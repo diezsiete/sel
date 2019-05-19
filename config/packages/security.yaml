@@ -20,6 +20,8 @@ security:
                 authenticators:
                     - App\Security\LoginFormAuthenticator
             switch_user: true
+            logout:
+                path: app_logout
 
             # activate different ways to authenticate
 
