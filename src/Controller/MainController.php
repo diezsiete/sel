@@ -16,4 +16,12 @@ class MainController extends AbstractController
             'controller_name' => 'MainController',
         ]);
     }
+
+    /**
+     * @Route("/perfil", name="app_perfil")
+     */
+    public function perfil()
+    {
+
+    }
 }
