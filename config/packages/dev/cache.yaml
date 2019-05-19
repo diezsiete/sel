@@ -1,0 +1,4 @@
+framework:
+  cache:
+    # filesystem para development
+    app: cache.adapter.filesystem
