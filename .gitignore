@@ -1,6 +1,8 @@
 /.idea/
 /public/vendor/
 /public/img/
+/public/js/examples/
+
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php

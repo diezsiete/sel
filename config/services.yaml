@@ -25,3 +25,19 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    app.menu_builder:
+        class: App\Menu\MenuBuilder
+        arguments: ["@knp_menu.factory"]
+        tags:
+            - { name: knp_menu.menu_builder, method: createMainMenu, alias: main }
+
+    app.menu_renderer:
+        class: App\Menu\MenuRenderer
+        arguments:
+            - "@knp_menu.matcher"
+            - "%knp_menu.renderer.list.options%"
+            - "%kernel.charset%"
+        tags:
+            # The alias is what is used to retrieve the menu
+            - { name: knp_menu.renderer, alias: custom }
