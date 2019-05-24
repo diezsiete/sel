@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "32965386f3cbd58d3fdbc7280f16bdaf",
+    "content-hash": "9ffc28fdcb942fefcfcb7dc625c33697",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1242,6 +1242,52 @@
                 "reflection"
             ],
             "time": "2018-06-14T14:45:07+00:00"
+        },
+        {
+            "name": "ercorp/ssrs-sdk",
+            "version": "0.0.12",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/EmergencyReporting/ssrsreport.git",
+                "reference": "83c25b97f14b75d7ac03f6e3044b4027f397cc02"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/EmergencyReporting/ssrsreport/zipball/83c25b97f14b75d7ac03f6e3044b4027f397cc02",
+                "reference": "83c25b97f14b75d7ac03f6e3044b4027f397cc02",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "SSRS\\": "library/SSRS/",
+                    "SSRS\\Common\\": "library/SSRS/Common/",
+                    "SSRS\\Factory\\": "library/SSRS/Factory/",
+                    "SSRS\\Interfaces\\": "library/SSRS/Interface/",
+                    "SSRS\\RenderType\\": "library/SSRS/RenderType/",
+                    "SSRS\\SSRSType\\": "library/SSRS/SSRSType/",
+                    "SSRS\\TestConnection\\": "library/SSRS/TestConnection/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Gabe Martin",
+                    "email": "gabema@gmail.com"
+                },
+                {
+                    "name": "Justin Revelstoke",
+                    "email": "justin.revelstoke@emergencyreporting.com"
+                }
+            ],
+            "description": "PHP library for connecting to SSRS SOAP",
+            "time": "2019-02-03T04:43:45+00:00"
         },
         {
             "name": "gedmo/doctrine-extensions",

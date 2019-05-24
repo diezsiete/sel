@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Comprobantes de pago{% endblock %}
+
+{% block body %}
+    <!-- start: page -->
+    <div class="row">
+        <div class="col">
+            <section class="card">
+                <div class="card-body">
+                    <table class="table table-bordered table-striped mb-0" id="datatable-default">
+                        <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Convenio</th>
+                            <th>Identifación</th>
+                            <th>Nombre</th>
+                            <th>PDF</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for nomina in nominas %}
+                            <tr>
+                                <td>{{ nomina.fecha|date('Y-m-d') }}</td>
+                                <td>{{ nomina.convenioNombre }}</td>
+                                <td>{{ nomina.nitTercero }}</td>
+                                <td>{{ nomina.nombre }}</td>
+                                <td>
+                                    <a target="_blank" href="{{ path('app_comprobante', {'fecha' : nomina.fecha|date('Y-m-d')}) }}">
+                                        <i class="fas fa-file-pdf fa-2x"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </div>
+    <!-- end: page -->
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <!-- Specific Page Vendor -->
+    <script src="{{ asset('vendor/datatables/media/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('vendor/datatables/media/js/dataTables.bootstrap4.min.js') }}"></script>
+    <!-- Examples -->
+    <script src="{{ asset('js/examples/examples.datatables.default.js') }}"></script>
+{% endblock %}

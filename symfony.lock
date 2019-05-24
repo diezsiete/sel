@@ -108,6 +108,9 @@
             "config/packages/dev/easy_log_handler.yaml"
         ]
     },
+    "ercorp/ssrs-sdk": {
+        "version": "0.0.12"
+    },
     "fzaninotto/faker": {
         "version": "v1.8.0"
     },
