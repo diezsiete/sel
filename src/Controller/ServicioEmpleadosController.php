@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\Service\NovasoftSsrs\Report\ReportNom204;
 use App\Service\NovasoftSsrs\Report\ReportNom932;
+use App\Service\Pdf\PdfCartaLaboral;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ServicioEmpleadosController extends BaseController
@@ -44,19 +45,25 @@ class ServicioEmpleadosController extends BaseController
     public function certificadoLaboral(ReportNom932 $reporte)
     {
         $reporte->setParameterCodigoEmpleado('53124855');
-        // $x = $reporte->renderMap();
+        $certificado = $reporte->renderCertificado();
         return $this->render('servicio_empleados/certificado-laboral.html.twig', [
-            'tieneCertificado' => true,
+            'tieneCertificado' => $certificado,
         ]);
     }
 
     /**
      * @Route("/certificado-laboral-pdf", name="app_certificado_laboral_pdf")
      */
-    public function certificadoLaboralPdf(ReportNom932 $reporte)
+    public function certificadoLaboralPdf(ReportNom932 $reporte, PdfCartaLaboral $pdf)
     {
         $reporte->setParameterCodigoEmpleado('53124855');
-        $pdfData = $reporte->renderMap();
+        $certificado = $reporte->renderCertificado();
+        //TODO no hay certificado
+        $pdfContent = $this->render('servicio_empleados/certificado-laboral.pdf.php', [
+            'pdf' => $pdf,
+            'certificado' => $certificado,
+        ]);
+        return $this->renderPdf($pdfContent);
     }
 
     /**
@@ -64,7 +71,7 @@ class ServicioEmpleadosController extends BaseController
      */
     public function certificadoIngresos()
     {
-
+        return $this->render('servicio_empleados/certificado-ingresos.html.twig');
     }
     
 }

@@ -52,7 +52,7 @@ class MapperNom932 extends Mapper
 
     public function setEsHombre($esHombre)
     {
-        $this->targetObject->setEsHombre($esHombre != 1);
+        $this->targetObject->setHombre($esHombre != 1);
     }
 
     public function setFechaIngreso($fechaIngreso)

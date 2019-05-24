@@ -49,7 +49,7 @@ class NovasoftCertificadoLaboral
     /**
      * @var boolean
      */
-    private $esHombre;
+    private $hombre;
     /**
      * @var \DateTime
      */
@@ -83,6 +83,10 @@ class NovasoftCertificadoLaboral
         return $this->nombre;
     }
 
+    public function getNombreCompleto(): string
+    {
+        return $this->primerApellido . " " . ($this->segundoApellido ? "$this->segundoApellido " : "") . $this->nombre;
+    }
     /**
      * @param string $nombre
      * @return NovasoftCertificadoLaboral
@@ -258,18 +262,18 @@ class NovasoftCertificadoLaboral
     /**
      * @return bool
      */
-    public function isEsHombre(): bool
+    public function esHombre(): bool
     {
-        return $this->esHombre;
+        return $this->hombre;
     }
 
     /**
      * @param bool $esHombre
      * @return NovasoftCertificadoLaboral
      */
-    public function setEsHombre(bool $esHombre): NovasoftCertificadoLaboral
+    public function setHombre(bool $esHombre): NovasoftCertificadoLaboral
     {
-        $this->esHombre = $esHombre;
+        $this->hombre = $esHombre;
         return $this;
     }
 
@@ -292,9 +296,9 @@ class NovasoftCertificadoLaboral
     }
 
     /**
-     * @return \DateTime
+     * @return \DateTime|null
      */
-    public function getFechaEgreso(): \DateTime
+    public function getFechaEgreso(): ?\DateTime
     {
         return $this->fechaEgreso;
     }
