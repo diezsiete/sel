@@ -34,6 +34,12 @@ class MenuBuilder
         $menu['Servicio empleados']
             ->addChild('Comprobantes de pago', ['route' => 'app_comprobantes'])
             ->setExtra('icon', 'fas fa-dollar-sign');
+        $menu['Servicio empleados']
+            ->addChild('Certificado laboral', ['route' => 'app_certificado_laboral'])
+            ->setExtra('icon', 'fas fa-file-invoice');
+        $menu['Servicio empleados']
+            ->addChild('Certificado ingresos', ['route' => 'app_certificado_ingresos'])
+            ->setExtra('icon', 'fas fa-file-alt');
 
         return $menu;
     }

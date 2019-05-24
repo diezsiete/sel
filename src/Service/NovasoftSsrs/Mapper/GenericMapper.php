@@ -7,14 +7,14 @@ namespace App\Service\NovasoftSsrs\Mapper;
 class GenericMapper extends Mapper
 {
 
-    protected function defineTargetClass()
+    protected function defineTargetClass(): string
     {
-        $this->targetClass = GenericEntity::class;
+        return GenericEntity::class;
     }
 
-    protected function defineMap()
+    protected function defineMap(): array
     {
-        $this->map = [];
+        return [];
     }
 
     public function __set($name, $value)

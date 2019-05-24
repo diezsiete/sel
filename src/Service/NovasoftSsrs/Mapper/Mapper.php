@@ -18,14 +18,14 @@ abstract class Mapper
 
     protected $targetObject;
 
-    abstract protected function defineTargetClass();
-    abstract protected function defineMap();
+    abstract protected function defineTargetClass(): string;
+    abstract protected function defineMap(): array;
 
 
     public function __construct()
     {
-        $this->defineTargetClass();
-        $this->defineMap();
+        $this->targetClass = $this->defineTargetClass();
+        $this->map = $this->defineMap();
 
         $this->targetObject = new $this->targetClass();
     }

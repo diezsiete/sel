@@ -55,68 +55,68 @@ class ReportFormatter
     }
 
     /**
-     * Converts each row of csv string or csv array parsed to a new object of $class
-     * @param string|array $csv_data
-     * @param string $class
-     * @return object[]
+     * Utilizar para reportes de una sola linea, donde el csv viene separado en varias lineas como Nom932
+     * @param string $csvData
+     * @return array|bool|false
      */
-    public function csvToObject($csv_data, $class)
+    public function csvSplittedToAssociative($csvData)
     {
-        $objects   = [];
-        $csv_array = is_array($csv_data) ? $csv_data : $this->csvToAssociative($csv_data);
-        $col_setmethod_map = []; //guarda el nombre del metodo set para cada columna, para cache
-        $col_camelname_map = [];
-        $rows_count = count($csv_array);
-
-        for($i = 0; $i < $rows_count; $i++) {
-            $object = new $class();
-            foreach($csv_array[$i] as $col_name => $value) {
-                // primera iteración guarda el respectivo atributo camelCase y la funcion set
-                // para utilizarlos en las demas iteraciones
-                if($i == 0) {
-                    $col_camelname_map[$col_name] = $this->utils->convertToCamelCase($col_name);
-                    $set_method = "set" . ucfirst($col_camelname_map[$col_name]);
-                    if(method_exists($object, $set_method)) {
-                        $col_setmethod_map[$col_name] = $set_method;
-                    }
-                }
-                // si el objeto tiene la funcion set
-                if(isset($col_setmethod_map[$col_name])) {
-                    $set_method = $col_setmethod_map[$col_name];
-                    $object->$set_method($value);
-                }
-                // si no (ej stdClass) guarda el atributo
-                else {
-                    $camelname = $col_camelname_map[$col_name];
-                    $object->$camelname = $value;
-                }
+        $cols =  $data = [];
+        $lines = explode("\n", $csvData);
+        //one_row false, por que el reporte utiliza el procedimiento rs_rhh_RepNom922 que puede botar mas de una linea
+        $col = $one_row = false;
+        foreach($lines as $line){
+            $row = str_getcsv($line);
+            if(!$row[0]) {
+                $col = $one_row = false;
+                continue;
             }
-            $objects[] = $object;
+            if(!$col){
+                $cols = array_merge($cols, $row);
+                $col = true;
+            }elseif(!$one_row){
+                $data = array_merge($data, $row);
+                $one_row = true;
+            }
         }
-
-        return $objects;
+        $csv = false;
+        if($data && count($cols) == count($data))
+            $csv = array_combine($cols, $data);
+        return $csv;
     }
 
     /**
      * Converts each row of $csv_data to a object using the Mapper mechanism
-     * @param string|array $csv_data
+     * @param string|array $csvData
      * @param Mapper $mapper
      * @return mixed array of objects of type the Mapper $targetObject
      */
-    public function mapCsv($csv_data, Mapper $mapper)
+    public function mapCsv($csvData, Mapper $mapper)
     {
-        $csv_array  = is_array($csv_data) ? $csv_data : $this->csvToAssociative($csv_data);
-        $objects    = [];
-        $rows_count = count($csv_array);
+        if(is_array($csvData)) {
+            //$csvData puede venir como una array sencilla
+            if(!is_array(reset($csvData))) {
+                $csvArray = [$csvData];
+            } else {
+                $csvArray = $csvData;
+            }
+        } else {
+            $csvArray = $this->csvToAssociative($csvData);
+        }
+        $rowsCount = count($csvArray);
 
-        for($i = 0; $i < $rows_count; $i++) {
-            foreach($csv_array[$i] as $attribute => $value) {
-                $mapper->$attribute = $value;
+        $objects    = [];
+
+        for($i = 0; $i < $rowsCount; $i++) {
+            foreach($csvArray[$i] as $attribute => $value) {
+                $mapper->$attribute = trim($value);
             }
             $mapper->addMappedObject($objects);
         }
         return $objects;
     }
+
+
 
     /**
      * Takes a row of csv that are column names. If it finds columns repeated, adds appendix

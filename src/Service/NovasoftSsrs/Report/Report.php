@@ -87,7 +87,8 @@ abstract class Report
     {
         $this->loadReport();
         $this->setExecutionParameters();
-        return $this->reportServer->renderCSV();
+        $csv = $this->reportServer->renderCSV();
+        return $csv;
     }
 
     /**
@@ -99,15 +100,6 @@ abstract class Report
         $this->loadReport();
         $this->setExecutionParameters();
         return $this->reportFormatter->csvToAssociative($this->reportServer->renderCSV());
-    }
-
-    /**
-     * @return object[]
-     * @throws \SSRS\SSRSReportException
-     */
-    public function renderEntidad()
-    {
-        return $this->reportFormatter->csvToObject($this->renderAssociative(), '\stdClass');
     }
 
     /**

@@ -4,9 +4,7 @@ namespace App\Controller;
 
 
 use App\Service\NovasoftSsrs\Report\ReportNom204;
-use App\Service\NovasoftSsrs\Report\ReportNomU1503;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use App\Service\NovasoftSsrs\Report\ReportNom932;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ServicioEmpleadosController extends BaseController
@@ -38,6 +36,35 @@ class ServicioEmpleadosController extends BaseController
             ->setParameterFechaFin($fecha);
 
         return $this->renderPdf($reporte->renderPdf());
+    }
+
+    /**
+     * @Route("/certificado-laboral", name="app_certificado_laboral")
+     */
+    public function certificadoLaboral(ReportNom932 $reporte)
+    {
+        $reporte->setParameterCodigoEmpleado('53124855');
+        // $x = $reporte->renderMap();
+        return $this->render('servicio_empleados/certificado-laboral.html.twig', [
+            'tieneCertificado' => true,
+        ]);
+    }
+
+    /**
+     * @Route("/certificado-laboral-pdf", name="app_certificado_laboral_pdf")
+     */
+    public function certificadoLaboralPdf(ReportNom932 $reporte)
+    {
+        $reporte->setParameterCodigoEmpleado('53124855');
+        $pdfData = $reporte->renderMap();
+    }
+
+    /**
+     * @Route("/certificado-ingresos", name="app_certificado_ingresos")
+     */
+    public function certificadoIngresos()
+    {
+
     }
     
 }

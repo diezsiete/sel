@@ -26,14 +26,14 @@ class MapperNom204 extends Mapper
      */
     protected $mappedObjects = [];
 
-    protected function defineTargetClass()
+    protected function defineTargetClass(): string
     {
-        $this->targetClass = NovasoftNomina::class;
+        return NovasoftNomina::class;
     }
 
-    protected function defineMap()
+    protected function defineMap(): array
     {
-        $this->map = [
+        return [
             'textbox12' => 'nombre',
             'num_ide' => 'nitTercero',
             'textbox276' => 'convenioNombre',
