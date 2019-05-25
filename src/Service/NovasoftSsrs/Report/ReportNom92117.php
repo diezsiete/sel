@@ -6,8 +6,8 @@
 namespace App\Service\NovasoftSsrs\Report;
 
 
-use App\Service\NovasoftSsrs\Entity\NovasoftCertificadoIngresos;
-use App\Service\NovasoftSsrs\Entity\NovasoftCertificadoLaboral;
+use App\Service\NovasoftSsrs\Entity\ReporteCertificadoIngresos;
+use App\Service\NovasoftSsrs\Entity\ReporteCertificadoLaboral;
 use App\Service\NovasoftSsrs\Mapper\MapperNom92117;
 use App\Service\NovasoftSsrs\Mapper\MapperNom932;
 use App\Service\NovasoftSsrs\ReportFormatter;
@@ -101,7 +101,7 @@ class ReportNom92117 extends Report
     }
 
     /**
-     * @return NovasoftCertificadoIngresos|null
+     * @return ReporteCertificadoIngresos|null
      * @throws \SSRS\SSRSReportException
      */
     public function renderCertificado()

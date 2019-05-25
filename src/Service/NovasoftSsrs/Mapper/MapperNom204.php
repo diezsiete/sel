@@ -10,25 +10,25 @@ namespace App\Service\NovasoftSsrs\Mapper;
 
 
 
-use App\Service\NovasoftSsrs\Entity\NovasoftNomina;
-use App\Service\NovasoftSsrs\Entity\NovasoftNominaDeducido;
-use App\Service\NovasoftSsrs\Entity\NovasoftNominaDevengo;
+use App\Service\NovasoftSsrs\Entity\ReporteNomina;
+use App\Service\NovasoftSsrs\Entity\ReporteNominaDeducido;
+use App\Service\NovasoftSsrs\Entity\ReporteNominaDevengo;
 
 class MapperNom204 extends Mapper
 {
     /**
-     * @var NovasoftNomina
+     * @var ReporteNomina
      */
     protected $targetObject;
 
     /**
-     * @var NovasoftNomina[]
+     * @var ReporteNomina[]
      */
     protected $mappedObjects = [];
 
     protected function defineTargetClass(): string
     {
-        return NovasoftNomina::class;
+        return ReporteNomina::class;
     }
 
     protected function defineMap(): array
@@ -163,7 +163,7 @@ class MapperNom204 extends Mapper
     }
 
     /**
-     * @param NovasoftNomina[] $objects
+     * @param ReporteNomina[] $objects
      */
     public function addMappedObject(&$objects)
     {
@@ -202,26 +202,26 @@ class MapperNom204 extends Mapper
     }
 
     /**
-     * @return NovasoftNominaDevengo
+     * @return ReporteNominaDevengo
      */
     protected function getLastDevengo()
     {
         $devengo = $this->targetObject->getDevengados()->last();
         if(!$devengo) {
-            $devengo = new NovasoftNominaDevengo();
+            $devengo = new ReporteNominaDevengo();
             $this->targetObject->addDevengo($devengo);
         }
         return $devengo;
     }
 
     /**
-     * @return NovasoftNominaDeducido
+     * @return ReporteNominaDeducido
      */
     protected function getLastDeducido()
     {
         $deducido = $this->targetObject->getDeducidos()->last();
         if(!$deducido) {
-            $deducido = new NovasoftNominaDeducido();
+            $deducido = new ReporteNominaDeducido();
             $this->targetObject->addDeducido($deducido);
         }
         return $deducido;

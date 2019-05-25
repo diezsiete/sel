@@ -35,6 +35,8 @@ services:
             - '%env(NOVASOFT_SSRS_PASSWORD)%'
             - '%env(NOVASOFT_SSRS_URL)%'
 
+
+
     app.menu_builder:
         class: App\Menu\MenuBuilder
         arguments: ["@knp_menu.factory"]

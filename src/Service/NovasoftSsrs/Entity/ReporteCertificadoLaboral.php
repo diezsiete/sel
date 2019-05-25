@@ -4,7 +4,7 @@
 namespace App\Service\NovasoftSsrs\Entity;
 
 
-class NovasoftCertificadoLaboral
+class ReporteCertificadoLaboral
 {
     /**
      * @var string
@@ -89,9 +89,9 @@ class NovasoftCertificadoLaboral
     }
     /**
      * @param string $nombre
-     * @return NovasoftCertificadoLaboral
+     * @return ReporteCertificadoLaboral
      */
-    public function setNombre(string $nombre): NovasoftCertificadoLaboral
+    public function setNombre(string $nombre): ReporteCertificadoLaboral
     {
         $this->nombre = $nombre;
         return $this;
@@ -107,9 +107,9 @@ class NovasoftCertificadoLaboral
 
     /**
      * @param string $primerApellido
-     * @return NovasoftCertificadoLaboral
+     * @return ReporteCertificadoLaboral
      */
-    public function setPrimerApellido(string $primerApellido): NovasoftCertificadoLaboral
+    public function setPrimerApellido(string $primerApellido): ReporteCertificadoLaboral
     {
         $this->primerApellido = $primerApellido;
         return $this;
@@ -125,9 +125,9 @@ class NovasoftCertificadoLaboral
 
     /**
      * @param string $segundoApellido
-     * @return NovasoftCertificadoLaboral
+     * @return ReporteCertificadoLaboral
      */
-    public function setSegundoApellido(string $segundoApellido): NovasoftCertificadoLaboral
+    public function setSegundoApellido(string $segundoApellido): ReporteCertificadoLaboral
     {
         $this->segundoApellido = $segundoApellido;
         return $this;
@@ -143,9 +143,9 @@ class NovasoftCertificadoLaboral
 
     /**
      * @param bool $activo
-     * @return NovasoftCertificadoLaboral
+     * @return ReporteCertificadoLaboral
      */
-    public function setActivo(bool $activo): NovasoftCertificadoLaboral
+    public function setActivo(bool $activo): ReporteCertificadoLaboral
     {
         $this->activo = $activo;
         return $this;
@@ -161,9 +161,9 @@ class NovasoftCertificadoLaboral
 
     /**
      * @param string $cedula
-     * @return NovasoftCertificadoLaboral
+     * @return ReporteCertificadoLaboral
      */
-    public function setCedula(string $cedula): NovasoftCertificadoLaboral
+    public function setCedula(string $cedula): ReporteCertificadoLaboral
     {
         $this->cedula = $cedula;
         return $this;
@@ -179,9 +179,9 @@ class NovasoftCertificadoLaboral
 
     /**
      * @param string $contrato
-     * @return NovasoftCertificadoLaboral
+     * @return ReporteCertificadoLaboral
      */
-    public function setContrato(string $contrato): NovasoftCertificadoLaboral
+    public function setContrato(string $contrato): ReporteCertificadoLaboral
     {
         $this->contrato = $contrato;
         return $this;
@@ -197,9 +197,9 @@ class NovasoftCertificadoLaboral
 
     /**
      * @param string $empresaUsuaria
-     * @return NovasoftCertificadoLaboral
+     * @return ReporteCertificadoLaboral
      */
-    public function setEmpresaUsuaria(string $empresaUsuaria): NovasoftCertificadoLaboral
+    public function setEmpresaUsuaria(string $empresaUsuaria): ReporteCertificadoLaboral
     {
         $this->empresaUsuaria = $empresaUsuaria;
         return $this;
@@ -215,9 +215,9 @@ class NovasoftCertificadoLaboral
 
     /**
      * @param string $cargo
-     * @return NovasoftCertificadoLaboral
+     * @return ReporteCertificadoLaboral
      */
-    public function setCargo(string $cargo): NovasoftCertificadoLaboral
+    public function setCargo(string $cargo): ReporteCertificadoLaboral
     {
         $this->cargo = $cargo;
         return $this;
@@ -233,9 +233,9 @@ class NovasoftCertificadoLaboral
 
     /**
      * @param string $nsalario
-     * @return NovasoftCertificadoLaboral
+     * @return ReporteCertificadoLaboral
      */
-    public function setNsalario(string $nsalario): NovasoftCertificadoLaboral
+    public function setNsalario(string $nsalario): ReporteCertificadoLaboral
     {
         $this->nsalario = $nsalario;
         return $this;
@@ -251,9 +251,9 @@ class NovasoftCertificadoLaboral
 
     /**
      * @param string $salario
-     * @return NovasoftCertificadoLaboral
+     * @return ReporteCertificadoLaboral
      */
-    public function setSalario(string $salario): NovasoftCertificadoLaboral
+    public function setSalario(string $salario): ReporteCertificadoLaboral
     {
         $this->salario = $salario;
         return $this;
@@ -269,9 +269,9 @@ class NovasoftCertificadoLaboral
 
     /**
      * @param bool $esHombre
-     * @return NovasoftCertificadoLaboral
+     * @return ReporteCertificadoLaboral
      */
-    public function setHombre(bool $esHombre): NovasoftCertificadoLaboral
+    public function setHombre(bool $esHombre): ReporteCertificadoLaboral
     {
         $this->hombre = $esHombre;
         return $this;
@@ -287,9 +287,9 @@ class NovasoftCertificadoLaboral
 
     /**
      * @param \DateTime $fechaIngreso
-     * @return NovasoftCertificadoLaboral
+     * @return ReporteCertificadoLaboral
      */
-    public function setFechaIngreso(\DateTime $fechaIngreso): NovasoftCertificadoLaboral
+    public function setFechaIngreso(\DateTime $fechaIngreso): ReporteCertificadoLaboral
     {
         $this->fechaIngreso = $fechaIngreso;
         return $this;
@@ -305,9 +305,9 @@ class NovasoftCertificadoLaboral
 
     /**
      * @param \DateTime $fechaEgreso
-     * @return NovasoftCertificadoLaboral
+     * @return ReporteCertificadoLaboral
      */
-    public function setFechaEgreso(?\DateTime $fechaEgreso): NovasoftCertificadoLaboral
+    public function setFechaEgreso(?\DateTime $fechaEgreso): ReporteCertificadoLaboral
     {
         $this->fechaEgreso = $fechaEgreso;
         return $this;
@@ -323,9 +323,9 @@ class NovasoftCertificadoLaboral
 
     /**
      * @param string $tipoDocumento
-     * @return NovasoftCertificadoLaboral
+     * @return ReporteCertificadoLaboral
      */
-    public function setTipoDocumento(string $tipoDocumento): NovasoftCertificadoLaboral
+    public function setTipoDocumento(string $tipoDocumento): ReporteCertificadoLaboral
     {
         $this->tipoDocumento = $tipoDocumento;
         return $this;
@@ -341,9 +341,9 @@ class NovasoftCertificadoLaboral
 
     /**
      * @param string $email
-     * @return NovasoftCertificadoLaboral
+     * @return ReporteCertificadoLaboral
      */
-    public function setEmail(string $email): NovasoftCertificadoLaboral
+    public function setEmail(string $email): ReporteCertificadoLaboral
     {
         $this->email = $email;
         return $this;
@@ -359,9 +359,9 @@ class NovasoftCertificadoLaboral
 
     /**
      * @param string $fechaIngresoTextual
-     * @return NovasoftCertificadoLaboral
+     * @return ReporteCertificadoLaboral
      */
-    public function setFechaIngresoTextual(string $fechaIngresoTextual): NovasoftCertificadoLaboral
+    public function setFechaIngresoTextual(string $fechaIngresoTextual): ReporteCertificadoLaboral
     {
         $this->fechaIngresoTextual = $fechaIngresoTextual;
         return $this;
@@ -377,9 +377,9 @@ class NovasoftCertificadoLaboral
 
     /**
      * @param string $fechaCertificadoTextual
-     * @return NovasoftCertificadoLaboral
+     * @return ReporteCertificadoLaboral
      */
-    public function setFechaCertificadoTextual(string $fechaCertificadoTextual): NovasoftCertificadoLaboral
+    public function setFechaCertificadoTextual(string $fechaCertificadoTextual): ReporteCertificadoLaboral
     {
         $this->fechaCertificadoTextual = $fechaCertificadoTextual;
         return $this;

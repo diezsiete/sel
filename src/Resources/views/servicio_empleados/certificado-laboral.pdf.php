@@ -1,9 +1,9 @@
 <?php
-use App\Service\NovasoftSsrs\Entity\NovasoftCertificadoLaboral;
+use App\Service\NovasoftSsrs\Entity\ReporteCertificadoLaboral;
 use App\Service\Pdf\PdfCartaLaboral;
 
 /** @var PdfCartaLaboral $pdf */
-/** @var NovasoftCertificadoLaboral $certificado */
+/** @var ReporteCertificadoLaboral $certificado */
 
 $compania = 'pta';
 

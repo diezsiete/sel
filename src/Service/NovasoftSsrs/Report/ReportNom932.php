@@ -7,7 +7,7 @@ namespace App\Service\NovasoftSsrs\Report;
 
 
 
-use App\Service\NovasoftSsrs\Entity\NovasoftCertificadoLaboral;
+use App\Service\NovasoftSsrs\Entity\ReporteCertificadoLaboral;
 use App\Service\NovasoftSsrs\Mapper\MapperNom932;
 
 class ReportNom932 extends Report
@@ -31,7 +31,7 @@ class ReportNom932 extends Report
     }
 
     /**
-     * @return NovasoftCertificadoLaboral[]
+     * @return ReporteCertificadoLaboral[]
      * @throws \SSRS\SSRSReportException
      */
     public function renderMap()
@@ -41,7 +41,7 @@ class ReportNom932 extends Report
     }
 
     /**
-     * @return NovasoftCertificadoLaboral|null
+     * @return ReporteCertificadoLaboral|null
      * @throws \SSRS\SSRSReportException
      */
     public function renderCertificado()

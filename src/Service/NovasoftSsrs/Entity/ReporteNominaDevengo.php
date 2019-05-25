@@ -4,7 +4,7 @@
 namespace App\Service\NovasoftSsrs\Entity;
 
 
-class NovasoftNominaDeducido
+class ReporteNominaDevengo
 {
     /**
      * @var string
@@ -21,9 +21,9 @@ class NovasoftNominaDeducido
     /**
      * @var string
      */
-    private $deducidos;
+    private $devengados;
     /**
-     * @var NovasoftNomina
+     * @var ReporteNomina
      */
     private $nomina;
 
@@ -37,9 +37,9 @@ class NovasoftNominaDeducido
 
     /**
      * @param string $codigo
-     * @return NovasoftNominaDeducido
+     * @return ReporteNominaDevengo
      */
-    public function setCodigo(string $codigo): NovasoftNominaDeducido
+    public function setCodigo(string $codigo): ReporteNominaDevengo
     {
         $this->codigo = $codigo;
         return $this;
@@ -55,9 +55,9 @@ class NovasoftNominaDeducido
 
     /**
      * @param string $detalle
-     * @return NovasoftNominaDeducido
+     * @return ReporteNominaDevengo
      */
-    public function setDetalle(string $detalle): NovasoftNominaDeducido
+    public function setDetalle(string $detalle): ReporteNominaDevengo
     {
         $this->detalle = $detalle;
         return $this;
@@ -73,9 +73,9 @@ class NovasoftNominaDeducido
 
     /**
      * @param string $cantidad
-     * @return NovasoftNominaDeducido
+     * @return ReporteNominaDevengo
      */
-    public function setCantidad(string $cantidad): NovasoftNominaDeducido
+    public function setCantidad(string $cantidad): ReporteNominaDevengo
     {
         $this->cantidad = $cantidad;
         return $this;
@@ -84,34 +84,34 @@ class NovasoftNominaDeducido
     /**
      * @return string
      */
-    public function getDeducidos(): string
+    public function getDevengados(): string
     {
-        return $this->deducidos;
+        return $this->devengados;
     }
 
     /**
-     * @param string $deducidos
-     * @return NovasoftNominaDeducido
+     * @param string $devengados
+     * @return ReporteNominaDevengo
      */
-    public function setDeducidos(string $deducidos): NovasoftNominaDeducido
+    public function setDevengados(string $devengados): ReporteNominaDevengo
     {
-        $this->deducidos = $deducidos;
+        $this->devengados = $devengados;
         return $this;
     }
 
     /**
-     * @return NovasoftNomina
+     * @return ReporteNomina
      */
-    public function getNomina(): NovasoftNomina
+    public function getNomina(): ReporteNomina
     {
         return $this->nomina;
     }
 
     /**
-     * @param NovasoftNomina $nomina
-     * @return NovasoftNominaDeducido
+     * @param ReporteNomina $nomina
+     * @return ReporteNominaDevengo
      */
-    public function setNomina(NovasoftNomina $nomina): NovasoftNominaDeducido
+    public function setNomina(ReporteNomina $nomina): ReporteNominaDevengo
     {
         $this->nomina = $nomina;
         return $this;

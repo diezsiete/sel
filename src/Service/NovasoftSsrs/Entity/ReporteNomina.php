@@ -6,7 +6,7 @@ namespace App\Service\NovasoftSsrs\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
-class NovasoftNomina
+class ReporteNomina
 {
     /**
      * @var \DateTime
@@ -66,12 +66,12 @@ class NovasoftNomina
     private $netoTexto;
 
     /**
-     * @var ArrayCollection|NovasoftNominaDeducido[]
+     * @var ArrayCollection|ReporteNominaDeducido[]
      */
     private $deducidos;
 
     /**
-     * @var ArrayCollection|NovasoftNominaDevengo[]
+     * @var ArrayCollection|ReporteNominaDevengo[]
      */
     private $devengados;
     /**
@@ -115,9 +115,9 @@ class NovasoftNomina
 
     /**
      * @param \DateTime $fecha
-     * @return NovasoftNomina
+     * @return ReporteNomina
      */
-    public function setFecha(\DateTime $fecha): NovasoftNomina
+    public function setFecha(\DateTime $fecha): ReporteNomina
     {
         $this->fecha = $fecha;
         return $this;
@@ -133,9 +133,9 @@ class NovasoftNomina
 
     /**
      * @param string $nombre
-     * @return NovasoftNomina
+     * @return ReporteNomina
      */
-    public function setNombre(string $nombre): NovasoftNomina
+    public function setNombre(string $nombre): ReporteNomina
     {
         $this->nombre = $nombre;
         return $this;
@@ -151,9 +151,9 @@ class NovasoftNomina
 
     /**
      * @param string $nitTercero
-     * @return NovasoftNomina
+     * @return ReporteNomina
      */
-    public function setNitTercero(string $nitTercero): NovasoftNomina
+    public function setNitTercero(string $nitTercero): ReporteNomina
     {
         $this->nitTercero = $nitTercero;
         return $this;
@@ -169,9 +169,9 @@ class NovasoftNomina
 
     /**
      * @param string $convenioNombre
-     * @return NovasoftNomina
+     * @return ReporteNomina
      */
-    public function setConvenioNombre(string $convenioNombre): NovasoftNomina
+    public function setConvenioNombre(string $convenioNombre): ReporteNomina
     {
         $this->convenioNombre = $convenioNombre;
         return $this;
@@ -187,9 +187,9 @@ class NovasoftNomina
 
     /**
      * @param string $pension
-     * @return NovasoftNomina
+     * @return ReporteNomina
      */
-    public function setPension(string $pension): NovasoftNomina
+    public function setPension(string $pension): ReporteNomina
     {
         $this->pension = $pension;
         return $this;
@@ -205,9 +205,9 @@ class NovasoftNomina
 
     /**
      * @param string $salud
-     * @return NovasoftNomina
+     * @return ReporteNomina
      */
-    public function setSalud(string $salud): NovasoftNomina
+    public function setSalud(string $salud): ReporteNomina
     {
         $this->salud = $salud;
         return $this;
@@ -223,9 +223,9 @@ class NovasoftNomina
 
     /**
      * @param string $banco
-     * @return NovasoftNomina
+     * @return ReporteNomina
      */
-    public function setBanco(string $banco): NovasoftNomina
+    public function setBanco(string $banco): ReporteNomina
     {
         $this->banco = $banco;
         return $this;
@@ -241,9 +241,9 @@ class NovasoftNomina
 
     /**
      * @param string $cuenta
-     * @return NovasoftNomina
+     * @return ReporteNomina
      */
-    public function setCuenta(string $cuenta): NovasoftNomina
+    public function setCuenta(string $cuenta): ReporteNomina
     {
         $this->cuenta = $cuenta;
         return $this;
@@ -259,9 +259,9 @@ class NovasoftNomina
 
     /**
      * @param string $salario
-     * @return NovasoftNomina
+     * @return ReporteNomina
      */
-    public function setSalario(string $salario): NovasoftNomina
+    public function setSalario(string $salario): ReporteNomina
     {
         $this->salario = $salario;
         return $this;
@@ -277,9 +277,9 @@ class NovasoftNomina
 
     /**
      * @param string $cargo
-     * @return NovasoftNomina
+     * @return ReporteNomina
      */
-    public function setCargo(string $cargo): NovasoftNomina
+    public function setCargo(string $cargo): ReporteNomina
     {
         $this->cargo = $cargo;
         return $this;
@@ -295,9 +295,9 @@ class NovasoftNomina
 
     /**
      * @param string $devengadosTotal
-     * @return NovasoftNomina
+     * @return ReporteNomina
      */
-    public function setDevengadosTotal(string $devengadosTotal): NovasoftNomina
+    public function setDevengadosTotal(string $devengadosTotal): ReporteNomina
     {
         $this->devengadosTotal = $devengadosTotal;
         return $this;
@@ -313,9 +313,9 @@ class NovasoftNomina
 
     /**
      * @param string $deducidosTotal
-     * @return NovasoftNomina
+     * @return ReporteNomina
      */
-    public function setDeducidosTotal(string $deducidosTotal): NovasoftNomina
+    public function setDeducidosTotal(string $deducidosTotal): ReporteNomina
     {
         $this->deducidosTotal = $deducidosTotal;
         return $this;
@@ -331,9 +331,9 @@ class NovasoftNomina
 
     /**
      * @param string $neto
-     * @return NovasoftNomina
+     * @return ReporteNomina
      */
-    public function setNeto(string $neto): NovasoftNomina
+    public function setNeto(string $neto): ReporteNomina
     {
         $this->neto = $neto;
         return $this;
@@ -349,29 +349,29 @@ class NovasoftNomina
 
     /**
      * @param string $netoTexto
-     * @return NovasoftNomina
+     * @return ReporteNomina
      */
-    public function setNetoTexto(string $netoTexto): NovasoftNomina
+    public function setNetoTexto(string $netoTexto): ReporteNomina
     {
         $this->netoTexto = $netoTexto;
         return $this;
     }
 
-    public function addDeducido(NovasoftNominaDeducido $deducido)
+    public function addDeducido(ReporteNominaDeducido $deducido)
     {
         $this->deducidos->add($deducido);
         $deducido->setNomina($this);
     }
 
 
-    public function addDevengo(NovasoftNominaDevengo $devengo)
+    public function addDevengo(ReporteNominaDevengo $devengo)
     {
         $this->devengados->add($devengo);
         $devengo->setNomina($this);
     }
 
     /**
-     * @return NovasoftNominaDeducido[]|ArrayCollection
+     * @return ReporteNominaDeducido[]|ArrayCollection
      */
     public function getDeducidos()
     {
@@ -379,7 +379,7 @@ class NovasoftNomina
     }
 
     /**
-     * @return NovasoftNominaDevengo[]|ArrayCollection
+     * @return ReporteNominaDevengo[]|ArrayCollection
      */
     public function getDevengados()
     {
@@ -396,9 +396,9 @@ class NovasoftNomina
 
     /**
      * @param string $baseSalario
-     * @return NovasoftNomina
+     * @return ReporteNomina
      */
-    public function setBaseSalario(string $baseSalario): NovasoftNomina
+    public function setBaseSalario(string $baseSalario): ReporteNomina
     {
         $this->baseSalario = $baseSalario;
         return $this;
@@ -414,9 +414,9 @@ class NovasoftNomina
 
     /**
      * @param string $basePension
-     * @return NovasoftNomina
+     * @return ReporteNomina
      */
-    public function setBasePension(string $basePension): NovasoftNomina
+    public function setBasePension(string $basePension): ReporteNomina
     {
         $this->basePension = $basePension;
         return $this;
@@ -432,9 +432,9 @@ class NovasoftNomina
 
     /**
      * @param string $baseRetencion
-     * @return NovasoftNomina
+     * @return ReporteNomina
      */
-    public function setBaseRetencion(string $baseRetencion): NovasoftNomina
+    public function setBaseRetencion(string $baseRetencion): ReporteNomina
     {
         $this->baseRetencion = $baseRetencion;
         return $this;
@@ -450,9 +450,9 @@ class NovasoftNomina
 
     /**
      * @param string $metRetencion
-     * @return NovasoftNomina
+     * @return ReporteNomina
      */
-    public function setMetRetencion(string $metRetencion): NovasoftNomina
+    public function setMetRetencion(string $metRetencion): ReporteNomina
     {
         $this->metRetencion = $metRetencion;
         return $this;
@@ -468,9 +468,9 @@ class NovasoftNomina
 
     /**
      * @param string $porcentajeRetencion
-     * @return NovasoftNomina
+     * @return ReporteNomina
      */
-    public function setPorcentajeRetencion(string $porcentajeRetencion): NovasoftNomina
+    public function setPorcentajeRetencion(string $porcentajeRetencion): ReporteNomina
     {
         $this->porcentajeRetencion = $porcentajeRetencion;
         return $this;
@@ -486,9 +486,9 @@ class NovasoftNomina
 
     /**
      * @param string $diasVacacionesPend
-     * @return NovasoftNomina
+     * @return ReporteNomina
      */
-    public function setDiasVacacionesPend(string $diasVacacionesPend): NovasoftNomina
+    public function setDiasVacacionesPend(string $diasVacacionesPend): ReporteNomina
     {
         $this->diasVacacionesPend = $diasVacacionesPend;
         return $this;

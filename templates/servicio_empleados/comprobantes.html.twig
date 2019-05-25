@@ -19,14 +19,14 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {% for nomina in nominas %}
+                        {% for comprobante in comprobantes %}
                             <tr>
-                                <td>{{ nomina.fecha|date('Y-m-d') }}</td>
-                                <td>{{ nomina.convenioNombre }}</td>
-                                <td>{{ nomina.nitTercero }}</td>
-                                <td>{{ nomina.nombre }}</td>
+                                <td>{{ comprobante.fecha|date('Y-m-d') }}</td>
+                                <td>{{ comprobante.convenioNombre }}</td>
+                                <td>{{ comprobante.nitTercero }}</td>
+                                <td>{{ comprobante.nombre }}</td>
                                 <td>
-                                    <a target="_blank" href="{{ path('app_comprobante', {'fecha' : nomina.fecha|date('Y-m-d')}) }}">
+                                    <a target="_blank" href="{{ path('app_comprobante', {'comprobanteId' : comprobante.fecha|date('Y-m-d')}) }}">
                                         <i class="fas fa-file-pdf fa-2x"></i>
                                     </a>
                                 </td>

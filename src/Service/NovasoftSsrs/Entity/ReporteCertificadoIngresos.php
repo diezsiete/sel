@@ -4,7 +4,7 @@
 namespace App\Service\NovasoftSsrs\Entity;
 
 
-class NovasoftCertificadoIngresos
+class ReporteCertificadoIngresos
 {
     private $DV;
     private $primerApellido;
@@ -49,7 +49,7 @@ class NovasoftCertificadoIngresos
 
     /**
      * @param mixed $DV
-     * @return NovasoftCertificadoIngresos
+     * @return ReporteCertificadoIngresos
      */
     public function setDV($DV)
     {
@@ -67,7 +67,7 @@ class NovasoftCertificadoIngresos
 
     /**
      * @param mixed $primerApellido
-     * @return NovasoftCertificadoIngresos
+     * @return ReporteCertificadoIngresos
      */
     public function setPrimerApellido($primerApellido)
     {
@@ -85,7 +85,7 @@ class NovasoftCertificadoIngresos
 
     /**
      * @param mixed $segundoApellido
-     * @return NovasoftCertificadoIngresos
+     * @return ReporteCertificadoIngresos
      */
     public function setSegundoApellido($segundoApellido)
     {
@@ -103,7 +103,7 @@ class NovasoftCertificadoIngresos
 
     /**
      * @param mixed $nombres
-     * @return NovasoftCertificadoIngresos
+     * @return ReporteCertificadoIngresos
      */
     public function setNombres($nombres)
     {
@@ -121,9 +121,9 @@ class NovasoftCertificadoIngresos
 
     /**
      * @param string $periodoCertificacionDe
-     * @return NovasoftCertificadoIngresos
+     * @return ReporteCertificadoIngresos
      */
-    public function setPeriodoCertificacionDe(string $periodoCertificacionDe): NovasoftCertificadoIngresos
+    public function setPeriodoCertificacionDe(string $periodoCertificacionDe): ReporteCertificadoIngresos
     {
         $this->periodoCertificacionDe[] = $periodoCertificacionDe;
         return $this;
@@ -139,9 +139,9 @@ class NovasoftCertificadoIngresos
 
     /**
      * @param string $periodoCertificacionA
-     * @return NovasoftCertificadoIngresos
+     * @return ReporteCertificadoIngresos
      */
-    public function setPeriodoCertificacionA(string $periodoCertificacionA): NovasoftCertificadoIngresos
+    public function setPeriodoCertificacionA(string $periodoCertificacionA): ReporteCertificadoIngresos
     {
         $this->periodoCertificacionA[] = $periodoCertificacionA;
         return $this;
@@ -157,9 +157,9 @@ class NovasoftCertificadoIngresos
 
     /**
      * @param string $fechaExpedicion
-     * @return NovasoftCertificadoIngresos
+     * @return ReporteCertificadoIngresos
      */
-    public function setFechaExpedicion(string $fechaExpedicion): NovasoftCertificadoIngresos
+    public function setFechaExpedicion(string $fechaExpedicion): ReporteCertificadoIngresos
     {
         $this->fechaExpedicion[] = $fechaExpedicion;
         return $this;
@@ -175,7 +175,7 @@ class NovasoftCertificadoIngresos
 
     /**
      * @param mixed $lugarRetencion
-     * @return NovasoftCertificadoIngresos
+     * @return ReporteCertificadoIngresos
      */
     public function setLugarRetencion($lugarRetencion)
     {
@@ -193,9 +193,9 @@ class NovasoftCertificadoIngresos
 
     /**
      * @param string $codigoDepartamento
-     * @return NovasoftCertificadoIngresos
+     * @return ReporteCertificadoIngresos
      */
-    public function setCodigoDepartamento(string $codigoDepartamento): NovasoftCertificadoIngresos
+    public function setCodigoDepartamento(string $codigoDepartamento): ReporteCertificadoIngresos
     {
         $this->codigoDepartamento[] = $codigoDepartamento;
         return $this;
@@ -211,9 +211,9 @@ class NovasoftCertificadoIngresos
 
     /**
      * @param string $codigoCiudad
-     * @return NovasoftCertificadoIngresos
+     * @return ReporteCertificadoIngresos
      */
-    public function setCodigoCiudad(string $codigoCiudad): NovasoftCertificadoIngresos
+    public function setCodigoCiudad(string $codigoCiudad): ReporteCertificadoIngresos
     {
         $this->codigoCiudad[] = $codigoCiudad;
         return $this;
@@ -229,7 +229,7 @@ class NovasoftCertificadoIngresos
 
     /**
      * @param mixed $pagosSalarios
-     * @return NovasoftCertificadoIngresos
+     * @return ReporteCertificadoIngresos
      */
     public function setPagosSalarios($pagosSalarios)
     {
@@ -247,7 +247,7 @@ class NovasoftCertificadoIngresos
 
     /**
      * @param mixed $pagosHonorarios
-     * @return NovasoftCertificadoIngresos
+     * @return ReporteCertificadoIngresos
      */
     public function setPagosHonorarios($pagosHonorarios)
     {
@@ -265,7 +265,7 @@ class NovasoftCertificadoIngresos
 
     /**
      * @param mixed $pagosServicios
-     * @return NovasoftCertificadoIngresos
+     * @return ReporteCertificadoIngresos
      */
     public function setPagosServicios($pagosServicios)
     {
@@ -283,7 +283,7 @@ class NovasoftCertificadoIngresos
 
     /**
      * @param mixed $pagosComisiones
-     * @return NovasoftCertificadoIngresos
+     * @return ReporteCertificadoIngresos
      */
     public function setPagosComisiones($pagosComisiones)
     {
@@ -301,7 +301,7 @@ class NovasoftCertificadoIngresos
 
     /**
      * @param mixed $pagosPrestaciones
-     * @return NovasoftCertificadoIngresos
+     * @return ReporteCertificadoIngresos
      */
     public function setPagosPrestaciones($pagosPrestaciones)
     {
@@ -319,7 +319,7 @@ class NovasoftCertificadoIngresos
 
     /**
      * @param mixed $pagosViaticos
-     * @return NovasoftCertificadoIngresos
+     * @return ReporteCertificadoIngresos
      */
     public function setPagosViaticos($pagosViaticos)
     {
@@ -337,7 +337,7 @@ class NovasoftCertificadoIngresos
 
     /**
      * @param mixed $pagosRepresentacion
-     * @return NovasoftCertificadoIngresos
+     * @return ReporteCertificadoIngresos
      */
     public function setPagosRepresentacion($pagosRepresentacion)
     {
@@ -355,7 +355,7 @@ class NovasoftCertificadoIngresos
 
     /**
      * @param mixed $pagosCompensaciones
-     * @return NovasoftCertificadoIngresos
+     * @return ReporteCertificadoIngresos
      */
     public function setPagosCompensaciones($pagosCompensaciones)
     {
@@ -373,7 +373,7 @@ class NovasoftCertificadoIngresos
 
     /**
      * @param mixed $pagosOtros
-     * @return NovasoftCertificadoIngresos
+     * @return ReporteCertificadoIngresos
      */
     public function setPagosOtros($pagosOtros)
     {
@@ -391,7 +391,7 @@ class NovasoftCertificadoIngresos
 
     /**
      * @param mixed $pagosCesantias
-     * @return NovasoftCertificadoIngresos
+     * @return ReporteCertificadoIngresos
      */
     public function setPagosCesantias($pagosCesantias)
     {
@@ -409,7 +409,7 @@ class NovasoftCertificadoIngresos
 
     /**
      * @param mixed $pagosJubilacion
-     * @return NovasoftCertificadoIngresos
+     * @return ReporteCertificadoIngresos
      */
     public function setPagosJubilacion($pagosJubilacion)
     {
@@ -427,7 +427,7 @@ class NovasoftCertificadoIngresos
 
     /**
      * @param mixed $totalIngresosBrutos
-     * @return NovasoftCertificadoIngresos
+     * @return ReporteCertificadoIngresos
      */
     public function setTotalIngresosBrutos($totalIngresosBrutos)
     {
@@ -445,7 +445,7 @@ class NovasoftCertificadoIngresos
 
     /**
      * @param mixed $aportesSalud
-     * @return NovasoftCertificadoIngresos
+     * @return ReporteCertificadoIngresos
      */
     public function setAportesSalud($aportesSalud)
     {
@@ -463,7 +463,7 @@ class NovasoftCertificadoIngresos
 
     /**
      * @param mixed $aportesPensionObligatorio
-     * @return NovasoftCertificadoIngresos
+     * @return ReporteCertificadoIngresos
      */
     public function setAportesPensionObligatorio($aportesPensionObligatorio)
     {
@@ -481,7 +481,7 @@ class NovasoftCertificadoIngresos
 
     /**
      * @param mixed $aportesPensionVoluntario
-     * @return NovasoftCertificadoIngresos
+     * @return ReporteCertificadoIngresos
      */
     public function setAportesPensionVoluntario($aportesPensionVoluntario)
     {
@@ -499,7 +499,7 @@ class NovasoftCertificadoIngresos
 
     /**
      * @param mixed $aportesAFC
-     * @return NovasoftCertificadoIngresos
+     * @return ReporteCertificadoIngresos
      */
     public function setAportesAFC($aportesAFC)
     {
@@ -517,7 +517,7 @@ class NovasoftCertificadoIngresos
 
     /**
      * @param mixed $valorRetencionFuente
-     * @return NovasoftCertificadoIngresos
+     * @return ReporteCertificadoIngresos
      */
     public function setValorRetencionFuente($valorRetencionFuente)
     {
@@ -535,7 +535,7 @@ class NovasoftCertificadoIngresos
 
     /**
      * @param mixed $pagadorNombre
-     * @return NovasoftCertificadoIngresos
+     * @return ReporteCertificadoIngresos
      */
     public function setPagadorNombre($pagadorNombre)
     {
@@ -553,7 +553,7 @@ class NovasoftCertificadoIngresos
 
     /**
      * @param mixed $pagadorNit
-     * @return NovasoftCertificadoIngresos
+     * @return ReporteCertificadoIngresos
      */
     public function setPagadorNit($pagadorNit)
     {
@@ -571,7 +571,7 @@ class NovasoftCertificadoIngresos
 
     /**
      * @param mixed $totalTexto
-     * @return NovasoftCertificadoIngresos
+     * @return ReporteCertificadoIngresos
      */
     public function setTotalTexto($totalTexto)
     {
@@ -589,7 +589,7 @@ class NovasoftCertificadoIngresos
 
     /**
      * @param mixed $total
-     * @return NovasoftCertificadoIngresos
+     * @return ReporteCertificadoIngresos
      */
     public function setTotal($total)
     {
@@ -607,9 +607,9 @@ class NovasoftCertificadoIngresos
 
     /**
      * @param string $certificoTexto
-     * @return NovasoftCertificadoIngresos
+     * @return ReporteCertificadoIngresos
      */
-    public function setCertificoTexto(string $certificoTexto): NovasoftCertificadoIngresos
+    public function setCertificoTexto(string $certificoTexto): ReporteCertificadoIngresos
     {
         $this->certificoTexto[] = $certificoTexto;
         return $this;

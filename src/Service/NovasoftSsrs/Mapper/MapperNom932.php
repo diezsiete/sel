@@ -4,18 +4,18 @@
 namespace App\Service\NovasoftSsrs\Mapper;
 
 
-use App\Service\NovasoftSsrs\Entity\NovasoftCertificadoLaboral;
+use App\Service\NovasoftSsrs\Entity\ReporteCertificadoLaboral;
 
 class MapperNom932 extends Mapper
 {
     /**
-     * @var NovasoftCertificadoLaboral
+     * @var ReporteCertificadoLaboral
      */
     protected $targetObject;
 
     protected function defineTargetClass(): string
     {
-        return NovasoftCertificadoLaboral::class;
+        return ReporteCertificadoLaboral::class;
     }
 
     protected function defineMap(): array
