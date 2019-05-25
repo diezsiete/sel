@@ -5,10 +5,9 @@ namespace App\Service\NovasoftSsrs;
 
 
 use App\Service\NovasoftSsrs\Report\ReportNom204;
+use App\Service\NovasoftSsrs\Report\ReportNom701;
 use App\Service\NovasoftSsrs\Report\ReportNom92117;
 use App\Service\NovasoftSsrs\Report\ReportNom932;
-use SSRS\Common\Credentials;
-use SSRS\SSRSReport;
 
 class NovasoftSsrs
 {
@@ -25,6 +24,11 @@ class NovasoftSsrs
      * @var ReportNom92117
      */
     private $reportNom92117;
+
+    /**
+     * @var ReportNom701
+     */
+    private $reportNom701;
 
     /**
      * @required
@@ -52,6 +56,15 @@ class NovasoftSsrs
     }
 
     /**
+     * @required
+     * @param ReportNom701 $reportNom701
+     */
+    public function setReportNom701(ReportNom701 $reportNom701)
+    {
+        $this->reportNom701 = $reportNom701;
+    }
+
+    /**
      * @return ReportNom204
      */
     public function getReportNom204(): ReportNom204
@@ -73,5 +86,13 @@ class NovasoftSsrs
     public function getReportNom92117(): ReportNom92117
     {
         return $this->reportNom92117;
+    }
+
+    /**
+     * @return ReportNom701
+     */
+    public function getReportNom701()
+    {
+        return $this->reportNom701;
     }
 }

@@ -6,8 +6,10 @@ namespace App\Service;
 
 use App\Service\NovasoftSsrs\Entity\ReporteCertificadoIngresos;
 use App\Service\NovasoftSsrs\Entity\ReporteCertificadoLaboral;
+use App\Service\NovasoftSsrs\Entity\ReporteLiquidacion;
 use App\Service\NovasoftSsrs\Entity\ReporteNomina;
 use App\Service\NovasoftSsrs\NovasoftSsrs;
+use App\Service\NovasoftSsrs\Report\Report;
 
 class ReportesServicioEmpleados
 {
@@ -95,12 +97,35 @@ class ReportesServicioEmpleados
         return $certificados;
     }
 
+    /**
+     * @param $periodo
+     * @param $empleadoIdent
+     * @return mixed
+     */
     public function getCertificadoIngresosPdf($periodo, $empleadoIdent)
     {
         $reporteNovasoft = $this->novasoftSsrs->getReportNom92117();
         $reporteNovasoft
             ->setParameterCodigoEmpleado($empleadoIdent)
             ->setParameterAno($periodo);
+        return $reporteNovasoft->renderPdf();
+    }
+
+    /**
+     * @param string $empleadoIdent
+     * @return ReporteLiquidacion[]
+     */
+    public function getLiquidacionesDeContrato(string $empleadoIdent)
+    {
+        $reporteNovasoft = $this->novasoftSsrs->getReportNom701();
+        $reporteNovasoft->setParameterCodigoEmpleado($empleadoIdent);
+        return $reporteNovasoft->renderMap();
+    }
+
+    public function getLiquidacionDeContratoPdf(string $empleadoIdent, $fechaIngreso, $fechaRetiro)
+    {
+        $reporteNovasoft = $this->novasoftSsrs->getReportNom701();
+        $reporteNovasoft->setParameterCodigoEmpleado($empleadoIdent);
         return $reporteNovasoft->renderPdf();
     }
 }

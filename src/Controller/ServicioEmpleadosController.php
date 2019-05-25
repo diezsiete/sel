@@ -3,10 +3,6 @@
 namespace App\Controller;
 
 
-use App\Service\NovasoftSsrs\Entity\ReporteCertificadoIngresos;
-use App\Service\NovasoftSsrs\Report\ReportNom204;
-use App\Service\NovasoftSsrs\Report\ReportNom92117;
-use App\Service\NovasoftSsrs\Report\ReportNom932;
 use App\Service\Pdf\PdfCartaLaboral;
 use App\Service\ReportesServicioEmpleados;
 use Symfony\Component\Routing\Annotation\Route;
@@ -77,5 +73,24 @@ class ServicioEmpleadosController extends BaseController
         $reportePdf = $reportes->getCertificadoIngresosPdf($periodo, '53124855');
         return $this->renderPdf($reportePdf);
     }
-    
+
+    /**
+     * @Route("/liquidaciones-de-contrato", name="app_liquidaciones_de_contrato")
+     */
+    public function liquidacionesDeContrato(ReportesServicioEmpleados $reportes)
+    {
+        $liquidaciones = $reportes->getLiquidacionesDeContrato('1023010041');
+        return $this->render('servicio_empleados/liquidaciones-de-contrato.html.twig', [
+            'liquidaciones' => $liquidaciones
+        ]);
+    }
+
+    /**
+     * @Route("/liquidacion-de-contrato/{fechaIngreso}/{fechaRetiro}", name="app_liquidacion_de_contrato_pdf")
+     */
+    public function liquidacionDeContratoPdf(ReportesServicioEmpleados $reportes, $fechaIngreso, $fechaRetiro)
+    {
+        $reportePdf = $reportes->getLiquidacionDeContratoPdf('1023010041', $fechaIngreso, $fechaRetiro);
+        return $this->renderPdf($reportePdf);
+    }
 }

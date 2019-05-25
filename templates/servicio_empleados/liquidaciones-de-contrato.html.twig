@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+    Liquidaciones de contrato
+{% endblock %}
+
+{% block body %}
+    <!-- start: page -->
+    <div class="row">
+        <div class="col">
+            <section class="card">
+                <div class="card-body">
+                    <table class="table table-bordered table-striped mb-0" id="datatable-default">
+                        <thead>
+                        <tr>
+                            <th>Cargo</th>
+                            <th>Fecha ingreso</th>
+                            <th>Fecha retiro</th>
+                            <th>Número contrato</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for liquidacion in liquidaciones %}
+                            <tr>
+                                <td>{{ liquidacion.ultimoCargo }}</td>
+                                <td>{{ liquidacion.fechaIngreso|date('Y-m-d') }}</td>
+                                <td>{{ liquidacion.fechaRetiro|date('Y-m-d') }}</td>
+                                <td>{{ liquidacion.numeroContrato }}</td>
+                                <td>
+                                    <a target="_blank" href="{{ path('app_liquidacion_de_contrato_pdf', {
+                                        'fechaIngreso' : liquidacion.fechaIngreso|date('Y-m-d'),
+                                        'fechaRetiro': liquidacion.fechaRetiro|date('Y-m-d')
+                                    }) }}">
+                                        <i class="fas fa-file-pdf fa-2x"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </div>
+    <!-- end: page -->
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <!-- Specific Page Vendor -->
+    <script src="{{ asset('vendor/datatables/media/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('vendor/datatables/media/js/dataTables.bootstrap4.min.js') }}"></script>
+    <!-- Examples -->
+    <script src="{{ asset('js/examples/examples.datatables.default.js') }}"></script>
+{% endblock %}
+
+
+

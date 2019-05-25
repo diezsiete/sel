@@ -40,6 +40,9 @@ class MenuBuilder
         $menu['Servicio empleados']
             ->addChild('Certificado ingresos', ['route' => 'app_certificados_ingresos'])
             ->setExtra('icon', 'fas fa-file-alt');
+        $menu['Servicio empleados']
+            ->addChild('Liquidación de contrato', ['route' => 'app_liquidaciones_de_contrato'])
+            ->setExtra('icon', 'fas fa-strikethrough');
 
         return $menu;
     }
