@@ -14,7 +14,15 @@ use App\Service\Utils;
 
 class ReportNomU1503 extends Report
 {
-    protected $path = "/ReportesWeb/NOM/NOMU1503";
+    protected function getReportPath(): string
+    {
+        return "/ReportesWeb/NOM/NOMU1503";
+    }
+
+    protected function getMapperClass(): ?string
+    {
+        return null;
+    }
 
     /**
      * Fecha desde

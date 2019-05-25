@@ -16,11 +16,15 @@ use App\Service\Utils;
 
 class ReportNom92117 extends Report
 {
-    protected $path = "/ReportesWeb/NOM/NOM921_17";
-    /**
-     * @var string
-     */
-    protected $mapperClass = MapperNom92117::class;
+    protected function getReportPath(): string
+    {
+        return "/ReportesWeb/NOM/NOM921_17";
+    }
+
+    protected function getMapperClass(): ?string
+    {
+        return MapperNom92117::class;
+    }
 
     /**
      * @var string

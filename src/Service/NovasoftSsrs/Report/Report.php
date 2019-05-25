@@ -51,6 +51,9 @@ abstract class Report
      */
     protected $utils;
 
+    protected abstract function getReportPath(): string;
+
+    protected abstract function getMapperClass(): ?string;
 
     /**
      * Report constructor.
@@ -62,6 +65,10 @@ abstract class Report
         $this->reportServer = $reportServer;
         $this->reportFormatter = $reportFormatter;
         $this->utils = $utils;
+
+        $this->path = $this->getReportPath();
+        $this->mapperClass = $this->getMapperClass() ?? GenericMapper::class;
+
         $this->setDb($novasoftSsrsDb);
     }
 

@@ -13,7 +13,16 @@ use App\Service\Utils;
 
 class ReportNom204 extends Report
 {
-    protected $path = "/ReportesWeb/NOM/NOM204";
+
+    protected function getReportPath(): string
+    {
+        return "/ReportesWeb/NOM/NOM204";
+    }
+
+    protected function getMapperClass(): ?string
+    {
+        return MapperNom204::class;
+    }
 
     /**
      * Fecha de corte
@@ -76,10 +85,6 @@ class ReportNom204 extends Report
      */
     protected $parameter_Origen = "H";
 
-    /**
-     * @var string
-     */
-    protected $mapperClass = MapperNom204::class;
 
     public function __construct(ReportServer $reportServer, ReportFormatter $reportFormatter, Utils $utils, $novasoftSsrsDb)
     {
@@ -127,5 +132,4 @@ class ReportNom204 extends Report
     {
         return $this->reportFormatter->mapCsv($this->renderCSV(), new $this->mapperClass());
     }
-
 }

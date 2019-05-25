@@ -12,11 +12,15 @@ use App\Service\NovasoftSsrs\Mapper\MapperNom932;
 
 class ReportNom932 extends Report
 {
-    protected $path = "/ReportesWeb/NOM/NOM932";
-    /**
-     * @var string
-     */
-    protected $mapperClass = MapperNom932::class;
+    protected function getReportPath(): string
+    {
+        return "/ReportesWeb/NOM/NOM932";
+    }
+
+    protected function getMapperClass(): ?string
+    {
+        return MapperNom932::class;
+    }
 
     /**
      * Identificación del empleado

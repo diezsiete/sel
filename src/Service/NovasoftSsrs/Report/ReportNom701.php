@@ -11,9 +11,15 @@ use App\Service\Utils;
 
 class ReportNom701 extends Report
 {
-    protected $path = "/ReportesWeb/NOM/NOM701";
+    protected function getReportPath(): string
+    {
+        return "/ReportesWeb/NOM/NOM701";
+    }
 
-    protected $mapperClass = MapperNom701::class;
+    protected function getMapperClass(): ?string
+    {
+        return MapperNom701::class;
+    }
 
     protected $parameter_Ind_Fec = "1";
     protected $parameter_fFecIni = "3/1/2017";

@@ -128,4 +128,14 @@ class ReportesServicioEmpleados
         $reporteNovasoft->setParameterCodigoEmpleado($empleadoIdent);
         return $reporteNovasoft->renderPdf();
     }
+
+    /**
+     * @return mixed
+     * @throws \SSRS\SSRSReportException
+     */
+    public function getConvenios()
+    {
+        $reporteNovasoft = $this->novasoftSsrs->getReportNom936();
+        return $reporteNovasoft->renderMap();
+    }
 }
