@@ -36,7 +36,7 @@ class ReportNom932 extends Report
      */
     public function renderMap()
     {
-        $csvAssociative = $this->reportFormatter->csvSplittedToAssociative($this->renderCSV());
+        $csvAssociative = $this->reportFormatter->csvColsSplittedToAssociative($this->renderCSV());
         return $this->reportFormatter->mapCsv($csvAssociative, new $this->mapperClass());
     }
 

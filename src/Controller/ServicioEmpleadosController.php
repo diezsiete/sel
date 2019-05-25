@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 
+use App\Service\NovasoftSsrs\Entity\NovasoftCertificadoIngresos;
 use App\Service\NovasoftSsrs\Report\ReportNom204;
+use App\Service\NovasoftSsrs\Report\ReportNom92117;
 use App\Service\NovasoftSsrs\Report\ReportNom932;
 use App\Service\Pdf\PdfCartaLaboral;
 use Symfony\Component\Routing\Annotation\Route;
@@ -67,11 +69,33 @@ class ServicioEmpleadosController extends BaseController
     }
 
     /**
-     * @Route("/certificado-ingresos", name="app_certificado_ingresos")
+     * @Route("/certificados-ingresos", name="app_certificados_ingresos")
      */
-    public function certificadoIngresos()
+    public function certificadosIngresos(ReportNom92117 $reporte)
     {
-        return $this->render('servicio_empleados/certificado-ingresos.html.twig');
+        $reporte->setParameterCodigoEmpleado('53124855');
+        /** @var NovasoftCertificadoIngresos[] $certificados */
+        $certificados = [];
+        $anos = ['2018', '2017'];
+        foreach($anos as $ano) {
+            $reporte->setParameterAno($ano);
+            $certificados[$ano] = $reporte->renderCertificado();
+        }
+
+        return $this->render('servicio_empleados/certificado-ingresos.html.twig', [
+            'certificados' => $certificados
+        ]);
+    }
+
+    /**
+     * @Route("/certificado-ingresos/{periodo}", name="app_certificado_ingresos")
+     */
+    public function certificadoIngreso(ReportNom92117 $reporte, $periodo)
+    {
+        $reporte
+            ->setParameterCodigoEmpleado('53124855')
+            ->setParameterAno($periodo);
+        return $this->renderPdf($reporte->renderPdf());
     }
     
 }

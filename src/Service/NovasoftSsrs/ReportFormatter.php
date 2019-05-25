@@ -50,16 +50,15 @@ class ReportFormatter
                 $csv[] = array_map('trim', $row);
             }
         }
-
         return $csv;
     }
 
     /**
-     * Utilizar para reportes de una sola linea, donde el csv viene separado en varias lineas como Nom932
+     * Utilizar para reportes de una sola linea, donde las columnas del csv viene separado en varias lineas como Nom932
      * @param string $csvData
      * @return array|bool|false
      */
-    public function csvSplittedToAssociative($csvData)
+    public function csvColsSplittedToAssociative($csvData)
     {
         $cols =  $data = [];
         $lines = explode("\n", $csvData);
@@ -86,6 +85,32 @@ class ReportFormatter
     }
 
     /**
+     * Utilizar para reportes de una sola linea, donde las columnas vienen en primera fila y el contenido en varias
+     * @param string $csvData
+     * @return array|bool|false
+     */
+    public function csvContSplittedToAssociative($csvData)
+    {
+        $cols =  $data = [];
+        $lines = explode("\n", $csvData);
+        $col = false;
+        foreach($lines as $line){
+            $row = str_getcsv($line);
+            if(!$row[0] && ($col && count($row) < count($cols))) {
+                continue;
+            }
+            if(!$col){
+                $cols = array_merge($cols, $row);
+                $col = true;
+            }else {
+                $row = array_combine($cols, $row);
+                $data = $data + array_filter($row);
+            }
+        }
+        return $data;
+    }
+
+    /**
      * Converts each row of $csv_data to a object using the Mapper mechanism
      * @param string|array $csvData
      * @param Mapper $mapper
@@ -106,7 +131,6 @@ class ReportFormatter
         $rowsCount = count($csvArray);
 
         $objects    = [];
-
         for($i = 0; $i < $rowsCount; $i++) {
             foreach($csvArray[$i] as $attribute => $value) {
                 $mapper->$attribute = trim($value);
