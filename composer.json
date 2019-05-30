@@ -7,6 +7,7 @@
         "ext-iconv": "*",
         "ercorp/ssrs-sdk": "^0.0.12",
         "knplabs/knp-menu-bundle": "^2.2",
+        "omines/datatables-bundle": "^0.3.0",
         "sensio/framework-extra-bundle": "^5.3",
         "setasign/fpdf": "1.8.1",
         "setasign/fpdi": "1.6.2",
