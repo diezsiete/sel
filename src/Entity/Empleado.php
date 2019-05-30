@@ -17,16 +17,6 @@ class Empleado
     private $id;
 
     /**
-     * @ORM\Column(type="bigint")
-     */
-    private $identificacion;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $nombre;
-
-    /**
      * @ORM\Column(type="string", length=2)
      */
     private $sexo;
@@ -62,11 +52,6 @@ class Empleado
     private $direccion;
 
     /**
-     * @ORM\Column(type="string", length=65, nullable=true)
-     */
-    private $email;
-
-    /**
      * @ORM\Column(type="string", length=75)
      */
     private $centroCosto;
@@ -87,39 +72,22 @@ class Empleado
     private $cargo;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Convenio", inversedBy="empleados")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Convenio", inversedBy="empleados", cascade={"remove"})
      * @ORM\JoinColumn(referencedColumnName="codigo")
      */
     private $convenio;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Usuario", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $usuario;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getIdentificacion(): ?int
-    {
-        return $this->identificacion;
-    }
-
-    public function setIdentificacion(int $identificacion): self
-    {
-        $this->identificacion = $identificacion;
-
-        return $this;
-    }
-
-    public function getNombre(): ?string
-    {
-        return $this->nombre;
-    }
-
-    public function setNombre(string $nombre): self
-    {
-        $this->nombre = $nombre;
-
-        return $this;
-    }
 
     public function getSexo(): ?string
     {
@@ -205,17 +173,6 @@ class Empleado
         return $this;
     }
 
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-
-    public function setEmail(?string $email): self
-    {
-        $this->email = $email;
-
-        return $this;
-    }
 
     public function getCentroCosto(): ?string
     {
@@ -273,6 +230,18 @@ class Empleado
     public function setConvenio(?Convenio $convenio): self
     {
         $this->convenio = $convenio;
+
+        return $this;
+    }
+
+    public function getUsuario(): ?Usuario
+    {
+        return $this->usuario;
+    }
+
+    public function setUsuario(Usuario $usuario): self
+    {
+        $this->usuario = $usuario;
 
         return $this;
     }

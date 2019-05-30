@@ -16,9 +16,9 @@ use App\Entity\Convenio;
 class MapperNom936 extends Mapper
 {
 
-    protected function defineTargetClass(): string
+    protected function instanceTargetObject()
     {
-        return Convenio::class;
+        return new Convenio();
     }
 
     protected function defineMap(): array

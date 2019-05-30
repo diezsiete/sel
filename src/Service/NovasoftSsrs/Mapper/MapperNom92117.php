@@ -13,9 +13,9 @@ class MapperNom92117 extends Mapper
      */
     protected $targetObject;
 
-    protected function defineTargetClass(): string
+    protected function instanceTargetObject()
     {
-        return ReporteCertificadoIngresos::class;
+        return new ReporteCertificadoIngresos();
     }
 
     protected function defineMap(): array

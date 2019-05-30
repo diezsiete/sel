@@ -249,4 +249,21 @@ class Usuario implements UserInterface
 
         return $this;
     }
+
+    public function getNombreCompleto($solo_primeros = false, $ucfirst = false)
+    {
+        $primer_nombre = $ucfirst ? ucfirst(mb_strtolower($this->primerNombre)) : $this->primerNombre;
+        $segundo_nombre = $ucfirst ? ucfirst(mb_strtolower($this->segundoNombre)) : $this->segundoNombre;
+        $primer_apellido = $ucfirst ? ucfirst(mb_strtolower($this->primerApellido)) : $this->primerApellido;
+        $segundo_apellido = $ucfirst ? ucfirst(mb_strtolower($this->segundoApellido)) : $this->segundoApellido;
+
+        if($solo_primeros)
+            $return =  $primer_nombre.' '.$primer_apellido;
+        else
+            $return =  $primer_nombre.' '
+                .($segundo_nombre? $segundo_nombre. ' ' : '')
+                .$primer_apellido
+                .($segundo_apellido ? ' ' . $segundo_apellido : '');
+        return $return;
+    }
 }

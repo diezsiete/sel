@@ -7,9 +7,9 @@ namespace App\Service\NovasoftSsrs\Mapper;
 class GenericMapper extends Mapper
 {
 
-    protected function defineTargetClass(): string
+    protected function instanceTargetObject()
     {
-        return GenericEntity::class;
+        return new GenericEntity();
     }
 
     protected function defineMap(): array

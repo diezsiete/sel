@@ -26,9 +26,9 @@ class MapperNom204 extends Mapper
      */
     protected $mappedObjects = [];
 
-    protected function defineTargetClass(): string
+    protected function instanceTargetObject()
     {
-        return ReporteNomina::class;
+        return new ReporteNomina();
     }
 
     protected function defineMap(): array

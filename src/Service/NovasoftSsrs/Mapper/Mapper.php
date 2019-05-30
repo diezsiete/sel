@@ -14,20 +14,17 @@ abstract class Mapper
 {
     protected $map;
 
-    protected $targetClass;
-
     protected $targetObject;
 
-    abstract protected function defineTargetClass(): string;
+    abstract protected function instanceTargetObject();
     abstract protected function defineMap(): array;
 
 
     public function __construct()
     {
-        $this->targetClass = $this->defineTargetClass();
         $this->map = $this->defineMap();
 
-        $this->targetObject = new $this->targetClass();
+        $this->targetObject = $this->instanceTargetObject();
     }
 
     public function __set($name, $value)
@@ -45,6 +42,6 @@ abstract class Mapper
     public function addMappedObject(&$objects)
     {
         $objects[] = $this->targetObject;
-        $this->targetObject = new $this->targetClass();
+        $this->targetObject = $this->instanceTargetObject();
     }
 }

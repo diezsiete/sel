@@ -9,6 +9,7 @@ use App\Service\NovasoftSsrs\Report\ReportNom701;
 use App\Service\NovasoftSsrs\Report\ReportNom92117;
 use App\Service\NovasoftSsrs\Report\ReportNom932;
 use App\Service\NovasoftSsrs\Report\ReportNom936;
+use App\Service\NovasoftSsrs\Report\ReportNomU1503;
 
 class NovasoftSsrs
 {
@@ -35,6 +36,11 @@ class NovasoftSsrs
      * @var ReportNom936
      */
     private $reportNom936;
+
+    /**
+     * @var ReportNomU1503
+     */
+    private $reportNomU1503;
 
     /**
      * @required
@@ -79,6 +85,16 @@ class NovasoftSsrs
     }
 
     /**
+     * @required
+     * @param ReportNomU1503 $reportNomU1503
+     */
+    public function setReportNomU1503(ReportNomU1503 $reportNomU1503): void
+    {
+        $this->reportNomU1503 = $reportNomU1503;
+    }
+
+
+    /**
      * @return ReportNom204
      */
     public function getReportNom204(): ReportNom204
@@ -116,5 +132,13 @@ class NovasoftSsrs
     public function getReportNom936(): ReportNom936
     {
         return $this->reportNom936;
+    }
+
+    /**
+     * @return ReportNomU1503
+     */
+    public function getReportNomU1503(): ReportNomU1503
+    {
+        return $this->reportNomU1503;
     }
 }

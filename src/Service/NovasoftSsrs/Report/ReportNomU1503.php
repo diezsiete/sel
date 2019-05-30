@@ -8,12 +8,20 @@
 
 namespace App\Service\NovasoftSsrs\Report;
 
+use App\Entity\Empleado;
+use App\Repository\ConvenioRepository;
+use App\Service\NovasoftSsrs\Mapper\MapperNomU1503;
 use App\Service\NovasoftSsrs\ReportFormatter;
 use App\Service\NovasoftSsrs\ReportServer;
 use App\Service\Utils;
 
 class ReportNomU1503 extends Report
 {
+    /**
+     * @var ConvenioRepository
+     */
+    private $convenioRepository;
+
     protected function getReportPath(): string
     {
         return "/ReportesWeb/NOM/NOMU1503";
@@ -21,7 +29,7 @@ class ReportNomU1503 extends Report
 
     protected function getMapperClass(): ?string
     {
-        return null;
+        return MapperNomU1503::class;
     }
 
     /**
@@ -55,33 +63,38 @@ class ReportNomU1503 extends Report
 
 
 
-
-    public function __construct(ReportServer $reportServer, ReportFormatter $reportFormatter, Utils $utils, $novasoftSsrsDb)
+    public function __construct(ReportServer $reportServer, ReportFormatter $reportFormatter, Utils $utils,
+                                $novasoftSsrsDb, ConvenioRepository $convenioRepository)
     {
         parent::__construct($reportServer, $reportFormatter, $utils, $novasoftSsrsDb);
 
         $today = $this->utils->dateFormatToday('m/d/Y');
         $this->parameter_feccori = $today;
         $this->parameter_feccorf = $today;
+        $this->convenioRepository = $convenioRepository;
     }
 
     /**
-     * @param string $parameter_feccori
+     * @param string|\DateTime|null $fechaDesde
      * @return ReportNomU1503
      */
-    public function setParameterFechaDesde($parameter_feccori)
+    public function setParameterFechaDesde($fechaDesde)
     {
-        $this->parameter_feccori = $parameter_feccori;
+        if($fechaDesde) {
+            $this->parameter_feccori = is_object($fechaDesde) ? $fechaDesde->format('m/d/Y') : $fechaDesde;
+        }
         return $this;
     }
 
     /**
-     * @param string $parameter_feccorf
+     * @param string|\DateTime|null $fechaHasta
      * @return ReportNomU1503
      */
-    public function setParameterFechaHasta($parameter_feccorf)
+    public function setParameterFechaHasta($fechaHasta)
     {
-        $this->parameter_feccorf = $parameter_feccorf;
+        if($fechaHasta) {
+            $this->parameter_feccorf = is_object($fechaHasta) ? $fechaHasta->format('m/d/Y') : $fechaHasta;
+        }
         return $this;
     }
 
@@ -106,10 +119,15 @@ class ReportNomU1503 extends Report
     }
 
     /**
-     * @return NovasoftEmpleado[]
+     * @return Empleado[]
      */
     public function renderMap()
     {
         return parent::renderMap();
+    }
+
+    protected function getMapperInstance()
+    {
+        return new $this->mapperClass($this->convenioRepository);
     }
 }

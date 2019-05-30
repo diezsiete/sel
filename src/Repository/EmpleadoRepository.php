@@ -19,6 +19,19 @@ class EmpleadoRepository extends ServiceEntityRepository
         parent::__construct($registry, Empleado::class);
     }
 
+    /**
+     * @param string $identificacion
+     * @return Empleado|null
+     */
+    public function findByIdentificacion(string $identificacion)
+    {
+        $qb = $this->createQueryBuilder('e')
+            ->join('e.usuario', 'u')
+            ->andWhere('u.identificacion = :identificacion')
+            ->setParameter('identificacion', $identificacion);
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
     // /**
     //  * @return Empleado[] Returns an array of Empleado objects
     //  */

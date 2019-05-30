@@ -13,9 +13,9 @@ class MapperNom701 extends Mapper
      */
     protected $targetObject;
 
-    protected function defineTargetClass(): string
+    protected function instanceTargetObject()
     {
-        return ReporteLiquidacion::class;
+        return new ReporteLiquidacion();
     }
 
     protected function defineMap(): array

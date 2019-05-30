@@ -115,7 +115,7 @@ abstract class Report
      */
     public function renderMap()
     {
-        return $this->reportFormatter->mapCsv($this->renderCSV(), new $this->mapperClass());
+        return $this->reportFormatter->mapCsv($this->renderCSV(), $this->getMapperInstance());
     }
 
     /**
@@ -127,6 +127,8 @@ abstract class Report
         $this->setExecutionParameters();
         return $this->reportServer->renderPdf();
     }
+
+
     /**
      * @return ExecutionInfo2
      * @throws \SSRS\SSRSReportException
@@ -156,5 +158,13 @@ abstract class Report
             }
         }
         $this->reportServer->setExecutionParameters($parameters);
+    }
+
+    /**
+     * @return mixed
+     */
+    protected function getMapperInstance()
+    {
+        return new $this->mapperClass();
     }
 }

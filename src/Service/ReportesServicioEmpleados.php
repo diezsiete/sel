@@ -4,6 +4,7 @@
 namespace App\Service;
 
 
+use App\Entity\Empleado;
 use App\Service\NovasoftSsrs\Entity\ReporteCertificadoIngresos;
 use App\Service\NovasoftSsrs\Entity\ReporteCertificadoLaboral;
 use App\Service\NovasoftSsrs\Entity\ReporteLiquidacion;
@@ -89,7 +90,7 @@ class ReportesServicioEmpleados
 
         $certificados = [];
         $anos = ['2018', '2017'];
-        foreach($anos as $ano) {
+        foreach ($anos as $ano) {
             $reporteNovasoft->setParameterAno($ano);
             $certificados[$ano] = $reporteNovasoft->renderCertificado();
         }
@@ -138,4 +139,21 @@ class ReportesServicioEmpleados
         $reporteNovasoft = $this->novasoftSsrs->getReportNom936();
         return $reporteNovasoft->renderMap();
     }
+
+    /**
+     * @param string $convenioCodigo
+     * @param \DateTime $desde
+     * @param \DateTime $hasta
+     * @return Empleado[]
+     */
+    public function getEmpleados(string $convenioCodigo, $desde, $hasta)
+    {
+        $reportNovasoft = $this->novasoftSsrs->getReportNomU1503();
+        $reportNovasoft->setParameterCodigoConvenio($convenioCodigo);
+        $reportNovasoft->setParameterFechaDesde($desde);
+        $reportNovasoft->setParameterFechaHasta($hasta);
+
+        return $reportNovasoft->renderMap();
+    }
+
 }
