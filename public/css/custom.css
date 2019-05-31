@@ -1,4 +1,12 @@
-/* Add here all your CSS customizations */
+/* HEADER ------------------------------------------------------------------------------------------------------------*/
+.notifications > li .notification-icon.switch-user {
+    background: orangered;
+}
+.notifications > li .notification-icon.switch-user i {
+    color: white;
+}
+
+/* DATATABLES --------------------------------------------------------------------------------------------------------*/
 .dataTables_processing {
     left: 15px;
     right:15px;
@@ -11,3 +19,4 @@
     text-align: center;
     padding-top: 10px;
 }
+

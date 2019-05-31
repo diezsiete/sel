@@ -13,6 +13,8 @@ use Omines\DataTablesBundle\Column\TextColumn;
 use Omines\DataTablesBundle\DataTable;
 use Omines\DataTablesBundle\DataTableState;
 use Omines\DataTablesBundle\DataTableTypeInterface;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Security;
 
 class UsuarioDataTableType implements DataTableTypeInterface
 {
@@ -21,10 +23,20 @@ class UsuarioDataTableType implements DataTableTypeInterface
      * @var UsuarioRepository
      */
     private $usuarioRepository;
+    /**
+     * @var Security
+     */
+    private $security;
+    /**
+     * @var RouterInterface
+     */
+    private $router;
 
-    public function __construct(UsuarioRepository $usuarioRepository)
+    public function __construct(UsuarioRepository $usuarioRepository, Security $security, RouterInterface $router)
     {
         $this->usuarioRepository = $usuarioRepository;
+        $this->security = $security;
+        $this->router = $router;
     }
 
     /**
@@ -57,5 +69,17 @@ class UsuarioDataTableType implements DataTableTypeInterface
                 ]
             ])
         ;
+        if($this->security->isGranted(['ROLE_ALLOWED_TO_SWITCH'], $this->security->getUser())) {
+            $dataTable->add('switch', TextColumn::class, [
+                'label' => 'Impersonificar',
+                'data' => function (Usuario $usuario) {
+                    return $usuario->getIdentificacion();
+                },
+                'render' => function($identificacion) {
+                    $route = $this->router->generate('app_comprobantes', ['_switch_user' => $identificacion]);
+                    return sprintf('<a href="%s"><i class="fas fa-user-cog"></i></a>', $route);
+                }
+            ]);
+        }
     }
 }

@@ -70,6 +70,12 @@
 
             <ul class="notifications">
                 <li>
+                    {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
+                        <a href="{{ path('admin_usuarios', {'_switch_user': '_exit'})  }}" class="notification-icon switch-user">
+                            <i class="fas fa-user-cog"></i>
+                        </a>
+                    {% endif %}
+
                     <a href="#" class="dropdown-toggle notification-icon" data-toggle="dropdown">
                         <i class="fas fa-tasks"></i>
                         <span class="badge">3</span>

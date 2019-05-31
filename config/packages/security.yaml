@@ -45,5 +45,6 @@ security:
         # dejamos solo acceso a la pagina de login 
         - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/change-password$, roles: IS_AUTHENTICATED_FULLY}
+        - { path: ^/admin, roles: ROLE_OPERADOR}
         # las demas paginas serán restringidas
         - { path: ^/, roles: IS_AUTHENTICATED_REMEMBERED }
