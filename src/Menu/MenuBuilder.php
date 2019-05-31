@@ -44,6 +44,14 @@ class MenuBuilder
             ->addChild('Liquidación de contrato', ['route' => 'app_liquidaciones_de_contrato'])
             ->setExtra('icon', 'fas fa-strikethrough');
 
+        $menu->addChild('Administración')
+            ->setUri('#')
+            ->setExtra('icon', 'fas fa-cog');
+        $menu['Administración']
+            ->addChild('Usuarios', ['route' => 'admin_usuarios'])
+            ->setExtra('icon', 'fas fa-users');
+
+
         return $menu;
     }
 }

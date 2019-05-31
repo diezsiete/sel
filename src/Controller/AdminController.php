@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\DataTable\Type\UsuarioDataTableType;
 use App\Entity\Convenio;
+use App\Entity\Usuario;
 use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
 use Omines\DataTablesBundle\Column\TextColumn;
 use Omines\DataTablesBundle\DataTable;
@@ -13,15 +15,29 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AdminController extends AbstractController
 {
+
+    /**
+     * @Route("/admin/usuarios", name="admin_usuarios")
+     */
+    public function usuarios(DataTableFactory $dataTableFactory, Request $request)
+    {
+        $table = $dataTableFactory->createFromType(UsuarioDataTableType::class, [], ['searching' => true])
+            ->handleRequest($request);
+
+        if($table->isCallback()) {
+            return $table->getResponse();
+        }
+
+        return $this->render('admin/usuarios.html.twig', ['datatable' => $table]);
+    }
+
     /**
      * @Route("/convenios", name="admin_convenios", defaults={"header": "Convenios"})
      */
     public function convenios(DataTableFactory $dataTableFactory, Request $request)
     {
-        $dom = "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>"
-             . "<'row'<'col-sm-12'tr>>"
-             . "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>";
-        $table = $dataTableFactory->create(['searching' => true, 'dom' => $dom])
+
+        $table = $dataTableFactory->create(['searching' => true])
             ->add('codigo', TextColumn::class, ['label' => 'Codigo'])
             ->add('nombre', TextColumn::class, ['label' => 'Nombre'])
             ->add('direccion', TextColumn::class, ['label' => 'Direccion'])

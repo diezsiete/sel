@@ -76,6 +76,11 @@ class Usuario implements UserInterface
      */
     private $ultimoLogin;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $type;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -265,5 +270,17 @@ class Usuario implements UserInterface
                 .$primer_apellido
                 .($segundo_apellido ? ' ' . $segundo_apellido : '');
         return $return;
+    }
+
+    public function getType(): ?int
+    {
+        return $this->type;
+    }
+
+    public function setType(?int $type): self
+    {
+        $this->type = $type;
+
+        return $this;
     }
 }
