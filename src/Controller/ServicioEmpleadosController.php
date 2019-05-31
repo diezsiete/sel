@@ -3,8 +3,12 @@
 namespace App\Controller;
 
 
+use App\DataTable\Type\ReporteNominaDataTableType;
+use App\Entity\ReporteNomina;
 use App\Service\Pdf\PdfCartaLaboral;
 use App\Service\ReportesServicioEmpleados;
+use Omines\DataTablesBundle\DataTableFactory;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ServicioEmpleadosController extends BaseController
@@ -12,20 +16,26 @@ class ServicioEmpleadosController extends BaseController
     /**
      * @Route("/comprobantes", name="app_comprobantes")
      */
-    public function comprobantes(ReportesServicioEmpleados $reportes)
+    public function comprobantes(DataTableFactory $dataTableFactory, Request $request)
     {
-        $comprobantes = $reportes->getComprobantesDePago('53124855');
-        return $this->render('servicio_empleados/comprobantes.html.twig', [
-            'comprobantes' => $comprobantes
-        ]);
+        $table = $dataTableFactory->createFromType(ReporteNominaDataTableType::class,
+            ['identificacion' => '1010187047'], ['searching' => false, 'paging' => false])
+            ->handleRequest($request);
+
+        if($table->isCallback()) {
+            return $table->getResponse();
+        }
+
+        return $this->render('servicio_empleados/comprobantes.html.twig', ['datatable' => $table]);
     }
 
     /**
-     * @Route("/comprobante/{comprobanteId}", name="app_comprobante")
+     * @Route("/comprobante/{comprobante}", name="app_comprobante")
      */
-    public function comprobante(ReportesServicioEmpleados $reportes, $comprobanteId)
+    public function comprobante(ReportesServicioEmpleados $reportes, ReporteNomina $comprobante)
     {
-        $comprobantePdf = $reportes->getComprobanteDePagoPdf($comprobanteId, '53124855');
+        $comprobantePdf = $reportes
+            ->getComprobanteDePagoPdf($comprobante->getFecha(), $comprobante->getUsuario()->getIdentificacion());
         return $this->renderPdf($comprobantePdf);
     }
 

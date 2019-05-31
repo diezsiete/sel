@@ -18,3 +18,5 @@ framework:
 
     templating:
         engines: ['twig', 'php']
+
+    ide: 'phpstorm://open?url=file://%%f&line=%%l'

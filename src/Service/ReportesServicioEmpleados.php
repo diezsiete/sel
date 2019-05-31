@@ -41,15 +41,17 @@ class ReportesServicioEmpleados
     }
 
     /**
-     * @param $comprobanteId
+     * @param string|\DateTimeInterface $fecha
      * @param $empleadoIdent
      * @return mixed
      */
-    public function getComprobanteDePagoPdf($comprobanteId, $empleadoIdent)
+    public function getComprobanteDePagoPdf($fecha, $empleadoIdent)
     {
         $reporteNovasoft = $this->novasoftSsrs->getReportNom204();
 
-        $fecha = \DateTime::createFromFormat('Y-m-d', $comprobanteId);
+        if(is_string($fecha)) {
+            $fecha = \DateTime::createFromFormat('Y-m-d', $fecha);
+        }
 
         $reporteNovasoft->setParameterCodigoEmpleado($empleadoIdent)
             ->setParameterFechaInicio($fecha)
