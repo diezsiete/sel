@@ -17,27 +17,26 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class UsuarioRepository extends ServiceEntityRepository
 {
+    private $usuariosCached = [];
+
+
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Usuario::class);
     }
 
-    // /**
-    //  * @return Usuario[] Returns an array of Usuario objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findByIdentificacionCached($identificacion)
     {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('u.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        if(!isset($this->usuariosCached[$identificacion])) {
+            $this->usuariosCached[$identificacion] = $this->createQueryBuilder('u')
+                ->andWhere('u.identificacion = :identificacion')
+                ->setParameter('identificacion', $identificacion)
+                ->getQuery()
+                ->getOneOrNullResult();
+        }
+        return $this->usuariosCached[$identificacion];
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?Usuario

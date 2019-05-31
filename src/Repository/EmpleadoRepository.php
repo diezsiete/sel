@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Empleado;
+use App\Entity\Usuario;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -30,6 +31,18 @@ class EmpleadoRepository extends ServiceEntityRepository
             ->andWhere('u.identificacion = :identificacion')
             ->setParameter('identificacion', $identificacion);
         return $qb->getQuery()->getOneOrNullResult();
+    }
+
+    /**
+     * @return Usuario[]
+     */
+    public function findAllUsuarios()
+    {
+        $qb = $this->_em->createQueryBuilder()
+            ->select('u')
+            ->from(Usuario::class, 'u')
+            ->join($this->_entityName, 'e', 'WITH', 'u = e.usuario');
+        return $qb->getQuery()->getResult();
     }
 
     // /**

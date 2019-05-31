@@ -9,13 +9,13 @@
 namespace App\Service\NovasoftSsrs\Mapper;
 
 
-
-use App\Service\NovasoftSsrs\Entity\ReporteNomina;
-use App\Service\NovasoftSsrs\Entity\ReporteNominaDeducido;
-use App\Service\NovasoftSsrs\Entity\ReporteNominaDevengo;
+use App\Entity\ReporteNomina;
+use App\Entity\ReporteNominaDetalle;
+use App\Repository\UsuarioRepository;
 
 class MapperNom204 extends Mapper
 {
+
     /**
      * @var ReporteNomina
      */
@@ -25,6 +25,19 @@ class MapperNom204 extends Mapper
      * @var ReporteNomina[]
      */
     protected $mappedObjects = [];
+    /**
+     * @var UsuarioRepository
+     */
+    private $usuarioRepository;
+
+    /**
+     * MapperNom204 constructor.
+     */
+    public function __construct(UsuarioRepository $usuarioRepository)
+    {
+        $this->usuarioRepository = $usuarioRepository;
+        parent::__construct();
+    }
 
     protected function instanceTargetObject()
     {
@@ -34,9 +47,8 @@ class MapperNom204 extends Mapper
     protected function defineMap(): array
     {
         return [
-            'textbox12' => 'nombre',
             'num_ide' => 'nitTercero',
-            'textbox276' => 'convenioNombre',
+            'textbox276' => 'convenioCodigoNombre',
             'textbox22' => 'fecha',
             'textbox2' => 'pension',
             'textbox3' => 'salud',
@@ -67,7 +79,9 @@ class MapperNom204 extends Mapper
 
     public function setNitTercero($nitTercero)
     {
-        $this->targetObject->setNitTercero(preg_replace('/\D/', '', $nitTercero));
+        $identificacion = preg_replace('/\D/', '', $nitTercero);
+        $usuario = $this->usuarioRepository->findByIdentificacionCached($identificacion);
+        $this->targetObject->setUsuario($usuario);
     }
 
     public function setBanco($banco)
@@ -80,9 +94,9 @@ class MapperNom204 extends Mapper
         $this->targetObject->setCargo(str_replace('CARGO :', '', $cargo));
     }
 
-    public function setConvenioNombre($convenio)
+    public function setConvenioCodigoNombre($convenio)
     {
-        $this->targetObject->setConvenioNombre(str_replace('Convenio: ', '', $convenio));
+        $this->targetObject->setConvenioCodigoNombre(str_replace('Convenio: ', '', $convenio));
     }
 
     public function setCuenta($cuenta)
@@ -109,56 +123,56 @@ class MapperNom204 extends Mapper
     public function setDevengoCodigo($valor)
     {
         if($valor) {
-            $this->getLastDevengo()->setCodigo($valor);
+            $this->getLastDetalle('devengo')->setCodigo($valor);
         }
     }
 
     public function setDevengoDetalle($valor)
     {
         if($valor) {
-            $this->getLastDevengo()->setDetalle($valor);
+            $this->getLastDetalle('devengo')->setDetalle($valor);
         }
     }
 
     public function setDevengoCantidad($valor)
     {
         if($valor) {
-            $this->getLastDevengo()->setCantidad($valor);
+            $this->getLastDetalle('devengo')->setCantidad($valor);
         }
     }
 
     public function setDevengados($valor)
     {
         if($valor) {
-            $this->getLastDevengo()->setDevengados($valor);
+            $this->getLastDetalle('devengo')->setValor($valor);
         }
     }
 
     public function setDeducidoCodigo($valor)
     {
         if($valor) {
-            $this->getLastDeducido()->setCodigo($valor);
+            $this->getLastDetalle('deducido')->setCodigo($valor);
         }
     }
 
     public function setDeducidoDetalle($valor)
     {
         if($valor) {
-            $this->getLastDeducido()->setDetalle($valor);
+            $this->getLastDetalle('deducido')->setDetalle($valor);
         }
     }
 
     public function setDeducidoCantidad($valor)
     {
         if($valor) {
-            $this->getLastDeducido()->setCantidad($valor);
+            $this->getLastDetalle('deducido')->setCantidad($valor);
         }
     }
 
     public function setDeducidos($valor)
     {
         if($valor) {
-            $this->getLastDeducido()->setDeducidos($valor);
+            $this->getLastDetalle('deducido')->setValor($valor);
         }
     }
 
@@ -168,17 +182,16 @@ class MapperNom204 extends Mapper
     public function addMappedObject(&$objects)
     {
         $mappedObject = $this->targetObject;
+
         $fecha = $mappedObject->getFecha()->format('Ymd');
         if(!isset($objects[$fecha])) {
             $objects[$fecha] = $mappedObject;
         } else {
             $nomina = $objects[$fecha];
-            foreach($mappedObject->getDeducidos() as $deducido) {
-                $nomina->addDeducido($deducido);
+            foreach($mappedObject->getDetalles() as $detalle) {
+                $nomina->addDetalle($detalle);
             }
-            foreach($mappedObject->getDevengados() as $devengo) {
-                $nomina->addDevengo($devengo);
-            }
+
             if($mappedObject->getBaseSalario()) {
                 $nomina->setBaseSalario($mappedObject->getBaseSalario());
             }
@@ -198,33 +211,31 @@ class MapperNom204 extends Mapper
                 $nomina->setDiasVacacionesPend($mappedObject->getDiasVacacionesPend());
             }
         }
-        $this->targetObject = new $this->targetClass();
+        $this->targetObject = $this->instanceTargetObject();
     }
 
     /**
-     * @return ReporteNominaDevengo
+     * @param string $tipo devengo o deducido
+     * @return ReporteNominaDetalle
      */
-    protected function getLastDevengo()
+    protected function getLastDetalle($tipo = 'devengo')
     {
-        $devengo = $this->targetObject->getDevengados()->last();
-        if(!$devengo) {
-            $devengo = new ReporteNominaDevengo();
-            $this->targetObject->addDevengo($devengo);
+        $lastDetalle = null;
+        $detallesCount = $this->targetObject->getDetalles()->count();
+        if($detallesCount) {
+            for ($i = $detallesCount - 1; $i >= 0; $i--) {
+                $currentDetalle = $this->targetObject->getDetalles()->get($i);
+                if($currentDetalle->getTipo() === $tipo) {
+                    $lastDetalle = $currentDetalle;
+                    break;
+                }
+            }
         }
-        return $devengo;
-    }
-
-    /**
-     * @return ReporteNominaDeducido
-     */
-    protected function getLastDeducido()
-    {
-        $deducido = $this->targetObject->getDeducidos()->last();
-        if(!$deducido) {
-            $deducido = new ReporteNominaDeducido();
-            $this->targetObject->addDeducido($deducido);
+        if(!$lastDetalle) {
+            $lastDetalle = new ReporteNominaDetalle();
+            $lastDetalle->setTipo($tipo);
+            $this->targetObject->addDetalle($lastDetalle);
         }
-        return $deducido;
+        return $lastDetalle;
     }
-
 }

@@ -15,7 +15,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class SeEmpleadoActualizarCommand extends Command
+class SeEmpleadoActualizarCommand extends PeriodoCommand
 {
     protected static $defaultName = 'se:empleado-actualizar';
     /**
@@ -38,9 +38,9 @@ class SeEmpleadoActualizarCommand extends Command
     public function __construct(ConvenioRepository $convenioRepository, EmpleadoImport $empleadoImport,
                                 ReportesServicioEmpleados $reportesServicioEmpleados, EntityManagerInterface $em)
     {
+        parent::__construct();
         $this->convenioRepository = $convenioRepository;
         $this->empleadoImport = $empleadoImport;
-        parent::__construct();
         $this->reportesServicioEmpleados = $reportesServicioEmpleados;
         $this->em = $em;
     }
@@ -50,14 +50,9 @@ class SeEmpleadoActualizarCommand extends Command
         $this
             ->setDescription('Actualizar los empleados desde Novasoft')
             ->addArgument('convenios', InputArgument::IS_ARRAY,
-                'convenios codigos para descargar. Omita y se toman todos' )
-            ->addOption('desde', null, InputOption::VALUE_OPTIONAL,
-                'fecha desde Y-m-d. [omita y se toma hoy]')
-            ->addOption('hasta', null, InputOption::VALUE_OPTIONAL,
-                'fecha desde Y-m-d. [omita y se toma hoy]')
-            ->addOption('periodo', 'p', InputOption::VALUE_OPTIONAL,
-                'Omite desde y hasta. Especifica mes en formato Y-m')
-        ;
+                'convenios codigos para descargar. Omita y se toman todos' );
+
+        parent::configure();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -65,8 +60,8 @@ class SeEmpleadoActualizarCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $convenios = $this->getConvenios($input->getArgument('convenios'));
 
-        $desde = $this->getDesde($input);
-        $hasta = $this->getHasta($input);
+        $desde = $this->getInicio($input);
+        $hasta = $this->getFin($input);
 
         //$this->empleadoImport->import($convenios, $desde, $hasta);
 
@@ -89,7 +84,6 @@ class SeEmpleadoActualizarCommand extends Command
         }
     }
 
-
     /**
      * @param string[] $conveniosCodigos
      * @return Convenio[]
@@ -97,36 +91,6 @@ class SeEmpleadoActualizarCommand extends Command
     private function getConvenios($conveniosCodigos = [])
     {
         return $conveniosCodigos ? $this->convenioRepository->findBy(['codigo' => $conveniosCodigos]) : $this->convenioRepository->findAll();
-    }
-
-    /**
-     * @param InputInterface $input
-     * @return \DateTime|null
-     */
-    private function getDesde(InputInterface $input)
-    {
-        $desde = $input->getOption('desde');
-        if($periodo = $input->getOption('periodo')) {
-            $desde = \DateTime::createFromFormat('Y-m-d', "$periodo-01");
-        } else {
-            $desde = $desde ? \DateTime::createFromFormat('Y-m-d', $desde) : $desde;
-        }
-        return $desde;
-    }
-
-    /**
-     * @param InputInterface $input
-     * @return \DateTime|null
-     */
-    private function getHasta(InputInterface $input)
-    {
-        $hasta = $input->getOption('hasta');
-        if($periodo = $input->getOption('periodo')) {
-            $hasta = \DateTime::createFromFormat('Y-m-d', \DateTime::createFromFormat("Y-m-d", "$periodo-01")->format("Y-m-t"));
-        } else {
-            $hasta = $hasta ? \DateTime::createFromFormat('Y-m-d', $hasta) : $hasta;
-        }
-        return $hasta;
     }
 
 }

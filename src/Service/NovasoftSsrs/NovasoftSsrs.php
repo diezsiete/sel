@@ -4,6 +4,7 @@
 namespace App\Service\NovasoftSsrs;
 
 
+use App\Entity\Usuario;
 use App\Service\NovasoftSsrs\Report\ReportNom204;
 use App\Service\NovasoftSsrs\Report\ReportNom701;
 use App\Service\NovasoftSsrs\Report\ReportNom92117;
@@ -140,5 +141,31 @@ class NovasoftSsrs
     public function getReportNomU1503(): ReportNomU1503
     {
         return $this->reportNomU1503;
+    }
+
+
+    /**
+     * @param Usuario $usuario
+     * @param null|\DateTime $fechaInicio
+     * @param null|\DateTime $fechaFin
+     * @return \App\Entity\ReporteNomina[]
+     * @throws \SSRS\SSRSReportException
+     */
+    public function getReporteNomina(Usuario $usuario, $fechaInicio = null, $fechaFin = null)
+    {
+        $reporteNovasoft = $this->getReportNom204();
+        $reporteNovasoft->setParameterCodigoEmpleado($usuario->getIdentificacion());
+        if($fechaInicio) {
+            $reporteNovasoft->setParameterFechaInicio($fechaInicio);
+        }
+        if($fechaFin) {
+            $reporteNovasoft->setParameterFechaFin($fechaFin);
+        }
+
+        $nominas = $reporteNovasoft->renderMap();
+
+        krsort($nominas);
+
+        return $nominas;
     }
 }

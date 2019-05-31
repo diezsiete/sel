@@ -56,11 +56,11 @@ class EmpleadoImport
         $convenios = !is_array($convenios) ? [$convenios] : $convenios;
         foreach ($convenios as $convenio) {
             $empleados = $this->reportesServicioEmpleados->getEmpleados($convenio->getCodigo(), $desde, $hasta);
-//            foreach ($empleados as $empleado) {
-//                if(!$this->updateEmpleado($empleado)) {
-//                    $this->insertEmpleado($empleado);
-//                }
-//            }
+            foreach ($empleados as $empleado) {
+                if(!$this->updateEmpleado($empleado)) {
+                    $this->insertEmpleado($empleado);
+                }
+            }
         }
     }
 

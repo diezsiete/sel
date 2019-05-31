@@ -22,9 +22,9 @@
                         {% for comprobante in comprobantes %}
                             <tr>
                                 <td>{{ comprobante.fecha|date('Y-m-d') }}</td>
-                                <td>{{ comprobante.convenioNombre }}</td>
-                                <td>{{ comprobante.nitTercero }}</td>
-                                <td>{{ comprobante.nombre }}</td>
+                                <td>{{ comprobante.convenioCodigoNombre }}</td>
+                                <td>{{ comprobante.usuario.identificacion }}</td>
+                                <td>{{ comprobante.usuario.nombreCompleto }}</td>
                                 <td>
                                     <a target="_blank" href="{{ path('app_comprobante', {'comprobanteId' : comprobante.fecha|date('Y-m-d')}) }}">
                                         <i class="fas fa-file-pdf fa-2x"></i>

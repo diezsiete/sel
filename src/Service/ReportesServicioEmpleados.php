@@ -5,10 +5,10 @@ namespace App\Service;
 
 
 use App\Entity\Empleado;
+use App\Entity\ReporteNomina;
 use App\Service\NovasoftSsrs\Entity\ReporteCertificadoIngresos;
 use App\Service\NovasoftSsrs\Entity\ReporteCertificadoLaboral;
 use App\Service\NovasoftSsrs\Entity\ReporteLiquidacion;
-use App\Service\NovasoftSsrs\Entity\ReporteNomina;
 use App\Service\NovasoftSsrs\NovasoftSsrs;
 use App\Service\NovasoftSsrs\Report\Report;
 

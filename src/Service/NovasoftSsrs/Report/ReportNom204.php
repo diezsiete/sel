@@ -4,8 +4,8 @@
 namespace App\Service\NovasoftSsrs\Report;
 
 
-use App\Service\NovasoftSsrs\Entity\ReporteNomina;
-use App\Service\NovasoftSsrs\Mapper\GenericMapper;
+use App\Entity\ReporteNomina;
+use App\Repository\UsuarioRepository;
 use App\Service\NovasoftSsrs\Mapper\MapperNom204;
 use App\Service\NovasoftSsrs\ReportFormatter;
 use App\Service\NovasoftSsrs\ReportServer;
@@ -13,6 +13,15 @@ use App\Service\Utils;
 
 class ReportNom204 extends Report
 {
+
+    /**
+     * @var MapperNom204
+     */
+    protected $mapperClass;
+    /**
+     * @var UsuarioRepository
+     */
+    private $usuarioRepository;
 
     protected function getReportPath(): string
     {
@@ -86,12 +95,14 @@ class ReportNom204 extends Report
     protected $parameter_Origen = "H";
 
 
-    public function __construct(ReportServer $reportServer, ReportFormatter $reportFormatter, Utils $utils, $novasoftSsrsDb)
+    public function __construct(ReportServer $reportServer, ReportFormatter $reportFormatter, Utils $utils,
+                                $novasoftSsrsDb, UsuarioRepository $usuarioRepository)
     {
         parent::__construct($reportServer, $reportFormatter, $utils, $novasoftSsrsDb);
 
         $this->parameter_FecIni = '2/1/2017';
         $this->parameter_FecFin = $this->utils->dateFormatToday('m/d/Y');
+        $this->usuarioRepository = $usuarioRepository;
     }
 
     /**
@@ -130,6 +141,11 @@ class ReportNom204 extends Report
      */
     public function renderMap()
     {
-        return $this->reportFormatter->mapCsv($this->renderCSV(), new $this->mapperClass());
+        return $this->reportFormatter->mapCsv($this->renderCSV(), $this->getMapperInstance());
+    }
+
+    protected function getMapperInstance()
+    {
+        return new $this->mapperClass($this->usuarioRepository);
     }
 }

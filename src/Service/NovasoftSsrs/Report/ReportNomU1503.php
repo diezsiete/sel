@@ -75,26 +75,22 @@ class ReportNomU1503 extends Report
     }
 
     /**
-     * @param string|\DateTime|null $fechaDesde
+     * @param \DateTime $fechaDesde
      * @return ReportNomU1503
      */
     public function setParameterFechaDesde($fechaDesde)
     {
-        if($fechaDesde) {
-            $this->parameter_feccori = is_object($fechaDesde) ? $fechaDesde->format('m/d/Y') : $fechaDesde;
-        }
+        $this->parameter_feccori = $fechaDesde->format('m/d/Y');
         return $this;
     }
 
     /**
-     * @param string|\DateTime|null $fechaHasta
+     * @param \DateTime $fechaHasta
      * @return ReportNomU1503
      */
     public function setParameterFechaHasta($fechaHasta)
     {
-        if($fechaHasta) {
-            $this->parameter_feccorf = is_object($fechaHasta) ? $fechaHasta->format('m/d/Y') : $fechaHasta;
-        }
+        $this->parameter_feccorf = $fechaHasta->format('m/d/Y');
         return $this;
     }
 

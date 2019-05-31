@@ -101,7 +101,7 @@ class ReportNom92117 extends Report
     public function renderMap()
     {
         $csvAssociative = $this->reportFormatter->csvContSplittedToAssociative($this->renderCSV());
-        return $this->reportFormatter->mapCsv($csvAssociative, new $this->mapperClass());
+        return $this->reportFormatter->mapCsv($csvAssociative, $this->getMapperInstance());
     }
 
     /**
