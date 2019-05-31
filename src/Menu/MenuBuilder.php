@@ -5,19 +5,25 @@ namespace App\Menu;
 
 
 use Knp\Menu\FactoryInterface;
+use Symfony\Component\Security\Core\Security;
 
 class MenuBuilder
 {
     private $factory;
+    /**
+     * @var Security
+     */
+    private $security;
 
     /**
      * @param FactoryInterface $factory
      *
      * Add any other dependency you need
      */
-    public function __construct(FactoryInterface $factory)
+    public function __construct(FactoryInterface $factory, Security $security)
     {
         $this->factory = $factory;
+        $this->security = $security;
     }
 
     public function createMainMenu(array $options)
@@ -27,29 +33,27 @@ class MenuBuilder
         $menu->addChild('Dashboard', ['route' => 'app_main'])
             ->setExtra('icon', 'fas fa-home');
 
-        $menu->addChild('Servicio empleados')
-            ->setUri('#')
-            ->setExtra('icon', 'fas fa-columns');
+        $user = $this->security->getUser();
 
-        $menu['Servicio empleados']
-            ->addChild('Comprobantes de pago', ['route' => 'app_comprobantes'])
-            ->setExtra('icon', 'fas fa-dollar-sign');
-        $menu['Servicio empleados']
-            ->addChild('Certificado laboral', ['route' => 'app_certificado_laboral'])
-            ->setExtra('icon', 'fas fa-file-invoice');
-        $menu['Servicio empleados']
-            ->addChild('Certificado ingresos', ['route' => 'app_certificados_ingresos'])
-            ->setExtra('icon', 'fas fa-file-alt');
-        $menu['Servicio empleados']
-            ->addChild('Liquidación de contrato', ['route' => 'app_liquidaciones_de_contrato'])
-            ->setExtra('icon', 'fas fa-strikethrough');
+        if ($this->security->isGranted(['ROLE_VER_SE_REPORTES'], $user)) {
+            $menu->addChild('Comprobantes de pago', ['route' => 'app_comprobantes'])
+                ->setExtra('icon', 'fas fa-dollar-sign');
+            $menu->addChild('Certificado laboral', ['route' => 'app_certificado_laboral'])
+                ->setExtra('icon', 'fas fa-file-invoice');
+            $menu->addChild('Certificado ingresos', ['route' => 'app_certificados_ingresos'])
+                ->setExtra('icon', 'fas fa-file-alt');
+            $menu->addChild('Liquidación de contrato', ['route' => 'app_liquidaciones_de_contrato'])
+                ->setExtra('icon', 'fas fa-strikethrough');
+        }
 
-        $menu->addChild('Administración')
-            ->setUri('#')
-            ->setExtra('icon', 'fas fa-cog');
-        $menu['Administración']
-            ->addChild('Usuarios', ['route' => 'admin_usuarios'])
-            ->setExtra('icon', 'fas fa-users');
+        if($this->security->isGranted(['ROLE_ADMIN_USUARIOS'], $user)) {
+            $menu->addChild('Administración')
+                ->setUri('#')
+                ->setExtra('icon', 'fas fa-cog');
+            $menu['Administración']
+                ->addChild('Usuarios', ['route' => 'admin_usuarios'])
+                ->setExtra('icon', 'fas fa-users');
+        }
 
 
         return $menu;

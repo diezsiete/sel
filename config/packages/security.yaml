@@ -30,6 +30,14 @@ security:
 
             # form_login: true
             # https://symfony.com/doc/current/security/form_login_setup.html
+    # nos permite crear grupos de roles
+    role_hierarchy:
+        ROLE_EMPLEADO: [ROLE_VER_SE_REPORTES]
+        ROLE_OPERADOR: [ROLE_ADMIN_USUARIOS]
+        ROLE_ADMIN: [ROLE_OPERADOR, ROLE_ALLOWED_TO_SWITCH]
+        ROLE_SUPERADMIN: [ROLE_ADMIN]
+
+
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used

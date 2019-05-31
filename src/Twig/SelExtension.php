@@ -22,7 +22,7 @@ class SelExtension extends AbstractExtension
 
     public function __construct(RequestStack $request, MenuExtension $menuExtension)
     {
-        $this->menuExtension = $menuExtension;
+        // $this->menuExtension = $menuExtension;
         $this->request = $request;
     }
 
@@ -46,6 +46,6 @@ class SelExtension extends AbstractExtension
     public function pageHeader($menu)
     {
         $header = $this->request->getCurrentRequest()->get('header');
-        return $header ?? $this->menuExtension->getCurrentItem($menu)->getName();
+//        return $header ?? $this->menuExtension->getCurrentItem($menu)->getName();
     }
 }
