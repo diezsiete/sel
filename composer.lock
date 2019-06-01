@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5cbe62939657f0fb76277784d9ef10e9",
+    "content-hash": "b025b4a94fb8be0cd6b8627114245d51",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -4501,62 +4501,6 @@
             "description": "Symfony Stopwatch Component",
             "homepage": "https://symfony.com",
             "time": "2019-05-27T08:16:38+00:00"
-        },
-        {
-            "name": "symfony/templating",
-            "version": "v4.3.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/templating.git",
-                "reference": "70da2d83b16e7b717b3e02debacaf66da8c07ef4"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/templating/zipball/70da2d83b16e7b717b3e02debacaf66da8c07ef4",
-                "reference": "70da2d83b16e7b717b3e02debacaf66da8c07ef4",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.1.3",
-                "symfony/polyfill-ctype": "~1.8"
-            },
-            "require-dev": {
-                "psr/log": "~1.0"
-            },
-            "suggest": {
-                "psr/log-implementation": "For using debug logging in loaders"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "4.3-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Component\\Templating\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Symfony Templating Component",
-            "homepage": "https://symfony.com",
-            "time": "2019-02-23T15:22:31+00:00"
         },
         {
             "name": "symfony/translation",

@@ -62,10 +62,6 @@ class ServicioEmpleadosController extends BaseController
         $identificacion = $this->getUser()->getIdentificacion();
         $certificado = $reportes->getCertificadoLaboral($identificacion);
         // TODO no hay certificado
-//        $pdfContent = $this->render('servicio_empleados/certificado-laboral2.pdf.php', [
-//            'pdf' => $pdf,
-//            'certificado' => $certificado,
-//        ]);
         return $this->renderPdf($pdf->render($certificado));
     }
 
