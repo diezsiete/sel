@@ -27,15 +27,10 @@ class Pais
      */
     private $dptos;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Ciudad", mappedBy="pais", orphanRemoval=true)
-     */
-    private $ciudades;
 
     public function __construct()
     {
         $this->dptos = new ArrayCollection();
-        $this->ciudades = new ArrayCollection();
     }
 
     public function getId(): ?string
@@ -80,37 +75,6 @@ class Pais
             // set the owning side to null (unless already changed)
             if ($dpto->getPais() === $this) {
                 $dpto->setPais(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Ciudad[]
-     */
-    public function getCiudades(): Collection
-    {
-        return $this->ciudades;
-    }
-
-    public function addCiudade(Ciudad $ciudade): self
-    {
-        if (!$this->ciudades->contains($ciudade)) {
-            $this->ciudades[] = $ciudade;
-            $ciudade->setPais($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCiudade(Ciudad $ciudade): self
-    {
-        if ($this->ciudades->contains($ciudade)) {
-            $this->ciudades->removeElement($ciudade);
-            // set the owning side to null (unless already changed)
-            if ($ciudade->getPais() === $this) {
-                $ciudade->setPais(null);
             }
         }
 

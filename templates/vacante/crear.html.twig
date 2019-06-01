@@ -3,7 +3,7 @@
 {% block title %}Crear Vacante{% endblock %}
 
 {% block body %}
-    {% include('vacante/_vacante-form.html.twig', {
+    {{ include('vacante/_vacante-form.html.twig', {
         button_text: 'Crear'
-    }) %}
+    }) }}
 {% endblock %}

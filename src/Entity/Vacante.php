@@ -74,10 +74,6 @@ class Vacante
      */
     private $nivelAcademicoCurso = 0;
 
-    /**
-     * @ORM\Column(type="smallint", nullable=true)
-     */
-    private $idiomaPorcentaje;
 
     /**
      * @ORM\Column(type="smallint", nullable=true)
@@ -119,20 +115,12 @@ class Vacante
      */
     private $salarioRango;
 
-    /**
-     * @ORM\Column(type="string", length=30)
-     */
-    private $nivelAcademico;
 
     /**
-     * @ORM\Column(type="string", length=16)
+     * @ORM\Column(type="smallint")
      */
     private $experiencia;
-
-    /**
-     * @ORM\Column(type="string", length=10, nullable=true)
-     */
-    private $idioma;
+    
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Area", inversedBy="vacantes")
@@ -143,7 +131,6 @@ class Vacante
      * @ORM\ManyToMany(targetEntity="App\Entity\Cargo", inversedBy="vacantes")
      */
     private $cargo;
-
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\LicenciaConduccion", inversedBy="vacantes")
@@ -170,13 +157,35 @@ class Vacante
      * @ORM\JoinTable(name="vacante_ciudad",
      *     joinColumns={@ORM\JoinColumn(name="vacante_id", referencedColumnName="id")},
      *     inverseJoinColumns={
-     *          @ORM\JoinColumn(name="pais_id", referencedColumnName="pais_id"),
-     *          @ORM\JoinColumn(name="dpto_id", referencedColumnName="dpto_id"),
      *          @ORM\JoinColumn(name="ciudad_id", referencedColumnName="id"),
+     *          @ORM\JoinColumn(name="pais_id", referencedColumnName="pais_id"),
+     *          @ORM\JoinColumn(name="dpto_id", referencedColumnName="dpto_id")
      *     }
      * )
      */
     private $ciudad;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\NivelAcademico")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $nivelAcademico;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Idioma")
+     */
+    private $idioma;
+
+    /**
+     * @ORM\Column(type="string", length=2, nullable=true)
+     */
+    private $idiomaDestreza;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\VacanteVigencia")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $vigencia;
 
     public function __construct()
     {
@@ -327,17 +336,7 @@ class Vacante
         return $this;
     }
 
-    public function getIdiomaPorcentaje(): ?int
-    {
-        return $this->idiomaPorcentaje;
-    }
 
-    public function setIdiomaPorcentaje(?int $idiomaPorcentaje): self
-    {
-        $this->idiomaPorcentaje = $idiomaPorcentaje;
-
-        return $this;
-    }
 
     public function getGenero(): ?int
     {
@@ -435,41 +434,19 @@ class Vacante
         return $this;
     }
 
-    public function getNivelAcademico(): ?string
-    {
-        return $this->nivelAcademico;
-    }
 
-    public function setNivelAcademico(string $nivelAcademico): self
-    {
-        $this->nivelAcademico = $nivelAcademico;
-
-        return $this;
-    }
-
-    public function getExperiencia(): ?string
+    public function getExperiencia(): ?int
     {
         return $this->experiencia;
     }
 
-    public function setExperiencia(string $experiencia): self
+    public function setExperiencia(int $experiencia): self
     {
         $this->experiencia = $experiencia;
 
         return $this;
     }
 
-    public function getIdioma(): ?string
-    {
-        return $this->idioma;
-    }
-
-    public function setIdioma(?string $idioma): self
-    {
-        $this->idioma = $idioma;
-
-        return $this;
-    }
 
     /**
      * @return Collection|Area[]
@@ -654,6 +631,54 @@ class Vacante
         if ($this->ciudad->contains($ciudad)) {
             $this->ciudad->removeElement($ciudad);
         }
+
+        return $this;
+    }
+
+    public function getNivelAcademico(): ?NivelAcademico
+    {
+        return $this->nivelAcademico;
+    }
+
+    public function setNivelAcademico(?NivelAcademico $nivelAcademico): self
+    {
+        $this->nivelAcademico = $nivelAcademico;
+
+        return $this;
+    }
+
+    public function getIdioma(): ?Idioma
+    {
+        return $this->idioma;
+    }
+
+    public function setIdioma(?Idioma $idioma): self
+    {
+        $this->idioma = $idioma;
+
+        return $this;
+    }
+
+    public function getIdiomaDestreza(): ?string
+    {
+        return $this->idiomaDestreza;
+    }
+
+    public function setIdiomaDestreza(?string $idiomaDestreza): self
+    {
+        $this->idiomaDestreza = $idiomaDestreza;
+
+        return $this;
+    }
+
+    public function getVigencia(): ?VacanteVigencia
+    {
+        return $this->vigencia;
+    }
+
+    public function setVigencia(?VacanteVigencia $vigencia): self
+    {
+        $this->vigencia = $vigencia;
 
         return $this;
     }

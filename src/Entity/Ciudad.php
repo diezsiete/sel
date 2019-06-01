@@ -19,15 +19,24 @@ class Ciudad
 
     /**
      * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity="App\Entity\Pais", inversedBy="ciudades")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity="Pais")
+     * @ORM\JoinColumn(name="pais_id", referencedColumnName="id")
      */
-    private $pais;
+    protected $pais;
 
     /**
      * @ORM\Id()
+     * @ORM\Column(type="string", length=7)
+     * @ORM\Column(name="dpto_id", type="integer")
+     */
+    protected $dptoId;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Dpto", inversedBy="ciudades")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumns(
+     *     @ORM\JoinColumn(name="dpto_id", referencedColumnName="id"),
+     *     @ORM\JoinColumn(name="pais_id", referencedColumnName="pais_id")
+     * )
      */
     private $dpto;
 
@@ -66,15 +75,8 @@ class Ciudad
         return $this;
     }
 
-    public function getPais(): ?Pais
+    public function __toString()
     {
-        return $this->pais;
-    }
-
-    public function setPais(?Pais $pais): self
-    {
-        $this->pais = $pais;
-
-        return $this;
+        return $this->getNombre();
     }
 }

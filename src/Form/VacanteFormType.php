@@ -12,35 +12,41 @@ class VacanteFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('date')
-            ->add('titulo')
+            ->add('titulo', null, [
+                'label' => 'Título'
+            ])
+            ->add('ciudad')
             ->add('descripcion')
             ->add('requisitos')
-            ->add('vacantesCantidad')
-            ->add('salarioNeto')
-            ->add('salarioAdicion')
-            ->add('salarioAdicionConcepto')
-            ->add('salarioPublicar')
-            ->add('nivelAcademicoCurso')
-            ->add('idiomaPorcentaje')
-            ->add('genero')
-            ->add('publicada')
-            ->add('empresa')
+            ->add('area')
+            ->add('cargo')
             ->add('nivel')
             ->add('subnivel')
             ->add('contratoTipo')
             ->add('intensidadHoraria')
+            ->add('vacantesCantidad')
+
             ->add('salarioRango')
+            ->add('salarioPublicar')
+            ->add('salarioNeto')
+            ->add('salarioAdicion')
+            ->add('salarioAdicionConcepto')
+
             ->add('nivelAcademico')
-            ->add('experiencia')
-            ->add('idioma')
-            ->add('usuario')
-            ->add('area')
-            ->add('cargo')
-            ->add('ciudad')
-            ->add('licenciaConduccion')
+            ->add('nivelAcademicoCurso')
+
             ->add('profesion')
-            ->add('aplicantes')
+            ->add('experiencia')
+
+            ->add('idioma')
+            ->add('idiomaDestreza')
+
+            ->add('genero')
+
+            ->add('licenciaConduccion')
+
+            ->add('vigencia')
+            ->add('empresa')
         ;
     }
 

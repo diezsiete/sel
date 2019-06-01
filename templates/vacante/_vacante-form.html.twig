@@ -1,3 +1,11 @@
 {{ form_start(vacanteForm, {attr: {novalidate: 'novalidate'}}) }}
+    {{ form_widget(vacanteForm) }}
 
+<div class="form-row">
+    <div class="col-md-12 text-right mt-3">
+        <button class="btn btn-primary modal-confirm">
+            {{ button_text }}
+        </button>
+    </div>
+</div>
 {{ form_end(vacanteForm) }}
