@@ -5,6 +5,7 @@ namespace App\DataTable\Type;
 
 
 use App\Entity\ReporteNomina;
+use App\Entity\Usuario;
 use Doctrine\ORM\QueryBuilder;
 use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
 use Omines\DataTablesBundle\Column\DateTimeColumn;
@@ -31,6 +32,7 @@ class ReporteNominaDataTableType implements DataTableTypeInterface
      */
     public function configure(DataTable $dataTable, array $options)
     {
+        $id = $options['id'];
 
         $dataTable
             ->add('fecha', DateTimeColumn::class, ['label' => 'Fecha', 'format' => 'Y-m-d'])
@@ -46,13 +48,14 @@ class ReporteNominaDataTableType implements DataTableTypeInterface
             ->addOrderBy('fecha', DataTable::SORT_DESCENDING)
             ->createAdapter(ORMAdapter::class, [
                 'entity' => ReporteNomina::class,
-                'criteria' => [
-                    function (QueryBuilder $builder) use ($options) {
-                        $builder
-                            ->andWhere('usuario.identificacion = :identificacion')
-                            ->setParameter('identificacion', $options['identificacion']);
-                    },
-                ]
+                'query' => function (QueryBuilder $builder) use ($id) {
+                    $builder
+                        ->select('rn')
+                        ->from(ReporteNomina::class, 'rn')
+                        ->join('rn.usuario', 'usuario')
+                        ->where('usuario.id = :id')
+                        ->setParameter('id', $id);
+                },
             ]);
     }
 }

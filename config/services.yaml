@@ -5,6 +5,19 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: 'en'
+    app:
+        razon: PTA S.A.S
+        nit: 860.527.350-6
+        dir: Calle 72 A N° 20 A - 57
+        web: www.pta.com.co
+        mail: info@pta.com.co
+        logo: /img/sel/pta-logo.png
+        logo_pdf: /img/sel/pta-logo-pdf.png
+        certificado_laboral:
+            firma: /img/sel/firma-certificado-laboral.png
+            firmante: FERNANDA SANCHEZ LAGUNA
+            firmante_cargo: Directora de Servicio al Cliente
+            firmante_contacto: PBX 756 98 40 Ext. 110-106-136
 
 services:
     # default configuration for services in *this* file
@@ -13,6 +26,7 @@ services:
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
         bind:
             $novasoftSsrsDb: 'PTA'
+            $webDir: '%env(DOCUMENT_ROOT)%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name

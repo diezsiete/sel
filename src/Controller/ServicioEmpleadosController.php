@@ -14,12 +14,13 @@ use Symfony\Component\Routing\Annotation\Route;
 class ServicioEmpleadosController extends BaseController
 {
     /**
-     * @Route("/comprobantes", name="app_comprobantes")
+     * @Route("/comprobantes", name="app_comprobantes", defaults={"header": "Comprobantes de pago"})
      */
     public function comprobantes(DataTableFactory $dataTableFactory, Request $request)
     {
+        $id = $this->getUser()->getId();
         $table = $dataTableFactory->createFromType(ReporteNominaDataTableType::class,
-            ['identificacion' => '1010187047'], ['searching' => false, 'paging' => false])
+            ['id' => $id], ['searching' => false, 'paging' => false])
             ->handleRequest($request);
 
         if($table->isCallback()) {
@@ -30,21 +31,24 @@ class ServicioEmpleadosController extends BaseController
     }
 
     /**
+     * TODO: seguridad solo puede ver su comprobante
      * @Route("/comprobante/{comprobante}", name="app_comprobante")
      */
     public function comprobante(ReportesServicioEmpleados $reportes, ReporteNomina $comprobante)
     {
         $comprobantePdf = $reportes
             ->getComprobanteDePagoPdf($comprobante->getFecha(), $comprobante->getUsuario()->getIdentificacion());
+
         return $this->renderPdf($comprobantePdf);
     }
 
     /**
-     * @Route("/certificado-laboral", name="app_certificado_laboral")
+     * @Route("/certificado-laboral", name="app_certificado_laboral", defaults={ "header" :"Certificado Laboral"})
      */
     public function certificadoLaboral(ReportesServicioEmpleados $reportes)
     {
-        $certificados = $reportes->getCertificadosLaborales('53124855');
+        $identificacion = $this->getUser()->getIdentificacion();
+        $certificados = $reportes->getCertificadosLaborales($identificacion);
         return $this->render('servicio_empleados/certificado-laboral.html.twig', [
             'tieneCertificado' => count($certificados) > 0,
         ]);
@@ -55,13 +59,14 @@ class ServicioEmpleadosController extends BaseController
      */
     public function certificadoLaboralPdf(ReportesServicioEmpleados $reportes, PdfCartaLaboral $pdf)
     {
-        $certificado = $reportes->getCertificadoLaboral('53124855');
-        //TODO no hay certificado
-        $pdfContent = $this->render('servicio_empleados/certificado-laboral.pdf.php', [
-            'pdf' => $pdf,
-            'certificado' => $certificado,
-        ]);
-        return $this->renderPdf($pdfContent);
+        $identificacion = $this->getUser()->getIdentificacion();
+        $certificado = $reportes->getCertificadoLaboral($identificacion);
+        // TODO no hay certificado
+//        $pdfContent = $this->render('servicio_empleados/certificado-laboral2.pdf.php', [
+//            'pdf' => $pdf,
+//            'certificado' => $certificado,
+//        ]);
+        return $this->renderPdf($pdf->render($certificado));
     }
 
     /**

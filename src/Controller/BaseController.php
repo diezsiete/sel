@@ -4,9 +4,15 @@
 namespace App\Controller;
 
 
+use App\Entity\Usuario;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Class BaseController
+ * @package App\Controller
+ * @method Usuario getUser()
+ */
 class BaseController extends AbstractController
 {
 
