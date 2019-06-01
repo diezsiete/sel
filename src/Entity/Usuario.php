@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -91,6 +93,16 @@ class Usuario implements UserInterface
      * @ORM\Column(type="integer", nullable=true)
      */
     private $type;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Vacante", mappedBy="aplicantes")
+     */
+    private $vacantes;
+
+    public function __construct()
+    {
+        $this->vacantes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -291,6 +303,34 @@ class Usuario implements UserInterface
     public function setType(?int $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Vacante[]
+     */
+    public function getVacantes(): Collection
+    {
+        return $this->vacantes;
+    }
+
+    public function addVacante(Vacante $vacante): self
+    {
+        if (!$this->vacantes->contains($vacante)) {
+            $this->vacantes[] = $vacante;
+            $vacante->addAplicante($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVacante(Vacante $vacante): self
+    {
+        if ($this->vacantes->contains($vacante)) {
+            $this->vacantes->removeElement($vacante);
+            $vacante->removeAplicante($this);
+        }
 
         return $this;
     }
