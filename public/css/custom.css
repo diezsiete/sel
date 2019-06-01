@@ -1,4 +1,8 @@
 /* HEADER ------------------------------------------------------------------------------------------------------------*/
+.header .logo {
+    margin: 13px 0 0 15px;
+}
+
 .notifications > li .notification-icon.switch-user {
     background: orangered;
 }

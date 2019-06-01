@@ -54,7 +54,7 @@ class SelParameters
 
     public function getLogo()
     {
-        return $this->webDir . $this->parameters['logo'];
+        return $this->parameters['logo'];
     }
 
     public function getLogoPdf()
