@@ -2,8 +2,19 @@
 
 {% block title %}Crear Vacante{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('vendor/chosen/chosen.min.css') }}">
+{% endblock %}
+
 {% block body %}
     {{ include('vacante/_vacante-form.html.twig', {
         button_text: 'Crear'
     }) }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('vendor/chosen/chosen.jquery.min.js') }}"></script>
+    <script src="{{ asset('js/sel/vacante/vacante-form.js') }}"></script>
 {% endblock %}

@@ -2,7 +2,10 @@
 
 namespace App\Form;
 
+use App\Entity\Ciudad;
 use App\Entity\Vacante;
+use App\Repository\CiudadRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -15,7 +18,14 @@ class VacanteFormType extends AbstractType
             ->add('titulo', null, [
                 'label' => 'Título'
             ])
-            ->add('ciudad')
+            ->add('ciudad', EntityType::class, [
+                'class' => Ciudad::class,
+                'query_builder' => function(CiudadRepository $repository) {
+                    return $repository->createQueryBuilder('c')->addCriteria($repository->ciudadesColombiaCriteria());
+                },
+                'multiple' => true,
+                'required' => true,
+            ])
             ->add('descripcion')
             ->add('requisitos')
             ->add('area')

@@ -114,7 +114,11 @@ class Usuario implements UserInterface
         return $this->identificacion;
     }
 
-    public function setIdentificacion(string $identificacion): self
+    /**
+     * @param string $identificacion
+     * @return Usuario
+     */
+    public function setIdentificacion($identificacion): self
     {
         $this->identificacion = $identificacion;
 
@@ -187,7 +191,7 @@ class Usuario implements UserInterface
         return $this->email;
     }
 
-    public function setEmail(?string $email): self
+    public function setEmail($email): self
     {
         $this->email = $email;
 
@@ -199,7 +203,11 @@ class Usuario implements UserInterface
         return $this->primerNombre;
     }
 
-    public function setPrimerNombre(string $primerNombre): self
+    /**
+     * @param string $primerNombre
+     * @return Usuario
+     */
+    public function setPrimerNombre($primerNombre): self
     {
         $this->primerNombre = $primerNombre;
 
@@ -223,7 +231,11 @@ class Usuario implements UserInterface
         return $this->primerApellido;
     }
 
-    public function setPrimerApellido(string $primerApellido): self
+    /**
+     * @param string $primerApellido
+     * @return Usuario
+     */
+    public function setPrimerApellido($primerApellido): self
     {
         $this->primerApellido = $primerApellido;
 

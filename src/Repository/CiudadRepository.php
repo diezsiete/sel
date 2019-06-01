@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Ciudad;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\Criteria;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -19,22 +20,22 @@ class CiudadRepository extends ServiceEntityRepository
         parent::__construct($registry, Ciudad::class);
     }
 
-    // /**
-    //  * @return Ciudad[] Returns an array of Ciudad objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return Ciudad[]
+     */
+    public function findColmbia()
     {
         return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
+            ->andWhere('c.pais = :colombia')
+            ->setParameter('colombia', '057')
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
-    */
+
+    public function ciudadesColombiaCriteria()
+    {
+        return Criteria::create()->andWhere(Criteria::expr()->eq('c.pais', '057'));
+    }
 
     /*
     public function findOneBySomeField($value): ?Ciudad

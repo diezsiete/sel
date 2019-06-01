@@ -40,7 +40,7 @@ class Vacante
     private $descripcion;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\Column(type="text")
      */
     private $requisitos;
 
@@ -120,12 +120,7 @@ class Vacante
      * @ORM\Column(type="smallint")
      */
     private $experiencia;
-    
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Area", inversedBy="vacantes")
-     */
-    private $area;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Cargo", inversedBy="vacantes")
@@ -187,15 +182,20 @@ class Vacante
      */
     private $vigencia;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\VacanteArea", inversedBy="vacantes")
+     */
+    private $area;
+
     public function __construct()
     {
-        $this->area = new ArrayCollection();
         $this->cargo = new ArrayCollection();
         $this->licenciaConduccion = new ArrayCollection();
         $this->profesion = new ArrayCollection();
         $this->redesSociales = new ArrayCollection();
         $this->aplicantes = new ArrayCollection();
         $this->ciudad = new ArrayCollection();
+        $this->area = new ArrayCollection();
     }
 
 
@@ -447,33 +447,6 @@ class Vacante
         return $this;
     }
 
-
-    /**
-     * @return Collection|Area[]
-     */
-    public function getArea(): Collection
-    {
-        return $this->area;
-    }
-
-    public function addArea(Area $area): self
-    {
-        if (!$this->area->contains($area)) {
-            $this->area[] = $area;
-        }
-
-        return $this;
-    }
-
-    public function removeArea(Area $area): self
-    {
-        if ($this->area->contains($area)) {
-            $this->area->removeElement($area);
-        }
-
-        return $this;
-    }
-
     /**
      * @return Collection|Cargo[]
      */
@@ -679,6 +652,32 @@ class Vacante
     public function setVigencia(?VacanteVigencia $vigencia): self
     {
         $this->vigencia = $vigencia;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|VacanteArea[]
+     */
+    public function getArea(): Collection
+    {
+        return $this->area;
+    }
+
+    public function addArea(VacanteArea $area): self
+    {
+        if (!$this->area->contains($area)) {
+            $this->area[] = $area;
+        }
+
+        return $this;
+    }
+
+    public function removeArea(VacanteArea $area): self
+    {
+        if ($this->area->contains($area)) {
+            $this->area->removeElement($area);
+        }
 
         return $this;
     }

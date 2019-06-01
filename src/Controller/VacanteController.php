@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Form\VacanteFormType;
-use App\Repository\PaisRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,7 +18,7 @@ class VacanteController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
-
+            $this->addFlash('success', "Datos actualizados exitosamente!");
         }
 
         return $this->render('vacante/crear.html.twig', [
