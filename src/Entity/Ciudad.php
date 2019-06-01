@@ -35,16 +35,6 @@ class Ciudad
      * @ORM\Column(type="string", length=45)
      */
     private $nombre;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Vacante", mappedBy="ciudad")
-     */
-    private $vacantes;
-
-    public function __construct()
-    {
-        $this->vacantes = new ArrayCollection();
-    }
     
 
     public function getId(): ?string
@@ -84,34 +74,6 @@ class Ciudad
     public function setPais(?Pais $pais): self
     {
         $this->pais = $pais;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Vacante[]
-     */
-    public function getVacantes(): Collection
-    {
-        return $this->vacantes;
-    }
-
-    public function addVacante(Vacante $vacante): self
-    {
-        if (!$this->vacantes->contains($vacante)) {
-            $this->vacantes[] = $vacante;
-            $vacante->addCiudad($this);
-        }
-
-        return $this;
-    }
-
-    public function removeVacante(Vacante $vacante): self
-    {
-        if ($this->vacantes->contains($vacante)) {
-            $this->vacantes->removeElement($vacante);
-            $vacante->removeCiudad($this);
-        }
 
         return $this;
     }

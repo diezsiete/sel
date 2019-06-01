@@ -144,10 +144,6 @@ class Vacante
      */
     private $cargo;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Ciudad", inversedBy="vacantes")
-     */
-    private $ciudad;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\LicenciaConduccion", inversedBy="vacantes")
@@ -169,15 +165,28 @@ class Vacante
      */
     private $aplicantes;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Ciudad")
+     * @ORM\JoinTable(name="vacante_ciudad",
+     *     joinColumns={@ORM\JoinColumn(name="vacante_id", referencedColumnName="id")},
+     *     inverseJoinColumns={
+     *          @ORM\JoinColumn(name="pais_id", referencedColumnName="pais_id"),
+     *          @ORM\JoinColumn(name="dpto_id", referencedColumnName="dpto_id"),
+     *          @ORM\JoinColumn(name="ciudad_id", referencedColumnName="id"),
+     *     }
+     * )
+     */
+    private $ciudad;
+
     public function __construct()
     {
         $this->area = new ArrayCollection();
         $this->cargo = new ArrayCollection();
-        $this->ciudad = new ArrayCollection();
         $this->licenciaConduccion = new ArrayCollection();
         $this->profesion = new ArrayCollection();
         $this->redesSociales = new ArrayCollection();
         $this->aplicantes = new ArrayCollection();
+        $this->ciudad = new ArrayCollection();
     }
 
 
@@ -515,32 +524,6 @@ class Vacante
     }
 
     /**
-     * @return Collection|Ciudad[]
-     */
-    public function getCiudad(): Collection
-    {
-        return $this->ciudad;
-    }
-
-    public function addCiudad(Ciudad $ciudad): self
-    {
-        if (!$this->ciudad->contains($ciudad)) {
-            $this->ciudad[] = $ciudad;
-        }
-
-        return $this;
-    }
-
-    public function removeCiudad(Ciudad $ciudad): self
-    {
-        if ($this->ciudad->contains($ciudad)) {
-            $this->ciudad->removeElement($ciudad);
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|LicenciaConduccion[]
      */
     public function getLicenciaConduccion(): Collection
@@ -644,6 +627,32 @@ class Vacante
     {
         if ($this->aplicantes->contains($aplicante)) {
             $this->aplicantes->removeElement($aplicante);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Ciudad[]
+     */
+    public function getCiudad(): Collection
+    {
+        return $this->ciudad;
+    }
+
+    public function addCiudad(Ciudad $ciudad): self
+    {
+        if (!$this->ciudad->contains($ciudad)) {
+            $this->ciudad[] = $ciudad;
+        }
+
+        return $this;
+    }
+
+    public function removeCiudad(Ciudad $ciudad): self
+    {
+        if ($this->ciudad->contains($ciudad)) {
+            $this->ciudad->removeElement($ciudad);
         }
 
         return $this;
