@@ -5,26 +5,27 @@
     <meta charset="UTF-8">
 
     <title>{% block title %}Servicios en linea{% endblock %}</title>
-    <meta name="keywords" content="HTML5 Admin Template" />
+    <meta name="keywords" content="HTML5 Admin Template"/>
     <meta name="description" content="Porto Admin - Responsive HTML5 Template">
     <meta name="author" content="okler.net">
 
     <!-- Mobile Metas -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 
     <!-- Web Fonts  -->
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light"
+          rel="stylesheet" type="text/css">
 
     {% block stylesheets %}
         <!-- Vendor CSS -->
-        <link rel="stylesheet" href="{{ asset('vendor/bootstrap/css/bootstrap.css') }}" />
-        <link rel="stylesheet" href="{{ asset('vendor/font-awesome/css/all.min.css') }}" />
+        <link rel="stylesheet" href="{{ asset('vendor/bootstrap/css/bootstrap.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('vendor/font-awesome/css/all.min.css') }}"/>
 
         <!-- Theme CSS -->
-        <link rel="stylesheet" href="{{ asset('css/theme.css') }}" />
+        <link rel="stylesheet" href="{{ asset('css/theme.css') }}"/>
 
         <!-- Skin CSS -->
-        <link rel="stylesheet" href="{{ asset('css/skins/default.css') }}" />
+        <link rel="stylesheet" href="{{ asset('css/skins/default.css') }}"/>
 
         <!-- Theme Custom CSS -->
         <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
@@ -42,14 +43,13 @@
 </head>
 <body>
 <section class="body">
-
-    <!-- start: header -->
     <header class="header">
         <div class="logo-container">
             <a href="{{ path('app_main') }}" class="logo">
-                <img src="{{ asset('img/logo.png') }}" width="75" height="35" alt="Porto Admin" />
+                <img src="{{ asset('img/logo.png') }}" width="75" height="35" alt="Porto Admin"/>
             </a>
-            <div class="d-md-none toggle-sidebar-left" data-toggle-class="sidebar-left-opened" data-target="html" data-fire-event="sidebar-left-opened">
+            <div class="d-md-none toggle-sidebar-left" data-toggle-class="sidebar-left-opened" data-target="html"
+                 data-fire-event="sidebar-left-opened">
                 <i class="fas fa-bars" aria-label="Toggle sidebar"></i>
             </div>
         </div>
@@ -71,7 +71,8 @@
             <ul class="notifications">
                 <li>
                     {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
-                        <a href="{{ path('admin_usuarios', {'_switch_user': '_exit'})  }}" class="notification-icon switch-user">
+                        <a href="{{ path('admin_usuarios', {'_switch_user': '_exit'}) }}"
+                           class="notification-icon switch-user">
                             <i class="fas fa-user-cog"></i>
                         </a>
                     {% endif %}
@@ -95,7 +96,8 @@
                                         <span class="message float-right text-dark">60%</span>
                                     </p>
                                     <div class="progress progress-xs light">
-                                        <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;"></div>
+                                        <div class="progress-bar" role="progressbar" aria-valuenow="60"
+                                             aria-valuemin="0" aria-valuemax="100" style="width: 60%;"></div>
                                     </div>
                                 </li>
 
@@ -105,7 +107,8 @@
                                         <span class="message float-right text-dark">98%</span>
                                     </p>
                                     <div class="progress progress-xs light">
-                                        <div class="progress-bar" role="progressbar" aria-valuenow="98" aria-valuemin="0" aria-valuemax="100" style="width: 98%;"></div>
+                                        <div class="progress-bar" role="progressbar" aria-valuenow="98"
+                                             aria-valuemin="0" aria-valuemax="100" style="width: 98%;"></div>
                                     </div>
                                 </li>
 
@@ -115,7 +118,8 @@
                                         <span class="message float-right text-dark">33%</span>
                                     </p>
                                     <div class="progress progress-xs light mb-1">
-                                        <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width: 33%;"></div>
+                                        <div class="progress-bar" role="progressbar" aria-valuenow="33"
+                                             aria-valuemin="0" aria-valuemax="100" style="width: 33%;"></div>
                                     </div>
                                 </li>
                             </ul>
@@ -139,7 +143,8 @@
                                 <li>
                                     <a href="#" class="clearfix">
                                         <figure class="image">
-                                            <img src="{{ asset('img/!sample-user.jpg') }}" alt="Joseph Doe Junior" class="rounded-circle" />
+                                            <img src="{{ asset('img/!sample-user.jpg') }}" alt="Joseph Doe Junior"
+                                                 class="rounded-circle"/>
                                         </figure>
                                         <span class="title">Joseph Doe</span>
                                         <span class="message">Lorem ipsum dolor sit.</span>
@@ -148,7 +153,8 @@
                                 <li>
                                     <a href="#" class="clearfix">
                                         <figure class="image">
-                                            <img src="{{ asset('img/!sample-user.jpg') }}" alt="Joseph Junior" class="rounded-circle" />
+                                            <img src="{{ asset('img/!sample-user.jpg') }}" alt="Joseph Junior"
+                                                 class="rounded-circle"/>
                                         </figure>
                                         <span class="title">Joseph Junior</span>
                                         <span class="message truncate">Truncated message. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sit amet lacinia orci. Proin vestibulum eget risus non luctus. Nunc cursus lacinia lacinia. Nulla molestie malesuada est ac tincidunt. Quisque eget convallis diam, nec venenatis risus. Vestibulum blandit faucibus est et malesuada. Sed interdum cursus dui nec venenatis. Pellentesque non nisi lobortis, rutrum eros ut, convallis nisi. Sed tellus turpis, dignissim sit amet tristique quis, pretium id est. Sed aliquam diam diam, sit amet faucibus tellus ultricies eu. Aliquam lacinia nibh a metus bibendum, eu commodo eros commodo. Sed commodo molestie elit, a molestie lacus porttitor id. Donec facilisis varius sapien, ac fringilla velit porttitor et. Nam tincidunt gravida dui, sed pharetra odio pharetra nec. Duis consectetur venenatis pharetra. Vestibulum egestas nisi quis elementum elementum.</span>
@@ -157,7 +163,8 @@
                                 <li>
                                     <a href="#" class="clearfix">
                                         <figure class="image">
-                                            <img src="{{ asset('img/!sample-user.jpg') }}" alt="Joe Junior" class="rounded-circle" />
+                                            <img src="{{ asset('img/!sample-user.jpg') }}" alt="Joe Junior"
+                                                 class="rounded-circle"/>
                                         </figure>
                                         <span class="title">Joe Junior</span>
                                         <span class="message">Lorem ipsum dolor sit.</span>
@@ -166,7 +173,8 @@
                                 <li>
                                     <a href="#" class="clearfix">
                                         <figure class="image">
-                                            <img src="{{ asset('img/!sample-user.jpg') }}" alt="Joseph Junior" class="rounded-circle" />
+                                            <img src="{{ asset('img/!sample-user.jpg') }}" alt="Joseph Junior"
+                                                 class="rounded-circle"/>
                                         </figure>
                                         <span class="title">Joseph Junior</span>
                                         <span class="message">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sit amet lacinia orci. Proin vestibulum eget risus non luctus. Nunc cursus lacinia lacinia. Nulla molestie malesuada est ac tincidunt. Quisque eget convallis diam.</span>
@@ -174,7 +182,7 @@
                                 </li>
                             </ul>
 
-                            <hr />
+                            <hr/>
 
                             <div class="text-right">
                                 <a href="#" class="view-more">View All</a>
@@ -225,7 +233,7 @@
                                 </li>
                             </ul>
 
-                            <hr />
+                            <hr/>
 
                             <div class="text-right">
                                 <a href="#" class="view-more">View All</a>
@@ -240,7 +248,8 @@
             <div id="userbox" class="userbox">
                 <a href="#" data-toggle="dropdown">
                     <figure class="profile-picture">
-                        <img src="{{ asset('img/!logged-user.jpg') }}" alt="Joseph Doe" class="rounded-circle" data-lock-picture="img/!logged-user.jpg" />
+                        <img src="{{ asset('img/!logged-user.jpg') }}" alt="Joseph Doe" class="rounded-circle"
+                             data-lock-picture="img/!logged-user.jpg"/>
                     </figure>
                     <div class="profile-info" data-lock-name="John Doe" data-lock-email="johndoe@okler.com">
                         <span class="name">{{ app.user.primerNombre }}</span>
@@ -254,13 +263,14 @@
                     <ul class="list-unstyled mb-2">
                         <li class="divider"></li>
                         <li>
-                            <a role="menuitem" tabindex="-1" href="pages-user-profile.html"><i class="fas fa-user"></i> My Profile</a>
+                            <a role="menuitem" tabindex="-1" href="{{ path('app_profile') }}">
+                                <i class="fas fa-user"></i> Mi Perfil
+                            </a>
                         </li>
                         <li>
-                            <a role="menuitem" tabindex="-1" href="#" data-lock-screen="true"><i class="fas fa-lock"></i> Lock Screen</a>
-                        </li>
-                        <li>
-                            <a role="menuitem" tabindex="-1" href="pages-signin.html"><i class="fas fa-power-off"></i> Logout</a>
+                            <a role="menuitem" tabindex="-1" href="{{ path('app_logout') }}">
+                                <i class="fas fa-power-off"></i> Cerrar sesión
+                            </a>
                         </li>
                     </ul>
                 </div>
@@ -268,8 +278,6 @@
         </div>
         <!-- end: search & user box -->
     </header>
-    <!-- end: header -->
-
     <div class="inner-wrapper">
         <!-- start: sidebar -->
         <aside id="sidebar-left" class="sidebar-left">
@@ -278,7 +286,8 @@
                 <div class="sidebar-title">
                     Navigation
                 </div>
-                <div class="sidebar-toggle d-none d-md-block" data-toggle-class="sidebar-left-collapsed" data-target="html" data-fire-event="sidebar-left-toggle">
+                <div class="sidebar-toggle d-none d-md-block" data-toggle-class="sidebar-left-collapsed"
+                     data-target="html" data-fire-event="sidebar-left-toggle">
                     <i class="fas fa-bars" aria-label="Toggle sidebar"></i>
                 </div>
             </div>
@@ -286,14 +295,12 @@
             <div class="nano">
                 <div class="nano-content">
                     <nav id="menu" class="nav-main" role="navigation">
-                        {{
-                        knp_menu_render(
+                        {{ knp_menu_render(
                             'main', {
                                 'currentClass': 'nav-active',
                                 'ancestorClass': 'nav-expanded nav-active',
                                 'branch_class': 'nav-parent'
-                            }, 'custom')
-                        }}
+                            }, 'custom') }}
                     </nav>
                 </div>
             </div>
@@ -308,13 +315,20 @@
                 </h2>
             </header>
 
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    {{ message }}
+                </div>
+            {% endfor %}
+
+
             <!-- start: page -->
             {% block body %}{% endblock %}
             <!-- end: page -->
 
         </section>
     </div>
-
     <aside id="sidebar-right" class="sidebar-right">
         <div class="nano">
             <div class="nano-content">

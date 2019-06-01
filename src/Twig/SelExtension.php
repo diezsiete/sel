@@ -46,6 +46,7 @@ class SelExtension extends AbstractExtension
     public function pageHeader($menu)
     {
         $header = $this->request->getCurrentRequest()->get('header');
+        return $header;
 //        return $header ?? $this->menuExtension->getCurrentItem($menu)->getName();
     }
 }

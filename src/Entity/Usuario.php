@@ -4,10 +4,16 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UsuarioRepository")
+ * @UniqueEntity(
+ *     fields={"identificacion"},
+ *     message="Identificación ya registrada"
+ * )
  */
 class Usuario implements UserInterface
 {
@@ -21,6 +27,7 @@ class Usuario implements UserInterface
     private $id;
 
     /**
+     * @Assert\NotBlank(message="Por favor ingrese identificación")
      * @ORM\Column(type="string", length=180, unique=true)
      */
     private $identificacion;
@@ -37,11 +44,14 @@ class Usuario implements UserInterface
     private $password;
 
     /**
+     * @Assert\NotBlank(message="Por favor ingrese correo")
+     * @Assert\Email()
      * @ORM\Column(type="string", length=140, nullable=true)
      */
     private $email;
 
     /**
+     * @Assert\NotBlank(message="Por favor ingrese su nombre")
      * @ORM\Column(type="string", length=60)
      */
     private $primerNombre;
@@ -52,6 +62,7 @@ class Usuario implements UserInterface
     private $segundoNombre;
 
     /**
+     * @Assert\NotBlank(message="Por favor ingrese su apellido")
      * @ORM\Column(type="string", length=60)
      */
     private $primerApellido;
