@@ -1,0 +1,128 @@
+{% form_theme vacanteForm 'form/vacante_layout.html.twig' %}
+
+{{ form_start(vacanteForm, {attr: {novalidate: 'novalidate'}}) }}
+
+<div class="form-row">
+    <div class="col-lg-12">
+        <section class="card">
+            <header class="card-header">
+                <h2 class="card-title">Datos básicos</h2>
+            </header>
+            <div class="card-body">
+                <div class="form-row">
+                    {{ form_row(vacanteForm.titulo, {container_attr: {class: 'col-lg-6'}}) }}
+                    {{ form_row(vacanteForm.ciudad, {container_attr: {class: 'col-lg-6'}}) }}
+                </div>
+
+                {{ form_row(vacanteForm.descripcion) }}
+
+                {{ form_row(vacanteForm.requisitos) }}
+
+
+                <div class="form-row">
+                    {{ form_row(vacanteForm.area, {container_attr: {class: 'col-lg-6'}}) }}
+                    {{ form_row(vacanteForm.cargo, {container_attr: {class: 'col-lg-6'}}) }}
+                </div>
+
+                <div class="form-row">
+                    {{ form_row(vacanteForm.nivel, {
+                        container_attr: {class: 'col-lg-6'},
+                        attr: {
+                            'data-subnivel-url' : path('admin_vacante_subnivel_select'),
+                            class: 'js-vacante-form-nivel'
+                        }
+                    }) }}
+
+                    {{ form_row(vacanteForm.subnivel, {container_attr: {class: 'col-lg-6 js-subnivel-target'}}) }}
+                </div>
+
+                <div class="form-row">
+                    {{ form_row(vacanteForm.contratoTipo, {container_attr: {class: 'col-lg-4'}}) }}
+                    {{ form_row(vacanteForm.intensidadHoraria, {container_attr: {class: 'col-lg-4'}}) }}
+                    {{ form_row(vacanteForm.vacantesCantidad, {container_attr: {class: 'col-lg-4'}}) }}
+                </div>
+            </div>
+        </section>
+
+
+        <section class="card">
+            <header class="card-header">
+                <h2 class="card-title">Salario</h2>
+            </header>
+            <div class="card-body">
+                <div class="form-row">
+                    {{ form_row(vacanteForm.salarioRango, {container_attr: {class: 'col-lg-6'}}) }}
+                    {{ form_row(vacanteForm.salarioPublicar, {container_attr: {class: 'col-lg-6'}}) }}
+                </div>
+                <div class="form-row">
+                    {{ form_row(vacanteForm.salarioNeto, {container_attr: {class: 'col-lg-6'}}) }}
+                    {{ form_row(vacanteForm.salarioAdicion, {container_attr: {class: 'col-lg-6'}}) }}
+                </div>
+
+                {{ form_row(vacanteForm.salarioAdicionConcepto) }}
+            </div>
+        </section>
+
+
+        <section class="card">
+            <header class="card-header">
+                <h2 class="card-title">Requisitos</h2>
+            </header>
+            <div class="card-body">
+                <div class="form-row">
+                    {{ form_row(vacanteForm.nivelAcademico, {container_attr: {class: 'col-lg-6'}}) }}
+                    {{ form_row(vacanteForm.nivelAcademicoCurso, {container_attr: {class: 'col-lg-6'}}) }}
+                </div>
+
+                <div class="form-row">
+                    {{ form_row(vacanteForm.profesion, {container_attr: {class: 'col-lg-6'}}) }}
+                    {{ form_row(vacanteForm.experiencia, {container_attr: {class: 'col-lg-6'}}) }}
+                </div>
+
+                <div class="form-row">
+                    {{ form_row(vacanteForm.idioma, {container_attr: {class: 'col-lg-6'}}) }}
+                    {{ form_row(vacanteForm.idiomaDestreza, {container_attr: {class: 'col-lg-6'}}) }}
+                </div>
+
+                <div class="form-row">
+                    {{ form_row(vacanteForm.genero, {
+                        container_attr: {class: 'col-lg-6'},
+                        label_attr: {class: 'radio-inline' }
+                    }) }}
+                    {{  form_row(vacanteForm.licenciaConduccion, {
+                        container_attr: {class: 'col-lg-6'},
+                        label_attr: {class: 'checkbox-inline' }
+                    }) }}
+                    {# for checkbox in vacanteForm.licenciaConduccion %}
+                        {{ form_label(checkbox) }}
+                        {{ form_widget(checkbox, {label_attr: {class: 'checkbox-inline' }}) }}
+                    {% endfor #}
+                </div>
+
+            </div>
+        </section>
+
+        <section class="card">
+            <header class="card-header">
+                <h2 class="card-title">Configuración</h2>
+            </header>
+            <div class="card-body">
+                <div class="form-row">
+                    {{ form_row(vacanteForm.vigencia, {container_attr: {class: 'col-lg-6'}}) }}
+                    {{ form_row(vacanteForm.empresa, {container_attr: {class: 'col-lg-6'}}) }}
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+<div class="form-row">
+    <div class="col-md-12 text-right mt-3">
+        <button class="btn btn-primary modal-confirm">
+            {{ button_text }}
+        </button>
+    </div>
+</div>
+
+
+{{ form_end(vacanteForm) }}

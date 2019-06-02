@@ -67,7 +67,7 @@ class Vacante
     /**
      * @ORM\Column(type="boolean")
      */
-    private $salarioPublicar;
+    private $salarioPublicar = true;
 
     /**
      * @ORM\Column(type="boolean")
@@ -91,17 +91,17 @@ class Vacante
     private $empresa;
 
     /**
-     * @ORM\Column(type="string", length=15)
+     * @ORM\Column(type="smallint")
      */
     private $nivel;
 
     /**
-     * @ORM\Column(type="string", length=40)
+     * @ORM\Column(type="smallint")
      */
     private $subnivel;
 
     /**
-     * @ORM\Column(type="string", length=27, nullable=true)
+     * @ORM\Column(type="smallint", nullable=true)
      */
     private $contratoTipo;
 
@@ -111,16 +111,14 @@ class Vacante
     private $intensidadHoraria;
 
     /**
-     * @ORM\Column(type="string", length=12)
+     * @ORM\Column(type="smallint")
      */
     private $salarioRango;
-
 
     /**
      * @ORM\Column(type="smallint")
      */
     private $experiencia;
-
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Cargo", inversedBy="vacantes")
@@ -160,11 +158,6 @@ class Vacante
      */
     private $ciudad;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\NivelAcademico")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $nivelAcademico;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Idioma")
@@ -186,6 +179,12 @@ class Vacante
      * @ORM\ManyToMany(targetEntity="App\Entity\VacanteArea", inversedBy="vacantes")
      */
     private $area;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\NivelAcademico")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $nivelAcademico;
 
     public function __construct()
     {
@@ -337,7 +336,6 @@ class Vacante
     }
 
 
-
     public function getGenero(): ?int
     {
         return $this->genero;
@@ -374,36 +372,48 @@ class Vacante
         return $this;
     }
 
-    public function getNivel(): ?string
+    public function getNivel(): ?int
     {
         return $this->nivel;
     }
 
-    public function setNivel(string $nivel): self
+    /**
+     * @param int $nivel
+     * @return Vacante
+     */
+    public function setNivel($nivel): self
     {
         $this->nivel = $nivel;
 
         return $this;
     }
 
-    public function getSubnivel(): ?string
+    public function getSubnivel(): ?int
     {
         return $this->subnivel;
     }
 
-    public function setSubnivel(string $subnivel): self
+    /**
+     * @param int $subnivel
+     * @return Vacante
+     */
+    public function setSubnivel($subnivel): self
     {
         $this->subnivel = $subnivel;
 
         return $this;
     }
 
-    public function getContratoTipo(): ?string
+    public function getContratoTipo(): ?int
     {
         return $this->contratoTipo;
     }
 
-    public function setContratoTipo(?string $contratoTipo): self
+    /**
+     * @param int $contratoTipo
+     * @return Vacante
+     */
+    public function setContratoTipo($contratoTipo): self
     {
         $this->contratoTipo = $contratoTipo;
 
@@ -422,12 +432,16 @@ class Vacante
         return $this;
     }
 
-    public function getSalarioRango(): ?string
+    public function getSalarioRango(): ?int
     {
         return $this->salarioRango;
     }
 
-    public function setSalarioRango(string $salarioRango): self
+    /**
+     * @param int $salarioRango
+     * @return Vacante
+     */
+    public function setSalarioRango($salarioRango): self
     {
         $this->salarioRango = $salarioRango;
 
@@ -608,18 +622,6 @@ class Vacante
         return $this;
     }
 
-    public function getNivelAcademico(): ?NivelAcademico
-    {
-        return $this->nivelAcademico;
-    }
-
-    public function setNivelAcademico(?NivelAcademico $nivelAcademico): self
-    {
-        $this->nivelAcademico = $nivelAcademico;
-
-        return $this;
-    }
-
     public function getIdioma(): ?Idioma
     {
         return $this->idioma;
@@ -678,6 +680,18 @@ class Vacante
         if ($this->area->contains($area)) {
             $this->area->removeElement($area);
         }
+
+        return $this;
+    }
+
+    public function getNivelAcademico(): ?NivelAcademico
+    {
+        return $this->nivelAcademico;
+    }
+
+    public function setNivelAcademico(?NivelAcademico $nivelAcademico): self
+    {
+        $this->nivelAcademico = $nivelAcademico;
 
         return $this;
     }

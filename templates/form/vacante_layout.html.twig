@@ -1,0 +1,9 @@
+{%- block checkbox_row -%}
+    <div {% with { attr: container_attr } %}{{ block('attributes') }}{% endwith %}>
+        <div class="sel checkbox-custom checkbox-default">
+            <input type="checkbox" {{ block('widget_attributes') }} {% if value  %} value="{{ value }}"{% endif %}{% if checked is defined and checked %} checked="checked"{% endif %}>
+            <label for="{{ id }}">{{ label }}</label>
+            {{ form_help(form) }}
+        </div>
+    </div>
+{% endblock %}

@@ -19,7 +19,7 @@ class Profesion
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=45)
+     * @ORM\Column(type="string", length=100)
      */
     private $nombre;
 
@@ -76,5 +76,10 @@ class Profesion
         }
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->nombre;
     }
 }
