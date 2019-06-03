@@ -26,4 +26,25 @@ $(function(){
             }
         });
     });
+
+
+    var $idiomaSelect = $('.js-vacante-form-idioma');
+    var $idiomaDestrezaSelect = $('.js-vacante-form-idioma-destreza');
+
+    $idiomaSelect.on('change', function(e){
+        var idiomaVal = $idiomaSelect.val();
+        console.log(idiomaVal);
+        changeDisableStateSelectNotRequired($idiomaDestrezaSelect, idiomaVal);
+    })
 });
+
+function changeDisableStateSelectNotRequired($select, val) {
+    if(val) {
+        $select.removeAttr('disabled');
+        $select.find('option:first').remove();
+    } else {
+        $select.attr('disabled', true);
+        $option = $("<option></option>");
+        $select.prepend($option).val("");
+    }
+}

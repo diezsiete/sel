@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Constant\VacanteConstant;
 use App\Entity\Ciudad;
+use App\Entity\Idioma;
 use App\Entity\LicenciaConduccion;
 use App\Entity\Vacante;
 use App\Repository\CiudadRepository;
@@ -11,8 +12,6 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -29,7 +28,7 @@ class VacanteFormType extends AbstractType
             ])
             ->add('ciudad', EntityType::class, [
                 'class' => Ciudad::class,
-                'query_builder' => function(CiudadRepository $repository) {
+                'query_builder' => function (CiudadRepository $repository) {
                     return $repository->createQueryBuilder('c')->addCriteria($repository->ciudadesColombiaCriteria());
                 },
                 'multiple' => true,
@@ -43,26 +42,24 @@ class VacanteFormType extends AbstractType
             ->add('cargo', null, [
                 'required' => true,
             ])
-
             ->add('nivel', ChoiceType::class, [
                 'choices' => array_flip(VacanteConstant::NIVEL),
                 'placeholder' => 'Seleccione...'
             ])
-
             ->add('contratoTipo', ChoiceType::class, [
                 'label' => 'Tipo de contrato',
                 'placeholder' => 'Seleccione...',
-                'choices' => array_flip(VacanteConstant::CONTRATO_TIPO)
+                'choices' => array_flip(VacanteConstant::CONTRATO_TIPO),
+                'required' => false,
             ])
             ->add('intensidadHoraria', ChoiceType::class, [
                 'label' => 'Intensidad horaria',
                 'placeholder' => 'Seleccione...',
-                'choices' => array_flip(VacanteConstant::INTENSIDAD_HORARIA)
+                'choices' => array_flip(VacanteConstant::INTENSIDAD_HORARIA),
             ])
             ->add('vacantesCantidad', null, [
                 'label' => 'Cantidad de vacantes'
             ])
-
             ->add('salarioRango', ChoiceType::class, [
                 'label' => 'Rango salario (en millones)',
                 'placeholder' => 'Seleccione...',
@@ -84,7 +81,6 @@ class VacanteFormType extends AbstractType
                 'label' => 'Concepto (Adicionales)',
                 'help' => 'Dar una pequeña descripción de la razón de la suma adicional',
             ])
-
             ->add('nivelAcademico', null, [
                 'label' => 'Minimo nivel academico'
             ])
@@ -92,7 +88,6 @@ class VacanteFormType extends AbstractType
                 'label' => 'Nivel academico en curso',
                 'help' => 'Activado indica que la persona puede estar cursando el nivel académico indicado'
             ])
-
             ->add('profesion', null, [
                 'label' => 'Profesión'
             ])
@@ -100,18 +95,11 @@ class VacanteFormType extends AbstractType
                 'label' => 'Años de experiencia requerida',
                 'choices' => array_flip(VacanteConstant::EXPERIENCIA),
             ])
-
             ->add('idioma', null, [
                 'label' => 'Idioma requerido',
                 'help' => 'Si la vacante tiene como requerimiento el manejo de algún idioma',
                 'placeholder' => 'Seleccione...'
             ])
-            ->add('idiomaDestreza', ChoiceType::class, [
-                'label' => 'Destreza en el idioma',
-                'help' => 'Seleccione el nivel de destreza que se require en el idioma',
-                'choices' => array_flip(VacanteConstant::IDIOMA_DESTREZA)
-            ])
-
             ->add('genero', ChoiceType::class, [
                 'label' => 'Genero',
                 'expanded' => true,
@@ -120,7 +108,6 @@ class VacanteFormType extends AbstractType
                 'choices' => array_flip(VacanteConstant::GENERO),
                 'required' => false,
             ])
-
             ->add('licenciaConduccion', EntityType::class, [
                 'label' => 'Licencia de conducción',
                 'class' => LicenciaConduccion::class,
@@ -129,7 +116,6 @@ class VacanteFormType extends AbstractType
                 'placeholder' => 'No aplica',
                 'required' => false,
             ])
-
             ->add('vigencia', null, [
                 'label' => 'Vigencia',
                 'help' => 'Duración publicada en la página'
@@ -138,19 +124,22 @@ class VacanteFormType extends AbstractType
                 'label' => 'Empresa (Novasoft)',
                 'choices' => array_flip(VacanteConstant::EMPRESA),
                 'help' => 'A que base de datos de Novasoft se subiran las hojas de vida'
-            ])
-        ;
+            ]);
 
-        $builder->addEventListener(FormEvents::PRE_SET_DATA,
-            function (FormEvent $event) {
-                /** @var Vacante $vacante */
-                if($vacante = $event->getData()) {
-                    $this->setupSubnivelField($event->getForm(), $vacante->getNivel());
-                }
-            });
-        $builder->get('nivel')->addEventListener(FormEvents::POST_SUBMIT, function(FormEvent $event){
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            /** @var Vacante $vacante */
+            if ($vacante = $event->getData()) {
+                $this->setupSubnivelField($event->getForm(), $vacante->getNivel());
+                $this->setupIdiomaDestrezaField($event->getForm(), $vacante->getIdioma());
+            }
+        });
+        $builder->get('nivel')->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
             $form = $event->getForm();
             $this->setupSubnivelField($form->getParent(), $form->getData());
+        });
+        $builder->get('idioma')->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+            $form = $event->getForm();
+            $this->setupIdiomaDestrezaField($form->getParent(), $form->getData());
         });
     }
 
@@ -170,10 +159,25 @@ class VacanteFormType extends AbstractType
             'required' => true,
             'disabled' => !$subniveles,
         ];
-        if(!$subniveles) {
+        if (!$subniveles) {
             $options['placeholder'] = 'Seleccione Nivel...';
         }
         $form->add('subnivel', ChoiceType::class, $options);
     }
 
+    private function setupIdiomaDestrezaField(FormInterface $form, ?Idioma $idioma)
+    {
+        $options = [
+            'label' => 'Destreza en el idioma',
+            'help' => 'Seleccione el nivel de destreza que se require en el idioma',
+            'choices' => array_flip(VacanteConstant::IDIOMA_DESTREZA),
+            'required' => false,
+        ];
+        if(!$idioma) {
+            $options['disabled'] = true;
+        } else {
+            $options['placeholder'] = false;
+        }
+        $form->add('idiomaDestreza', ChoiceType::class, $options);
+    }
 }

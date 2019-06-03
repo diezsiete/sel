@@ -5,12 +5,16 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\VacanteRepository")
  */
 class Vacante
 {
+    use TimestampableEntity;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -25,29 +29,88 @@ class Vacante
     private $usuario;
 
     /**
-     * @ORM\Column(type="date")
-     */
-    private $date;
-
-    /**
+     * @Assert\NotBlank(message="Ingrese titulo de la vacante")
      * @ORM\Column(type="string", length=255)
      */
     private $titulo;
 
     /**
+     * @Assert\Count(min=1, max=100, minMessage="Agregar al menos una ciudad")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Ciudad")
+     * @ORM\JoinTable(name="vacante_ciudad",
+     *     joinColumns={@ORM\JoinColumn(name="vacante_id", referencedColumnName="id")},
+     *     inverseJoinColumns={
+     *          @ORM\JoinColumn(name="ciudad_id", referencedColumnName="id"),
+     *          @ORM\JoinColumn(name="pais_id", referencedColumnName="pais_id"),
+     *          @ORM\JoinColumn(name="dpto_id", referencedColumnName="dpto_id")
+     *     }
+     * )
+     */
+    private $ciudad;
+
+    /**
+     * @Assert\NotBlank(message="Ingrese descripción de la vacante")
      * @ORM\Column(type="text")
      */
     private $descripcion;
 
     /**
+     * @Assert\NotBlank(message="Ingrese requisitos de la vacante")
      * @ORM\Column(type="text")
      */
     private $requisitos;
 
     /**
+     * @Assert\Count(min=1, max=100, minMessage="Agregar al menos un area")
+     * @ORM\ManyToMany(targetEntity="App\Entity\VacanteArea", inversedBy="vacantes")
+     */
+    private $area;
+
+    /**
+     * @Assert\Count(min=1, max=100, minMessage="Agregar al menos un cargo")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Cargo", inversedBy="vacantes")
+     */
+    private $cargo;
+
+    /**
+     * @Assert\NotBlank(message="Ingrese nivel")
      * @ORM\Column(type="smallint")
      */
-    private $vacantesCantidad;
+    private $nivel;
+
+    /**
+     * @Assert\NotBlank(message="Ingrese subnivel")
+     * @ORM\Column(type="smallint")
+     */
+    private $subnivel;
+
+    /**
+     * @ORM\Column(type="smallint", nullable=true)
+     */
+    private $contratoTipo;
+
+    /**
+     * @ORM\Column(type="string", length=8, nullable=true)
+     */
+    private $intensidadHoraria;
+
+    /**
+     * @Assert\NotBlank(message="Ingrese cantidad de vacantes disponibles")
+     * @Assert\Positive(message="Ingrese número mayor a 0")
+     * @ORM\Column(type="smallint")
+     */
+    private $vacantesCantidad = 1;
+
+    /**
+     * @Assert\NotBlank(message="Ingrese rango de salario")
+     * @ORM\Column(type="smallint")
+     */
+    private $salarioRango;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $salarioPublicar = true;
 
     /**
      * @ORM\Column(type="string", length=31, nullable=true)
@@ -65,99 +128,26 @@ class Vacante
     private $salarioAdicionConcepto;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\ManyToOne(targetEntity="App\Entity\NivelAcademico")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $salarioPublicar = true;
+    private $nivelAcademico;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $nivelAcademicoCurso = 0;
-
-
-    /**
-     * @ORM\Column(type="smallint", nullable=true)
-     */
-    private $genero;
+    private $nivelAcademicoCurso = false;
 
     /**
-     * @ORM\Column(type="boolean")
-     */
-    private $publicada = true;
-
-    /**
-     * @ORM\Column(type="string", length=11, nullable=true)
-     */
-    private $empresa;
-
-    /**
-     * @ORM\Column(type="smallint")
-     */
-    private $nivel;
-
-    /**
-     * @ORM\Column(type="smallint")
-     */
-    private $subnivel;
-
-    /**
-     * @ORM\Column(type="smallint", nullable=true)
-     */
-    private $contratoTipo;
-
-    /**
-     * @ORM\Column(type="string", length=8, nullable=true)
-     */
-    private $intensidadHoraria;
-
-    /**
-     * @ORM\Column(type="smallint")
-     */
-    private $salarioRango;
-
-    /**
-     * @ORM\Column(type="smallint")
-     */
-    private $experiencia;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Cargo", inversedBy="vacantes")
-     */
-    private $cargo;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\LicenciaConduccion", inversedBy="vacantes")
-     */
-    private $licenciaConduccion;
-
-    /**
+     * @Assert\Count(min=1, max=100, minMessage="Agregar al menos una profesión")
      * @ORM\ManyToMany(targetEntity="App\Entity\Profesion", inversedBy="vacantes")
      */
     private $profesion;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\VacanteRedSocial", mappedBy="vacante", orphanRemoval=true)
+     * @ORM\Column(type="smallint")
      */
-    private $redesSociales;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Usuario", inversedBy="vacantes")
-     */
-    private $aplicantes;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Ciudad")
-     * @ORM\JoinTable(name="vacante_ciudad",
-     *     joinColumns={@ORM\JoinColumn(name="vacante_id", referencedColumnName="id")},
-     *     inverseJoinColumns={
-     *          @ORM\JoinColumn(name="ciudad_id", referencedColumnName="id"),
-     *          @ORM\JoinColumn(name="pais_id", referencedColumnName="pais_id"),
-     *          @ORM\JoinColumn(name="dpto_id", referencedColumnName="dpto_id")
-     *     }
-     * )
-     */
-    private $ciudad;
-
+    private $experiencia;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Idioma")
@@ -170,21 +160,42 @@ class Vacante
     private $idiomaDestreza;
 
     /**
+     * @ORM\Column(type="smallint", nullable=true)
+     */
+    private $genero;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\LicenciaConduccion", inversedBy="vacantes")
+     */
+    private $licenciaConduccion;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\VacanteVigencia")
      * @ORM\JoinColumn(nullable=false)
      */
     private $vigencia;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\VacanteArea", inversedBy="vacantes")
+     * @ORM\Column(type="string", length=11, nullable=true)
      */
-    private $area;
+    private $empresa;
+
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\NivelAcademico")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(type="boolean")
      */
-    private $nivelAcademico;
+    private $publicada = true;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\VacanteRedSocial", mappedBy="vacante", orphanRemoval=true)
+     */
+    private $redesSociales;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Usuario", inversedBy="vacantes")
+     */
+    private $aplicantes;
+
 
     public function __construct()
     {
@@ -196,7 +207,6 @@ class Vacante
         $this->ciudad = new ArrayCollection();
         $this->area = new ArrayCollection();
     }
-
 
     public function getId(): ?int
     {
@@ -211,18 +221,6 @@ class Vacante
     public function setUsuario(?Usuario $usuario): self
     {
         $this->usuario = $usuario;
-
-        return $this;
-    }
-
-    public function getDate(): ?\DateTimeInterface
-    {
-        return $this->date;
-    }
-
-    public function setDate(\DateTimeInterface $date): self
-    {
-        $this->date = $date;
 
         return $this;
     }

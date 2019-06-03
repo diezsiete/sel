@@ -5,12 +5,11 @@ namespace App\Controller;
 use App\Entity\Vacante;
 use App\Form\VacanteFormType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class VacanteAdminController extends AbstractController
+class VacanteAdminController extends BaseController
 {
     /**
      * @Route("/admin/vacante/crear", name="admin_vacante_crear")
@@ -22,7 +21,14 @@ class VacanteAdminController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
-            $this->addFlash('success', "Datos actualizados exitosamente!");
+            /** @var Vacante $vacante */
+            $vacante = $form->getData();
+            $vacante->setUsuario($this->getUser());
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($vacante);
+            $em->flush();
+            $this->addFlash('success', "Vacante creada exitosamente!");
         }
 
         return $this->render('vacante_admin/crear.html.twig', [

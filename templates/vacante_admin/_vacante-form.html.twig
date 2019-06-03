@@ -80,8 +80,14 @@
                 </div>
 
                 <div class="form-row">
-                    {{ form_row(vacanteForm.idioma, {container_attr: {class: 'col-lg-6'}}) }}
-                    {{ form_row(vacanteForm.idiomaDestreza, {container_attr: {class: 'col-lg-6'}}) }}
+                    {{ form_row(vacanteForm.idioma, {
+                        attr: {class: 'js-vacante-form-idioma'},
+                        container_attr: {class: 'col-lg-6'}
+                    }) }}
+                    {{ form_row(vacanteForm.idiomaDestreza, {
+                        attr: {class: 'js-vacante-form-idioma-destreza'},
+                        container_attr: {class: 'col-lg-6'}
+                    }) }}
                 </div>
 
                 <div class="form-row">
