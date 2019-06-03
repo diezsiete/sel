@@ -89,7 +89,8 @@ class VacanteFormType extends AbstractType
                 'help' => 'Activado indica que la persona puede estar cursando el nivel académico indicado'
             ])
             ->add('profesion', null, [
-                'label' => 'Profesión'
+                'label' => 'Profesión',
+                'required' => true,
             ])
             ->add('experiencia', ChoiceType::class, [
                 'label' => 'Años de experiencia requerida',

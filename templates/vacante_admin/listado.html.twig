@@ -1,0 +1,13 @@
+{% extends 'base.datatable.html.twig' %}
+
+{% block title %}Vacantes{% endblock %}
+{% block page_header %}Vacantes{% endblock %}
+
+
+{% block body %}
+    {{ parent() }}
+
+    {{ include('default/_modal-borrar.html.twig') }}
+{% endblock %}
+
+

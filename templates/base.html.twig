@@ -310,17 +310,12 @@
         <section role="main" class="content-body">
             <header class="page-header">
                 <h2>
-                    {# knp_menu_get_current_item('main').name #}
-                    {{ page_header('main') }}
+                    {% block page_header %}
+                    {% endblock %}
                 </h2>
             </header>
 
-            {% for message in app.flashes('success') %}
-                <div class="alert alert-success">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                    {{ message }}
-                </div>
-            {% endfor %}
+            {{ include('default/_flash_messages.html.twig') }}
 
 
             <!-- start: page -->

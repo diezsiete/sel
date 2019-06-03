@@ -55,7 +55,7 @@ class UsuarioDataTableType implements DataTableTypeInterface
             })
             ->createAdapter(ORMAdapter::class, [
                 'entity' => Usuario::class,
-                'query' => function (QueryBuilder $builder, DataTableState $state) {
+                'query' => function (QueryBuilder $builder) {
                     $builder
                         ->select('u')
                         ->from(Usuario::class, 'u');
@@ -75,6 +75,7 @@ class UsuarioDataTableType implements DataTableTypeInterface
                 'data' => function (Usuario $usuario) {
                     return $usuario->getIdentificacion();
                 },
+                'className' => 'actions',
                 'render' => function($identificacion) {
                     $route = $this->router->generate('app_comprobantes', ['_switch_user' => $identificacion]);
                     return sprintf('<a href="%s"><i class="fas fa-user-cog"></i></a>', $route);

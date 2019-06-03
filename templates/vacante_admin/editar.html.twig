@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Crear Vacante{% endblock %}
-{% block page_header %}Crear Vacante{% endblock %}
+{% block title %}Actualizar Vacante{% endblock %}
+{% block page_header %}Actualizar Vacante{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -10,7 +10,7 @@
 
 {% block body %}
     {{ include('vacante_admin/_vacante-form.html.twig', {
-        button_text: 'Crear'
+        button_text: 'Actualizar'
     }) }}
 {% endblock %}
 
