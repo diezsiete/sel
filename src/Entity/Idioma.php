@@ -11,34 +11,65 @@ class Idioma
 {
     /**
      * @ORM\Id()
-     * @ORM\Column(type="string", length=3)
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=10)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Hv", inversedBy="idiomas")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $nombre;
+    private $hv;
 
-    public function getId(): ?string
+    /**
+     * @ORM\Column(type="string", length=3)
+     */
+    private $idiomaCodigo;
+
+    /**
+     * @ORM\Column(type="string", length=2)
+     */
+    private $destreza;
+
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getNombre(): ?string
+    public function getHv(): ?Hv
     {
-        return $this->nombre;
+        return $this->hv;
     }
 
-    public function setNombre(string $nombre): self
+    public function setHv(?Hv $hv): self
     {
-        $this->nombre = $nombre;
+        $this->hv = $hv;
 
         return $this;
     }
 
-    public function __toString()
+    public function getIdiomaCodigo(): ?string
     {
-        return $this->nombre;
+        return $this->idiomaCodigo;
+    }
+
+    public function setIdiomaCodigo(string $idiomaCodigo): self
+    {
+        $this->idiomaCodigo = $idiomaCodigo;
+
+        return $this;
+    }
+
+    public function getDestreza(): ?string
+    {
+        return $this->destreza;
+    }
+
+    public function setDestreza(string $destreza): self
+    {
+        $this->destreza = $destreza;
+
+        return $this;
     }
 }

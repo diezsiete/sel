@@ -13,22 +13,21 @@ class Dpto
 {
     /**
      * @ORM\Id()
-     * @ORM\Column(type="string", length=7)
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
      */
     private $id;
 
     /**
-     * @ORM\Id()
+     * @ORM\Column(type="string", length=255)
+     */
+    private $nombre;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Pais", inversedBy="dptos")
      * @ORM\JoinColumn(nullable=false)
      */
     private $pais;
-
-    /**
-     * @ORM\Column(type="string", length=45)
-     */
-    private $nombre;
-
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Ciudad", mappedBy="dpto")
@@ -40,7 +39,7 @@ class Dpto
         $this->ciudades = new ArrayCollection();
     }
 
-    public function getId(): ?string
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -77,23 +76,23 @@ class Dpto
         return $this->ciudades;
     }
 
-    public function addCiudad(Ciudad $ciudad): self
+    public function addCiudade(Ciudad $ciudade): self
     {
-        if (!$this->ciudades->contains($ciudad)) {
-            $this->ciudades[] = $ciudad;
-            $ciudad->setDpto($this);
+        if (!$this->ciudades->contains($ciudade)) {
+            $this->ciudades[] = $ciudade;
+            $ciudade->setDpto($this);
         }
 
         return $this;
     }
 
-    public function removeCiudad(Ciudad $ciudad): self
+    public function removeCiudade(Ciudad $ciudade): self
     {
-        if ($this->ciudades->contains($ciudad)) {
-            $this->ciudades->removeElement($ciudad);
+        if ($this->ciudades->contains($ciudade)) {
+            $this->ciudades->removeElement($ciudade);
             // set the owning side to null (unless already changed)
-            if ($ciudad->getDpto() === $this) {
-                $ciudad->setDpto(null);
+            if ($ciudade->getDpto() === $this) {
+                $ciudade->setDpto(null);
             }
         }
 

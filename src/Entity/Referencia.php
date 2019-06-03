@@ -1,0 +1,177 @@
+<?php
+
+namespace App\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity(repositoryClass="App\Repository\ReferenciaRepository")
+ */
+class Referencia
+{
+    /**
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
+     */
+    private $id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Hv", inversedBy="referencias")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $hv;
+
+    /**
+     * @ORM\Column(type="smallint")
+     */
+    private $tipo;
+
+    /**
+     * @ORM\Column(type="string", length=105)
+     */
+    private $nombre;
+
+    /**
+     * @ORM\Column(type="string", length=145)
+     */
+    private $ocupacion;
+
+    /**
+     * @ORM\Column(type="string", length=45, nullable=true)
+     */
+    private $parentesco;
+
+    /**
+     * @ORM\Column(type="bigint")
+     */
+    private $celular;
+
+    /**
+     * @ORM\Column(type="string", length=100, nullable=true)
+     */
+    private $entidad;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $telefono;
+
+    /**
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    private $direccion;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getHv(): ?Hv
+    {
+        return $this->hv;
+    }
+
+    public function setHv(?Hv $hv): self
+    {
+        $this->hv = $hv;
+
+        return $this;
+    }
+
+    public function getTipo(): ?int
+    {
+        return $this->tipo;
+    }
+
+    public function setTipo(int $tipo): self
+    {
+        $this->tipo = $tipo;
+
+        return $this;
+    }
+
+    public function getNombre(): ?string
+    {
+        return $this->nombre;
+    }
+
+    public function setNombre(string $nombre): self
+    {
+        $this->nombre = $nombre;
+
+        return $this;
+    }
+
+    public function getOcupacion(): ?string
+    {
+        return $this->ocupacion;
+    }
+
+    public function setOcupacion(string $ocupacion): self
+    {
+        $this->ocupacion = $ocupacion;
+
+        return $this;
+    }
+
+    public function getParentesco(): ?string
+    {
+        return $this->parentesco;
+    }
+
+    public function setParentesco(?string $parentesco): self
+    {
+        $this->parentesco = $parentesco;
+
+        return $this;
+    }
+
+    public function getCelular(): ?int
+    {
+        return $this->celular;
+    }
+
+    public function setCelular(int $celular): self
+    {
+        $this->celular = $celular;
+
+        return $this;
+    }
+
+    public function getEntidad(): ?string
+    {
+        return $this->entidad;
+    }
+
+    public function setEntidad(?string $entidad): self
+    {
+        $this->entidad = $entidad;
+
+        return $this;
+    }
+
+    public function getTelefono(): ?int
+    {
+        return $this->telefono;
+    }
+
+    public function setTelefono(?int $telefono): self
+    {
+        $this->telefono = $telefono;
+
+        return $this;
+    }
+
+    public function getDireccion(): ?string
+    {
+        return $this->direccion;
+    }
+
+    public function setDireccion(?string $direccion): self
+    {
+        $this->direccion = $direccion;
+
+        return $this;
+    }
+}

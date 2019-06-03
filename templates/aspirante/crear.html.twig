@@ -1,0 +1,149 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Aspirante{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-lg-12">
+            <section class="card form-wizard" id="w3">
+                <header class="card-header">
+                    <div class="card-actions">
+                        <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+                        <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+                    </div>
+
+                    <h2 class="card-title">Form Wizard</h2>
+                </header>
+                <div class="card-body">
+                    <div class="wizard-progress">
+                        <div class="steps-progress">
+                            <div class="progress-indicator"></div>
+                        </div>
+                        <ul class="nav">
+                            <li class="nav-item active">
+                                <a class="nav-link" href="#w3-account" data-toggle="tab"><span>1</span>Account Info</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#w3-profile" data-toggle="tab"><span>2</span>Profile Info</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#w3-billing" data-toggle="tab"><span>3</span>Billing Info</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#w3-confirm" data-toggle="tab"><span>4</span>Confirmation</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <form class="form-horizontal p-3" novalidate="novalidate">
+                        <div class="tab-content">
+                            <div id="w3-account" class="tab-pane active">
+                                <div class="form-group row">
+                                    <label class="col-sm-4 control-label text-sm-right pt-1" for="w3-username">Username</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" name="username" id="w3-username" required>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-4 control-label text-sm-right pt-1" for="w3-password">Password</label>
+                                    <div class="col-sm-8">
+                                        <input type="password" class="form-control" name="password" id="w3-password" minlength="6" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="w3-profile" class="tab-pane">
+                                <div class="form-group row">
+                                    <label class="col-sm-4 control-label text-sm-right pt-1" for="w3-first-name">First Name</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" name="first-name" id="w3-first-name">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-4 control-label text-sm-right pt-1" for="w3-last-name">Last Name</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" name="last-name" id="w3-last-name">
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="w3-billing" class="tab-pane">
+                                <div class="form-group row">
+                                    <label class="col-sm-4 control-label text-sm-right pt-1" for="w3-cc">Card Number</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" name="cc-number" id="w3-cc" required>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-4 control-label text-sm-right pt-1" for="inputSuccess">Expiration</label>
+                                    <div class="col-sm-4">
+                                        <select class="form-control" name="exp-month" required>
+                                            <option>January</option>
+                                            <option>February</option>
+                                            <option>March</option>
+                                            <option>April</option>
+                                            <option>May</option>
+                                            <option>June</option>
+                                            <option>July</option>
+                                            <option>August</option>
+                                            <option>September</option>
+                                            <option>October</option>
+                                            <option>November</option>
+                                            <option>December</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <select class="form-control" name="exp-year" required>
+                                            <option>2014</option>
+                                            <option>2015</option>
+                                            <option>2017</option>
+                                            <option>2017</option>
+                                            <option>2018</option>
+                                            <option>2019</option>
+                                            <option>2020</option>
+                                            <option>2021</option>
+                                            <option>2022</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="w3-confirm" class="tab-pane">
+                                <div class="form-group row">
+                                    <label class="col-sm-4 control-label text-sm-right pt-1" for="w3-email">Email</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" name="email" id="w3-email" required>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-3"></div>
+                                    <div class="col-sm-9">
+                                        <div class="checkbox-custom">
+                                            <input type="checkbox" name="terms" id="w3-terms" required>
+                                            <label for="w3-terms">I agree to the terms of service</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer">
+                    <ul class="pager">
+                        <li class="previous disabled">
+                            <a><i class="fas fa-angle-left"></i> Previous</a>
+                        </li>
+                        <li class="finish hidden float-right">
+                            <a>Finish</a>
+                        </li>
+                        <li class="next">
+                            <a>Next <i class="fas fa-angle-right"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('vendor/bootstrap-wizard/jquery.bootstrap.wizard.js') }}"></script>
+    <script src="{{ asset('js/sel/aspirante/crear.js') }}"></script>
+{% endblock %}

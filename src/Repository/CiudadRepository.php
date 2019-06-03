@@ -27,25 +27,13 @@ class CiudadRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('c')
             ->andWhere('c.pais = :colombia')
-            ->setParameter('colombia', '057')
+            ->setParameter('colombia', '48')
             ->getQuery()
             ->getResult();
     }
 
     public function ciudadesColombiaCriteria()
     {
-        return Criteria::create()->andWhere(Criteria::expr()->eq('c.pais', '057'));
+        return Criteria::create()->andWhere(Criteria::expr()->eq('c.pais', '48'));
     }
-
-    /*
-    public function findOneBySomeField($value): ?Ciudad
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

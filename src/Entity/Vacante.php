@@ -35,20 +35,6 @@ class Vacante
     private $titulo;
 
     /**
-     * @Assert\Count(min=1, max=100, minMessage="Agregar al menos una ciudad")
-     * @ORM\ManyToMany(targetEntity="App\Entity\Ciudad")
-     * @ORM\JoinTable(name="vacante_ciudad",
-     *     joinColumns={@ORM\JoinColumn(name="vacante_id", referencedColumnName="id")},
-     *     inverseJoinColumns={
-     *          @ORM\JoinColumn(name="ciudad_id", referencedColumnName="id"),
-     *          @ORM\JoinColumn(name="pais_id", referencedColumnName="pais_id"),
-     *          @ORM\JoinColumn(name="dpto_id", referencedColumnName="dpto_id")
-     *     }
-     * )
-     */
-    private $ciudad;
-
-    /**
      * @Assert\NotBlank(message="Ingrese descripción de la vacante")
      * @ORM\Column(type="text")
      */
@@ -150,11 +136,6 @@ class Vacante
     private $experiencia;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Idioma")
-     */
-    private $idioma;
-
-    /**
      * @ORM\Column(type="string", length=2, nullable=true)
      */
     private $idiomaDestreza;
@@ -196,6 +177,16 @@ class Vacante
      */
     private $aplicantes;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Ciudad")
+     */
+    private $ciudad;
+
+    /**
+     * @ORM\Column(type="string", length=3, nullable=true)
+     */
+    private $idiomaCodigo;
+
 
     public function __construct()
     {
@@ -204,8 +195,8 @@ class Vacante
         $this->profesion = new ArrayCollection();
         $this->redesSociales = new ArrayCollection();
         $this->aplicantes = new ArrayCollection();
-        $this->ciudad = new ArrayCollection();
         $this->area = new ArrayCollection();
+        $this->ciudad = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -594,43 +585,6 @@ class Vacante
         return $this;
     }
 
-    /**
-     * @return Collection|Ciudad[]
-     */
-    public function getCiudad(): Collection
-    {
-        return $this->ciudad;
-    }
-
-    public function addCiudad(Ciudad $ciudad): self
-    {
-        if (!$this->ciudad->contains($ciudad)) {
-            $this->ciudad[] = $ciudad;
-        }
-
-        return $this;
-    }
-
-    public function removeCiudad(Ciudad $ciudad): self
-    {
-        if ($this->ciudad->contains($ciudad)) {
-            $this->ciudad->removeElement($ciudad);
-        }
-
-        return $this;
-    }
-
-    public function getIdioma(): ?Idioma
-    {
-        return $this->idioma;
-    }
-
-    public function setIdioma(?Idioma $idioma): self
-    {
-        $this->idioma = $idioma;
-
-        return $this;
-    }
 
     public function getIdiomaDestreza(): ?string
     {
@@ -690,6 +644,44 @@ class Vacante
     public function setNivelAcademico(?NivelAcademico $nivelAcademico): self
     {
         $this->nivelAcademico = $nivelAcademico;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Ciudad[]
+     */
+    public function getCiudad(): Collection
+    {
+        return $this->ciudad;
+    }
+
+    public function addCiudad(Ciudad $ciudad): self
+    {
+        if (!$this->ciudad->contains($ciudad)) {
+            $this->ciudad[] = $ciudad;
+        }
+
+        return $this;
+    }
+
+    public function removeCiudad(Ciudad $ciudad): self
+    {
+        if ($this->ciudad->contains($ciudad)) {
+            $this->ciudad->removeElement($ciudad);
+        }
+
+        return $this;
+    }
+
+    public function getIdiomaCodigo(): ?string
+    {
+        return $this->idiomaCodigo;
+    }
+
+    public function setIdiomaCodigo(?string $idiomaCodigo): self
+    {
+        $this->idiomaCodigo = $idiomaCodigo;
 
         return $this;
     }

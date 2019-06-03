@@ -2,8 +2,6 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -13,40 +11,29 @@ class Ciudad
 {
     /**
      * @ORM\Id()
-     * @ORM\Column(type="string", length=7)
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
      */
     private $id;
 
     /**
-     * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity="Pais")
-     * @ORM\JoinColumn(name="pais_id", referencedColumnName="id")
+     * @ORM\Column(type="string", length=255)
      */
-    protected $pais;
-
-    /**
-     * @ORM\Id()
-     * @ORM\Column(type="string", length=7)
-     * @ORM\Column(name="dpto_id", type="integer")
-     */
-    protected $dptoId;
+    private $nombre;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Dpto", inversedBy="ciudades")
-     * @ORM\JoinColumns(
-     *     @ORM\JoinColumn(name="dpto_id", referencedColumnName="id"),
-     *     @ORM\JoinColumn(name="pais_id", referencedColumnName="pais_id")
-     * )
+     * @ORM\JoinColumn(nullable=false)
      */
     private $dpto;
 
     /**
-     * @ORM\Column(type="string", length=45)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Pais", inversedBy="ciudades")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $nombre;
-    
+    private $pais;
 
-    public function getId(): ?string
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -75,8 +62,20 @@ class Ciudad
         return $this;
     }
 
+    public function getPais(): ?Pais
+    {
+        return $this->pais;
+    }
+
+    public function setPais(?Pais $pais): self
+    {
+        $this->pais = $pais;
+
+        return $this;
+    }
+
     public function __toString()
     {
-        return $this->getNombre();
+        return $this->nombre;
     }
 }
