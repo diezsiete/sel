@@ -10,10 +10,78 @@
     color: white;
 }
 
+
 /* BODY --------------------------------------------------------------------------------------------------------------*/
 .content-body {
     padding: 1rem;
 }
+
+.page-header > ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.page-header > ul > li {
+    display: inline-block;
+    padding: 15px;
+    font-size: 13px;
+    border-right: 1px solid #121418;
+}
+
+.page-header > ul > li > a {
+    display: inline-block;
+    padding: 0;
+    color: #abb4be;
+}
+
+.page-header > ul > li > a:hover, .page-header > ul > li > a:focus {
+    color: #fff;
+    text-decoration: none;
+}
+
+.page-header > ul > li.right {
+    float: right;
+    padding-right: 10px;
+}
+
+.page-header > ul > li i.fa, .page-header > ul > li .fab, .page-header > ul > li .fal, .page-header > ul > li .far, .page-header > ul > li .fas {
+    font-size: 14px;
+}
+
+.page-header > ul > li > .btn {
+    margin-top: -9px;
+}
+
+.page-header .nav-pills {
+    margin-top: -8px;
+}
+
+.page-header .nav-pills > li {
+    margin-right: 1px;
+}
+
+.page-header .nav-pills > li > label {
+    margin-bottom: 0;
+    margin-right: 12px;
+    margin-top: 8px;
+}
+
+.page-header .nav-pills a {
+    color: #abb4be;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.page-header .nav-pills a:hover {
+    background: #171717;
+    color: #FFF;
+}
+
+.page-header .nav-pills .active a {
+    color: #FFF;
+}
+
 
 /* DATATABLES --------------------------------------------------------------------------------------------------------*/
 .dataTables_processing {
@@ -41,4 +109,11 @@
 .sel.checkbox-custom .form-text.text-muted{
     position: absolute;
     bottom: 0;
+}
+
+
+@media only screen and (max-width: 767px) {
+    .content-body {
+        padding: 0 15px 15px;
+    }
 }

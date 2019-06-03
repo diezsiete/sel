@@ -46,6 +46,14 @@ class MenuBuilder
                 ->setExtra('icon', 'fas fa-strikethrough');
         }
 
+        if($this->security->isGranted(['ROLE_CREAR_VACANTE'], $user)) {
+            $menu->addChild('Vacantes', ['route' => 'admin_vacante_listado'])
+                ->setExtra('icon', 'fas fa-business-time');
+            $menu['Vacantes']
+                ->addChild('Vacantes', ['route' => 'admin_vacante_listado'])
+                ->setExtra('icon', 'fas fa-clipboard-list');
+        }
+
         if($this->security->isGranted(['ROLE_ADMIN_USUARIOS'], $user)) {
             $menu->addChild('Administración')
                 ->setUri('#')

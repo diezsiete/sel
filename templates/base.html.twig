@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="fixed" lang="es">
+<html class="fixed sidebar-left-collapsed" lang="es">
 <head>
     <!-- Basic -->
     <meta charset="UTF-8">
@@ -310,9 +310,11 @@
         <section role="main" class="content-body">
             <header class="page-header">
                 <h2>
-                    {% block page_header %}
+                    {% block page_header_title %}
                     {% endblock %}
                 </h2>
+                {% block page_header_pills %}
+                {% endblock %}
             </header>
 
             {{ include('default/_flash_messages.html.twig') }}

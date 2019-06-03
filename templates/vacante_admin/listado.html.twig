@@ -1,10 +1,24 @@
 {% extends 'base.datatable.html.twig' %}
 
 {% block title %}Vacantes{% endblock %}
-{% block page_header %}Vacantes{% endblock %}
-
+{% block page_header_title %}Vacantes{% endblock %}
+{% block page_header_pills %}
+    <ul>
+        <li class="right">
+            <ul class="nav nav-pills nav-pills-primary">
+                <li class="nav-item">
+                    <a class="nav-link" data-option-value="*" href="#all">Exportar</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-option-value=".document" href="{{ path('admin_vacante_crear') }}">Crear</a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+{% endblock %}
 
 {% block body %}
+
     {{ parent() }}
 
     {{ include('default/_modal-borrar.html.twig') }}
