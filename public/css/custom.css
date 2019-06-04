@@ -112,6 +112,28 @@
 }
 
 
+/* TABS --------------------------------------------------------------------------------------------------------------*/
+@media (min-width: 992px) {
+    .tab-navigation nav > ul > li > a {
+        background: #ecedf0 none repeat scroll 0 0;
+        border-radius: 4px 4px 0 0 !important;
+        color: inherit;
+        font-weight: 600;
+        min-width: 90px;
+        padding: 0.5rem 1rem;
+        text-align: center;
+        text-transform: uppercase;
+        font-size: 11px;
+
+    }
+    .tab-navigation nav > ul > li.nav-active > a {
+        color: #33353F;
+        background: #f6f6f6;
+    }
+}
+
+
+
 @media only screen and (max-width: 767px) {
     .content-body {
         padding: 0 15px 15px;

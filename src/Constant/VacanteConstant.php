@@ -88,6 +88,19 @@ class VacanteConstant
         18 => 'Más de 15'
     ];
 
+    const IDIOMA_CODIGO = [
+        '01' => 'INGLÉS',
+        '02' => 'ESPAÑOL',
+        '03' => 'FRANCÉS',
+        '04' => 'ITALIANO',
+        '05' => 'ALEMÁN',
+        '06' => 'CHINO',
+        '07' => 'HOLANDÉS',
+        '08' => 'JAPONÉS',
+        '09' => 'MANDARÍN',
+        '10' => 'PORTUGUÉS'
+    ];
+
     const IDIOMA_DESTREZA = [
         2 => 'BAJO',
         3 => 'MEDIO',

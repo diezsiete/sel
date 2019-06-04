@@ -114,6 +114,18 @@
     "ercorp/ssrs-sdk": {
         "version": "0.0.12"
     },
+    "friendsofsymfony/jsrouting-bundle": {
+        "version": "2.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "2.3",
+            "ref": "a9f2e49180f75cdc71ae279a929c4b2e0638de84"
+        },
+        "files": [
+            "config/routes/fos_js_routing.yaml"
+        ]
+    },
     "fzaninotto/faker": {
         "version": "v1.8.0"
     },
@@ -152,6 +164,15 @@
         "files": [
             "config/packages/datatables.yaml"
         ]
+    },
+    "phpdocumentor/reflection-common": {
+        "version": "1.0.1"
+    },
+    "phpdocumentor/reflection-docblock": {
+        "version": "4.3.1"
+    },
+    "phpdocumentor/type-resolver": {
+        "version": "0.4.0"
     },
     "psr/cache": {
         "version": "1.0.1"
@@ -364,6 +385,9 @@
     "symfony/property-access": {
         "version": "v4.2.8"
     },
+    "symfony/property-info": {
+        "version": "v4.3.0"
+    },
     "symfony/routing": {
         "version": "4.2",
         "recipe": {
@@ -402,6 +426,12 @@
     },
     "symfony/security-http": {
         "version": "v4.2.8"
+    },
+    "symfony/serializer": {
+        "version": "v4.3.0"
+    },
+    "symfony/serializer-pack": {
+        "version": "v1.0.2"
     },
     "symfony/service-contracts": {
         "version": "v1.1.2"
@@ -489,6 +519,12 @@
     },
     "twig/twig": {
         "version": "v2.10.0"
+    },
+    "webmozart/assert": {
+        "version": "1.4.0"
+    },
+    "willdurand/jsonp-callback-validator": {
+        "version": "v1.1.0"
     },
     "zendframework/zend-code": {
         "version": "3.3.1"

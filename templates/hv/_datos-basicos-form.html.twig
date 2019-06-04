@@ -1,0 +1,156 @@
+{{ form_start(hvForm, {attr: {novalidate: 'novalidate'}}) }}
+
+<div class="row">
+    <div class="col-lg-12">
+        <section class="card">
+            <header class="card-header">
+                <h2 class="card-title">Datos básicos</h2>
+            </header>
+            <div class="card-body">
+                <div class="form-row">
+                    {{ form_row(hvForm.primerNombre, {container_attr: {class: 'col-lg-3'}}) }}
+                    {{ form_row(hvForm.segundoNombre, {container_attr: {class: 'col-lg-3'}}) }}
+                    {{ form_row(hvForm.primerApellido, {container_attr: {class: 'col-lg-3'}}) }}
+                    {{ form_row(hvForm.segundoApellido, {container_attr: {class: 'col-lg-3'}}) }}
+                </div>
+                <div class="form-row">
+                    {{ form_row(hvForm.identificacion, {container_attr: {class: 'col-lg-6'}}) }}
+                    {{ form_row(hvForm.identificacionTipo, {container_attr: {class: 'col-lg-6'}}) }}
+                </div>
+                <div class="form-row">
+                    {{ form_row(hvForm.identPais, {
+                        attr: {class: 'chosen pais'},
+                        container_attr: {class: 'col-lg-4'}
+                    }) }}
+                    {{ form_row(hvForm.identDpto, {
+                        attr: {class: 'chosen dpto'},
+                        container_attr: {class: 'col-lg-4'}
+                    }) }}
+                    {{ form_row(hvForm.identCiudad, {
+                        attr: {class: 'chosen'},
+                        container_attr: {class: 'col-lg-4'}
+                    }) }}
+                </div>
+                <div class="form-row">
+                    {{ form_row(hvForm.nacPais, {
+                        attr: {class: 'chosen pais'},
+                        container_attr: {class: 'col-lg-4'}
+                    }) }}
+                    {{ form_row(hvForm.nacDpto, {
+                        attr: {class: 'chosen dpto'},
+                        container_attr: {class: 'col-lg-4'}
+                    }) }}
+                    {{ form_row(hvForm.nacCiudad, {
+                        attr: {class: 'chosen'},
+                        container_attr: {class: 'col-lg-4'}
+                    }) }}
+                </div>
+
+                <div class="form-row">
+                    {% set nacimientoOptions = {
+                        format: "yyyy-mm-dd",
+                        language: "es",
+                        startDate: "1920-01-01",
+                        endDate: "-14y"
+                    } %}
+                    {{ form_row(hvForm.nacimiento, {
+                        attr: {
+                            'data-plugin-datepicker': '',
+                            'data-plugin-options': nacimientoOptions|json_encode|raw,
+                            'data-plugin-masked-input': '',
+                            'data-input-mask': "9999-99-99",
+                            'placeholder': "____-__-__"
+                        },
+                        container_attr: {class: 'col-lg-4'}
+                    }) }}
+                    {{ form_row(hvForm.genero, {
+                        container_attr: {class: 'col-lg-4'}
+                    }) }}
+                    {{ form_row(hvForm.estadoCivil, {
+                        container_attr: {class: 'col-lg-4'}
+                    }) }}
+                </div>
+
+                <div class="form-row">
+                    {{ form_row(hvForm.grupoSanguineo, {
+                        container_attr: {class: 'col-lg-4'}
+                    }) }}
+                    {{ form_row(hvForm.factorRh, {
+                        container_attr: {class: 'col-lg-4'}
+                    }) }}
+                    {{ form_row(hvForm.nacionalidad, {
+                        container_attr: {class: 'col-lg-4'}
+                    }) }}
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <header class="card-header">
+                <h2 class="card-title">Vivienda y contacto</h2>
+            </header>
+            <div class="card-body">
+                <div class="form-row">
+                    {{ form_row(hvForm.email, {container_attr: {class: 'col-lg-6'}}) }}
+                    {{ form_row(hvForm.emailAlt, {container_attr: {class: 'col-lg-6'}}) }}
+                </div>
+                <div class="form-row">
+                    {{ form_row(hvForm.resiPais, {
+                        attr: {class: 'chosen pais'},
+                        container_attr: {class: 'col-lg-4'}
+                    }) }}
+                    {{ form_row(hvForm.resiDpto, {
+                        attr: {class: 'chosen dpto'},
+                        container_attr: {class: 'col-lg-4'}
+                    }) }}
+                    {{ form_row(hvForm.resiCiudad, {
+                        attr: {class: 'chosen'},
+                        container_attr: {class: 'col-lg-4'}
+                    }) }}
+                </div>
+                <div class="form-row">
+                    {{ form_row(hvForm.barrio, {container_attr: {class: 'col-lg-6'}}) }}
+                    {{ form_row(hvForm.direccion, {container_attr: {class: 'col-lg-6'}}) }}
+                </div>
+                <div class="form-row">
+                    {{ form_row(hvForm.telefono, {container_attr: {class: 'col-lg-6'}}) }}
+                    {{ form_row(hvForm.celular, {container_attr: {class: 'col-lg-6'}}) }}
+                </div>
+
+            </div>
+        </section>
+        <section class="card">
+            <header class="card-header">
+                <h2 class="card-title">Formación</h2>
+            </header>
+            <div class="card-body">
+                {{ form_row(hvForm.nivelAcademico) }}
+            </div>
+        </section>
+        <section class="card">
+            <header class="card-header">
+                <h2 class="card-title">Información adicional</h2>
+            </header>
+            <div class="card-body">
+                <div class="form-row">
+                    {{ form_row(hvForm.estatura, {container_attr: {class: 'col-lg-6'}}) }}
+                    {{ form_row(hvForm.peso, {container_attr: {class: 'col-lg-6'}}) }}
+                </div>
+                <div class="form-row">
+                    {{ form_row(hvForm.aspiracionSueldo, {container_attr: {class: 'col-lg-6'}}) }}
+                    {{ form_row(hvForm.personasCargo, {container_attr: {class: 'col-lg-6'}}) }}
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 text-right mt-3">
+        <button class="btn btn-primary modal-confirm">
+            Guardar
+        </button>
+    </div>
+</div>
+
+{{ form_end(hvForm) }}

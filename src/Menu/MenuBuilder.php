@@ -26,9 +26,9 @@ class MenuBuilder
         $this->security = $security;
     }
 
-    public function createMainMenu(array $options)
+    public function createMainMenu()
     {
-        $menu = $this->factory->createItem('root');
+        $menu = $this->factory->createItem('main');
 
         $menu->addChild('Dashboard', ['route' => 'app_main'])
             ->setExtra('icon', 'fas fa-home');
@@ -63,6 +63,31 @@ class MenuBuilder
                 ->setExtra('icon', 'fas fa-users');
         }
 
+
+        return $menu;
+    }
+
+    public function createHvMenu(array $options)
+    {
+        $menu = $this->factory->createItem('hv');
+        $menu->addChild('Datos básicos', ['route' => 'hv_datos_basicos'])
+            ->setExtra('icon', 'fas fa-user-circle');
+        $menu->addChild('Formación', ['route' => 'hv_formacion'])
+            ->setExtra('icon', 'fas fa-columns');
+        $menu->addChild('Experiencia', ['route' => 'hv_experiencia'])
+            ->setExtra('icon', 'fas fa-copy');
+        $menu->addChild('Referencias', ['route' => 'hv_referencias'])
+            ->setExtra('icon', 'fas fa-tasks');
+        $menu->addChild('Redes sociales', ['route' => 'hv_redes_sociales'])
+            ->setExtra('icon', 'fab fa-whatsapp');
+        $menu->addChild('Familiares', ['route' => 'hv_familiares'])
+            ->setExtra('icon', 'fas fa-child');
+        $menu->addChild('Vivienda', ['route' => 'hv_vivienda'])
+            ->setExtra('icon', 'fas fa-home');
+        $menu->addChild('Idiomas', ['route' => 'hv_idiomas'])
+            ->setExtra('icon', 'fas fa-language');
+        $menu->addChild('Adjunto', ['route' => 'hv_adjunto'])
+            ->setExtra('icon', 'fas fa-upload');
 
         return $menu;
     }

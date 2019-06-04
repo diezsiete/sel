@@ -1,0 +1,25 @@
+{% extends 'hv/base.hv.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('vendor/chosen/chosen.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/bootstrap-datepicker/css/bootstrap-datepicker3.css') }}" />
+{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+    {{ include('hv/_datos-basicos-form.html.twig') }}
+{% endblock %}
+
+{% block javascripts_vendor %}
+    {{ parent() }}
+    <script src="{{ asset('vendor/chosen/chosen.jquery.min.js') }}"></script>
+    <script src="{{ asset('vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+    <script src="{{ asset('vendor/jquery-maskedinput/jquery.maskedinput.js') }}"></script>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+    <script src="{{ asset('js/sel/hv/hv-form.js') }}"></script>
+{% endblock %}

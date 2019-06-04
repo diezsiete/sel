@@ -95,7 +95,7 @@ class Pais
         return $this->ciudades;
     }
 
-    public function addCiudade(Ciudad $ciudade): self
+    public function addCiudad(Ciudad $ciudade): self
     {
         if (!$this->ciudades->contains($ciudade)) {
             $this->ciudades[] = $ciudade;
@@ -105,7 +105,7 @@ class Pais
         return $this;
     }
 
-    public function removeCiudade(Ciudad $ciudade): self
+    public function removeCiudad(Ciudad $ciudade): self
     {
         if ($this->ciudades->contains($ciudade)) {
             $this->ciudades->removeElement($ciudade);
@@ -116,5 +116,10 @@ class Pais
         }
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->nombre;
     }
 }

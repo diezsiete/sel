@@ -4,7 +4,6 @@ namespace App\Form;
 
 use App\Constant\VacanteConstant;
 use App\Entity\Ciudad;
-use App\Entity\Idioma;
 use App\Entity\LicenciaConduccion;
 use App\Entity\Vacante;
 use App\Repository\CiudadRepository;
@@ -96,10 +95,11 @@ class VacanteFormType extends AbstractType
                 'label' => 'Años de experiencia requerida',
                 'choices' => array_flip(VacanteConstant::EXPERIENCIA),
             ])
-            ->add('idioma', null, [
+            ->add('idiomaCodigo', ChoiceType::class, [
                 'label' => 'Idioma requerido',
                 'help' => 'Si la vacante tiene como requerimiento el manejo de algún idioma',
-                'placeholder' => 'Seleccione...'
+                'placeholder' => 'Seleccione...',
+                'choices' => array_flip(VacanteConstant::IDIOMA_CODIGO)
             ])
             ->add('genero', ChoiceType::class, [
                 'label' => 'Genero',
@@ -131,14 +131,14 @@ class VacanteFormType extends AbstractType
             /** @var Vacante $vacante */
             if ($vacante = $event->getData()) {
                 $this->setupSubnivelField($event->getForm(), $vacante->getNivel());
-                $this->setupIdiomaDestrezaField($event->getForm(), $vacante->getIdioma());
+                $this->setupIdiomaDestrezaField($event->getForm(), $vacante->getIdiomaCodigo());
             }
         });
         $builder->get('nivel')->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
             $form = $event->getForm();
             $this->setupSubnivelField($form->getParent(), $form->getData());
         });
-        $builder->get('idioma')->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+        $builder->get('idiomaCodigo')->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
             $form = $event->getForm();
             $this->setupIdiomaDestrezaField($form->getParent(), $form->getData());
         });
@@ -166,7 +166,7 @@ class VacanteFormType extends AbstractType
         $form->add('subnivel', ChoiceType::class, $options);
     }
 
-    private function setupIdiomaDestrezaField(FormInterface $form, ?Idioma $idioma)
+    private function setupIdiomaDestrezaField(FormInterface $form, ?string $idioma)
     {
         $options = [
             'label' => 'Destreza en el idioma',

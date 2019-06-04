@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\HvRepository")
@@ -26,6 +27,7 @@ class Hv
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Pais")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotNull(message="Ingrese pais de nacimiento")
      */
     private $nacPais;
 
@@ -42,6 +44,7 @@ class Hv
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Pais")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotNull(message="Ingrese pais de identificación")
      */
     private $identPais;
 
@@ -83,11 +86,13 @@ class Hv
 
     /**
      * @ORM\Column(type="string", length=45, nullable=true)
+     * @Assert\NotNull(message="Ingrese barrio")
      */
     private $barrio;
 
     /**
      * @ORM\Column(type="string", length=60, nullable=true)
+     * @Assert\NotNull(message="Ingrese dirección")
      */
     private $direccion;
 
@@ -124,6 +129,7 @@ class Hv
 
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
+     * @Assert\Email(message="Ingrese un email valido")
      */
     private $emailAlt;
 
@@ -191,6 +197,11 @@ class Hv
      * @ORM\OneToMany(targetEntity="App\Entity\Vivienda", mappedBy="hv", orphanRemoval=true)
      */
     private $viviendas;
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $nacimiento;
 
     public function __construct()
     {
@@ -750,6 +761,18 @@ class Hv
                 $vivienda->setHv(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getNacimiento(): ?\DateTimeInterface
+    {
+        return $this->nacimiento;
+    }
+
+    public function setNacimiento(?\DateTimeInterface $nacimiento): self
+    {
+        $this->nacimiento = $nacimiento;
 
         return $this;
     }

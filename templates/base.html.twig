@@ -29,12 +29,6 @@
 
         <!-- Theme Custom CSS -->
         <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
-
-        <script src="{{ asset('vendor/jquery/jquery.js') }}"></script>
-        <script src="{{ asset('vendor/jquery-browser-mobile/jquery.browser.mobile.js') }}"></script>
-        <script src="{{ asset('vendor/popper/umd/popper.min.js') }}"></script>
-        <script src="{{ asset('vendor/bootstrap/js/bootstrap.js') }}"></script>
-        <script src="{{ asset('vendor/nanoscroller/nanoscroller.js') }}"></script>
     {% endblock %}
 
     <!-- Head Libs -->
@@ -299,7 +293,8 @@
                             'main', {
                                 'currentClass': 'nav-active',
                                 'ancestorClass': 'nav-expanded nav-active',
-                                'branch_class': 'nav-parent'
+                                'branch_class': 'nav-parent',
+                                'rootClass': 'nav nav-main'
                             }, 'custom') }}
                     </nav>
                 </div>
@@ -395,11 +390,16 @@
     </aside>
 </section>
 
+<!-- Vendor -->
+{% block javascripts_vendor %}
+    <script src="{{ asset('vendor/jquery/jquery.js') }}"></script>
+    <script src="{{ asset('vendor/jquery-browser-mobile/jquery.browser.mobile.js') }}"></script>
+    <script src="{{ asset('vendor/popper/umd/popper.min.js') }}"></script>
+    <script src="{{ asset('vendor/bootstrap/js/bootstrap.js') }}"></script>
+    <script src="{{ asset('vendor/nanoscroller/nanoscroller.js') }}"></script>
+{% endblock %}
 {% block javascripts %}
-    <!-- Vendor -->
-
-
-
+    <script src="{{ asset('vendor/common/common.js') }}"></script>
     <!-- Theme Base, Components and Settings -->
     <script src="{{ asset('js/theme.js') }}"></script>
 

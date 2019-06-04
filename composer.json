@@ -7,6 +7,7 @@
         "ext-iconv": "*",
         "craue/formflow-bundle": "^3.1",
         "ercorp/ssrs-sdk": "^0.0.12",
+        "friendsofsymfony/jsrouting-bundle": "^2.3",
         "knplabs/knp-menu-bundle": "^2.2",
         "omines/datatables-bundle": "^0.3.0",
         "sensio/framework-extra-bundle": "^5.3",
@@ -21,6 +22,7 @@
         "symfony/framework-bundle": "^4.0",
         "symfony/orm-pack": "^1.0",
         "symfony/security-bundle": "^4.0",
+        "symfony/serializer-pack": "^1.0",
         "symfony/twig-bundle": "^4.0",
         "symfony/validator": "^4.0",
         "symfony/yaml": "^4.0"

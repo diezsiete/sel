@@ -59,6 +59,7 @@ services:
         arguments: ["@knp_menu.factory"]
         tags:
             - { name: knp_menu.menu_builder, method: createMainMenu, alias: main }
+            - { name: knp_menu.menu_builder, method: createHvMenu, alias: hv }
 
     app.menu_renderer:
         class: App\Menu\MenuRenderer
