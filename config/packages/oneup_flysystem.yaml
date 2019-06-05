@@ -4,7 +4,12 @@ oneup_flysystem:
         default_adapter:
             local:
                 directory: '%kernel.cache_dir%/flysystem'
+        private_uploads_adapter:
+            local:
+                directory: '%kernel.project_dir%/var/uploads'
     filesystems:
         default_filesystem:
             adapter: default_adapter
             alias: League\Flysystem\Filesystem
+        private_uploads_filesystem:
+            adapter: private_uploads_adapter

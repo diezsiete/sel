@@ -35,4 +35,20 @@ class HvConstant
     const NACIONALIDAD = [
         1 => "Colombiano", 2 => "Doble", 3 => "Extranjero"
     ];
+
+    const NIVEL_ACADEMICO = [
+        '01' => 'PREESCOLAR',
+        '02' => 'BASICA PRIMARIA',
+        '03' => 'BASICA SECUNDARIA',
+        '04' => 'MEDIA ACADEMICA O CLASICA',
+        '05' => 'MEDIA TECNICAS',
+        '06' => 'NORMALISTA',
+        '07' => 'TECNICA PROFESIONAL',
+        '08' => 'TECNOLOGICO',
+        '09' => 'PROFESIONAL',
+        '10' => 'ESPECIALISTA',
+        '11' => 'MAESTRIA',
+        '12' => 'DOCTORADO',
+        '13' => 'NINGUNO'
+    ];
 }

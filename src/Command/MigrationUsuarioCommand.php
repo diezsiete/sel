@@ -15,7 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-class MigrationUsuarioCommand extends Command
+class MigrationUsuarioCommand extends MigrationCommand
 {
     protected static $defaultName = 'migration:usuario';
     /**
@@ -30,16 +30,14 @@ class MigrationUsuarioCommand extends Command
 
     public function __construct(ManagerRegistry $doctrine, UserPasswordEncoderInterface $passwordEncoder)
     {
-        parent::__construct();
-        $this->doctrine = $doctrine;
+        parent::__construct($doctrine);
         $this->passwordEncoder = $passwordEncoder;
     }
 
     protected function configure()
     {
-        $this
-            ->setDescription('Migracion de usuarios')
-        ;
+        parent::configure();
+        $this->setDescription('Migracion de usuarios');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -47,13 +45,12 @@ class MigrationUsuarioCommand extends Command
         $sql = "SELECT * FROM `usuario` "
              . "WHERE ultimo_login IS NOT NULL OR DATE_FORMAT(creacion, \"%Y\") >= 2018 ";
 
-        /** @var Connection $conn */
-        $conn = $this->doctrine->getConnection('se');
-        $sqlCount = str_replace('*', "COUNT(*)", $sql);
-        $count = (int) $conn->fetchColumn($sqlCount);
+        $sql = $this->addLimitToSql($sql);
 
-        $progressBar = new ProgressBar($output, $count);
-        $progressBar->setFormat('debug');
+
+        $conn = $this->getSeConnection();
+        $count = $this->countSql($conn, $sql);
+        $progressBar = $this->getProgressBar($output, $count);
 
         $stmt = $conn->query($sql);
         while ($row = $stmt->fetch()) {
@@ -98,9 +95,7 @@ class MigrationUsuarioCommand extends Command
                 ->setPassword($this->passwordEncoder->encodePassword($usuario, $pss))
                 ->setType($type);
 
-            $em = $this->doctrine->getManager('default');
-            $em->persist($usuario);
-            $em->flush();
+            $this->persistAndFlush($usuario);
 
             $progressBar->advance();
         }

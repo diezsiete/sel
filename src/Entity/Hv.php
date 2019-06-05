@@ -106,11 +106,6 @@ class Hv
      */
     private $celular;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\NivelAcademico")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $nivelAcademico;
 
     /**
      * @ORM\Column(type="string", length=2, nullable=true)
@@ -202,6 +197,41 @@ class Hv
      * @ORM\Column(type="date", nullable=true)
      */
     private $nacimiento;
+
+    /**
+     * @ORM\Column(type="smallint", nullable=true)
+     */
+    private $lmilitarClase;
+
+    /**
+     * @ORM\Column(type="bigint", nullable=true)
+     */
+    private $lmilitarNumero;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $lmilitarDistrito;
+
+    /**
+     * @ORM\Column(type="bigint", nullable=true)
+     */
+    private $presupuestoMensual;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $deudas;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $deudasConcepto;
+
+    /**
+     * @ORM\Column(type="string", length=3)
+     */
+    private $nivelAcademico;
 
     public function __construct()
     {
@@ -407,18 +437,6 @@ class Hv
     public function setCelular(?int $celular): self
     {
         $this->celular = $celular;
-
-        return $this;
-    }
-
-    public function getNivelAcademico(): ?NivelAcademico
-    {
-        return $this->nivelAcademico;
-    }
-
-    public function setNivelAcademico(?NivelAcademico $nivelAcademico): self
-    {
-        $this->nivelAcademico = $nivelAcademico;
 
         return $this;
     }
@@ -773,6 +791,90 @@ class Hv
     public function setNacimiento(?\DateTimeInterface $nacimiento): self
     {
         $this->nacimiento = $nacimiento;
+
+        return $this;
+    }
+
+    public function getLmilitarClase(): ?int
+    {
+        return $this->lmilitarClase;
+    }
+
+    public function setLmilitarClase(?int $lmilitarClase): self
+    {
+        $this->lmilitarClase = $lmilitarClase;
+
+        return $this;
+    }
+
+    public function getLmilitarNumero(): ?int
+    {
+        return $this->lmilitarNumero;
+    }
+
+    public function setLmilitarNumero(?int $lmilitarNumero): self
+    {
+        $this->lmilitarNumero = $lmilitarNumero;
+
+        return $this;
+    }
+
+    public function getLmilitarDistrito(): ?int
+    {
+        return $this->lmilitarDistrito;
+    }
+
+    public function setLmilitarDistrito(?int $lmilitarDistrito): self
+    {
+        $this->lmilitarDistrito = $lmilitarDistrito;
+
+        return $this;
+    }
+
+    public function getPresupuestoMensual(): ?int
+    {
+        return $this->presupuestoMensual;
+    }
+
+    public function setPresupuestoMensual(?int $presupuestoMensual): self
+    {
+        $this->presupuestoMensual = $presupuestoMensual;
+
+        return $this;
+    }
+
+    public function getDeudas(): ?bool
+    {
+        return $this->deudas;
+    }
+
+    public function setDeudas(?bool $deudas): self
+    {
+        $this->deudas = $deudas;
+
+        return $this;
+    }
+
+    public function getDeudasConcepto(): ?string
+    {
+        return $this->deudasConcepto;
+    }
+
+    public function setDeudasConcepto(?string $deudasConcepto): self
+    {
+        $this->deudasConcepto = $deudasConcepto;
+
+        return $this;
+    }
+
+    public function getNivelAcademico(): ?string
+    {
+        return $this->nivelAcademico;
+    }
+
+    public function setNivelAcademico(string $nivelAcademico): self
+    {
+        $this->nivelAcademico = $nivelAcademico;
 
         return $this;
     }

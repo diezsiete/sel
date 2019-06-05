@@ -52,10 +52,6 @@ class Familiar
      */
     private $ocupacion;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\NivelAcademico")
-     */
-    private $nivelAcademico;
 
     /**
      * @ORM\Column(type="smallint", nullable=true)
@@ -76,6 +72,11 @@ class Familiar
      * @ORM\Column(type="string", length=2, nullable=true)
      */
     private $identificacionTipo;
+
+    /**
+     * @ORM\Column(type="string", length=3, nullable=true)
+     */
+    private $nivelAcademico;
 
     public function getId(): ?int
     {
@@ -166,18 +167,6 @@ class Familiar
         return $this;
     }
 
-    public function getNivelAcademico(): ?NivelAcademico
-    {
-        return $this->nivelAcademico;
-    }
-
-    public function setNivelAcademico(?NivelAcademico $nivelAcademico): self
-    {
-        $this->nivelAcademico = $nivelAcademico;
-
-        return $this;
-    }
-
     public function getGenero(): ?int
     {
         return $this->genero;
@@ -222,6 +211,18 @@ class Familiar
     public function setIdentificacionTipo(?string $identificacionTipo): self
     {
         $this->identificacionTipo = $identificacionTipo;
+
+        return $this;
+    }
+
+    public function getNivelAcademico(): ?string
+    {
+        return $this->nivelAcademico;
+    }
+
+    public function setNivelAcademico(?string $nivelAcademico): self
+    {
+        $this->nivelAcademico = $nivelAcademico;
 
         return $this;
     }

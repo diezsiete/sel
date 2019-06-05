@@ -114,12 +114,6 @@ class Vacante
     private $salarioAdicionConcepto;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\NivelAcademico")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $nivelAcademico;
-
-    /**
      * @ORM\Column(type="boolean")
      */
     private $nivelAcademicoCurso = false;
@@ -186,6 +180,11 @@ class Vacante
      * @ORM\Column(type="string", length=3, nullable=true)
      */
     private $idiomaCodigo;
+
+    /**
+     * @ORM\Column(type="string", length=3)
+     */
+    private $nivelAcademico;
 
 
     public function __construct()
@@ -636,18 +635,6 @@ class Vacante
         return $this;
     }
 
-    public function getNivelAcademico(): ?NivelAcademico
-    {
-        return $this->nivelAcademico;
-    }
-
-    public function setNivelAcademico(?NivelAcademico $nivelAcademico): self
-    {
-        $this->nivelAcademico = $nivelAcademico;
-
-        return $this;
-    }
-
     /**
      * @return Collection|Ciudad[]
      */
@@ -682,6 +669,18 @@ class Vacante
     public function setIdiomaCodigo(?string $idiomaCodigo): self
     {
         $this->idiomaCodigo = $idiomaCodigo;
+
+        return $this;
+    }
+
+    public function getNivelAcademico(): ?string
+    {
+        return $this->nivelAcademico;
+    }
+
+    public function setNivelAcademico(string $nivelAcademico): self
+    {
+        $this->nivelAcademico = $nivelAcademico;
 
         return $this;
     }
