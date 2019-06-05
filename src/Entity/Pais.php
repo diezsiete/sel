@@ -33,6 +33,11 @@ class Pais
      */
     private $ciudades;
 
+    /**
+     * @ORM\Column(type="string", length=7)
+     */
+    private $nId;
+
     public function __construct()
     {
         $this->dptos = new ArrayCollection();
@@ -121,5 +126,17 @@ class Pais
     public function __toString()
     {
         return $this->nombre;
+    }
+
+    public function getNId(): ?string
+    {
+        return $this->nId;
+    }
+
+    public function setNId(string $nId): self
+    {
+        $this->nId = $nId;
+
+        return $this;
     }
 }

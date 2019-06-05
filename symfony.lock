@@ -141,6 +141,9 @@
     "knplabs/knp-menu-bundle": {
         "version": "v2.2.1"
     },
+    "league/flysystem": {
+        "version": "1.0.52"
+    },
     "monolog/monolog": {
         "version": "1.24.0"
     },
@@ -163,6 +166,18 @@
         },
         "files": [
             "config/packages/datatables.yaml"
+        ]
+    },
+    "oneup/flysystem-bundle": {
+        "version": "3.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "3.0",
+            "ref": "0eb87bba411c227da027fe5f7c1dc7954b02f242"
+        },
+        "files": [
+            "config/packages/oneup_flysystem.yaml"
         ]
     },
     "phpdocumentor/reflection-common": {

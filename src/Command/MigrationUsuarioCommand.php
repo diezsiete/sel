@@ -53,6 +53,7 @@ class MigrationUsuarioCommand extends Command
         $count = (int) $conn->fetchColumn($sqlCount);
 
         $progressBar = new ProgressBar($output, $count);
+        $progressBar->setFormat('debug');
 
         $stmt = $conn->query($sql);
         while ($row = $stmt->fetch()) {

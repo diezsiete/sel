@@ -37,6 +37,16 @@ class Dpto
      */
     private $ciudades;
 
+    /**
+     * @ORM\Column(type="string", length=7)
+     */
+    private $nId;
+
+    /**
+     * @ORM\Column(type="string", length=7)
+     */
+    private $nPaisId;
+
     public function __construct()
     {
         $this->ciudades = new ArrayCollection();
@@ -105,5 +115,29 @@ class Dpto
     public function __toString()
     {
         return $this->nombre;
+    }
+
+    public function getNId(): ?string
+    {
+        return $this->nId;
+    }
+
+    public function setNId(string $nId): self
+    {
+        $this->nId = $nId;
+
+        return $this;
+    }
+
+    public function getNPaisId(): ?string
+    {
+        return $this->nPaisId;
+    }
+
+    public function setNPaisId(string $nPaisId): self
+    {
+        $this->nPaisId = $nPaisId;
+
+        return $this;
     }
 }
