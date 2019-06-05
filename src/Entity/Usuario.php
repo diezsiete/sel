@@ -99,6 +99,11 @@ class Usuario implements UserInterface
      */
     private $vacantes;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $idOld;
+
     public function __construct()
     {
         $this->vacantes = new ArrayCollection();
@@ -343,6 +348,18 @@ class Usuario implements UserInterface
             $this->vacantes->removeElement($vacante);
             $vacante->removeAplicante($this);
         }
+
+        return $this;
+    }
+
+    public function getIdOld(): ?int
+    {
+        return $this->idOld;
+    }
+
+    public function setIdOld(int $idOld): self
+    {
+        $this->idOld = $idOld;
 
         return $this;
     }

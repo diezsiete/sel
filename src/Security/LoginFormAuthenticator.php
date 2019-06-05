@@ -75,9 +75,24 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         return $user;
     }
 
+    /**
+     * @param mixed $credentials
+     * @param UserInterface|Usuario $user
+     * @return bool
+     */
     public function checkCredentials($credentials, UserInterface $user)
     {
-        return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
+        $password = $credentials['password'];
+        if($user->getType() === 1) {
+            $password = hash('sha256', hash('sha512', $password));
+        }
+        $isValid = $this->passwordEncoder->isPasswordValid($user, $password);
+
+        if($isValid && $user->getType() === 1) {
+            $this->updatePasswordToNewHash($user, $credentials['password']);
+        }
+
+        return $isValid;
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
@@ -92,5 +107,14 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     protected function getLoginUrl()
     {
         return $this->urlGenerator->generate('app_login');
+    }
+
+    private function updatePasswordToNewHash(Usuario $usuario, $plainPassword)
+    {
+        $password = $this->passwordEncoder->encodePassword($usuario, $plainPassword);
+        $usuario
+            ->setPassword($password)
+            ->setType(2);
+        $this->entityManager->flush();
     }
 }
