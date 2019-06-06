@@ -97,17 +97,6 @@ class Hv
     private $direccion;
 
     /**
-     * @ORM\Column(type="bigint", nullable=true)
-     */
-    private $telefono;
-
-    /**
-     * @ORM\Column(type="bigint", nullable=true)
-     */
-    private $celular;
-
-
-    /**
      * @ORM\Column(type="string", length=2, nullable=true)
      */
     private $grupoSanguineo;
@@ -232,6 +221,16 @@ class Hv
      * @ORM\Column(type="string", length=3)
      */
     private $nivelAcademico;
+
+    /**
+     * @ORM\Column(type="string", length=17, nullable=true)
+     */
+    private $telefono;
+
+    /**
+     * @ORM\Column(type="string", length=17, nullable=true)
+     */
+    private $celular;
 
     public function __construct()
     {
@@ -413,30 +412,6 @@ class Hv
     public function setDireccion(?string $direccion): self
     {
         $this->direccion = $direccion;
-
-        return $this;
-    }
-
-    public function getTelefono(): ?int
-    {
-        return $this->telefono;
-    }
-
-    public function setTelefono(?int $telefono): self
-    {
-        $this->telefono = $telefono;
-
-        return $this;
-    }
-
-    public function getCelular(): ?int
-    {
-        return $this->celular;
-    }
-
-    public function setCelular(?int $celular): self
-    {
-        $this->celular = $celular;
 
         return $this;
     }
@@ -875,6 +850,30 @@ class Hv
     public function setNivelAcademico(string $nivelAcademico): self
     {
         $this->nivelAcademico = $nivelAcademico;
+
+        return $this;
+    }
+
+    public function getTelefono(): ?string
+    {
+        return $this->telefono;
+    }
+
+    public function setTelefono(?string $telefono): self
+    {
+        $this->telefono = $telefono;
+
+        return $this;
+    }
+
+    public function getCelular(): ?string
+    {
+        return $this->celular;
+    }
+
+    public function setCelular(?string $celular): self
+    {
+        $this->celular = $celular;
 
         return $this;
     }

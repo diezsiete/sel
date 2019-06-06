@@ -55,6 +55,7 @@ class MigrationHvCommand extends MigrationCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $batchSize = 20;
         $sql = "SELECT hv.*, u.nacimiento "
              . "FROM `hv` hv "
              . "JOIN `usuario` u ON hv.usuario_id = u.id "
@@ -66,6 +67,8 @@ class MigrationHvCommand extends MigrationCommand
 
         $progressBar = $this->getProgressBar($output, $this->countSql($se, $sql));
 
+        $i = 0;
+        $em = $this->getDefaultManager();
         $stmt = $se->query($sql);
         while ($row = $stmt->fetch()) {
             $usuario = $this->getUsuarioByIdOld($row['usuario_id']);
@@ -106,8 +109,12 @@ class MigrationHvCommand extends MigrationCommand
                     ->setNivelAcademico($row['nivel_academico_id']);
 
                 $this->setHvAdjunto($hv, $row['adjunto']);
-
-                $this->persistAndFlush($hv);
+                $em->persist($hv);
+                if (($i % $batchSize) === 0) {
+                    $em->flush(); // Executes all updates.
+                    $em->clear(); // Detaches all objects from Doctrine!
+                }
+                ++$i;
             }
             $progressBar->advance();
         }
@@ -186,11 +193,16 @@ class MigrationHvCommand extends MigrationCommand
         if($oldFileName) {
             if ($this->privateFileSystem->has('hv_adjunto_old/' . $oldFileName)) {
                 try {
+                    $mimeType = $this->privateFileSystem->getMimetype('hv_adjunto_old/' . $oldFileName);
+                    if(!$mimeType) {
+                        $mimeType = 'application/octet-stream';
+                    }
+
                     $filePath = $this->projectDir . '/var/uploads/hv_adjunto_old/' . $oldFileName;
                     $file = new File($filePath);
-                    $mimeType = $file->getMimeType() ?? 'application/octet-stream';
+
                     $fileName = $this->uploaderHelper->uploadHvAdjunto($file);
-                    $this->privateFileSystem->delete('hv_adjunto_old/a.pdf');
+                    $this->privateFileSystem->delete('hv_adjunto_old/' . $oldFileName);
 
                     $hvAdjunto = (new HvAdjunto())
                         ->setFilename($fileName)
@@ -198,8 +210,9 @@ class MigrationHvCommand extends MigrationCommand
                         ->setMimeType($mimeType);
 
                     $hv->setAdjunto($hvAdjunto);
-                } catch (FileNotFoundException $e) {
-                    $this->io->error($e->getMessage());
+                } catch (\Exception $e) {
+                    $usuario = $hv->getUsuario()->getNombreCompleto(true) . " [".$hv->getUsuario()->getIdentificacion()."] ";
+                    $this->io->error($usuario . get_class($e) . ": " .$e->getMessage());
                 }
             } else {
                 $this->io->warning($hv->getUsuario()->getNombreCompleto(true)

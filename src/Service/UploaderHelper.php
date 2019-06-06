@@ -33,8 +33,13 @@ class UploaderHelper
             $originalFilename = $file->getClientOriginalName();
         } else {
             $originalFilename = $file->getFilename();
+
         }
-        $newFilename = Urlizer::urlize(pathinfo($originalFilename, PATHINFO_FILENAME)).'-'.uniqid().'.'.$file->guessExtension();
+        $extension = $file->getExtension();
+        if(!$extension) {
+            $extension = $file->guessExtension();
+        }
+        $newFilename = Urlizer::urlize(pathinfo($originalFilename, PATHINFO_FILENAME)).'-'.uniqid().'.'.$extension;
 
 
         if(!$isPublic) {

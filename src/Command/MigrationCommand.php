@@ -107,7 +107,7 @@ abstract class MigrationCommand extends Command
     {
         if (preg_match('/LIMIT *(\d+)(?:, *(\d+)|)/', $sql, $matches)) {
             if(count($matches) === 3) {
-                $count = (int)$matches[2] - (int)$matches[1];
+                $count = (int)$matches[2];
             } else {
                 $count = (int)$matches[1];
             }
@@ -141,7 +141,7 @@ abstract class MigrationCommand extends Command
 
     protected function addLimitToSql($sql)
     {
-        if($this->offset) {
+        if($this->offset !== null) {
             $sql .= " LIMIT $this->offset";
         }
         if($this->limit) {
