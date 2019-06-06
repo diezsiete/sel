@@ -32,6 +32,17 @@ class Area
         $this->vacantes = new ArrayCollection();
     }
 
+    /**
+     * @param mixed $id
+     * @return Area
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+
     public function getId(): ?string
     {
         return $this->id;

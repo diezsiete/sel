@@ -5,6 +5,7 @@ namespace App\Command;
 
 
 use App\Entity\Usuario;
+use App\Repository\UsuarioRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Console\Command\Command;
@@ -27,6 +28,11 @@ abstract class MigrationCommand extends Command
     private $doctrine;
 
     /**
+     * @var UsuarioRepository
+     */
+    private $usuarioRepository = null;
+
+    /**
      * @var SymfonyStyle
      */
     protected $io;
@@ -36,10 +42,31 @@ abstract class MigrationCommand extends Command
      */
     protected $limit;
 
+
+    protected $batchSize = 20;
+
+    protected $seStmt = null;
+
     /**
      * @var string
      */
     protected $offset;
+    /**
+     * @var Connection|object
+     */
+    private $seConnection;
+    /**
+     * @var int
+     */
+    private $batchCount = 0;
+    /**
+     * @var ProgressBar|null
+     */
+    protected $progressBar = null;
+    /**
+     * @var OutputInterface
+     */
+    private $output;
 
     public function __construct(ManagerRegistry $managerRegistry)
     {
@@ -52,7 +79,15 @@ abstract class MigrationCommand extends Command
         $this->io = new SymfonyStyle($input, $output);
         $this->offset = $input->getArgument('offset');
         $this->limit = $input->getArgument('limit');
-        return parent::run($input, $output);
+        $this->output = $output;
+        $return = parent::run($input, $output);
+
+        if($this->progressBar) {
+            $this->progressBar->finish();
+            $this->io->writeln('');
+        }
+
+        return $return;
     }
 
     protected function configure()
@@ -64,13 +99,15 @@ abstract class MigrationCommand extends Command
         ;
     }
 
-
     /**
      * @return Connection|object
      */
     protected function getSeConnection()
     {
-        return $this->doctrine->getConnection('se');
+        if(!$this->seConnection) {
+            $this->seConnection = $this->doctrine->getConnection('se');
+        }
+        return $this->seConnection;
     }
 
     /**
@@ -85,16 +122,15 @@ abstract class MigrationCommand extends Command
     }
 
     /**
-     * @param $output
      * @param $count
      * @param string $format
      * @return ProgressBar
      */
-    protected function getProgressBar($output, $count, $format = 'debug')
+    protected function initProgressBar($count, $format = 'debug')
     {
-        $progressBar = new ProgressBar($output, $count);
-        $progressBar->setFormat($format);
-        return $progressBar;
+        $this->progressBar = new ProgressBar($this->output, $count);
+        $this->progressBar->setFormat($format);
+        return $this->progressBar;
     }
 
 
@@ -103,8 +139,11 @@ abstract class MigrationCommand extends Command
      * @param string $sql
      * @return int
      */
-    protected function countSql($conn, $sql)
+    protected function countSql($sql, $conn = null)
     {
+        if(!$conn) {
+            $conn = $this->getSeConnection();
+        }
         if (preg_match('/LIMIT *(\d+)(?:, *(\d+)|)/', $sql, $matches)) {
             if(count($matches) === 3) {
                 $count = (int)$matches[2];
@@ -131,8 +170,10 @@ abstract class MigrationCommand extends Command
      */
     protected function getUsuarioByIdOld($idOld)
     {
-        $usuarioRepository = $this->getDefaultManager()->getRepository(Usuario::class);
-        $usuario = $usuarioRepository->findOneBy(['idOld' => $idOld]);
+        if(!$this->usuarioRepository) {
+            $this->usuarioRepository = $this->getDefaultManager()->getRepository(Usuario::class);
+        }
+        $usuario = $this->usuarioRepository->findOneBy(['idOld' => $idOld]);
         if(!$usuario) {
             $this->io->error("Usuario con idOld '" . $idOld. "' no encontrado");
         }
@@ -148,5 +189,35 @@ abstract class MigrationCommand extends Command
             $sql .= ", $this->limit";
         }
         return $sql;
+    }
+
+    protected function seFetch($sql)
+    {
+        if(!$this->seStmt) {
+            $this->seStmt = $this->getSeConnection()->query($sql);
+        }
+        $row = $this->seStmt->fetch();
+        if(!$row) {
+            $em = $this->getDefaultManager();
+            $em->flush();
+            $em->clear();
+            $this->seStmt = null;
+            $this->batchCount = 0;
+        }
+        return $row;
+    }
+
+    protected function selPersist($object)
+    {
+        $em = $this->getDefaultManager();
+        $em->persist($object);
+        if (($this->batchCount % $this->batchSize) === 0) {
+            $em->flush(); // Executes all updates.
+            $em->clear(); // Detaches all objects from Doctrine!
+        }
+        $this->batchCount++;
+        if($this->progressBar) {
+            $this->progressBar->advance();
+        }
     }
 }

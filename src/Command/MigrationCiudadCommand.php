@@ -26,7 +26,7 @@ class MigrationCiudadCommand extends MigrationCommand
 
         $se = $this->getSeConnection();
 
-        $progressBar = $this->getProgressBar($output, $this->countSql($se, $sql));
+        $progressBar = $this->initProgressBar($this->countSql($sql));
 
         $stmt = $se->query($sql);
         while ($row = $stmt->fetch()) {
@@ -65,9 +65,6 @@ class MigrationCiudadCommand extends MigrationCommand
 
             $progressBar->advance();
         }
-
-        $progressBar->finish();
-        $output->writeln("");
     }
 
 

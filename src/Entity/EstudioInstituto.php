@@ -25,6 +25,16 @@ class EstudioInstituto
         return $this->id;
     }
 
+    /**
+     * @param mixed $id
+     * @return EstudioInstituto
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
+
     public function getNombre(): ?string
     {
         return $this->nombre;

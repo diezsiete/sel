@@ -68,24 +68,12 @@ class VacanteConstant
     ];
 
     const EXPERIENCIA = [
-        1 => 'Sin experiencia',
-        2 => 'Menos de un año',
-        3 => '1',
-        4 => '2',
-        5 => '3',
-        6 => '4',
-        7 => '5',
-        8 => '6',
-        9 => '7',
-        10 => '8',
-        11 => '9',
-        12 => '10',
-        13 => '11',
-        14 => '12',
-        15 => '13',
-        16 => '14',
-        17 => '15',
-        18 => 'Más de 15'
+        0 => 'NO APLICA',
+        2 => 'DE 0 A 1 AÑO',
+        3 => 'DE 1 A 2 AÑOS',
+        4 => 'DE 2 a 3 AÑOS',
+        5 => 'DE 4 A 7 AÑOS',
+        6 => 'De 8 AÑOS EN ADELANTE'
     ];
 
     const IDIOMA_CODIGO = [

@@ -51,4 +51,19 @@ class HvConstant
         '12' => 'DOCTORADO',
         '13' => 'NINGUNO'
     ];
+
+    const PARENTESCO = ['01' => 'NIETO', '02' => 'HIJO', '04' => 'HERMANO', '05' => 'TIO', '06' => 'SOBRINO',
+        '07' => 'PRIMO', '08' => 'CUÑADO', '09' => 'YERNO/NUERA', '10' => 'SUEGRO', '11' => 'CONYUGE', '12' => 'ABUELO',
+        '13' => 'PADRE/MADRE'
+    ];
+    const OCUPACION = ['1' => 'EMPLEADO', '2' => 'ESTUDIANTE', '3' => 'HOGAR', '4' => 'DESEMPLEADO',
+        '5' => 'PENSIONADO', '6' => 'INDEPENDIENTE', '7' => 'OTRAS'
+    ];
+
+    const REFERENCIA_TIPO = [1 => 'PERSONAL', 2 => 'FAMILIAR', 3 => 'LABORAL'];
+
+    const VIVIENDA_TIP = [1 => 'CASA', 2 => 'APARTAMENTO', 3 => 'CASALOTE', 4 => 'HABITACIÓN', 5 => 'FINCA',
+        6 => 'INQUILINATO', 7 => 'VEREDA'
+    ];
+    const TENEDOR = [1 => 'PROPIA', 2 => 'ARRIENDO', 3 => 'CREDITO HIPOTECARIO', 4 => 'CEDIDA', 5 => 'FAMILIAR'];
 }

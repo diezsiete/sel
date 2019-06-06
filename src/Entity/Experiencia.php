@@ -64,12 +64,12 @@ class Experiencia
     private $jefeInmediato;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="string", length=20, nullable=true)
      */
     private $salarioBasico;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="string", length=20, nullable=true)
      */
     private $telefonoJefe;
 
@@ -196,24 +196,24 @@ class Experiencia
         return $this;
     }
 
-    public function getSalarioBasico(): ?int
+    public function getSalarioBasico(): ?string
     {
         return $this->salarioBasico;
     }
 
-    public function setSalarioBasico(?int $salarioBasico): self
+    public function setSalarioBasico(?string $salarioBasico): self
     {
         $this->salarioBasico = $salarioBasico;
 
         return $this;
     }
 
-    public function getTelefonoJefe(): ?int
+    public function getTelefonoJefe(): ?string
     {
         return $this->telefonoJefe;
     }
 
-    public function setTelefonoJefe(?int $telefonoJefe): self
+    public function setTelefonoJefe(?string $telefonoJefe): self
     {
         $this->telefonoJefe = $telefonoJefe;
 

@@ -43,7 +43,7 @@ class Referencia
     private $parentesco;
 
     /**
-     * @ORM\Column(type="bigint")
+     * @ORM\Column(type="string", length=20)
      */
     private $celular;
 
@@ -53,7 +53,7 @@ class Referencia
     private $entidad;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="string", length=20, nullable=true)
      */
     private $telefono;
 
@@ -127,12 +127,12 @@ class Referencia
         return $this;
     }
 
-    public function getCelular(): ?int
+    public function getCelular(): ?string
     {
         return $this->celular;
     }
 
-    public function setCelular(int $celular): self
+    public function setCelular(string $celular): self
     {
         $this->celular = $celular;
 
@@ -151,12 +151,12 @@ class Referencia
         return $this;
     }
 
-    public function getTelefono(): ?int
+    public function getTelefono(): ?string
     {
         return $this->telefono;
     }
 
-    public function setTelefono(?int $telefono): self
+    public function setTelefono(?string $telefono): self
     {
         $this->telefono = $telefono;
 

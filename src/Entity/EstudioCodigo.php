@@ -25,6 +25,16 @@ class EstudioCodigo
         return $this->id;
     }
 
+    /**
+     * @param mixed $id
+     * @return EstudioCodigo
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
+
     public function getNombre(): ?string
     {
         return $this->nombre;
