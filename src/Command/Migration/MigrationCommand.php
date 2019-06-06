@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Command;
+namespace App\Command\Migration;
 
 
 use App\Entity\Usuario;

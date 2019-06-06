@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Command;
+namespace App\Command\Migration;
 
 use App\Entity\Hv;
 use App\Entity\HvAdjunto;
