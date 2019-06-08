@@ -1,0 +1,24 @@
+<!-- Modal Form -->
+<div id="modalForm" class="modal-block modal-block-primary mfp-hide">
+    <section class="card">
+        <header class="card-header">
+            <h2 class="card-title">
+                {% block modal_title %}
+                    Agregar
+                {% endblock %}
+            </h2>
+        </header>
+        <div class="card-body" data-loading-overlay>
+            {% block modal_body %}
+            {% endblock %}
+        </div>
+        <footer class="card-footer">
+            <div class="row">
+                <div class="col-md-12 text-right">
+                    <button class="btn btn-primary modal-confirm">Guardar</button>
+                    <button class="btn btn-default modal-dismiss">Cancelar</button>
+                </div>
+            </div>
+        </footer>
+    </section>
+</div>

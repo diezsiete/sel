@@ -1,19 +1,22 @@
-<div class="modal" id="modal-borrar" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Esta seguro?</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p>Esta seguro que desea elminar?</p>
-            </div>
-            <div class="modal-footer">
-                <a type="button" class="btn btn-primary">Confirmar</a>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+<div id="modalBasic" class="modal-block mfp-hide">
+    <section class="card">
+        <header class="card-header">
+            <h2 class="card-title">Esta seguro?</h2>
+        </header>
+        <div class="card-body">
+            <div class="modal-wrapper">
+                <div class="modal-text">
+                    <p class="mb-0">Esta seguro que desea elminar este registro?</p>
+                </div>
             </div>
         </div>
-    </div>
+        <footer class="card-footer">
+            <div class="row">
+                <div class="col-md-12 text-right">
+                    <button class="btn btn-primary modal-confirm">Confirmar</button>
+                    <button class="btn btn-default modal-dismiss">Cancelar</button>
+                </div>
+            </div>
+        </footer>
+    </section>
 </div>

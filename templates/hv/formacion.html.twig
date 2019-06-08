@@ -2,6 +2,9 @@
 
 {% block stylesheets %}
     {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('vendor/magnific-popup/magnific-popup.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/chosen/chosen.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/pnotify/pnotify.custom.css') }}">
 {% endblock %}
 
 {% block body %}
@@ -11,12 +14,66 @@
         <div class="col-lg-12">
             <section class="card">
                 <header class="card-header">
-                    <h2 class="card-title">Formación</h2>
+                    <h2 class="card-title">Estudios</h2>
                 </header>
                 <div class="card-body">
+                    <p class="lead">
+                        Ingrese en el cuadro los estudios que ha realizado, o que se encuentra actualmente cursando.
+                    </p>
+                    <p>
+                        Para agregar, presione el boton <span class="highlight">Agregar estudio</span> encontrado en la
+                        parte inferior derecha del cuadro.
+                    </p>
+
+                    <div id="datatable">Loading...</div>
+
                 </div>
             </section>
+            <footer class="card-footer text-right">
+                <a class="crear-entity btn btn-primary" href="#modalForm">Agregar estudio</a>
+            </footer>
         </div>
     </div>
 
+    {% embed ('hv/_modal-entity.html.twig') %}
+        {% block modal_body %}
+            {{ include('hv/_estudio-form.html.twig') }}
+        {% endblock %}
+    {% endembed %}
+
+    {{ include('default/_modal-borrar.html.twig') }}
+
 {% endblock %}
+
+{% block javascripts_vendor %}
+    {{ parent() }}
+    <script src="{{ asset('vendor/magnific-popup/jquery.magnific-popup.min.js') }}"></script>
+    <script src="{{ asset('vendor/chosen/chosen.jquery.min.js') }}"></script>
+    <script src="{{ asset('vendor/pnotify/pnotify.custom.js') }}"></script>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/sel/hv/hv-entity.js') }}"></script>
+
+    {% embed 'datatable/javascripts.datatable.html.twig' %}
+        {% block script_datatable %}
+            <script>
+                $(function () {
+                    $('#datatable')
+                        .initDataTables({{ datatable_settings(datatable) }})
+                        .then(dt => {
+                            $wrapper = $('#modalForm');
+                            new hvEntity($wrapper, $('#modalBasic'), dt);
+                        });
+
+
+                });
+            </script>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
+
+
+
+

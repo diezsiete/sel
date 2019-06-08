@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\EstudioCodigoRepository")
@@ -12,15 +13,17 @@ class EstudioCodigo
     /**
      * @ORM\Id()
      * @ORM\Column(type="string", length=7)
+     * @Groups("main")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=45)
+     * @Groups("main")
      */
     private $nombre;
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
@@ -45,5 +48,10 @@ class EstudioCodigo
         $this->nombre = $nombre;
 
         return $this;
+    }
+
+    public function __toString()
+    {
+       return $this->nombre;
     }
 }

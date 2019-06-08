@@ -1,0 +1,13 @@
+<!-- Specific Page Vendor -->
+<script src="{{ asset('vendor/datatables/media/js/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('vendor/datatables/media/js/dataTables.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('bundles/datatables/js/datatables.js') }}"></script>
+{% block script_datatable %}
+    <script>
+        $(function() {
+            $('#datatable').initDataTables({{ datatable_settings(datatable) }}).then(dt => {
+                window.dt = dt;
+            })
+        });
+    </script>
+{% endblock %}

@@ -2,16 +2,23 @@
 
 namespace App\Controller;
 
+use App\DataTable\Type\Hv\EstudioDataTableType;
 use App\Entity\Dpto;
+use App\Entity\Estudio;
 use App\Entity\Hv;
 use App\Entity\Pais;
+use App\Form\EstudioFormType;
 use App\Form\HvFormType;
+use App\Repository\HvRepository;
+use Omines\DataTablesBundle\DataTableFactory;
 use Proxies\__CG__\App\Entity\Usuario;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
-class HvController extends AbstractController
+class HvController extends BaseController
 {
     /**
      * @Route("/hv/crear", name="hv_crear")
@@ -74,8 +81,6 @@ class HvController extends AbstractController
                 ->setIdentificacion($identificacion)
                 ->setEmail($email)
                 ->aceptarTerminos();
-
-
         }
         return $this->render('hv/datos-basicos.html.twig', [
             'hvForm' => $form->createView(),
@@ -85,10 +90,100 @@ class HvController extends AbstractController
     /**
      * @Route("/hv/formacion", name="hv_formacion")
      */
-    public function formacion(Request $request)
+    public function formacion(DataTableFactory $dataTableFactory, Request $request, HvRepository $hvRepository)
     {
-        return $this->render('hv/formacion.html.twig');
+        $table = $dataTableFactory->createFromType(EstudioDataTableType::class,
+            ['usuario' => $this->getUser()], ['searching' => false, 'paging' => false])
+            ->handleRequest($request);
+        if($table->isCallback()) {
+            return $table->getResponse();
+        }
+
+        $form = $this->createForm(EstudioFormType::class);
+
+        return $this->render('hv/formacion.html.twig', ['datatable' => $table, 'estudioForm' => $form->createView()]);
     }
+
+    /**
+     * @Route("/hv/new/estudio", name="hv_new_estudio")
+     */
+    public function newEstudioAction(Request $request, HvRepository $hvRepository)
+    {
+        $data = json_decode($request->getContent(), true);
+        if ($data === null) {
+            throw new BadRequestHttpException('Invalid JSON');
+        }
+
+        $estudio = new Estudio();
+        $estudio->setHv($hvRepository->findByUsuario($this->getUser()));
+        $form = $this->createForm(EstudioFormType::class, $estudio);
+        $form->submit($data);
+        if (!$form->isValid()) {
+            return $this->json(['errors' => $this->getErrorsFromForm($form)], 400);
+        }
+
+        $estudio = $form->getData();
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($estudio);
+        $em->flush();
+
+        return $this->json($estudio, 200, [], [
+            'groups' => ['main']
+        ]);
+
+    }
+
+    /**
+     * @Route("/hv/get/estudio/{id}", name="hv_get_estudio")
+     */
+    public function getEstudio(Estudio $estudio)
+    {
+        return $this->json($estudio, 200, [], [
+            'groups' => ['main']
+        ]);
+    }
+
+    /**
+     * @Route("/hv/update/estudio/{id}", name="hv_update_estudio", defaults={"id"=null})
+     */
+    public function updateEstudio(?Estudio $estudio, Request $request, HvRepository $hvRepository)
+    {
+        $data = json_decode($request->getContent(), true);
+        if ($data === null) {
+            throw new BadRequestHttpException('Invalid JSON');
+        }
+
+        if(!$estudio) {
+            $estudio = new Estudio();
+            $estudio->setHv($hvRepository->findByUsuario($this->getUser()));
+        }
+
+        $form = $this->createForm(EstudioFormType::class, $estudio);
+        $form->submit($data);
+        if (!$form->isValid()) {
+            return $this->json(['errors' => $this->getErrorsFromForm($form)], 400);
+        }
+
+        $estudio = $form->getData();
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($estudio);
+        $em->flush();
+
+        return $this->json(['ok' => 1]);
+    }
+
+    /**
+     * @Route("/hv/delete/estudio/{id}", name="hv_delete_estudio")
+     */
+    public function deleteEstudio(Estudio $estudio)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($estudio);
+        $em->flush();
+        return $this->json(['ok' => 1]);
+    }
+
+
 
     /**
      * @Route("/hv/experiencia", name="hv_experiencia")

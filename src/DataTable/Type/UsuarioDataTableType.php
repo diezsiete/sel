@@ -4,6 +4,8 @@
 namespace App\DataTable\Type;
 
 
+use App\DataTable\Column\ButtonColumn\ButtonColumn;
+use App\DataTable\Column\ButtonColumn\ButtonTypeRoute;
 use App\Entity\Usuario;
 use App\Repository\UsuarioRepository;
 use Doctrine\ORM\QueryBuilder;
@@ -70,16 +72,10 @@ class UsuarioDataTableType implements DataTableTypeInterface
             ])
         ;
         if($this->security->isGranted(['ROLE_ALLOWED_TO_SWITCH'], $this->security->getUser())) {
-            $dataTable->add('switch', TextColumn::class, [
+            $dataTable->add('actions', ButtonColumn::class, [
                 'label' => 'Impersonificar',
-                'data' => function (Usuario $usuario) {
-                    return $usuario->getIdentificacion();
-                },
-                'className' => 'actions',
-                'render' => function($identificacion) {
-                    $route = $this->router->generate('app_comprobantes', ['_switch_user' => $identificacion]);
-                    return sprintf('<a href="%s"><i class="fas fa-user-cog"></i></a>', $route);
-                }
+                'field' => 'u.identificacion',
+                'buttons' => [new ButtonTypeRoute('app_comprobantes', ['_switch_user'], 'fas fa-user-cog')]
             ]);
         }
     }

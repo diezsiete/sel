@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\EstudioRepository")
@@ -13,6 +15,7 @@ class Estudio
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups("main")
      */
     private $id;
 
@@ -25,27 +28,35 @@ class Estudio
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\EstudioCodigo")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotNull(message="Seleccione el area de estudio")
+     * @Groups("main")
      */
     private $codigo;
 
     /**
      * @ORM\Column(type="string", length=75)
+     * @Assert\NotNull(message="Ingrese nombre del estudio")
+     * @Groups("main")
      */
     private $nombre;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\EstudioInstituto")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotNull(message="Seleccione instituto. Si no lo encuentra seleccione opción 'NO APLICA'")
+     * @Groups("main")
      */
     private $instituto;
 
     /**
      * @ORM\Column(type="date", nullable=true)
+     * @Groups("main")
      */
     private $fin;
 
     /**
      * @ORM\Column(type="string", length=75, nullable=true)
+     * @Groups("main")
      */
     private $institutoNombreAlt;
 
@@ -61,6 +72,7 @@ class Estudio
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
+     * @Groups("main")
      */
     private $graduado;
 
@@ -71,6 +83,7 @@ class Estudio
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
+     * @Groups("main")
      */
     private $cancelo;
 
@@ -113,7 +126,11 @@ class Estudio
         return $this->nombre;
     }
 
-    public function setNombre(string $nombre): self
+    /**
+     * @param string $nombre
+     * @return Estudio
+     */
+    public function setNombre($nombre): self
     {
         $this->nombre = $nombre;
 

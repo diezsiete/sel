@@ -35,6 +35,9 @@ class MenuBuilder
 
         $user = $this->security->getUser();
 
+        $menu->addChild('Hoja de vida', ['route' => 'hv_datos_basicos'])
+            ->setExtra('icon', 'far fa-address-card');
+
         if ($this->security->isGranted(['ROLE_VER_SE_REPORTES'], $user)) {
             $menu->addChild('Comprobantes de pago', ['route' => 'app_comprobantes'])
                 ->setExtra('icon', 'fas fa-dollar-sign');

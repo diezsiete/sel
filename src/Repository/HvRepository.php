@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Hv;
+use App\Entity\Usuario;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -17,6 +18,11 @@ class HvRepository extends ServiceEntityRepository
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Hv::class);
+    }
+
+    public function findByUsuario(Usuario $usuario)
+    {
+        return $this->findOneBy(['usuario' => $usuario]);
     }
 
     // /**

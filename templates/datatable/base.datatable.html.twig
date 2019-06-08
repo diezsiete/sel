@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col">
+            <section class="card">
+                <div class="card-body">
+                    <div id="datatable">Loading...</div>
+                </div>
+            </section>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% embed 'datatable/javascripts.datatable.html.twig' %}
+    {% endembed %}
+
+{% endblock %}
