@@ -4,18 +4,20 @@
 namespace App\DataTable\Type\Hv;
 
 
+use App\Constant\HvConstant;
 use App\Constant\VacanteConstant;
 use App\DataTable\Column\ButtonColumn\ButtonAttrRoute;
 use App\DataTable\Column\ButtonColumn\ButtonColumn;
 use App\DataTable\Column\ButtonColumn\ButtonTypeModal;
 use App\Entity\Experiencia;
+use App\Entity\Referencia;
 use Doctrine\ORM\QueryBuilder;
 use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
 use Omines\DataTablesBundle\Column\TextColumn;
 use Omines\DataTablesBundle\DataTable;
 use Omines\DataTablesBundle\DataTableTypeInterface;
 
-class ExperienciaDataTableType implements DataTableTypeInterface
+class ReferenciaDataTableType implements DataTableTypeInterface
 {
 
     /**
@@ -27,32 +29,31 @@ class ExperienciaDataTableType implements DataTableTypeInterface
         $usuario = $options['usuario'];
 
         $dataTable
-            ->add('empresa', TextColumn::class, ['label' => 'Nombre de la empresa'])
-            ->add('cargo', TextColumn::class, ['label' => 'Cargo'])
-            ->add('experiencia', TextColumn::class, ['label' => 'Area de experiencia', 'field' => 'area.nombre'])
-            ->add('duracion', TextColumn::class, ['label' => 'Duración', 'render' => function($id) {
-                return VacanteConstant::EXPERIENCIA[$id];
-            } ])
+            ->add('tipo', TextColumn::class, ['label' => 'Tipo de referencia', 'render' => function($id) {
+                return HvConstant::REFERENCIA_TIPO[$id];
+            }])
+            ->add('nombre', TextColumn::class, ['label' => 'Nombre'])
+            ->add('ocupacion', TextColumn::class, ['label' => 'Ocupación'])
+            ->add('parentesco', TextColumn::class, ['label' => 'Parentesco'])
+            ->add('celular', TextColumn::class, ['label' => 'Celular'])
             ->add('id', ButtonColumn::class, ['label' => '', 'buttons' => [
                 (new ButtonTypeModal('#modalForm', 'fas fa-pencil-alt'))->setAttr([
                     'class' => 'modal-with-form',
-                    'data-get-url' => new ButtonAttrRoute('hv_entity_get', ['id', 'entity' => 'experiencia']),
-                    'data-update-url' => new ButtonAttrRoute('hv_entity_update', ['id', 'entity' => 'experiencia'])
+                    'data-get-url' => new ButtonAttrRoute('hv_entity_get', ['id', 'entity' => 'referencia']),
+                    'data-update-url' => new ButtonAttrRoute('hv_entity_update', ['id', 'entity' => 'referencia'])
                 ]),
                 (new ButtonTypeModal('#modalBasic', 'far fa-trash-alt'))->setAttr([
                     'class' => 'modal-with-form',
-                    'data-delete-url' => new ButtonAttrRoute('hv_entity_delete', ['id', 'entity' => 'experiencia'])
+                    'data-delete-url' => new ButtonAttrRoute('hv_entity_delete', ['id', 'entity' => 'referencia'])
                 ])
             ]])
             ->createAdapter(ORMAdapter::class, [
-                'entity' => Experiencia::class,
+                'entity' => Referencia::class,
                 'query' => function (QueryBuilder $builder) use ($usuario) {
                     $builder
-                        ->select('e')
-                        ->from(Experiencia::class, 'e')
-                        ->join('e.area', 'area')
-                        ->join( 'e.hv', 'hv', 'WITH', 'hv.usuario = :usuario')
-                        ->orderBy('e.id', 'DESC')
+                        ->select('r')
+                        ->from(Referencia::class, 'r')
+                        ->join( 'r.hv', 'hv', 'WITH', 'hv.usuario = :usuario')
                         ->setParameter('usuario', $usuario);
                 },
             ]);

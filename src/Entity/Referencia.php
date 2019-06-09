@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ReferenciaRepository")
@@ -11,43 +13,59 @@ class Referencia extends HvEntity
 {
     /**
      * @ORM\Column(type="smallint")
+     * @Assert\NotNull(message="Ingrese el tipo de referencia")
+     * @Groups("main")
      */
     private $tipo;
 
     /**
      * @ORM\Column(type="string", length=105)
+     * @Assert\NotNull(message="Ingrese nombre")
+     * @Groups("main")
      */
     private $nombre;
 
     /**
      * @ORM\Column(type="string", length=145)
+     * @Assert\NotNull(message="Ingrese ocupación")
+     * @Groups("main")
      */
     private $ocupacion;
 
     /**
      * @ORM\Column(type="string", length=45, nullable=true)
+     * @Assert\NotNull(message="Ingrese parentesco")
+     * @Groups("main")
      */
     private $parentesco;
 
     /**
      * @ORM\Column(type="string", length=20)
+     * @Assert\NotNull(message="Ingrese celular de la referencia")
+     * @Assert\Positive(message="Ingrese valor numerico")
+     * @Groups("main")
      */
     private $celular;
 
     /**
-     * @ORM\Column(type="string", length=100, nullable=true)
-     */
-    private $entidad;
-
-    /**
      * @ORM\Column(type="string", length=20, nullable=true)
+     * @Assert\NotNull(message="Ingrese telefono de la referencia")
+     * @Assert\Positive(message="Ingrese valor numerico")
+     * @Groups("main")
      */
     private $telefono;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
+     * @Groups("main")
      */
     private $direccion;
+
+    /**
+     * @ORM\Column(type="string", length=100, nullable=true)
+     * @Groups("main")
+     */
+    private $entidad;
 
 
     public function getTipo(): ?int
@@ -55,7 +73,11 @@ class Referencia extends HvEntity
         return $this->tipo;
     }
 
-    public function setTipo(int $tipo): self
+    /**
+     * @param integer $tipo
+     * @return Referencia
+     */
+    public function setTipo($tipo): self
     {
         $this->tipo = $tipo;
 
@@ -67,7 +89,11 @@ class Referencia extends HvEntity
         return $this->nombre;
     }
 
-    public function setNombre(string $nombre): self
+    /**
+     * @param string $nombre
+     * @return Referencia
+     */
+    public function setNombre($nombre): self
     {
         $this->nombre = $nombre;
 
@@ -79,7 +105,11 @@ class Referencia extends HvEntity
         return $this->ocupacion;
     }
 
-    public function setOcupacion(string $ocupacion): self
+    /**
+     * @param string $ocupacion
+     * @return Referencia
+     */
+    public function setOcupacion($ocupacion): self
     {
         $this->ocupacion = $ocupacion;
 
@@ -103,7 +133,11 @@ class Referencia extends HvEntity
         return $this->celular;
     }
 
-    public function setCelular(string $celular): self
+    /**
+     * @param string $celular
+     * @return Referencia
+     */
+    public function setCelular($celular): self
     {
         $this->celular = $celular;
 

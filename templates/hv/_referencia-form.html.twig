@@ -1,0 +1,23 @@
+{{ form_start(form, { attr: {
+    class: 'form-entity',
+    novalidate:'novalidate',
+    'data-url': path('hv_entity_update', {'entity': 'referencia'})
+}}) }}
+
+{{ form_row(form.tipo) }}
+
+{{ form_row(form.nombre) }}
+
+{{ form_row(form.ocupacion) }}
+
+{{ form_row(form.parentesco) }}
+
+<div class="form-row">
+    {{ form_row(form.celular, {container_attr: {class: 'col-md-4'}}) }}
+    {{ form_row(form.telefono, {container_attr: {class: 'col-md-4'}}) }}
+    {{ form_row(form.direccion, {container_attr: {class: 'col-md-4'}}) }}
+</div>
+
+{{ form_row(form.entidad) }}
+
+{{ form_end(form) }}

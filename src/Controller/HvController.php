@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\DataTable\Type\Hv\EstudioDataTableType;
 use App\DataTable\Type\Hv\ExperienciaDataTableType;
+use App\DataTable\Type\Hv\ReferenciaDataTableType;
 use App\Entity\Dpto;
 use App\Entity\Estudio;
 use App\Entity\Hv;
@@ -12,12 +13,10 @@ use App\Entity\Pais;
 use App\Entity\Usuario;
 use App\Form\EstudioFormType;
 use App\Form\ExperienciaFormType;
-use App\Form\HvEntityFormType;
 use App\Form\HvFormType;
+use App\Form\ReferenciaFormType;
 use App\Repository\HvRepository;
 use Omines\DataTablesBundle\DataTableFactory;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
@@ -126,6 +125,15 @@ class HvController extends BaseController
     }
 
     /**
+     * @Route("/hv/referencias", name="hv_referencias")
+     */
+    public function referencias(Request $request, DataTableFactory $dataTableFactory)
+    {
+        return $this->hvEntityPage($request, $dataTableFactory, ReferenciaDataTableType::class,
+            ReferenciaFormType::class, 'hv/referencias.html.twig');
+    }
+
+    /**
      * @Route("/hv/entity/get/{entity}/{id}", defaults={"id"=null}, name="hv_entity_get")
      */
     public function entityGet(HvEntity $entity)
@@ -170,14 +178,6 @@ class HvController extends BaseController
         $em->remove($entity);
         $em->flush();
         return $this->json(['ok' => 1]);
-    }
-
-    /**
-     * @Route("/hv/referencias", name="hv_referencias")
-     */
-    public function referencias(Request $request)
-    {
-        return $this->render('hv/referencias.html.twig');
     }
 
     /**
@@ -240,5 +240,22 @@ class HvController extends BaseController
         return $this->json($ciudades, 200, [], [
             'groups' => ['main']
         ]);
+    }
+
+    protected function hvEntityPage(Request $request, DataTableFactory $dataTableFactory, string $datatableType,
+                                    string $formType, string $view, array $parameters = [])
+    {
+        $table = $dataTableFactory->createFromType(
+            $datatableType,
+            ['usuario' => $this->getUser()],
+            ['searching' => false, 'paging' => false]
+        );
+        $table->handleRequest($request);
+        if($table->isCallback()) {
+            return $table->getResponse();
+        }
+        $form = $this->createForm($formType);
+
+        return $this->render($view, $parameters + ['datatable' => $table, 'form' => $form->createView()]);
     }
 }

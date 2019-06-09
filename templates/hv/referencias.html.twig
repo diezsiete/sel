@@ -1,22 +1,12 @@
-{% extends 'hv/base.hv.html.twig' %}
+{% extends 'hv/base-hv-entity.html.twig' %}
 
-{% block stylesheets %}
-    {{ parent() }}
+{% block card_title %}
+    Referencias
+{% endblock %}
+{% block card_body_lead %}
+    Ingrese en el cuadro mínimo 3 referencias. Una de tipo personal, otra laboral y otra familiar.
 {% endblock %}
 
-{% block body %}
-    {{ parent() }}
-
-    <div class="row">
-        <div class="col-lg-12">
-            <section class="card">
-                <header class="card-header">
-                    <h2 class="card-title">Referencias</h2>
-                </header>
-                <div class="card-body">
-                </div>
-            </section>
-        </div>
-    </div>
-
+{% block modal_body %}
+    {{ include('hv/_referencia-form.html.twig') }}
 {% endblock %}
