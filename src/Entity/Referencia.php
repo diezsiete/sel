@@ -7,21 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ReferenciaRepository")
  */
-class Referencia
+class Referencia extends HvEntity
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Hv", inversedBy="referencias")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $hv;
-
     /**
      * @ORM\Column(type="smallint")
      */
@@ -62,22 +49,6 @@ class Referencia
      */
     private $direccion;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getHv(): ?Hv
-    {
-        return $this->hv;
-    }
-
-    public function setHv(?Hv $hv): self
-    {
-        $this->hv = $hv;
-
-        return $this;
-    }
 
     public function getTipo(): ?int
     {

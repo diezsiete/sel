@@ -54,10 +54,5 @@ class EstudioFormType extends AbstractType
         ]);
     }
 
-    public function getBlockPrefix()
-    {
-        return '';
-    }
-
 
 }

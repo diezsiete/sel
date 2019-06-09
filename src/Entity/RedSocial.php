@@ -7,21 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\RedSocialRepository")
  */
-class RedSocial
+class RedSocial extends HvEntity
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Hv", inversedBy="redesSociales")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $hv;
-
     /**
      * @ORM\Column(type="smallint")
      */
@@ -31,23 +18,6 @@ class RedSocial
      * @ORM\Column(type="string", length=145)
      */
     private $cuenta;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getHv(): ?Hv
-    {
-        return $this->hv;
-    }
-
-    public function setHv(?Hv $hv): self
-    {
-        $this->hv = $hv;
-
-        return $this;
-    }
 
     public function getTipo(): ?int
     {

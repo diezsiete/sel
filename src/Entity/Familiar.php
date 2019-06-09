@@ -7,21 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\FamiliarRepository")
  */
-class Familiar
+class Familiar extends HvEntity
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Hv", inversedBy="familiares")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $hv;
-
     /**
      * @ORM\Column(type="string", length=15)
      */
@@ -78,22 +65,6 @@ class Familiar
      */
     private $nivelAcademico;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getHv(): ?Hv
-    {
-        return $this->hv;
-    }
-
-    public function setHv(?Hv $hv): self
-    {
-        $this->hv = $hv;
-
-        return $this;
-    }
 
     public function getPrimerApellido(): ?string
     {

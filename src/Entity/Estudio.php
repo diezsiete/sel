@@ -9,22 +9,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\EstudioRepository")
  */
-class Estudio
+class Estudio extends HvEntity
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     * @Groups("main")
-     */
-    private $id;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Hv", inversedBy="estudios")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $hv;
-
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\EstudioCodigo")
      * @ORM\JoinColumn(nullable=false)
@@ -91,23 +77,6 @@ class Estudio
      * @ORM\Column(type="string", length=15, nullable=true)
      */
     private $numeroTarjeta;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getHv(): ?Hv
-    {
-        return $this->hv;
-    }
-
-    public function setHv(?Hv $hv): self
-    {
-        $this->hv = $hv;
-
-        return $this;
-    }
 
     public function getCodigo(): ?EstudioCodigo
     {

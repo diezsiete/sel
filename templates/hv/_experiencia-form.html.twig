@@ -1,0 +1,37 @@
+{{ form_start(experienciaForm, { attr: {
+    class: 'form-entity',
+    novalidate:'novalidate',
+    'data-url': path('hv_entity_update', {'entity': 'experiencia'})
+}}) }}
+
+<div class="form-row">
+    {{ form_row(experienciaForm.empresa, {container_attr: {class: 'col-md-6'}}) }}
+    {{ form_row(experienciaForm.cargo, {container_attr: {class: 'col-md-6'}}) }}
+</div>
+
+<div class="form-row">
+    {{ form_row(experienciaForm.area, {container_attr: {class: 'col-md-6'}, attr: {class: 'chosen'}}) }}
+    {{ form_row(experienciaForm.duracion, {container_attr: {class: 'col-md-6'}}) }}
+</div>
+
+<div class="form-row">
+    {{ form_row(experienciaForm.descripcion, {container_attr: {class: 'col-md-6'}}) }}
+    {{ form_row(experienciaForm.logrosObtenidos, {container_attr: {class: 'col-md-6'}}) }}
+</div>
+
+{{ form_row(experienciaForm.motivoRetiro) }}
+
+<div class="form-row">
+    {{ form_row(experienciaForm.jefeInmediato, {container_attr: {class: 'col-md-6'}}) }}
+    {{ form_row(experienciaForm.telefonoJefe, {container_attr: {class: 'col-md-6'}}) }}
+</div>
+
+
+<div class="form-row">
+    {{ form_row(experienciaForm.salarioBasico, {container_attr: {class: 'col-md-4'}}) }}
+    {{ form_row(experienciaForm.fechaIngreso, {container_attr: {class: 'col-md-4'}}) }}
+    {{ form_row(experienciaForm.fechaRetiro, {container_attr: {class: 'col-md-4'}}) }}
+</div>
+
+
+{{ form_end(experienciaForm) }}

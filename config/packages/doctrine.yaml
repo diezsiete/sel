@@ -43,12 +43,3 @@ doctrine:
                         dir: '%kernel.project_dir%/src/Entity'
                         prefix: 'App\Entity'
                         alias: App
-            se:
-                connection: se
-                mappings:
-                    Se:
-                        is_bundle: false
-                        type: annotation
-                        dir: '%kernel.project_dir%/src/Entity/Se'
-                        prefix: 'App\Entity\Se'
-                        alias: Se

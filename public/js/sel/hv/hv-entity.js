@@ -114,12 +114,12 @@
 
         _removeFormErrors: function() {
             this.$form.find('.invalid-feedback').remove();
+            this.$form.find(':input').removeClass('is-invalid');
             return this;
         },
 
         _clearForm: function() {
             this._removeFormErrors();
-            this.$form.find(':input').removeClass('is-invalid');
             this.$form[0].reset();
             return this._updateChosen();
         },

@@ -1,4 +1,4 @@
-{% extends 'hv/base.hv.html.twig' %}
+{% extends 'hv/base-hv.html.twig' %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -14,14 +14,19 @@
         <div class="col-lg-12">
             <section class="card">
                 <header class="card-header">
-                    <h2 class="card-title">Estudios</h2>
+                    <h2 class="card-title">
+                        {% block card_title %}
+                            Estudios
+                        {% endblock %}
+                    </h2>
                 </header>
                 <div class="card-body">
                     <p class="lead">
-                        Ingrese en el cuadro los estudios que ha realizado, o que se encuentra actualmente cursando.
+                        {% block card_body_lead %}
+                        {% endblock %}
                     </p>
                     <p>
-                        Para agregar, presione el boton <span class="highlight">Agregar estudio</span> encontrado en la
+                        Para agregar, presione el boton <span class="highlight">Agregar</span> encontrado en la
                         parte inferior derecha del cuadro.
                     </p>
 
@@ -30,16 +35,35 @@
                 </div>
             </section>
             <footer class="card-footer text-right">
-                <a class="crear-entity btn btn-primary" href="#modalForm">Agregar estudio</a>
+                <a class="crear-entity btn btn-primary" href="#modalForm">Agregar</a>
             </footer>
         </div>
     </div>
 
-    {% embed ('hv/_modal-entity.html.twig') %}
-        {% block modal_body %}
-            {{ include('hv/_estudio-form.html.twig') }}
-        {% endblock %}
-    {% endembed %}
+    <!-- Modal Form -->
+    <div id="modalForm" class="modal-block modal-block-primary mfp-hide">
+        <section class="card">
+            <header class="card-header">
+                <h2 class="card-title">
+                    {% block modal_title %}
+                        Agregar
+                    {% endblock %}
+                </h2>
+            </header>
+            <div class="card-body" data-loading-overlay>
+                {% block modal_body %}
+                {% endblock %}
+            </div>
+            <footer class="card-footer">
+                <div class="row">
+                    <div class="col-md-12 text-right">
+                        <button class="btn btn-primary modal-confirm">Guardar</button>
+                        <button class="btn btn-default modal-dismiss">Cancelar</button>
+                    </div>
+                </div>
+            </footer>
+        </section>
+    </div>
 
     {{ include('default/_modal-borrar.html.twig') }}
 
@@ -66,8 +90,6 @@
                             $wrapper = $('#modalForm');
                             new hvEntity($wrapper, $('#modalBasic'), dt);
                         });
-
-
                 });
             </script>
         {% endblock %}

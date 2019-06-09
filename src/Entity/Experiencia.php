@@ -3,102 +3,94 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ExperienciaRepository")
  */
-class Experiencia
+class Experiencia extends HvEntity
 {
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Hv", inversedBy="experiencias")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $hv;
-
-    /**
      * @ORM\Column(type="string", length=55)
+     * @Assert\NotNull(message="Ingrese nombre de la empresa")
+     * @Groups("main")
      */
     private $empresa;
 
     /**
      * @ORM\Column(type="string", length=45)
+     * @Assert\NotNull(message="Ingrese cargo")
+     * @Groups("main")
      */
     private $cargo;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Area")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotNull(message="Selecione area")
+     * @Groups("main")
      */
     private $area;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\NotNull(message="Ingrese descripcion")
+     * @Groups("main")
      */
     private $descripcion;
 
     /**
      * @ORM\Column(type="smallint")
+     * @Groups("main")
      */
     private $duracion;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Groups("main")
      */
     private $logrosObtenidos;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Groups("main")
      */
     private $motivoRetiro;
 
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
+     * @Assert\NotNull(message="Ingrese nombre del jefe")
+     * @Groups("main")
      */
     private $jefeInmediato;
 
     /**
      * @ORM\Column(type="string", length=20, nullable=true)
+     * @Groups("main")
      */
     private $salarioBasico;
 
     /**
      * @ORM\Column(type="string", length=20, nullable=true)
+     * @Assert\NotNull(message="Ingrese telefono del jefe inmediato")
+     * @Groups("main")
      */
     private $telefonoJefe;
 
     /**
      * @ORM\Column(type="date", nullable=true)
+     * @Assert\NotNull(message="Ingrese fecha")
+     * @Groups("main")
      */
     private $fechaIngreso;
 
     /**
      * @ORM\Column(type="date", nullable=true)
+     * @Groups("main")
      */
     private $fechaRetiro;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getHv(): ?Hv
-    {
-        return $this->hv;
-    }
-
-    public function setHv(?Hv $hv): self
-    {
-        $this->hv = $hv;
-
-        return $this;
-    }
 
     public function getEmpresa(): ?string
     {

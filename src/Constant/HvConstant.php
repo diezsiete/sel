@@ -66,4 +66,6 @@ class HvConstant
         6 => 'INQUILINATO', 7 => 'VEREDA'
     ];
     const TENEDOR = [1 => 'PROPIA', 2 => 'ARRIENDO', 3 => 'CREDITO HIPOTECARIO', 4 => 'CEDIDA', 5 => 'FAMILIAR'];
+
+    const HV_ENTITY = ['Estudio', 'Experiencia', 'Referencia', 'RedSocial', 'Familiar', 'Vivienda', 'Idioma'];
 }

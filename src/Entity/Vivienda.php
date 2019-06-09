@@ -7,21 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ViviendaRepository")
  */
-class Vivienda
+class Vivienda extends HvEntity
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Hv", inversedBy="viviendas")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $hv;
-
     /**
      * @ORM\Column(type="string", length=40)
      */
@@ -63,22 +50,6 @@ class Vivienda
      */
     private $viviendaActual;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getHv(): ?Hv
-    {
-        return $this->hv;
-    }
-
-    public function setHv(?Hv $hv): self
-    {
-        $this->hv = $hv;
-
-        return $this;
-    }
 
     public function getDireccion(): ?string
     {

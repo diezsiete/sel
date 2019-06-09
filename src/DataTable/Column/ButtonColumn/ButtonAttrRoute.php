@@ -45,8 +45,7 @@ class ButtonAttrRoute
             if(is_int($routeParamKey)) {
                 $routeParams[$routeParamValue] = $value;
             } else {
-                // TODO
-                throw new \Exception("Parametros mapeados a valor compuesto no soportado aun");
+                $routeParams[$routeParamKey] = $routeParamValue;
             }
         }
         return $this->router->generate($this->routeName, $routeParams);
