@@ -20,26 +20,9 @@ abstract class HvEntity
      */
     protected $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Hv", inversedBy="estudios")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    protected $hv;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getHv(): ?Hv
-    {
-        return $this->hv;
-    }
-
-    public function setHv(?Hv $hv): self
-    {
-        $this->hv = $hv;
-
-        return $this;
     }
 }

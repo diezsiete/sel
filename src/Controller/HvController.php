@@ -69,9 +69,11 @@ class HvController extends BaseController
     /**
      * @Route("/hv/datos-basicos", name="hv_datos_basicos")
      */
-    public function datosBasicos(Request $request)
+    public function datosBasicos(Request $request, HvRepository $hvRepository)
     {
-        $form = $this->createForm(HvFormType::class);
+        $hv = $hvRepository->findByUsuario($this->getUser());
+
+        $form = $this->createForm(HvFormType::class, $hv);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
             /** @var Hv $hv */

@@ -25,6 +25,23 @@ class Idioma extends HvEntity
      */
     private $destreza;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Hv", inversedBy="idiomas")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    protected $hv;
+
+    public function getHv(): ?Hv
+    {
+        return $this->hv;
+    }
+
+    public function setHv(?Hv $hv): self
+    {
+        $this->hv = $hv;
+
+        return $this;
+    }
 
     public function getIdiomaCodigo(): ?string
     {

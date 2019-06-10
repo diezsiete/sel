@@ -66,6 +66,24 @@ class Vivienda extends HvEntity
      */
     private $viviendaActual;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Hv", inversedBy="viviendas")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    protected $hv;
+
+    public function getHv(): ?Hv
+    {
+        return $this->hv;
+    }
+
+    public function setHv(?Hv $hv): self
+    {
+        $this->hv = $hv;
+
+        return $this;
+    }
+
 
     public function getDireccion(): ?string
     {

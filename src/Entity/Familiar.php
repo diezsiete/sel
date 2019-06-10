@@ -87,6 +87,24 @@ class Familiar extends HvEntity
      */
     private $nivelAcademico;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Hv", inversedBy="familiares")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    protected $hv;
+
+    public function getHv(): ?Hv
+    {
+        return $this->hv;
+    }
+
+    public function setHv(?Hv $hv): self
+    {
+        $this->hv = $hv;
+
+        return $this;
+    }
+
 
     public function getPrimerApellido(): ?string
     {

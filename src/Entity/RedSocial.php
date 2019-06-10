@@ -25,6 +25,24 @@ class RedSocial extends HvEntity
      */
     private $cuenta;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Hv", inversedBy="redesSociales")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    protected $hv;
+
+    public function getHv(): ?Hv
+    {
+        return $this->hv;
+    }
+
+    public function setHv(?Hv $hv): self
+    {
+        $this->hv = $hv;
+
+        return $this;
+    }
+
     public function getTipo(): ?int
     {
         return $this->tipo;

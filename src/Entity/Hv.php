@@ -150,7 +150,7 @@ class Hv
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Experiencia", mappedBy="hv", orphanRemoval=true)
      */
-    private $experiencias;
+    private $experiencia;
 
     /**
      * @ORM\Column(type="string", length=2)
@@ -235,7 +235,7 @@ class Hv
     public function __construct()
     {
         $this->estudios = new ArrayCollection();
-        $this->experiencias = new ArrayCollection();
+        $this->experiencia = new ArrayCollection();
         $this->familiares = new ArrayCollection();
         $this->idiomas = new ArrayCollection();
         $this->redesSociales = new ArrayCollection();
@@ -563,15 +563,15 @@ class Hv
     /**
      * @return Collection|Experiencia[]
      */
-    public function getExperiencias(): Collection
+    public function getExperiencia(): Collection
     {
-        return $this->experiencias;
+        return $this->experiencia;
     }
 
     public function addExperiencia(Experiencia $experiencia): self
     {
-        if (!$this->experiencias->contains($experiencia)) {
-            $this->experiencias[] = $experiencia;
+        if (!$this->experiencia->contains($experiencia)) {
+            $this->experiencia[] = $experiencia;
             $experiencia->setHv($this);
         }
 
@@ -580,8 +580,8 @@ class Hv
 
     public function removeExperiencia(Experiencia $experiencia): self
     {
-        if ($this->experiencias->contains($experiencia)) {
-            $this->experiencias->removeElement($experiencia);
+        if ($this->experiencia->contains($experiencia)) {
+            $this->experiencia->removeElement($experiencia);
             // set the owning side to null (unless already changed)
             if ($experiencia->getHv() === $this) {
                 $experiencia->setHv(null);
