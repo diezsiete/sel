@@ -6,6 +6,14 @@ namespace App\Constant;
 
 class HvConstant
 {
+    const ESTADO_CIVIL = [
+        1 => 'SOLTERO',
+        2 => 'CASADO',
+        3 => 'DIVORCIADO',
+        4 => 'VIUDO',
+        5 => 'UNION LIBRE'
+    ];
+
     const IDENTIFICACION_TIPO = [
         //'0' => 'No Aplica',
         '01' => 'Cédula de Ciudadania',
@@ -19,19 +27,20 @@ class HvConstant
         '22' => 'Tipo documento Extranjero',
         '23' => 'Documento definido información exogena',
     ];
-    const ESTADO_CIVIL = [
-        1 => 'SOLTERO',
-        2 => 'CASADO',
-        3 => 'DIVORCIADO',
-        4 => 'VIUDO',
-        5 => 'UNION LIBRE'
+
+    const FACTOR_RH = [
+        "+" => "+", "-" => "-"
+    ];
+
+    const GENERO = [
+        1 => 'FEMENINO',
+        2 => 'MASCULINO',
+        3 => 'OTRO'
     ];
     const GRUPO_SANGUINEO = [
         "A" => "A", "B" => "B", "AB" => "AB", "O" => "O"
     ];
-    const FACTOR_RH = [
-        "+" => "+", "-" => "-"
-    ];
+
     const NACIONALIDAD = [
         1 => "Colombiano", 2 => "Doble", 3 => "Extranjero"
     ];
@@ -52,20 +61,33 @@ class HvConstant
         '13' => 'NINGUNO'
     ];
 
-    const PARENTESCO = ['01' => 'NIETO', '02' => 'HIJO', '04' => 'HERMANO', '05' => 'TIO', '06' => 'SOBRINO',
-        '07' => 'PRIMO', '08' => 'CUÑADO', '09' => 'YERNO/NUERA', '10' => 'SUEGRO', '11' => 'CONYUGE', '12' => 'ABUELO',
-        '13' => 'PADRE/MADRE'
-    ];
     const OCUPACION = ['1' => 'EMPLEADO', '2' => 'ESTUDIANTE', '3' => 'HOGAR', '4' => 'DESEMPLEADO',
         '5' => 'PENSIONADO', '6' => 'INDEPENDIENTE', '7' => 'OTRAS'
     ];
 
+    const PARENTESCO = ['01' => 'NIETO', '02' => 'HIJO', '04' => 'HERMANO', '05' => 'TIO', '06' => 'SOBRINO',
+        '07' => 'PRIMO', '08' => 'CUÑADO', '09' => 'YERNO/NUERA', '10' => 'SUEGRO', '11' => 'CONYUGE', '12' => 'ABUELO',
+        '13' => 'PADRE/MADRE'
+    ];
+
+    const RED_SOCIAL = [
+        1 => 'SKYPE',
+        2 => 'TWITTER',
+        3 => 'FACEBOOK',
+        4 => 'WHASTAPP',
+        5 => 'LINKEDIN',
+    ];
+
     const REFERENCIA_TIPO = [1 => 'PERSONAL', 2 => 'FAMILIAR', 3 => 'LABORAL'];
 
-    const VIVIENDA_TIP = [1 => 'CASA', 2 => 'APARTAMENTO', 3 => 'CASALOTE', 4 => 'HABITACIÓN', 5 => 'FINCA',
-        6 => 'INQUILINATO', 7 => 'VEREDA'
-    ];
     const TENEDOR = [1 => 'PROPIA', 2 => 'ARRIENDO', 3 => 'CREDITO HIPOTECARIO', 4 => 'CEDIDA', 5 => 'FAMILIAR'];
 
+    const VIVIENDA_TIPO = [1 => 'CASA', 2 => 'APARTAMENTO', 3 => 'CASALOTE', 4 => 'HABITACIÓN', 5 => 'FINCA',
+        6 => 'INQUILINATO', 7 => 'VEREDA'
+    ];
+
+
     const HV_ENTITY = ['Estudio', 'Experiencia', 'Referencia', 'RedSocial', 'Familiar', 'Vivienda', 'Idioma'];
+
+
 }

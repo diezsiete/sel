@@ -1,0 +1,10 @@
+{{ form_start(form, { attr: {
+    class: 'form-entity',
+    novalidate:'novalidate',
+    'data-url': path('hv_entity_update', {'entity': 'idioma'})
+}}) }}
+
+{{ form_row(form.idiomaCodigo) }}
+{{ form_row(form.destreza) }}
+
+{{ form_end(form) }}

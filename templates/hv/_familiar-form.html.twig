@@ -1,0 +1,34 @@
+{{ form_start(form, { attr: {
+    class: 'form-entity',
+    novalidate:'novalidate',
+    'data-url': path('hv_entity_update', {'entity': 'familiar'})
+}}) }}
+
+<div class="form-row">
+    {{ form_row(form.nombre, {container_attr: {class: 'col-md-4'}}) }}
+    {{ form_row(form.primerApellido, {container_attr: {class: 'col-md-4'}}) }}
+    {{ form_row(form.segundoApellido, {container_attr: {class: 'col-md-4'}}) }}
+</div>
+
+<div class="form-row">
+    {{ form_row(form.identificacion, {container_attr: {class: 'col-md-6'}}) }}
+    {{ form_row(form.identificacionTipo, {container_attr: {class: 'col-md-6'}}) }}
+</div>
+
+<div class="form-row">
+    {{ form_row(form.nacimiento, {container_attr: {class: 'col-md-6'}}) }}
+    {{ form_row(form.parentesco, {container_attr: {class: 'col-md-6'}}) }}
+</div>
+
+<div class="form-row">
+    {{ form_row(form.ocupacion, {container_attr: {class: 'col-md-6'}}) }}
+    {{ form_row(form.nivelAcademico, {container_attr: {class: 'col-md-6'}}) }}
+</div>
+
+<div class="form-row">
+    {{ form_row(form.genero, {container_attr: {class: 'col-md-6'}}) }}
+    {{ form_row(form.estadoCivil, {container_attr: {class: 'col-md-6'}}) }}
+</div>
+
+
+{{ form_end(form) }}

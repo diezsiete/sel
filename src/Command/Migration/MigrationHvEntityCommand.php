@@ -208,7 +208,7 @@ class MigrationHvEntityCommand extends MigrationCommand
             ->setEstrato($row['estrato'])
             ->setTipoVivienda($row['tipo_vivienda'])
             ->setTenedor($row['tenedor']);
-        if ($row['vivenda_actual']) {
+        if ($row['vivienda_actual']) {
             $vivienda->setViviendaActual($row['vivienda_actual'] == 1);
         }
         

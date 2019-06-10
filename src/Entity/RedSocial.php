@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\RedSocialRepository")
@@ -11,11 +13,15 @@ class RedSocial extends HvEntity
 {
     /**
      * @ORM\Column(type="smallint")
+     * @Assert\NotNull(message="Ingrese tipo de red social")
+     * @Groups("main")
      */
     private $tipo;
 
     /**
      * @ORM\Column(type="string", length=145)
+     * @Assert\NotNull(message="Ingrese cuenta")
+     * @Groups("main")
      */
     private $cuenta;
 
@@ -24,7 +30,7 @@ class RedSocial extends HvEntity
         return $this->tipo;
     }
 
-    public function setTipo(int $tipo): self
+    public function setTipo(?int $tipo): self
     {
         $this->tipo = $tipo;
 
@@ -36,7 +42,7 @@ class RedSocial extends HvEntity
         return $this->cuenta;
     }
 
-    public function setCuenta(string $cuenta): self
+    public function setCuenta(?string $cuenta): self
     {
         $this->cuenta = $cuenta;
 

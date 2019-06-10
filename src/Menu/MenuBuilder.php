@@ -75,7 +75,7 @@ class MenuBuilder
         $menu = $this->factory->createItem('hv');
         $menu->addChild('Datos básicos', ['route' => 'hv_datos_basicos'])
             ->setExtra('icon', 'fas fa-user-circle');
-        $menu->addChild('Formación', ['route' => 'hv_formacion'])
+        $menu->addChild('Formación', ['route' => 'hv_estudio'])
             ->setExtra('icon', 'fas fa-columns');
         $menu->addChild('Experiencia', ['route' => 'hv_experiencia'])
             ->setExtra('icon', 'fas fa-copy');

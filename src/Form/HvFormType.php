@@ -136,7 +136,7 @@ class HvFormType extends AbstractType
                 'help' => 'Utilizar el formato ej: 2010-10-23',
             ])
             ->add('genero', ChoiceType::class, [
-                'choices' => array_flip(VacanteConstant::GENERO),
+                'choices' => array_flip(HvConstant::GENERO),
                 'required' => true,
             ])
             ->add('estadoCivil', ChoiceType::class, [

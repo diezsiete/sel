@@ -4,7 +4,11 @@ namespace App\Controller;
 
 use App\DataTable\Type\Hv\EstudioDataTableType;
 use App\DataTable\Type\Hv\ExperienciaDataTableType;
+use App\DataTable\Type\Hv\FamiliarDataTableType;
+use App\DataTable\Type\Hv\IdiomaDataTableType;
+use App\DataTable\Type\Hv\RedSocialDataTableType;
 use App\DataTable\Type\Hv\ReferenciaDataTableType;
+use App\DataTable\Type\Hv\ViviendaDataTableType;
 use App\Entity\Dpto;
 use App\Entity\Estudio;
 use App\Entity\Hv;
@@ -13,8 +17,12 @@ use App\Entity\Pais;
 use App\Entity\Usuario;
 use App\Form\EstudioFormType;
 use App\Form\ExperienciaFormType;
+use App\Form\FamiliarFormType;
 use App\Form\HvFormType;
+use App\Form\IdiomaFormType;
+use App\Form\RedSocialFormType;
 use App\Form\ReferenciaFormType;
+use App\Form\ViviendaFormType;
 use App\Repository\HvRepository;
 use Omines\DataTablesBundle\DataTableFactory;
 use Symfony\Component\HttpFoundation\Request;
@@ -91,37 +99,21 @@ class HvController extends BaseController
     }
 
     /**
-     * @Route("/hv/formacion", name="hv_formacion")
+     * @Route("/hv/estudio", name="hv_estudio")
      */
-    public function formacion(DataTableFactory $dataTableFactory, Request $request)
+    public function estudio(Request $request, DataTableFactory $dataTableFactory)
     {
-        $table = $dataTableFactory->createFromType(EstudioDataTableType::class,
-            ['usuario' => $this->getUser()], ['searching' => false, 'paging' => false])
-            ->handleRequest($request);
-        if($table->isCallback()) {
-            return $table->getResponse();
-        }
-
-        $form = $this->createForm(EstudioFormType::class);
-
-        return $this->render('hv/estudio.html.twig', ['datatable' => $table, 'estudioForm' => $form->createView()]);
+        return $this->hvEntityPage($request, $dataTableFactory, EstudioDataTableType::class,
+            EstudioFormType::class, 'hv/estudio.html.twig');
     }
 
     /**
      * @Route("/hv/experiencia", name="hv_experiencia")
      */
-    public function experiencia(DataTableFactory $dataTableFactory, Request $request)
+    public function experiencia(Request $request, DataTableFactory $dataTableFactory)
     {
-        $table = $dataTableFactory->createFromType(ExperienciaDataTableType::class,
-            ['usuario' => $this->getUser()], ['searching' => false, 'paging' => false])
-            ->handleRequest($request);
-        if($table->isCallback()) {
-            return $table->getResponse();
-        }
-
-        $form = $this->createForm(ExperienciaFormType::class);
-
-        return $this->render('hv/experiencia.html.twig', ['datatable' => $table, 'experienciaForm' => $form->createView()]);
+        return $this->hvEntityPage($request, $dataTableFactory, ExperienciaDataTableType::class,
+            ExperienciaFormType::class, 'hv/experiencia.html.twig');
     }
 
     /**
@@ -131,6 +123,42 @@ class HvController extends BaseController
     {
         return $this->hvEntityPage($request, $dataTableFactory, ReferenciaDataTableType::class,
             ReferenciaFormType::class, 'hv/referencias.html.twig');
+    }
+
+    /**
+     * @Route("/hv/redes-sociales", name="hv_redes_sociales")
+     */
+    public function redesSociales(Request $request, DataTableFactory $dataTableFactory)
+    {
+        return $this->hvEntityPage($request, $dataTableFactory, RedSocialDataTableType::class,
+            RedSocialFormType::class, 'hv/redes-sociales.html.twig');
+    }
+
+    /**
+     * @Route("/hv/familiares", name="hv_familiares")
+     */
+    public function familiares(Request $request, DataTableFactory $dataTableFactory)
+    {
+        return $this->hvEntityPage($request, $dataTableFactory, FamiliarDataTableType::class,
+            FamiliarFormType::class, 'hv/familiares.html.twig');
+    }
+
+    /**
+     * @Route("/hv/vivienda", name="hv_vivienda")
+     */
+    public function vivienda(Request $request, DataTableFactory $dataTableFactory)
+    {
+        return $this->hvEntityPage($request, $dataTableFactory, ViviendaDataTableType::class,
+            ViviendaFormType::class, 'hv/vivienda.html.twig');
+    }
+
+    /**
+     * @Route("/hv/idiomas", name="hv_idiomas")
+     */
+    public function idiomas(Request $request, DataTableFactory $dataTableFactory)
+    {
+        return $this->hvEntityPage($request, $dataTableFactory, IdiomaDataTableType::class,
+            IdiomaFormType::class, 'hv/idiomas.html.twig');
     }
 
     /**
@@ -178,38 +206,6 @@ class HvController extends BaseController
         $em->remove($entity);
         $em->flush();
         return $this->json(['ok' => 1]);
-    }
-
-    /**
-     * @Route("/hv/redes-sociales", name="hv_redes_sociales")
-     */
-    public function redesSociales(Request $request)
-    {
-        return $this->render('hv/redes-sociales.html.twig');
-    }
-
-    /**
-     * @Route("/hv/familiares", name="hv_familiares")
-     */
-    public function familiares(Request $request)
-    {
-        return $this->render('hv/familiares.html.twig');
-    }
-
-    /**
-     * @Route("/hv/vivienda", name="hv_vivienda")
-     */
-    public function vivienda(Request $request)
-    {
-        return $this->render('hv/vivienda.html.twig');
-    }
-
-    /**
-     * @Route("/hv/idiomas", name="hv_idiomas")
-     */
-    public function idiomas(Request $request)
-    {
-        return $this->render('hv/idiomas.html.twig');
     }
 
     /**

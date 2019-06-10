@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Constant\HvConstant;
 use App\Constant\VacanteConstant;
 use App\Entity\Ciudad;
 use App\Entity\LicenciaConduccion;
@@ -106,7 +107,7 @@ class VacanteFormType extends AbstractType
                 'expanded' => true,
                 'multiple' => false,
                 'placeholder' => 'No aplica',
-                'choices' => array_flip(VacanteConstant::GENERO),
+                'choices' => array_flip(HvConstant::GENERO),
                 'required' => false,
             ])
             ->add('licenciaConduccion', EntityType::class, [

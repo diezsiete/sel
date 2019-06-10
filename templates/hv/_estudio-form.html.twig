@@ -1,26 +1,26 @@
-{{ form_start(estudioForm, { attr: {
+{{ form_start(form, { attr: {
     class: 'form-entity',
     novalidate:'novalidate',
     'data-url': path('hv_entity_update', {'entity': 'estudio'})
 }}) }}
 
 <div class="form-row">
-    {{ form_row(estudioForm.codigo, {
+    {{ form_row(form.codigo, {
         container_attr: {class: 'col-md-6'},
         attr: {class: 'chosen'}
     }) }}
-    {{ form_row(estudioForm.nombre, {container_attr: {class: 'col-md-6'}}) }}
+    {{ form_row(form.nombre, {container_attr: {class: 'col-md-6'}}) }}
 </div>
 
-{{ form_row(estudioForm.instituto, {
+{{ form_row(form.instituto, {
     attr: {class: 'chosen'}
 }) }}
-{{ form_row(estudioForm.institutoNombreAlt) }}
+{{ form_row(form.institutoNombreAlt) }}
 
 <div class="form-row">
-    {{ form_row(estudioForm.fin, {container_attr: {class: 'col-md-6'}}) }}
-    {{ form_row(estudioForm.graduado, {container_attr: {class: 'col-md-3'}}) }}
-    {{ form_row(estudioForm.cancelo, {container_attr: {class: 'col-md-3'}}) }}
+    {{ form_row(form.fin, {container_attr: {class: 'col-md-6'}}) }}
+    {{ form_row(form.graduado, {container_attr: {class: 'col-md-3'}}) }}
+    {{ form_row(form.cancelo, {container_attr: {class: 'col-md-3'}}) }}
 </div>
 
-{{ form_end(estudioForm) }}
+{{ form_end(form) }}

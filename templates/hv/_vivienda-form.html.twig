@@ -1,0 +1,24 @@
+{{ form_start(form, { attr: {
+    class: 'form-entity',
+    novalidate:'novalidate',
+    'data-url': path('hv_entity_update', {'entity': 'vivienda'})
+}}) }}
+
+
+<div class="form-row">
+    {{ form_row(form.direccion, {container_attr: {class: 'col-md-8'}}) }}
+    {{ form_row(form.estrato, {container_attr: {class: 'col-md-4'}}) }}
+</div>
+<div class="form-row">
+    {{ form_row(form.pais, {container_attr: {class: 'col-md-4'}}) }}
+    {{ form_row(form.dpto, {container_attr: {class: 'col-md-4'}}) }}
+    {{ form_row(form.ciudad, {container_attr: {class: 'col-md-4'}}) }}
+</div>
+<div class="form-row">
+    {{ form_row(form.tipoVivienda, {container_attr: {class: 'col-md-6'}}) }}
+    {{ form_row(form.tenedor, {container_attr: {class: 'col-md-6'}}) }}
+</div>
+
+{{ form_row(form.viviendaActual) }}
+
+{{ form_end(form) }}

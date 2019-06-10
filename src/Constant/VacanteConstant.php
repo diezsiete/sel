@@ -96,11 +96,6 @@ class VacanteConstant
         5 => 'SUPERIOR'
     ];
 
-    const GENERO = [
-        1 => 'FEMENINO',
-        2 => 'MASCULINO',
-        3 => 'OTRO'
-    ];
     const EMPRESA = [
         1 => 'PTA',
         2 => 'SERVILABOR'

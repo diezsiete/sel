@@ -1,37 +1,37 @@
-{{ form_start(experienciaForm, { attr: {
+{{ form_start(form, { attr: {
     class: 'form-entity',
     novalidate:'novalidate',
     'data-url': path('hv_entity_update', {'entity': 'experiencia'})
 }}) }}
 
 <div class="form-row">
-    {{ form_row(experienciaForm.empresa, {container_attr: {class: 'col-md-6'}}) }}
-    {{ form_row(experienciaForm.cargo, {container_attr: {class: 'col-md-6'}}) }}
+    {{ form_row(form.empresa, {container_attr: {class: 'col-md-6'}}) }}
+    {{ form_row(form.cargo, {container_attr: {class: 'col-md-6'}}) }}
 </div>
 
 <div class="form-row">
-    {{ form_row(experienciaForm.area, {container_attr: {class: 'col-md-6'}, attr: {class: 'chosen'}}) }}
-    {{ form_row(experienciaForm.duracion, {container_attr: {class: 'col-md-6'}}) }}
+    {{ form_row(form.area, {container_attr: {class: 'col-md-6'}, attr: {class: 'chosen'}}) }}
+    {{ form_row(form.duracion, {container_attr: {class: 'col-md-6'}}) }}
 </div>
 
 <div class="form-row">
-    {{ form_row(experienciaForm.descripcion, {container_attr: {class: 'col-md-6'}}) }}
-    {{ form_row(experienciaForm.logrosObtenidos, {container_attr: {class: 'col-md-6'}}) }}
+    {{ form_row(form.descripcion, {container_attr: {class: 'col-md-6'}}) }}
+    {{ form_row(form.logrosObtenidos, {container_attr: {class: 'col-md-6'}}) }}
 </div>
 
-{{ form_row(experienciaForm.motivoRetiro) }}
+{{ form_row(form.motivoRetiro) }}
 
 <div class="form-row">
-    {{ form_row(experienciaForm.jefeInmediato, {container_attr: {class: 'col-md-6'}}) }}
-    {{ form_row(experienciaForm.telefonoJefe, {container_attr: {class: 'col-md-6'}}) }}
+    {{ form_row(form.jefeInmediato, {container_attr: {class: 'col-md-6'}}) }}
+    {{ form_row(form.telefonoJefe, {container_attr: {class: 'col-md-6'}}) }}
 </div>
 
 
 <div class="form-row">
-    {{ form_row(experienciaForm.salarioBasico, {container_attr: {class: 'col-md-4'}}) }}
-    {{ form_row(experienciaForm.fechaIngreso, {container_attr: {class: 'col-md-4'}}) }}
-    {{ form_row(experienciaForm.fechaRetiro, {container_attr: {class: 'col-md-4'}}) }}
+    {{ form_row(form.salarioBasico, {container_attr: {class: 'col-md-4'}}) }}
+    {{ form_row(form.fechaIngreso, {container_attr: {class: 'col-md-4'}}) }}
+    {{ form_row(form.fechaRetiro, {container_attr: {class: 'col-md-4'}}) }}
 </div>
 
 
-{{ form_end(experienciaForm) }}
+{{ form_end(form) }}
