@@ -4,12 +4,15 @@ namespace App\Form;
 
 use App\Constant\HvConstant;
 use App\Constant\VacanteConstant;
+use App\Entity\Ciudad;
 use App\Entity\Dpto;
 use App\Entity\Hv;
 use App\Entity\Pais;
+use App\Form\Model\HvDatosBasicosModel;
 use App\Repository\UsuarioRepository;
 use App\Validator\IdentificacionUnica;
 use App\Validator\IdentificacionUnicaValidator;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -75,52 +78,44 @@ class HvFormType extends AbstractType
         $builder
             ->add('primerNombre', TextType::class, [
                 'label' => 'Primer nombre',
-                'mapped' => false,
                 'required' => true,
-                'constraints' => [
-                    new NotBlank(['message' => 'Ingrese primer nombre'])
-                ]
             ])
             ->add('segundoNombre', TextType::class, [
                 'label' => 'Segundo nombre',
-                'mapped' => false,
                 'required' => false,
             ])
             ->add('primerApellido', TextType::class, [
                 'label' => 'Primer apellido',
-                'mapped' => false,
                 'required' => true,
-                'constraints' => [
-                    new NotBlank(['message' => 'Ingrese primer apellido'])
-                ]
             ])
             ->add('segundoApellido', TextType::class, [
                 'label' => 'Segundo apellido',
-                'mapped' => false,
                 'required' => false,
             ])
             ->add('identificacion', NumberType::class, [
                 'html5' => false,
                 'label' => 'Identificación',
-                'mapped' => false,
                 'required' => true,
-                'constraints' => [
-                    new NotBlank(['message' => 'Ingrese identificación']),
-                    new IdentificacionUnica(),
-                ]
             ])
+
+            ->add('email', EmailType::class, [
+                'required' => true,
+            ])
+
             ->add('identificacionTipo', ChoiceType::class, [
                 'choices' => array_flip(HvConstant::IDENTIFICACION_TIPO),
                 'label' => 'Tipo de identificación',
                 'required' => true
             ])
-            ->add('identPais', null, [
+            ->add('identPais', EntityType::class, [
+                'class' => Pais::class,
                 'label' => 'Pais de la identificación',
                 'placeholder' => 'Seleccione...',
             ])
             ->add('identDpto')
 
-            ->add('nacPais', null, [
+            ->add('nacPais', EntityType::class, [
+                'class' => Pais::class,
                 'label' => 'Pais de nacimiento',
                 'placeholder' => 'Seleccione...'
             ])
@@ -160,21 +155,13 @@ class HvFormType extends AbstractType
                 'required' => true,
             ])
 
-
-            ->add('email', EmailType::class, [
-                'mapped' => false,
-                'required' => true,
-                'constraints' => [
-                    new NotBlank(['message' => 'Ingrese email']),
-                    new Email(['message' => 'Ingrese un email valido'])
-                ]
-            ])
             ->add('emailAlt', EmailType::class, [
                 'label' => 'Email alternativo',
                 'required' => false,
             ])
 
-            ->add('resiPais', null, [
+            ->add('resiPais', EntityType::class, [
+                'class' => Pais::class,
                 'label' => 'Pais donde vive',
                 'placeholder' => 'Seleccione...'
             ])
@@ -189,8 +176,9 @@ class HvFormType extends AbstractType
             ->add('telefono')
             ->add('celular')
 
-            ->add('nivelAcademico')
-
+            ->add('nivelAcademico', ChoiceType::class, [
+                'choices' => array_flip(HvConstant::NIVEL_ACADEMICO)
+            ])
             ->add('estatura', null, [
                 'label' => 'Estatura (Metros)'
             ])
@@ -235,18 +223,18 @@ class HvFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Hv::class,
+            'data_class' => HvDatosBasicosModel::class,
         ]);
     }
 
     private function setupDptoField(FormInterface $form, ?Pais $pais, array $locationConfig)
     {
-        $this->setupLocationField($form, !is_object($pais), $locationConfig);
+        $this->setupLocationField($form, !is_object($pais), $locationConfig + ['class' => Dpto::class]);
     }
 
     private function setupCiudadField(FormInterface $form, ?Dpto $dpto, array $locationConfig)
     {
-        $this->setupLocationField($form, !is_object($dpto), $locationConfig);
+        $this->setupLocationField($form, !is_object($dpto), $locationConfig + ['class' => Ciudad::class]);
     }
 
 
@@ -256,12 +244,14 @@ class HvFormType extends AbstractType
             'label' => $locationConfig['label'],
             'placeholder' => 'Seleccione...',
             'required' => false,
+            'class' => $locationConfig['class'],
         ];
-        $type = null;
+        $type = EntityType::class;
         if ($disabled) {
             $type = ChoiceType::class;
             $options['disabled'] = true;
             $options['choices'] = [];
+            unset($options['class']);
         }
         $form->add($locationConfig['name'], $type, $options);
     }

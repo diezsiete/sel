@@ -27,7 +27,7 @@ class IdiomaDataTableType implements DataTableTypeInterface
      */
     public function configure(DataTable $dataTable, array $options)
     {
-        $usuario = $options['usuario'];
+        $hv = $options['hv'];
 
         $dataTable
             ->add('idiomaCodigo', TextColumn::class, ['label' => 'Idioma', 'render' => function($id) {
@@ -49,12 +49,12 @@ class IdiomaDataTableType implements DataTableTypeInterface
             ]])
             ->createAdapter(ORMAdapter::class, [
                 'entity' => Idioma::class,
-                'query' => function (QueryBuilder $builder) use ($usuario) {
+                'query' => function (QueryBuilder $builder) use ($hv) {
                     $builder
                         ->select('i')
                         ->from(Idioma::class, 'i')
-                        ->join( 'i.hv', 'hv', 'WITH', 'hv.usuario = :usuario')
-                        ->setParameter('usuario', $usuario);
+                        ->where('i.hv = :hv')
+                        ->setParameter('hv', $hv);
                 },
             ]);
     }

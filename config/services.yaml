@@ -72,3 +72,11 @@ services:
         tags:
             # The alias is what is used to retrieve the menu
             - { name: knp_menu.renderer, alias: custom }
+
+
+    session:
+        class: Symfony\Component\HttpFoundation\Session\Session
+        arguments: ['@session.storage', '@session.namespacedattributebag', '@session.flash_bag']
+
+    session.namespacedattributebag:
+        class: Symfony\Component\HttpFoundation\Session\Attribute\NamespacedAttributeBag

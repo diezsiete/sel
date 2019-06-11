@@ -18,82 +18,47 @@ use App\Entity\Usuario;
 use App\Form\EstudioFormType;
 use App\Form\ExperienciaFormType;
 use App\Form\FamiliarFormType;
+use App\Form\HvFlow;
 use App\Form\HvFormType;
 use App\Form\IdiomaFormType;
+use App\Form\Model\HvDatosBasicosModel;
 use App\Form\RedSocialFormType;
 use App\Form\ReferenciaFormType;
 use App\Form\ViviendaFormType;
 use App\Repository\HvRepository;
+use App\Service\HvResolver;
 use Omines\DataTablesBundle\DataTableFactory;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 class HvController extends BaseController
 {
+
     /**
-     * @Route("/hv/crear", name="hv_crear")
+     * @var HvResolver
      */
-    public function crear(Request $request)
+    private $hvResolver;
+
+    public function __construct(HvResolver $hvResolver)
     {
-
-        $form = $this->createForm(HvFormType::class);
-        $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()) {
-            /** @var Hv $hv */
-            $hv = $form->getData();
-
-            $primerNombre = $form['primerNombre']->getData();
-            $segundoNombre = $form['segundoNombre']->getData();
-            $primerApellido = $form['primerApellido']->getData();
-            $segundoApellido = $form['segundoApellido']->getData();
-            $identificacion = $form['identificacion']->getData();
-            $email = $form['email']->getData();
-
-            $usuario = new Usuario();
-            $usuario->setPrimerNombre($primerNombre)
-                ->setSegundoNombre($segundoNombre)
-                ->setPrimerApellido($primerApellido)
-                ->setSegundoApellido($segundoApellido)
-                ->setIdentificacion($identificacion)
-                ->setEmail($email)
-                ->aceptarTerminos();
-
-
-        }
-        return $this->render('hv/crear.html.twig', [
-            'hvForm' => $form->createView(),
-        ]);
+        $this->hvResolver = $hvResolver;
     }
 
     /**
-     * @Route("/hv/datos-basicos", name="hv_datos_basicos")
+     * @Route("/sel/hv/datos-basicos", name="hv_datos_basicos")
      */
     public function datosBasicos(Request $request, HvRepository $hvRepository)
     {
-        $hv = $hvRepository->findByUsuario($this->getUser());
+        $hvdto = new HvDatosBasicosModel();
+        $hvdto->fillFromEntities($this->getUser(), $hvRepository->findByUsuario($this->getUser()));
 
-        $form = $this->createForm(HvFormType::class, $hv);
+        $form = $this->createForm(HvFormType::class, $hvdto);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
-            /** @var Hv $hv */
-            $hv = $form->getData();
-
-            $primerNombre = $form['primerNombre']->getData();
-            $segundoNombre = $form['segundoNombre']->getData();
-            $primerApellido = $form['primerApellido']->getData();
-            $segundoApellido = $form['segundoApellido']->getData();
-            $identificacion = $form['identificacion']->getData();
-            $email = $form['email']->getData();
-
-            $usuario = new Usuario();
-            $usuario->setPrimerNombre($primerNombre)
-                ->setSegundoNombre($segundoNombre)
-                ->setPrimerApellido($primerApellido)
-                ->setSegundoApellido($segundoApellido)
-                ->setIdentificacion($identificacion)
-                ->setEmail($email)
-                ->aceptarTerminos();
+            /** @var HvDatosBasicosModel $hvdto */
+            $hvdto = $form->getData();
         }
         return $this->render('hv/datos-basicos.html.twig', [
             'hvForm' => $form->createView(),
@@ -101,66 +66,66 @@ class HvController extends BaseController
     }
 
     /**
-     * @Route("/hv/estudio", name="hv_estudio")
+     * @Route("/sel/hv/estudio", name="hv_estudio")
      */
     public function estudio(Request $request, DataTableFactory $dataTableFactory)
     {
         return $this->hvEntityPage($request, $dataTableFactory, EstudioDataTableType::class,
-            EstudioFormType::class, 'hv/estudio.html.twig');
+            EstudioFormType::class, 'hv/hv-entity/estudio.html.twig');
     }
 
     /**
-     * @Route("/hv/experiencia", name="hv_experiencia")
+     * @Route("/sel/hv/experiencia", name="hv_experiencia")
      */
     public function experiencia(Request $request, DataTableFactory $dataTableFactory)
     {
         return $this->hvEntityPage($request, $dataTableFactory, ExperienciaDataTableType::class,
-            ExperienciaFormType::class, 'hv/experiencia.html.twig');
+            ExperienciaFormType::class, 'hv/hv-entity/experiencia.html.twig');
     }
 
     /**
-     * @Route("/hv/referencias", name="hv_referencias")
+     * @Route("/sel/hv/referencias", name="hv_referencias")
      */
     public function referencias(Request $request, DataTableFactory $dataTableFactory)
     {
         return $this->hvEntityPage($request, $dataTableFactory, ReferenciaDataTableType::class,
-            ReferenciaFormType::class, 'hv/referencias.html.twig');
+            ReferenciaFormType::class, 'hv/hv-entity/referencias.html.twig');
     }
 
     /**
-     * @Route("/hv/redes-sociales", name="hv_redes_sociales")
+     * @Route("/sel/hv/redes-sociales", name="hv_redes_sociales")
      */
     public function redesSociales(Request $request, DataTableFactory $dataTableFactory)
     {
         return $this->hvEntityPage($request, $dataTableFactory, RedSocialDataTableType::class,
-            RedSocialFormType::class, 'hv/redes-sociales.html.twig');
+            RedSocialFormType::class, 'hv/hv-entity/redes-sociales.html.twig');
     }
 
     /**
-     * @Route("/hv/familiares", name="hv_familiares")
+     * @Route("/sel/hv/familiares", name="hv_familiares")
      */
     public function familiares(Request $request, DataTableFactory $dataTableFactory)
     {
         return $this->hvEntityPage($request, $dataTableFactory, FamiliarDataTableType::class,
-            FamiliarFormType::class, 'hv/familiares.html.twig');
+            FamiliarFormType::class, 'hv/hv-entity/familiares.html.twig');
     }
 
     /**
-     * @Route("/hv/vivienda", name="hv_vivienda")
+     * @Route("/sel/hv/vivienda", name="hv_vivienda")
      */
     public function vivienda(Request $request, DataTableFactory $dataTableFactory)
     {
         return $this->hvEntityPage($request, $dataTableFactory, ViviendaDataTableType::class,
-            ViviendaFormType::class, 'hv/vivienda.html.twig');
+            ViviendaFormType::class, 'hv/hv-entity/vivienda.html.twig');
     }
 
     /**
-     * @Route("/hv/idiomas", name="hv_idiomas")
+     * @Route("/sel/hv/idiomas", name="hv_idiomas")
      */
     public function idiomas(Request $request, DataTableFactory $dataTableFactory)
     {
         return $this->hvEntityPage($request, $dataTableFactory, IdiomaDataTableType::class,
-            IdiomaFormType::class, 'hv/idiomas.html.twig');
+            IdiomaFormType::class, 'hv/hv-entity/idiomas.html.twig');
     }
 
     /**
@@ -174,16 +139,14 @@ class HvController extends BaseController
     /**
      * @Route("/hv/entity/update/{entity}/{id}", name="hv_entity_update", defaults={"id"=null})
      */
-    public function entityUpdate(HvEntity $entity, Request $request, HvRepository $hvRepository, $formType)
+    public function entityUpdate(HvEntity $entity, Request $request, HvResolver $hvResolver, $formType)
     {
         $data = json_decode($request->getContent(), true);
         if ($data === null) {
             throw new BadRequestHttpException('Invalid JSON');
         }
 
-        if(!$entity->getId()) {
-            $entity->setHv($hvRepository->findByUsuario($this->getUser()));
-        }
+        $entity->setHv($hvResolver->getHv());
 
         $form = $this->createForm($formType, $entity);
         $form->submit($data);
@@ -245,7 +208,7 @@ class HvController extends BaseController
     {
         $table = $dataTableFactory->createFromType(
             $datatableType,
-            ['usuario' => $this->getUser()],
+            ['hv' => $this->hvResolver->getHv()],
             ['searching' => false, 'paging' => false]
         );
         $table->handleRequest($request);

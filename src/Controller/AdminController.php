@@ -17,7 +17,7 @@ class AdminController extends AbstractController
 {
 
     /**
-     * @Route("/admin/usuarios", name="admin_usuarios")
+     * @Route("/sel/admin/usuarios", name="admin_usuarios")
      */
     public function usuarios(DataTableFactory $dataTableFactory, Request $request)
     {
@@ -32,7 +32,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/convenios", name="admin_convenios", defaults={"header": "Convenios"})
+     * @Route("/sel/admin/convenios", name="admin_convenios", defaults={"header": "Convenios"})
      */
     public function convenios(DataTableFactory $dataTableFactory, Request $request)
     {

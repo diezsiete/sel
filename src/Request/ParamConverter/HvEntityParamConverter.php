@@ -54,7 +54,7 @@ class HvEntityParamConverter implements ParamConverterInterface
                 ->getRepository($fullClassName);
             $entity = $repository->find($id);
             if(!$entity) {
-                $message = sprintf('%s object not found by the @%s annotation.', $class, $this->getAnnotationName($configuration));
+                $message = sprintf('%s object not found by the @%s annotation.', $className, $this->getAnnotationName($configuration));
                 throw new NotFoundHttpException($message);
             }
         } else {

@@ -1,0 +1,15 @@
+{% extends 'hv/base-hv-entity.html.twig' %}
+
+{% block card_title %}
+    Vivienda
+{% endblock %}
+{% block card_body %}
+    <p class="lead">
+        Ingrese en el cuadro detalle de su vivienda, o viviendas
+    </p>
+    {{ parent() }}
+{% endblock %}
+
+{% block modal_body %}
+    {{ include('hv/hv-entity/_vivienda-form.html.twig') }}
+{% endblock %}

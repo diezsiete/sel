@@ -14,7 +14,7 @@ class VacanteAdminController extends BaseController
 {
 
     /**
-     * @Route("/admin/vacante/listado", name="admin_vacante_listado")
+     * @Route("/sel/admin/vacante/listado", name="admin_vacante_listado")
      */
     public function listado(DataTableFactory $dataTableFactory, Request $request)
     {
@@ -29,7 +29,7 @@ class VacanteAdminController extends BaseController
     }
 
     /**
-     * @Route("/admin/vacante/crear", name="admin_vacante_crear")
+     * @Route("/sel/admin/vacante/crear", name="admin_vacante_crear")
      */
     public function crear(Request $request)
     {
@@ -55,7 +55,7 @@ class VacanteAdminController extends BaseController
     }
 
     /**
-     * @Route("/admin/vacante/editar/{vacante}", name="admin_vacante_editar")
+     * @Route("/sel/admin/vacante/editar/{vacante}", name="admin_vacante_editar")
      */
     public function editar(Request $request, Vacante $vacante)
     {
@@ -77,7 +77,7 @@ class VacanteAdminController extends BaseController
     }
 
     /**
-     * @Route("/admin/vacante/borrar/{vacante}", name="admin_vacante_borrar")
+     * @Route("/sel/admin/vacante/borrar/{vacante}", name="admin_vacante_borrar")
      */
     public function borrar(Vacante $vacante)
     {
@@ -89,7 +89,7 @@ class VacanteAdminController extends BaseController
     }
 
     /**
-     * @Route("/admin/vacante/subnivel-select", name="admin_vacante_subnivel_select")
+     * @Route("/sel/admin/vacante/subnivel-select", name="admin_vacante_subnivel_select")
      * @IsGranted("ROLE_USER")
      */
     public function subnivelSelect(Request $request)

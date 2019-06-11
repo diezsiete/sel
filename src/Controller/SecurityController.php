@@ -34,7 +34,7 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/perfil", name="app_profile", defaults={"header": "Perfil"})
+     * @Route("/sel/perfil", name="app_profile", defaults={"header": "Perfil"})
      */
     public function profile(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {

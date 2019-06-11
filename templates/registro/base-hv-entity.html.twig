@@ -1,0 +1,32 @@
+{% extends 'hv/base-hv-entity.html.twig' %}
+
+{% block tabs %}
+{% endblock %}
+
+{% block card_title %}
+    Estudios
+{% endblock %}
+{% block card_body %}
+    {% block card_body_text %}
+    {% endblock %}
+    <div class="alerts"></div>
+    {{ parent() }}
+    <a class="crear-entity btn btn-primary pull-right" href="#modalForm">Agregar</a>
+{% endblock %}
+
+{% block card_footer %}
+    <a class="btn btn-default pull-left anterior" href="{{ path(prevRoute) }}"><i class="fas fa-angle-left"></i> Anterior</a>
+    <a class="btn btn-success pull-right disabled siguiente" href="{{ path(nextRoute) }}">Siguiente <i class="fas fa-angle-right"></i></a>
+{% endblock %}
+
+{% block modal_body %}
+    {{ include('hv/hv-entity/_estudio-form.html.twig') }}
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+    <script src="{{ asset('js/sel/registro/registro.js') }}"></script>
+{% endblock %}

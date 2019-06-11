@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Registro{% endblock %}
+
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('vendor/chosen/chosen.min.css') }}">
@@ -7,17 +9,15 @@
 {% endblock %}
 
 {% block body %}
-    {{ parent() }}
-    {{ include('hv/_tabs-hv.html.twig') }}
-
     {{ form_start(hvForm, {attr: {novalidate: 'novalidate'}}) }}
 
     {{ include('hv/_datos-basicos-form.html.twig') }}
 
     <div class="row">
         <div class="col-md-12 text-right mt-3">
-            <button class="btn btn-primary">
-                Guardar
+            <button class="btn btn-success">
+                Siguiente
+                <i class="fas fa-angle-right"></i>
             </button>
         </div>
     </div>

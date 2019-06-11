@@ -26,7 +26,7 @@ class ReferenciaDataTableType implements DataTableTypeInterface
      */
     public function configure(DataTable $dataTable, array $options)
     {
-        $usuario = $options['usuario'];
+        $hv = $options['hv'];
 
         $dataTable
             ->add('tipo', TextColumn::class, ['label' => 'Tipo de referencia', 'render' => function($id) {
@@ -49,12 +49,12 @@ class ReferenciaDataTableType implements DataTableTypeInterface
             ]])
             ->createAdapter(ORMAdapter::class, [
                 'entity' => Referencia::class,
-                'query' => function (QueryBuilder $builder) use ($usuario) {
+                'query' => function (QueryBuilder $builder) use ($hv) {
                     $builder
                         ->select('r')
                         ->from(Referencia::class, 'r')
-                        ->join( 'r.hv', 'hv', 'WITH', 'hv.usuario = :usuario')
-                        ->setParameter('usuario', $usuario);
+                        ->where('r.hv = :hv')
+                        ->setParameter('hv', $hv);
                 },
             ]);
     }

@@ -24,7 +24,7 @@ class ExperienciaDataTableType implements DataTableTypeInterface
      */
     public function configure(DataTable $dataTable, array $options)
     {
-        $usuario = $options['usuario'];
+        $hv = $options['hv'];
 
         $dataTable
             ->add('empresa', TextColumn::class, ['label' => 'Nombre de la empresa'])
@@ -46,14 +46,14 @@ class ExperienciaDataTableType implements DataTableTypeInterface
             ]])
             ->createAdapter(ORMAdapter::class, [
                 'entity' => Experiencia::class,
-                'query' => function (QueryBuilder $builder) use ($usuario) {
+                'query' => function (QueryBuilder $builder) use ($hv) {
                     $builder
                         ->select('e')
                         ->from(Experiencia::class, 'e')
                         ->join('e.area', 'area')
-                        ->join( 'e.hv', 'hv', 'WITH', 'hv.usuario = :usuario')
+                        ->where('e.hv = :hv')
                         ->orderBy('e.id', 'DESC')
-                        ->setParameter('usuario', $usuario);
+                        ->setParameter('hv', $hv);
                 },
             ]);
     }

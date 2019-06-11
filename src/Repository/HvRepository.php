@@ -20,7 +20,7 @@ class HvRepository extends ServiceEntityRepository
         parent::__construct($registry, Hv::class);
     }
 
-    public function findByUsuario(Usuario $usuario)
+    public function findByUsuario($usuario)
     {
         return $this->findOneBy(['usuario' => $usuario]);
     }

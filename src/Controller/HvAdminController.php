@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class HvAdminController extends AbstractController
 {
     /**
-     * @Route("/admin/hv/listado", name="admin_hv_listado")
+     * @Route("/sel/admin/hv/listado", name="admin_hv_listado")
      */
     public function listado(DataTableFactory $dataTableFactory, Request $request)
     {

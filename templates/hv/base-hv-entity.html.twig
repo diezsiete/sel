@@ -1,4 +1,4 @@
-{% extends 'hv/base-hv.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -10,63 +10,59 @@
 {% block body %}
     {{ parent() }}
 
-    <div class="row">
-        <div class="col-lg-12">
-            <section class="card">
-                <header class="card-header">
-                    <h2 class="card-title">
-                        {% block card_title %}
-                            Estudios
-                        {% endblock %}
-                    </h2>
-                </header>
-                <div class="card-body">
-                    <p class="lead">
-                        {% block card_body_lead %}
-                        {% endblock %}
-                    </p>
-                    <p>
-                        {% block card_body_text %}
+    {% block tabs %}
+        {{ include('hv/_tabs-hv.html.twig') }}
+    {% endblock %}
 
-                        {% endblock %}
-                    </p>
-
-                    <div id="datatable">Loading...</div>
-
-                </div>
-            </section>
-            <footer class="card-footer text-right">
-                <a class="crear-entity btn btn-primary" href="#modalForm">Agregar</a>
-            </footer>
-        </div>
-    </div>
-
-    <!-- Modal Form -->
-    <div id="modalForm" class="modal-block modal-block-primary mfp-hide">
+<div class="row">
+    <div class="col-lg-12">
         <section class="card">
             <header class="card-header">
                 <h2 class="card-title">
-                    {% block modal_title %}
-                        Agregar
+                    {% block card_title %}
                     {% endblock %}
                 </h2>
             </header>
-            <div class="card-body" data-loading-overlay>
-                {% block modal_body %}
+            <div class="card-body">
+                {% block card_body %}
+                    <div id="datatable">Loading...</div>
                 {% endblock %}
             </div>
-            <footer class="card-footer">
-                <div class="row">
-                    <div class="col-md-12 text-right">
-                        <button class="btn btn-primary modal-confirm">Guardar</button>
-                        <button class="btn btn-default modal-dismiss">Cancelar</button>
-                    </div>
-                </div>
-            </footer>
         </section>
+        <footer class="card-footer">
+            {% block card_footer %}
+                <a class="crear-entity btn btn-primary pull-right" href="#modalForm">Agregar</a>
+            {% endblock %}
+        </footer>
     </div>
+</div>
 
-    {{ include('default/_modal-borrar.html.twig') }}
+<!-- Modal Form -->
+<div id="modalForm" class="modal-block modal-block-primary mfp-hide">
+    <section class="card">
+        <header class="card-header">
+            <h2 class="card-title">
+                {% block modal_title %}
+                    Agregar
+                {% endblock %}
+            </h2>
+        </header>
+        <div class="card-body" data-loading-overlay>
+            {% block modal_body %}
+            {% endblock %}
+        </div>
+        <footer class="card-footer">
+            <div class="row">
+                <div class="col-md-12 text-right">
+                    <button class="btn btn-primary modal-confirm">Guardar</button>
+                    <button class="btn btn-default modal-dismiss">Cancelar</button>
+                </div>
+            </div>
+        </footer>
+    </section>
+</div>
+
+{{ include('default/_modal-borrar.html.twig') }}
 
 {% endblock %}
 

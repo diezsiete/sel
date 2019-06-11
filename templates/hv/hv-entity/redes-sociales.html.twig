@@ -1,0 +1,15 @@
+{% extends 'hv/base-hv-entity.html.twig' %}
+
+{% block card_title %}
+    Redes sociales
+{% endblock %}
+{% block card_body %}
+    <p class="lead">
+        Ingrese en el cuadro redes sociales como <b>Whatsapp</b>, Facebook o Twitter.
+    </p>
+    {{ parent() }}
+{% endblock %}
+
+{% block modal_body %}
+    {{ include('hv/hv-entity/_red-social-form.html.twig') }}
+{% endblock %}

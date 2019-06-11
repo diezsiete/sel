@@ -27,7 +27,7 @@ class ViviendaDataTableType implements DataTableTypeInterface
      */
     public function configure(DataTable $dataTable, array $options)
     {
-        $usuario = $options['usuario'];
+        $hv = $options['hv'];
 
         $dataTable
             ->add('tipoVivienda', TextColumn::class, ['label' => 'Tipo de vivienda', 'render' => function($val) {
@@ -51,13 +51,13 @@ class ViviendaDataTableType implements DataTableTypeInterface
             ]])
             ->createAdapter(ORMAdapter::class, [
                 'entity' => Vivienda::class,
-                'query' => function (QueryBuilder $builder) use ($usuario) {
+                'query' => function (QueryBuilder $builder) use ($hv) {
                     $builder
                         ->select('v')
                         ->from(Vivienda::class, 'v')
                         ->join('v.ciudad', 'ciudad')
-                        ->join( 'v.hv', 'hv', 'WITH', 'hv.usuario = :usuario')
-                        ->setParameter('usuario', $usuario);
+                        ->where('v.hv = :hv')
+                        ->setParameter('hv', $hv);
                 },
             ]);
     }

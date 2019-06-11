@@ -28,7 +28,7 @@ class RedSocialDataTableType implements DataTableTypeInterface
      */
     public function configure(DataTable $dataTable, array $options)
     {
-        $usuario = $options['usuario'];
+        $hv = $options['hv'];
 
         $dataTable
             ->add('tipo', TextColumn::class, ['label' => 'Red social', 'render' => function($id) {
@@ -48,12 +48,12 @@ class RedSocialDataTableType implements DataTableTypeInterface
             ]])
             ->createAdapter(ORMAdapter::class, [
                 'entity' => RedSocial::class,
-                'query' => function (QueryBuilder $builder) use ($usuario) {
+                'query' => function (QueryBuilder $builder) use ($hv) {
                     $builder
                         ->select('rs')
                         ->from(RedSocial::class, 'rs')
-                        ->join( 'rs.hv', 'hv', 'WITH', 'hv.usuario = :usuario')
-                        ->setParameter('usuario', $usuario);
+                        ->where('rs.hv = :hv')
+                        ->setParameter('hv', $hv);
                 },
             ]);
     }

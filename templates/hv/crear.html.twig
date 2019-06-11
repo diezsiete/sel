@@ -3,34 +3,23 @@
 {% block title %}Hoja de vida{% endblock %}
 {% block page_header_title %}Hoja de vida{% endblock %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('vendor/chosen/chosen.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('vendor/bootstrap-datepicker/css/bootstrap-datepicker3.css') }}" />
-{% endblock %}
-
 {% block body %}
-    <div class="tab-navigation collapse">
-        <nav>
-            {{ knp_menu_render(
-                'hv', {
-                    'currentClass': 'nav-active',
-                    'rootClass': 'nav nav-pills',
-                }, 'custom') }}
-        </nav>
+    <div>
+        Steps:
+        {% include '@CraueFormFlow/FormFlow/stepList.html.twig' %}
     </div>
-    {{ include('hv/_hv-form.html.twig') }}
-{% endblock %}
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
 
-{% block javascripts_vendor %}
-    {{ parent() }}
-    <script src="{{ asset('vendor/chosen/chosen.jquery.min.js') }}"></script>
-    <script src="{{ asset('vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
-    <script src="{{ asset('vendor/jquery-maskedinput/jquery.maskedinput.js') }}"></script>
-{% endblock %}
-{% block javascripts %}
-    {{ parent() }}
-    <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
-    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
-    <script src="{{ asset('js/sel/hv/hv-form.js') }}"></script>
+    {% if flow.getCurrentStepNumber() == 1 %}
+        <div>
+            When selecting four wheels you have to choose the engine in the next step.<br />
+            {{ form_row(form.numberOfWheels) }}
+        </div>
+    {% endif %}
+
+    {{ form_rest(form) }}
+
+    {% include '@CraueFormFlow/FormFlow/buttons.html.twig' %}
+    {{ form_end(form) }}
 {% endblock %}

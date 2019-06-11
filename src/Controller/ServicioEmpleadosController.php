@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ServicioEmpleadosController extends BaseController
 {
     /**
-     * @Route("/comprobantes", name="app_comprobantes", defaults={"header": "Comprobantes de pago"})
+     * @Route("/sel/se/comprobantes", name="app_comprobantes", defaults={"header": "Comprobantes de pago"})
      */
     public function comprobantes(DataTableFactory $dataTableFactory, Request $request)
     {
@@ -32,7 +32,7 @@ class ServicioEmpleadosController extends BaseController
 
     /**
      * TODO: seguridad solo puede ver su comprobante
-     * @Route("/comprobante/{comprobante}", name="app_comprobante")
+     * @Route("/sel/se/comprobante/{comprobante}", name="app_comprobante")
      */
     public function comprobante(ReportesServicioEmpleados $reportes, ReporteNomina $comprobante)
     {
@@ -43,7 +43,7 @@ class ServicioEmpleadosController extends BaseController
     }
 
     /**
-     * @Route("/certificado-laboral", name="app_certificado_laboral", defaults={ "header" :"Certificado Laboral"})
+     * @Route("/sel/se/certificado-laboral", name="app_certificado_laboral", defaults={ "header" :"Certificado Laboral"})
      */
     public function certificadoLaboral(ReportesServicioEmpleados $reportes)
     {
@@ -55,7 +55,7 @@ class ServicioEmpleadosController extends BaseController
     }
 
     /**
-     * @Route("/certificado-laboral-pdf", name="app_certificado_laboral_pdf")
+     * @Route("/sel/se/certificado-laboral-pdf", name="app_certificado_laboral_pdf")
      */
     public function certificadoLaboralPdf(ReportesServicioEmpleados $reportes, PdfCartaLaboral $pdf)
     {
@@ -66,7 +66,7 @@ class ServicioEmpleadosController extends BaseController
     }
 
     /**
-     * @Route("/certificados-ingresos", name="app_certificados_ingresos")
+     * @Route("/sel/se/certificados-ingresos", name="app_certificados_ingresos")
      */
     public function certificadosIngresos(ReportesServicioEmpleados $reportes)
     {
@@ -77,7 +77,7 @@ class ServicioEmpleadosController extends BaseController
     }
 
     /**
-     * @Route("/certificado-ingresos/{periodo}", name="app_certificado_ingresos")
+     * @Route("/sel/se/certificado-ingresos/{periodo}", name="app_certificado_ingresos")
      */
     public function certificadoIngreso(ReportesServicioEmpleados $reportes, $periodo)
     {
@@ -86,7 +86,7 @@ class ServicioEmpleadosController extends BaseController
     }
 
     /**
-     * @Route("/liquidaciones-de-contrato", name="app_liquidaciones_de_contrato")
+     * @Route("/sel/se/liquidaciones-de-contrato", name="app_liquidaciones_de_contrato")
      */
     public function liquidacionesDeContrato(ReportesServicioEmpleados $reportes)
     {
@@ -97,7 +97,7 @@ class ServicioEmpleadosController extends BaseController
     }
 
     /**
-     * @Route("/liquidacion-de-contrato/{fechaIngreso}/{fechaRetiro}", name="app_liquidacion_de_contrato_pdf")
+     * @Route("/sel/se/liquidacion-de-contrato/{fechaIngreso}/{fechaRetiro}", name="app_liquidacion_de_contrato_pdf")
      */
     public function liquidacionDeContratoPdf(ReportesServicioEmpleados $reportes, $fechaIngreso, $fechaRetiro)
     {

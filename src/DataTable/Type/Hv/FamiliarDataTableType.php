@@ -26,7 +26,7 @@ class FamiliarDataTableType implements DataTableTypeInterface
      */
     public function configure(DataTable $dataTable, array $options)
     {
-        $usuario = $options['usuario'];
+        $hv = $options['hv'];
 
         $dataTable
             ->add('nombre', TextColumn::class, ['label' => 'Nombre'])
@@ -52,12 +52,12 @@ class FamiliarDataTableType implements DataTableTypeInterface
             ]])
             ->createAdapter(ORMAdapter::class, [
                 'entity' => Familiar::class,
-                'query' => function (QueryBuilder $builder) use ($usuario) {
+                'query' => function (QueryBuilder $builder) use ($hv) {
                     $builder
                         ->select('f')
                         ->from(Familiar::class, 'f')
-                        ->join( 'f.hv', 'hv', 'WITH', 'hv.usuario = :usuario')
-                        ->setParameter('usuario', $usuario);
+                        ->where('f.hv = :hv')
+                        ->setParameter('hv', $hv);
                 },
             ]);
     }

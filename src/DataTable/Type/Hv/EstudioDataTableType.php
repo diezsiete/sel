@@ -24,7 +24,7 @@ class EstudioDataTableType implements DataTableTypeInterface
      */
     public function configure(DataTable $dataTable, array $options)
     {
-        $usuario = $options['usuario'];
+        $hv = $options['hv'];
 
         $dataTable
             ->add('codigo', TextColumn::class, ['label' => 'Codigo', 'field' => 'codigo.nombre'])
@@ -44,15 +44,15 @@ class EstudioDataTableType implements DataTableTypeInterface
             ]])
             ->createAdapter(ORMAdapter::class, [
                 'entity' => Estudio::class,
-                'query' => function (QueryBuilder $builder) use ($usuario) {
+                'query' => function (QueryBuilder $builder) use ($hv) {
                     $builder
                         ->select('e')
                         ->from(Estudio::class, 'e')
                         ->join('e.codigo', 'codigo')
                         ->join('e.instituto', 'instituto')
-                        ->join( 'e.hv', 'hv', 'WITH', 'hv.usuario = :usuario')
+                        ->where('e.hv = :hv')
                         ->orderBy('e.id', 'DESC')
-                        ->setParameter('usuario', $usuario);
+                        ->setParameter('hv', $hv);
                 },
             ]);
     }

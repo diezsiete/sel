@@ -1,0 +1,26 @@
+{% extends 'hv/base-hv-entity.html.twig' %}
+
+{% block card_title %}
+    Estudios
+{% endblock %}
+{% block card_body %}
+    <p class="lead">
+        Agregue en el cuadro los estudios que ha realizado, o que se encuentra actualmente cursando.
+    </p>
+    {{ parent() }}
+{% endblock %}
+
+{% block modal_body %}
+    {{ include('hv/hv-entity/_estudio-form.html.twig') }}
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
