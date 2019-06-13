@@ -100,4 +100,15 @@ class VacanteConstant
         1 => 'PTA',
         2 => 'SERVILABOR'
     ];
+
+    const VIGENCIA = [
+        1 => ['nombre' => '3 dias', 'interval_spec' => 'P3D', 'mysql_interval' => 'DAY', 'mysql_interval_value' => 3],
+        2 => ['nombre' => '5 dias', 'interval_spec' => 'P5D', 'mysql_interval' => 'DAY', 'mysql_interval_value' => 5],
+        3 => ['nombre' => '8 dias', 'interval_spec' => 'P8D', 'mysql_interval' => 'DAY', 'mysql_interval_value' => 8],
+        4 => ['nombre' => '15 dias', 'interval_spec' => 'P15D', 'mysql_interval' => 'DAY', 'mysql_interval_value' => 15],
+        5 => ['nombre' => 'Un mes', 'interval_spec' => 'P1M', 'mysql_interval' => 'MONTH', 'mysql_interval_value' => 1],
+        6 => ['nombre' => 'Dos meses', 'interval_spec' => 'P2M', 'mysql_interval' => 'MONTH', 'mysql_interval_value' => 2],
+        7 => ['nombre' => 'Tres meses', 'interval_spec' => 'P3M', 'mysql_interval' => 'MONTH', 'mysql_interval_value' => 3],
+        8 => ['nombre' => 'Cierre del paquete', 'interval_spec' => 'P4M', 'mysql_interval' => 'MONTH', 'mysql_interval_value' => 4]
+    ];
 }

@@ -42,21 +42,13 @@ class MigrationUsuarioCommand extends MigrationCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $batchSize = 20;
         $sql = "SELECT * FROM `usuario` "
              . "WHERE ultimo_login IS NOT NULL OR DATE_FORMAT(creacion, \"%Y\") >= 2018 ";
-
         $sql = $this->addLimitToSql($sql);
 
+        $this->initProgressBar($this->countSql($sql));
 
-        $conn = $this->getSeConnection();
-        $count = $this->countSql($sql);
-        $progressBar = $this->initProgressBar($count);
-
-        $i = 0;
-        $em = $this->getDefaultManager();
-        $stmt = $conn->query($sql);
-        while ($row = $stmt->fetch()) {
+        while ($row = $this->fetch($sql)) {
             $roles = $this->migrateRoles($row['roles']);
 
             $creacion = \DateTime::createFromFormat('Y-m-d H:i:s', $row['creacion']);
@@ -98,18 +90,8 @@ class MigrationUsuarioCommand extends MigrationCommand
                 ->setPassword($this->passwordEncoder->encodePassword($usuario, $pss))
                 ->setType($type);
 
-            $em->persist($usuario);
-            if (($i % $batchSize) === 0) {
-                $em->flush(); // Executes all updates.
-                $em->clear(); // Detaches all objects from Doctrine!
-            }
-            ++$i;
-
-            $progressBar->advance();
+            $this->selPersist($usuario);
         }
-
-        $progressBar->finish();
-        $output->writeln("");
     }
 
     private function migrateRoles($roles)

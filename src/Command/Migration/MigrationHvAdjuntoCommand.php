@@ -61,7 +61,7 @@ class MigrationHvAdjuntoCommand extends MigrationCommand
         $sql = $this->addLimitToSql($sql);
         $this->initProgressBar($this->countSql($sql));
 
-        while ($row = $this->seFetch($sql)) {
+        while ($row = $this->fetch($sql)) {
             $hv = $this->getHvByUsuarioIdOld($row['usuario_id']);
             if($hv) {
                 $this->setHvAdjunto($hv, $row['adjunto']);

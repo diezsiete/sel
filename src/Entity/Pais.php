@@ -34,7 +34,7 @@ class Pais
     private $ciudades;
 
     /**
-     * @ORM\Column(type="string", length=7)
+     * @ORM\Column(type="string", length=7, nullable=true)
      */
     private $nId;
 

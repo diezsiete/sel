@@ -145,12 +145,6 @@ class Vacante
     private $licenciaConduccion;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\VacanteVigencia")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $vigencia;
-
-    /**
      * @ORM\Column(type="string", length=11, nullable=true)
      */
     private $empresa;
@@ -162,7 +156,7 @@ class Vacante
     private $publicada = true;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\VacanteRedSocial", mappedBy="vacante", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\VacanteRedSocial", mappedBy="vacante", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $redesSociales;
 
@@ -185,6 +179,21 @@ class Vacante
      * @ORM\Column(type="string", length=3)
      */
     private $nivelAcademico;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $activa = true;
+
+    /**
+     * @ORM\Column(type="smallint")
+     */
+    private $vigencia = 8;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $archivada = false;
 
 
     public function __construct()
@@ -535,7 +544,7 @@ class Vacante
         return $this->redesSociales;
     }
 
-    public function addRedesSociale(VacanteRedSocial $redesSociale): self
+    public function addRedesSocial(VacanteRedSocial $redesSociale): self
     {
         if (!$this->redesSociales->contains($redesSociale)) {
             $this->redesSociales[] = $redesSociale;
@@ -545,7 +554,7 @@ class Vacante
         return $this;
     }
 
-    public function removeRedesSociale(VacanteRedSocial $redesSociale): self
+    public function removeRedesSocial(VacanteRedSocial $redesSociale): self
     {
         if ($this->redesSociales->contains($redesSociale)) {
             $this->redesSociales->removeElement($redesSociale);
@@ -593,18 +602,6 @@ class Vacante
     public function setIdiomaDestreza(?string $idiomaDestreza): self
     {
         $this->idiomaDestreza = $idiomaDestreza;
-
-        return $this;
-    }
-
-    public function getVigencia(): ?VacanteVigencia
-    {
-        return $this->vigencia;
-    }
-
-    public function setVigencia(?VacanteVigencia $vigencia): self
-    {
-        $this->vigencia = $vigencia;
 
         return $this;
     }
@@ -681,6 +678,42 @@ class Vacante
     public function setNivelAcademico(string $nivelAcademico): self
     {
         $this->nivelAcademico = $nivelAcademico;
+
+        return $this;
+    }
+
+    public function getActiva(): ?bool
+    {
+        return $this->activa;
+    }
+
+    public function setActiva(bool $activa): self
+    {
+        $this->activa = $activa;
+
+        return $this;
+    }
+
+    public function getVigencia(): ?int
+    {
+        return $this->vigencia;
+    }
+
+    public function setVigencia(int $vigencia): self
+    {
+        $this->vigencia = $vigencia;
+
+        return $this;
+    }
+
+    public function getArchivada(): ?bool
+    {
+        return $this->archivada;
+    }
+
+    public function setArchivada(bool $archivada): self
+    {
+        $this->archivada = $archivada;
 
         return $this;
     }

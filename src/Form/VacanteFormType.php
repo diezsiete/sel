@@ -81,7 +81,8 @@ class VacanteFormType extends AbstractType
                 'label' => 'Concepto (Adicionales)',
                 'help' => 'Dar una pequeña descripción de la razón de la suma adicional',
             ])
-            ->add('nivelAcademico', null, [
+            ->add('nivelAcademico', ChoiceType::class, [
+                'choices' => array_flip(HvConstant::NIVEL_ACADEMICO),
                 'label' => 'Minimo nivel academico'
             ])
             ->add('nivelAcademicoCurso', null, [
@@ -118,7 +119,9 @@ class VacanteFormType extends AbstractType
                 'placeholder' => 'No aplica',
                 'required' => false,
             ])
-            ->add('vigencia', null, [
+            ->add('vigencia', ChoiceType::class, [
+                'choices' => array_flip(
+                    array_map(function($vigencia){ return $vigencia['nombre'];}, VacanteConstant::VIGENCIA)),
                 'label' => 'Vigencia',
                 'help' => 'Duración publicada en la página'
             ])

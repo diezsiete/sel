@@ -52,7 +52,7 @@ class MigrationHvEntityCommand extends MigrationCommand
 
         foreach($entities as $entity) {
             $sql = "SELECT * FROM " . $entity;
-            while ($row = $this->seFetch($sql)) {
+            while ($row = $this->fetch($sql)) {
                 $hv = $this->getHvByUsuarioIdOld($row['usuario_id']);
                 if ($hv) {
                     switch ($entity) {

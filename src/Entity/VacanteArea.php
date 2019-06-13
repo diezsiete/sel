@@ -38,6 +38,16 @@ class VacanteArea
         return $this->id;
     }
 
+    /**
+     * @param mixed $id
+     * @return VacanteArea
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
+
     public function getNombre(): ?string
     {
         return $this->nombre;

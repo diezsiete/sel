@@ -30,7 +30,7 @@ class MigrationHvCommand extends MigrationCommand
 
         $this->initProgressBar($this->countSql($sql));
 
-        while ($row = $this->seFetch($sql)) {
+        while ($row = $this->fetch($sql)) {
             $usuario = $this->getUsuarioByIdOld($row['usuario_id']);
             if($usuario) {
                 $hv = (new Hv())->setUsuario($usuario);

@@ -12,11 +12,16 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 abstract class MigrationCommand extends Command
 {
+    const CONNECTION_DEFAULT = "default";
+    const CONNECTION_SE = "se";
+    const CONNECTION_SE_VACANTES = "se_vacantes";
+
     /**
      * @var \Doctrine\Common\Persistence\ObjectManager
      */
@@ -45,7 +50,10 @@ abstract class MigrationCommand extends Command
 
     protected $batchSize = 20;
 
-    protected $seStmt = null;
+    /**
+     * @var \Doctrine\DBAL\Driver\Statement
+     */
+    protected $currentStmt = null;
 
     /**
      * @var string
@@ -68,6 +76,8 @@ abstract class MigrationCommand extends Command
      */
     private $output;
 
+    protected $connections = [];
+
     public function __construct(ManagerRegistry $managerRegistry)
     {
         parent::__construct();
@@ -80,7 +90,13 @@ abstract class MigrationCommand extends Command
         $this->offset = $input->getArgument('offset');
         $this->limit = $input->getArgument('limit');
         $this->output = $output;
+
+        if($input->getOption('down')) {
+            $this->setCode([$this, 'down']);
+        }
+
         $return = parent::run($input, $output);
+
 
         if($this->progressBar) {
             $this->progressBar->finish();
@@ -90,24 +106,19 @@ abstract class MigrationCommand extends Command
         return $return;
     }
 
+    protected function down()
+    {
+        $this->io->warning("Metodo down vacio");
+    }
+
     protected function configure()
     {
         parent::configure();
         $this
             ->addArgument('offset', InputArgument::OPTIONAL, 'offset')
             ->addArgument('limit', InputArgument::OPTIONAL, 'limit')
+            ->addOption('down', null, InputOption::VALUE_NONE);
         ;
-    }
-
-    /**
-     * @return Connection|object
-     */
-    protected function getSeConnection()
-    {
-        if(!$this->seConnection) {
-            $this->seConnection = $this->doctrine->getConnection('se');
-        }
-        return $this->seConnection;
     }
 
     /**
@@ -139,11 +150,9 @@ abstract class MigrationCommand extends Command
      * @param string $sql
      * @return int
      */
-    protected function countSql($sql, $conn = null)
+    protected function countSql($sql, $connectionName = self::CONNECTION_SE)
     {
-        if(!$conn) {
-            $conn = $this->getSeConnection();
-        }
+        $conn = $this->getConnection($connectionName);
         if (preg_match('/LIMIT *(\d+)(?:, *(\d+)|)/', $sql, $matches)) {
             if(count($matches) === 3) {
                 $count = (int)$matches[2];
@@ -164,18 +173,29 @@ abstract class MigrationCommand extends Command
         $em->flush();
     }
 
+    protected function flushAndClear()
+    {
+        $em = $this->getDefaultManager();
+        $em->flush();
+        $em->clear();
+    }
+
     /**
      * @param $idOld
      * @return Usuario|object|null
      */
-    protected function getUsuarioByIdOld($idOld)
+    protected function getUsuarioByIdOld($idOld, $errorMessage = null)
     {
         if(!$this->usuarioRepository) {
             $this->usuarioRepository = $this->getDefaultManager()->getRepository(Usuario::class);
         }
         $usuario = $this->usuarioRepository->findOneBy(['idOld' => $idOld]);
         if(!$usuario) {
-            $this->io->error("Usuario con idOld '" . $idOld. "' no encontrado");
+            if(!$errorMessage) {
+                $errorMessage = "Usuario con idOld '%id%' no encontrado";
+            }
+            $errorMessage = str_replace('%id%', $idOld, $errorMessage);
+            $this->io->error($errorMessage);
         }
         return $usuario;
     }
@@ -191,33 +211,83 @@ abstract class MigrationCommand extends Command
         return $sql;
     }
 
-    protected function seFetch($sql)
-    {
-        if(!$this->seStmt) {
-            $this->seStmt = $this->getSeConnection()->query($sql);
-        }
-        $row = $this->seStmt->fetch();
-        if(!$row) {
-            $em = $this->getDefaultManager();
-            $em->flush();
-            $em->clear();
-            $this->seStmt = null;
-            $this->batchCount = 0;
-        }
-        return $row;
-    }
-
     protected function selPersist($object)
     {
-        $em = $this->getDefaultManager();
-        $em->persist($object);
+        $this->getDefaultManager()->persist($object);
         if (($this->batchCount % $this->batchSize) === 0) {
-            $em->flush(); // Executes all updates.
-            $em->clear(); // Detaches all objects from Doctrine!
+            $this->flushAndClear();
         }
         $this->batchCount++;
         if($this->progressBar) {
             $this->progressBar->advance();
         }
+    }
+
+    /**
+     * @param $connectionName
+     * @return Connection|object
+     */
+    protected function getConnection($connectionName = self::CONNECTION_SE)
+    {
+        if(!isset($this->connections[$connectionName]) || $this->connections[$connectionName] === null) {
+            $this->connections[$connectionName] = $this->doctrine->getConnection($connectionName);
+        }
+        return $this->connections[$connectionName];
+    }
+
+    protected function fetch($sql, $connectionName = self::CONNECTION_SE)
+    {
+        if(!$this->currentStmt) {
+            $this->currentStmt = $this->getConnection($connectionName)->query($sql);
+        }
+
+        $row = $this->currentStmt->fetch();
+        if(!$row) {
+            $this->flushAndClear();
+            $this->currentStmt = null;
+            $this->batchCount = 0;
+        }
+        return $row;
+    }
+
+    protected function truncateTable(string $className, $disableForeignKeyChecks = true)
+    {
+        $em = $this->getDefaultManager();
+        $cmd = $em->getClassMetadata($className);
+        $connection = $this->getConnection(self::CONNECTION_DEFAULT);
+        $connection->beginTransaction();
+        try {
+            if($disableForeignKeyChecks) {
+                $connection->query('SET FOREIGN_KEY_CHECKS=0');
+            }
+            $connection->query('TRUNCATE TABLE '.$cmd->getTableName());
+            if($disableForeignKeyChecks) {
+                $connection->query('SET FOREIGN_KEY_CHECKS=1');
+            }
+            $connection->commit();
+            $em->flush();
+        } catch (\Exception $e) {
+            try {
+                $this->io->writeln('Can\'t truncate table ' . $cmd->getTableName() . '. Reason: ' . $e->getMessage(), TRUE);
+                $connection->rollback();
+                return false;
+            } catch (ConnectionException $connectionException) {
+                $this->io->writeln(STDERR, print_r('Can\'t rollback truncating table ' . $cmd->getTableName() . '. Reason: ' . $connectionException->getMessage(), TRUE));
+                return false;
+            }
+        }
+        return true;
+    }
+
+    protected function deleteTable(string $className)
+    {
+        $em = $this->getDefaultManager();
+        $cmd = $em->getClassMetadata($className);
+        $connection = $this->getConnection(self::CONNECTION_DEFAULT);
+        $connection->beginTransaction();
+
+        $connection->query('DELETE FROM '.$cmd->getTableName());
+        $connection->commit();
+        $em->flush();
     }
 }

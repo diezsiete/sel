@@ -38,6 +38,16 @@ class LicenciaConduccion
         return $this->id;
     }
 
+    /**
+     * @param mixed $id
+     * @return LicenciaConduccion
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
+
     public function getNombre(): ?string
     {
         return $this->nombre;
