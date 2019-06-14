@@ -25,7 +25,15 @@ class MigrationHvEntityCommand extends MigrationCommand
 {
     protected static $defaultName = 'migration:hv-entity';
 
-    private $entites = ['estudio', 'experiencia', 'familiar', 'red_social', 'referencia', 'vivienda', 'idioma'];
+    private $entites = [
+        'estudio' => Estudio::class,
+        'experiencia' => Experiencia::class,
+        'familiar' => Familiar::class,
+        'red_social' => RedSocial::class,
+        'referencia' => Referencia::class,
+        'vivienda' => Vivienda::class,
+        'idioma' => Idioma::class
+    ];
     /**
      * @var HvRepository
      */
@@ -34,55 +42,88 @@ class MigrationHvEntityCommand extends MigrationCommand
     protected function configure()
     {
         $this->setDescription('Migrar entidades relacionadas a hv')
-            ->addArgument('entity', InputArgument::REQUIRED, 'la entidad a importar');
+            ->addArgument('entity', InputArgument::OPTIONAL, 'la entidad a importar');
         parent::configure();
     }
 
+    private $cachedHv = null;
+
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-
         $entity = $input->getArgument('entity');
-        $entities = $entity ? [$entity] : $this->entites;
+        $entities = $entity ? [$entity] : array_keys($this->entites);
+
+
+
+        $sql = $this->addLimitToSql("SELECT u.id_old FROM hv join usuario u ON hv.usuario_id = u.id");
+        $stmt = $this->getConnection(self::CONNECTION_DEFAULT)->query($sql);
+        $ids = $stmt->fetchAll(\PDO::FETCH_COLUMN);
+
+        $sqlLimit = "";
+        if($this->offset !== null && $this->limit !== null) {
+            $sqlLimit = " WHERE hv.usuario_id IN (".implode(",", $ids).")";
+        }
         $count = 0;
         foreach($entities as $entity) {
-            $sql = "SELECT * FROM " . $entity;
+            $sql = "SELECT * FROM hv JOIN $entity ON $entity.usuario_id = hv.usuario_id " . $sqlLimit;
             $count += $this->countSql($sql);
         }
+
         $this->initProgressBar($count);
 
-        foreach($entities as $entity) {
-            $sql = "SELECT * FROM " . $entity;
-            while ($row = $this->fetch($sql)) {
-                $hv = $this->getHvByUsuarioIdOld($row['usuario_id']);
-                if ($hv) {
+        foreach($ids as $id){
+            foreach($entities as $entity) {
+                $sql = "SELECT * FROM " . $entity . " WHERE usuario_id = $id";
+                while ($row = $this->fetch($sql)) {
+                    if(!$this->cachedHv) {
+                        $this->cachedHv = $this->getHvByUsuarioIdOld($id);
+                    }
                     switch ($entity) {
                         case 'estudio':
-                            $object = $this->addEstudio($row, $hv);
+                            $object = $this->addEstudio($row, $this->cachedHv);
                             break;
                         case 'experiencia':
-                            $object = $this->addExperiencia($row, $hv);
+                            $object = $this->addExperiencia($row, $this->cachedHv);
                             break;
                         case 'familiar':
-                            $object = $this->addFamiliar($row, $hv);
+                            $object = $this->addFamiliar($row, $this->cachedHv);
                             break;
                         case 'red_social':
-                            $object = $this->addRedSocial($row, $hv);
+                            $object = $this->addRedSocial($row, $this->cachedHv);
                             break;
                         case 'referencia':
-                            $object = $this->addReferencia($row, $hv);
+                            $object = $this->addReferencia($row, $this->cachedHv);
                             break;
                         case 'vivienda':
-                            $object = $this->addVivienda($row, $hv);
+                            $object = $this->addVivienda($row, $this->cachedHv);
                             break;
                         case 'idioma':
-                            $object = $this->addIdioma($row, $hv);
+                            $object = $this->addIdioma($row, $this->cachedHv);
                             break;
                     }
                     $this->selPersist($object);
+
                 }
             }
+            $this->cachedHv = null;
         }
     }
+
+    protected function down(InputInterface $input, OutputInterface $output)
+    {
+        $entity = $input->getArgument('entity');
+        $entities = $entity ? $this->entites[$entity] : $this->entites;
+        foreach($entities as $entity) {
+            $this->truncateTable($entity);
+        }
+    }
+
+    protected function flushAndClear()
+    {
+        parent::flushAndClear();
+        $this->cachedHv = null;
+    }
+
 
     private function getHvByUsuarioIdOld($usuario_id)
     {

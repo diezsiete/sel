@@ -73,6 +73,11 @@ class MigrationHvCommand extends MigrationCommand
         }
     }
 
+    public function down(InputInterface $input, OutputInterface $output)
+    {
+        $this->truncateTable(Hv::class);
+    }
+
     /**
      * @return Pais|object|null
      */

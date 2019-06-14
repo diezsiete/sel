@@ -41,7 +41,7 @@ class MigrationVacanteCommand extends MigrationCommand
         $this->setDescription('Migracion de vacante');
     }
 
-    protected function down()
+    protected function down(InputInterface $input, OutputInterface $output)
     {
         $this->deleteTable(Vacante::class);
         $this->truncateTable(Vacante::class);

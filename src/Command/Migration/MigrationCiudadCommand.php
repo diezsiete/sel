@@ -94,7 +94,7 @@ class MigrationCiudadCommand extends MigrationCommand
         }
     }
 
-    protected function down()
+    protected function down(InputInterface $input, OutputInterface $output)
     {
         $this->truncateTable(Ciudad::class);
         $this->truncateTable(Dpto::class);

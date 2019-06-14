@@ -82,7 +82,7 @@ class MigrationDefaultsCommand extends MigrationCommand
         }
     }
 
-    protected function down()
+    protected function down(InputInterface $input, OutputInterface $output)
     {
         foreach($this->entitiesData as $data) {
             $this->truncateTable($data['entity']);

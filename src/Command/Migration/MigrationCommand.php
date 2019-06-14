@@ -10,6 +10,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
+use Symfony\Component\Console\Input\Input;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -87,8 +88,8 @@ abstract class MigrationCommand extends Command
     public function run(InputInterface $input, OutputInterface $output)
     {
         $this->io = new SymfonyStyle($input, $output);
-        $this->offset = $input->getArgument('offset');
-        $this->limit = $input->getArgument('limit');
+        $this->offset = $input->getOption('offset') !== null ? (int)$input->getOption('offset') : null;
+        $this->limit = $input->getOption('limit') !== null ? (int)$input->getOption('limit') : null;
         $this->output = $output;
 
         if($input->getOption('down')) {
@@ -106,7 +107,7 @@ abstract class MigrationCommand extends Command
         return $return;
     }
 
-    protected function down()
+    protected function down(InputInterface $input, OutputInterface $output)
     {
         $this->io->warning("Metodo down vacio");
     }
@@ -115,9 +116,9 @@ abstract class MigrationCommand extends Command
     {
         parent::configure();
         $this
-            ->addArgument('offset', InputArgument::OPTIONAL, 'offset')
-            ->addArgument('limit', InputArgument::OPTIONAL, 'limit')
-            ->addOption('down', null, InputOption::VALUE_NONE);
+            ->addOption('offset', 'o',InputOption::VALUE_OPTIONAL, 'offset')
+            ->addOption('limit','l', InputOption::VALUE_OPTIONAL, 'limit')
+            ->addOption('down', 'd', InputOption::VALUE_NONE);
         ;
     }
 

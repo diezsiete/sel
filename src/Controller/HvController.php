@@ -49,10 +49,10 @@ class HvController extends BaseController
     /**
      * @Route("/sel/hv/datos-basicos", name="hv_datos_basicos")
      */
-    public function datosBasicos(Request $request, HvRepository $hvRepository)
+    public function datosBasicos(Request $request, HvResolver $hvResolver)
     {
-        $hvdto = new HvDatosBasicosModel();
-        $hvdto->fillFromEntities($this->getUser(), $hvRepository->findByUsuario($this->getUser()));
+        $hvdto = (new HvDatosBasicosModel())
+            ->fillFromEntities($this->getUser(), $hvResolver->getHv());
 
         $form = $this->createForm(HvFormType::class, $hvdto);
         $form->handleRequest($request);
@@ -174,11 +174,13 @@ class HvController extends BaseController
     }
 
     /**
-     * @Route("/hv/adjunto", name="hv_adjunto")
+     * @Route("/sel/hv/adjunto", name="hv_adjunto")
      */
-    public function adjunto(Request $request)
+    public function adjunto(Request $request, HvResolver $hvResolver)
     {
-        return $this->render('hv/adjunto.html.twig');
+        return $this->render('hv/adjunto.html.twig', [
+            'hv' => $hvResolver->getHv()
+        ]);
     }
 
     /**
