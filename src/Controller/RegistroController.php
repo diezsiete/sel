@@ -12,6 +12,7 @@ use App\Form\FamiliarFormType;
 use App\Form\HvFormType;
 use App\Form\Model\HvDatosBasicosModel;
 use App\Form\ReferenciaFormType;
+use App\Service\HvResolver;
 use App\Service\RegistroWizard;
 use Omines\DataTablesBundle\DataTableFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -31,9 +32,9 @@ class RegistroController extends AbstractController
     }
 
     /**
-     * @Route("/registro/datos-basicos", name="registro_datos_basicos")
+     * @Route("/registro", name="registro_datos_basicos")
      */
-    public function index(Request $request)
+    public function index(Request $request, HvResolver $hvResolver)
     {
         $hvdto = (new HvDatosBasicosModel())
             ->fillFromEntities($this->registroWizard->getUsuario(), $this->registroWizard->getHv());

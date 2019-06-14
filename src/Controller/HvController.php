@@ -28,6 +28,7 @@ use App\Form\ViviendaFormType;
 use App\Repository\HvRepository;
 use App\Service\HvResolver;
 use Omines\DataTablesBundle\DataTableFactory;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -48,6 +49,7 @@ class HvController extends BaseController
 
     /**
      * @Route("/sel/hv/datos-basicos", name="hv_datos_basicos")
+     * @IsGranted("HV_MANAGE", subject="hvResolver")
      */
     public function datosBasicos(Request $request, HvResolver $hvResolver)
     {
@@ -67,8 +69,9 @@ class HvController extends BaseController
 
     /**
      * @Route("/sel/hv/estudio", name="hv_estudio")
+     * @IsGranted("HV_MANAGE", subject="hvResolver")
      */
-    public function estudio(Request $request, DataTableFactory $dataTableFactory)
+    public function estudio(Request $request, DataTableFactory $dataTableFactory, HvResolver $hvResolver)
     {
         return $this->hvEntityPage($request, $dataTableFactory, EstudioDataTableType::class,
             EstudioFormType::class, 'hv/hv-entity/estudio.html.twig');
@@ -76,8 +79,9 @@ class HvController extends BaseController
 
     /**
      * @Route("/sel/hv/experiencia", name="hv_experiencia")
+     * @IsGranted("HV_MANAGE", subject="hvResolver")
      */
-    public function experiencia(Request $request, DataTableFactory $dataTableFactory)
+    public function experiencia(Request $request, DataTableFactory $dataTableFactory, HvResolver $hvResolver)
     {
         return $this->hvEntityPage($request, $dataTableFactory, ExperienciaDataTableType::class,
             ExperienciaFormType::class, 'hv/hv-entity/experiencia.html.twig');
@@ -85,8 +89,9 @@ class HvController extends BaseController
 
     /**
      * @Route("/sel/hv/referencias", name="hv_referencias")
+     * @IsGranted("HV_MANAGE", subject="hvResolver")
      */
-    public function referencias(Request $request, DataTableFactory $dataTableFactory)
+    public function referencias(Request $request, DataTableFactory $dataTableFactory, HvResolver $hvResolver)
     {
         return $this->hvEntityPage($request, $dataTableFactory, ReferenciaDataTableType::class,
             ReferenciaFormType::class, 'hv/hv-entity/referencias.html.twig');
@@ -94,8 +99,9 @@ class HvController extends BaseController
 
     /**
      * @Route("/sel/hv/redes-sociales", name="hv_redes_sociales")
+     * @IsGranted("HV_MANAGE", subject="hvResolver")
      */
-    public function redesSociales(Request $request, DataTableFactory $dataTableFactory)
+    public function redesSociales(Request $request, DataTableFactory $dataTableFactory, HvResolver $hvResolver)
     {
         return $this->hvEntityPage($request, $dataTableFactory, RedSocialDataTableType::class,
             RedSocialFormType::class, 'hv/hv-entity/redes-sociales.html.twig');
@@ -103,8 +109,9 @@ class HvController extends BaseController
 
     /**
      * @Route("/sel/hv/familiares", name="hv_familiares")
+     * @IsGranted("HV_MANAGE", subject="hvResolver")
      */
-    public function familiares(Request $request, DataTableFactory $dataTableFactory)
+    public function familiares(Request $request, DataTableFactory $dataTableFactory, HvResolver $hvResolver)
     {
         return $this->hvEntityPage($request, $dataTableFactory, FamiliarDataTableType::class,
             FamiliarFormType::class, 'hv/hv-entity/familiares.html.twig');
@@ -112,8 +119,9 @@ class HvController extends BaseController
 
     /**
      * @Route("/sel/hv/vivienda", name="hv_vivienda")
+     * @IsGranted("HV_MANAGE", subject="hvResolver")
      */
-    public function vivienda(Request $request, DataTableFactory $dataTableFactory)
+    public function vivienda(Request $request, DataTableFactory $dataTableFactory, HvResolver $hvResolver)
     {
         return $this->hvEntityPage($request, $dataTableFactory, ViviendaDataTableType::class,
             ViviendaFormType::class, 'hv/hv-entity/vivienda.html.twig');
@@ -121,8 +129,9 @@ class HvController extends BaseController
 
     /**
      * @Route("/sel/hv/idiomas", name="hv_idiomas")
+     * @IsGranted("HV_MANAGE", subject="hvResolver")
      */
-    public function idiomas(Request $request, DataTableFactory $dataTableFactory)
+    public function idiomas(Request $request, DataTableFactory $dataTableFactory, HvResolver $hvResolver)
     {
         return $this->hvEntityPage($request, $dataTableFactory, IdiomaDataTableType::class,
             IdiomaFormType::class, 'hv/hv-entity/idiomas.html.twig');
@@ -130,6 +139,7 @@ class HvController extends BaseController
 
     /**
      * @Route("/hv/entity/get/{entity}/{id}", defaults={"id"=null}, name="hv_entity_get")
+     * @IsGranted("HV_MANAGE", subject="entity")
      */
     public function entityGet(HvEntity $entity)
     {
@@ -138,6 +148,7 @@ class HvController extends BaseController
 
     /**
      * @Route("/hv/entity/update/{entity}/{id}", name="hv_entity_update", defaults={"id"=null})
+     * @IsGranted("HV_MANAGE", subject="entity")
      */
     public function entityUpdate(HvEntity $entity, Request $request, HvResolver $hvResolver, $formType)
     {
@@ -164,6 +175,7 @@ class HvController extends BaseController
 
     /**
      * @Route("/hv/entity/delete/{entity}/{id}", name="hv_entity_delete")
+     * @IsGranted("HV_MANAGE", subject="entity")
      */
     public function deleteEstudio(HvEntity $entity)
     {
@@ -175,6 +187,7 @@ class HvController extends BaseController
 
     /**
      * @Route("/sel/hv/adjunto", name="hv_adjunto")
+     * @IsGranted("HV_MANAGE", subject="hvResolver")
      */
     public function adjunto(Request $request, HvResolver $hvResolver)
     {

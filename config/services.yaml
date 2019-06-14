@@ -74,6 +74,14 @@ services:
             # The alias is what is used to retrieve the menu
             - { name: knp_menu.renderer, alias: custom }
 
+    app.tokens.action_listener:
+        class: App\EventListener\RegistroListener
+        arguments:
+            - "@security.token_storage"
+            - "@router"
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+
 
     session:
         class: Symfony\Component\HttpFoundation\Session\Session
