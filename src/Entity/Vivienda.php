@@ -9,8 +9,16 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ViviendaRepository")
  */
-class Vivienda extends HvEntity
+class Vivienda implements HvEntity
 {
+    /**
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
+     * @Groups("main")
+     */
+    protected $id;
+
     /**
      * @ORM\Column(type="string", length=40)
      * @Assert\NotNull(message="Ingrese dirección")
@@ -72,6 +80,11 @@ class Vivienda extends HvEntity
      */
     protected $hv;
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
     public function getHv(): ?Hv
     {
         return $this->hv;
@@ -83,7 +96,6 @@ class Vivienda extends HvEntity
 
         return $this;
     }
-
 
     public function getDireccion(): ?string
     {

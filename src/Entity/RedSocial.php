@@ -9,8 +9,16 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\RedSocialRepository")
  */
-class RedSocial extends HvEntity
+class RedSocial implements HvEntity
 {
+    /**
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
+     * @Groups("main")
+     */
+    protected $id;
+
     /**
      * @ORM\Column(type="smallint")
      * @Assert\NotNull(message="Ingrese tipo de red social")
@@ -30,6 +38,11 @@ class RedSocial extends HvEntity
      * @ORM\JoinColumn(nullable=false)
      */
     protected $hv;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
     public function getHv(): ?Hv
     {

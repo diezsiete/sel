@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\HvRepository")
  */
-class Hv
+class Hv implements HvEntity
 {
     /**
      * @ORM\Id()
@@ -138,6 +138,7 @@ class Hv
     private $personasCargo;
 
     /**
+     * @var HvAdjunto
      * @ORM\OneToOne(targetEntity="App\Entity\HvAdjunto", mappedBy="hv", cascade={"persist", "remove"})
      */
     private $adjunto;
@@ -875,6 +876,11 @@ class Hv
     {
         $this->celular = $celular;
 
+        return $this;
+    }
+
+    public function getHv(): ?Hv
+    {
         return $this;
     }
 }

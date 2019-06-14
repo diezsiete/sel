@@ -9,8 +9,16 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ReferenciaRepository")
  */
-class Referencia extends HvEntity
+class Referencia implements HvEntity
 {
+    /**
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
+     * @Groups("main")
+     */
+    protected $id;
+
     /**
      * @ORM\Column(type="smallint")
      * @Assert\NotNull(message="Ingrese el tipo de referencia")
@@ -72,6 +80,11 @@ class Referencia extends HvEntity
      * @ORM\JoinColumn(nullable=false)
      */
     protected $hv;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
     public function getHv(): ?Hv
     {

@@ -36,11 +36,11 @@ class MigrationHvAdjuntoCommand extends MigrationCommand
      */
     private $uploaderHelper;
 
-    public function __construct(ManagerRegistry $managerRegistry, FilesystemInterface $privateUploadFileSystem,
+    public function __construct(ManagerRegistry $managerRegistry, FilesystemInterface $privateUploadFilesystem,
                                 UploaderHelper $uploaderHelper, string $kernelProjectDir)
     {
         parent::__construct($managerRegistry);
-        $this->privateFileSystem = $privateUploadFileSystem;
+        $this->privateFileSystem = $privateUploadFilesystem;
         $this->projectDir = $kernelProjectDir;
         $this->uploaderHelper = $uploaderHelper;
     }

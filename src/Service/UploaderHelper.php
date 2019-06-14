@@ -3,7 +3,9 @@
 namespace App\Service;
 
 use Gedmo\Sluggable\Util\Urlizer;
+use League\Flysystem\FileNotFoundException;
 use League\Flysystem\FilesystemInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -14,20 +16,43 @@ class UploaderHelper
     /**
      * @var FilesystemInterface
      */
-    private $privateFileSystem;
+    private $privateFilesystem;
+    /**
+     * @var FilesystemInterface
+     */
+    private $publicFilesystem;
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
-    public function __construct(FilesystemInterface $privateUploadFileSystem)
+    public function __construct(FilesystemInterface $privateUploadFilesystem, FilesystemInterface $publicUploadFilesystem,
+                                LoggerInterface $logger)
     {
-        $this->privateFileSystem = $privateUploadFileSystem;
+        $this->privateFilesystem = $privateUploadFilesystem;
+        $this->publicFilesystem = $publicUploadFilesystem;
+        $this->logger = $logger;
     }
 
-    public function uploadHvAdjunto(File $file): string
+    public function uploadHvAdjunto(File $file, ?string $existingFilename): string
     {
-        return $this->uploadFile($file, self::HV_ADJUNTO, false);
+        return $this->uploadFile($file, self::HV_ADJUNTO, false, $existingFilename);
     }
 
+    /**
+     * @resource
+     */
+    public function readStream(string $path, bool $isPublic)
+    {
+        $filesystem = $isPublic ? $this->publicFilesystem : $this->privateFilesystem;
+        $resource = $filesystem->readStream($path);
+        if($resource === false) {
+            throw new \Exception(sprintf("Error abriendo stream para '%s'", $path));
+        }
+        return $resource;
+    }
 
-    private function uploadFile(File $file, string $directory, bool $isPublic): string
+    private function uploadFile(File $file, string $directory, bool $isPublic, ?string $existingFilename): string
     {
         if ($file instanceof UploadedFile) {
             $originalFilename = $file->getClientOriginalName();
@@ -41,22 +66,32 @@ class UploaderHelper
         }
         $newFilename = Urlizer::urlize(pathinfo($originalFilename, PATHINFO_FILENAME)).'-'.uniqid().'.'.$extension;
 
+        $fileSystem = $isPublic ? $this->publicFilesystem : $this->privateFilesystem;
 
-        if(!$isPublic) {
-            $fileSystem = $this->privateFileSystem;
-            $stream = fopen($file->getPathname(), 'r');
-            $result = $fileSystem->writeStream(
-                $directory . '/' . $newFilename,
-                $stream
-            );
-            if($result === false) {
-                throw new \Exception(sprintf('Could not write uploaded file "%s"', $newFilename));
-            }
-            if (is_resource($stream)) {
-                fclose($stream);
-            }
-
-            return $newFilename;
+        $stream = fopen($file->getPathname(), 'r');
+        $result = $fileSystem->writeStream(
+            $directory . '/' . $newFilename,
+            $stream
+        );
+        if($result === false) {
+            throw new \Exception(sprintf('Could not write uploaded file "%s"', $newFilename));
         }
+        if (is_resource($stream)) {
+            fclose($stream);
+        }
+
+        if($existingFilename) {
+            try {
+                $result = $fileSystem->delete($directory . '/' . $existingFilename);
+                if($result === false) {
+                    throw new \Exception(sprintf("Could not delete old hv adjunto file '%s'", $existingFilename));
+                }
+            }catch(FileNotFoundException $e) {
+                $this->logger->alert(sprintf("Old hv adjunto file '%s' was missing when trying to delete", $existingFilename));
+            }
+        }
+
+        return $newFilename;
+
     }
 }

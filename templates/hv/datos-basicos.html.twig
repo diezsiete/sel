@@ -7,7 +7,6 @@
 {% endblock %}
 
 {% block body %}
-    {{ parent() }}
     {{ include('hv/_tabs-hv.html.twig') }}
 
     {{ form_start(hvForm, {attr: {novalidate: 'novalidate'}}) }}

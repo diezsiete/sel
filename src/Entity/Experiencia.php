@@ -9,8 +9,16 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ExperienciaRepository")
  */
-class Experiencia extends HvEntity
+class Experiencia implements HvEntity
 {
+    /**
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
+     * @Groups("main")
+     */
+    protected $id;
+
     /**
      * @ORM\Column(type="string", length=55)
      * @Assert\NotNull(message="Ingrese nombre de la empresa")
@@ -96,6 +104,11 @@ class Experiencia extends HvEntity
      * @ORM\JoinColumn(nullable=false)
      */
     protected $hv;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
     public function getHv(): ?Hv
     {

@@ -9,8 +9,16 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\IdiomaRepository")
  */
-class Idioma extends HvEntity
+class Idioma implements HvEntity
 {
+    /**
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
+     * @Groups("main")
+     */
+    protected $id;
+
     /**
      * @ORM\Column(type="string", length=3)
      * @Assert\NotNull(message="Ingrese idioma")
@@ -30,6 +38,11 @@ class Idioma extends HvEntity
      * @ORM\JoinColumn(nullable=false)
      */
     protected $hv;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
     public function getHv(): ?Hv
     {

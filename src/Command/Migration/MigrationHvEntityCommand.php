@@ -53,8 +53,6 @@ class MigrationHvEntityCommand extends MigrationCommand
         $entity = $input->getArgument('entity');
         $entities = $entity ? [$entity] : array_keys($this->entites);
 
-
-
         $sql = $this->addLimitToSql("SELECT u.id_old FROM hv join usuario u ON hv.usuario_id = u.id");
         $stmt = $this->getConnection(self::CONNECTION_DEFAULT)->query($sql);
         $ids = $stmt->fetchAll(\PDO::FETCH_COLUMN);
