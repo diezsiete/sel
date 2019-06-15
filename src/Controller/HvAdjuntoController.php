@@ -8,10 +8,12 @@ use App\Entity\Hv;
 use App\Entity\HvAdjunto;
 use App\Service\UploaderHelper;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -21,7 +23,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class HvAdjuntoController extends BaseController
 {
     /**
-     * @Route("/sel/hv-adjunto/{id}/upload", name="hv_adjunto_upload", methods={"POST"})
+     * @Route("/hv-adjunto/{id}/upload", name="hv_adjunto_upload", methods={"POST"})
+     * @IsGranted("HV_MANAGE", subject="hv")
      */
     public function upload(Hv $hv, Request $request, UploaderHelper $uploaderHelper, EntityManagerInterface $em,
                            ValidatorInterface $validator)
@@ -71,13 +74,15 @@ class HvAdjuntoController extends BaseController
 
     /**
      * @Route("/sel/hv-adjunto/{id}/download", name="hv_adjunto_download", methods={"GET"})
-     *
+     * @IsGranted("HV_MANAGE", subject="hv")
      */
-    public function downloadAdjunto(HvAdjunto $adjunto, UploaderHelper $uploaderHelper)
+    public function downloadAdjunto(Hv $hv, UploaderHelper $uploaderHelper)
     {
-        $hv = $adjunto->getHv();
-        $this->denyAccessUnlessGranted('HV_MANAGE', $hv);
+        $adjunto = $hv->getAdjunto();
 
+        if(!$adjunto) {
+            return new Response();
+        }
         $response = new StreamedResponse(function() use ($adjunto, $uploaderHelper){
             $outputStream = fopen('php://output', 'wb');
             $fileStream = $uploaderHelper->readStream($adjunto->getFilePath(), false);

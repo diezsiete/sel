@@ -41,6 +41,7 @@ class Usuario implements UserInterface
 
     /**
      * @var string The hashed password
+     * @Assert\NotBlank(message="Por favor ingrese contraseña")
      * @ORM\Column(type="string")
      */
     private $password;
@@ -100,7 +101,7 @@ class Usuario implements UserInterface
     private $vacantes;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $idOld;
 
@@ -114,7 +115,10 @@ class Usuario implements UserInterface
         return $this->id;
     }
 
-    public function getIdentificacion(): ?string
+    /**
+     * @return string|null
+     */
+    public function getIdentificacion()
     {
         return $this->identificacion;
     }
@@ -167,7 +171,11 @@ class Usuario implements UserInterface
         return (string) $this->password;
     }
 
-    public function setPassword(string $password): self
+    /**
+     * @param string $password
+     * @return Usuario
+     */
+    public function setPassword($password): self
     {
         $this->password = $password;
 
@@ -275,6 +283,17 @@ class Usuario implements UserInterface
     {
         return $this->aceptoTerminosEn;
     }
+
+    /**
+     * @param \DateTimeInterface $aceptoTerminosEn
+     * @return Usuario
+     */
+    public function setAceptoTerminosEn(?\DateTimeInterface $aceptoTerminosEn)
+    {
+        $this->aceptoTerminosEn = $aceptoTerminosEn;
+        return $this;
+    }
+
 
     public function aceptarTerminos(): self
     {

@@ -31,7 +31,7 @@ class RegistroListener
     {
         $currentRoute = $event->getRequest()->attributes->get('_route');
         if(preg_match('/registro_/', $currentRoute)) {
-            if($this->isUserLogged() && $this->hvResolver->getHv()) {
+            if($this->isUserLogged()) {
                 $response = new RedirectResponse($this->router->generate('hv_datos_basicos'));
                 $event->setResponse($response);
             }

@@ -32,18 +32,17 @@ class HvVoter extends Voter
     {
         $user = $token->getUser();
 
-        // if the user is anonymous, do not grant access
-        if (!$user instanceof UserInterface) {
-            return false;
-        }
-
         // ... (check conditions and return true to grant permission) ...
         switch ($attribute) {
             case 'HV_MANAGE':
-                if ($subject->getHv()->getUsuario() == $user) {
+                if ($this->security->isGranted('ROLE_ADMIN_VACANTE')) {
                     return true;
                 }
-                if ($this->security->isGranted('ROLE_ADMIN_VACANTE')) {
+                //esta editando hv en registro
+                if(!$subject->getHv() || !is_object($user)) {
+                    return true;
+                }
+                if ($subject->getHv()->getUsuario() == $user) {
                     return true;
                 }
                 return false;

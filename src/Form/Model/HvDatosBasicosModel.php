@@ -15,6 +15,7 @@ class HvDatosBasicosModel
 {
     /**
      * @Assert\NotBlank(message="Por favor ingrese identificación")
+     * @Assert\Regex(pattern="/^[0-9]+$/", message="Solo se aceptan numeros")
      * @IdentificacionUnica()
      */
     public $identificacion;

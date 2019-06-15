@@ -28,7 +28,7 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="row {{hv.adjunto ? '' : 'hidden'}}">
         <div class="col">
             <section class="card">
                 <header class="card-header">
@@ -66,7 +66,7 @@
                     });
                     this.on('success', function(file, response) {
                         const $embed = $('embed');
-                        $embed.attr('src', $embed.attr('src'));
+                        $embed.attr('src', $embed.attr('src')).closest('.row').removeClass('hidden');
                     })
                 },
                 dictDefaultMessage: "Arrastre aqui archivo para subir"

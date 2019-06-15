@@ -6,18 +6,24 @@ use App\DataTable\Type\Hv\EstudioDataTableType;
 use App\DataTable\Type\Hv\ExperienciaDataTableType;
 use App\DataTable\Type\Hv\FamiliarDataTableType;
 use App\DataTable\Type\Hv\ReferenciaDataTableType;
+use App\Entity\Usuario;
+use App\Form\CuentaFormType;
 use App\Form\EstudioFormType;
 use App\Form\ExperienciaFormType;
 use App\Form\FamiliarFormType;
 use App\Form\HvFormType;
 use App\Form\Model\HvDatosBasicosModel;
+use App\Form\ProfileFormType;
 use App\Form\ReferenciaFormType;
+use App\Security\LoginFormAuthenticator;
 use App\Service\HvResolver;
 use App\Service\RegistroWizard;
 use Omines\DataTablesBundle\DataTableFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 
 class RegistroController extends AbstractController
 {
@@ -38,7 +44,6 @@ class RegistroController extends AbstractController
     {
         $hvdto = (new HvDatosBasicosModel())
             ->fillFromEntities($this->registroWizard->getUsuario(), $this->registroWizard->getHv());
-        $hvdto->identificacion = 1234567890;
 
         $form = $this->createForm(HvFormType::class, $hvdto);
         $form->handleRequest($request);
@@ -55,7 +60,8 @@ class RegistroController extends AbstractController
 
             $this->registroWizard
                 ->setHv($hv)
-                ->setUsuario($usuario);
+                ->setUsuario($usuario)
+                ->setCurrentStepValid();
 
             return $this->redirectToRoute($this->registroWizard->nextRoute());
         }
@@ -70,6 +76,9 @@ class RegistroController extends AbstractController
      */
     public function estudio(Request $request, DataTableFactory $dataTableFactory)
     {
+        if($routeInvalid = $this->registroWizard->validatePrevStepsValid()) {
+            return $this->redirectToRoute($routeInvalid);
+        }
         return $this->hvEntityPage($request, $dataTableFactory, EstudioDataTableType::class,
             EstudioFormType::class, 'registro/estudios.html.twig');
     }
@@ -79,6 +88,9 @@ class RegistroController extends AbstractController
      */
     public function experiencia(Request $request, DataTableFactory $dataTableFactory)
     {
+        if($routeInvalid = $this->registroWizard->validatePrevStepsValid()) {
+            return $this->redirectToRoute($routeInvalid);
+        }
         return $this->hvEntityPage($request, $dataTableFactory, ExperienciaDataTableType::class,
             ExperienciaFormType::class, 'registro/experiencia.html.twig');
     }
@@ -88,6 +100,9 @@ class RegistroController extends AbstractController
      */
     public function referencias(Request $request, DataTableFactory $dataTableFactory)
     {
+        if($routeInvalid = $this->registroWizard->validatePrevStepsValid()) {
+            return $this->redirectToRoute($routeInvalid);
+        }
         return $this->hvEntityPage($request, $dataTableFactory, ReferenciaDataTableType::class,
             ReferenciaFormType::class, 'registro/referencias.html.twig');
     }
@@ -97,6 +112,9 @@ class RegistroController extends AbstractController
      */
     public function familiares(Request $request, DataTableFactory $dataTableFactory)
     {
+        if($routeInvalid = $this->registroWizard->validatePrevStepsValid()) {
+            return $this->redirectToRoute($routeInvalid);
+        }
         return $this->hvEntityPage($request, $dataTableFactory, FamiliarDataTableType::class,
             FamiliarFormType::class, 'registro/familiares.html.twig');
     }
@@ -104,9 +122,42 @@ class RegistroController extends AbstractController
     /**
      * @Route("/registro/cuenta", name="registro_cuenta")
      */
-    public function cuenta(Request $request)
+    public function cuenta(Request $request, UserPasswordEncoderInterface $passwordEncoder,
+                           GuardAuthenticatorHandler $guard, LoginFormAuthenticator $formAuthenticator)
     {
-        return $this->render('registro/cuenta.html.twig');
+        if($routeInvalid = $this->registroWizard->validatePrevStepsValid()) {
+            return $this->redirectToRoute($routeInvalid);
+        }
+
+        $usuario = $this->registroWizard->getUsuario();
+        $form = $this->createForm(CuentaFormType::class, $usuario);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+            /** @var Usuario $usuario */
+            $usuario = $form->getData();
+
+            $plainPassword = $usuario->getPassword();
+            $encodedPassword = $passwordEncoder->encodePassword($usuario, $plainPassword);
+            $usuario->setPassword($encodedPassword);
+
+            $this->registroWizard->getHv()->setUsuario($usuario);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($usuario);
+            $em->flush();
+
+            $this->addFlash('success', "Registrado exitosamente!");
+
+            $this->registroWizard->clearSession();
+            return $guard->authenticateUserAndHandleSuccess($usuario, $request, $formAuthenticator, 'main');
+        }
+
+        return $this->render('registro/cuenta.html.twig', [
+            'cuentaForm' => $form->createView(),
+            'hv' => $this->registroWizard->getHv(),
+            'prevRoute' => $this->registroWizard->prevRoute(),
+        ]);
     }
 
     /**
@@ -115,6 +166,11 @@ class RegistroController extends AbstractController
     public function canNextRoute()
     {
         $ok = $this->registroWizard->canNextRoute();
+        if($ok === true) {
+            $this->registroWizard->setCurrentStepValid();
+        } else {
+            $this->registroWizard->setCurrentStepInvalid();
+        }
         return $this->json(['can' => $ok === true, 'errorMessage' => $ok === true ? "" : $ok]);
     }
 

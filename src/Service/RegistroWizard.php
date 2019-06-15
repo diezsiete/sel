@@ -12,9 +12,10 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class RegistroWizard
 {
-    const SESSION_ID = 'registro/hv-id';
+    const SESSION_ID = 'registro/hv_id';
     const SESSION_USUARIO = 'registro/usuario';
     const SESSION_STEP = 'registro/step';
+    const SESSION_STEP_VALID = 'registro/step_valid';
     
     /**
      * @var SessionInterface
@@ -42,9 +43,9 @@ class RegistroWizard
 
     public function __construct(HvResolver $hvResolver, SessionInterface $session, RequestStack $requestStack)
     {
+
         $this->session = $session;
         $this->hvResolver = $hvResolver;
-
 
         $request = $requestStack->getCurrentRequest();
         if($request->isXmlHttpRequest()) {
@@ -55,6 +56,13 @@ class RegistroWizard
             $this->session->set(self::SESSION_STEP, $this->step);
         }
 
+        if(!$this->session->get(self::SESSION_STEP_VALID)) {
+            $sessionStepValid = [];
+            foreach($this->routes as $route) {
+                $sessionStepValid[$route] = false;
+            }
+            $this->session->set(self::SESSION_STEP_VALID, $sessionStepValid);
+        }
     }
 
     public function getHv()
@@ -105,6 +113,25 @@ class RegistroWizard
         return $this->routes[$this->step + 1] ?? null;
     }
 
+    public function setCurrentStepValid()
+    {
+        $this->session->set(self::SESSION_STEP_VALID . '/' . $this->routes[$this->step], true);
+    }
+    public function setCurrentStepInvalid()
+    {
+        $this->session->set(self::SESSION_STEP_VALID . '/' . $this->routes[$this->step], false);
+    }
+
+    public function validatePrevStepsValid(): ?string
+    {
+        for ($i = 0; $i < $this->step; $i++) {
+            if(!$this->session->get(self::SESSION_STEP_VALID . '/' . $this->routes[$i])) {
+                return $this->routes[$i];
+            }
+        }
+        return null;
+    }
+
     /**
      * @return bool|string
      */
@@ -120,6 +147,10 @@ class RegistroWizard
                 break;
             case 3:
                 $errorMessage = $this->validarReferencias();
+                break;
+            case 4:
+                $errorMessage = $this->validarFamiliares();
+                break;
         }
         return $errorMessage === true ? true : $errorMessage;
     }
@@ -145,6 +176,11 @@ class RegistroWizard
             return "Falta completar referencias de tipo : " . implode(", ", $referenciasRequired)
                 . (count($referenciasRequired) ? " y " : " ") . $lastReferencia;
         }
+        return true;
+    }
+
+    private function validarFamiliares()
+    {
         return true;
     }
 }

@@ -3,20 +3,18 @@
 namespace App\Form;
 
 use App\Constant\HvConstant;
-use App\Constant\VacanteConstant;
 use App\Entity\Ciudad;
 use App\Entity\Dpto;
 use App\Entity\Hv;
 use App\Entity\Pais;
 use App\Form\Model\HvDatosBasicosModel;
 use App\Repository\UsuarioRepository;
-use App\Validator\IdentificacionUnica;
-use App\Validator\IdentificacionUnicaValidator;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -24,9 +22,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Validator\Constraints\Email;
-use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class HvFormType extends AbstractType
 {
@@ -92,8 +88,7 @@ class HvFormType extends AbstractType
                 'label' => 'Segundo apellido',
                 'required' => false,
             ])
-            ->add('identificacion', NumberType::class, [
-                'html5' => false,
+            ->add('identificacion', TextType::class, [
                 'label' => 'Identificación',
                 'required' => true,
             ])
