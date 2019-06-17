@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\SelParameters;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -9,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class PtaController extends AbstractController
 {
     /**
-     * @Route("/", name="pta_index")
+     * @Route("/", name="pta_index", host="%empresa.pta.host%")
      */
     public function index()
     {

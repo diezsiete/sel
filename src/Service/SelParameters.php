@@ -22,8 +22,7 @@ class SelParameters
 
     public function __construct(ContainerBagInterface $bag, $webDir)
     {
-        $this->bag = $bag;
-        $this->parameters = $bag->get('app');
+        $this->parameters = $bag->get('empresa.config');
         $this->webDir = $webDir;
     }
 

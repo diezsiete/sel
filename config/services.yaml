@@ -5,21 +5,7 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: 'en'
-    app:
-        razon: PTA S.A.S
-        nit: 860.527.350-6
-        dir: Calle 72 A N° 20 A - 57
-        web: www.pta.com.co
-        mail: info@pta.com.co
-        logo: /img/sel/pta-logo.png
-        logo_pdf: /img/sel/pta-logo-pdf.png
-        certificado_laboral:
-            firma: /img/sel/firma-certificado-laboral.png
-            firmante: FERNANDA SANCHEZ LAGUNA
-            firmante_cargo: Directora de Servicio al Cliente
-            firmante_contacto: PBX 756 98 40 Ext. 110-106-136
-        templates:
-            login: 'pta/login.html.twig'
+    empresa: 'servilabor'
 
 services:
     # default configuration for services in *this* file

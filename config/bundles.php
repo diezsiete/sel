@@ -20,4 +20,5 @@ return [
     Craue\FormFlowBundle\CraueFormFlowBundle::class => ['all' => true],
     FOS\JsRoutingBundle\FOSJsRoutingBundle::class => ['all' => true],
     Oneup\FlysystemBundle\OneupFlysystemBundle::class => ['all' => true],
+    App\AppBundle::class => ['all' => true],
 ];
