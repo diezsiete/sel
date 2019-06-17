@@ -1,0 +1,37 @@
+{% extends 'pta/base.html.twig' %}
+
+{% block body %}
+<section class="page-header page-header-classic">
+    <div class="container">
+        <div class="row">
+            <div class="col p-static">
+                <h1 data-title-border>Iniciar sesión</h1>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container">
+
+    <div class="row">
+        <div class="col">
+
+            <div class="featured-boxes">
+                <div class="row">
+                    <div class="col-md-6 offset-md-3">
+                        <div class="featured-box featured-box-primary text-left mt-5">
+                            <div class="box-content">
+                                {{ include('security/_login-form.html.twig') }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

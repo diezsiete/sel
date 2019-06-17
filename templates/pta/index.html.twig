@@ -1,0 +1,243 @@
+{% extends 'pta/base.html.twig' %}
+
+{% set btn_y, btn_width, btn_height, btn_padding, btn_empr_x, btn_empl_x = 190, 540, 220, 50, 45, 585 %}
+
+{% block body %}
+    <!-- SLIDER -->
+    <div class="slider-container rev_slider_wrapper">
+        <div id="revolutionSlider" class="slider rev_slider" data-version="5.4.8"
+             data-plugin-revolution-slider data-plugin-options="{'delay': 9000, 'gridwidth': 1170, 'gridheight': 500, 'responsiveLevels': [4096,1200,992,500], 'navigation' : {'arrows': { 'enable': true, 'style': 'arrows-style-2', 'left': {'h_align': 'center', 'v_align' : 'bottom', 'v_offset': 30, 'h_offset': 90}, 'right': {'h_align': 'center', 'v_align' : 'bottom', 'v_offset': 30, 'h_offset': 125}}, 'bullets': {'enable': false}}}">
+            <ul>
+
+                <li data-transition="fade">
+                    <img src="{{ asset('/img/pta/slides/slide-corporate-2-1.jpg') }}"
+                         alt=""
+                         data-bgposition="center center"
+                         data-bgfit="cover"
+                         data-bgrepeat="no-repeat"
+                         class="rev-slidebg">
+
+                    <!-- Empresas -->
+                    <!-- LAYER SHAPE -->
+                    <div class="tp-caption tp-shape tp-shapewrapper tp-resizeme btn-empr-bg btn-main-servicios"
+                         data-x="{{ btn_empr_x }}"
+                         data-hoffset="200"
+                         data-y="{{ btn_y }}"
+                         data-voffset="200"
+                         data-width="{{  btn_width }}"
+                         data-height="{{ btn_height }}"
+                         data-whitespace="nowrap"
+                         data-transform_idle="o:1;"
+                         data-style_hover="cursor:pointer;"
+                         data-transform_in="opacity:0;s:300;e:Power2.easeInOut;"
+                         data-transform_out="opacity:0;s:300;s:300;"
+                         data-start="500"
+                         data-responsive_offset="on" >
+                    </div>
+
+
+                    <div class="tp-caption top-label btn-main-servicios"
+                         data-x="{{ btn_empr_x + btn_padding }}"
+                         data-y="{{ btn_y + 40 }}"
+                         data-start="500"
+                         data-transform_in="y:[-300%];opacity:0;s:500;">SU ALIADO EN</div>
+
+
+                    <div class="tp-caption main-label btn-main-servicios"
+                         data-x="{{ btn_empr_x + btn_padding }}"
+                         data-y="{{ btn_y + 70 }}"
+                         data-start="1500"
+                         data-whitespace="nowrap"
+                         data-transform_in="y:[100%];s:500;"
+                         data-transform_out="opacity:0;s:500;"
+                         data-mask_in="x:0px;y:0px;">SOLUCIONES <br />EMPRESARIALES</div>
+
+                    <div class="tp-caption bottom-label btn-main-servicios"
+                         data-x="{{ btn_empr_x + btn_padding }}"
+                         data-y="{{ btn_y + 170 }}"
+                         data-start="2000"
+                         data-transform_in="y:[100%];opacity:0;s:500;">Descubra nuestros servicios.</div>
+
+
+
+                    <!-- Trabajadores -->
+                    <div class="tp-caption tp-shape tp-shapewrapper tp-resizeme btn-empl-bg btn-main-empleados"
+                         data-x="{{ btn_empl_x}}"
+                         data-hoffset="200"
+                         data-y="{{ btn_y }}"
+                         data-voffset="200"
+                         data-width="{{ btn_width }}"
+                         data-height="{{ btn_height }}"
+                         data-whitespace="nowrap"
+                         data-transform_idle="o:1;"
+                         data-style_hover="cursor:pointer;"
+                         data-transform_in="opacity:0;s:300;e:Power2.easeInOut;"
+                         data-transform_out="opacity:0;s:300;s:300;"
+                         data-start="500"
+                         data-responsive_offset="on" >
+                    </div>
+
+                    <div class="tp-caption top-label btn-main-empleados"
+                         data-x="{{ btn_empl_x + btn_padding }}"
+                         data-y="{{ btn_y + 40 }}"
+                         data-start="500"
+                         data-transform_in="y:[-300%];opacity:0;s:500;">¿BUSCA TRABAJO?</div>
+
+                    <div class="tp-caption main-label btn-main-empleados"
+                         data-x="{{ btn_empl_x + btn_padding }}"
+                         data-y="{{ btn_y + 70 }}"
+                         data-start="1500"
+                         data-whitespace="nowrap"
+                         data-transform_in="y:[100%];s:500;"
+                         data-transform_out="opacity:0;s:500;"
+                         data-mask_in="x:0px;y:0px;">OFERTAS <br /> LABORALES</div>
+
+                    <div class="tp-caption bottom-label btn-main-empleados"
+                         data-x="{{ btn_empl_x + btn_padding }}"
+                         data-y="{{ btn_y + 170 }}"
+                         data-start="2000"
+                         data-transform_in="y:[100%];opacity:0;s:500;">Para un empleo digno y seguro.</div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- /SLIDER -->
+
+    <div class="home-intro mb-0" id="home-intro">
+        <div class="container">
+
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <p>
+                        Desde 1985, somos el aliado estratégico de su empresa.
+                        <span>Suministramos personal calificado para diferentes sectores economicos</span>
+                    </p>
+                </div>
+                <div class="col-lg-4">
+                    <div class="get-started text-left text-lg-right">
+                        <a href="#" class="btn btn-primary btn-lg text-3 font-weight-semibold px-4 py-3">
+                            Conocer mas sobre nosotros!
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="container py-3 my-5">
+        <div class="row justify-content-center appear-animation" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="400">
+            <div class="col">
+                <h2 class="text-10 font-weight-normal text-color-dark mb-4 line-height-4">
+                    <span class="text-color-primary font-weight-bold ">PTA S.A.S</span> - Personal Temporal y Asesorías
+                </h2>
+                <p class="text-5 font-weight-normal text-color-dark line-height-7">
+                    Respaldados por nuestra amplia experiencia en la administración de recursos humanos,
+                    nos posicionamos en el mercado como una de las empresas líderes del sector.
+                </p>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container">
+        <div class="row counters counters-sm py-4 mt-5">
+            <div class="col-sm-6 col-lg-3 mb-5 mb-lg-0">
+                <div class="counter">
+                    <i class="fa fa-building"></i>
+                    <strong class="text-color-dark font-weight-extra-bold" data-to="150" data-append="+">0</strong>
+                    <label class="text-4 mt-1">Empresas usuarias</label>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-3 mb-5 mb-lg-0">
+                <div class="counter">
+                    <i class="fa fa-user"></i>
+                    <strong class="text-color-dark font-weight-extra-bold" data-to="3500" data-append="+">0</strong>
+                    <label class="text-4 mt-1">Empleados en misión</label>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-3 mb-5 mb-lg-0">
+                <div class="counter">
+                    <i class="fa fa-medal"></i>
+                    <strong class="text-color-dark font-weight-extra-bold" data-to="34">0</strong>
+                    <label class="text-4 mt-1">Años de experiencia</label>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+                <div class="counter">
+                    <i class="fa fa-home"></i>
+                    <strong class="text-color-dark font-weight-extra-bold" data-to="8" data-append="">0</strong>
+                    <label class="text-4 mt-1">Agencias en Colombia</label>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+    <section class="section section-height-3 bg-light border border-bottom-0 m-0">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="feature-box feature-box-style-2 reverse mb-xl appear-animation" data-appear-animation="fadeInLeft" data-appear-animation-delay="300">
+                        <div class="feature-box-icon">
+                            <i class="fa fa-bolt"></i>
+                        </div>
+                        <div class="feature-box-info">
+                            <h4 class="mb-sm">Politica de calidad</h4>
+                            <p class="mb-lg">
+                                Satisfacer a los clientes en el suministro de empleados en misión idóneos,
+                                garantizando la calidad del servicio.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="feature-box feature-box-style-2 reverse mt-xl appear-animation" data-appear-animation="fadeInLeft" data-appear-animation-delay="600">
+                        <div class="feature-box-icon">
+                            <i class="fa fa-arrows-alt"></i>
+                        </div>
+                        <div class="feature-box-info">
+                            <h4 class="mb-sm">Presencia en varias ciudades</h4>
+                            <p class="mb-lg">
+                                Amplia red de oficinas que, trabajando en equipo,
+                                aseguran cobertura en las principales ciudades de Colombia.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <img src="{{ asset('/img/pta/mockup-porto2.png') }}" class="img-responsive mockup-landing-page mb-xl appear-animation" alt="Porto" data-appear-animation="fadeInDown" data-appear-animation-delay="300">
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-box feature-box-style-2 mb-xl appear-animation" data-appear-animation="fadeInRight" data-appear-animation-delay="300">
+                        <div class="feature-box-icon">
+                            <i class="fa fa-puzzle-piece"></i>
+                        </div>
+                        <div class="feature-box-info">
+                            <h4 class="mb-sm">Aliado Estrategico</h4>
+                            <p class="mb-lg">
+                                Nuestro principal motor es lograr cumplir los objetivos de nuestros clientes,
+                                aportando experiencia y compromiso.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="feature-box feature-box-style-2 mt-xl appear-animation" data-appear-animation="fadeInRight" data-appear-animation-delay="600">
+                        <div class="feature-box-icon">
+                            <i class="fa fa-chart-line"></i>
+                        </div>
+                        <div class="feature-box-info">
+
+                            <h4 class="mb-sm">Crecimiento continuo</h4>
+
+                            <p class="mb-lg">
+                                Buscamos constantemente el mejoramiento continuo de nuestros procesos.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

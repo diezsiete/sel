@@ -1,0 +1,49 @@
+{% if error %}
+    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+{% endif %}
+<form method="post" novalidate="novalidate">
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+    <div class="form-group mb-3">
+        <label for="identificacion">Identificación</label>
+        <div class="input-group">
+            <input type="text" name="identificacion" id="identificacion" class="form-control form-control-lg"
+                   required autofocus value="{{ last_username }}">
+            <span class="input-group-append">
+                                <span class="input-group-text">
+                                    <i class="fas fa-user"></i>
+                                </span>
+                            </span>
+        </div>
+    </div>
+
+    <div class="form-group mb-3">
+        <div class="clearfix">
+            <label for="password" class="float-left">Contraseña</label>
+            <a href="#" class="float-right">Perdio su contraseña?</a>
+        </div>
+        <div class="input-group">
+            <input type="password" name="password" id="password" class="form-control form-control-lg" required>
+            <span class="input-group-append">
+                                <span class="input-group-text">
+                                    <i class="fas fa-lock"></i>
+                                </span>
+                            </span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-8">
+            <div class="checkbox-custom checkbox-default">
+                <input id="RememberMe" type="checkbox" name="_remember_me"/>
+                <label for="RememberMe">Recordarme</label>
+            </div>
+        </div>
+        <div class="col-sm-4 text-right">
+            <button type="submit" class="btn btn-primary btn-modern float-right">Iniciar sesión</button>
+        </div>
+    </div>
+    <br>
+    <p class="text-center">No tiene una cuenta? <a href="{{ path('registro_datos_basicos') }}">Registrese!</a></p>
+
+
+</form>

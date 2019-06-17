@@ -18,6 +18,8 @@ parameters:
             firmante: FERNANDA SANCHEZ LAGUNA
             firmante_cargo: Directora de Servicio al Cliente
             firmante_contacto: PBX 756 98 40 Ext. 110-106-136
+        templates:
+            login: 'pta/login.html.twig'
 
 services:
     # default configuration for services in *this* file
