@@ -1,0 +1,9 @@
+{% extends 'servilabor/base.html.twig' %}
+
+{% block title %} Servilabor - {{ servicio }} {% endblock %}
+
+{% block body %}
+    {{ include('servilabor/servicios/_'~servicio~'.html.twig') }}
+{% endblock %}
+
+

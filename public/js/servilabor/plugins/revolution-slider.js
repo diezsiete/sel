@@ -18,8 +18,25 @@ var RevolutionSlider = function () {
 					jQuery('.red-soluciones').closest('.tp-parallax-wrap').addClass('red-soluciones-layer');
 				});
 	        });
-        }
-    };
+        },
+		//Revolution Slider - Full Screen Offset Container
+		initRSfullScreenOffset: function () {
+			var revapi;
+			jQuery(document).ready(function() {
+				revapi = jQuery('#revSlider').show().revolution(
+					{
+						delay:15000,
+						startwidth:1170,
+						startheight:400,
+						hideThumbs:10,
+						fullWidth:"off",
+						fullScreen:"on",
+						hideCaptionAtLimit: "",
+						dottedOverlay:"threexthree",
+						navigationStyle:"preview4",
+						fullScreenOffsetContainer: ".header"
+					});
+			});
+		}
+	};
 }();
-
-RevolutionSlider.initRSfullWidth();

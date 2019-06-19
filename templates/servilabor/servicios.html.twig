@@ -1,9 +1,84 @@
 {% extends 'servilabor/base.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('vendor/rs-plugin/css/settings.css') }}">
+{% endblock %}
+
 {% block title %}
     Servilabor - Servicios
 {% endblock %}
 
 {% block body %}
+    <!--=== Slider ===-->
+    <div id="rev-slider-servicios" class="rev_slider_wrapper fullscreen-container" style="background: #252525; padding: 0;"
+         data-alias="beforeafterslider1"
+         data-source="gallery">
+        <!-- START REVOLUTION SLIDER 5.4.3.3 fullscreen mode -->
+        <div id="revSlider" class="rev_slider fullscreenbanner" style="display: none;"
+             data-version="5.4.3.3">
+            <ul>
+                <!-- SLIDE -->
+                <li class="revolution-mch-1" data-transition="fade" data-slotamount="5" data-masterspeed="1000" data-title="Slide 1">
+                    <!-- MAIN IMAGE -->
+                    <img src="{{ asset('img/servilabor/bg/macbook-kit2-23.jpg') }}"  alt="darkblurbg"  data-bgfit="cover" data-bgposition="center center" data-bgrepeat="no-repeat">
+
+                    <!-- LAYER -->
+                    <div class="tp-caption sft page-scroll"
+                         data-x="center"
+                         data-hoffset="0"
+                         data-y="center"
+                         data-width="['full']"
+                         data-speed="1600"
+                         data-start="800"
+                         data-easing="Power4.easeOut"
+                         data-endspeed="300"
+                         data-endeasing="Power1.easeIn"
+                         data-captionhidden="off"
+                         style="z-index: 6">
+                        <div class="row">
+                            <div class="col-md-4 content-boxes-v6">
+                                <a href="#outsourcing" class="rounded-x text-uppercase">
+                                    Outsourcing
+                                </a>
+                            </div>
+                            <div class="col-md-4 content-boxes-v6">
+                                <a href="#RPO" class="rounded-x text-uppercase">
+                                    RPO
+                                </a>
+                            </div>
+                            <div class="col-md-4 content-boxes-v6">
+                                <a href="#payroll" class="rounded-x text-uppercase">
+                                    Payroll
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END LAYER -->
+                </li>
+                <!-- END SLIDE -->
+
+            </ul>
+            <div class="tp-bannertimer tp-bottom"></div>
+        </div>
+    </div>
+    <!--=== End Slider ===-->
+
+    {{ include('servilabor/servicios/_outsourcing.html.twig') }}
+
+    {{ include('servilabor/servicios/_rpo.html.twig') }}
+
+    {{ include('servilabor/servicios/_payroll.html.twig') }}
+
 
 {% endblock %}
 
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('vendor/rs-plugin/js/jquery.themepunch.tools.min.js') }}"></script>
+    <script src="{{ asset('vendor/rs-plugin/js/jquery.themepunch.revolution.min.js') }}"></script>
+    <script src="{{ asset('js/servilabor/plugins/revolution-slider.js') }}"></script>
+    <script>
+        RevolutionSlider.initRSfullScreenOffset();
+    </script>
+{% endblock %}

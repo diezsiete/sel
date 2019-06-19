@@ -3,15 +3,13 @@
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('vendor/rs-plugin/css/settings.css') }}">
-
-
 {% endblock %}
 
 
 {% block body %}
     {{ include('servilabor/index/_slider.html.twig') }}
 
-    {{ include('servilabor/index/_icons.html.twig')  }}
+    {{ include('servilabor/index/_icons.html.twig') }}
 
     <hr class="g-brd-gray-light-v4 my-0">
 
@@ -35,7 +33,8 @@
 
             <div class="row justify-content-center g-mb-20">
                 <a href="http://www.camacoes.com.co" target="_blank">
-                    <img class="img-responsive" src="{{ asset('img/servilabor/logo-camacoes2.png') }}" alt="logo camacoes">
+                    <img class="img-responsive" src="{{ asset('img/servilabor/logo-camacoes2.png') }}"
+                         alt="logo camacoes">
                 </a>
             </div>
         </div>
@@ -85,7 +84,7 @@
                     </h2>
                 </div>
             </header>
-        <!-- Icon Blocks -->
+            <!-- Icon Blocks -->
             <div class="row">
                 <div class="col-lg-4 g-mb-30">
                     <!-- Icon Blocks -->
@@ -101,7 +100,8 @@
                         </div>
                     </div>
                     <hr class="g-my-15">
-                    <p class="g-color-gray-dark-v4">We strive to embrace and drive change in our industry which allows us to keep our clients relevant.</p>
+                    <p class="g-color-gray-dark-v4">We strive to embrace and drive change in our industry which allows
+                        us to keep our clients relevant.</p>
                     <!-- End Icon Blocks -->
                 </div>
 
@@ -119,7 +119,8 @@
                         </div>
                     </div>
                     <hr class="g-my-15">
-                    <p class="g-color-gray-dark-v4">We strive to embrace and drive change in our industry which allows us to keep our clients relevant.</p>
+                    <p class="g-color-gray-dark-v4">We strive to embrace and drive change in our industry which allows
+                        us to keep our clients relevant.</p>
                     <!-- End Icon Blocks -->
                 </div>
 
@@ -137,7 +138,8 @@
                         </div>
                     </div>
                     <hr class="g-my-15">
-                    <p class="g-color-gray-dark-v4">We strive to embrace and drive change in our industry which allows us to keep our clients relevant.</p>
+                    <p class="g-color-gray-dark-v4">We strive to embrace and drive change in our industry which allows
+                        us to keep our clients relevant.</p>
                     <!-- End Icon Blocks -->
                 </div>
             </div>
@@ -159,7 +161,8 @@
                         </div>
                     </div>
                     <hr class="g-my-15">
-                    <p class="g-color-gray-dark-v4">We strive to embrace and drive change in our industry which allows us to keep our clients relevant.</p>
+                    <p class="g-color-gray-dark-v4">We strive to embrace and drive change in our industry which allows
+                        us to keep our clients relevant.</p>
                     <!-- End Icon Blocks -->
                 </div>
 
@@ -177,7 +180,8 @@
                         </div>
                     </div>
                     <hr class="g-my-15">
-                    <p class="g-color-gray-dark-v4">We strive to embrace and drive change in our industry which allows us to keep our clients relevant.</p>
+                    <p class="g-color-gray-dark-v4">We strive to embrace and drive change in our industry which allows
+                        us to keep our clients relevant.</p>
                     <!-- End Icon Blocks -->
                 </div>
 
@@ -195,7 +199,8 @@
                         </div>
                     </div>
                     <hr class="g-my-15">
-                    <p class="g-color-gray-dark-v4">We strive to embrace and drive change in our industry which allows us to keep our clients relevant.</p>
+                    <p class="g-color-gray-dark-v4">We strive to embrace and drive change in our industry which allows
+                        us to keep our clients relevant.</p>
                     <!-- End Icon Blocks -->
                 </div>
             </div>
@@ -209,7 +214,7 @@
     {#{{  include('servilabor/index/_counters.html.twig') }}#}
 
     {# include('servilabor/index/_news.html.twig') #}
-    
+
     {# include('servilabor/index/_action.html.twig') #}
 
 {% endblock %}
@@ -220,5 +225,7 @@
     <script src="{{ asset('vendor/rs-plugin/js/jquery.themepunch.tools.min.js') }}"></script>
     <script src="{{ asset('vendor/rs-plugin/js/jquery.themepunch.revolution.min.js') }}"></script>
     <script src="{{ asset('js/servilabor/plugins/revolution-slider.js') }}"></script>
-
+    <script>
+        RevolutionSlider.initRSfullWidth();
+    </script>
 {% endblock %}

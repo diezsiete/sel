@@ -8,11 +8,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class ServilaborController extends AbstractController
 {
     /**
-     * @Route("/", name="servilabor_index", host="%empresa.servilabor.host%")
+     * @Route("/", name="servilabor_inicio", host="%empresa.servilabor.host%")
      */
-    public function index()
+    public function inicio()
     {
-        return $this->render('servilabor/index.html.twig');
+        return $this->render('servilabor/inicio.html.twig');
     }
 
     /**
@@ -29,5 +29,27 @@ class ServilaborController extends AbstractController
     public function servicios()
     {
         return $this->render('servilabor/servicios.html.twig');
+    }
+
+    /**
+     * @Route("/servicios/{servicio}", name="servilabor_servicio", host="%empresa.servilabor.host%")
+     */
+    public function serviciosInner($servicio)
+    {
+        if(!in_array($servicio, ['outsourcing', 'rpo', 'payroll'])) {
+            throw $this->createNotFoundException('Pagina no encontrada');
+        }
+
+        return $this->render('servilabor/servicios-inner.html.twig', [
+            'servicio' => $servicio
+        ]);
+    }
+
+    /**
+     * @Route("/candidatos", name="servilabor_candidatos", host="%empresa.servilabor.host%")
+     */
+    public function candidatos()
+    {
+        return $this->render('servilabor/candidatos.html.twig');
     }
 }
