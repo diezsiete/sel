@@ -1,0 +1,70 @@
+{% extends 'servilabor/base.html.twig' %}
+
+{% block body %}
+<!-- Login -->
+<section class="g-bg-gray-light-v5">
+    <div class="container g-py-100">
+        <div class="row justify-content-center">
+            <div class="col-sm-8 col-lg-5">
+                <div class="u-shadow-v21 g-bg-white rounded g-py-40 g-px-30">
+                    <header class="text-center mb-4">
+                        <h2 class="h2 g-color-black g-font-weight-600">Iniciar sesión</h2>
+                    </header>
+
+                    {% if error %}
+                        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                    {% endif %}
+
+                    <!-- Form -->
+                    <form class="g-py-15" method="post" novalidate="novalidate" >
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                        <div class="mb-4">
+                            <div class="input-group g-brd-primary--focus">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text g-width-45 g-brd-right-none g-brd-gray-light-v4 g-color-gray-dark-v5"><i class="icon-finance-067 u-line-icon-pro"></i></span>
+                                </div>
+                                <input class="form-control g-color-black g-bg-white g-brd-gray-light-v4 g-py-15 g-px-15"
+                                       type="email" placeholder="Identificación" value="{{ last_username }}"
+                                       name="identificacion" id="identificacion" >
+                            </div>
+                        </div>
+
+                        <div class="g-mb-35">
+                            <div class="input-group g-brd-primary--focus mb-4">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text g-width-45 g-brd-right-none g-brd-gray-light-v4 g-color-gray-dark-v5"><i class="icon-media-094 u-line-icon-pro"></i></span>
+                                </div>
+                                <input class="form-control g-color-black g-bg-white g-brd-gray-light-v4 g-py-15 g-px-15"
+                                       type="password" placeholder="Contraseña"  name="password" id="password">
+                            </div>
+
+                            <div class="row justify-content-between">
+                                <div class="col align-self-center">
+                                    <label class="form-check-inline u-check g-color-gray-dark-v5 g-font-size-12 g-pl-25 mb-0">
+                                        <input class="g-hidden-xs-up g-pos-abs g-top-0 g-left-0" type="checkbox">
+                                        <div class="u-check-icon-checkbox-v6 g-absolute-centered--y g-left-0">
+                                            <i class="fa" data-check-icon="&#xf00c"></i>
+                                        </div>
+                                        Mantenerme conectado
+                                    </label>
+                                </div>
+                                <div class="col align-self-center text-right">
+                                    <a class="g-font-size-12" href="#">Olvido su contraseña?</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <button class="btn btn-md btn-block u-btn-primary rounded g-py-13" type="submit">
+                                Iniciar sesión
+                            </button>
+                        </div>
+                    </form>
+                    <!-- End Form -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Login -->
+{% endblock %}
