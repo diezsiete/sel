@@ -22,4 +22,4 @@ app:
       host: 'servilabor.localhost'
       razon: SERVILABOR S.A.S
       templates:
-        login: 'pta/login.html.twig'
+        login: 'servilabor/login.html.twig'
