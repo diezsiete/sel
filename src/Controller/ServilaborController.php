@@ -16,6 +16,14 @@ class ServilaborController extends AbstractController
     }
 
     /**
+     * @Route("/nosotros", name="servilabor_nosotros", host="%empresa.servilabor.host%")
+     */
+    public function nosotros()
+    {
+        return $this->render('servilabor/nosotros.html.twig');
+    }
+
+    /**
      * @Route("/servicios", name="servilabor_servicios", host="%empresa.servilabor.host%")
      */
     public function servicios()

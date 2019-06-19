@@ -20,7 +20,7 @@ class PtaController extends AbstractController
     }
 
     /**
-     * @Route("/nosotros", name="pta_nosotros")
+     * @Route("/nosotros", name="pta_nosotros", host="%empresa.pta.host%")
      * @return Response
      */
     public function nosotros()
@@ -29,7 +29,7 @@ class PtaController extends AbstractController
     }
 
     /**
-     * @Route("/servicios", name="pta_servicios")
+     * @Route("/servicios", name="pta_servicios", host="%empresa.pta.host%")
      */
     public function servicios()
     {
@@ -37,7 +37,7 @@ class PtaController extends AbstractController
     }
 
     /**
-     * @Route("/noticias", name="pta_noticias")
+     * @Route("/noticias", name="pta_noticias", host="%empresa.pta.host%")
      */
     public function noticias()
     {
@@ -47,7 +47,7 @@ class PtaController extends AbstractController
 
 
     /**
-     * @Route("/contacto", name="pta_contacto")
+     * @Route("/contacto", name="pta_contacto", host="%empresa.pta.host%")
      */
     public function contacto()
     {
