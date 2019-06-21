@@ -6,6 +6,7 @@ use App\Form\CandidatoFormType;
 use App\Form\ContactoFormType;
 use App\Form\Model\ContactoModel;
 use App\Service\Mailer;
+use App\Service\SelParameters;
 use App\Service\UploaderHelper;
 use Swift_Attachment;
 use Swift_Mailer;
@@ -55,28 +56,31 @@ class ServilaborController extends AbstractController
     }
 
     /**
+     * @Route("/blog", name="servilabor_blog", host="%empresa.servilabor.host%")
+     */
+    public function blog()
+    {
+        return $this->render('servilabor/blog.html.twig');
+    }
+
+    /**
      * @Route("/candidatos", name="servilabor_candidatos", host="%empresa.servilabor.host%")
      */
-    public function candidatos(Request $request, UploaderHelper $uploaderHelper, Swift_Mailer $mailer, ContainerBagInterface $bag)
+    public function candidatos(Request $request, UploaderHelper $uploaderHelper, Mailer $mailer, ContainerBagInterface $bag, SelParameters $parameters)
     {
         $form = $this->createForm(CandidatoFormType::class);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
             if($adjunto = $request->files->get('adjunto')) {
                 $data = $form->getData();
-                $fileName = $uploaderHelper->uploadPrivateFile($adjunto);
-                $fileMetadata = $uploaderHelper->getPrivateFileMetadata($fileName, $bag);
+                $fileMetadata = $uploaderHelper->uploadPrivateFile($adjunto, true, $bag);
 
-                $message = (new \Swift_Message('[servilabor.com.co/candidatos] ' . $data['nombre']))
-                    ->setFrom($data['email'])
-                    ->setTo('guerrerojosedario@gmail.com')
-                    ->setBody(
-                        $this->renderView('servilabor/emails/candidatos.html.twig', [
-                            'data' => $data,
-                        ]), 'text/html')
-                    ->attach(Swift_Attachment::fromPath($fileMetadata['fullpath']));
-
-                $mailer->send($message);
+                $subject = '[servilabor.com.co/candidatos] ' . $data['nombre'];
+                $from = $data['email'];
+                $to = $parameters->getContactoEmail();
+                $mailer->send($subject, $from, $to, 'servilabor/emails/candidatos.html.twig', [
+                    'data' => $data
+                ], $fileMetadata['fullpath']);
 
                 $this->addFlash('success', 'El mensaje se ha enviado exitosamente, gracias por utilizar nuestros servicios');
             } else {

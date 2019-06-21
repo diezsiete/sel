@@ -9,11 +9,13 @@ app:
       mail: info@pta.com.co
       logo: /img/sel/pta-logo.png
       logo_pdf: /img/sel/pta-logo-pdf.png
+
       certificado_laboral:
         firma: /img/sel/firma-certificado-laboral.png
         firmante: FERNANDA SANCHEZ LAGUNA
         firmante_cargo: Directora de Servicio al Cliente
         firmante_contacto: PBX 756 98 40 Ext. 110-106-136
+
       templates:
         login: 'pta/login.html.twig'
 
@@ -21,6 +23,21 @@ app:
     servilabor:
       host: 'servilabor.localhost'
       razon: SERVILABOR S.A.S
+      nit: 800.154.576-3
+      dir: 'Cra 14 # 76-39 Of 102'
+      web: www.servilabor.com.co
+      mail: info@servilabor.com.co
+      tel: 300 31 13
+      logo: /img/sel/logo-servilabor.png
+      logo_pdf: /img/sel/logo-servilabor-pdf.png
+
+      certificado_laboral:
+        firma: /img/sel/firma-certificado-laboral-servilabor.png
+        firmante: SERGIO INVERNON RAMOS
+        firmante_cargo: Gerente General
+        firmante_contacto: PBX 300 31 13
+
       templates:
         login: 'servilabor/login.html.twig'
+
       contacto_email: guerrerojosedario@gmail.com

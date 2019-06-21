@@ -41,18 +41,17 @@ class UploaderHelper
         return $this->uploadFile($file, self::HV_ADJUNTO, false, $existingFilename);
     }
 
-    public function uploadPrivateFile(File $file): string
+    public function uploadPrivateFile(File $file, $getMetadata = false, ?ContainerBagInterface $bag = null)
     {
-        return $this->uploadFile($file, self::PRIVATE_FILES, false);
-    }
-
-    public function getPrivateFileMetadata(string $path, ?ContainerBagInterface $bag = null)
-    {
-        $metadata =  $this->privateFilesystem->getMetadata(self::PRIVATE_FILES . '/' . $path);
-        if($bag && $metadata) {
-            $metadata['fullpath'] = $bag->get('kernel.project_dir') . '/' . $bag->get('private_uploads_dir_name') . '/'  . $metadata['path'];
+        $fileName = $this->uploadFile($file, self::PRIVATE_FILES, false);
+        if($getMetadata) {
+            $metadata =  $this->privateFilesystem->getMetadata(self::PRIVATE_FILES . '/' . $fileName);
+            if($bag && $metadata) {
+                $metadata['fullpath'] = $bag->get('kernel.project_dir') . '/' . $bag->get('private_uploads_dir_name') . '/'  . $metadata['path'];
+            }
+            return $metadata;
         }
-        return $metadata;
+        return $fileName;
     }
 
     /**

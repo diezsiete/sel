@@ -30,6 +30,7 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('dir')->end()
                         ->scalarNode('web')->end()
                         ->scalarNode('mail')->end()
+                        ->scalarNode('tel')->end()
                         ->scalarNode('logo')->end()
                         ->scalarNode('logo_pdf')->end()
 

@@ -51,6 +51,11 @@ class SelParameters
         return $this->parameters['mail'];
     }
 
+    public function getTel()
+    {
+        return $this->parameters['tel'];
+    }
+
     public function getLogo()
     {
         return $this->parameters['logo'];
