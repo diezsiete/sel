@@ -6,7 +6,8 @@
 parameters:
     locale: 'en'
     empresa: 'servilabor'
-
+    private_uploads_dir_name: 'var/uploads'
+    private_uploads_base_url: '/%private_uploads_dir_name%'
 services:
     # default configuration for services in *this* file
     _defaults:

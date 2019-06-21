@@ -1,10 +1,192 @@
 {% extends 'servilabor/base.html.twig' %}
 
+{% block title %}Servilabor - Candidatos {% endblock %}
+
+{% form_theme form _self %}
+
+{%- block choice_widget_expanded -%}
+    {%- for child in form %}
+        {%- set checked = child.vars.checked ? 'checked' : '' -%}
+        <label class="u-check">
+            <input type="radio" {{ block('widget_attributes') }} class="g-hidden-xs-up g-pos-abs g-top-0 g-left-0"
+                   value="{{ child.vars.value }}" {{ checked }}  />
+            <span class="btn btn-md btn-block u-btn-outline-lightgray g-color-white--checked g-bg-primary--checked {% if loop.index0 > 0 %} g-brd-left-none--md {% endif %} rounded-0">
+                {{child.vars.value}}
+            </span>
+        </label>
+    {% endfor -%}
+
+{%- endblock choice_widget_expanded -%}
+
+
 {% block body %}
+    <!-- Breadcrumbs -->
+    <section class="g-bg-gray-light-v5 g-py-50">
+        <div class="container">
+            <div class="d-sm-flex text-center">
+                <div class="align-self-center">
+                    <h2 class="h3 g-font-weight-300 w-100 g-mb-10 g-mb-0--md">
+                        Ingresa tus datos para trabajar con nosotros
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Breadcrumbs -->
+
+    <section class="g-py-50">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    {{ include('default/_flash_messages.html.twig') }}
+                </div>
+            </div>
+
+            <!-- General Forms -->
+            {{ form_start(form, {attr: {
+                enctype: 'multipart/form-data',
+                novalidate: 'novalidate',
+                class: 'g-brd-around g-brd-gray-light-v4 g-pa-30 g-mb-30'
+            }}) }}
+
+                <h4 class="h6 g-font-weight-700 g-mb-20">Datos personales</h4>
+
+
+                <div class="row">
+
+                    <!-- Text Input with Left Appended Icon -->
+                    <div class="form-group g-mb-20 col-md-6">
+                        <label class="g-mb-10">Nombres</label>
+                        <div class="input-group g-brd-primary--focus">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text rounded-0 g-bg-white g-color-gray-light-v1"><i class="icon-user-follow"></i></span>
+                            </div>
+                            {{ form_widget(form.nombre, {attr: {
+                                class: 'form-control-md rounded-0"',
+                                placeholder: 'Ingrese su nombre'
+                            }}) }}
+                            {{ form_errors(form.nombre) }}
+                        </div>
+                    </div>
+                    <!-- End Text Input with Left Appended Icon -->
+                    <!-- Text Input with Left Appended Icon -->
+                    <div class="form-group g-mb-20 col-md-6">
+                        <label class="g-mb-10">Número de documento</label>
+                        <div class="input-group g-brd-primary--focus">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text rounded-0 g-bg-white g-color-gray-light-v1"><i class="icon-user-follow"></i></span>
+                            </div>
+                            {{ form_widget(form.identificacion, {attr: {
+                                class: 'form-control-md rounded-0"',
+                                placeholder: 'Ingrese número de documento'
+                            }}) }}
+                            {{ form_errors(form.identificacion) }}
+                        </div>
+                    </div>
+                    <!-- End Text Input with Left Appended Icon -->
+                </div>
+
+                <div class="row">
+
+                    <!-- Text Input with Left Appended Icon -->
+                    <div class="form-group g-mb-20 col-md-4">
+                        <label class="g-mb-10">Correo</label>
+                        <div class="input-group g-brd-primary--focus">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text rounded-0 g-bg-white g-color-gray-light-v1"><i class="icon-envelope"></i></span>
+                            </div>
+                            {{ form_widget(form.email, {attr: {
+                                class: 'form-control-md rounded-0"',
+                                placeholder: 'Ingrese su correo electronico'
+                            }}) }}
+                            {{ form_errors(form.email) }}
+                        </div>
+                    </div>
+                    <!-- End Text Input with Left Appended Icon -->
+                    <!-- Text Input with Left Appended Icon -->
+                    <div class="form-group g-mb-20 col-md-4">
+                        <label class="g-mb-10">Teléfono</label>
+                        <div class="input-group g-brd-primary--focus">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text rounded-0 g-bg-white g-color-gray-light-v1"><i class="icon-phone"></i></span>
+                            </div>
+                            {{ form_widget(form.telefono, {attr: {
+                                class: 'form-control-md rounded-0"',
+                                placeholder: 'Teléfono de contacto'
+                            }}) }}
+                            {{ form_errors(form.telefono) }}
+                        </div>
+                    </div>
+                    <!-- End Text Input with Left Appended Icon -->
+                    <!-- Text Input with Left Appended Icon -->
+                    <div class="form-group g-mb-20 col-md-4">
+                        <label class="g-mb-10">Lugar de residencia</label>
+                        <div class="input-group g-brd-primary--focus">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text rounded-0 g-bg-white g-color-gray-light-v1"><i class="icon-home"></i></span>
+                            </div>
+                            {{ form_widget(form.residencia, {attr: {
+                                class: 'form-control-md rounded-0"',
+                                placeholder: 'Ciudad donde vive'
+                            }}) }}
+                            {{ form_errors(form.residencia) }}
+                        </div>
+                    </div>
+                    <!-- End Text Input with Left Appended Icon -->
+                </div>
+
+                <!-- Text Input with Both Appended Icon -->
+                <div class="form-group g-mb-20">
+                    <label class="g-mb-10">Fecha de nacimiento</label>
+                    <div class="input-group g-brd-primary--focus">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text rounded-0 g-bg-white g-color-gray-light-v1"><i class="icon-calendar"></i></span>
+                        </div>
+                        {{ form_widget(form.nacimiento, {attr: {
+                            class: 'form-control-md rounded-0"',
+                            placeholder: 'En formato AAAA-MM-DD'
+                        }}) }}
+                        {{ form_errors(form.nacimiento) }}
+                    </div>
+                    {{ form_help(form.nacimiento, {help_attr: { class: 'g-font-size-default g-mt-10'}}) }}
+                </div>
+                <!-- End Text Input with Both Appended Icon -->
+
+                <hr class="g-brd-gray-light-v4 g-mx-minus-30">
+
+                <h4 class="h6 g-font-weight-700 g-mb-20">Actividad en la que desas trabajar</h4>
+                <div class="btn-group justified-content">
+                    {{ form_widget(form.actividad) }}
+
+                </div>
+
+                <hr class="g-brd-gray-light-v4 g-mx-minus-30">
+
+                <!-- File Input -->
+                <div class="form-group">
+                    <label class="g-mb-10" for="inputGroup1_2">Hoja de vida</label>
+
+                    <div class="input-group u-file-attach-v1 g-brd-gray-light-v2">
+                        <input id="inputGroup1_2" class="form-control form-control-md rounded-0" type="text" placeholder="Text in field" readonly="">
+
+                        <div class="input-group-append">
+                            <button class="btn btn-md u-btn-primary rounded-0" type="submit">Browse</button>
+                            <input type="file" name="adjunto">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="g-mb-20">&nbsp;</div>
+
+                <div class="text-center">
+                    <input type="submit" class="btn btn-xl u-btn-primary g-mb-1 " value="Enviar">
+                </div>
+            {{ form_end(form) }}
+            <!-- End General Forms -->
+        </div>
+    </section>
+    <!-- End Timeline #02 -->
 
 {% endblock %}
 
-{% block stylesheets %}
-
-{% endblock %}
 

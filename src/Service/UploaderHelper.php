@@ -6,12 +6,14 @@ use Gedmo\Sluggable\Util\Urlizer;
 use League\Flysystem\FileNotFoundException;
 use League\Flysystem\FilesystemInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class UploaderHelper
 {
     const HV_ADJUNTO = 'hv_adjunto';
+    const PRIVATE_FILES = 'private_files';
 
     /**
      * @var FilesystemInterface
@@ -39,6 +41,20 @@ class UploaderHelper
         return $this->uploadFile($file, self::HV_ADJUNTO, false, $existingFilename);
     }
 
+    public function uploadPrivateFile(File $file): string
+    {
+        return $this->uploadFile($file, self::PRIVATE_FILES, false);
+    }
+
+    public function getPrivateFileMetadata(string $path, ?ContainerBagInterface $bag = null)
+    {
+        $metadata =  $this->privateFilesystem->getMetadata(self::PRIVATE_FILES . '/' . $path);
+        if($bag && $metadata) {
+            $metadata['fullpath'] = $bag->get('kernel.project_dir') . '/' . $bag->get('private_uploads_dir_name') . '/'  . $metadata['path'];
+        }
+        return $metadata;
+    }
+
     /**
      * @resource
      */
@@ -52,7 +68,7 @@ class UploaderHelper
         return $resource;
     }
 
-    private function uploadFile(File $file, string $directory, bool $isPublic, ?string $existingFilename): string
+    private function uploadFile(File $file, string $directory, bool $isPublic, ?string $existingFilename = null): string
     {
         if ($file instanceof UploadedFile) {
             $originalFilename = $file->getClientOriginalName();

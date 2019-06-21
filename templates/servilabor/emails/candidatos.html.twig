@@ -1,0 +1,15 @@
+<h2>
+       Aplicación a formulario de candidatos
+</h2>
+
+<p>
+    {% for key, value in data %}
+        <strong>{{ key }} : </strong>
+        {% if key == 'nacimiento' %}
+                {{ value|date('Y-m-d') }}
+        {% else %}
+                {{ value }}
+        {% endif %}
+        <br>
+    {% endfor %}
+</p>
