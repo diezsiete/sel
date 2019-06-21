@@ -3,8 +3,12 @@
 namespace App\Controller;
 
 use App\Form\CandidatoFormType;
+use App\Form\ContactoFormType;
+use App\Form\Model\ContactoModel;
+use App\Service\Mailer;
 use App\Service\UploaderHelper;
 use Swift_Attachment;
+use Swift_Mailer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -53,7 +57,7 @@ class ServilaborController extends AbstractController
     /**
      * @Route("/candidatos", name="servilabor_candidatos", host="%empresa.servilabor.host%")
      */
-    public function candidatos(Request $request, UploaderHelper $uploaderHelper, \Swift_Mailer $mailer, ContainerBagInterface $bag)
+    public function candidatos(Request $request, UploaderHelper $uploaderHelper, Swift_Mailer $mailer, ContainerBagInterface $bag)
     {
         $form = $this->createForm(CandidatoFormType::class);
         $form->handleRequest($request);
@@ -81,6 +85,26 @@ class ServilaborController extends AbstractController
         }
 
         return $this->render('servilabor/candidatos.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/contacto", name="servilabor_contacto", host="%empresa.servilabor.host%")
+     */
+    public function contacto(Request $request, Mailer $mailer)
+    {
+        $form = $this->createForm(ContactoFormType::class);
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+
+            $mailer->sendContacto($form->getData());
+
+            $this->addFlash('success', 'El mensaje se ha enviado exitosamente');
+        }
+
+        return $this->render('servilabor/contacto.html.twig', [
             'form' => $form->createView()
         ]);
     }

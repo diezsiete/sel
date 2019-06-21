@@ -81,9 +81,13 @@ class SelParameters
         return $this->parameters['certificado_laboral']['firmante_contacto'];
     }
 
-
     public function getTemplateLogin()
     {
         return $this->parameters['templates']['login'];
+    }
+
+    public function getContactoEmail()
+    {
+        return $this->parameters['contacto_email'];
     }
 }

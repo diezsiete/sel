@@ -1,0 +1,100 @@
+{% extends 'servilabor/base.html.twig' %}
+{% block title %}
+    Contacto
+{% endblock %}
+
+{% form_theme form _self %}
+
+{% block span_required %}
+    <span class="g-color-red">*</span>
+{% endblock %}
+
+{% block body %}
+    <section class="container g-pt-100 g-pb-40">
+        <div class="row justify-content-between">
+
+            <div class="col-lg-7 g-mb-60">
+
+                {{ include('default/_flash_messages.html.twig') }}
+
+                <h2 class="h3">Contactenos</h2>
+                <p class="g-color-gray-dark-v3 g-font-size-16">
+                    En Servilabor nos interesa mantenernos en contacto con usted,
+                    para cualquier inquietud o sugerencia por favor no dude en escribirnos utilizando el siguiente formulario
+                </p>
+
+                <hr class="g-my-40">
+
+                <!-- Contact Form -->
+                {{ form_start(form, {attr: {
+                    novalidate: 'novalidate'
+                }})}}
+                    {{ form_row(form.nombre, {
+                        container_attr: {class: 'g-mb-20'},
+                        label_attr: {class: 'g-color-gray-dark-v2 g-font-weight-600 g-font-size-13'},
+                        attr: {class: 'g-color-gray-dark-v5 g-bg-white g-bg-white--focus g-brd-primary--focus g-brd-gray-light-v4 rounded-3 g-py-13 g-px-15'}
+                    }) }}
+
+                    {{ form_row(form.email, {
+                        container_attr: {class: 'g-mb-20'},
+                        label_attr: {class: 'g-color-gray-dark-v2 g-font-weight-600 g-font-size-13'},
+                        attr: {class: 'g-color-gray-dark-v5 g-bg-white g-bg-white--focus g-brd-primary--focus g-brd-gray-light-v4 rounded-3 g-py-13 g-px-15'}
+                    }) }}
+
+
+                    {{ form_row(form.mensaje, {
+                        container_attr: {class: 'g-mb-40'},
+                        label_attr: {class: 'g-color-gray-dark-v2 g-font-weight-600 g-font-size-13'},
+                        attr: {class: 'g-color-gray-dark-v5 g-bg-white g-bg-white--focus g-brd-primary--focus g-brd-gray-light-v4 g-resize-none rounded-3 g-py-13 g-px-15'}
+                    }) }}
+
+                    <button class="btn btn-lg u-btn-primary g-font-weight-600 g-font-size-default rounded-3 text-uppercase g-py-15 g-px-30" type="submit" role="button">
+                        Enviar mensaje
+                    </button>
+                {{form_end(form)}}
+                <!-- End Contact Form -->
+            </div>
+
+            <div class="col-lg-4 g-mb-60">
+                <!-- Google Map -->
+                <div id="GMapCustomized-light" class="js-g-map embed-responsive embed-responsive-21by9 g-height-300" data-type="custom" data-lat="40.674" data-lng="-73.946" data-zoom="12" data-title="Agency" data-styles='[["", "", [{"saturation":-100},{"lightness":51},{"visibility":"simplified"}]], ["", "labels", [{"visibility":"on"}]], ["water", "", [{"color":"#bac6cb"}]] ]'
+                     data-pin="true" data-pin-icon="../../assets/img/icons/pin/green.png">
+                </div>
+                <!-- End Google Map -->
+
+                <hr class="g-my-40">
+
+                <!-- Contact Info -->
+                <h2 class="h3 mb-4">Información de contacto</h2>
+                <div class="media mb-2">
+                    <i class="d-flex g-color-gray-dark-v5 mt-1 mr-3 icon-hotel-restaurant-235 u-line-icon-pro"></i>
+                    <div class="media-body">
+                        <p class="g-color-gray-dark-v3 mb-2">Cra 14 # 76-39 Of 102
+                            <br>Bogotá,
+                            <br>Colombia</p>
+                    </div>
+                </div>
+                <div class="media mb-2">
+                    <i class="d-flex g-color-gray-dark-v5 mt-1 mr-3 icon-communication-062 u-line-icon-pro"></i>
+                    <div class="media-body">
+                        <p class="g-color-gray-dark-v3 mb-2">Correo: <a class="g-color-gray-dark-v4" href="#">
+                                info@servilabor.com.co
+                            </a>
+                        </p>
+                    </div>
+                </div>
+                <div class="media mb-2">
+                    <i class="d-flex g-color-gray-dark-v5 mt-1 mr-3 icon-communication-033 u-line-icon-pro"></i>
+                    <div class="media-body">
+                        <p class="g-color-gray-dark-v3">Llamar: <span class="g-color-gray-dark-v4">+57 1 300 31 13</span>
+                        </p>
+                    </div>
+                </div>
+                <!-- End Contact Info -->
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+
+

@@ -1,0 +1,15 @@
+<h1>Mensaje formulario pagina {{ sel_parameters.razon }}</h1>
+<p><b>La persona : </b> {{ contacto.nombre }}</p>
+<p><b>Con correo : </b> {{ contacto.email }} </p>
+
+{% if contacto.categoria is not null %}
+    <p>
+        Mando el siguiente mensaje con la categoria : <b><?= $categoria ?></b>
+    </p>
+{% else %}
+    <p>
+        Mando el siguiente mensaje:
+    </p>
+{% endif %}
+<h3>Mensaje:</h3>
+<p>{{ contacto.mensaje }}</p>

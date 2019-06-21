@@ -23,3 +23,4 @@ app:
       razon: SERVILABOR S.A.S
       templates:
         login: 'servilabor/login.html.twig'
+      contacto_email: guerrerojosedario@gmail.com

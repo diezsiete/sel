@@ -19,7 +19,7 @@
         <{{ element|default('label') }}{% if label_attr %}{% with { attr: label_attr } %}{{ block('attributes') }}{% endwith %}{% endif %}>
         {{- translation_domain is same as(false) ? label : label|trans(label_translation_parameters, translation_domain) -}}
         {% if required -%}
-            <span class="required">*</span>
+            {{ block('span_required') }}
         {%- endif -%}
 
         </{{ element|default('label') }}>
@@ -49,3 +49,6 @@
     </{{ element|default('div') }}>
 {%- endblock form_row %}
 
+{% block span_required %}
+    <span class="required">*</span>
+{% endblock %}
