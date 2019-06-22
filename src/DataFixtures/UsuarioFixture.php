@@ -22,7 +22,6 @@ class UsuarioFixture extends BaseFixture
 
     protected function loadData(ObjectManager $manager)
     {
-        return;
         $this->createMany(2, 'main_users', function ($i) use ($manager){
             $user = new Usuario();
             $user

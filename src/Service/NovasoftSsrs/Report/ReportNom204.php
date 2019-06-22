@@ -95,10 +95,9 @@ class ReportNom204 extends Report
     protected $parameter_Origen = "H";
 
 
-    public function __construct(ReportServer $reportServer, ReportFormatter $reportFormatter, Utils $utils,
-                                $novasoftSsrsDb, UsuarioRepository $usuarioRepository)
+    public function __construct(ReportServer $reportServer, ReportFormatter $reportFormatter, Utils $utils, UsuarioRepository $usuarioRepository)
     {
-        parent::__construct($reportServer, $reportFormatter, $utils, $novasoftSsrsDb);
+        parent::__construct($reportServer, $reportFormatter, $utils);
 
         $this->parameter_FecIni = '2/1/2017';
         $this->parameter_FecFin = $this->utils->dateFormatToday('m/d/Y');

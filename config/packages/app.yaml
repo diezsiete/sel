@@ -1,12 +1,13 @@
 app:
   empresas:
-    pta:
-      host: 'pta.localhost'
+    PTA:
+      host: '%env(HOST_PTA)%'
       razon: PTA S.A.S
       nit: 860.527.350-6
       dir: Calle 72 A N° 20 A - 57
       web: www.pta.com.co
       mail: info@pta.com.co
+      tel: (1) 756 98 40
       logo: /img/sel/pta-logo.png
       logo_pdf: /img/sel/pta-logo-pdf.png
 
@@ -19,9 +20,12 @@ app:
       templates:
         login: 'pta/login.html.twig'
 
+      ssrs_db:
+        PTA: ~
 
-    servilabor:
-      host: 'servilabor.localhost'
+
+    SERVILABOR:
+      host: '%env(HOST_SERVILABOR)%'
       razon: SERVILABOR S.A.S
       nit: 800.154.576-3
       dir: 'Cra 14 # 76-39 Of 102'
@@ -41,3 +45,10 @@ app:
         login: 'servilabor/login.html.twig'
 
       contacto_email: guerrerojosedario@gmail.com
+
+      ssrs_db:
+        SERVILABOR: ~
+        UNIVERSAL:
+          convenios: false
+        EMPLEADOS_SOS:
+          convenios: false

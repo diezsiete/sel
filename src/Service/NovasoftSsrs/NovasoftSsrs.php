@@ -5,6 +5,8 @@ namespace App\Service\NovasoftSsrs;
 
 
 use App\Entity\Usuario;
+use App\Service\Configuracion\Configuracion;
+use App\Service\Configuracion\SsrsDb;
 use App\Service\NovasoftSsrs\Report\ReportNom204;
 use App\Service\NovasoftSsrs\Report\ReportNom701;
 use App\Service\NovasoftSsrs\Report\ReportNom92117;
@@ -42,6 +44,22 @@ class NovasoftSsrs
      * @var ReportNomU1503
      */
     private $reportNomU1503;
+
+    /**
+     * @var SsrsDb
+     */
+    private $ssrsDb;
+
+    /**
+     * @var Configuracion
+     */
+    private $configuracion;
+
+    public function __construct(Configuracion $configuracion)
+    {
+        $this->configuracion = $configuracion;
+        $this->ssrsDb = $this->configuracion->getSsrsDb(true);
+    }
 
     /**
      * @required
@@ -94,13 +112,23 @@ class NovasoftSsrs
         $this->reportNomU1503 = $reportNomU1503;
     }
 
+    /**
+     * @param SsrsDb $ssrsDb
+     * @return NovasoftSsrs
+     */
+    public function setSsrsDb(SsrsDb $ssrsDb): NovasoftSsrs
+    {
+        $this->ssrsDb = $ssrsDb;
+        return $this;
+    }
+
 
     /**
      * @return ReportNom204
      */
     public function getReportNom204(): ReportNom204
     {
-        return $this->reportNom204;
+        return $this->reportNom204->setDb($this->ssrsDb);
     }
 
     /**
@@ -108,7 +136,7 @@ class NovasoftSsrs
      */
     public function getReportNom701()
     {
-        return $this->reportNom701;
+        return $this->reportNom701->setDb($this->ssrsDb);
     }
 
     /**
@@ -116,7 +144,7 @@ class NovasoftSsrs
      */
     public function getReportNom932(): ReportNom932
     {
-        return $this->reportNom932;
+        return $this->reportNom932->setDb($this->ssrsDb);
     }
 
     /**
@@ -124,7 +152,7 @@ class NovasoftSsrs
      */
     public function getReportNom92117(): ReportNom92117
     {
-        return $this->reportNom92117;
+        return $this->reportNom92117->setDb($this->ssrsDb);
     }
 
     /**
@@ -132,7 +160,7 @@ class NovasoftSsrs
      */
     public function getReportNom936(): ReportNom936
     {
-        return $this->reportNom936;
+        return $this->reportNom936->setDb($this->ssrsDb);
     }
 
     /**
@@ -140,7 +168,7 @@ class NovasoftSsrs
      */
     public function getReportNomU1503(): ReportNomU1503
     {
-        return $this->reportNomU1503;
+        return $this->reportNomU1503->setDb($this->ssrsDb);
     }
 
 

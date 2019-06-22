@@ -5,6 +5,7 @@ namespace App\Service;
 
 
 use App\Form\Model\ContactoModel;
+use App\Service\Configuracion\Configuracion;
 use Psr\Container\ContainerInterface;
 use Swift_Attachment;
 use Swift_Mailer;
@@ -21,15 +22,15 @@ class Mailer
      */
     private $container;
     /**
-     * @var SelParameters
+     * @var Configuracion
      */
-    private $parameters;
+    private $configuracion;
 
-    public function __construct(Swift_Mailer $mailer, ContainerInterface $container, SelParameters $parameters)
+    public function __construct(Swift_Mailer $mailer, ContainerInterface $container, Configuracion $configuracion)
     {
         $this->mailer = $mailer;
         $this->container = $container;
-        $this->parameters = $parameters;
+        $this->configuracion = $configuracion;
     }
 
     public function send($subject, $from, $to, $view, $parameters, $attachmentPath = false)
@@ -50,8 +51,8 @@ class Mailer
 
     public function sendContacto(ContactoModel $contacto)
     {
-        $contactoEmail = $this->parameters->getContactoEmail();
-        $this->send($this->parameters->getRazon() . '. Pagina web formulario contacto', $contacto->email, $contactoEmail,
+        $contactoEmail = $this->configuracion->getContactoEmail();
+        $this->send($this->configuracion->getRazon() . '. Pagina web formulario contacto', $contacto->email, $contactoEmail,
             'emails/contacto.html.twig', ['contacto' => $contacto]);
     }
 }

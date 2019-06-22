@@ -64,9 +64,9 @@ class ReportNomU1503 extends Report
 
 
     public function __construct(ReportServer $reportServer, ReportFormatter $reportFormatter, Utils $utils,
-                                $novasoftSsrsDb, ConvenioRepository $convenioRepository)
+                                ConvenioRepository $convenioRepository)
     {
-        parent::__construct($reportServer, $reportFormatter, $utils, $novasoftSsrsDb);
+        parent::__construct($reportServer, $reportFormatter, $utils);
 
         $today = $this->utils->dateFormatToday('m/d/Y');
         $this->parameter_feccori = $today;

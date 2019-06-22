@@ -10,11 +10,15 @@ namespace App\Service\NovasoftSsrs\Mapper;
 
 
 use App\Entity\Convenio;
-
+use App\Service\NovasoftSsrs\Exception\InvalidMappedObject;
 
 
 class MapperNom936 extends Mapper
 {
+    /**
+     * @var Convenio
+     */
+    protected $targetObject;
 
     protected function instanceTargetObject()
     {
@@ -29,5 +33,17 @@ class MapperNom936 extends Mapper
             'nom_conv' => 'nombre',
             'dir_conv' => 'direccion'
         ];
+    }
+
+    /**
+     * @param $nombre
+     * @throws InvalidMappedObject
+     */
+    public function setNombre($nombre)
+    {
+        if(strstr($nombre, 'NO USAR') !== false) {
+            throw new InvalidMappedObject();
+        }
+        $this->targetObject->setNombre($nombre);
     }
 }

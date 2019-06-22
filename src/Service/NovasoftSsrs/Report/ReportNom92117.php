@@ -71,9 +71,9 @@ class ReportNom92117 extends Report
      */
     protected $parameter_Ccod_emp = "%";
 
-    public function __construct(ReportServer $reportServer, ReportFormatter $reportFormatter, Utils $utils, $novasoftSsrsDb)
+    public function __construct(ReportServer $reportServer, ReportFormatter $reportFormatter, Utils $utils)
     {
-        parent::__construct($reportServer, $reportFormatter, $utils, $novasoftSsrsDb);
+        parent::__construct($reportServer, $reportFormatter, $utils);
 
         $this->parameter_fec_exp = (new \DateTime())->format('m/d/Y');
     }

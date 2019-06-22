@@ -4,12 +4,9 @@ namespace App\Controller;
 
 use App\Form\CandidatoFormType;
 use App\Form\ContactoFormType;
-use App\Form\Model\ContactoModel;
+use App\Service\Configuracion\Configuracion;
 use App\Service\Mailer;
-use App\Service\SelParameters;
 use App\Service\UploaderHelper;
-use Swift_Attachment;
-use Swift_Mailer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ServilaborController extends AbstractController
 {
     /**
-     * @Route("/", name="servilabor_inicio", host="%empresa.servilabor.host%")
+     * @Route("/", name="servilabor_inicio", host="%empresa.SERVILABOR.host%")
      */
     public function inicio()
     {
@@ -26,7 +23,7 @@ class ServilaborController extends AbstractController
     }
 
     /**
-     * @Route("/nosotros", name="servilabor_nosotros", host="%empresa.servilabor.host%")
+     * @Route("/nosotros", name="servilabor_nosotros", host="%empresa.SERVILABOR.host%")
      */
     public function nosotros()
     {
@@ -34,7 +31,7 @@ class ServilaborController extends AbstractController
     }
 
     /**
-     * @Route("/servicios", name="servilabor_servicios", host="%empresa.servilabor.host%")
+     * @Route("/servicios", name="servilabor_servicios", host="%empresa.SERVILABOR.host%")
      */
     public function servicios()
     {
@@ -42,7 +39,7 @@ class ServilaborController extends AbstractController
     }
 
     /**
-     * @Route("/servicios/{servicio}", name="servilabor_servicio", host="%empresa.servilabor.host%")
+     * @Route("/servicios/{servicio}", name="servilabor_servicio", host="%empresa.SERVILABOR.host%")
      */
     public function serviciosInner($servicio)
     {
@@ -56,7 +53,7 @@ class ServilaborController extends AbstractController
     }
 
     /**
-     * @Route("/blog", name="servilabor_blog", host="%empresa.servilabor.host%")
+     * @Route("/blog", name="servilabor_blog", host="%empresa.SERVILABOR.host%")
      */
     public function blog()
     {
@@ -64,9 +61,9 @@ class ServilaborController extends AbstractController
     }
 
     /**
-     * @Route("/candidatos", name="servilabor_candidatos", host="%empresa.servilabor.host%")
+     * @Route("/candidatos", name="servilabor_candidatos", host="%empresa.SERVILABOR.host%")
      */
-    public function candidatos(Request $request, UploaderHelper $uploaderHelper, Mailer $mailer, ContainerBagInterface $bag, SelParameters $parameters)
+    public function candidatos(Request $request, UploaderHelper $uploaderHelper, Mailer $mailer, ContainerBagInterface $bag, Configuracion $configuracion)
     {
         $form = $this->createForm(CandidatoFormType::class);
         $form->handleRequest($request);
@@ -77,7 +74,7 @@ class ServilaborController extends AbstractController
 
                 $subject = '[servilabor.com.co/candidatos] ' . $data['nombre'];
                 $from = $data['email'];
-                $to = $parameters->getContactoEmail();
+                $to = $configuracion->getContactoEmail();
                 $mailer->send($subject, $from, $to, 'servilabor/emails/candidatos.html.twig', [
                     'data' => $data
                 ], $fileMetadata['fullpath']);
@@ -94,7 +91,7 @@ class ServilaborController extends AbstractController
     }
 
     /**
-     * @Route("/contacto", name="servilabor_contacto", host="%empresa.servilabor.host%")
+     * @Route("/contacto", name="servilabor_contacto", host="%empresa.SERVILABOR.host%")
      */
     public function contacto(Request $request, Mailer $mailer)
     {

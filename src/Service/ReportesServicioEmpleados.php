@@ -4,8 +4,10 @@
 namespace App\Service;
 
 
+use App\Entity\Convenio;
 use App\Entity\Empleado;
 use App\Entity\ReporteNomina;
+use App\Service\Configuracion\SsrsDb;
 use App\Service\NovasoftSsrs\Entity\ReporteCertificadoIngresos;
 use App\Service\NovasoftSsrs\Entity\ReporteCertificadoLaboral;
 use App\Service\NovasoftSsrs\Entity\ReporteLiquidacion;
@@ -133,7 +135,7 @@ class ReportesServicioEmpleados
     }
 
     /**
-     * @return mixed
+     * @return Convenio[]
      * @throws \SSRS\SSRSReportException
      */
     public function getConvenios()
@@ -156,6 +158,12 @@ class ReportesServicioEmpleados
         $reportNovasoft->setParameterFechaHasta($hasta);
 
         return $reportNovasoft->renderMap();
+    }
+
+    public function setSsrsDb(SsrsDb $ssrsDb)
+    {
+        $this->novasoftSsrs->setSsrsDb($ssrsDb);
+        return $this;
     }
 
 }

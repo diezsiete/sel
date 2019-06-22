@@ -8,6 +8,7 @@
 
 namespace App\Service\NovasoftSsrs;
 
+use App\Service\NovasoftSsrs\Exception\InvalidMappedObject;
 use App\Service\Utils;
 use App\Service\NovasoftSsrs\Mapper\Mapper;
 
@@ -132,10 +133,13 @@ class ReportFormatter
 
         $objects    = [];
         for($i = 0; $i < $rowsCount; $i++) {
-            foreach($csvArray[$i] as $attribute => $value) {
-                $mapper->$attribute = trim($value);
+            try {
+                foreach ($csvArray[$i] as $attribute => $value) {
+                    $mapper->$attribute = trim($value);
+                }
+                $mapper->addMappedObject($objects);
+            } catch (InvalidMappedObject $e) {
             }
-            $mapper->addMappedObject($objects);
         }
         return $objects;
     }

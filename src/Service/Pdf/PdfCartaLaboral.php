@@ -10,13 +10,13 @@ class PdfCartaLaboral extends PdfBase
 {
     public function render(ReporteCertificadoLaboral $certificado)
     {
-        $compania = $this->parameters->getRazon();
-        $nit = $this->parameters->getNit();
-        $logoImg = $this->parameters->getLogoPdf();
-        $firmaImg = $this->parameters->getCertificadoLaboralFirma();
-        $firmante = $this->parameters->getCertificadoLaboralFirmante();
-        $firmanteCargo = $this->parameters->getCertificadoLaboralFirmanteCargo();
-        $firmanteContacto = $this->parameters->getCertificadoLaboralFirmanteContacto();
+        $compania = $this->configuracion->getRazon();
+        $nit = $this->configuracion->getNit();
+        $logoImg = $this->configuracion->getLogoPdf();
+        $firmaImg = $this->configuracion->certificadoLaboral()->getFirma();
+        $firmante = $this->configuracion->certificadoLaboral()->getFirmante();
+        $firmanteCargo = $this->configuracion->certificadoLaboral()->getCargo();
+        $firmanteContacto = $this->configuracion->certificadoLaboral()->getContacto();
 
         $eusuaria = $certificado->getEmpresaUsuaria();
         $cargo = $certificado->getCargo();

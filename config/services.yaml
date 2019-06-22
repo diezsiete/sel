@@ -5,16 +5,16 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: 'en'
-    empresa: 'servilabor'
+    empresa: '%env(EMPRESA)%'
     private_uploads_dir_name: 'var/uploads'
     private_uploads_base_url: '/%private_uploads_dir_name%'
+
 services:
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
         bind:
-            $novasoftSsrsDb: 'PTA'
             $webDir: '%env(DOCUMENT_ROOT)%'
             $kernelProjectDir: '%kernel.project_dir%'
             $publicUploadFilesystem: '@oneup_flysystem.public_uploads_filesystem_filesystem'

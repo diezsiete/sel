@@ -36,6 +36,26 @@ class ConvenioImport
         return $this->persistNovasoftConvenios($novasoftConvenios);
     }
 
+    /**
+     * @param Convenio $convenio
+     * @return bool
+     */
+    public function persistConvenio(Convenio $convenio)
+    {
+        $persisted = true;
+        $convenioDb = $this->em->getRepository(Convenio::class)->find($convenio->getCodigo());
+        if($convenioDb) {
+            $persisted = false;
+            $convenioDb
+                ->setNombre($convenio->getNombre())
+                ->setCodigo($convenio->getCodigo())
+                ->setCodigoCliente($convenio->getCodigoCliente())
+                ->setDireccion($convenio->getDireccion());
+        } else {
+            $this->em->persist($convenio);
+        }
+        return $persisted;
+    }
 
     private function persistNovasoftConvenios($convenios)
     {

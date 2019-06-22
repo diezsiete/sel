@@ -4,16 +4,15 @@
 namespace App\Service\Pdf;
 
 
-use App\Service\SelParameters;
+use App\Service\Configuracion\Configuracion;
 use App\Service\Utils;
-use Symfony\Component\Asset\Packages;
 
 abstract class PdfBase extends \FPDF
 {
     /**
-     * @var SelParameters
+     * @var Configuracion
      */
-    protected $parameters;
+    protected $configuracion;
 
     /**
      * @var Utils
@@ -27,11 +26,11 @@ abstract class PdfBase extends \FPDF
 
     /**
      * @required
-     * @param SelParameters $parameters
+     * @param Configuracion $configuracion
      */
-    public function setSelParameters(SelParameters $parameters)
+    public function setSelParameters(Configuracion $configuracion)
     {
-        $this->parameters = $parameters;
+        $this->configuracion = $configuracion;
     }
 
     /**
@@ -54,9 +53,9 @@ abstract class PdfBase extends \FPDF
     public function Footer()
     {
         // Position at 1.5 cm from bottom
-        $compania = $this->parameters->getRazon();
-        $compania_dir = $this->parameters->getDir();
-        $compania_web = $this->parameters->getWeb();
+        $compania = $this->configuracion->getRazon();
+        $compania_dir = $this->configuracion->getDir();
+        $compania_web = $this->configuracion->getWeb();
 
         $this->SetY(-20);
         $this->SetFont('Arial','',7);

@@ -34,9 +34,9 @@ class ReportNom701 extends Report
     protected $parameter_CodEmp;
     protected $parameter_Origen  = "H";
 
-    public function __construct(ReportServer $reportServer, ReportFormatter $reportFormatter, Utils $utils, $novasoftSsrsDb)
+    public function __construct(ReportServer $reportServer, ReportFormatter $reportFormatter, Utils $utils)
     {
-        parent::__construct($reportServer, $reportFormatter, $utils, $novasoftSsrsDb);
+        parent::__construct($reportServer, $reportFormatter, $utils);
 
         $this->parameter_fFecIni = '2/1/2017';
         $this->parameter_fFecFin = $this->utils->dateFormatToday('m/t/Y');

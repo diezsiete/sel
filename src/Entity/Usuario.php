@@ -93,7 +93,7 @@ class Usuario implements UserInterface
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $type;
+    private $type = 2;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Vacante", mappedBy="aplicantes")

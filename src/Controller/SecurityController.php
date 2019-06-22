@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Usuario;
 use App\Form\ProfileFormType;
-use App\Service\SelParameters;
+use App\Service\Configuracion\Configuracion;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,7 +17,7 @@ class SecurityController extends AbstractController
     /**
      * @Route("/login", name="app_login")
      */
-    public function login(AuthenticationUtils $authenticationUtils, SelParameters $parameters): Response
+    public function login(AuthenticationUtils $authenticationUtils, Configuracion $configuracion): Response
     {
         if ($this->isGranted('ROLE_USER')) {
             return $this->redirectToRoute('app_main');
@@ -27,7 +27,7 @@ class SecurityController extends AbstractController
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render($parameters->getTemplateLogin(), ['last_username' => $lastUsername, 'error' => $error]);
+        return $this->render($configuracion->getTemplateLogin(), ['last_username' => $lastUsername, 'error' => $error]);
     }
 
     /**

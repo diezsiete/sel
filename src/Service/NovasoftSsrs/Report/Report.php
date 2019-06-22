@@ -4,6 +4,7 @@ namespace App\Service\NovasoftSsrs\Report;
 
 
 
+use App\Service\Configuracion\SsrsDb;
 use App\Service\NovasoftSsrs\ReportFormatter;
 use App\Service\NovasoftSsrs\ReportServer;
 use App\Service\Utils;
@@ -60,7 +61,7 @@ abstract class Report
      * @param ReportServer $reportServer
      * @param ReportFormatter $reportFormatter
      */
-    public function __construct(ReportServer $reportServer, ReportFormatter $reportFormatter, Utils $utils, $novasoftSsrsDb)
+    public function __construct(ReportServer $reportServer, ReportFormatter $reportFormatter, Utils $utils)
     {
         $this->reportServer = $reportServer;
         $this->reportFormatter = $reportFormatter;
@@ -68,13 +69,12 @@ abstract class Report
 
         $this->path = $this->getReportPath();
         $this->mapperClass = $this->getMapperClass() ?? GenericMapper::class;
-
-        $this->setDb($novasoftSsrsDb);
     }
 
-    public function setDb($db)
+    public function setDb(SsrsDb $db)
     {
-        $this->path = "/$db$this->path";
+        $this->path = "/". $db->getNombre() . "$this->path";
+        return $this;
     }
 
     /**

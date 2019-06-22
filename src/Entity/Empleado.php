@@ -83,6 +83,11 @@ class Empleado
      */
     private $usuario;
 
+    /**
+     * @ORM\Column(type="string", length=20, nullable=true)
+     */
+    private $ssrsDb;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -245,4 +250,23 @@ class Empleado
 
         return $this;
     }
+
+    /**
+     * @return string|null
+     */
+    public function getSsrsDb()
+    {
+        return $this->ssrsDb;
+    }
+
+    /**
+     * @param mixed $ssrsDb
+     * @return Empleado
+     */
+    public function setSsrsDb($ssrsDb)
+    {
+        $this->ssrsDb = $ssrsDb;
+        return $this;
+    }
+
 }

@@ -37,6 +37,11 @@ class Convenio
      */
     private $empleados;
 
+    /**
+     * @ORM\Column(type="string", length=20, nullable=true)
+     */
+    private $ssrsDb;
+
     public function __construct()
     {
         $this->empleados = new ArrayCollection();
@@ -123,6 +128,24 @@ class Convenio
             }
         }
 
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSsrsDb()
+    {
+        return $this->ssrsDb;
+    }
+
+    /**
+     * @param mixed $ssrsDb
+     * @return Convenio
+     */
+    public function setSsrsDb($ssrsDb)
+    {
+        $this->ssrsDb = $ssrsDb;
         return $this;
     }
 }

@@ -20,13 +20,15 @@ class AppExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $container->setParameter('empresa.config', $config['empresas'][$empresa]);
+
         foreach($config['empresas'] as $empresaKey => $empresaConfig) {
+            $container->setParameter('empresa.'.$empresaKey.'.config', $empresaConfig);
             $container->setParameter('empresa.'.$empresaKey.'.host', $empresaConfig['host']);
+            $container->setParameter('empresa.'.$empresaKey.'.db', '%env(DATABASE_URL_'.$empresaKey.')%');
         }
 
-        $databaseUrl = 'DATABASE_URL_' .strtoupper($empresa);
-
-        $container->setParameter('env(EMPRESA)', '%env('.$databaseUrl.')%');
+        $container->setParameter('env(DB_URL)', '%%empresa.'.$empresa.'.db%%');
     }
+
+
 }
