@@ -36,10 +36,6 @@ section.cualidades.section.section-height-5 {
     padding-bottom: 0;
 }
 
-#footer.index{
-    margin-top: 0;
-}
-
 /* Nosotros --------------------------------------------------------------------------------------------------------- */
 .logos{
     text-align:center !important;
@@ -62,4 +58,30 @@ section.cualidades.section.section-height-5 {
 }
 .pricing-table .plan .plan-footer {
     padding: 0.1rem;
+}
+
+/* Contacto -------------------------------------------------------------------------------------------------------- */
+
+section.ciudades-nav {
+    margin: 0;
+    padding: 10px 0;
+    text-align: center;
+    z-index: 3;
+}
+.ciudades-nav ul{
+    padding-inline-start: 0;
+    position: relative;
+}
+.ciudades-nav .sort-source.sort-source-style-2 > li > a {
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+.ciudades-nav .sort-source.sort-source-style-2 > li.active > a {
+    background-color: #3f317d;
+}
+.ciudades-nav .sort-source.sort-source-style-2 > li.active > a:after{
+    margin-top: 30px;
+}
+#googlemaps{
+    z-index:2;
 }

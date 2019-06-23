@@ -17,12 +17,14 @@ class ContactoModel
      * @Assert\NotBlank(message="Ingrese su correo")
      * @Assert\Email(message="Ingrese un email valido")
      */
-    public $email;
+    public $from;
 
     /**
      * @Assert\NotBlank(message="Ingrese mensaje")
      */
     public $mensaje;
 
-    public $categoria = null;
+    public $asunto = null;
+
+    public $to;
 }

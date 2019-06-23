@@ -1,10 +1,10 @@
 <h1>Mensaje formulario pagina {{ configuracion.razon }}</h1>
 <p><b>La persona : </b> {{ contacto.nombre }}</p>
-<p><b>Con correo : </b> {{ contacto.email }} </p>
+<p><b>Con correo : </b> {{ contacto.from }} </p>
 
-{% if contacto.categoria is not null %}
+{% if contacto.asunto is not null %}
     <p>
-        Mando el siguiente mensaje con la categoria : <b><?= $categoria ?></b>
+        Mando el siguiente mensaje con el asunto : <b>{{ contacto.asunto }}</b>
     </p>
 {% else %}
     <p>

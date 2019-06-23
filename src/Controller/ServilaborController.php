@@ -74,7 +74,7 @@ class ServilaborController extends AbstractController
 
                 $subject = '[servilabor.com.co/candidatos] ' . $data['nombre'];
                 $from = $data['email'];
-                $to = $configuracion->getContactoEmail();
+                $to = $configuracion->getEmails()->getContacto();
                 $mailer->send($subject, $from, $to, 'servilabor/emails/candidatos.html.twig', [
                     'data' => $data
                 ], $fileMetadata['fullpath']);
@@ -99,9 +99,7 @@ class ServilaborController extends AbstractController
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
-
             $mailer->sendContacto($form->getData());
-
             $this->addFlash('success', 'El mensaje se ha enviado exitosamente');
         }
 

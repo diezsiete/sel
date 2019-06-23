@@ -23,6 +23,27 @@ app:
       ssrs_db:
         PTA: ~
 
+      emails:
+        contacto:
+          Dudas, comentarios:
+            - servicioalcliente@pta.com.co
+          Aportes seguridad social:
+            - analista.seguridad@pta.com.co
+          Nomina y prestaciones sociales:
+            - nomina@pta.com.co
+            - analista.seguridad@pta.com.co
+          Pagaduría:
+            - martha.duarte@pta.com.co
+          Quejas y reclamos:
+            - servicioalcliente@pta.com.co
+            - bienestar@pta.com.co
+          Salud ocupacional:
+            - salud.ocupacional@pta.com.co
+          Selección y reclutamiento:
+            - paula.hoyos@pta.com.co
+          Servicio al cliente:
+            - servicioalcliente@pta.com.co
+
     SERVILABOR:
       host: '%env(HOST_SERVILABOR)%'
       razon: SERVILABOR S.A.S
@@ -43,7 +64,8 @@ app:
       templates:
         login: 'servilabor/login.html.twig'
 
-      contacto_email: guerrerojosedario@gmail.com
+      emails:
+        contacto: guerrerojosedario@gmail.com
 
       ssrs_db:
         SERVILABOR: ~

@@ -33,6 +33,11 @@ class Configuracion
      */
     private $oficinas = null;
 
+    /**
+     * @var Emails
+     */
+    private $emails = null;
+
     public function __construct(ContainerBagInterface $bag, $webDir)
     {
         $this->parameters = $bag->get('empresa.'.$bag->get('empresa').'.config');
@@ -118,29 +123,27 @@ class Configuracion
         return $this->certificadoLaboral;
     }
 
-    public function oficinas($ciudad = null)
+    public function oficinas($nombreOficina = null)
     {
         if(!$this->oficinas) {
             $this->oficinas = [];
-            foreach($this->parameters['oficinas'] as $oficina) {
-                $this->oficinas[] = new Oficina(
-                    $oficina['ciudad'],
-                    $oficina['direccion'],
-                    $oficina['telefono'],
-                    $oficina['email'],
-                    $oficina['latitude'],
-                    $oficina['longitude']
-                );
+            foreach($this->parameters['oficinas'] as $nombre => $oficinaData) {
+                $this->oficinas[$nombre] = new Oficina($nombre, $oficinaData);
             }
         }
-        if($ciudad) {
-            $return = current(array_filter($this->oficinas, function(Oficina $oficna) use ($ciudad) {
-                return $oficna->getCiudad() === $ciudad;
-            }));
+        if($nombreOficina) {
+            return $this->oficinas[$nombreOficina] ?? null;
         } else {
-            $return = $this->oficinas;
+            return $this->oficinas;
         }
-        return $return;
+    }
+
+    public function getEmails(): Emails
+    {
+        if(!$this->emails) {
+            $this->emails = new Emails($this->parameters['emails']);
+        }
+        return $this->emails;
     }
 
     /**
@@ -150,10 +153,5 @@ class Configuracion
     public function getTemplateLogin()
     {
         return $this->parameters['templates']['login'];
-    }
-
-    public function getContactoEmail()
-    {
-        return $this->parameters['contacto_email'];
     }
 }

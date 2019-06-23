@@ -9,6 +9,11 @@ class Oficina
     /**
      * @var string
      */
+    private $nombre;
+
+    /**
+     * @var string
+     */
     public $ciudad;
     /**
      * @var string
@@ -31,14 +36,29 @@ class Oficina
      */
     public $longitude;
 
-    public function __construct($ciudad, $direccion, $telefono, $email, $latitude, $longitude)
+    /**
+     * @var boolean
+     */
+    public $principal;
+
+    public function __construct($nombre, $oficinaData)
     {
-        $this->ciudad = $ciudad;
-        $this->direccion = $direccion;
-        $this->telefono = $telefono;
-        $this->email = $email;
-        $this->latitude = $latitude;
-        $this->longitude = $longitude;
+        $this->nombre = $nombre;
+        $this->ciudad = $oficinaData['ciudad'];
+        $this->direccion = $oficinaData['direccion'];
+        $this->telefono = $oficinaData['telefono'];
+        $this->email = $oficinaData['email'];
+        $this->latitude = $oficinaData['latitude'];
+        $this->longitude = $oficinaData['longitude'];
+        $this->principal = $oficinaData['principal'];
+    }
+
+    /**
+     * @return string
+     */
+    public function getNombre(): string
+    {
+        return $this->nombre;
     }
 
     /**
@@ -87,5 +107,13 @@ class Oficina
     public function getLongitude(): float
     {
         return $this->longitude;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPrincipal(): bool
+    {
+        return $this->principal;
     }
 }

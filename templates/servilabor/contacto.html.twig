@@ -35,7 +35,7 @@
                         attr: {class: 'g-color-gray-dark-v5 g-bg-white g-bg-white--focus g-brd-primary--focus g-brd-gray-light-v4 rounded-3 g-py-13 g-px-15'}
                     }) }}
 
-                    {{ form_row(form.email, {
+                    {{ form_row(form.from, {
                         container_attr: {class: 'g-mb-20'},
                         label_attr: {class: 'g-color-gray-dark-v2 g-font-weight-600 g-font-size-13'},
                         attr: {class: 'g-color-gray-dark-v5 g-bg-white g-bg-white--focus g-brd-primary--focus g-brd-gray-light-v4 rounded-3 g-py-13 g-px-15'}
@@ -57,8 +57,15 @@
 
             <div class="col-lg-4 g-mb-60">
                 <!-- Google Map -->
-                <div id="GMapCustomized-light" class="js-g-map embed-responsive embed-responsive-21by9 g-height-300" data-type="custom" data-lat="40.674" data-lng="-73.946" data-zoom="12" data-title="Agency" data-styles='[["", "", [{"saturation":-100},{"lightness":51},{"visibility":"simplified"}]], ["", "labels", [{"visibility":"on"}]], ["water", "", [{"color":"#bac6cb"}]] ]'
-                     data-pin="true" data-pin-icon="../../assets/img/icons/pin/green.png">
+                <div id="GMapCustomized-light" class="js-g-map embed-responsive embed-responsive-21by9 g-height-300"
+                     data-type="custom"
+                     data-lat="4.662908"
+                     data-lng="-74.058368"
+                     data-zoom="16"
+                     data-title="Servilabor, SAS."
+                     data-styles='[["", "", [{"saturation":-10},{"lightness":1},{"visibility":"simplified"}]], ["", "labels", [{"visibility":"on"}]], ["water", "", [{"color":"#bac6cb"}]] ]'
+                     data-pin="true"
+                     data-pin-icon="{{ asset('img/servilabor/pin-darkblue.png') }}">
                 </div>
                 <!-- End Google Map -->
 
@@ -95,6 +102,21 @@
         </div>
     </section>
 {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('vendor/gmaps/gmaps.min.js') }}"></script>
+    <script src="{{ asset('js/servilabor/unify/components/gmap/hs.map.js') }}"></script>
+    <script>
+        // initialization of google map
+        function initMap() {
+            $.HSCore.components.HSGMap.init('.js-g-map');
+        }
+    </script>
+
+    <script src="//maps.googleapis.com/maps/api/js?key=AIzaSyCrW-SfykmlYaUIXuywqRHl0LmYNDpso1A&callback=initMap" async defer></script>
+{% endblock %}
+
 
 
 

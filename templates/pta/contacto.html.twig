@@ -1,1 +1,126 @@
 {% extends 'pta/base.html.twig' %}
+
+{% block title %}
+    PTA - Contacto
+{% endblock %}
+
+{% block body %}
+
+    <section class="page-header page-header-classic page-header-md contacto ciudades-nav">
+            <div class="row">
+                <div class="col-md-12">
+                    <ul class="nav-pills sort-source sort-source-style-2" data-sort-id="portfolio" data-option-key="filter">
+                        {% for key, oficina in configuracion.oficinas %}
+                            <li data-option-value="*" {{ currentOficina == oficina ? 'class="active" data-title-border' : ''}}>
+                                <a href="{{ path('pta_contacto', {'oficina': key}) }}" >
+                                    {{ oficina.ciudad }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+    </section>
+
+    <div class="container">
+
+        <div class="row py-5">
+            <div class="col-lg-6">
+
+                <div class="overflow-hidden mb-1">
+                    <h2 class="font-weight-normal text-7 mt-2 mb-0 appear-animation" data-appear-animation="maskUp" data-appear-animation-delay="200">
+                        Ponganse en <strong class="font-weight-extra-bold">contacto</strong>
+                    </h2>
+                </div>
+                <div class="overflow-hidden mb-4 pb-3">
+                    <p class="mb-0 appear-animation" data-appear-animation="maskUp" data-appear-animation-delay="400">
+                        Sientase libre de preguntar por detalles, estamos para atenderle!
+                    </p>
+                </div>
+
+                {{ form_start(form, {attr: {
+                    novalidate: 'novalidate'
+                }})}}
+
+                    {{ include('default/_flash_messages.html.twig') }}
+
+                    <div class="form-row">
+                        {{ form_row(form.nombre, {
+                            container_attr: {class: 'col-lg-6'},
+                            label_attr: {class: 'font-weight-bold text-dark text-2'}
+                        }) }}
+                        {{ form_row(form.from, {
+                            container_attr: {class: 'col-lg-6'},
+                            label_attr: {class: 'font-weight-bold text-dark text-2'}
+                        }) }}
+                    </div>
+                    <div class="form-row">
+                        {{ form_row(form.asunto, {
+                            container_attr: {class: 'col'},
+                            label_attr: {class: 'font-weight-bold text-dark text-2'}
+                        }) }}
+                    </div>
+                    <div class="form-row">
+                        {{ form_row(form.mensaje, {
+                            container_attr: {class: 'col'},
+                            label_attr: {class: 'font-weight-bold text-dark text-2'}
+                        }) }}
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <input type="submit" value="Enviar mensaje" class="btn btn-primary btn-modern">
+                        </div>
+                    </div>
+                {{form_end(form)}}
+
+            </div>
+            <div class="col-lg-6">
+
+                <div class="appear-animation" data-appear-animation="fadeIn" data-appear-animation-delay="800">
+                    <h4 class="mt-2 mb-1">Agencia  <strong>{{ currentOficina.ciudad }}</strong></h4>
+                    <ul class="list list-icons list-icons-style-2 mt-2">
+                        <li><i class="fas fa-map-marker-alt top-6"></i> <strong class="text-dark">Dirección:</strong> {{ currentOficina.direccion }}, {{currentOficina.ciudad}}, Colombia</li>
+                        <li><i class="fas fa-phone top-6"></i> <strong class="text-dark">Teléfono:</strong> {{ currentOficina.telefono }}</li>
+                        <li><i class="fas fa-envelope top-6"></i> <strong class="text-dark">Email:</strong>
+                            <a href="mailto:{{ currentOficina.email }}">{{ currentOficina.email }}</a></li>
+                    </ul>
+                </div>
+
+                <div class="appear-animation" data-appear-animation="fadeIn" data-appear-animation-delay="950">
+                    <h4 class="pt-5"><strong>Horarios</strong> de atención al publico</h4>
+                    <ul class="list list-icons list-dark mt-2">
+                        <li><i class="far fa-clock top-6"></i> Lunes a Viernes - 7:30 AM a 12:30 PM y 1:30 PM a 5:30 PM</li>
+                        <li><i class="far fa-clock top-6"></i> Sabado - 9am a 12pm</li>
+                        <li><i class="far fa-clock top-6"></i> Domingo - Cerrado</li>
+                    </ul>
+                </div>
+
+                <h4 class="pt-5">Ponganse en <strong>Contacto</strong></h4>
+                <p class="lead mb-0 text-4">
+                    Puede contactarnos por medio escrito ya sea con el formulario o
+                    por correo electrónico. Tambien es posible comunicarse con nosotros via telefónica o
+                    personalmente dirigiendose a la dirección indicada en los horarios que estamos disponibles.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div id="googlemaps" class="google-map mb-0 mt-3"></div>
+
+{% endblock %}
+
+{% block footer_class %}mt-0{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDricqRT23AwWytA8LU4CwFspmE1dh09tg"></script>
+    <script>
+        var oficina = {{ currentOficina|json_encode|raw }};
+        var pinImg = "{{ asset('img/pta/pin.png') }}"
+    </script>
+    <script src="{{ asset('js/pta/contacto.js') }}"></script>
+{% endblock %}

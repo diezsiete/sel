@@ -51,8 +51,7 @@ class Mailer
 
     public function sendContacto(ContactoModel $contacto)
     {
-        $contactoEmail = $this->configuracion->getContactoEmail();
-        $this->send($this->configuracion->getRazon() . '. Pagina web formulario contacto', $contacto->email, $contactoEmail,
+        $this->send($this->configuracion->getRazon() . '. Pagina web formulario contacto', $contacto->from, $contacto->to,
             'emails/contacto.html.twig', ['contacto' => $contacto]);
     }
 }

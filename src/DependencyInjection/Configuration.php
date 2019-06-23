@@ -47,7 +47,6 @@ class Configuration implements ConfigurationInterface
                                 ->scalarNode('login')->end()
                             ->end()
                         ->end()
-                        ->scalarNode('contacto_email')->end()
                         ->arrayNode('ssrs_db')
                             ->useAttributeAsKey('name')
                             ->arrayPrototype()
@@ -56,6 +55,7 @@ class Configuration implements ConfigurationInterface
                                 ->end()
                             ->end()
                         ->end()
+                        ->append($this->addEmailsNode())
                         ->append($this->addOficinasNode())
                     ->end()
                 ->end()
@@ -65,12 +65,13 @@ class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
-    public function addOficinasNode()
+    protected function addOficinasNode()
     {
         $treeBuilder = new TreeBuilder('oficinas');
 
         $node = $treeBuilder->getRootNode()
             ->requiresAtLeastOneElement()
+            ->useAttributeAsKey('nombre')
             ->arrayPrototype()
                 ->children()
                     ->scalarNode('ciudad')->end()
@@ -79,9 +80,27 @@ class Configuration implements ConfigurationInterface
                     ->scalarNode('email')->end()
                     ->floatNode('latitude')->end()
                     ->floatNode('longitude')->end()
+                    ->booleanNode('principal')->defaultValue(false)->end()
                 ->end()
             ->end()
         ;
+        return $node;
+    }
+
+    protected function addEmailsNode()
+    {
+        $treeBuilder = new TreeBuilder('emails');
+        $node =
+            $treeBuilder->getRootNode()->children()
+                ->variableNode('contacto')
+                    ->validate()
+                        ->ifTrue(function ($v) {
+                            return false === is_string($v) && false === is_array($v);
+                        })
+                        ->thenInvalid('Here you message about why it is invalid')
+                    ->end()
+                ->end()
+            ->end();
         return $node;
     }
 }
