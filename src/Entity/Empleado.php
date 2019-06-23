@@ -17,17 +17,17 @@ class Empleado
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=2)
+     * @ORM\Column(type="smallint")
      */
     private $sexo;
 
     /**
-     * @ORM\Column(type="string", length=20)
+     * @ORM\Column(type="string", length=20, nullable=true)
      */
     private $estadoCivil;
 
     /**
-     * @ORM\Column(type="smallint")
+     * @ORM\Column(type="smallint", nullable=true)
      */
     private $hijos;
 
@@ -37,12 +37,12 @@ class Empleado
     private $nacimiento;
 
     /**
-     * @ORM\Column(type="bigint", nullable=true)
+     * @ORM\Column(type="string", length=20, nullable=true)
      */
     private $telefono1;
 
     /**
-     * @ORM\Column(type="bigint", nullable=true)
+     * @ORM\Column(type="string", length=20, nullable=true)
      */
     private $telefono2;
 
@@ -52,7 +52,7 @@ class Empleado
     private $direccion;
 
     /**
-     * @ORM\Column(type="string", length=75)
+     * @ORM\Column(type="string", length=75, nullable=true)
      */
     private $centroCosto;
 
@@ -78,7 +78,7 @@ class Empleado
     private $convenio;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Usuario", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="App\Entity\Usuario")
      * @ORM\JoinColumn(nullable=false)
      */
     private $usuario;
@@ -94,12 +94,12 @@ class Empleado
     }
 
 
-    public function getSexo(): ?string
+    public function getSexo()
     {
         return $this->sexo;
     }
 
-    public function setSexo(string $sexo): self
+    public function setSexo($sexo): self
     {
         $this->sexo = $sexo;
 
@@ -142,24 +142,24 @@ class Empleado
         return $this;
     }
 
-    public function getTelefono1(): ?int
+    public function getTelefono1(): ?string
     {
         return $this->telefono1;
     }
 
-    public function setTelefono1(?int $telefono1): self
+    public function setTelefono1(?string $telefono1): self
     {
         $this->telefono1 = $telefono1;
 
         return $this;
     }
 
-    public function getTelefono2(): ?int
+    public function getTelefono2(): ?string
     {
         return $this->telefono2;
     }
 
-    public function setTelefono2(?int $telefono2): self
+    public function setTelefono2(?string $telefono2): self
     {
         $this->telefono2 = $telefono2;
 

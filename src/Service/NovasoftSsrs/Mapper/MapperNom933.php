@@ -5,7 +5,7 @@ namespace App\Service\NovasoftSsrs\Mapper;
 
 use App\Entity\Empleado;
 use App\Entity\Usuario;
-use App\Service\NovasoftSsrs\DataFilter;
+use App\Service\NovasoftSsrs\Exception\InvalidMappedObject;
 
 class MapperNom933 extends Mapper
 {
@@ -13,10 +13,7 @@ class MapperNom933 extends Mapper
      * @var Empleado
      */
     protected $targetObject;
-    /**
-     * @var DataFilter
-     */
-    private $filter;
+
 
     protected function instanceTargetObject()
     {
@@ -25,11 +22,6 @@ class MapperNom933 extends Mapper
         return $targetObject;
     }
 
-    public function __construct(DataFilter $filter)
-    {
-        parent::__construct();
-        $this->filter = $filter;
-    }
 
     protected function defineMap(): array
     {
@@ -46,24 +38,14 @@ class MapperNom933 extends Mapper
             'tel_cel' => 'telefono1',
             'tel_res' => 'telefono2',
             'sex_emp' => 'sexo',
-            'nom_car' => 'cargo',
-            //'est_lab' => 'activo',
-            //'nom_con' => 'contrato',
-            //'nombre' => 'empresaUsuaria',
-            //'nSalario' => 'nsalario',
-            //'sal_bas' => 'salario',
-            //'fec_ing1' => 'fechaIngresoTextual',
-            //'Fcert' => 'fechaCertificadoTextual'
-
-            //'estado_civil' => 'estadoCivil',
-            //'hijos' => 'hijos',
-            //'ccosto' => 'centroCosto',
-            //'nomina' => 'convenio',
         ];
     }
 
     protected function setIdentificacion($identificacion)
     {
+        if(!$identificacion) {
+            throw new InvalidMappedObject();
+        }
         $this->targetObject->getUsuario()->setIdentificacion($identificacion);
     }
 
@@ -88,6 +70,7 @@ class MapperNom933 extends Mapper
 
     protected function setEmail($email)
     {
+        $email = $this->filter->emailValido($email);
         $this->targetObject->getUsuario()->setEmail($email);
     }
 
@@ -103,8 +86,8 @@ class MapperNom933 extends Mapper
 
     protected function setFechaRetiro($fechaRetiro)
     {
-        if($fechaRetiro = $this->filter->fechaFromNovasoft($fechaRetiro)) {
-            $this->targetObject->setFechaRetiro($fechaRetiro);
+        if($fechaRetiro) {
+            $this->targetObject->setFechaRetiro($this->filter->fechaFromNovasoft($fechaRetiro));
         }
     }
 }

@@ -160,6 +160,15 @@ class ReportesServicioEmpleados
         return $reportNovasoft->renderMap();
     }
 
+    public function getEmpleado($ident = null)
+    {
+        $reportNovasoft = $this->novasoftSsrs->getReportNom933();
+        if($ident) {
+            $reportNovasoft->setParameterCodigoEmpleado($ident);
+        }
+        return $reportNovasoft->renderMap();
+    }
+
     public function setSsrsDb(SsrsDb $ssrsDb)
     {
         $this->novasoftSsrs->setSsrsDb($ssrsDb);

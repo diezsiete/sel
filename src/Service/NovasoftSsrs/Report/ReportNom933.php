@@ -29,16 +29,15 @@ class ReportNom933 extends Report
 
     public function setParameterCodigoEmpleado($identificacion)
     {
-        $this->parameter_cod_emp = $identificacion;
+        $this->parameter_cod_emp = $identificacion . '%';
     }
 
     /**
      * @return Empleado[]
-     * @throws \SSRS\SSRSReportException
      */
     public function renderMap()
     {
-        $csvAssociative = $this->reportFormatter->csvColsSplittedToAssociative($this->renderCSV());
-        return $this->reportFormatter->mapCsv($csvAssociative, $this->getMapperInstance());
+        $csv = $this->renderCSV();
+        return $this->reportFormatter->mapCsv($csv, $this->getMapperInstance());
     }
 }

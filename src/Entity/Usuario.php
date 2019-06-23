@@ -164,6 +164,21 @@ class Usuario implements UserInterface
     }
 
     /**
+     * @param string|string[] $rolName
+     * @return $this
+     */
+    public function addRol($rolName)
+    {
+        $newRoles = is_array($rolName) ? $rolName : [$rolName];
+        foreach ($newRoles as $newRole) {
+            if (!in_array($newRole, $this->roles)) {
+                $this->roles[] = $newRole;
+            }
+        }
+        return $this;
+    }
+
+    /**
      * @see UserInterface
      */
     public function getPassword(): string

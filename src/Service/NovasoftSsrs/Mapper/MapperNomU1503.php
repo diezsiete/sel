@@ -140,4 +140,10 @@ class MapperNomU1503 extends Mapper
         $convenio = $this->convenioRepository->find($convenio_codigo);
         $this->targetObject->setConvenio($convenio);
     }
+
+    protected function setSexo($sexo)
+    {
+        $sexo = $sexo == "M" ? 2 : 1;
+        $this->targetObject->setSexo($sexo);
+    }
 }

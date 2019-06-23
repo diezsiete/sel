@@ -11,6 +11,7 @@ use App\Service\NovasoftSsrs\Report\ReportNom204;
 use App\Service\NovasoftSsrs\Report\ReportNom701;
 use App\Service\NovasoftSsrs\Report\ReportNom92117;
 use App\Service\NovasoftSsrs\Report\ReportNom932;
+use App\Service\NovasoftSsrs\Report\ReportNom933;
 use App\Service\NovasoftSsrs\Report\ReportNom936;
 use App\Service\NovasoftSsrs\Report\ReportNomU1503;
 
@@ -20,10 +21,11 @@ class NovasoftSsrs
      * @var ReportNom204
      */
     private $reportNom204;
+
     /**
-     * @var ReportNom932
+     * @var ReportNom701
      */
-    private $reportNom932;
+    private $reportNom701;
 
     /**
      * @var ReportNom92117
@@ -31,9 +33,14 @@ class NovasoftSsrs
     private $reportNom92117;
 
     /**
-     * @var ReportNom701
+     * @var ReportNom932
      */
-    private $reportNom701;
+    private $reportNom932;
+
+    /**
+     * @var ReportNom933
+     */
+    private $reportNom933;
 
     /**
      * @var ReportNom936
@@ -69,14 +76,16 @@ class NovasoftSsrs
     {
         $this->reportNom204 = $reportNom204;
     }
+
     /**
      * @required
-     * @param ReportNom932 $reportNom932
+     * @param ReportNom701 $reportNom701
      */
-    public function setReportNom932(ReportNom932 $reportNom932)
+    public function setReportNom701(ReportNom701 $reportNom701)
     {
-        $this->reportNom932 = $reportNom932;
+        $this->reportNom701 = $reportNom701;
     }
+
     /**
      * @required
      * @param ReportNom92117 $reportNom92117
@@ -88,11 +97,20 @@ class NovasoftSsrs
 
     /**
      * @required
-     * @param ReportNom701 $reportNom701
+     * @param ReportNom932 $reportNom932
      */
-    public function setReportNom701(ReportNom701 $reportNom701)
+    public function setReportNom932(ReportNom932 $reportNom932)
     {
-        $this->reportNom701 = $reportNom701;
+        $this->reportNom932 = $reportNom932;
+    }
+
+    /**
+     * @required
+     * @param ReportNom933 $reportNom933
+     */
+    public function setReportNom933(ReportNom933 $reportNom933)
+    {
+        $this->reportNom933 = $reportNom933;
     }
 
     /**
@@ -122,7 +140,6 @@ class NovasoftSsrs
         return $this;
     }
 
-
     /**
      * @return ReportNom204
      */
@@ -140,6 +157,14 @@ class NovasoftSsrs
     }
 
     /**
+     * @return ReportNom92117
+     */
+    public function getReportNom92117(): ReportNom92117
+    {
+        return $this->reportNom92117->setDb($this->ssrsDb);
+    }
+
+    /**
      * @return ReportNom932
      */
     public function getReportNom932(): ReportNom932
@@ -148,11 +173,11 @@ class NovasoftSsrs
     }
 
     /**
-     * @return ReportNom92117
+     * @return ReportNom933
      */
-    public function getReportNom92117(): ReportNom92117
+    public function getReportNom933(): ReportNom933
     {
-        return $this->reportNom92117->setDb($this->ssrsDb);
+        return $this->reportNom933->setDb($this->ssrsDb);
     }
 
     /**

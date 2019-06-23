@@ -10,11 +10,18 @@ namespace App\Service\NovasoftSsrs\Mapper;
 
 
 
+use App\Service\NovasoftSsrs\DataFilter;
+
 abstract class Mapper
 {
     protected $map;
 
     protected $targetObject;
+
+    /**
+     * @var DataFilter
+     */
+    protected $filter;
 
     abstract protected function instanceTargetObject();
     abstract protected function defineMap(): array;
@@ -43,5 +50,11 @@ abstract class Mapper
     {
         $objects[] = $this->targetObject;
         $this->targetObject = $this->instanceTargetObject();
+    }
+
+    public function setFilter(DataFilter $filter)
+    {
+        $this->filter = $filter;
+        return $this;
     }
 }

@@ -5,6 +5,7 @@ namespace App\Service\NovasoftSsrs\Report;
 
 
 use App\Service\Configuracion\SsrsDb;
+use App\Service\NovasoftSsrs\DataFilter;
 use App\Service\NovasoftSsrs\ReportFormatter;
 use App\Service\NovasoftSsrs\ReportServer;
 use App\Service\Utils;
@@ -51,6 +52,18 @@ abstract class Report
      * @var Utils
      */
     protected $utils;
+    /**
+     * @var DataFilter
+     */
+    private $filter;
+
+    /**
+     * @required
+     */
+    public function setFilter(DataFilter $filter)
+    {
+        $this->filter = $filter;
+    }
 
     protected abstract function getReportPath(): string;
 
@@ -165,6 +178,6 @@ abstract class Report
      */
     protected function getMapperInstance()
     {
-        return new $this->mapperClass();
+        return (new $this->mapperClass())->setFilter($this->filter);
     }
 }
