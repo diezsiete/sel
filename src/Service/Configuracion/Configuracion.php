@@ -28,6 +28,11 @@ class Configuracion
      */
     private $certificadoLaboral = null;
 
+    /**
+     * @var Oficina[]
+     */
+    private $oficinas = null;
+
     public function __construct(ContainerBagInterface $bag, $webDir)
     {
         $this->parameters = $bag->get('empresa.'.$bag->get('empresa').'.config');
@@ -111,6 +116,31 @@ class Configuracion
                 $this->parameters['certificado_laboral']['firmante_contacto']);
         }
         return $this->certificadoLaboral;
+    }
+
+    public function oficinas($ciudad = null)
+    {
+        if(!$this->oficinas) {
+            $this->oficinas = [];
+            foreach($this->parameters['oficinas'] as $oficina) {
+                $this->oficinas[] = new Oficina(
+                    $oficina['ciudad'],
+                    $oficina['direccion'],
+                    $oficina['telefono'],
+                    $oficina['email'],
+                    $oficina['latitude'],
+                    $oficina['longitude']
+                );
+            }
+        }
+        if($ciudad) {
+            $return = current(array_filter($this->oficinas, function(Oficina $oficna) use ($ciudad) {
+                return $oficna->getCiudad() === $ciudad;
+            }));
+        } else {
+            $return = $this->oficinas;
+        }
+        return $return;
     }
 
     /**

@@ -31,6 +31,15 @@
     color: #333;
 }
 
+/** --- cualidades --- **/
+section.cualidades.section.section-height-5 {
+    padding-bottom: 0;
+}
+
+#footer.index{
+    margin-top: 0;
+}
+
 /* Nosotros --------------------------------------------------------------------------------------------------------- */
 .logos{
     text-align:center !important;

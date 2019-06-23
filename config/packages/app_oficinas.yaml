@@ -1,0 +1,59 @@
+app:
+  empresas:
+    PTA:
+      oficinas:
+        - ciudad: Bogota
+          direccion: Calle 72 A N° 20 A - 57
+          telefono: (1) 7569840
+          email: servicioalcliente@pta.com.co
+          latitude: 4.66122
+          longitude: -74.06336
+
+        - ciudad: Barranquilla
+          direccion: Cra 53 N° 68 B - 29 Local 01
+          telefono: (5) 368 30 24
+          email: barranquilla@pta.com.co
+          latitude: 10.99680
+          longitude: -74.79964
+
+        - ciudad: Bucaramanga
+          direccion: Carrera 34 Nº 51 - 80   Of. 403 (Centro Empresarial Foro)
+          telefono: (7) 657 28 61
+          email: bucaramanga@pta.com.co
+          latitude: 7.11393
+          longitude: -73.10998
+
+        - ciudad: Cali
+          direccion: Calle 22 Norte Nº 4 N - 56    Of. 204 (Edf. Vanesa)
+          telefono: (2) 660 48 58
+          email: agenciacali@pta.com.co
+          latitude: 3.462535
+          longitude: -76.527968
+
+        - ciudad: Duitama
+          direccion: Calle 16 N° 14-41Of. 1008 (Centro Empresarial Palma Real)
+          telefono: (8) 761 74 36
+          email: duitama@pta.com.co
+          latitude: 5.82880
+          longitude: -73.03401
+
+        - ciudad: Ibagué
+          direccion: Manzana B, Casa 7 Barrio Prados del Norte
+          telefono: (8) 274 31 95
+          email: jefatura.ibague@pta.com.co
+          latitude: 4.431412
+          longitude: -75.219765
+
+        - ciudad: Medellín
+          direccion: Carrera 49  Nº 52 - 170  Of. 601 (Ed. Los Cambulos)
+          telefono: (4) 251 20 90
+          email: ptamedellin@pta.com.co
+          latitude: 6.25117
+          longitude: -75.56570
+
+        - ciudad: Pereira
+          direccion: Carrera 6 N° 18 - 46   Of. 405 A (C. Cial. y de Negocios La Plazuela P.H.)
+          telefono: (6) 333 3637
+          email: ptapereira@pta.com.co
+          latitude: 4.81549
+          longitude: -75.69361

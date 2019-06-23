@@ -56,11 +56,32 @@ class Configuration implements ConfigurationInterface
                                 ->end()
                             ->end()
                         ->end()
+                        ->append($this->addOficinasNode())
                     ->end()
                 ->end()
             ->end()
         ->end();
 
         return $treeBuilder;
+    }
+
+    public function addOficinasNode()
+    {
+        $treeBuilder = new TreeBuilder('oficinas');
+
+        $node = $treeBuilder->getRootNode()
+            ->requiresAtLeastOneElement()
+            ->arrayPrototype()
+                ->children()
+                    ->scalarNode('ciudad')->end()
+                    ->scalarNode('direccion')->end()
+                    ->scalarNode('telefono')->end()
+                    ->scalarNode('email')->end()
+                    ->floatNode('latitude')->end()
+                    ->floatNode('longitude')->end()
+                ->end()
+            ->end()
+        ;
+        return $node;
     }
 }

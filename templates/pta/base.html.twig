@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
 
     <!-- Basic -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>Porto - Responsive HTML5 Template 7.2.0</title>
+    <title>{% block title %}PTA - Personal Temporal y Asesorías{% endblock %}</title>
 
-    <meta name="keywords" content="HTML5 Template" />
-    <meta name="description" content="Porto - Responsive HTML5 Template">
-    <meta name="author" content="okler.net">
+    <meta name="keywords" content="PTA trabajo temporal " />
+    <meta name="description" content="Pagina web pta">
+    <meta name="author" content="PTA SAS">
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="{{ asset('/img/pta/favicon.ico') }}" type="image/x-icon" />
@@ -163,43 +163,54 @@
         {% endblock %}
     </div>
 
-    <footer id="footer" class="mt-0">
-        <div class="container my-4">
+    <footer id="footer" class="{% block footer_class %}{% endblock %}">
+        <div class="container">
             <div class="row py-5">
-                <div class="col-md-6 col-lg-3 mb-5 mb-lg-0">
-                    <h5 class="text-5 text-transform-none font-weight-semibold text-color-light mb-4">Contact Details</h5>
-                    <p class="text-4 mb-0">Porto Template 123</p>
-                    <p class="text-4 mb-0">Porto Blvd, Suite</p>
-                    <p class="text-4 mb-0">New York</p>
-                </div>
-                <div class="col-md-6 col-lg-3 mb-5 mb-lg-0">
-                    <h5 class="text-5 text-transform-none font-weight-semibold text-color-light mb-4">Opening Hours</h5>
-                    <p class="text-4 mb-0">Mon-Fri: <span class="text-color-light">8:30 am to 5:00 pm</span></p>
-                    <p class="text-4 mb-0">Saturday: <span class="text-color-light">9:30 am to 1:00 pm</span></p>
-                    <p class="text-4 mb-0">Sunday: <span class="text-color-light">Closed</span></p>
-                </div>
-                <div class="col-md-6 col-lg-3 mb-5 mb-lg-0">
-                    <h5 class="text-5 text-transform-none font-weight-semibold text-color-light mb-4">Call Us Now</h5>
-                    <p class="text-7 text-color-light font-weight-bold mb-2">(800) 123 4567</p>
-                    <p class="text-4 mb-0">Sales: <span class="text-color-light">(800) 123 4568</span></p>
-                </div>
-                <div class="col-md-6 col-lg-3">
-                    <h5 class="text-5 text-transform-none font-weight-semibold text-color-light mb-4">Social Media</h5>
-                    <ul class="footer-social-icons social-icons m-0">
-                        <li class="social-icons-facebook"><a href="http://www.facebook.com/" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a></li>
-                        <li class="social-icons-twitter"><a href="http://www.twitter.com/" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a></li>
-                        <li class="social-icons-linkedin"><a href="http://www.linkedin.com/" target="_blank" title="Linkedin"><i class="fab fa-linkedin-in"></i></a></li>
-                    </ul>
+                <div class="col-md-12 justify-content-center justify-content-md-start mb-4 mb-lg-0">
+                    <div class="row">
+                        {% for oficina in configuracion.oficinas %}
+                            <div class="col-md-3 mb-5">
+                                <div class="ml-3 text-center text-md-left">
+                                    <h5 class="text-3 mb-0 text-color-light">{{ oficina.ciudad }}</h5>
+                                    <p class="text-4 mb-0">
+                                        <i class="fas fa-map-marker-alt text-color-primary top-1 p-relative"></i>
+                                        <span class="pl-1">{{ oficina.direccion }}</span><br>
+                                        <i class="fas fa-phone text-color-secondary top-1 p-relative"></i>
+                                        <span class="pl-1">{{ oficina.telefono }}</span><br>
+                                        <i class="fas fa-envelope text-color-tertiary top-1 p-relative"></i>
+                                        <span class="pl-1">{{ oficina.email }}</span>
+                                    </p>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="container">
-            <div class="footer-copyright footer-copyright-style-2 pb-4">
-                <div class="py-2">
-                    <div class="row py-4">
-                        <div class="col d-flex align-items-center justify-content-center mb-4 mb-lg-0">
-                            <p>© Copyright 2019. All Rights Reserved.</p>
-                        </div>
+        <div class="footer-copyright">
+            <div class="container py-2">
+                <div class="row py-4">
+                    <div class="col-lg-1 d-flex align-items-center justify-content-center justify-content-lg-start mb-2 mb-lg-0">
+                        <a href="{{ path('pta_index') }}" class="logo pr-0 pr-lg-3">
+                            <img alt="Porto Website Template" src="{{asset('img/pta/logo-PTA-footer.png')}}" class="opacity-5" height="16">
+                        </a>
+                    </div>
+                    <div class="col-lg-5 d-flex align-items-center justify-content-center justify-content-lg-start mb-4 mb-lg-0">
+                        <p>© {{ 'now'|date('Y') }}. Todos los derechos reservados.</p>
+                    </div>
+                    <div class="col-lg-6 d-flex align-items-center justify-content-center justify-content-lg-end">
+                        <nav id="sub-menu">
+                            <ul>
+                                <li><i class="fas fa-angle-right"></i><a href="page-faq.html" class="ml-1 text-decoration-none">
+                                        Aviso de privacidad
+                                </a></li>
+                                <li><i class="fas fa-angle-right"></i><a href="sitemap.html" class="ml-1 text-decoration-none">
+                                        Política de tratamiento de datos personales
+                                </a></li>
+                            </ul>
+                        </nav>
                     </div>
                 </div>
             </div>

@@ -23,7 +23,6 @@ app:
       ssrs_db:
         PTA: ~
 
-
     SERVILABOR:
       host: '%env(HOST_SERVILABOR)%'
       razon: SERVILABOR S.A.S
