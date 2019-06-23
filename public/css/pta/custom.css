@@ -45,13 +45,21 @@ section.cualidades.section.section-height-5 {
     text-align:center !important;
 }
 .logos a.servilabor{
-    background: url(../img/colombia.gif) no-repeat 80px 30px;
+    background: url(../../img/pta/colombia.gif) no-repeat 80px 30px;
     padding-bottom: 30px;
 }
 .logos a.nortempo{
-    background: url(../img/flags.gif) no-repeat 80px -516px;
+    background: url(../../img/pta/flags.gif) no-repeat 80px -516px;
     padding-bottom: 25px;
 }
 .logos .img-1{
     margin-right: 80px;
+}
+
+/* Servicios -------------------------------------------------------------------------------------------------------- */
+.pricing-table .plan .plan-header{
+    padding: 0.15rem 1rem;
+}
+.pricing-table .plan .plan-footer {
+    padding: 0.1rem;
 }

@@ -1,1 +1,324 @@
 {% extends 'pta/base.html.twig' %}
+
+{% block title %}
+    PTA - Servicios
+{% endblock %}
+
+{% block body %}
+    <section class="page-header page-header-classic page-header-md">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 order-2 order-md-1 align-self-center p-static">
+                    <h1 data-title-border>Servicios</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container pb-1">
+
+
+
+        <div class="row">
+            <div class="col-lg-10">
+                <div class="overflow-hidden mb-3">
+                    <h2 class="font-weight-bold text-8 mb-3 appear-animation" data-appear-animation="maskUp">
+                        Servicios que dan <strong>solución</strong> a sus <strong>necesidades</strong>
+                    </h2>
+                    <p class="lead mb-0 appear-animation" data-appear-animation="maskUp" data-appear-animation-delay="200">
+                        Somos una empresa de trabajos temporales con trayectoria y experiencia de mas de 35 años.
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-2 appear-animation mt-3" data-appear-animation="fadeIn" data-appear-animation-delay="500">
+                <a href="{{ path('pta_contacto') }}" class="btn btn-modern btn-primary mt-1">Contactenos!</a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col py-3">
+                <hr class="solid mt-5 mb-2">
+            </div>
+        </div>
+
+
+        <div class="pricing-table pricing-table-no-gap mb-4">
+            <div class="col-md-4">
+                <div class="plan">
+                    <div class="plan-header bg-primary">
+                    </div>
+                    <div class="plan-price">
+                        <div class="box-content">
+                            <i class="icon-featured icon-user icons text-color-light bg-color-primary"></i>
+                            <h4 class="font-weight-bold">Selección de personal</h4>
+                        </div>
+                    </div>
+                    <div class="plan-features">
+                        <ul>
+                            <li>Reclutamiento y selección</li>
+                            <li>Todos los perfiles, todos los sectores</li>
+                            <li>Selección por competencias</li>
+                            <li>Pruebas y entrevistas</li>
+                            <li>Verificación de datos</li>
+                            <li>Visita domiciliaria</li>
+                            <li>Pruebas de poligrafo</li>
+                        </ul>
+                    </div>
+                    <div class="plan-footer"></div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="plan">
+                    <div class="plan-header bg-secondary">
+                    </div>
+                    <div class="plan-price">
+                        <div class="box-content">
+                            <i class="icon-featured icon-book-open icons text-color-light bg-color-secondary"></i>
+                            <h4 class="font-weight-bold">Evaluación</h4>
+                        </div>
+                    </div>
+                    <div class="plan-features">
+                        <ul>
+                            <li>Pruebas de personalidad</li>
+                            <li>Pruebas de comportamiento</li>
+                            <li>Pruebas de inteligencia</li>
+                            <li>Pruebas de competencia</li>
+                            <li>Confirmación referencias laborales</li>
+                            <li>Confirmación referencias personales</li>
+                            <li>Consulta de antecedentes</li>
+                        </ul>
+                    </div>
+                    <div class="plan-footer"></div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="plan">
+                    <div class="plan-header bg-tertiary">
+                    </div>
+                    <div class="plan-price">
+                        <div class="box-content">
+                            <i class="icon-featured icon-layers icons text-color-light bg-color-tertiary"></i>
+                            <h4 class="font-weight-bold">Contratación y administración</h4>
+                        </div>
+                    </div>
+                    <div class="plan-features">
+                        <ul>
+                            <li>Vinculación</li>
+                            <li>Afiliación a seguridad social</li>
+                            <li>Remuneración</li>
+                            <li>Procesos disciplinarios</li>
+                            <li>Bienestar</li>
+                            <li>Seguridad y salud en el trabajo</li>
+                            <li>&nbsp;</li>
+                        </ul>
+                    </div>
+                    <div class="plan-footer"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <hr class="solid my-5">
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-lg-8">
+                <h2>Sectores económicos</h2>
+                <div class="row">
+                    <div class="col-lg-6 mb-3">
+                        <div class="feature-box feature-box-style-2">
+                            <div class="feature-box-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="feature-box-info">
+                                <h4 class="mb-2">Consultoría</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 mb-3">
+                        <div class="feature-box feature-box-style-2">
+                            <div class="feature-box-icon">
+                                <i class="fas fa-hard-hat"></i>
+                            </div>
+                            <div class="feature-box-info">
+                                <h4 class="mb-2">Minero</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 mb-3">
+                        <div class="feature-box feature-box-style-2">
+                            <div class="feature-box-icon">
+                                <i class="fas fa-prescription-bottle-alt"></i>
+                            </div>
+                            <div class="feature-box-info">
+                                <h4 class="mb-2">Farmacéutico</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 mb-3">
+                        <div class="feature-box feature-box-style-2">
+                            <div class="feature-box-icon">
+                                <i class="fas fa-spa"></i>
+                            </div>
+                            <div class="feature-box-info">
+                                <h4 class="mb-2">Flor cultivos</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 mb-3">
+                        <div class="feature-box feature-box-style-2">
+                            <div class="feature-box-icon">
+                                <i class="fas fa-coins"></i>
+                            </div>
+                            <div class="feature-box-info">
+                                <h4 class="mb-2">Financiero</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 mb-3">
+                        <div class="feature-box feature-box-style-2">
+                            <div class="feature-box-icon">
+                                <i class="fas fa-utensils"></i>
+                            </div>
+                            <div class="feature-box-info">
+                                <h4 class="mb-2">Alimentos</h4>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="col-lg-6 mb-3">
+                        <div class="feature-box feature-box-style-2">
+                            <div class="feature-box-icon">
+                                <i class="fas fa-truck"></i>
+                            </div>
+                            <div class="feature-box-info">
+                                <h4 class="mb-2">Transporte</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 mb-3">
+                        <div class="feature-box feature-box-style-2">
+                            <div class="feature-box-icon">
+                                <i class="fas fa-hard-hat"></i>
+                            </div>
+                            <div class="feature-box-info">
+                                <h4 class="mb-2">Salud</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 mb-3">
+                        <div class="feature-box feature-box-style-2">
+                            <div class="feature-box-icon">
+                                <i class="fas fa-pencil-ruler"></i>
+                            </div>
+                            <div class="feature-box-info">
+                                <h4 class="mb-2">Publicidad</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 mb-3">
+                        <div class="feature-box feature-box-style-2">
+                            <div class="feature-box-icon">
+                                <i class="fas fa-burn"></i>
+                            </div>
+                            <div class="feature-box-info">
+                                <h4 class="mb-2">Explotación de gas</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 mb-3">
+                        <div class="feature-box feature-box-style-2">
+                            <div class="feature-box-icon">
+                                <i class="fas fa-shopping-bag"></i>
+                            </div>
+                            <div class="feature-box-info">
+                                <h4 class="mb-2">Mercadeo y ventas</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 mb-3">
+                        <div class="feature-box feature-box-style-2">
+                            <div class="feature-box-icon">
+                                <i class="fas fa-american-sign-language-interpreting"></i>
+                            </div>
+                            <div class="feature-box-info">
+                                <h4 class="mb-2">Manufactura</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <h2>Perfiles</h2>
+
+                <div class="accordion accordion-modern accordion-modern-grey-scale-1 without-bg mt-4" id="accordion11">
+                    <div class="card card-default mb-2">
+                        <div class="card-header">
+                            <h4 class="card-title m-0">
+                                <a class="accordion-toggle text-3">
+                                    Gerenciales
+                                </a>
+                            </h4>
+                        </div>
+                    </div>
+                    <div class="card card-default mb-2">
+                        <div class="card-header">
+                            <h4 class="card-title m-0">
+                                <a class="accordion-toggle text-3">
+                                    Jefaturas
+                                </a>
+                            </h4>
+                        </div>
+                    </div>
+                    <div class="card card-default mb-2">
+                        <div class="card-header">
+                            <h4 class="card-title m-0">
+                                <a class="accordion-toggle text-3">
+                                    Supervisión
+                                </a>
+                            </h4>
+                        </div>
+                    </div>
+                    <div class="card card-default mb-2">
+                        <div class="card-header">
+                            <h4 class="card-title m-0">
+                                <a class="accordion-toggle text-3">
+                                    Asistenciales
+                                </a>
+                            </h4>
+                        </div>
+                    </div>
+                    <div class="card card-default mb-2">
+                        <div class="card-header">
+                            <h4 class="card-title m-0">
+                                <a class="accordion-toggle text-3">
+                                    Auxiliares
+                                </a>
+                            </h4>
+                        </div>
+                    </div>
+                    <div class="card card-default mb-2">
+                        <div class="card-header">
+                            <h4 class="card-title m-0">
+                                <a class="accordion-toggle text-3">
+                                    Operativos
+                                </a>
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+
+
+    </div>
+{% endblock %}
