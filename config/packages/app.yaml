@@ -17,9 +17,6 @@ app:
         firmante_cargo: Directora de Servicio al Cliente
         firmante_contacto: PBX 756 98 40 Ext. 110-106-136
 
-      templates:
-        login: 'pta/login.html.twig'
-
       ssrs_db:
         PTA: ~
 
@@ -60,9 +57,6 @@ app:
         firmante: SERGIO INVERNON RAMOS
         firmante_cargo: Gerente General
         firmante_contacto: PBX 300 31 13
-
-      templates:
-        login: 'servilabor/login.html.twig'
 
       emails:
         contacto: guerrerojosedario@gmail.com

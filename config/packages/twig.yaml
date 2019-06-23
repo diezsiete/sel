@@ -7,3 +7,6 @@ twig:
         - 'form/sel_layout.html.twig'
     globals:
         configuracion: '@App\Service\Configuracion\Configuracion'
+
+    paths:
+        - '%kernel.project_dir%/templates/%env(EMPRESA)%/app'

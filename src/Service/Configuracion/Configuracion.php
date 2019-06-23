@@ -145,13 +145,4 @@ class Configuracion
         }
         return $this->emails;
     }
-
-    /**
-     * @return string
-     * @deprecated
-     */
-    public function getTemplateLogin()
-    {
-        return $this->parameters['templates']['login'];
-    }
 }
