@@ -41,6 +41,15 @@ class RegistroWizard
         'registro_cuenta'
     ];
 
+    private $titulos = [
+        'Datos Básicos',
+        'Estudios',
+        'Experiencia',
+        'Referencias',
+        'Familiares',
+        'Cuenta'
+    ];
+
     public function __construct(HvResolver $hvResolver, SessionInterface $session, RequestStack $requestStack)
     {
 
@@ -131,6 +140,36 @@ class RegistroWizard
         }
         return null;
     }
+
+    public function isStepValid($step)
+    {
+        return $this->session->get(self::SESSION_STEP_VALID . '/' . $this->routes[$step]) ? true : false;
+    }
+
+    /**
+     * @return int
+     */
+    public function getStep(): int
+    {
+        return $this->step;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRoutes(): array
+    {
+        return $this->routes;
+    }
+
+    /**
+     * @return array
+     */
+    public function getTitulos(): array
+    {
+        return $this->titulos;
+    }
+
 
     /**
      * @return bool|string

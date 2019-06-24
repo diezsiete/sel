@@ -207,7 +207,7 @@ abstract class MigrationCommand extends Command
             $sql .= " LIMIT $this->offset";
         }
         if($this->limit) {
-            $sql .= ", $this->limit";
+            $sql .= $this->offset ? ", $this->limit" : " LIMIT $this->limit";
         }
         return $sql;
     }

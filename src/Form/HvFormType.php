@@ -71,6 +71,8 @@ class HvFormType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $hvdto = $options['data'] ?? null;
+
         $builder
             ->add('primerNombre', TextType::class, [
                 'label' => 'Primer nombre',
@@ -188,14 +190,12 @@ class HvFormType extends AbstractType
             ])
         ;
 
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
-            /** @var Hv|null $hv */
-            $hv = $event->getData();
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($hvdto) {
             foreach(self::LOCACION_FIELD_CONFIG as $paisName => $config) {
-                $pais = $hv ? $hv->{"get".ucfirst($paisName)}() : null;
+                $pais = $hvdto ? $hvdto->{"get".ucfirst($paisName)}() : null;
                 $this->setupDptoField($event->getForm(), $pais, $config['dpto']);
 
-                $dpto = $hv ? $hv->{"get".ucfirst($config['dpto']['name'])}() : null;
+                $dpto = $hvdto ? $hvdto->{"get".ucfirst($config['dpto']['name'])}() : null;
                 $this->setupCiudadField($event->getForm(), $dpto, $config['ciudad']);
             }
         });

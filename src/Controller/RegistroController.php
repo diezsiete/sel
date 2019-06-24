@@ -67,7 +67,8 @@ class RegistroController extends AbstractController
         }
 
         return $this->render('registro/datos-basicos.html.twig', [
-            'hvForm' => $form->createView()
+            'hvForm' => $form->createView(),
+            'registroWizard' => $this->registroWizard,
         ]);
     }
 
@@ -157,6 +158,7 @@ class RegistroController extends AbstractController
             'cuentaForm' => $form->createView(),
             'hv' => $this->registroWizard->getHv(),
             'prevRoute' => $this->registroWizard->prevRoute(),
+            'registroWizard' => $this->registroWizard,
         ]);
     }
 
@@ -194,6 +196,7 @@ class RegistroController extends AbstractController
             'form' => $form->createView(),
             'prevRoute' => $this->registroWizard->prevRoute(),
             'nextRoute' => $this->registroWizard->nextRoute(),
+            'registroWizard' => $this->registroWizard,
         ]);
     }
 }

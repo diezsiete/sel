@@ -1,0 +1,98 @@
+{% extends 'pta/base.html.twig' %}
+{% use 'default/javascripts.html.twig' %}
+
+{% block title %} Registro {% endblock %}
+
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('vendor/magnific-popup/magnific-popup.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/chosen/chosen.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/bootstrap-datepicker/css/bootstrap-datepicker3.css') }}" />
+    <link rel="stylesheet" href="{{ asset('vendor/pnotify/pnotify.custom.css') }}">
+{% endblock %}
+
+{% block body %}
+
+    {{ include('pta/registro/_header.html.twig') }}
+
+    <div class="container py-2 registro">
+        <div class="row">
+            <div class="col-lg-12 mb-3">
+                {% block body_text %}
+                {% endblock %}
+                <div class="alerts"></div>
+                <div id="datatable">Loading...</div>
+                <a class="crear-entity btn btn-primary pull-right" href="#modalForm">Agregar</a>
+            </div>
+            <div class="col-lg-12">
+                <a class="btn btn-default pull-left anterior" href="{{ path(prevRoute) }}"><i class="fas fa-angle-left"></i> Anterior</a>
+                <a class="btn btn-success pull-right disabled siguiente" href="{{ path(nextRoute) }}">Siguiente <i class="fas fa-angle-right"></i></a>
+            </div>
+        </div>
+
+        <!-- Modal Form -->
+        <div id="modalForm" class="modal-block modal-block-lg modal-block-primary mfp-hide">
+            <section class="card">
+                <header class="card-header">
+                    <h2 class="card-title">
+                        {% block modal_title %}
+                            Agregar
+                        {% endblock %}
+                    </h2>
+                </header>
+                <div class="card-body" data-loading-overlay>
+                    {% block modal_body %}
+                    {% endblock %}
+                </div>
+                <footer class="card-footer">
+                    <div class="row">
+                        <div class="col-md-12 text-right">
+                            <button class="btn btn-primary modal-confirm">Guardar</button>
+                            <button class="btn btn-default modal-dismiss">Cancelar</button>
+                        </div>
+                    </div>
+                </footer>
+            </section>
+        </div>
+
+        {{ include('default/_modal-borrar.html.twig') }}
+
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {% block javascripts_vendor %}
+        {{ parent() }}
+        <script src="{{ asset('vendor/chosen/chosen.jquery.min.js') }}"></script>
+        <script src="{{ asset('vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+        <script src="{{ asset('vendor/jquery-maskedinput/jquery.maskedinput.js') }}"></script>
+    {% endblock %}
+
+    {{ parent() }}
+
+    <script src="{{ asset('vendor/magnific-popup/jquery.magnific-popup.min.js') }}"></script>
+    <script src="{{ asset('vendor/chosen/chosen.jquery.min.js') }}"></script>
+    <script src="{{ asset('vendor/pnotify/pnotify.custom.js') }}"></script>
+
+    <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+    <script src="{{ asset('js/sel/registro/registro.js') }}"></script>
+
+    <script src="{{ asset('js/sel/hv/hv-entity.js') }}"></script>
+
+    {% embed 'datatable/javascripts.datatable.html.twig' %}
+        {% block script_datatable %}
+            <script>
+                $(function () {
+                    $('#datatable')
+                        .initDataTables({{ datatable_settings(datatable) }})
+                        .then(dt => {
+                            $wrapper = $('#modalForm');
+                            new hvEntity($wrapper, $('#modalBasic'), dt);
+                        });
+                });
+            </script>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'registro/base-hv-entity.html.twig' %}
+
+{% block body_text %}
+    <p class="lead">
+        Ingrese en el cuadro familiares, especialmente aquellos que tiene a cargo.
+    </p>
+    <div class="alert alert-info">
+        <strong>Atención!</strong> Si tiene hijos, por favor especifique la información de ellos en el cuadro.
+    </div>
+{% endblock %}
+
+{% block modal_body %}
+    {{ include('hv/hv-entity/_familiar-form.html.twig') }}
+{% endblock %}

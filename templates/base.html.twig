@@ -1,3 +1,5 @@
+{% use 'default/javascripts.html.twig' with javascripts_vendor as default_javascripts_vendor, javascripts as default_javascripts %}
+
 <!doctype html>
 <html class="fixed sidebar-left-collapsed" lang="es">
 <head>
@@ -392,24 +394,12 @@
     </aside>
 </section>
 
-<!-- Vendor -->
 {% block javascripts_vendor %}
-    <script src="{{ asset('vendor/jquery/jquery.js') }}"></script>
-    <script src="{{ asset('vendor/jquery-browser-mobile/jquery.browser.mobile.js') }}"></script>
-    <script src="{{ asset('vendor/popper/umd/popper.min.js') }}"></script>
-    <script src="{{ asset('vendor/bootstrap/js/bootstrap.js') }}"></script>
-    <script src="{{ asset('vendor/nanoscroller/nanoscroller.js') }}"></script>
+    {{ block('default_javascripts_vendor') }}
 {% endblock %}
+
 {% block javascripts %}
-    <script src="{{ asset('vendor/common/common.js') }}"></script>
-    <!-- Theme Base, Components and Settings -->
-    <script src="{{ asset('js/sel/theme.js') }}"></script>
-
-    <!-- Theme Custom -->
-    <script src="{{ asset('js/sel/custom.js') }}"></script>
-
-    <!-- Theme Initialization Files -->
-    <script src="{{ asset('js/sel/theme.init.js') }}"></script>
+    {{ block('default_javascripts') }}
 {% endblock %}
 
 

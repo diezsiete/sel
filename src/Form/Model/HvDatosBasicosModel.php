@@ -129,6 +129,7 @@ class HvDatosBasicosModel
     public $identificacionTipo;
 
     /**
+     * @Assert\NotBlank(message="Ingrese su fecha de nacimiento")
      * @Assert\Date(message="Ingrese fecha valida de nacimiento")
      */
     public $nacimiento;

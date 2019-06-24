@@ -58,7 +58,7 @@ class MigrationHvEntityCommand extends MigrationCommand
         $ids = $stmt->fetchAll(\PDO::FETCH_COLUMN);
 
         $sqlLimit = "";
-        if($this->offset !== null && $this->limit !== null) {
+        if($this->offset !== null || $this->limit !== null) {
             $sqlLimit = " WHERE hv.usuario_id IN (".implode(",", $ids).")";
         }
         $count = 0;
