@@ -43,6 +43,7 @@ class MigrationVacanteCommand extends MigrationCommand
 
     protected function down(InputInterface $input, OutputInterface $output)
     {
+        $this->deleteTable(VacanteRedSocial::class);
         $this->deleteTable(Vacante::class);
         $this->truncateTable(Vacante::class);
     }
@@ -75,8 +76,9 @@ class MigrationVacanteCommand extends MigrationCommand
                     ->setSalarioAdicion($row['salario_adicion'])
                     ->setSalarioAdicionConcepto($row['salario_adicion_concepto'])
                     ->setNivelAcademicoCurso($row['nivel_academico_curso'] == 1)
-                    ->setEmpresa($row['empresa'])
-                    ->setVigencia($row['vigencia_id']);
+                    ->setEmpresa(strtoupper($row['empresa']) == 'PTA' ? 1 : 2)
+                    ->setVigencia($row['vigencia_id'])
+                    ->setCreatedAt(\DateTime::createFromFormat('Y-m-d', $row['date']));
 
                 $this
                     ->setIdioma($vacante, $row['idioma_id'], $row['idioma_porcentaje'])

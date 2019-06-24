@@ -129,8 +129,9 @@
                                                 </a>
                                             </li>
                                             <li class="dropdown">
-                                                <a class="dropdown-item dropdown-toggle" href="#">
-                                                    Ofertas laborales
+                                                <a class="dropdown-item dropdown-toggle {{ app.request.attributes.get('_route') in ['vacante_listado', 'vacante_detalle'] ? 'active' : '' }}"
+                                                   href="{{ path('vacante_listado') }}">
+                                                    Ofertas de empleo
                                                 </a>
                                             </li>
                                             <li class="dropdown">
@@ -161,6 +162,18 @@
 
 
     <div role="main" class="main">
+        {% block body_header %}
+            <section class="page-header page-header-classic page-header-md no-header">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12 order-2 order-md-1 align-self-center p-static">
+                            <h1 data-title-border></h1>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        {% endblock %}
+
         {% block body %}
         {% endblock %}
     </div>

@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -146,7 +147,7 @@ class Vacante
     private $licenciaConduccion;
 
     /**
-     * @ORM\Column(type="string", length=11, nullable=true)
+     * @ORM\Column(type="smallint", nullable=true)
      */
     private $empresa;
 
@@ -195,6 +196,12 @@ class Vacante
      * @ORM\Column(type="boolean")
      */
     private $archivada = false;
+
+    /**
+     * @Gedmo\Slug(fields={"titulo"})
+     * @ORM\Column(length=128, unique=true)
+     */
+    private $slug;
 
 
     public function __construct()
@@ -717,5 +724,10 @@ class Vacante
         $this->archivada = $archivada;
 
         return $this;
+    }
+
+    public function getSlug()
+    {
+        return $this->slug;
     }
 }

@@ -38,14 +38,20 @@ class MigrationUsuarioCommand extends MigrationCommand
     {
         parent::configure();
         $this->setDescription('Migracion de usuarios');
+        $this->addOption('rol', null, InputOption::VALUE_OPTIONAL,
+            'Importar usuarios solo de un rol especifico');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $sql = "SELECT * FROM `usuario` "
-             . "WHERE ultimo_login IS NOT NULL OR DATE_FORMAT(creacion, \"%Y\") >= 2018 ";
-        $sql = $this->addLimitToSql($sql);
+             . "WHERE (ultimo_login IS NOT NULL OR DATE_FORMAT(creacion, \"%Y\") >= 2018) ";
 
+        if($rol = $input->getOption('rol')) {
+            $sql .= "AND roles LIKE '%\"$rol\"%' ";
+        }
+
+        $sql = $this->addLimitToSql($sql);
         $this->initProgressBar($this->countSql($sql));
 
         while ($row = $this->fetch($sql)) {

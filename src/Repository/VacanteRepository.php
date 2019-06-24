@@ -19,6 +19,46 @@ class VacanteRepository extends ServiceEntityRepository
         parent::__construct($registry, Vacante::class);
     }
 
+    /**
+     * @return Vacante[]
+     */
+    public function findPublicada($search = null, $categoria = null, $categoriaId = null)
+    {
+        $qb = $this->createQueryBuilder('v')
+            ->andWhere('v.publicada = true')
+            ->join('v.ciudad', 'ciudad')
+            ->addSelect('ciudad')
+            ->orderBy('v.createdAt', 'DESC');
+
+        if($search) {
+            $qb->andWhere(
+                $qb->expr()->orX(
+                    $qb->expr()->like('v.titulo', ':search'),
+                    $qb->expr()->like('v.descripcion', ':search'),
+                    $qb->expr()->like('ciudad.nombre', ':search')
+                )
+            )->setParameter('search', '%' . $search . '%');
+        }
+        if($categoria && $categoriaId) {
+            $qb->join('v.' . $categoria, 'c', 'WITH', 'c.id = :categoriaId')
+                ->setParameter('categoriaId', $categoriaId);
+        }
+
+        return $qb->getQuery()->getResult();
+
+    }
+
+    public function getCategoriaPublicada($categoria)
+    {
+        return $this->createQueryBuilder('v')
+            ->select('c.id, c.nombre, COUNT(v.id) as count')
+            ->andWhere('v.publicada = true')
+            ->join('v.'.$categoria, 'c')
+            ->groupBy('c.id')
+            ->getQuery()
+            ->getResult();
+    }
+
     // /**
     //  * @return Vacante[] Returns an array of Vacante objects
     //  */

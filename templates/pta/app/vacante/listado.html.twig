@@ -1,0 +1,96 @@
+{% extends 'pta/base.html.twig' %}
+
+{% block title %}
+    PTA - Ofertas de empleo
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/pta/theme-blog.css') }}">
+{% endblock %}
+
+
+{% block body %}
+    <div id="ofertas">
+        <div class="container py-4">
+
+            <div class="row">
+                <div class="col-lg-3">
+                    <aside class="sidebar" id="sidebar">
+                        <form method="get">
+                            <div class="input-group mb-3 pb-1">
+                                <input class="form-control text-1" placeholder="Buscar..." name="s" id="s" type="text" value="{{ search }}">
+                                <span class="input-group-append">
+                                    <button type="submit" class="btn btn-dark text-1 p-2"><i class="fas fa-search m-2"></i></button>
+                                </span>
+                            </div>
+                        </form>
+                        <h5 class="font-weight-bold pt-4">Categorias</h5>
+                        <ul class="nav nav-list flex-column mb-5" id="accordion">
+                            {% for key, categoria in categorias %}
+                                <li class="nav-item">
+                                    <a class="nav-link {{ app.request.get('c') is same as(key) ? 'active' }}" data-toggle="collapse" data-parent="#accordion"
+                                       href="#collapse-{{ key }}" aria-expanded="false">
+                                        {{ categoria.nombre }}
+                                    </a>
+                                    <ul id="collapse-{{ key }}" class="collapse {{ app.request.get('c') is same as(key) ? 'show' }}">
+                                        {% for tipo in categoria.tipos %}
+                                            <li class="nav-item">
+                                                <a class="nav-link {{ app.request.get('cid') == tipo.id ? 'active' }}"
+                                                   href="{{ path('vacante_listado', {c: key, cid: tipo.id}) }}">
+                                                    {{ "%s (%d)"|format(tipo.nombre, tipo.count) }}
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </aside>
+                </div>
+
+
+                <div class="col-lg-9">
+                    <div class="row">
+                        {% for vacante in vacantes %}
+                            <div class="col-lg-12 mb-4 mb-lg-0">
+                                <article class="post post-medium">
+                                    <div class="post-content">
+                                        <h4 class="font-weight-semibold mb-1">
+                                            <a href="{{ path('vacante_detalle', {'slug': vacante.slug}) }}">
+                                                {{ vacante.titulo }}
+                                            </a>
+                                        </h4>
+                                        <p>
+                                            {{ (vacante.descripcion|length > 500 ? vacante.descripcion|slice(0, 500) ~ '…' : vacante.descripcion) }}
+                                        </p>
+                                        <div class="post-meta">
+                                            <span><i class="fas fa-map-marker-alt "></i>
+                                                {% for ciudad in vacante.ciudad %}
+                                                    {{ ciudad.nombre }}
+                                                {% endfor %}
+                                            </span>
+                                            <span><i class="far fa-calendar-alt"></i>
+                                                {{ vacante.createdAt|date('Y-m-d') }}
+                                            </span>
+
+
+                                            <span><i class="far fa-comments"></i> <a href="#">12 Comments</a></span>
+                                            <a href="{{ path('vacante_detalle', {'slug': vacante.slug}) }}"
+                                               class="btn btn-xs btn-primary float-right mb-4">Ver detalle...
+                                            </a>
+                                        </div>
+                                    </div>
+                                </article>
+                                <hr class="solid">
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+
