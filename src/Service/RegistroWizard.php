@@ -12,10 +12,12 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class RegistroWizard
 {
-    const SESSION_ID = 'registro/hv_id';
-    const SESSION_USUARIO = 'registro/usuario';
-    const SESSION_STEP = 'registro/step';
-    const SESSION_STEP_VALID = 'registro/step_valid';
+    const NAMESPACE = 'registro';
+
+    const SESSION_ID = self::NAMESPACE . '/hv_id';
+    const SESSION_USUARIO = self::NAMESPACE . '/usuario';
+    const SESSION_STEP = self::NAMESPACE . '/step';
+    const SESSION_STEP_VALID = self::NAMESPACE . '/step_valid';
     
     /**
      * @var SessionInterface
@@ -109,7 +111,7 @@ class RegistroWizard
 
     public function clearSession()
     {
-        $this->session->remove('registro');
+        $this->session->remove(self::NAMESPACE);
     }
 
     public function prevRoute()

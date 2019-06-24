@@ -9,6 +9,7 @@ use App\Entity\Hv;
 use App\Entity\Pais;
 use App\Form\Model\HvDatosBasicosModel;
 use App\Repository\UsuarioRepository;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -98,7 +99,6 @@ class HvFormType extends AbstractType
             ->add('email', EmailType::class, [
                 'required' => true,
             ])
-
             ->add('identificacionTipo', ChoiceType::class, [
                 'choices' => array_flip(HvConstant::IDENTIFICACION_TIPO),
                 'label' => 'Tipo de identificación',
@@ -109,16 +109,11 @@ class HvFormType extends AbstractType
                 'label' => 'Pais de la identificación',
                 'placeholder' => 'Seleccione...',
             ])
-            ->add('identDpto')
-
             ->add('nacPais', EntityType::class, [
                 'class' => Pais::class,
                 'label' => 'Pais de nacimiento',
                 'placeholder' => 'Seleccione...'
             ])
-            ->add('nacDpto')
-
-
             ->add('nacimiento', DateType::class, [
                 'label' => 'Fecha de nacimiento',
                 'required' => true,
@@ -162,8 +157,6 @@ class HvFormType extends AbstractType
                 'label' => 'Pais donde vive',
                 'placeholder' => 'Seleccione...'
             ])
-            ->add('resiDpto')
-
             ->add('barrio', null, [
                 'required' => true,
             ])
@@ -206,13 +199,7 @@ class HvFormType extends AbstractType
                 $config = self::LOCACION_FIELD_CONFIG[$form->getName()];
                 $this->setupDptoField($form->getParent(), $form->getData(), $config['dpto']);
             });
-            $builder->get($config['dpto']['name'])->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
-                $form = $event->getForm();
-                $config = self::LOCACION_FIELD_CONFIG[$form->getName()];
-                $this->setupDptoField($form->getParent(), $form->getData(), $config['ciudad']);
-            });
         }
-
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -224,29 +211,53 @@ class HvFormType extends AbstractType
 
     private function setupDptoField(FormInterface $form, ?Pais $pais, array $locationConfig)
     {
-        $this->setupLocationField($form, !is_object($pais), $locationConfig + ['class' => Dpto::class]);
-    }
-
-    private function setupCiudadField(FormInterface $form, ?Dpto $dpto, array $locationConfig)
-    {
-        $this->setupLocationField($form, !is_object($dpto), $locationConfig + ['class' => Ciudad::class]);
-    }
-
-
-    private function setupLocationField(FormInterface $form, bool $disabled, array $locationConfig)
-    {
         $options = [
             'label' => $locationConfig['label'],
             'placeholder' => 'Seleccione...',
             'required' => false,
-            'class' => $locationConfig['class'],
+            'auto_initialize' => false,
         ];
         $type = EntityType::class;
-        if ($disabled) {
+        if ($pais && $dptos = $pais->getDptos()) {
+            $options += [
+                'class' => Dpto::class,
+                'choices' => $dptos
+            ];
+        } else {
             $type = ChoiceType::class;
             $options['disabled'] = true;
             $options['choices'] = [];
-            unset($options['class']);
+        }
+        $builder = $form->getConfig()->getFormFactory()->createNamedBuilder($locationConfig['name'], $type, null, $options);
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+            $form = $event->getForm();
+            $config = self::LOCACION_FIELD_CONFIG[str_replace('Dpto', 'Pais', $form->getName())];
+            $dpto = $form->getData();
+            $this->setupCiudadField($form->getParent(), $dpto, $config['ciudad']);
+        });
+        $form->add($builder->getForm());
+    }
+
+    private function setupCiudadField(FormInterface $form, ?Dpto $dpto, array $locationConfig)
+    {
+        $options = [
+            'label' => $locationConfig['label'],
+            'required' => false,
+        ];
+        $type = EntityType::class;
+        if ($dpto) {
+            $options += [
+                'class' => Ciudad::class,
+                'query_builder' => function(EntityRepository $er) use ($dpto) {
+                    return $er->createQueryBuilder('c')
+                        ->andWhere('c.dpto = :dpto')
+                        ->setParameter('dpto', $dpto);
+                }
+            ];
+        } else {
+            $type = ChoiceType::class;
+            $options['disabled'] = true;
+            $options['choices'] = [];
         }
         $form->add($locationConfig['name'], $type, $options);
     }
