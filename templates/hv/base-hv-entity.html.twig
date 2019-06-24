@@ -2,7 +2,6 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('vendor/magnific-popup/magnific-popup.css') }}">
     <link rel="stylesheet" href="{{ asset('vendor/chosen/chosen.min.css') }}">
     <link rel="stylesheet" href="{{ asset('vendor/pnotify/pnotify.custom.css') }}">
 {% endblock %}
@@ -68,7 +67,6 @@
 
 {% block javascripts_vendor %}
     {{ parent() }}
-    <script src="{{ asset('vendor/magnific-popup/jquery.magnific-popup.min.js') }}"></script>
     <script src="{{ asset('vendor/chosen/chosen.jquery.min.js') }}"></script>
     <script src="{{ asset('vendor/pnotify/pnotify.custom.js') }}"></script>
 {% endblock %}

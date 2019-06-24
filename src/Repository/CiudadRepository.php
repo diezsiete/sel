@@ -21,20 +21,25 @@ class CiudadRepository extends ServiceEntityRepository
     }
 
     /**
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function findColombiaQuery()
+    {
+        return $this->createQueryBuilder('c')
+            ->join('c.pais', 'p')
+            ->andWhere("p.nombre = 'COLOMBIA'");
+    }
+    /**
      * @return Ciudad[]
      */
     public function findColmbia()
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.pais = :colombia')
-            ->setParameter('colombia', '1')
-            ->getQuery()
-            ->getResult();
+        return $this->findColombiaQuery()->getQuery()->getResult();
     }
 
     public function ciudadesColombiaCriteria()
     {
-        return Criteria::create()->andWhere(Criteria::expr()->eq('c.pais', '1'));
+        return Criteria::create()->andWhere(Criteria::expr()->eq('c.pais.nombre', 'COLOMBIA'));
     }
 
     /**

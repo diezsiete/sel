@@ -17,9 +17,20 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Security;
 
 class VacanteFormType extends AbstractType
 {
+    /**
+     * @var Security
+     */
+    private $security;
+
+    public function __construct(Security $security)
+    {
+        $this->security = $security;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -29,7 +40,7 @@ class VacanteFormType extends AbstractType
             ->add('ciudad', EntityType::class, [
                 'class' => Ciudad::class,
                 'query_builder' => function (CiudadRepository $repository) {
-                    return $repository->createQueryBuilder('c')->addCriteria($repository->ciudadesColombiaCriteria());
+                    return $repository->findColombiaQuery();
                 },
                 'multiple' => true,
                 'required' => true,
@@ -136,8 +147,15 @@ class VacanteFormType extends AbstractType
             if ($vacante = $event->getData()) {
                 $this->setupSubnivelField($event->getForm(), $vacante->getNivel());
                 $this->setupIdiomaDestrezaField($event->getForm(), $vacante->getIdiomaCodigo());
+
+                if(!$vacante->getId()){
+                    $vacante->setCreatedAt(new \DateTime());
+                }
+                $vacante->setUpdatedAt(new \DateTime())
+                    ->setUsuario($this->security->getUser());
             }
         });
+
         $builder->get('nivel')->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
             $form = $event->getForm();
             $this->setupSubnivelField($form->getParent(), $form->getData());
