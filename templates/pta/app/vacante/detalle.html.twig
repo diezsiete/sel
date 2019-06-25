@@ -1,0 +1,122 @@
+{% extends 'pta/base.html.twig' %}
+
+{% block title %}
+    PTA - {{ vacante.titulo }}
+{% endblock %}
+
+{% block body_header %}
+    <section class="page-header page-header-classic page-header-md mb-0">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 order-2 order-md-1 align-self-center p-static">
+                    <h1 data-title-border>
+                        {{ vacante.titulo }}
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row featured-boxes-full featured-boxes-full-scale">
+            <div class="col-lg-2 featured-box-full featured-box-full-light">
+                <i class="fas fa-map-marker-alt text-primary"></i>
+                <h4 class="font-weight-normal text-5">Locación</h4>
+                <p class="mb-0">
+                    {% for ciudad in vacante.ciudad %}
+                        {{ ciudad.nombre }}{% if not loop.last %}<br>{% endif %}
+                    {% endfor %}
+                </p>
+            </div>
+            <div class="col-lg-2 featured-box-full featured-box-full-light">
+                <i class="fas fa-dollar-sign text-primary"></i>
+                <h4 class="font-weight-normal text-5">Rango salario</h4>
+                <p class="mb-0">{{ vacante.salarioRangoHuman }}</p>
+            </div>
+            <div class="col-lg-2 featured-box-full featured-box-full-light">
+                <i class="fas fa-crosshairs text-primary"></i>
+                <h4 class="font-weight-normal text-5">Área</h4>
+                <p class="mb-0">
+                    {% for area in vacante.area %}
+                        {{ area.nombre }}{% if not loop.last %}<br>{% endif %}
+                    {% endfor %}
+                </p>
+            </div>
+            <div class="col-lg-2 featured-box-full featured-box-full-light">
+                <i class="fab fa-black-tie text-primary"></i>
+                <h4 class="font-weight-normal text-5">Cargo</h4>
+                <p class="mb-0">
+                    {% for cargo in vacante.cargo %}
+                        {{ cargo.nombre }}{% if not loop.last %}<br>{% endif %}
+                    {% endfor %}
+                </p>
+            </div>
+            <div class="col-lg-2 featured-box-full featured-box-full-light">
+                <i class="fas fa-bars text-primary"></i>
+                <h4 class="font-weight-normal text-5">Nivel</h4>
+                <p class="mb-0">
+                    {{ vacante.nivelHuman }}
+                </p>
+            </div>
+            <div class="col-lg-2 featured-box-full featured-box-full-light">
+                <i class="fas fa-file-contract text-primary"></i>
+                <h4 class="font-weight-normal text-5">Tipo contrato</h4>
+                <p class="mb-0">
+                    {{ vacante.contratoTipoHuman }}
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container py-4">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h2>
+                            Descipcion
+                        </h2>
+                        <p>
+                            {{ vacante.descripcion }}
+                        </p>
+                    </div>
+                    <div class="col-lg-12">
+                        <h2>
+                            Requisitos
+                        </h2>
+                        <p>
+                            {{ vacante.requisitos }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 detalle-left">
+                <aside class="sidebar ml-4">
+                        <h2>&nbsp;</h2>
+
+
+                        <h4>Minimo nivel acádemico</h4>
+                        <p>{{ vacante.nivelAcademicoHuman }}</p>
+
+
+                        <h4>Profesión</h4>
+                        <p>
+                            {% for profesion in vacante.profesion %}
+                                {{ profesion.nombre }}{% if not loop.last %}<br>{% endif %}
+                            {% endfor %}
+                        </p>
+
+
+                        <h4>Años de experiencia</h4>
+                        <p>{{ vacante.experienciaHuman }}</p>
+
+                        <button type="button" class="btn btn-3d btn-tertiary btn-xl my-5 btn-block">Aplicar</button>
+
+                </aside>
+            </div>
+        </div>
+    </div>
+{% endblock %}

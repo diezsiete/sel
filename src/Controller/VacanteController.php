@@ -49,6 +49,8 @@ class VacanteController extends AbstractController
      */
     public function detalle(Vacante $vacante)
     {
-
+        return $this->render('vacante/detalle.html.twig', [
+            'vacante' => $vacante
+        ]);
     }
 }

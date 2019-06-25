@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\Constant\HvConstant;
+use App\Constant\VacanteConstant;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -382,6 +384,11 @@ class Vacante
         return $this->nivel;
     }
 
+    public function getNivelHuman(): ?string
+    {
+        return $this->nivel ? VacanteConstant::NIVEL[$this->nivel] : null;
+    }
+
     /**
      * @param int $nivel
      * @return Vacante
@@ -414,6 +421,11 @@ class Vacante
         return $this->contratoTipo;
     }
 
+    public function getContratoTipoHuman(): ?string
+    {
+        return $this->contratoTipo ? VacanteConstant::CONTRATO_TIPO[$this->contratoTipo] : null;
+    }
+
     /**
      * @param int $contratoTipo
      * @return Vacante
@@ -442,6 +454,11 @@ class Vacante
         return $this->salarioRango;
     }
 
+    public function getSalarioRangoHuman()
+    {
+        return $this->salarioRango ? VacanteConstant::RANGO_SALARIO[$this->salarioRango] : null;
+    }
+
     /**
      * @param int $salarioRango
      * @return Vacante
@@ -457,6 +474,11 @@ class Vacante
     public function getExperiencia(): ?int
     {
         return $this->experiencia;
+    }
+
+    public function getExperienciaHuman()
+    {
+        return $this->experiencia !== null ? VacanteConstant::EXPERIENCIA[$this->experiencia] : null;
     }
 
     public function setExperiencia(int $experiencia): self
@@ -681,6 +703,11 @@ class Vacante
     public function getNivelAcademico(): ?string
     {
         return $this->nivelAcademico;
+    }
+
+    public function getNivelAcademicoHuman(): ?string
+    {
+        return $this->nivelAcademico ? HvConstant::NIVEL_ACADEMICO[$this->nivelAcademico] : null;
     }
 
     public function setNivelAcademico(string $nivelAcademico): self

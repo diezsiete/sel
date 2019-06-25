@@ -68,7 +68,18 @@ section.cualidades.section.section-height-5 {
 }
 
 /* Ofertas de empleo ------------------------------------------------------------------------------------------------ */
-
+html .featured-boxes-full .featured-box-full{
+    font-size: 10px;
+}
+html .featured-boxes-full .featured-box-full p{
+    font-size: 14px;
+}
+.featured-boxes-full .featured-box-full{
+    padding: 20px 55px;
+}
+.detalle-left h4{
+    font-weight: 300;
+}
 
 /* Contacto --------------------------------------------------------------------------------------------------------- */
 
