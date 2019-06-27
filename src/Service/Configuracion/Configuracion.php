@@ -4,6 +4,7 @@
 namespace App\Service\Configuracion;
 
 
+use App\Service\Hv\HvWizard\HvWizardRoute;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 
 class Configuracion
@@ -37,6 +38,11 @@ class Configuracion
      * @var Emails
      */
     private $emails = null;
+
+    /**
+     * @var HvWizardRoute[]
+     */
+    private $hvWizardRoutes = null;
 
     public function __construct(ContainerBagInterface $bag, $webDir)
     {
@@ -144,5 +150,16 @@ class Configuracion
             $this->emails = new Emails($this->parameters['emails']);
         }
         return $this->emails;
+    }
+
+    public function getHvWizardRoutes()
+    {
+        if(!$this->hvWizardRoutes) {
+            $this->hvWizardRoutes = [];
+            foreach($this->parameters['hv_wizard_routes'] as $key => $routeData) {
+                $this->hvWizardRoutes[] = new HvWizardRoute($key, $routeData['route'], $routeData['titulo']);
+            }
+        }
+        return $this->hvWizardRoutes;
     }
 }

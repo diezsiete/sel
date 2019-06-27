@@ -24,7 +24,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     use TargetPathTrait;
 
     private $entityManager;
-    private $urlGenerator;
+    protected $urlGenerator;
     private $csrfTokenManager;
     private $passwordEncoder;
 
@@ -39,8 +39,9 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
     public function supports(Request $request)
     {
-        return 'app_login' === $request->attributes->get('_route')
+        $supports = 'app_login' === $request->attributes->get('_route')
             && $request->isMethod('POST');
+        return $supports;
     }
 
     public function getCredentials(Request $request)

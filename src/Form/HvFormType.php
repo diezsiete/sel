@@ -206,6 +206,7 @@ class HvFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => HvDatosBasicosModel::class,
+            'csrf_protection' => false,
         ]);
     }
 

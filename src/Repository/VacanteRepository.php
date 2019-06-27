@@ -2,8 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\Usuario;
 use App\Entity\Vacante;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\Criteria;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -57,6 +59,18 @@ class VacanteRepository extends ServiceEntityRepository
             ->groupBy('c.id')
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * @param Vacante $vacante
+     */
+    public static function aplicanteCriteria(Usuario $usuario)
+    {
+        $criteria = Criteria::create()
+            ->andWhere(Criteria::expr()->andX(
+                Criteria::expr()->eq('id', $usuario->getId())
+            ));
+        return $criteria;
     }
 
     // /**

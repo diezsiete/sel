@@ -10,8 +10,10 @@
     <link rel="stylesheet" href="{{ asset('vendor/bootstrap-datepicker/css/bootstrap-datepicker3.css') }}" />
 {% endblock %}
 
+{% block body_header %}{% endblock %}
 {% block body %}
     {{ include('pta/registro/_header.html.twig') }}
+    {{ include('pta/registro/_process-line.html.twig') }}
 
     {{ form_start(hvForm, {attr: {novalidate: 'novalidate'}}) }}
 

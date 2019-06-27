@@ -1,13 +1,14 @@
 <?php
 
 
-namespace App\Service;
+namespace App\Service\Hv;
 
 
 use App\Entity\Hv;
 use App\Entity\HvEntity;
 use App\Entity\Usuario;
 use App\Repository\HvRepository;
+use App\Service\Hv\HvWizard\HvWizard;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Security;
@@ -49,8 +50,7 @@ class HvResolver implements HvEntity
 
     public function getSessionHv()
     {
-        // return $this->hvRepository->findByUsuario(927);
-        if($hvId = $this->session->get(RegistroWizard::SESSION_ID)){
+        if($hvId = $this->session->get(HvWizard::SESSION_ID)){
             return $this->hvRepository->find($hvId);
         }
         return null;

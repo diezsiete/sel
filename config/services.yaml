@@ -42,6 +42,9 @@ services:
             - '%env(NOVASOFT_SSRS_PASSWORD)%'
             - '%env(NOVASOFT_SSRS_URL)%'
 
+    App\Service\Hv\HvWizard\HvWizard:
+        factory: '@App\Service\Hv\HvWizard\HvWizardFactory'
+
     Knp\Menu\Twig\MenuExtension:
         alias: knp_menu.twig.extension
 

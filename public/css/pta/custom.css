@@ -123,6 +123,10 @@ section.ciudades-nav {
     pointer-events: none;
 }
 
+.process .process-step.current a:hover .process-step-circle-content {
+    text-decoration: none;
+}
+
 .process .process-step.current .process-step-circle {
     background-color: #3f317d;
     border-color: #3f317d;

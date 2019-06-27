@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Constant\HvConstant;
 use App\Constant\VacanteConstant;
+use App\Repository\VacanteRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -603,6 +604,14 @@ class Vacante
     public function getAplicantes(): Collection
     {
         return $this->aplicantes;
+    }
+
+
+    public function getAplicante(Usuario $aplicante): ?Usuario
+    {
+        $criteria = VacanteRepository::aplicanteCriteria($aplicante);
+        $usuario = $this->aplicantes->matching($criteria)->first();
+        return $usuario ? $usuario : null;
     }
 
     public function addAplicante(Usuario $aplicante): self

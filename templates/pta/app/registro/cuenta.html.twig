@@ -5,6 +5,9 @@
     <link rel="stylesheet" href="{{ asset('vendor/dropzone/min/dropzone.min.css') }}" />
 {% endblock %}
 
+{% block body_header %}{% endblock %}
+
+
 {% block body %}
     {{ include('pta/registro/_header.html.twig') }}
 
@@ -59,7 +62,7 @@
 
     <div class="row">
         <div class="col-md-12 mt-3">
-            <a class="btn btn-default pull-left anterior" href="{{ path(prevRoute) }}"><i class="fas fa-angle-left"></i> Anterior</a>
+            <a class="btn btn-default pull-left anterior" href="{{ path(prevRoute.route, prevRoute.parameters) }}"><i class="fas fa-angle-left"></i> Anterior</a>
             <button class="btn btn-success pull-right">
                 Finalizar
                 <i class="fas fa-angle-right"></i>

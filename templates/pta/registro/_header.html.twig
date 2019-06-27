@@ -1,51 +1,9 @@
-<section class="page-header page-header-classic page-header-md">
+<section class="page-header page-header-classic mb-4">
     <div class="container">
         <div class="row">
-            <div class="col-md-8 order-2 order-md-1 align-self-center p-static">
+            <div class="col p-static">
                 <h1 data-title-border>Registro</h1>
             </div>
         </div>
     </div>
 </section>
-
-
-<div class="row">
-    <div class="col">
-        <div class="row process process-connecting-line my-5">
-            <div class="connecting-line"></div>
-
-            {% for titulo in registroWizard.titulos %}
-                {% set current = loop.index0 == registroWizard.step %}
-                {% set valid = registroWizard.isStepValid(loop.index0)  %}
-                {% if valid %}
-                    {% set lastStepValid = loop.index0 %}
-                {% endif %}
-                {% set stepInProgress = lastStepValid is defined and lastStepValid + 1 == loop.index0 %}
-
-                {% if valid or stepInProgress %}
-                    <a href="{{ path(registroWizard.routes[loop.index0]) }}"
-                       class="process-step col-lg-2 mb-5 mb-lg-4 {{ current ? 'current' : 'valid' }}">
-                        <div class="process-step-circle">
-                            <strong class="process-step-circle-content">
-                                {{ current or stepInProgress ? loop.index  : '<i class="fas fa-check"></i>'}}
-                            </strong>
-                        </div>
-                        <div class="process-step-content">
-                            <h4 class="mb-1 text-4 font-weight-bold">{{ titulo }}</h4>
-                        </div>
-                    </a>
-                {% else %}
-                    <div class="process-step col-lg-2 mb-5 mb-lg-4 {{ current ? 'current' : 'disabled' }}">
-                        <div class="process-step-circle">
-                            <strong class="process-step-circle-content">{{ loop.index }}</strong>
-                        </div>
-                        <div class="process-step-content">
-                            <h4 class="mb-1 text-4 font-weight-bold">{{ titulo }}</h4>
-                        </div>
-                    </div>
-                {% endif %}
-            {% endfor %}
-        </div>
-
-    </div>
-</div>

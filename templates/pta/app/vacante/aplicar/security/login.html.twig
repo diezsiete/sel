@@ -1,0 +1,53 @@
+{% extends 'pta/base.html.twig' %}
+
+{% block title %}
+    PTA - Iniciar sesión
+{% endblock %}
+
+{% block body_header %}{% endblock %}
+{% set vacante = master_request().attributes.get('vacante') %}
+{% block body %}
+    <section class="page-header page-header-classic page-header-md mb-0">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 order-2 order-md-1 align-self-center p-static">
+                    <h1 data-title-border>
+                        {{ vacante.titulo }}
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="alert alert-info alert-sm">
+        <div class="container py-2">
+            <h4 class="font-weight-normal mb-0"><strong>Inicie sesión</strong> para poder aplicar a la vacante.
+                ¿No tiente cuenta con nosotros? <strong>
+                    <a href="{{ path('vacante_aplicar', {'slug': vacante.slug, 'wizard': 'registro' })  }}">Registrese!</a>
+                </strong>
+            </h4>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col">
+
+                <div class="featured-boxes">
+                    <div class="row">
+                        <div class="col-md-6 offset-md-3">
+                            <div class="featured-box featured-box-primary text-left mt-5">
+                                <div class="box-content">
+                                    {{ include('security/_login-form.html.twig') }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}

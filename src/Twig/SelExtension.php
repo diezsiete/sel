@@ -3,13 +3,19 @@
 namespace App\Twig;
 
 use Knp\Menu\Twig\MenuExtension;
+use Psr\Container\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Contracts\Service\ServiceSubscriberInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 
-class SelExtension extends AbstractExtension
+class SelExtension extends AbstractExtension implements ServiceSubscriberInterface
 {
+    /**
+     * @var ContainerInterface
+     */
+    protected $container;
 
     /**
      * @var MenuExtension
@@ -20,10 +26,11 @@ class SelExtension extends AbstractExtension
      */
     private $request;
 
-    public function __construct(RequestStack $request, MenuExtension $menuExtension)
+
+    public function __construct(ContainerInterface $container)
     {
         // $this->menuExtension = $menuExtension;
-        $this->request = $request;
+        $this->container = $container;
     }
 
     public function getFilters(): array
@@ -39,14 +46,20 @@ class SelExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('page_header', [$this, 'pageHeader']),
+            new TwigFunction('master_request', [$this, 'masterRequest']),
         ];
     }
 
-    public function pageHeader($menu)
+    public function masterRequest()
     {
-        $header = $this->request->getCurrentRequest()->get('header');
-        return $header;
-//        return $header ?? $this->menuExtension->getCurrentItem($menu)->getName();
+        return $this->container->get(RequestStack::class)->getMasterRequest();
+    }
+
+
+    public static function getSubscribedServices()
+    {
+        return [
+            RequestStack::class,
+        ];
     }
 }

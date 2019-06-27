@@ -40,6 +40,28 @@ app:
             - paula.hoyos@pta.com.co
           Servicio al cliente:
             - servicioalcliente@pta.com.co
+              
+      hv_wizard_routes:
+        basicos:
+          route: registro_datos_basicos
+          titulo: Básicos
+        estudios:
+          route: registro_estudios
+          titulo: Estudios
+        experiencia:
+          route: registro_experiencia
+          titulo: Experiencia
+        referencias:
+          route: registro_referencias
+          titulo: Referencias
+        familiares:
+          route: registro_familiares
+          titulo: Familiares
+        cuenta:
+          route: registro_cuenta
+          titulo: Cuenta
+
+
 
     SERVILABOR:
       host: '%env(HOST_SERVILABOR)%'

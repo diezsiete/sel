@@ -52,6 +52,7 @@ class Configuration implements ConfigurationInterface
                         ->end()
                         ->append($this->addEmailsNode())
                         ->append($this->addOficinasNode())
+                        ->append($this->addHvWizardRoutes())
                     ->end()
                 ->end()
             ->end()
@@ -96,6 +97,23 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
             ->end();
+        return $node;
+    }
+
+    protected function addHvWizardRoutes()
+    {
+        $treeBuilder = new TreeBuilder('hv_wizard_routes');
+        $node =
+            $treeBuilder->getRootNode()
+                ->requiresAtLeastOneElement()
+                ->useAttributeAsKey('key')
+                ->arrayPrototype()
+                    ->children()
+                        ->scalarNode('route')->end()
+                        ->scalarNode('titulo')->end()
+                    ->end()
+                ->end()
+        ;
         return $node;
     }
 }

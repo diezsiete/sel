@@ -5,8 +5,8 @@ namespace App\EventListener;
 
 
 use App\Entity\Usuario;
-use App\Service\HvResolver;
-use App\Service\RegistroWizard;
+use App\Service\Hv\HvResolver;
+use App\Service\Hv\HvWizard\HvWizard;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
@@ -44,13 +44,13 @@ class RegistroListener
     {
         $currentRoute = $event->getRequest()->attributes->get('_route');
         if(preg_match('/registro_/', $currentRoute)) {
-            if($this->isUserLogged()) {
+            if($this->isUserLogged() && !$event->getRequest()->isXmlHttpRequest()) {
                 $response = new RedirectResponse($this->router->generate('hv_datos_basicos'));
                 $event->setResponse($response);
             }
         } else {
             if(!$this->kernel->isDebug()) {
-                $this->session->remove(RegistroWizard::NAMESPACE);
+                $this->session->remove(HvWizard::NAMESPACE);
             }
         }
     }

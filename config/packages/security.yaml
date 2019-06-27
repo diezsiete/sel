@@ -14,11 +14,21 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+
+#        aplicar_vacante:
+#            anonymous: ~
+#            pattern: ofertas/.+/aplicar$
+#            form_login:
+#                login_path: app_login
+#                check_path: app_login
+
         main:
             anonymous: true
             guard:
                 authenticators:
                     - App\Security\LoginFormAuthenticator
+                    - App\Security\VacanteAplicarAuthenticator
+                entry_point: App\Security\LoginFormAuthenticator
             switch_user: true
             logout:
                 path: app_logout

@@ -12,9 +12,11 @@
     <link rel="stylesheet" href="{{ asset('vendor/pnotify/pnotify.custom.css') }}">
 {% endblock %}
 
+{% block body_header %}{% endblock %}
 {% block body %}
 
     {{ include('pta/registro/_header.html.twig') }}
+    {{ include('pta/registro/_process-line.html.twig') }}
 
     <div class="container py-2 registro">
         <div class="row">
@@ -26,8 +28,12 @@
                 <a class="crear-entity btn btn-primary pull-right" href="#modalForm">Agregar</a>
             </div>
             <div class="col-lg-12">
-                <a class="btn btn-default pull-left anterior" href="{{ path(prevRoute) }}"><i class="fas fa-angle-left"></i> Anterior</a>
-                <a class="btn btn-success pull-right disabled siguiente" href="{{ path(nextRoute) }}">Siguiente <i class="fas fa-angle-right"></i></a>
+                {% if prevRoute is not null %}
+                    <a class="btn btn-default pull-left anterior" href="{{ path(prevRoute.route, prevRoute.parameters) }}"><i class="fas fa-angle-left"></i> Anterior</a>
+                {% endif %}
+                {% if nextRoute is not null %}
+                    <a class="btn btn-success pull-right disabled siguiente" href="{{ path(nextRoute.route, nextRoute.parameters) }}">Siguiente <i class="fas fa-angle-right"></i></a>
+                {% endif %}
             </div>
         </div>
 

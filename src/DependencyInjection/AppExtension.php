@@ -20,7 +20,6 @@ class AppExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-
         foreach($config['empresas'] as $empresaKey => $empresaConfig) {
             $container->setParameter('empresa.'.$empresaKey.'.config', $empresaConfig);
             $container->setParameter('empresa.'.$empresaKey.'.host', $empresaConfig['host']);
