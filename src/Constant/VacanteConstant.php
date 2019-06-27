@@ -109,6 +109,6 @@ class VacanteConstant
         5 => ['nombre' => 'Un mes', 'interval_spec' => 'P1M', 'mysql_interval' => 'MONTH', 'mysql_interval_value' => 1],
         6 => ['nombre' => 'Dos meses', 'interval_spec' => 'P2M', 'mysql_interval' => 'MONTH', 'mysql_interval_value' => 2],
         7 => ['nombre' => 'Tres meses', 'interval_spec' => 'P3M', 'mysql_interval' => 'MONTH', 'mysql_interval_value' => 3],
-        8 => ['nombre' => 'Cierre del paquete', 'interval_spec' => 'P4M', 'mysql_interval' => 'MONTH', 'mysql_interval_value' => 4]
+        8 => ['nombre' => 'Seis meses', 'interval_spec' => 'P6M', 'mysql_interval' => 'MONTH', 'mysql_interval_value' => 4]
     ];
 }

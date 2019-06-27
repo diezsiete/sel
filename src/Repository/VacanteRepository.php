@@ -47,7 +47,17 @@ class VacanteRepository extends ServiceEntityRepository
         }
 
         return $qb->getQuery()->getResult();
+    }
 
+    /**
+     * @return Vacante[]
+     */
+    public function findActivas()
+    {
+        return $this->createQueryBuilder('v')
+            ->andWhere('v.activa = true')
+            ->getQuery()
+            ->getResult();
     }
 
     public function getCategoriaPublicada($categoria)
