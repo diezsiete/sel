@@ -33,7 +33,7 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('tel')->end()
                         ->scalarNode('logo')->end()
                         ->scalarNode('logo_pdf')->end()
-
+                        ->scalarNode('home_route')->end()
                         ->arrayNode('certificado_laboral')
                             ->children()
                                 ->scalarNode('firma')->end()

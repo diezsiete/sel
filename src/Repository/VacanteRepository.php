@@ -61,10 +61,7 @@ class VacanteRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    /**
-     * @param Vacante $vacante
-     */
-    public static function aplicanteCriteria(Usuario $usuario)
+    public static function aplicanteCriteria(Usuario $usuario): Criteria
     {
         $criteria = Criteria::create()
             ->andWhere(Criteria::expr()->andX(

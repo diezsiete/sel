@@ -2758,18 +2758,6 @@ html.sticky-header-enabled.sticky-header-active #header .header-logo-sticky-chan
 		-webkit-transform: translate3d(-100%, 0, 0);
 		transform: translate3d(-100%, 0, 0);
 	}
-	@	-webkit-keyframes sideMenuArrow {
-		0% {
-			left: 5px;
-	}
-
-	50% {
-		left: 10px;
-	}
-
-	100% {
-		left: 5px;
-	}
 }
 
 @keyframes sideMenuArrow {
@@ -2974,7 +2962,7 @@ html.side-header #header.side-header .header-nav.header-nav-links-vertical-slide
 	html.side-header-hamburguer-sidebar #header.side-header .header-nav.header-nav-links-vertical-slide nav ul li.dropdown-submenu {
 	position: static;
 }
-}
+
 /* Header Floating */
 #header.header-floating-icons .nav {
 	-webkit-box-orient: vertical;

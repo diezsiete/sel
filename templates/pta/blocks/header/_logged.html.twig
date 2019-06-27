@@ -1,0 +1,23 @@
+<div class="header-nav-features header-nav-features-no-border header-nav-features-lg-show-border order-1 order-lg-2">
+    <div class="header-nav-feature header-nav-features-user header-nav-features-user-logged d-inline-flex mx-2 pr-2" id="headerAccount">
+        <a href="#" class="header-nav-features-toggle">
+            <i class="far fa-user"></i> {{ app.user.nombreCompleto(true) }}
+        </a>
+        <div class="header-nav-features-dropdown header-nav-features-dropdown-mobile-fixed header-nav-features-dropdown-force-right" id="headerTopUserDropdown">
+            <div class="row">
+                <div class="col-8">
+                    <p class="mb-0 pb-0"><strong class="text-color-dark text-4">{{ app.user.nombreCompleto(true) }}</strong></p>
+                    <p class="mb-0 pb-3 text-2 line-height-1 pt-0 pt-1">{{ app.user.identificacion }}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <ul class="nav nav-list-simple flex-column text-3">
+                        <li class="nav-item"><a class="nav-link" href="{{ path('app_profile') }}">Mi Perfil</a></li>
+                        <li class="nav-item"><a class="nav-link border-bottom-0" href="{{ path('app_logout') }}">Cerrar sesión</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

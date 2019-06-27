@@ -10,6 +10,7 @@ app:
       tel: (1) 756 98 40
       logo: /img/sel/pta-logo.png
       logo_pdf: /img/sel/pta-logo-pdf.png
+      home_route: pta_index
 
       certificado_laboral:
         firma: /img/sel/firma-certificado-laboral.png
@@ -73,6 +74,7 @@ app:
       tel: 300 31 13
       logo: /img/sel/logo-servilabor.png
       logo_pdf: /img/sel/logo-servilabor-pdf.png
+      home_route: servilabor_inicio
 
       certificado_laboral:
         firma: /img/sel/firma-certificado-laboral-servilabor.png

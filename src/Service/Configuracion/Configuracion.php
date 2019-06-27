@@ -9,6 +9,8 @@ use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 
 class Configuracion
 {
+    private $empresa;
+
     /**
      * @var string
      */
@@ -44,9 +46,11 @@ class Configuracion
      */
     private $hvWizardRoutes = null;
 
+
     public function __construct(ContainerBagInterface $bag, $webDir)
     {
-        $this->parameters = $bag->get('empresa.'.$bag->get('empresa').'.config');
+        $this->empresa = $bag->get('empresa');
+        $this->parameters = $bag->get('empresa.'.$this->empresa.'.config');
         $this->webDir = $webDir;
     }
 
@@ -77,6 +81,10 @@ class Configuracion
         }
     }
 
+    public function getEmpresa()
+    {
+        return $this->empresa;
+    }
     public function getRazon()
     {
         return $this->parameters['razon'];
@@ -115,6 +123,11 @@ class Configuracion
     public function getLogoPdf()
     {
         return $this->webDir . $this->parameters['logo_pdf'];
+    }
+
+    public function homeRoute()
+    {
+        return $this->parameters['home_route'];
     }
 
     public function certificadoLaboral(): CertificadoLaboral
