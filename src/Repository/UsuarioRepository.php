@@ -50,10 +50,10 @@ class UsuarioRepository extends ServiceEntityRepository
     }
     */
 
-    public function userSearch(QueryBuilder $qb, $search, $alias = 'u')
+    public function userSearchExpression(QueryBuilder $qb, $search, $alias = 'u', $parameterKey = 'search')
     {
-        $qb->andWhere($qb->expr()->orX(
-            $qb->expr()->like($alias . '.identificacion', ':search'),
+        $expr = $qb->expr()->orX(
+            $qb->expr()->like($alias . '.identificacion', ':'.$parameterKey),
             $qb->expr()->like(
                 $qb->expr()->concat(
                     $qb->expr()->concat(
@@ -68,8 +68,10 @@ class UsuarioRepository extends ServiceEntityRepository
                         'COALESCE(' . $qb->expr()->concat($qb->expr()->literal(' '), $alias.'.segundoNombre') . ', \'\')'
                     )
                 ),
-                ':search'
+                ':'.$parameterKey
             )
-        ))->setParameter('search', "%" . str_replace(" ", "%", $search) . "%");
+        );
+        $qb->setParameter($parameterKey, "%" . str_replace(" ", "%", $search) . "%");
+        return $expr;
     }
 }

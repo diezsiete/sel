@@ -6,7 +6,11 @@ use App\Entity\Ciudad;
 use App\Entity\Dpto;
 use App\Entity\Hv;
 use App\Entity\Pais;
+use App\Entity\Usuario;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 
 
@@ -17,7 +21,9 @@ class MigrationHvCommand extends MigrationCommand
     protected function configure()
     {
         parent::configure();
-        $this->setDescription('Migracion de hv');
+        $this->setDescription('Migracion de hv')
+            ->addOption('import_usuario', null, InputOption::VALUE_NONE,
+                'Si activado, si el usuario no existe lo importa');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -141,5 +147,32 @@ class MigrationHvCommand extends MigrationCommand
         $this->setPais($key, $hv, $row);
         $this->setDpto($key, $hv, $row);
         $this->setCiudad($key, $hv, $row);
+    }
+
+
+    /**
+     * @param $idOld
+     * @return Usuario|object|null
+     * @throws \Exception
+     */
+    protected function getUsuarioByIdOld($idOld, $errorMessage = null)
+    {
+        $importUsuario = $this->input->getOption('import_usuario');
+        $usuario = parent::getUsuarioByIdOld($idOld, $importUsuario ? false : null);
+
+        if(!$usuario && $importUsuario) {
+            $this->io->writeln($idOld . " not found");
+            $command = $this->getApplication()->find('migration:usuario');
+            $arguments = [
+                'command' => 'migration:usuario',
+                '--id'    => $idOld,
+            ];
+            $commandInput = new ArrayInput($arguments);
+            $code = $command->run($commandInput, new NullOutput());
+            $this->io->writeln("migration:usuario -> " . $code);
+
+            $usuario = parent::getUsuarioByIdOld($idOld);
+        }
+        return $usuario;
     }
 }

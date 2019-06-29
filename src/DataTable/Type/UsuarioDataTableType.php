@@ -65,7 +65,9 @@ class UsuarioDataTableType implements DataTableTypeInterface
                 'criteria' => [
                     function(QueryBuilder $builder, DataTableState $state) {
                         if($state->getGlobalSearch()) {
-                            $this->usuarioRepository->userSearch($builder, $state->getGlobalSearch());
+                            $builder->andWhere(
+                                $this->usuarioRepository->userSearchExpression($builder, $state->getGlobalSearch())
+                            );
                         }
                     },
                 ]

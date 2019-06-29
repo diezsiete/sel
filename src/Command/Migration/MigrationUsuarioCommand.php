@@ -39,7 +39,9 @@ class MigrationUsuarioCommand extends MigrationCommand
         parent::configure();
         $this->setDescription('Migracion de usuarios');
         $this->addOption('rol', null, InputOption::VALUE_OPTIONAL,
-            'Importar usuarios solo de un rol especifico');
+            'Importar usuarios solo de un rol especifico')
+            ->addOption('id', null, InputOption::VALUE_OPTIONAL,
+                'Importar solo un id');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -50,10 +52,14 @@ class MigrationUsuarioCommand extends MigrationCommand
         if($rol = $input->getOption('rol')) {
             $sql .= "AND roles LIKE '%\"$rol\"%' ";
         }
+        if($id = $input->getOption('id')) {
+            $sql .= "AND id = ".$id;
+        }
 
         $sql = $this->addLimitToSql($sql);
         $this->initProgressBar($this->countSql($sql));
 
+        $persisted = 0;
         while ($row = $this->fetch($sql)) {
             $roles = $this->migrateRoles($row['roles']);
 
@@ -97,7 +103,9 @@ class MigrationUsuarioCommand extends MigrationCommand
                 ->setType($type);
 
             $this->selPersist($usuario);
+            $persisted = 1;
         }
+        return $persisted;
     }
 
     private function migrateRoles($roles)

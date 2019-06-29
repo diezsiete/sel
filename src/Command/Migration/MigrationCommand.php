@@ -36,7 +36,7 @@ abstract class MigrationCommand extends Command
     /**
      * @var UsuarioRepository
      */
-    private $usuarioRepository = null;
+    protected $usuarioRepository = null;
 
     /**
      * @var SymfonyStyle
@@ -44,10 +44,13 @@ abstract class MigrationCommand extends Command
     protected $io;
 
     /**
-     * @var string
+     * @var int
      */
-    protected $limit;
-
+    protected $limit = null;
+    /**
+     * @var int
+     */
+    protected $offset = null;
 
     protected $batchSize = 20;
 
@@ -56,14 +59,6 @@ abstract class MigrationCommand extends Command
      */
     protected $currentStmt = null;
 
-    /**
-     * @var string
-     */
-    protected $offset;
-    /**
-     * @var Connection|object
-     */
-    private $seConnection;
     /**
      * @var int
      */
@@ -75,7 +70,11 @@ abstract class MigrationCommand extends Command
     /**
      * @var OutputInterface
      */
-    private $output;
+    protected $output;
+    /**
+     * @var InputInterface
+     */
+    protected $input;
 
     protected $connections = [];
 
@@ -88,11 +87,20 @@ abstract class MigrationCommand extends Command
     public function run(InputInterface $input, OutputInterface $output)
     {
         $this->io = new SymfonyStyle($input, $output);
-        $this->offset = $input->getOption('offset') !== null ? (int)$input->getOption('offset') : null;
-        $this->limit = $input->getOption('limit') !== null ? (int)$input->getOption('limit') : null;
         $this->output = $output;
+        $this->input = $input;
 
-        if($input->getOption('down')) {
+        $down = false;
+
+        try {
+            $this->offset = $input->getOption('offset') !== null ? (int)$input->getOption('offset') : null;
+            $this->limit = $input->getOption('limit') !== null ? (int)$input->getOption('limit') : null;
+            $down = $input->getOption('down');
+        }catch (\InvalidArgumentException $e) {
+
+        }
+
+        if($down) {
             $this->setCode([$this, 'down']);
         }
 
@@ -183,6 +191,7 @@ abstract class MigrationCommand extends Command
 
     /**
      * @param $idOld
+     * @param null|string|false $errorMessage
      * @return Usuario|object|null
      */
     protected function getUsuarioByIdOld($idOld, $errorMessage = null)
@@ -192,11 +201,13 @@ abstract class MigrationCommand extends Command
         }
         $usuario = $this->usuarioRepository->findOneBy(['idOld' => $idOld]);
         if(!$usuario) {
-            if(!$errorMessage) {
-                $errorMessage = "Usuario con idOld '%id%' no encontrado";
+            if($errorMessage !== false) {
+                if (!$errorMessage) {
+                    $errorMessage = "Usuario con idOld '%id%' no encontrado";
+                }
+                $errorMessage = str_replace('%id%', $idOld, $errorMessage);
+                $this->io->error($errorMessage);
             }
-            $errorMessage = str_replace('%id%', $idOld, $errorMessage);
-            $this->io->error($errorMessage);
         }
         return $usuario;
     }

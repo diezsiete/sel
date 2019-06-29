@@ -1,0 +1,207 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Hojas de vida
+{% endblock %}
+
+{% block page_header_title %}
+    Hojas de vida
+{% endblock %}
+
+{% block section_class %}content-body{% endblock %}
+
+{% block body %}
+
+    <section class="content-with-menu content-with-menu-has-toolbar media-gallery">
+        <div class="content-with-menu-container">
+            <div class="inner-menu-toggle">
+                <a href="#" class="inner-menu-expand" data-open="inner-menu">
+                    Show Bar <i class="fas fa-chevron-right"></i>
+                </a>
+            </div>
+
+            <menu id="content-menu" class="inner-menu" role="menu">
+                <div class="nano">
+                    <div class="nano-content">
+
+                        <div class="inner-menu-toggle-inside">
+                            <a href="#" class="inner-menu-collapse">
+                                <i class="fas fa-chevron-up visible-xs-inline"></i><i class="fas fa-chevron-left hidden-xs-inline"></i> Hide Bar
+                            </a>
+                            <a href="#" class="inner-menu-expand" data-open="inner-menu">
+                                Show Bar <i class="fas fa-chevron-down"></i>
+                            </a>
+                        </div>
+
+                        <div class="inner-menu-content">
+
+                            <a class="btn btn-block btn-primary btn-md pt-2 pb-2 text-3" href="#">
+                                <i class="fas fa-upload mr-1"></i>
+                                Upload Files
+                            </a>
+
+                            <hr class="separator" />
+
+                            <div class="sidebar-widget m-0">
+                                <div class="widget-header clearfix">
+                                    <h6 class="title float-left mt-1">Folders</h6>
+                                    <div class="float-right">
+                                        <a href="#" class="btn btn-dark btn-sm btn-widget-act">Add Folder</a>
+                                    </div>
+                                </div>
+                                <div class="widget-content">
+                                    <ul class="mg-folders">
+                                        <li>
+                                            <a href="#" class="menu-item"><i class="fas fa-folder"></i> My Documents</a>
+                                            <div class="item-options">
+                                                <a href="#">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <a href="#" class="text-danger">
+                                                    <i class="fas fa-times"></i>
+                                                </a>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="menu-item"><i class="fas fa-folder"></i> Templates</a>
+                                            <div class="item-options">
+                                                <a href="#">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <a href="#" class="text-danger">
+                                                    <i class="fas fa-times"></i>
+                                                </a>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="menu-item"><i class="fas fa-folder"></i> Design</a>
+                                            <div class="item-options">
+                                                <a href="#">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <a href="#" class="text-danger">
+                                                    <i class="fas fa-times"></i>
+                                                </a>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="menu-item"><i class="fas fa-folder"></i> PSDs</a>
+                                            <div class="item-options">
+                                                <a href="#">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <a href="#" class="text-danger">
+                                                    <i class="fas fa-times"></i>
+                                                </a>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="menu-item"><i class="fas fa-folder"></i> Downloads</a>
+                                            <div class="item-options">
+                                                <a href="#">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <a href="#" class="text-danger">
+                                                    <i class="fas fa-times"></i>
+                                                </a>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="menu-item"><i class="fas fa-folder"></i> Photos</a>
+                                            <div class="item-options">
+                                                <a href="#">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <a href="#" class="text-danger">
+                                                    <i class="fas fa-times"></i>
+                                                </a>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="menu-item"><i class="fas fa-folder"></i> Projects</a>
+                                            <div class="item-options">
+                                                <a href="#">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <a href="#" class="text-danger">
+                                                    <i class="fas fa-times"></i>
+                                                </a>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <hr class="separator" />
+
+                            <div class="sidebar-widget m-0">
+                                <div class="widget-header">
+                                    <h6 class="title">Labels</h6>
+                                    <span class="widget-toggle">+</span>
+                                </div>
+                                <div class="widget-content">
+                                    <ul class="mg-tags">
+                                        <li><a href="#">Design</a></li>
+                                        <li><a href="#">Projects</a></li>
+                                        <li><a href="#">Photos</a></li>
+                                        <li><a href="#">Websites</a></li>
+                                        <li><a href="#">Documentation</a></li>
+                                        <li><a href="#">Download</a></li>
+                                        <li><a href="#">Images</a></li>
+                                        <li><a href="#">Vacation</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </menu>
+            <div class="inner-body mg-main">
+
+                <div class="inner-toolbar clearfix">
+                    <ul>
+                        <li>
+                            <a href="#" id="mgSelectAll"><i class="fas fa-check-square mr-1"></i> <span data-all-text="Select All" data-none-text="Select None">Select All</span></a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fas fa-pencil-alt mr-1"></i> Edit</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="far fa-trash-alt mr-1"></i> Delete</a>
+                        </li>
+                        <li class="right" data-sort-source data-sort-id="media-gallery">
+                            <ul class="nav nav-pills nav-pills-primary">
+                                <li class="nav-item">
+                                    <label>Filter:</label>
+                                </li>
+                                <li class="nav-item active">
+                                    <a class="nav-link" data-option-value="*" href="#all">All</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-option-value=".document" href="#document">Documents</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-option-value=".image" href="#image">Images</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-option-value=".video" href="#video">Videos</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+
+
+
+                <div class="search-content">
+                    {% block listado_content %}
+                    {% endblock %}
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+{% endblock %}
+

@@ -1,0 +1,82 @@
+<p class="result-type">
+    <button class="btn btn-primary btn-xs">hola</button>
+</p>
+<div class="result">
+    <div class="result-data">
+        <div class="row">
+            <div class="col-md-6">
+                <h4>{{ hv.usuario.nombreCompleto(true) }} - {{ hv.usuario.identificacion }}
+                    <i class="fas fa-{{ hv.genero == 1 ? 'female' : 'male' }}"></i>
+                </h4>
+            </div>
+            <div class="col-md-3">
+                <p>{{ hv.resiCiudad }}</p>
+            </div>
+            <div class="col-md-3">
+                <p>{{ constant('App\\Constant\\HvConstant::NIVEL_ACADEMICO')[hv.nivelAcademico] }}</p>
+            </div>
+        </div>
+        <table class="table table-responsive-md table-sm mb-3 ml-1">
+            <tr>
+                <th width="15%">
+{#                    <h5 data-toggle="collapse" data-target="#collapseEstudios{{ loop.index }}" aria-expanded="false" aria-controls="collapseEstudios{{ loop.index }}">#}
+{#                        Estudios#}
+{#                    </h5>#}
+                    <h5>Estudios</h5>
+                </th>
+                <th><h6>Area de estudio</h6></th><th><h6>Titlulo</h6></th>
+            </tr>
+{#            <tbody id="collapseEstudios{{ loop.index }}" class="collapse" >#}
+            {% for estudio in hv.estudios %}
+                <tr>
+                    <td></td>
+                    <td>
+                        {{ estudio.codigo.nombre }}
+                    </td>
+                    <td>
+                        {{ estudio.nombre }}
+                    </td>
+                </tr>
+            {% endfor %}
+{#            </tbody>#}
+        </table>
+
+        <table class="table table-responsive-md table-sm mb-0 ml-1">
+            <tr>
+                <th width="15%">
+{#                    <h5 data-toggle="collapse" data-target="#collapseExperiencia{{ loop.index }}" aria-expanded="false" aria-controls="collapseExperiencia{{ loop.index }}">#}
+{#                        Experiencia#}
+{#                    </h5>#}
+                    <h5>Experiencia</h5>
+                </th>
+                <th><h6>Nombre de la empresa</h6></th><th><h6>Cargo</h6></th><th><h6>Area del cargo</h6></th>
+            </tr>
+{#            <tbody id="collapseExperiencia{{ loop.index }}" class="collapse" >#}
+            {% for experiencia in hv.experiencia %}
+                <tr>
+                    <td></td>
+                    <td>
+                        {{ experiencia.empresa }}
+                    </td>
+                    <td>
+                        {{ experiencia.cargo }}
+                    </td>
+                    <td>
+                        {{ experiencia.area.nombre }}
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td colspan="3">
+                        <div class="row">
+                            <div class="col-md-2"><h6>Descripción</h6></div>
+                            <div class="col-md-10"><p>{{ experiencia.descripcion }}</p></div>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+{#            </tbody>#}
+        </table>
+
+    </div>
+</div>

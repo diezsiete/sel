@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\DataTable\Type\Hv\HvDataTableType;
+use App\Repository\HvRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Omines\DataTablesBundle\DataTableFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,14 +15,16 @@ class HvAdminController extends AbstractController
     /**
      * @Route("/sel/admin/hv/listado", name="admin_hv_listado")
      */
-    public function listado(DataTableFactory $dataTableFactory, Request $request)
+    public function listado(HvRepository $hvRepository, PaginatorInterface $paginator, Request $request)
     {
-        $table = $dataTableFactory->createFromType(HvDataTableType::class)
-            ->handleRequest($request);
+        $search = $request->get('search', null);
+        $qb = $hvRepository->searchQueryBuilder($search);
 
-        if($table->isCallback()) {
-            return $table->getResponse();
-        }
-        return $this->render('hv_admin/listado.html.twig', ['datatable' => $table]);
+        $pagination = $paginator->paginate($qb, $request->get('page', 1), 25);
+
+        return $this->render('hv_admin/listado.html.twig', [
+            'pagination' => $pagination,
+            'search' => $search
+        ]);
     }
 }

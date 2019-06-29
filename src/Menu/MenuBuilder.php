@@ -35,7 +35,7 @@ class MenuBuilder
 
         $user = $this->security->getUser();
 
-        $menu->addChild('Hoja de vida', ['route' => 'hv_datos_basicos'])
+        $menu->addChild('Mi hoja de vida', ['route' => 'hv_datos_basicos'])
             ->setExtra('icon', 'far fa-address-card');
 
         if ($this->security->isGranted(['ROLE_VER_SE_REPORTES'], $user)) {
@@ -50,11 +50,16 @@ class MenuBuilder
         }
 
         if($this->security->isGranted(['ROLE_CREAR_VACANTE'], $user)) {
-            $menu->addChild('Vacantes', ['route' => 'admin_vacante_listado'])
+            $menu->addChild('Vacantes')
+                ->setUri('#')
                 ->setExtra('icon', 'fas fa-business-time');
             $menu['Vacantes']
                 ->addChild('Vacantes', ['route' => 'admin_vacante_listado'])
                 ->setExtra('icon', 'fas fa-clipboard-list');
+            $menu['Vacantes']
+                ->addChild('Hojas de vida', ['route' => 'admin_hv_listado'])
+                ->setExtra('icon', 'far fa-address-card');
+
         }
 
         if($this->security->isGranted(['ROLE_ADMIN_USUARIOS'], $user)) {

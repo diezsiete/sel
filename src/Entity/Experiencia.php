@@ -34,7 +34,7 @@ class Experiencia implements HvEntity
     private $cargo;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Area")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Area", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotNull(message="Selecione area")
      * @Groups("main")
