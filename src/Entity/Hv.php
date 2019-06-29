@@ -97,17 +97,17 @@ class Hv implements HvEntity
     private $direccion;
 
     /**
-     * @ORM\Column(type="string", length=2, nullable=true)
+     * @ORM\Column(type="string", length=2)
      */
     private $grupoSanguineo;
 
     /**
-     * @ORM\Column(type="string", length=1, nullable=true)
+     * @ORM\Column(type="string", length=1)
      */
     private $factorRh;
 
     /**
-     * @ORM\Column(type="smallint", nullable=true)
+     * @ORM\Column(type="smallint")
      */
     private $nacionalidad;
 
@@ -417,36 +417,36 @@ class Hv implements HvEntity
         return $this;
     }
 
-    public function getGrupoSanguineo(): ?string
+    public function getGrupoSanguineo(): string
     {
         return $this->grupoSanguineo;
     }
 
-    public function setGrupoSanguineo(?string $grupoSanguineo): self
+    public function setGrupoSanguineo(string $grupoSanguineo): self
     {
         $this->grupoSanguineo = $grupoSanguineo;
 
         return $this;
     }
 
-    public function getFactorRh(): ?string
+    public function getFactorRh(): string
     {
         return $this->factorRh;
     }
 
-    public function setFactorRh(?string $factorRh): self
+    public function setFactorRh(string $factorRh): self
     {
         $this->factorRh = $factorRh;
 
         return $this;
     }
 
-    public function getNacionalidad(): ?int
+    public function getNacionalidad(): int
     {
         return $this->nacionalidad;
     }
 
-    public function setNacionalidad(?int $nacionalidad): self
+    public function setNacionalidad(int $nacionalidad): self
     {
         $this->nacionalidad = $nacionalidad;
 
@@ -607,9 +607,19 @@ class Hv implements HvEntity
     /**
      * @return Collection|Familiar[]
      */
-    public function getFamiliares(): Collection
+    public function getFamiliares(?string $parentesco = null): Collection
     {
-        return $this->familiares;
+        if($parentesco) {
+            $familiares = new ArrayCollection();
+            foreach($this->familiares as $familiar) {
+                if($familiar->getParentesco() === $parentesco){
+                    $familiares->add($familiar);
+                }
+            }
+        }else{
+            $familiares = $this->familiares;
+        }
+        return $familiares;
     }
 
     public function addFamiliare(Familiar $familiare): self
@@ -700,9 +710,19 @@ class Hv implements HvEntity
     /**
      * @return Collection|Referencia[]
      */
-    public function getReferencias(): Collection
+    public function getReferencias(?int $tipo = null): Collection
     {
-        return $this->referencias;
+        if($tipo) {
+            $referencias = new ArrayCollection();
+            foreach($this->referencias as $referencia) {
+                if($referencia->getTipo() === $tipo) {
+                    $referencias->add($referencia);
+                }
+            }
+        } else {
+            $referencias = $this->referencias;
+        }
+        return $referencias;
     }
 
     public function addReferencia(Referencia $referencia): self

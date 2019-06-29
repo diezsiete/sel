@@ -1,0 +1,18 @@
+<ul class="simple-post-list">
+    {% for redSocial in hv.redesSociales %}
+        <li>
+            <div class="post-image">
+                <div class="social-icons-list">
+                    <a rel="tooltip" data-placement="bottom" target="_blank" href="#"
+                       data-original-title="{{ constant('App\\Constant\\HvConstant::RED_SOCIAL')[redSocial.tipo] }}">
+                        <i class="{{ redesSocialesIcons[redSocial.tipo] }}"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="post-info">
+                {{ redSocial.cuenta }}
+            </div>
+        </li>
+    {% endfor %}
+</ul>
+

@@ -2,6 +2,7 @@
 
 namespace App\Command\Migration;
 
+use App\Constant\HvConstant;
 use App\Entity\Ciudad;
 use App\Entity\Dpto;
 use App\Entity\Hv;
@@ -51,9 +52,9 @@ class MigrationHvCommand extends MigrationCommand
                     ->setDireccion($row['direccion'])
                     ->setTelefono($row['telefono'])
                     ->setCelular($row['celular'])
-                    ->setGrupoSanguineo($row['grupo_sanguineo'])
-                    ->setFactorRh($row['factor_rh'])
-                    ->setNacionalidad($row['nacionalidad'])
+                    ->setGrupoSanguineo($row['grupo_sanguineo'] ? $row['grupo_sanguineo'] : HvConstant::GRUPO_SANGUINEO["A"])
+                    ->setFactorRh($row['factor_rh'] ? $row['factor_rh'] : HvConstant::FACTOR_RH["+"])
+                    ->setNacionalidad($row['nacionalidad'] ? $row['nacionalidad'] : HvConstant::NACIONALIDAD[1])
                     ->setEmailAlt($row['email_alt'])
                     ->setAspiracionSueldo($row['aspiracion_sueldo'])
                     ->setEstatura($row['estatura'])

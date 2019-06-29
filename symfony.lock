@@ -150,6 +150,9 @@
     "knplabs/knp-paginator-bundle": {
         "version": "v4.0.0"
     },
+    "knplabs/knp-time-bundle": {
+        "version": "v1.9.1"
+    },
     "league/flysystem": {
         "version": "1.0.52"
     },
@@ -479,6 +482,9 @@
             "config/packages/swiftmailer.yaml",
             "config/packages/test/swiftmailer.yaml"
         ]
+    },
+    "symfony/templating": {
+        "version": "v4.3.2"
     },
     "symfony/translation": {
         "version": "3.3",

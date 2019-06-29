@@ -13,7 +13,7 @@
             </div>
         </form>
     </div>
-    <div class="search-toolbar">
+    {#<div class="search-toolbar">
         <ul class="list-unstyled nav nav-tabs nav-pills">
             <li class="nav-item active">
                 <a class="nav-link" href="#everything" data-toggle="tab">Everything</a>
@@ -22,10 +22,10 @@
                 <a class="nav-link" href="#medias" data-toggle="tab">Medias</a>
             </li>
         </ul>
-    </div>
+    </div>#}
     <div class="tab-content pb-5">
         <div id="everything" class="tab-pane active">
-            <p class="total-results text-muted">Showing 1 to 10 of 47 results</p>
+            {#<p class="total-results text-muted">Showing 1 to 10 of 47 results</p>#}
 
             <ul class="list-unstyled search-results-list">
                 {% for hv in pagination %}
@@ -41,41 +41,6 @@
 
             {{ knp_pagination_render(pagination) }}
         </div>
-        <div id="medias" class="tab-pane">
-            <div class="row">
-                <div class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="thumb-preview">
-                        <a class="thumb-image" href="#">
-                            <img src="img/projects/project-2.jpg" class="img-fluid" alt="Project">
-                        </a>
-                    </div>
-                    <h5 class="mg-title font-weight-semibold">Blog<small>.png</small></h5>
-                </div>
-                <div class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="thumb-preview">
-                        <a class="thumb-image" href="#">
-                            <img src="img/projects/project-5.jpg" class="img-fluid" alt="Project">
-                        </a>
-                    </div>
-                    <h5 class="mg-title font-weight-semibold">Friends<small>.png</small></h5>
-                </div>
-                <div class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="thumb-preview">
-                        <a class="thumb-image" href="#">
-                            <img src="img/projects/project-4.jpg" class="img-fluid" alt="Project">
-                        </a>
-                    </div>
-                    <h5 class="mg-title font-weight-semibold">Life<small>.png</small></h5>
-                </div>
-                <div class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="thumb-preview">
-                        <a class="thumb-image" href="#">
-                            <img src="img/projects/project-5.jpg" class="img-fluid" alt="Project">
-                        </a>
-                    </div>
-                    <h5 class="mg-title font-weight-semibold">Poetry<small>.png</small></h5>
-                </div>
-            </div>
-        </div>
+
     </div>
 {% endblock %}

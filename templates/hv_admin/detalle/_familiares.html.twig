@@ -1,0 +1,72 @@
+<div class="p-3">
+    <div class="timeline timeline-simple mt-3 mb-3">
+        <div class="tm-body">
+            {% for key, parentesco in constant('App\\Constant\\HvConstant::PARENTESCO') %}
+                {% set familiares = hv.familiares(key) %}
+                {% if not familiares is empty %}
+                    <div class="tm-title">
+                        <h5 class="m-0 pt-2 pb-2 text-uppercase">{{ parentesco }}</h5>
+                    </div>
+                    <ol class="tm-items">
+                        {% for familiar in familiares %}
+                            <li>
+                                <div class="tm-box">
+                                    <form>
+                                        <div class="form-group row">
+                                            <label for="familliarNombre" class="col-sm-3 col-form-label">Nombre</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" readonly class="form-control-plaintext" id="familiarNombre"
+                                                       value="{{ familiar.nombre ~ ' ' ~ familiar.primerApellido ~ ' ' ~ familiar.segundoApellido }}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="familiarIdent" class="col-sm-3 col-form-label">Identificación</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" readonly class="form-control-plaintext" id="familiarIdent"
+                                                       value="{{ familiar.identificacion }}
+                                               - ({{ constant('App\\Constant\\HvConstant::IDENTIFICACION_TIPO')[familiar.identificacionTipo] }})">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="familiarNacimiento" class="col-sm-3 col-form-label">Nacimiento</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" readonly class="form-control-plaintext" id="familiarNacimiento"
+                                                       value="{{ familiar.nacimiento|date('Y-m-d') }}
+                                               - ({{ familiar.nacimiento|ago }})">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="familiarParentesco" class="col-sm-3 col-form-label">Parentesco</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" readonly class="form-control-plaintext" id="familiarParentesco"
+                                                       value="{{ familiar.nacimiento|date('Y-m-d') }}
+                                               - ({{ familiar.nacimiento|ago }})">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-sm-4">
+                                                <label for="familiarOcupacion">Ocupacion</label>
+                                                <input type="text" readonly class="form-control-plaintext" id="familiarOcupacion"
+                                                       value="{{ constant('App\\Constant\\HvConstant::OCUPACION')[familiar.ocupacion] }}">
+                                            </div>
+                                            <div class="form-group col-sm-4">
+                                                <label for="familiarNivelAcademico">Teléfono</label>
+                                                <input type="text" readonly class="form-control-plaintext" id="familiarNivelAcademico"
+                                                       value="{{ constant('App\\Constant\\HvConstant::NIVEL_ACADEMICO')[familiar.nivelAcademico] }}">
+                                            </div>
+                                            <div class="form-group col-sm-4">
+                                                <label for="familiarEstadoCivil">Dirección</label>
+                                                <input type="text" readonly class="form-control-plaintext" id="familiarEstadoCivil"
+                                                       value="{{ constant('App\\Constant\\HvConstant::ESTADO_CIVIL')[familiar.estadoCivil] }}">
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ol>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>

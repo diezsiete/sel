@@ -1,0 +1,92 @@
+<div class="p-3">
+    <div class="timeline timeline-simple mt-3 mb-3">
+        <div class="tm-body">
+            <ol class="tm-items">
+                {% for experiencia in hv.experiencia %}
+                    <li>
+                        <div class="tm-box">
+                            <form>
+                                <div class="row">
+                                    <div class="form-group col-sm-6">
+                                        <label for="empresa">Empresa</label>
+                                        <input type="text" readonly class="form-control-plaintext" id="empresa"
+                                               value="{{ experiencia.empresa }}">
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label for="cargo">Cargo</label>
+                                        <input type="text" readonly class="form-control-plaintext" id="cargo"
+                                               value="{{ experiencia.cargo }}">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-sm-6">
+                                        <label for="area">Area del cargo</label>
+                                        <input type="text" readonly class="form-control-plaintext" id="area"
+                                               value="{{ experiencia.area.nombre }}">
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label for="duracion">Duración</label>
+                                        <input type="text" readonly class="form-control-plaintext" id="duracion"
+                                               value="{{ constant('App\\Constant\\VacanteConstant::EXPERIENCIA')[experiencia.duracion]}}">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-sm-6">
+                                        <label for="jefe">Jefe</label>
+                                        <input type="text" readonly class="form-control-plaintext" id="jefe"
+                                               value="{{ experiencia.jefeInmediato }}">
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label for="jefe_telefono">Telefono jefe</label>
+                                        <input type="text" readonly class="form-control-plaintext" id="jefe_telefono"
+                                               value="{{ experiencia.telefonoJefe }}">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-sm-6">
+                                        <label for="ingreso">Fecha ingreso</label>
+                                        <input type="text" readonly class="form-control-plaintext" id="ingreso"
+                                               value="{{ experiencia.fechaIngreso|date('Y-m-d') }}">
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label for="retiro">Fecha retiro</label>
+                                        <input type="text" readonly class="form-control-plaintext" id="retiro"
+                                               value="{{ experiencia.fechaRetiro ? experiencia.fechaRetiro|date('Y-m-d') }}">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="descripcion">Descripcion</label>
+                                    <input type="text" readonly class="form-control-plaintext" id="descripcion"
+                                           value="{{ experiencia.descripcion }}">
+                                </div>
+                                {% if experiencia.logrosObtenidos %}
+                                    <div class="form-group">
+                                        <label for="logros">Logros obtenidos</label>
+                                        <input type="text" readonly class="form-control-plaintext" id="logros"
+                                               value="{{ experiencia.logrosObtenidos }}">
+                                    </div>
+                                {% endif %}
+                                {% if experiencia.motivoRetiro %}
+                                    <div class="form-group">
+                                        <label for="motivo">Motivo del retiro</label>
+                                        <input type="text" readonly class="form-control-plaintext" id="motivo"
+                                               value="{{ experiencia.motivoRetiro }}">
+                                    </div>
+                                {% endif %}
+                                {% if experiencia.salarioBasico %}
+                                    <div class="form-group row">
+                                        <label for="salario" class="col-sm-2 col-form-label">Salario</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" readonly class="form-control-plaintext" id="salario"
+                                                   value="{{ experiencia.salarioBasico }}">
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </form>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ol>
+        </div>
+    </div>
+</div>
