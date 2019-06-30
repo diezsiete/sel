@@ -21,16 +21,24 @@ class EmpleadoRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param string $identificacion
-     * @return Empleado|null
+     * @param string|string[] $identificacion
+     * @return Empleado|null|Empleado[]
      */
-    public function findByIdentificacion(string $identificacion)
+    public function findByIdentificacion($identificacion)
     {
         $qb = $this->createQueryBuilder('e')
-            ->join('e.usuario', 'u')
-            ->andWhere('u.identificacion = :identificacion')
-            ->setParameter('identificacion', $identificacion);
-        return $qb->getQuery()->getOneOrNullResult();
+            ->join('e.usuario', 'u');
+
+        if(is_array($identificacion)) {
+            $qb->andWhere($qb->expr()->in('u.identificacion', ':identificacion'));
+        }else{
+            $qb->andWhere('u.identificacion = :identificacion');
+        }
+
+        $query = $qb->setParameter('identificacion', $identificacion)
+            ->getQuery();
+
+        return is_array($identificacion) ? $query->getResult() : $query->getOneOrNullResult();
     }
 
     /**
@@ -43,6 +51,24 @@ class EmpleadoRepository extends ServiceEntityRepository
             ->from(Usuario::class, 'u')
             ->join($this->_entityName, 'e', 'WITH', 'u = e.usuario');
         return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param string|string[] $codigoConvenio
+     * @return Empleado[]
+     */
+    public function findByConvenio($codigoConvenio)
+    {
+        $qb = $this->createQueryBuilder('e')
+            ->join('e.convenio', 'c');
+        if(is_array($codigoConvenio)) {
+            $qb->andWhere($qb->expr()->in('c.codigo', ':codigoConvenio'));
+        } else {
+            $qb->andWhere('c.codigo = :codigoConvenio');
+        }
+        return $qb->setParameter('codigoConvenio', $codigoConvenio)
+            ->getQuery()
+            ->getResult();
     }
 
     // /**

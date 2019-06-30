@@ -64,7 +64,7 @@ class NiEmpleadoCommand extends PeriodoCommand
 
         foreach($dbs as $db) {
             if($db->hasConvenios()) {
-                foreach ($this->getConvenios() as $convenio) {
+                foreach ($this->getConvenios($db) as $convenio) {
                     $this->io->writeln($convenio->getCodigo());
                     $empleados = $this->reportesServicioEmpleados->setSsrsDb($db)->getEmpleados($convenio->getCodigo(), $desde, $hasta);
                     foreach ($empleados as $empleado) {
@@ -105,10 +105,12 @@ class NiEmpleadoCommand extends PeriodoCommand
     /**
      * @return Convenio[]
      */
-    private function getConvenios()
+    private function getConvenios(SsrsDb $ssrsDb)
     {
         $conveniosCodigos = $this->input->getArgument('convenios');
-        return $conveniosCodigos ? $this->convenioRepository->findBy(['codigo' => $conveniosCodigos]) : $this->convenioRepository->findAll();
+        return $conveniosCodigos ?
+            $this->convenioRepository->findBy(['codigo' => $conveniosCodigos, 'ssrsDb' => $ssrsDb->getNombre()]) :
+            $this->convenioRepository->findBy(['ssrsDb' => $ssrsDb->getNombre()]);
     }
 
     private function updateEmpleado(Empleado $empleado)

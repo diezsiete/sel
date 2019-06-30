@@ -55,11 +55,11 @@ class Configuracion
     }
 
     /**
-     * @param bool|string $first
+     * @param bool|string $filter
      * @return SsrsDb[]|SsrsDb
      * @throws \Exception
      */
-    public function getSsrsDb($first = false)
+    public function getSsrsDb($filter = false)
     {
         if(!$this->ssrsDbs) {
             $this->ssrsDbs = [];
@@ -68,16 +68,16 @@ class Configuracion
             }
         }
 
-        if(is_string($first)) {
-            $return = current(array_filter($this->ssrsDbs, function(SsrsDb $ssrsDb) use ($first) {
-                return $ssrsDb->getNombre() === $first;
+        if(is_string($filter)) {
+            $return = current(array_filter($this->ssrsDbs, function(SsrsDb $ssrsDb) use ($filter) {
+                return $ssrsDb->getNombre() === $filter;
             }));
             if(!$return) {
-                throw new \Exception("Base de datos " . $first . " no existe");
+                throw new \Exception("Base de datos " . $filter . " no existe");
             }
             return $return;
         } else {
-            return $first ? $this->ssrsDbs[0] : $this->ssrsDbs;
+            return $filter ? $this->ssrsDbs[0] : $this->ssrsDbs;
         }
     }
 
