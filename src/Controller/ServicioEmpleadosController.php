@@ -8,6 +8,7 @@ use App\Entity\ReporteNomina;
 use App\Service\Pdf\PdfCartaLaboral;
 use App\Service\ReportesServicioEmpleados;
 use Omines\DataTablesBundle\DataTableFactory;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -31,8 +32,8 @@ class ServicioEmpleadosController extends BaseController
     }
 
     /**
-     * TODO: seguridad solo puede ver su comprobante
      * @Route("/sel/se/comprobante/{comprobante}", name="app_comprobante")
+     * @IsGranted("REPORTE_MANAGE", subject="comprobante")
      */
     public function comprobante(ReportesServicioEmpleados $reportes, ReporteNomina $comprobante)
     {
@@ -70,7 +71,8 @@ class ServicioEmpleadosController extends BaseController
      */
     public function certificadosIngresos(ReportesServicioEmpleados $reportes)
     {
-        $certificados = $reportes->getCertificadosIngresos('53124855');
+        $identificacion = $this->getUser()->getIdentificacion();
+        $certificados = $reportes->getCertificadosIngresos($identificacion);
         return $this->render('servicio_empleados/certificado-ingresos.html.twig', [
             'certificados' => $certificados
         ]);
@@ -81,7 +83,8 @@ class ServicioEmpleadosController extends BaseController
      */
     public function certificadoIngreso(ReportesServicioEmpleados $reportes, $periodo)
     {
-        $reportePdf = $reportes->getCertificadoIngresosPdf($periodo, '53124855');
+        $identificacion = $this->getUser()->getIdentificacion();
+        $reportePdf = $reportes->getCertificadoIngresosPdf($periodo, $identificacion);
         return $this->renderPdf($reportePdf);
     }
 
@@ -90,7 +93,8 @@ class ServicioEmpleadosController extends BaseController
      */
     public function liquidacionesDeContrato(ReportesServicioEmpleados $reportes)
     {
-        $liquidaciones = $reportes->getLiquidacionesDeContrato('1023010041');
+        $identificacion = $this->getUser()->getIdentificacion();
+        $liquidaciones = $reportes->getLiquidacionesDeContrato($identificacion);
         return $this->render('servicio_empleados/liquidaciones-de-contrato.html.twig', [
             'liquidaciones' => $liquidaciones
         ]);
@@ -101,7 +105,8 @@ class ServicioEmpleadosController extends BaseController
      */
     public function liquidacionDeContratoPdf(ReportesServicioEmpleados $reportes, $fechaIngreso, $fechaRetiro)
     {
-        $reportePdf = $reportes->getLiquidacionDeContratoPdf('1023010041', $fechaIngreso, $fechaRetiro);
+        $identificacion = $this->getUser()->getIdentificacion();
+        $reportePdf = $reportes->getLiquidacionDeContratoPdf($identificacion, $fechaIngreso, $fechaRetiro);
         return $this->renderPdf($reportePdf);
     }
 }
