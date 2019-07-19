@@ -34,6 +34,7 @@ class VacanteAdminController extends BaseController
     public function crear(Request $request)
     {
         $vacante = new Vacante();
+
         $form = $this->createForm(VacanteFormType::class, $vacante);
         $form->handleRequest($request);
 

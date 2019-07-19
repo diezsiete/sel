@@ -2,9 +2,6 @@
     "behat/transliterator": {
         "version": "v1.2.0"
     },
-    "craue/formflow-bundle": {
-        "version": "3.1.1"
-    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {
@@ -343,6 +340,12 @@
             "src/Controller/.gitignore",
             "src/Kernel.php"
         ]
+    },
+    "symfony/http-client": {
+        "version": "v4.3.2"
+    },
+    "symfony/http-client-contracts": {
+        "version": "v1.1.5"
     },
     "symfony/http-foundation": {
         "version": "v4.2.8"

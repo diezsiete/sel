@@ -13,9 +13,12 @@ class ButtonTypeRoute extends ButtonType
      */
     protected $attrRoute;
 
-    public function __construct(string $routeName, array $routeParams = [], string $icon = null)
+    protected $target = null;
+
+    public function __construct(string $routeName, array $routeParams = [], string $icon = null, string $target = null)
     {
         $this->attrRoute = new ButtonAttrRoute($routeName, $routeParams);
+        $this->target = $target;
         parent::__construct($icon);
     }
 
@@ -26,7 +29,8 @@ class ButtonTypeRoute extends ButtonType
         if($buttonIcon = $this->icon) {
             $buttonText = "<i class='$buttonIcon'></i>";
         }
-        return sprintf('<a href="%s">%s</a>', $route, $buttonText);
+        $target = $this->target ? " target='$this->target'" : "";
+        return sprintf('<a href="%s"%s>%s</a>', $route, $target, $buttonText);
     }
 
     protected function generateRoute($value, $context)

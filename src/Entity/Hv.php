@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -21,6 +22,7 @@ class Hv implements HvEntity
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Usuario", cascade={"persist", "remove"})
+     * @Groups({"scrapper"})
      */
     private $usuario;
 
@@ -28,16 +30,19 @@ class Hv implements HvEntity
      * @ORM\ManyToOne(targetEntity="App\Entity\Pais")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotNull(message="Ingrese pais de nacimiento")
+     * @Groups({"scrapper"})
      */
     private $nacPais;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Dpto")
+     * @Groups({"scrapper"})
      */
     private $nacDpto;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Ciudad")
+     * @Groups({"scrapper"})
      */
     private $nacCiudad;
 
@@ -45,75 +50,89 @@ class Hv implements HvEntity
      * @ORM\ManyToOne(targetEntity="App\Entity\Pais")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotNull(message="Ingrese pais de identificación")
+     * @Groups({"scrapper"})
      */
     private $identPais;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Dpto")
+     * @Groups({"scrapper"})
      */
     private $identDpto;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Ciudad")
+     * @Groups({"scrapper"})
      */
     private $identCiudad;
 
     /**
      * @ORM\Column(type="smallint")
+     * @Groups({"scrapper"})
      */
     private $genero;
 
     /**
      * @ORM\Column(type="smallint")
+     * @Groups({"scrapper"})
      */
     private $estadoCivil;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Pais")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"scrapper"})
      */
     private $resiPais;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Dpto")
+     * @Groups({"scrapper"})
      */
     private $resiDpto;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Ciudad")
+     * @Groups({"scrapper"})
      */
     private $resiCiudad;
 
     /**
      * @ORM\Column(type="string", length=45, nullable=true)
      * @Assert\NotNull(message="Ingrese barrio")
+     * @Groups({"scrapper"})
      */
     private $barrio;
 
     /**
      * @ORM\Column(type="string", length=60, nullable=true)
      * @Assert\NotNull(message="Ingrese dirección")
+     * @Groups({"scrapper"})
      */
     private $direccion;
 
     /**
      * @ORM\Column(type="string", length=2)
+     * @Groups({"scrapper"})
      */
     private $grupoSanguineo;
 
     /**
      * @ORM\Column(type="string", length=1)
+     * @Groups({"scrapper"})
      */
     private $factorRh;
 
     /**
      * @ORM\Column(type="smallint")
+     * @Groups({"scrapper"})
      */
     private $nacionalidad;
 
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
      * @Assert\Email(message="Ingrese un email valido")
+     * @Groups({"scrapper"})
      */
     private $emailAlt;
 
@@ -155,6 +174,7 @@ class Hv implements HvEntity
 
     /**
      * @ORM\Column(type="string", length=2)
+     * @Groups({"scrapper"})
      */
     private $identificacionTipo;
 
@@ -185,6 +205,7 @@ class Hv implements HvEntity
 
     /**
      * @ORM\Column(type="date", nullable=true)
+     * @Groups({"scrapper"})
      */
     private $nacimiento;
 
@@ -220,16 +241,19 @@ class Hv implements HvEntity
 
     /**
      * @ORM\Column(type="string", length=3)
+     * @Groups({"scrapper"})
      */
     private $nivelAcademico;
 
     /**
      * @ORM\Column(type="string", length=17, nullable=true)
+     * @Groups({"scrapper"})
      */
     private $telefono;
 
     /**
      * @ORM\Column(type="string", length=17, nullable=true)
+     * @Groups({"scrapper"})
      */
     private $celular;
 
@@ -417,36 +441,36 @@ class Hv implements HvEntity
         return $this;
     }
 
-    public function getGrupoSanguineo(): string
+    public function getGrupoSanguineo()
     {
         return $this->grupoSanguineo;
     }
 
-    public function setGrupoSanguineo(string $grupoSanguineo): self
+    public function setGrupoSanguineo($grupoSanguineo): self
     {
         $this->grupoSanguineo = $grupoSanguineo;
 
         return $this;
     }
 
-    public function getFactorRh(): string
+    public function getFactorRh()
     {
         return $this->factorRh;
     }
 
-    public function setFactorRh(string $factorRh): self
+    public function setFactorRh($factorRh): self
     {
         $this->factorRh = $factorRh;
 
         return $this;
     }
 
-    public function getNacionalidad(): int
+    public function getNacionalidad()
     {
         return $this->nacionalidad;
     }
 
-    public function setNacionalidad(int $nacionalidad): self
+    public function setNacionalidad($nacionalidad): self
     {
         $this->nacionalidad = $nacionalidad;
 

@@ -17,3 +17,8 @@ framework:
         log: true
 
     ide: 'phpstorm://open?url=file://%%f&line=%%l'
+
+    # Enables validator auto-mapping support.
+    # For instance, basic validation constraints will be inferred from Doctrine's metadata.
+    validation:
+        auto_mapping: {'App\\': {}}

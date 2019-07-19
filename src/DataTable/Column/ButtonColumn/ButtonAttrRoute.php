@@ -45,7 +45,11 @@ class ButtonAttrRoute
             if(is_int($routeParamKey)) {
                 $routeParams[$routeParamValue] = $value;
             } else {
-                $routeParams[$routeParamKey] = $routeParamValue;
+                if($routeParamValue instanceof DatatablePropertyAccessor) {
+                    $routeParams[$routeParamKey] = $routeParamValue->getValue($context);
+                } else {
+                    $routeParams[$routeParamKey] = $routeParamValue;
+                }
             }
         }
         return $this->router->generate($this->routeName, $routeParams);

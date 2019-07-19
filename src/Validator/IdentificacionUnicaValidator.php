@@ -20,7 +20,12 @@ class IdentificacionUnicaValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint)
     {
-        $existingUser = $this->usuarioRepository->findOneBy(['identificacion' => $value]);
+        $identificacion = is_object($value) ? $value->identificacion : $value;
+        $existingUser = $this->usuarioRepository->findOneBy(['identificacion' => $identificacion]);
+
+        if(is_object($value) && $existingUser->getId() === $value->id) {
+            return null;
+        }
         if(!$existingUser) {
             return null;
         }

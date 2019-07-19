@@ -31,7 +31,8 @@ class NiConvenioCommand extends NiCommand
                         $convenio->setSsrsDb($db->getNombre());
                         $persisted = $this->persistConvenio($convenio);
                         $this->em->flush();
-                        $this->io->writeln("  " . $convenio->getNombre() . " [" . ($persisted ? 'insert' : 'update') . "]");
+                        $this->io->writeln("  [".$convenio->getCodigo()."] " . $convenio->getNombre()
+                            . " [" . ($persisted ? 'insert' : 'update') . "]");
                     }
                 } else {
                     $this->io->writeln("  no tiene");

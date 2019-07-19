@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CiudadRepository")
@@ -38,6 +39,8 @@ class Ciudad
 
     /**
      * @ORM\Column(type="string", length=7, nullable=true)
+     * @Groups({"scrapper"})
+     * @SerializedName("id")
      */
     private $nId;
 

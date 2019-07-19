@@ -1,0 +1,63 @@
+{% extends 'pta/base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('vendor/chosen/chosen.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/bootstrap-datepicker/css/bootstrap-datepicker3.css') }}" />
+{% endblock %}
+
+{% block page_header_title %}
+    Mi hoja de vida - Datos básicos
+{% endblock %}
+
+{% block body_header %}
+    <section class="page-header page-header-classic page-header-md mb-0">
+        <div class="container">
+            <div class="row">
+                <div class="col p-static">
+                    <h1 data-title-border>Mi hoja de vida</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block body %}
+
+<div class="container py-2 mt-4">
+
+    <div class="row">
+        <div class="col-lg-3 mt-4 mt-lg-0">
+            {{ include('pta/app/security/_left-nav.html.twig') }}
+        </div>
+        <div class="col-lg-9">
+
+            {{ form_start(hvForm, {attr: {novalidate: 'novalidate'}}) }}
+
+            {{ include('hv/_datos-basicos-form.html.twig') }}
+
+            <div class="row">
+                <div class="col-md-12 text-right mt-3">
+                    <button class="btn btn-primary">
+                        Guardar
+                    </button>
+                </div>
+            </div>
+            {{ form_end(hvForm) }}
+
+        </div>
+</div>
+
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('vendor/chosen/chosen.jquery.min.js') }}"></script>
+    <script src="{{ asset('vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+    <script src="{{ asset('vendor/jquery-maskedinput/jquery.maskedinput.js') }}"></script>
+
+    <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+    <script src="{{ asset('js/sel/hv/hv-form.js') }}"></script>
+{% endblock %}

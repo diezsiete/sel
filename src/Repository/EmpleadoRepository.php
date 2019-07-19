@@ -71,6 +71,14 @@ class EmpleadoRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findBySsrsDb($ssrsDb)
+    {
+        $qb = $this->createQueryBuilder('e')
+            ->andWhere('e.ssrsDb', ':ssrsDb')
+            ->setParameter('ssrsDb', $ssrsDb);
+        return $qb->getQuery()->getResult();
+    }
+
     // /**
     //  * @return Empleado[] Returns an array of Empleado objects
     //  */

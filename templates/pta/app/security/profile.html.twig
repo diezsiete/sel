@@ -1,0 +1,115 @@
+{% extends 'pta/base.html.twig' %}
+
+{% block page_header_title %}
+    Mi perfil
+{% endblock %}
+
+{% form_theme profileForm _self %}
+
+{% block form_row -%}
+    {%- set label_attr = label_attr|merge({class: "col-lg-3 font-weight-bold text-dark col-form-label form-control-label text-2"}) -%}
+    {%- if compound is defined and compound -%}
+        {%- set element = 'fieldset' -%}
+    {%- endif -%}
+    {%- set widget_attr = {} -%}
+    {%- if help is not empty -%}
+        {%- set widget_attr = {attr: {'aria-describedby': id ~"_help"}} -%}
+    {%- endif -%}
+    <div class="form-group row">
+        {% with { attr: label_attr } %}
+            {{- form_label(form, null, { label_attr: label_attr }) -}}
+        {% endwith %}
+
+        <div class="col-lg-9">
+            {{- form_widget(form, widget_attr) -}}
+            {{- form_help(form) -}}
+        </div>
+    </div>
+{%- endblock form_row %}
+
+
+
+{% block body_header %}
+    <section class="page-header page-header-classic page-header-md mb-0">
+        <div class="container">
+            <div class="row">
+                <div class="col p-static">
+                    <h1 data-title-border>Perfil de usuario</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block body %}
+
+    {% if app.request.hasPreviousSession %}
+        {% for type, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ type }} alert-lg mb-0">
+                    <div class="container py-2">
+                        <strong>{{ type in ['info', 'success'] ? 'Exito! ' : 'Atención! ' }}</strong> {{ message }}
+                    </div>
+                </div>
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
+
+    <div class="container py-2 mt-4">
+
+        <div class="row">
+            <div class="col-lg-3 mt-4 mt-lg-0">
+
+
+                {{ include('pta/app/security/_left-nav.html.twig') }}
+
+            </div>
+            <div class="col-lg-9">
+
+                <div class="overflow-hidden mb-1">
+                    <h2 class="font-weight-normal text-7 mb-0">
+                        <strong class="font-weight-extra-bold">Datos</strong> personales
+                    </h2>
+                </div>
+                <div class="overflow-hidden mb-4 pb-3">
+                    <p class="mb-0">Datos básicos de la cuenta</p>
+                </div>
+
+                {{ form_start(profileForm, {attr: {novalidate: 'novalidate'}}) }}
+
+
+                {{ form_row(profileForm.identificacion) }}
+                {{ form_row(profileForm.primerNombre) }}
+                {{ form_row(profileForm.segundoNombre) }}
+                {{ form_row(profileForm.primerApellido) }}
+                {{ form_row(profileForm.segundoApellido) }}
+
+                {{ form_row(profileForm.email) }}
+
+                <div class="overflow-hidden mb-1">
+                    <h2 class="font-weight-normal text-7 mb-4">
+                        Cambiar <strong class="font-weight-extra-bold">Contraseña</strong>
+                    </h2>
+                </div>
+
+                {{ form_row(profileForm.plainPassword.first) }}
+                {{ form_row(profileForm.plainPassword.second) }}
+
+
+                <div class="form-group row">
+                    <div class="form-group col-lg-9">
+
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <input type="submit" value="Guardar" class="btn btn-primary btn-modern float-right"
+                               data-loading-text="Loading...">
+                    </div>
+                </div>
+                {{ form_end(profileForm) }}
+
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}

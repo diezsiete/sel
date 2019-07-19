@@ -13,7 +13,7 @@ class PdfCartaLaboral extends PdfBase
         $compania = $this->configuracion->getRazon();
         $nit = $this->configuracion->getNit();
         $logoImg = $this->configuracion->getLogoPdf();
-        $firmaImg = $this->configuracion->certificadoLaboral()->getFirma();
+        $firmaImg = $this->configuracion->certificadoLaboral()->getFirma(true);
         $firmante = $this->configuracion->certificadoLaboral()->getFirmante();
         $firmanteCargo = $this->configuracion->certificadoLaboral()->getCargo();
         $firmanteContacto = $this->configuracion->certificadoLaboral()->getContacto();

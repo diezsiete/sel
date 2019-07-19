@@ -23,7 +23,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class NiNominaCommand extends PeriodoCommand
 {
-    protected static $defaultName = 'ni:nomina';
+    protected static $defaultName = 'sel:ni:nomina';
 
     protected $optionDesdeDescription = 'fecha desde Y-m-d. [omita y se toma desde 2017-02-01]';
 

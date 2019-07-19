@@ -26,6 +26,8 @@ class AppExtension extends Extension
             $container->setParameter('empresa.'.$empresaKey.'.db', '%env(DATABASE_URL_'.$empresaKey.')%');
         }
 
+        $container->setParameter('scrapper', $config['scrapper']);
+
         $container->setParameter('env(DB_URL)', '%%empresa.'.$empresa.'.db%%');
     }
 

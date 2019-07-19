@@ -19,7 +19,7 @@ class HvVoter extends Voter
 
     protected function supports($attribute, $subject)
     {
-        return in_array($attribute, ['HV_MANAGE']) && $subject instanceof HvEntity;
+        return in_array($attribute, ['HV_MANAGE', 'HV_MANAGE_PERSISTED']) && $subject instanceof HvEntity;
     }
 
     /**
@@ -42,8 +42,16 @@ class HvVoter extends Voter
                 if(!$subject->getHv() || !is_object($user)) {
                     return true;
                 }
-                if ($subject->getHv()->getUsuario() == $user) {
+                if ($subject->getHv()->getUsuario() === $user) {
                     return true;
+                }
+                return false;
+            case 'HV_MANAGE_PERSISTED':
+                if($subject->getHv()) {
+                    if ($this->security->isGranted('ROLE_ADMIN_VACANTE') ||
+                        $subject->getHv()->getUsuario() === $user) {
+                        return true;
+                    }
                 }
                 return false;
         }

@@ -368,12 +368,12 @@ class Vacante
         return $this;
     }
 
-    public function getEmpresa(): ?string
+    public function getEmpresa(): ?int
     {
         return $this->empresa;
     }
 
-    public function setEmpresa(?string $empresa): self
+    public function setEmpresa(?int $empresa): self
     {
         $this->empresa = $empresa;
 

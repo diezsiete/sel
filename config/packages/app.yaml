@@ -1,4 +1,6 @@
 app:
+  scrapper:
+    url: http://localhost:8666
   empresas:
     PTA:
       host: '%env(HOST_PTA)%'

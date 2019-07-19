@@ -4,6 +4,7 @@
 namespace App\Menu;
 
 
+use App\Service\Hv\HvResolver;
 use Knp\Menu\FactoryInterface;
 use Symfony\Component\Security\Core\Security;
 
@@ -14,16 +15,21 @@ class MenuBuilder
      * @var Security
      */
     private $security;
+    /**
+     * @var HvResolver
+     */
+    private $hvResolver;
 
     /**
      * @param FactoryInterface $factory
      *
      * Add any other dependency you need
      */
-    public function __construct(FactoryInterface $factory, Security $security)
+    public function __construct(FactoryInterface $factory, Security $security, HvResolver $hvResolver)
     {
         $this->factory = $factory;
         $this->security = $security;
+        $this->hvResolver = $hvResolver;
     }
 
     public function createMainMenu()
@@ -80,22 +86,25 @@ class MenuBuilder
         $menu = $this->factory->createItem('hv');
         $menu->addChild('Datos básicos', ['route' => 'hv_datos_basicos'])
             ->setExtra('icon', 'fas fa-user-circle');
-        $menu->addChild('Formación', ['route' => 'hv_estudio'])
-            ->setExtra('icon', 'fas fa-columns');
-        $menu->addChild('Experiencia', ['route' => 'hv_experiencia'])
-            ->setExtra('icon', 'fas fa-copy');
-        $menu->addChild('Referencias', ['route' => 'hv_referencias'])
-            ->setExtra('icon', 'fas fa-tasks');
-        $menu->addChild('Redes sociales', ['route' => 'hv_redes_sociales'])
-            ->setExtra('icon', 'fab fa-whatsapp');
-        $menu->addChild('Familiares', ['route' => 'hv_familiares'])
-            ->setExtra('icon', 'fas fa-child');
-        $menu->addChild('Vivienda', ['route' => 'hv_vivienda'])
-            ->setExtra('icon', 'fas fa-home');
-        $menu->addChild('Idiomas', ['route' => 'hv_idiomas'])
-            ->setExtra('icon', 'fas fa-language');
-        $menu->addChild('Adjunto', ['route' => 'hv_adjunto'])
-            ->setExtra('icon', 'fas fa-upload');
+
+        if($this->security->isGranted(['HV_MANAGE_PERSISTED'], $this->hvResolver)) {
+            $menu->addChild('Formación', ['route' => 'hv_estudio'])
+                ->setExtra('icon', 'fas fa-columns');
+            $menu->addChild('Experiencia', ['route' => 'hv_experiencia'])
+                ->setExtra('icon', 'fas fa-copy');
+            $menu->addChild('Referencias', ['route' => 'hv_referencias'])
+                ->setExtra('icon', 'fas fa-tasks');
+            $menu->addChild('Redes sociales', ['route' => 'hv_redes_sociales'])
+                ->setExtra('icon', 'fab fa-whatsapp');
+            $menu->addChild('Familiares', ['route' => 'hv_familiares'])
+                ->setExtra('icon', 'fas fa-child');
+            $menu->addChild('Vivienda', ['route' => 'hv_vivienda'])
+                ->setExtra('icon', 'fas fa-home');
+            $menu->addChild('Idiomas', ['route' => 'hv_idiomas'])
+                ->setExtra('icon', 'fas fa-language');
+            $menu->addChild('Adjunto', ['route' => 'hv_adjunto'])
+                ->setExtra('icon', 'fas fa-upload');
+        }
 
         return $menu;
     }

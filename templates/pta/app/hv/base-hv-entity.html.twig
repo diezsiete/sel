@@ -1,0 +1,118 @@
+{% extends 'pta/base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('vendor/chosen/chosen.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/pnotify/pnotify.custom.css') }}">
+{% endblock %}
+
+{% block page_header_title %}
+    Hoja de vida
+{% endblock %}
+
+{% block body_header %}
+    <section class="page-header page-header-classic page-header-md mb-0">
+        <div class="container">
+            <div class="row">
+                <div class="col p-static">
+                    <h1 data-title-border>Mi hoja de vida</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block body %}
+
+<div class="container py-2 mt-4">
+<div class="row">
+    <div class="col-lg-3 mt-4 mt-lg-0">
+
+
+        {{ include('pta/app/security/_left-nav.html.twig') }}
+
+    </div>
+    <div class="col-lg-9">
+        <div class="row">
+            <div class="col-lg-12">
+                <section class="card">
+                    <header class="card-header">
+                        <h2 class="card-title">
+                            {% block card_title %}
+                            {% endblock %}
+                        </h2>
+                    </header>
+                    <div class="card-body">
+                        {% block card_body %}
+                            <div id="datatable">Loading...</div>
+                        {% endblock %}
+                    </div>
+                </section>
+                <footer class="card-footer">
+                    {% block card_footer %}
+                        <a class="crear-entity btn btn-primary pull-right" href="#modalForm">Agregar</a>
+                    {% endblock %}
+                </footer>
+            </div>
+        </div>
+
+        <!-- Modal Form -->
+        <div id="modalForm" class="modal-block modal-block-primary mfp-hide">
+            <section class="card">
+                <header class="card-header">
+                    <h2 class="card-title">
+                        {% block modal_title %}
+                            Agregar
+                        {% endblock %}
+                    </h2>
+                </header>
+                <div class="card-body" data-loading-overlay>
+                    {% block modal_body %}
+                    {% endblock %}
+                </div>
+                <footer class="card-footer">
+                    <div class="row">
+                        <div class="col-md-12 text-right">
+                            <button class="btn btn-primary modal-confirm">Guardar</button>
+                            <button class="btn btn-default modal-dismiss">Cancelar</button>
+                        </div>
+                    </div>
+                </footer>
+            </section>
+        </div>
+    </div>
+</div>
+</div>
+
+{{ include('default/_modal-borrar.html.twig') }}
+
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ parent() }}
+    <script src="{{ asset('vendor/chosen/chosen.jquery.min.js') }}"></script>
+    <script src="{{ asset('vendor/pnotify/pnotify.custom.js') }}"></script>
+
+    <script src="{{ asset('js/sel/hv/hv-entity.js') }}"></script>
+
+    {% embed 'datatable/javascripts.datatable.html.twig' %}
+        {% block script_datatable %}
+            <script>
+                $(function () {
+                    $('#datatable')
+                        .initDataTables({{ datatable_settings(datatable) }})
+                        .then(dt => {
+                            $wrapper = $('#modalForm');
+                            new hvEntity($wrapper, $('#modalBasic'), dt);
+                        });
+                });
+            </script>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
+
+
+
+

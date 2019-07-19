@@ -11,12 +11,18 @@ use App\Entity\Usuario;
 use App\Validator\IdentificacionUnica;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * Class HvDatosBasicosModel
+ * @package App\Form\Model
+ * @IdentificacionUnica()
+ */
 class HvDatosBasicosModel
 {
+    public $id;
+
     /**
      * @Assert\NotBlank(message="Por favor ingrese identificación")
      * @Assert\Regex(pattern="/^[0-9]+$/", message="Solo se aceptan numeros")
-     * @IdentificacionUnica()
      */
     public $identificacion;
 
@@ -40,6 +46,7 @@ class HvDatosBasicosModel
     public $primerApellido;
     
     public $segundoApellido;
+
 
     /*
      * HV---------------------------------------------------------------------------------------------------------------
@@ -216,6 +223,7 @@ class HvDatosBasicosModel
     public function fillUsuario(Usuario $usuario)
     {
         $properties = get_object_vars($this);
+        unset($properties['id']);
         return $this->assignToEntity($properties, $usuario);
     }
 

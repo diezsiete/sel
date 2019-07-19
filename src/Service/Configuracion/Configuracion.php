@@ -1,4 +1,5 @@
 <?php
+/** @noinspection MissingService */
 
 
 namespace App\Service\Configuracion;
@@ -9,6 +10,14 @@ use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 
 class Configuracion
 {
+    /**
+     * @var ContainerBagInterface
+     */
+    private $bag;
+
+    /**
+     * @var string
+     */
     private $empresa;
 
     /**
@@ -46,9 +55,14 @@ class Configuracion
      */
     private $hvWizardRoutes = null;
 
+    /**
+     * @var null
+     */
+    private $scrapper = null;
 
     public function __construct(ContainerBagInterface $bag, $webDir)
     {
+        $this->bag = $bag;
         $this->empresa = $bag->get('empresa');
         $this->parameters = $bag->get('empresa.'.$this->empresa.'.config');
         $this->webDir = $webDir;
@@ -133,11 +147,7 @@ class Configuracion
     public function certificadoLaboral(): CertificadoLaboral
     {
         if(!$this->certificadoLaboral) {
-            $this->certificadoLaboral = new CertificadoLaboral(
-                $this->parameters['certificado_laboral']['firma'],
-                $this->parameters['certificado_laboral']['firmante'],
-                $this->parameters['certificado_laboral']['firmante_cargo'],
-                $this->parameters['certificado_laboral']['firmante_contacto']);
+            $this->certificadoLaboral = new CertificadoLaboral($this->parameters['certificado_laboral'], $this->webDir);
         }
         return $this->certificadoLaboral;
     }
@@ -174,5 +184,13 @@ class Configuracion
             }
         }
         return $this->hvWizardRoutes;
+    }
+
+    public function getScrapper()
+    {
+        if(!$this->scrapper) {
+            $this->scrapper = new ScrapperConfiguracion($this->bag->get('scrapper'));
+        }
+        return $this->scrapper;
     }
 }

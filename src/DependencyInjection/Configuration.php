@@ -20,6 +20,7 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->getRootNode();
 
         $rootNode->children()
+            ->append($this->addScrapperNode())
             ->arrayNode('empresas')
                 ->useAttributeAsKey('name')
                 ->arrayPrototype()
@@ -114,6 +115,17 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
         ;
+        return $node;
+    }
+
+    protected function addScrapperNode()
+    {
+        $treeBuilder = new TreeBuilder('scrapper');
+        $node =
+            $treeBuilder->getRootNode()
+                ->children()
+                    ->scalarNode('url')->end()
+                ->end();
         return $node;
     }
 }

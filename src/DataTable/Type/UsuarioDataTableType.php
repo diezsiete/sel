@@ -6,6 +6,7 @@ namespace App\DataTable\Type;
 
 use App\DataTable\Column\ButtonColumn\ButtonColumn;
 use App\DataTable\Column\ButtonColumn\ButtonTypeRoute;
+use App\DataTable\Column\ButtonColumn\DatatablePropertyAccessor;
 use App\Entity\Usuario;
 use App\Repository\UsuarioRepository;
 use Doctrine\ORM\QueryBuilder;
@@ -75,9 +76,13 @@ class UsuarioDataTableType implements DataTableTypeInterface
         ;
         if($this->security->isGranted(['ROLE_ALLOWED_TO_SWITCH'], $this->security->getUser())) {
             $dataTable->add('actions', ButtonColumn::class, [
-                'label' => 'Impersonificar',
+                'label' => '',
                 'field' => 'u.identificacion',
-                'buttons' => [new ButtonTypeRoute('app_comprobantes', ['_switch_user'], 'fas fa-user-cog')]
+                'buttons' => [
+                    new ButtonTypeRoute('app_comprobantes', ['_switch_user'], 'fas fa-user-cog'),
+                    new ButtonTypeRoute('admin_usuarios_editar',
+                        ['id' => new DatatablePropertyAccessor('id')], 'fas fa-pencil-alt')
+                ]
             ]);
         }
     }
