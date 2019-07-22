@@ -42,12 +42,29 @@ security:
             # https://symfony.com/doc/current/security/form_login_setup.html
     # nos permite crear grupos de roles
     role_hierarchy:
-        ROLE_EMPLEADO: [ROLE_VER_SE_REPORTES]
-        ROLE_OPERADOR: [ROLE_ADMIN_USUARIOS]
-        ROLE_VACANTES: [ROLE_CREAR_VACANTE]
-        ROLE_VACANTES_ADMIN: [ROLE_VACANTES, ROLE_ADMIN_VACANTE]
-        ROLE_ADMIN: [ROLE_OPERADOR, ROLE_VACANTES, ROLE_ALLOWED_TO_SWITCH]
-        ROLE_SUPERADMIN: [ROLE_ADMIN]
+        ROLE_EMPLEADO:
+            - ROLE_VER_SE_REPORTES
+        ROLE_OPERADOR:
+            - ROLE_ADMIN_USUARIOS
+        ROLE_VACANTES:
+            - ROLE_CREAR_VACANTE
+        ROLE_VACANTES_ADMIN:
+            - ROLE_VACANTES
+            - ROLE_ADMIN_VACANTE
+
+        ROLE_REPRESENTANTE:
+            - ROLE_VER_AUTOLIQUIDACIONES
+        ROLE_SERVICIO:
+            - ROLE_REPRESENTANTE
+            - ROLE_ADMIN_AUTOLIQUIDACIONES
+
+        ROLE_ADMIN:
+            - ROLE_OPERADOR
+            - ROLE_VACANTES
+            - ROLE_SERVICIO
+            - ROLE_ALLOWED_TO_SWITCH
+        ROLE_SUPERADMIN:
+            - ROLE_ADMIN
 
 
 

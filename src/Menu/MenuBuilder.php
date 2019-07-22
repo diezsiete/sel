@@ -6,6 +6,7 @@ namespace App\Menu;
 
 use App\Service\Hv\HvResolver;
 use Knp\Menu\FactoryInterface;
+use Knp\Menu\ItemInterface;
 use Symfony\Component\Security\Core\Security;
 
 class MenuBuilder
@@ -77,6 +78,10 @@ class MenuBuilder
                 ->setExtra('icon', 'fas fa-users');
         }
 
+        if($this->security->isGranted(['ROLE_VER_AUTOLIQUIDACIONES'], $user)) {
+            $this->createAutoliquidacionesMenu($menu);
+        }
+
 
         return $menu;
     }
@@ -107,5 +112,15 @@ class MenuBuilder
         }
 
         return $menu;
+    }
+
+    public function createAutoliquidacionesMenu(ItemInterface $menu)
+    {
+        $menu->addChild('Autoliquidaciones')
+            ->setUri('#')
+            ->setExtra('icon', 'fas fa-calendar-plus');
+        $menu['Autoliquidaciones']
+            ->addChild('Autoliquidaciones', ['route' => 'admin_autoliquidaciones'])
+            ->setExtra('icon', 'fas fa-clock');
     }
 }

@@ -25,11 +25,12 @@ class UsuarioFixture extends BaseFixture
         $this->createMany(2, 'main_users', function ($i) use ($manager){
             $user = new Usuario();
             $user
-                ->setIdentificacion($i+100)
+                ->setIdentificacion($i + 100)
                 ->setEmail(sprintf('usuario%d@sel.com.co', $i))
                 ->setPrimerNombre($this->faker->firstName)
                 ->setPrimerApellido($this->faker->lastName)
-                ->aceptarTerminos();
+                ->aceptarTerminos()
+                ->setIdOld(8);
 
             $user->setPassword($this->passwordEncoder->encodePassword($user,'coco'));
 

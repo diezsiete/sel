@@ -38,6 +38,8 @@ abstract class MigrationCommand extends Command
      */
     protected $usuarioRepository = null;
 
+    protected $repositories = [];
+
     /**
      * @var SymfonyStyle
      */
@@ -223,14 +225,14 @@ abstract class MigrationCommand extends Command
         return $sql;
     }
 
-    protected function selPersist($object)
+    protected function selPersist($object, $progressBarAdvance = true)
     {
         $this->getDefaultManager()->persist($object);
         if (($this->batchCount % $this->batchSize) === 0) {
             $this->flushAndClear();
         }
         $this->batchCount++;
-        if($this->progressBar) {
+        if($this->progressBar && $progressBarAdvance) {
             $this->progressBar->advance();
         }
     }
@@ -301,5 +303,13 @@ abstract class MigrationCommand extends Command
         $connection->query('DELETE FROM '.$cmd->getTableName());
         $connection->commit();
         $em->flush();
+    }
+
+    protected function getRepository($class)
+    {
+        if(!isset($this->repositories[$class])) {
+            $this->repositories[$class] = $this->getDefaultManager()->getRepository($class);
+        }
+        return $this->repositories[$class];
     }
 }

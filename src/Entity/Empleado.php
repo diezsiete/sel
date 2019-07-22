@@ -2,6 +2,10 @@
 
 namespace App\Entity;
 
+use App\Entity\Autoliquidacion\AutoliquidacionEmpleado;
+use App\Repository\Autoliquidacion\AutoliquidacionEmpleadoRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -57,12 +61,12 @@ class Empleado
     private $centroCosto;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="date")
      */
     private $fechaIngreso;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="date", nullable=true)
      */
     private $fechaRetiro;
 
@@ -87,6 +91,21 @@ class Empleado
      * @ORM\Column(type="string", length=20, nullable=true)
      */
     private $ssrsDb;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Autoliquidacion\AutoliquidacionEmpleado", mappedBy="empleado", orphanRemoval=true)
+     */
+    private $autoliquidacion;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Representante", inversedBy="empleados")
+     */
+    private $representante;
+
+    public function __construct()
+    {
+        $this->autoliquidacion = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -266,6 +285,52 @@ class Empleado
     public function setSsrsDb($ssrsDb)
     {
         $this->ssrsDb = $ssrsDb;
+        return $this;
+    }
+
+    /**
+     * @return Collection|AutoliquidacionEmpleado[]|AutoliquidacionEmpleado
+     */
+    public function getAutoliquidacion(?\DateTimeInterface $periodo = null): Collection
+    {
+        if($periodo) {
+            $this->autoliquidacion->matching(AutoliquidacionEmpleadoRepository::critireaPeriodo($perido));
+        }
+        return $this->autoliquidacion;
+    }
+
+    public function addAutoliquidacion(AutoliquidacionEmpleado $autoliquidacion): self
+    {
+        if (!$this->autoliquidacion->contains($autoliquidacion)) {
+            $this->autoliquidacion[] = $autoliquidacion;
+            $autoliquidacion->setEmpleado($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAutoliquidacion(AutoliquidacionEmpleado $autoliquidacion): self
+    {
+        if ($this->autoliquidacion->contains($autoliquidacion)) {
+            $this->autoliquidacion->removeElement($autoliquidacion);
+            // set the owning side to null (unless already changed)
+            if ($autoliquidacion->getEmpleado() === $this) {
+                $autoliquidacion->setEmpleado(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getRepresentante(): ?Representante
+    {
+        return $this->representante;
+    }
+
+    public function setRepresentante(?Representante $representante): self
+    {
+        $this->representante = $representante;
+
         return $this;
     }
 

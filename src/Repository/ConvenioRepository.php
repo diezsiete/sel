@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Convenio;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\AbstractQuery;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -17,6 +18,16 @@ class ConvenioRepository extends ServiceEntityRepository
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Convenio::class);
+    }
+
+    /**
+     * @return string[]
+     */
+    public function findAllCodigos()
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->select('c.codigo');
+        return $qb->getQuery()->getResult('FETCH_COLUMN');
     }
 
     // /**

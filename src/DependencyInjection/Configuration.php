@@ -54,6 +54,7 @@ class Configuration implements ConfigurationInterface
                         ->append($this->addEmailsNode())
                         ->append($this->addOficinasNode())
                         ->append($this->addHvWizardRoutes())
+                        ->append($this->addScrapperEmpresaNode())
                     ->end()
                 ->end()
             ->end()
@@ -128,4 +129,20 @@ class Configuration implements ConfigurationInterface
                 ->end();
         return $node;
     }
+
+    protected function addScrapperEmpresaNode()
+    {
+        $treeBuilder = new TreeBuilder('scrapper');
+        $node =
+            $treeBuilder->getRootNode()
+                ->children()
+                    ->arrayNode('ael')
+                        ->children()
+                            ->scalarNode('empleador')->end()
+                        ->end()
+                    ->end()
+                ->end();
+        return $node;
+    }
+
 }

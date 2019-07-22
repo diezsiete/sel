@@ -30,16 +30,11 @@ class UsuarioDataTableType implements DataTableTypeInterface
      * @var Security
      */
     private $security;
-    /**
-     * @var RouterInterface
-     */
-    private $router;
 
-    public function __construct(UsuarioRepository $usuarioRepository, Security $security, RouterInterface $router)
+    public function __construct(UsuarioRepository $usuarioRepository, Security $security)
     {
         $this->usuarioRepository = $usuarioRepository;
         $this->security = $security;
-        $this->router = $router;
     }
 
     /**

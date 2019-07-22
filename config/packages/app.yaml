@@ -1,6 +1,7 @@
 app:
   scrapper:
     url: http://localhost:8666
+
   empresas:
     PTA:
       host: '%env(HOST_PTA)%'
@@ -64,6 +65,10 @@ app:
           route: registro_cuenta
           titulo: Cuenta
 
+      scrapper:
+        ael:
+          empleador: pta
+
 
 
     SERVILABOR:
@@ -93,3 +98,7 @@ app:
           convenios: false
         EMPLEADOS_SOS:
           convenios: false
+
+      scrapper:
+        ael:
+          empleador: servilabor

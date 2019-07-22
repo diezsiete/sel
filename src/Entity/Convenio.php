@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\Entity\Autoliquidacion\Autoliquidacion;
+use App\Repository\EmpleadoRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -42,15 +44,23 @@ class Convenio
      */
     private $ssrsDb;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Autoliquidacion\Autoliquidacion", mappedBy="convenio")
+     */
+    private $autoliquidaciones;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Representante", mappedBy="convenio", orphanRemoval=true)
+     */
+    private $representantes;
+
     public function __construct()
     {
         $this->empleados = new ArrayCollection();
+        $this->autoliquidaciones = new ArrayCollection();
+        $this->representantes = new ArrayCollection();
     }
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getCodigo(): ?string
     {
@@ -108,6 +118,11 @@ class Convenio
         return $this->empleados;
     }
 
+    public function getEmpleadosEnRango(\DateTimeInterface $fechaIngreso, \DateTimeInterface $fechaRetiro)
+    {
+        return $this->empleados->matching(EmpleadoRepository::rangoPeriodoCriteria($fechaIngreso, $fechaRetiro));
+    }
+
     public function addEmpleado(Empleado $empleado): self
     {
         if (!$this->empleados->contains($empleado)) {
@@ -146,6 +161,45 @@ class Convenio
     public function setSsrsDb($ssrsDb)
     {
         $this->ssrsDb = $ssrsDb;
+        return $this;
+    }
+
+    /**
+     * @return Collection|Autoliquidacion[]
+     */
+    public function getAutoliquidaciones(): Collection
+    {
+        return $this->autoliquidaciones;
+    }
+
+    /**
+     * @return Collection|Representante[]
+     */
+    public function getRepresentantes(): Collection
+    {
+        return $this->representantes;
+    }
+
+    public function addRepresentante(Representante $representante): self
+    {
+        if (!$this->representantes->contains($representante)) {
+            $this->representantes[] = $representante;
+            $representante->setConvenio($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRepresentante(Representante $representante): self
+    {
+        if ($this->representantes->contains($representante)) {
+            $this->representantes->removeElement($representante);
+            // set the owning side to null (unless already changed)
+            if ($representante->getConvenio() === $this) {
+                $representante->setConvenio(null);
+            }
+        }
+
         return $this;
     }
 }

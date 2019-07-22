@@ -6,6 +6,7 @@ use App\Entity\Usuario;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Collections\Expr\Comparison;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -35,6 +36,17 @@ class UsuarioRepository extends ServiceEntityRepository
                 ->getOneOrNullResult();
         }
         return $this->usuariosCached[$identificacion];
+    }
+
+    /**
+     * @return Usuario|null
+     * @throws NonUniqueResultException
+     */
+    public function superAdmin()
+    {
+        $qb = $this->createQueryBuilder('u');
+        $qb->andWhere($qb->expr()->like('u.roles', "'%ROLE_SUPERADMIN%'"));
+        return $qb->getQuery()->getOneOrNullResult();
     }
 
 
