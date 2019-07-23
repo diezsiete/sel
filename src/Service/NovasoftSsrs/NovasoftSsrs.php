@@ -131,12 +131,13 @@ class NovasoftSsrs
     }
 
     /**
-     * @param SsrsDb $ssrsDb
+     * @param string $ssrsDb
      * @return NovasoftSsrs
+     * @throws \Exception
      */
-    public function setSsrsDb(SsrsDb $ssrsDb): NovasoftSsrs
+    public function setSsrsDb(string $ssrsDb): NovasoftSsrs
     {
-        $this->ssrsDb = $ssrsDb;
+        $this->ssrsDb = $this->configuracion->getSsrsDb($ssrsDb);
         return $this;
     }
 

@@ -15,6 +15,7 @@ use ReflectionMethod;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 abstract class TraitableCommand extends Command
@@ -25,6 +26,22 @@ abstract class TraitableCommand extends Command
         BeforeRun::class => BeforeRunEvent::class,
         Configure::class => ConfigureEvent::class
     ];
+
+    /**
+     * @var SymfonyStyle
+     */
+    protected $io;
+
+    /**
+     * @var InputInterface
+     */
+    protected $input;
+
+    /**
+     * @var OutputInterface
+     */
+    protected $output;
+
 
     /**
      * @var EventDispatcherInterface
@@ -55,6 +72,10 @@ abstract class TraitableCommand extends Command
 
     public function run(InputInterface $input, OutputInterface $output)
     {
+        $this->io = new SymfonyStyle($input, $output);
+        $this->input = $input;
+        $this->output = $output;
+
         $this->eventDispatcher->dispatch(new BeforeRunEvent($this, $input, $output));
 
         $return = parent::run($input, $output);

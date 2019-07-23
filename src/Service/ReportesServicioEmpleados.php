@@ -169,7 +169,7 @@ class ReportesServicioEmpleados
         return $reportNovasoft->renderMap();
     }
 
-    public function setSsrsDb(SsrsDb $ssrsDb)
+    public function setSsrsDb(string $ssrsDb): ReportesServicioEmpleados
     {
         $this->novasoftSsrs->setSsrsDb($ssrsDb);
         return $this;

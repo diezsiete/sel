@@ -2,30 +2,33 @@
 
 namespace App\Command\NovasoftImport;
 
-use App\Entity\Convenio;
+use App\Command\Helpers\ConsoleTrait;
+use App\Command\Helpers\Loggable;
+use App\Command\Helpers\PeriodoOption;
+use App\Command\Helpers\RangoPeriodoOption;
+use App\Command\Helpers\SearchByConvenioOrIdent;
+use App\Command\Helpers\TraitableCommand\TraitableCommand;
 use App\Entity\Empleado;
 use App\Entity\Usuario;
-use App\Repository\ConvenioRepository;
-use App\Repository\EmpleadoRepository;
 use App\Repository\UsuarioRepository;
-use App\Service\Configuracion\SsrsDb;
-use Symfony\Component\Console\Input\InputArgument;
+use App\Service\ReportesServicioEmpleados;
+use Doctrine\Common\Annotations\Reader;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-class NiEmpleadoCommand extends PeriodoCommand
+class NiEmpleadoCommand extends TraitableCommand
 {
+    use Loggable,
+        PeriodoOption,
+        RangoPeriodoOption,
+        SearchByConvenioOrIdent,
+        ConsoleTrait;
+
     protected static $defaultName = 'sel:ni:empleado';
-    /**
-     * @var EmpleadoRepository
-     */
-    private $empleadoRepository;
-    /**
-     * @var ConvenioRepository
-     */
-    private $convenioRepository;
+
 
     /**
      * @var UserPasswordEncoderInterface
@@ -35,25 +38,27 @@ class NiEmpleadoCommand extends PeriodoCommand
      * @var UsuarioRepository
      */
     private $usuarioRepository;
+    /**
+     * @var ReportesServicioEmpleados
+     */
+    private $reportesServicioEmpleados;
 
 
-    public function __construct(ConvenioRepository $convenioRepository, EmpleadoRepository $empleadoRepository,
+    public function __construct(Reader $reader, EventDispatcherInterface $dispatcher,
+                                ReportesServicioEmpleados $reportesServicioEmpleados,
                                 UsuarioRepository $usuarioRepository, UserPasswordEncoderInterface $passwordEncoder)
     {
-        parent::__construct();
-        $this->convenioRepository = $convenioRepository;
-        $this->empleadoRepository = $empleadoRepository;
+        parent::__construct($reader, $dispatcher);
         $this->passwordEncoder = $passwordEncoder;
         $this->usuarioRepository = $usuarioRepository;
+        $this->reportesServicioEmpleados = $reportesServicioEmpleados;
     }
 
     protected function configure()
     {
         $this->setDescription('Actualizar empleados desde novasoft')
-            ->addArgument('convenios', InputArgument::IS_ARRAY,
-                'convenios codigos para descargar. Omita y se toman todos')
             ->addOption('start_from', null, InputOption::VALUE_OPTIONAL,
-                'Codigo convenio desde donde se empieza la importacion. Ignora argumento convenios')
+                'Codigo convenio desde donde se empieza la importacion. Ignora argumento search')
         ;
         parent::configure();
     }
@@ -64,30 +69,38 @@ class NiEmpleadoCommand extends PeriodoCommand
         $desde = $this->getInicio($input);
         $hasta = $this->getFin($input);
 
-        $dbs = $this->getSsrsDbs();
 
-        foreach($dbs as $db) {
-            if($db->hasConvenios()) {
-                foreach ($this->getConvenios($db) as $convenio) {
-                    $this->io->writeln($convenio->getCodigo());
-                    $empleados = $this->reportesServicioEmpleados->setSsrsDb($db)->getEmpleados($convenio->getCodigo(), $desde, $hasta);
-                    foreach ($empleados as $empleado) {
-                        $this->io->writeln($empleado->getConvenio()->getCodigo());
-                        $this->importEmpleado($empleado, $db);
-                        $this->em->flush();
-                    }
+        if($this->isSearchConvenio()) {
+            foreach ($this->getConvenios() as $convenio) {
+                $codigo = $convenio->getCodigo();
+                $ssrsDb = $convenio->getSsrsDb();
+
+                $this->io->writeln($codigo);
+
+                $empleados = $this->reportesServicioEmpleados->setSsrsDb($ssrsDb)->getEmpleados($codigo, $desde, $hasta);
+
+                foreach ($empleados as $empleado) {
+                    $this->io->writeln($empleado->getConvenio()->getCodigo());
+                    $this->importEmpleado($empleado, $ssrsDb);
                 }
-            } else {
-                $empleados = $this->reportesServicioEmpleados->setSsrsDb($db)->getEmpleado();
-                foreach($empleados as $empleado) {
-                    $this->importEmpleado($empleado, $db);
-                    $this->em->flush();
+                $this->em->flush();
+            }
+
+        } else {
+            foreach($this->getEmpleados() as $empleado) {
+                $ssrsDb = $empleado->getSsrsDb();
+                $ident = $empleado->getUsuario()->getIdentificacion();
+                $empleadoNovasoft = $this->reportesServicioEmpleados->setSsrsDb($ssrsDb)->getEmpleado($ident);
+                if($empleadoNovasoft) {
+                    $this->importEmpleado($empleadoNovasoft[0], $ssrsDb);
                 }
             }
+            $this->em->flush();
+            $this->em->clear();
         }
     }
 
-    private function importEmpleado(Empleado $empleado, SsrsDb $ssrsDb)
+    private function importEmpleado(Empleado $empleado, string $ssrsDb)
     {
         $usuario = $this->updateUsuario($empleado->getUsuario());
         $usuarioMessage = "[usuario update]";
@@ -96,7 +109,7 @@ class NiEmpleadoCommand extends PeriodoCommand
             $usuarioMessage = "[usuario insert]";
         }
         $empleado->setUsuario($usuario);
-        $empleado->setSsrsDb($ssrsDb->getNombre());
+        $empleado->setSsrsDb($ssrsDb);
 
         $empleadoMessage = "[empleado update]";
         if (!$this->updateEmpleado($empleado)) {
@@ -107,28 +120,6 @@ class NiEmpleadoCommand extends PeriodoCommand
             $empleado->getUsuario()->getNombreCompleto(), $empleado->getUsuario()->getIdentificacion(), $usuarioMessage, $empleadoMessage));
     }
 
-    /**
-     * @return Convenio[]
-     */
-    private function getConvenios(SsrsDb $ssrsDb)
-    {
-        $conveniosCodigos = $this->input->getArgument('convenios');
-        $startFrom = $this->input->getOption('start_from');
-        if(!$startFrom) {
-            return $conveniosCodigos ?
-                $this->convenioRepository->findBy(['codigo' => $conveniosCodigos, 'ssrsDb' => $ssrsDb->getNombre()]) :
-                $this->convenioRepository->findBy(['ssrsDb' => $ssrsDb->getNombre()]);
-        } else {
-            $convenios = $this->convenioRepository->findBy(['ssrsDb' => $ssrsDb->getNombre()]);
-            $conveniosFiltered = [];
-            foreach($convenios as $convenio) {
-                if($conveniosFiltered || $convenio->getCodigo() === $startFrom) {
-                    $conveniosFiltered[] = $convenio;
-                }
-            }
-            return $conveniosFiltered;
-        }
-    }
 
     private function updateEmpleado(Empleado $empleado)
     {
@@ -183,4 +174,5 @@ class NiEmpleadoCommand extends PeriodoCommand
         $this->em->persist($usuario);
         return $usuario;
     }
+
 }

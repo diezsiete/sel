@@ -41,7 +41,7 @@ trait PeriodoOption
         return $this->periodo;
     }
 
-    protected function getRangoFromPeriodo(InputInterface $input, $required = true)
+    public function getRangoFromPeriodo(InputInterface $input, $required = true)
     {
         $periodo = $this->getPeriodo($input, $required);
         if($periodo) {
