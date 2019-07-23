@@ -4,8 +4,9 @@
 namespace App\Command\Helpers;
 
 
-use App\Command\Helpers\ModifyRun\Annotation\ModifyRunBefore;
-use App\Command\Helpers\ModifyRun\Event\ModifyRunBeforeEvent;
+use App\Command\Helpers\TraitableCommand\Annotation\BeforeRun;
+use App\Command\Helpers\TraitableCommand\Annotation\Configure;
+use App\Command\Helpers\TraitableCommand\Event\BeforeRunEvent;
 use App\Entity\Convenio;
 use App\Entity\Empleado;
 use App\Repository\ConvenioRepository;
@@ -15,7 +16,7 @@ use Symfony\Component\Console\Input\InputArgument;
 trait SearchByConvenioOrIdent
 {
 
-    protected $searchName;
+    protected $searchName = 'search';
     protected $searchValue = [];
 
     /**
@@ -44,21 +45,24 @@ trait SearchByConvenioOrIdent
         $this->empleadoRepository = $empleadoRepository;
     }
 
-    protected function addSearchByConvenioOrIdent($name = 'search')
+
+    /**
+     * @Configure
+     */
+    public function addSearchByConvenioOrIdent()
     {
-        $this->searchName = $name;
         $this->addArgument($this->searchName, InputArgument::IS_ARRAY | InputArgument::OPTIONAL,
             'codigos convenios o identificaciones. Omita y se toman todos los convenios');
         return $this;
     }
 
     /**
-     * @ModifyRunBefore
+     * @BeforeRun
      */
-    public function assignSearchValue(ModifyRunBeforeEvent $event)
+    public function assignSearchValue(BeforeRunEvent $event)
     {
         if($this->searchName) {
-            $this->searchValue = $event->input->getArgument($this->searchName);
+            $this->searchValue = $event->getInput()->getArgument($this->searchName);
         }
     }
 
@@ -116,9 +120,4 @@ trait SearchByConvenioOrIdent
             return $this->empleadoRepository->findByConvenio($this->searchValue);
         }
     }
-
-    /**
-     * Obliga a utilizar el trait ModifyRun
-     */
-    abstract protected function modifyRun();
 }

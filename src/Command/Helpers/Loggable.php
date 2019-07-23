@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Command\Helpers\ModifyRun;
+namespace App\Command\Helpers;
 
 
 use Psr\Log\LoggerInterface;

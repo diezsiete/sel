@@ -4,27 +4,38 @@
 namespace App\Command\Autoliquidacion;
 
 
+use App\Command\Helpers\ConsoleProgressBar;
+use App\Command\Helpers\ConsoleTrait;
+use App\Command\Helpers\Loggable;
+use App\Command\Helpers\PeriodoOption;
+use App\Command\Helpers\SearchByConvenioOrIdent;
+use App\Command\Helpers\TraitableCommand\TraitableCommand;
 use App\Entity\Autoliquidacion\Autoliquidacion;
 use App\Entity\Autoliquidacion\AutoliquidacionEmpleado;
 use App\Entity\Convenio;
 use App\Repository\Autoliquidacion\AutoliquidacionEmpleadoRepository;
 use App\Repository\Autoliquidacion\AutoliquidacionRepository;
-use App\Repository\UsuarioRepository;
 use App\Service\AutoliquidacionService;
+use Doctrine\Common\Annotations\Reader;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\ORMException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class AutoliquidacionCreateCommand extends AutoliquidacionCommand
+class AutoliquidacionCreateCommand extends TraitableCommand
 {
+    use Loggable,
+        PeriodoOption,
+        SearchByConvenioOrIdent,
+        ConsoleProgressBar,
+        ConsoleTrait;
+
+
     protected static $defaultName = 'sel:autoliquidacion:create';
 
-    /**
-     * @var UsuarioRepository
-     */
-    private $usuarioRepository;
+
     /**
      * @var AutoliquidacionService
      */
@@ -39,12 +50,13 @@ class AutoliquidacionCreateCommand extends AutoliquidacionCommand
     private $autoliquidacionEmpleadoRepository;
 
 
-    public function __construct(UsuarioRepository $usuarioRepository, AutoliquidacionService $autoliquidacionService,
+
+    public function __construct(Reader $reader, EventDispatcherInterface $dispatcher,
+                                AutoliquidacionService $autoliquidacionService,
                                 AutoliquidacionRepository $autoliquidacionRepository,
                                 AutoliquidacionEmpleadoRepository $autoliquidacionEmpleadoRepository)
     {
-        parent::__construct();
-        $this->usuarioRepository = $usuarioRepository;
+        parent::__construct($reader, $dispatcher);
         $this->autoliquidacionService = $autoliquidacionService;
         $this->autoliquidacionRepository = $autoliquidacionRepository;
         $this->autoliquidacionEmpleadoRepository = $autoliquidacionEmpleadoRepository;
@@ -52,17 +64,16 @@ class AutoliquidacionCreateCommand extends AutoliquidacionCommand
 
     protected function configure()
     {
+        $this->addOption('not_overwrite', null, InputOption::VALUE_NONE,
+                'Si la autoliquidacion ya existe la borra');
         parent::configure();
-        $this->addOptionRequired('periodo', 'p', InputOption::VALUE_REQUIRED,
-            'Especifique mes en formato Y-m')
-            ->addOption('not_overwrite', null, InputOption::VALUE_NONE,
-                'Si la autoliquidacion ya existe la borra')
-            ->addSearchByConvenioOrIdent();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $rango = $this->getRangoFromPeriodo($input->getOption('periodo'));
+        $rango = $this->getRangoFromPeriodo($input);
+
+
         $overwrite = !$input->getOption('not_overwrite');
 
         if($this->isSearchConvenio()) {
@@ -135,7 +146,7 @@ class AutoliquidacionCreateCommand extends AutoliquidacionCommand
         }
         $autoliquidacion = (new Autoliquidacion())
             ->setConvenio($convenio)
-            ->setUsuario($usuario ? $usuario : $this->usuarioRepository->superAdmin())
+            ->setUsuario($usuario ? $usuario : $this->getSuperAdmin(false))
             ->setPeriodo($periodo);
         $this->em->persist($autoliquidacion);
         return $autoliquidacion;
@@ -163,14 +174,9 @@ class AutoliquidacionCreateCommand extends AutoliquidacionCommand
 
     protected function progressBarCount(InputInterface $input, OutputInterface $output): int
     {
-        $rango = $this->getRangoFromPeriodo($input->getOption('periodo'));
+        $rango = $this->getRangoFromPeriodo($input);
         return $this->empleadoRepository->countByRango($rango->start, $rango->end, $this->searchValue);
     }
 
-    protected function getRangoFromPeriodo($periodo)
-    {
-        $start = \DateTime::createFromFormat('Y-m-d', "$periodo-01");
-        $end = \DateTime::createFromFormat('Y-m-d', $start->format('Y-m-t'));
-        return (object)['start' => $start, 'end' => $end];
-    }
+
 }

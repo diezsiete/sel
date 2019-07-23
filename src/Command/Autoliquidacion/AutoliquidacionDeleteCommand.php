@@ -4,29 +4,34 @@
 namespace App\Command\Autoliquidacion;
 
 
+use App\Command\Helpers\ConsoleProgressBar;
+use App\Command\Helpers\ConsoleTrait;
+use App\Command\Helpers\PeriodoOption;
+use App\Command\Helpers\SearchByConvenioOrIdent;
+use App\Command\Helpers\TraitableCommand\TraitableCommand;
 use App\Entity\Autoliquidacion\Autoliquidacion;
 use App\Repository\Autoliquidacion\AutoliquidacionRepository;
 use App\Service\AutoliquidacionService;
-use DateTime;
 use DateTimeInterface;
+use Doctrine\Common\Annotations\Reader;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 
-class AutoliquidacionDeleteCommand extends AutoliquidacionCommand
+class AutoliquidacionDeleteCommand extends TraitableCommand
 {
+    use PeriodoOption,
+        SearchByConvenioOrIdent,
+        ConsoleProgressBar,
+        ConsoleTrait;
+
     protected static $defaultName = 'sel:autoliquidacion:delete';
 
     /**
      * @var AutoliquidacionRepository
      */
     private $autoliquidacionRepository;
-
-    /**
-     * @var DateTimeInterface
-     */
-    private $periodo;
 
     /**
      * @var Autoliquidacion[]
@@ -37,26 +42,19 @@ class AutoliquidacionDeleteCommand extends AutoliquidacionCommand
      */
     private $autoliquidacionService;
 
-    public function __construct(AutoliquidacionRepository $autoliquidacionRepository,
+    public function __construct(Reader $reader, EventDispatcherInterface $dispatcher,
+                                AutoliquidacionRepository $autoliquidacionRepository,
                                 AutoliquidacionService $autoliquidacionService)
     {
-        parent::__construct();
+        parent::__construct($reader, $dispatcher);
         $this->autoliquidacionRepository = $autoliquidacionRepository;
         $this->autoliquidacionService = $autoliquidacionService;
     }
 
-    protected function configure()
-    {
-        parent::configure();
-        $this
-            ->addSearchByConvenioOrIdent()
-            ->addOption('periodo', 'p', InputOption::VALUE_OPTIONAL,
-                'Especifique mes en formato Y-m. Si no se especifica se toman todos');
-    }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $periodo = $this->getPeriodo($input);
+        $periodo = $this->getPeriodo($input, false);
         $autoliquidaciones = $this->findAutoliquidaciones($periodo);
 
 
@@ -80,10 +78,10 @@ class AutoliquidacionDeleteCommand extends AutoliquidacionCommand
 
     protected function progressBarCount(InputInterface $input, OutputInterface $output): int
     {
-        return count($this->findAutoliquidaciones($this->getPeriodo($input)));
+        return count($this->findAutoliquidaciones($this->getPeriodo($input, false)));
     }
 
-    protected function findAutoliquidaciones($periodo)
+    protected function findAutoliquidaciones(?DateTimeInterface $periodo = null)
     {
         if(!is_array($this->autoliquidaciones)) {
             $this->autoliquidaciones = [];
@@ -98,14 +96,5 @@ class AutoliquidacionDeleteCommand extends AutoliquidacionCommand
             }
         }
         return $this->autoliquidaciones;
-    }
-
-    protected function getPeriodo(InputInterface $input)
-    {
-        if(!$this->periodo) {
-            $this->periodo = $input->getOption('periodo') ?
-                DateTime::createFromFormat('Y-m-d', $input->getOption('periodo') . "-01") : null;
-        }
-        return $this->periodo;
     }
 }

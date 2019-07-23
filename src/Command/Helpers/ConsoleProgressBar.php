@@ -5,10 +5,11 @@ namespace App\Command\Helpers;
 
 
 
-use App\Command\Helpers\ModifyRun\Event\ModifyRunAfterEvent;
-use App\Command\Helpers\ModifyRun\Event\ModifyRunBeforeEvent;
-use App\Command\Helpers\ModifyRun\Annotation\ModifyRunAfter;
-use App\Command\Helpers\ModifyRun\Annotation\ModifyRunBefore;
+
+use App\Command\Helpers\TraitableCommand\Annotation\AfterRun;
+use App\Command\Helpers\TraitableCommand\Annotation\BeforeRun;
+use App\Command\Helpers\TraitableCommand\Event\AfterRunEvent;
+use App\Command\Helpers\TraitableCommand\Event\BeforeRunEvent;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -32,33 +33,30 @@ trait ConsoleProgressBar
     }
 
     /**
-     * @ModifyRunBefore
+     * @BeforeRun
      */
-    public function initProgressBar(ModifyRunBeforeEvent $event)
+    public function initProgressBar(BeforeRunEvent $event)
     {
-        $countProgressBar = $this->progressBarCount($event->input, $event->output);
+        $countProgressBar = $this->progressBarCount($event->getInput(), $event->getOutput());
         if($countProgressBar) {
-            $this->progressBar = new ProgressBar($event->output, $countProgressBar);
+            $this->progressBar = new ProgressBar($event->getOutput(), $countProgressBar);
             $this->progressBar->setFormat($this->progressBarFormat);
             return $this->progressBar;
         }
+        return null;
     }
 
     /**
-     * @ModifyRunAfter
+     * @AfterRun
      */
-    public function endProgressBar(ModifyRunAfterEvent $event)
+    public function endProgressBar(AfterRunEvent $event)
     {
         if($this->progressBar) {
             $this->progressBar->finish();
-            $event->output->writeln('');
+            $event->getOutput()->writeln('');
         }
     }
 
     abstract protected function progressBarCount(InputInterface $input, OutputInterface $output): ?int;
 
-    /**
-     * Obliga a utilizar el trait ModifyRun
-     */
-    abstract protected function modifyRun();
 }

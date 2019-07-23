@@ -5,18 +5,28 @@ namespace App\Command\Autoliquidacion;
 
 
 
+use App\Command\Helpers\ConsoleProgressBar;
+use App\Command\Helpers\ConsoleTrait;
+use App\Command\Helpers\Loggable;
+use App\Command\Helpers\PeriodoOption;
+use App\Command\Helpers\SearchByConvenioOrIdent;
+use App\Command\Helpers\TraitableCommand\TraitableCommand;
 use App\Repository\Autoliquidacion\AutoliquidacionRepository;
 use App\Service\Configuracion\Configuracion;
 use App\Service\Scrapper\AutoliquidacionScrapper;
-use DateTime;
-use DateTimeInterface;
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Common\Annotations\Reader;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class AutoliquidacionDownloadCommand extends AutoliquidacionCommand
+class AutoliquidacionDownloadCommand extends TraitableCommand
 {
+    use Loggable,
+        PeriodoOption,
+        SearchByConvenioOrIdent,
+        ConsoleProgressBar,
+        ConsoleTrait;
+
     protected static $defaultName = 'sel:autoliquidacion:download';
 
     /**
@@ -29,11 +39,6 @@ class AutoliquidacionDownloadCommand extends AutoliquidacionCommand
     private $autoliquidacionScrapper;
 
     /**
-     * @var DateTimeInterface
-     */
-    private $periodo = null;
-
-    /**
      * @var string[]
      */
     private $identificaciones = null;
@@ -43,24 +48,15 @@ class AutoliquidacionDownloadCommand extends AutoliquidacionCommand
      */
     private $configuracion;
 
-    public function __construct(EntityManagerInterface $em, AutoliquidacionRepository $autoliquidacionRepository,
+    public function __construct(Reader $annotationReader, EventDispatcherInterface $eventDispatcher,
+                                AutoliquidacionRepository $autoliquidacionRepository,
                                 AutoliquidacionScrapper $autoliquidacionScrapper, Configuracion $configuracion)
     {
-        parent::__construct();
-        $this->em = $em;
+        parent::__construct($annotationReader, $eventDispatcher);
+
         $this->autoliquidacionRepository = $autoliquidacionRepository;
         $this->autoliquidacionScrapper = $autoliquidacionScrapper;
         $this->configuracion = $configuracion;
-    }
-
-    protected function configure()
-    {
-        parent::configure();
-        $this
-            ->addSearchByConvenioOrIdent()
-            ->addOptionRequired('periodo', 'p', InputOption::VALUE_REQUIRED,
-                'Especifique mes en formato Y-m');
-
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -108,14 +104,5 @@ class AutoliquidacionDownloadCommand extends AutoliquidacionCommand
             }
         }
         return $this->identificaciones;
-    }
-
-    protected function getPeriodo(InputInterface $input)
-    {
-        if(!$this->periodo) {
-            $periodo = $input->getOption('periodo');
-            $this->periodo = DateTime::createFromFormat('Y-m-d', "$periodo-01");
-        }
-        return $this->periodo;
     }
 }
