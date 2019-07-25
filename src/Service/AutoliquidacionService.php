@@ -73,7 +73,7 @@ class AutoliquidacionService
         $path = "/autoliquidaciones/pdfs/";
         if($periodo) {
             $periodoDir = $periodo->format('Y-m');
-            $path .= "/autoliquidaciones/pdfs/$periodoDir" . ($ident ? "/$ident.pdf" : "");
+            $path .= "/$periodoDir" . ($ident ? "/$ident.pdf" : "");
         }
         return $path;
     }

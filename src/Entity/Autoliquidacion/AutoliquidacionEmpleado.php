@@ -32,12 +32,18 @@ class AutoliquidacionEmpleado
     /**
      * @ORM\Column(type="boolean")
      */
-    private $exito = 0;
+    private $exito = false;
 
     /**
      * @ORM\Column(type="string", length=145, nullable=true)
      */
     private $salida;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $code;
+
 
     public function getId(): ?int
     {
@@ -88,6 +94,18 @@ class AutoliquidacionEmpleado
     public function setSalida(?string $salida): self
     {
         $this->salida = $salida;
+
+        return $this;
+    }
+
+    public function getCode(): ?int
+    {
+        return $this->code;
+    }
+
+    public function setCode(?int $code): self
+    {
+        $this->code = $code;
 
         return $this;
     }

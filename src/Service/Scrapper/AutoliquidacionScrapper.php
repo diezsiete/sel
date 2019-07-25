@@ -5,8 +5,16 @@ namespace App\Service\Scrapper;
 
 
 use App\Service\AutoliquidacionService;
+use App\Service\Scrapper\Exception\ScrapperConflictException;
+use App\Service\Scrapper\Exception\ScrapperException;
+use App\Service\Scrapper\Exception\ScrapperNotFoundException;
 use DateTimeInterface;
 use Exception;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class AutoliquidacionScrapper
 {
@@ -36,11 +44,26 @@ class AutoliquidacionScrapper
     public function close()
     {
         $this->scrapperClient->get('/browser/close/ael');
-        return true;
+        return $this;
+    }
+
+    public function logout()
+    {
+        $this->scrapperClient->get('/ael/logout');
+        return $this;
     }
 
     /**
-     * @throws Exception
+     * @param string $ident
+     * @param DateTimeInterface $periodo
+     * @return ScrapperResponse
+     * @throws ScrapperNotFoundException
+     * @throws ScrapperException
+     * @throws ClientExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
      */
     public function generatePdf(string $ident, DateTimeInterface $periodo): ScrapperResponse
     {
@@ -69,11 +92,17 @@ class AutoliquidacionScrapper
 
     /**
      * @return ScrapperResponse
+     * @throws ScrapperConflictException
+     * @throws ScrapperException
      */
     public function clearIdent()
     {
         return $this->scrapperClient->get('/ael/clear-ident');
     }
 
+    public function reload()
+    {
+
+    }
 
 }

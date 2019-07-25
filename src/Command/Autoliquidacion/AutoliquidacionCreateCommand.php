@@ -71,6 +71,7 @@ class AutoliquidacionCreateCommand extends TraitableCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+
         $rango = $this->getRangoFromPeriodo($input);
 
 

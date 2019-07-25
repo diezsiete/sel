@@ -44,27 +44,30 @@ class AutoliquidacionRepository extends ServiceEntityRepository
         return $this->fetchIdentificaciones($qb);
     }
 
-    /**
-     * @param string[] $convenio
-     * @param DateTimeInterface $periodo
-     * @return string[]
-     * @throws QueryException
-     */
-    public function getIdentificacionesByConvenio($convenio, DateTimeInterface $periodo)
-    {
-        $qb = $this->createQueryBuilder('a');
-        $qb
-            ->andWhere($qb->expr()->in('c.codigo', $convenio))
-            ->addCriteria(static::periodoCriteria($periodo));
-        return $this->fetchIdentificaciones($qb);
-    }
 
-    public function getIdentificacionesByPeriodo(DateTimeInterface $periodo)
+    public function getIdentificacionesByPeriodo(DateTimeInterface $periodo, $noExito = false)
     {
         $qb = $this
             ->createQueryBuilder('a')
             ->addCriteria(static::periodoCriteria($periodo));
-        return $this->fetchIdentificaciones($qb);
+        return $this->fetchIdentificaciones($qb, $noExito);
+    }
+
+    /**
+     * @param string[] $convenio
+     * @param DateTimeInterface $periodo
+     * @param bool $noExito
+     * @return string[]
+     * @throws QueryException
+     */
+    public function getIdentificacionesByConvenio($convenio, DateTimeInterface $periodo, $noExito = false)
+    {
+        $qb = $this->createQueryBuilder('a');
+        $qb
+            ->join('a.convenio', 'c')
+            ->andWhere($qb->expr()->in('c.codigo', $convenio))
+            ->addCriteria(static::periodoCriteria($periodo));
+        return $this->fetchIdentificaciones($qb, $noExito);
     }
 
     /**
@@ -171,12 +174,17 @@ class AutoliquidacionRepository extends ServiceEntityRepository
      * @param QueryBuilder $qb
      * @return string[]
      */
-    protected function fetchIdentificaciones(QueryBuilder $qb)
+    protected function fetchIdentificaciones(QueryBuilder $qb, $noExito = false)
     {
-        return $qb->select('u.identificacion')
+        $qb = $qb->select('u.identificacion')
             ->join('a.empleados', 'ae')
             ->join('ae.empleado', 'e')
-            ->join('e.usuario', 'u')
-            ->getQuery()->getResult('FETCH_COLUMN');
+            ->join('e.usuario', 'u');
+
+        if($noExito) {
+            $qb->andWhere($qb->expr()->eq('ae.exito', $qb->expr()->literal(false)));
+        }
+
+        return $qb->getQuery()->getResult('FETCH_COLUMN');
     }
 }

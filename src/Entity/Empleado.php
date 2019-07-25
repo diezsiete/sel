@@ -77,7 +77,7 @@ class Empleado
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Convenio", inversedBy="empleados", cascade={"remove"})
-     * @ORM\JoinColumn(referencedColumnName="codigo")
+     * @ORM\JoinColumn(name="convenio_codigo", referencedColumnName="codigo")
      */
     private $convenio;
 

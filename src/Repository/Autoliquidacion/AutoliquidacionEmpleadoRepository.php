@@ -4,8 +4,8 @@ namespace App\Repository\Autoliquidacion;
 
 use App\Entity\Autoliquidacion\AutoliquidacionEmpleado;
 use App\Entity\Empleado;
+use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -24,10 +24,10 @@ class AutoliquidacionEmpleadoRepository extends ServiceEntityRepository
 
     /**
      * @param Empleado $empleado
-     * @param \DateTimeInterface $periodo
+     * @param DateTimeInterface $periodo
      * @return AutoliquidacionEmpleado
      */
-    public function findByEmpleadoPeriodo(Empleado $empleado, \DateTimeInterface $periodo)
+    public function findByEmpleadoPeriodo(Empleado $empleado, DateTimeInterface $periodo)
     {
         $qb = $this->createQueryBuilder('ae')
             ->join('ae.autoliquidacion', 'a')
@@ -40,6 +40,28 @@ class AutoliquidacionEmpleadoRepository extends ServiceEntityRepository
         } catch (NonUniqueResultException $e) {
             return null;
         }
+    }
+
+    /**
+     * @param string $ident
+     * @param DateTimeInterface|null $periodo
+     * @return AutoliquidacionEmpleado[]|AutoliquidacionEmpleado
+     * @throws NonUniqueResultException
+     */
+    public function findByIdentPeriodo(string $ident, ?DateTimeInterface $periodo = null)
+    {
+        $qb = $this->createQueryBuilder('ae')
+            ->join('ae.empleado', 'e')
+            ->join('e.usuario', 'u')
+            ->andWhere('u.identificacion = :ident')
+            ->setParameter('ident', $ident);
+        if($periodo) {
+            $qb->join('ae.autoliquidacion', 'a')
+                ->andWhere('a.periodo = :periodo')
+                ->setParameter('periodo', $periodo->format('Y-m-d'));
+            return $qb->getQuery()->getOneOrNullResult();
+        }
+        return $qb->getQuery()->getResult();
     }
 
 
