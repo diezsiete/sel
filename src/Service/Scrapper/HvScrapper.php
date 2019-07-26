@@ -6,6 +6,9 @@ namespace App\Service\Scrapper;
 
 use App\Entity\Hv;
 use App\Service\Configuracion\Configuracion;
+use App\Service\Scrapper\Response\ProcessResponse;
+use App\Service\Scrapper\Response\ScrapperResponse;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\HttpClient\Exception\ClientException;
 use Symfony\Component\HttpClient\Exception\ServerException;
@@ -24,27 +27,39 @@ class HvScrapper
      * @var ObjectNormalizer
      */
     private $normalizer;
+
     /**
-     * @var HttpClientInterface
+     * @var ScrapperClient
      */
-    private $httpClient;
+    private $scrapperClient;
     /**
-     * @var Configuracion
+     * @var EntityManagerInterface
      */
-    private $configuracion;
+    private $em;
 
     public function __construct(SerializerInterface $serializer, ObjectNormalizer $normalizer,
-                                HttpClientInterface $httpClient, Configuracion $configuracion)
+                                ScrapperClient $scrapperClient, EntityManagerInterface $em)
     {
         $this->serializer = $serializer;
         $this->normalizer = $normalizer;
-        $this->httpClient = $httpClient;
-        $this->configuracion = $configuracion;
+        $this->scrapperClient = $scrapperClient;
+        $this->em = $em;
     }
 
-    public function insertHv(Hv $hv)
+    public function insert(Hv $hv)
     {
+        try {
+            $hvNormalized = $this->normailizeHv($hv);
+            /** @var ProcessResponse $response */
+            $response = $this->scrapperClient->post('/hv/create', $hvNormalized);
 
+            $scrapperProcess = $response->getEntity($hv->getUsuario());
+            $this->em->persist($scrapperProcess);
+            $this->em->flush();
+
+        } catch (\Exception $e) {
+            throw $e;
+        }
     }
 
     public function hvUpdate(Hv $hv)
@@ -54,18 +69,22 @@ class HvScrapper
 //        ]);
         $hvNormalized = $this->normailizeHv($hv);
         dump($hvNormalized);
+
+
+
         $response = $this->httpClient->request('POST', $this->configuracion->getScrapper()->url . '/hv/create', [
             'json' => $hvNormalized
         ]);
 
-        try {
+
+        /*try {
             $decodedPayload = $response->toArray();
             dump($decodedPayload);
 //            $hv2 = json_decode($decodedPayload['hv2']);
 //            dump($hv2);
         } catch (ClientException | ServerException $e) {
             dump($response->getContent(false));
-        }
+        }*/
     }
 
     private function normailizeHv(Hv $hv)

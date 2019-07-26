@@ -18,7 +18,7 @@ use App\Service\Scrapper\AutoliquidacionScrapper;
 use App\Service\Scrapper\Exception\ScrapperConflictException;
 use App\Service\Scrapper\Exception\ScrapperException;
 use App\Service\Scrapper\Exception\ScrapperNotFoundException;
-use App\Service\Scrapper\ScrapperResponse;
+use App\Service\Scrapper\Response\ResponseManager;
 use Doctrine\Common\Annotations\Reader;
 use Exception;
 use Symfony\Component\Console\Input\InputInterface;
@@ -94,7 +94,7 @@ class AutoliquidacionDownloadCommand extends TraitableCommand
                         $autoliquidacion = $autoliquidacionEmpleado->getAutoliquidacion();
 
                         $exito = true;
-                        $code = ScrapperResponse::OK;
+                        $code = ResponseManager::OK;
                         $salida = "PDF descargado exitosamente";
 
                         try {
@@ -102,11 +102,11 @@ class AutoliquidacionDownloadCommand extends TraitableCommand
                             $this->scrapper->downloadPdf($ident, $periodo);
                             $this->scrapper->deletePdf($ident, $periodo);
                         } catch (ScrapperNotFoundException $e) {
-                            $code = ScrapperResponse::NOTFOUND;
+                            $code = ResponseManager::NOTFOUND;
                             $salida = $e->getMessage();
                         } catch (ScrapperException $e) {
                             $exito = false;
-                            $code = ScrapperResponse::ERROR;
+                            $code = ResponseManager::ERROR;
                             $salida = $e->getMessage();
                         }
 

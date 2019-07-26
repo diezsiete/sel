@@ -3,37 +3,25 @@
 
 namespace App\Service\Scrapper\Exception;
 
-use App\Service\Scrapper\ScrapperResponse;
+
+
+use App\Service\Scrapper\Response\ResponseManager;
 
 class ScrapperException extends \Exception
 {
-    /**
-     * @var ScrapperResponse
-     */
-    private $response;
 
-    public static function create(ScrapperResponse $scrapperResponse)
+    public static function create($message, $code)
     {
-        $code = $scrapperResponse->getCode();
         switch($code) {
-            case ScrapperResponse::NOTFOUND:
-                $exception = new ScrapperNotFoundException($scrapperResponse->getMessage());
+            case ResponseManager::NOTFOUND:
+                $exception = new ScrapperNotFoundException($message);
                 break;
-            case ScrapperResponse::CONFLICT:
-                $exception = new ScrapperConflictException($scrapperResponse->getMessage());
+            case ResponseManager::CONFLICT:
+                $exception = new ScrapperConflictException($message);
                 break;
             default:
-                $exception = new ScrapperException($scrapperResponse->getMessage());
+                $exception = new ScrapperException($message);
         }
-        $exception->response = $scrapperResponse;
         return $exception;
-    }
-
-    /**
-     * @return ScrapperResponse
-     */
-    public function getResponse()
-    {
-        return $this->response;
     }
 }

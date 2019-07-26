@@ -63,6 +63,7 @@ class HvController extends BaseController
             /** @var HvDatosBasicosModel $hvdto */
             $hvdto = $form->getData();
 
+
             $hv = $hvdto->fillHv($hvResolver->getHv() ?? new Hv());
             $usuario = $hvdto->fillUsuario($hvResolver->getUsuario());
 
@@ -73,7 +74,9 @@ class HvController extends BaseController
             }
             $em->flush();
 
-            $this->scrapper->hvUpdate($hv);
+
+            $this->scrapper->insert($hv);
+
 
             $this->addFlash('success', "Datos guardados exitosamente");
             $this->redirectToRoute('hv_datos_basicos');

@@ -7,6 +7,8 @@ namespace App\Service\Scrapper;
 use App\Service\Configuracion\Configuracion;
 use App\Service\Scrapper\Exception\ScrapperException;
 use App\Service\Scrapper\Exception\ScrapperNotFoundException;
+use App\Service\Scrapper\Response\ResponseManager;
+use App\Service\Scrapper\Response\ScrapperResponse;
 use Exception;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
@@ -35,7 +37,8 @@ class ScrapperClient
 
     public function request(string $method, string $url, array $options = [])
     {
-        return $this->httpClient->request($method, $this->getFullUrl($url), $options);
+        $response =  $this->httpClient->request($method, $this->getFullUrl($url), $options);
+        return $response;
     }
 
     /**
@@ -53,7 +56,15 @@ class ScrapperClient
     public function get(string $url, array $options = [])
     {
         $response = $this->request('GET', $url, $options);
-        return new ScrapperResponse($response->toArray());
+        return ResponseManager::instance($response->toArray());
+    }
+
+    public function post(string $url, $jsonData)
+    {
+        $response = $this->request('POST', $url, [
+            'json' => $jsonData
+        ]);
+        return ResponseManager::instance($response->toArray());
     }
 
     /**
