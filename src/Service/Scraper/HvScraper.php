@@ -19,6 +19,8 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  *      @see HvScraper::__updateHv
  * @method null insertChild(HvEntity $hvEntity)
  *      @see HvScraper::__insertChild
+ * @method null updateChild(HvEntity $hvEntity)
+ *      @see HvScraper::__updateChild
  */
 class HvScraper
 {
@@ -86,10 +88,16 @@ class HvScraper
     {
         $data = $this->normalizer->normalize($hvEntity->getHv(), null, [
             'groups' => ['scraper-hv-child'], 'scraper-hv-child' => $hvEntity]);
-        
+
         return $this->scraperClient->post('/hv/child', $data);
     }
 
+    public function __updateChild(HvEntity $hvEntity)
+    {
+        $data = $this->normalizer->normalize($hvEntity->getHv(), null, [
+            'groups' => ['scraper-hv-child'], 'scraper-hv-child' => get_class($hvEntity)]);
 
+        return $this->scraperClient->put('/hv/child', $data);
+    }
     
 }

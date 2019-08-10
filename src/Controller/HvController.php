@@ -198,6 +198,8 @@ class HvController extends BaseController
         if($entity->getHv()->getUsuario()) {
             if(!$entityId) {
                 $this->scraper->insertChild($entity);
+            } else {
+                $this->scraper->updateChild($entity);
             }
         }
 
