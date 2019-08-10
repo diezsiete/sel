@@ -17,8 +17,8 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @package App\Service\Scraper
  * @method null updateHv(Hv $hv)
  *      @see HvScraper::__updateHv
- * @method null put(Hv $hv)
- *      @see HvScraper::__put
+ * @method null insertChild(HvEntity $hvEntity)
+ *      @see HvScraper::__insertChild
  */
 class HvScraper
 {
@@ -53,31 +53,25 @@ class HvScraper
     public function __call($name, $arguments)
     {
         try {
-            /** @var HvEntity $hvEntity */
-            $hvEntity = $arguments[0];
-            $response = call_user_func([$this, "__$name"], $hvEntity);
-            if($response['id']) {
-                $process = new ScraperProcess($response['id'], $response['estado'], $response['porcentaje'], $hvEntity->getHv()->getUsuario());
-                $this->em->persist($process);
-                $this->em->flush();
-                $this->logger->info("process ".$response['id']." received and stored");
+            if(method_exists($this, "__$name")) {
+                /** @var HvEntity $hvEntity */
+                $hvEntity = $arguments[0];
+                $response = call_user_func([$this, "__$name"], $hvEntity);
+                if ($response['id']) {
+                    $process = new ScraperProcess($response['id'], $response['estado'], $response['porcentaje'], $hvEntity->getHv()->getUsuario());
+                    $this->em->persist($process);
+                    $this->em->flush();
+                    $this->logger->info("process " . $response['id'] . " received and stored");
+                } else {
+                    $this->logger->info($response['message']);
+                }
             } else {
-                $this->logger->info($response['message']);
+                throw new \Exception("method '__$name' doesn't exists");
             }
         } catch (\Exception $e) {
-            $this->logger->error($e->getMessage());
+            throw $e;
+            // $this->logger->error($e->getMessage());
         }
-    }
-
-    private function __put(HvEntity $hv)
-    {
-        $data = $this->normalizer->normalize($hv, null, [
-            'groups' => ['scraper']
-        ]);
-        $response = $this->scraperClient->put('/hv', $data);
-        $process = new ScraperProcess($response['id'], $response['estado'], $response['porcentaje'], $hv->getHv()->getUsuario());
-        $this->em->persist($process);
-        $this->em->flush();
     }
 
     public function __updateHv(Hv $hv)
@@ -87,5 +81,15 @@ class HvScraper
         ]);
         return $this->scraperClient->put('/hv', $data);
     }
+
+    public function __insertChild(HvEntity $hvEntity)
+    {
+        $data = $this->normalizer->normalize($hvEntity->getHv(), null, [
+            'groups' => ['scraper-hv-child'], 'scraper-hv-child' => $hvEntity]);
+        
+        return $this->scraperClient->post('/hv/child', $data);
+    }
+
+
     
 }

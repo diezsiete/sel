@@ -23,14 +23,14 @@ class Estudio implements HvEntity
      * @ORM\ManyToOne(targetEntity="App\Entity\EstudioCodigo")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotNull(message="Seleccione el area de estudio")
-     * @Groups({"main", "scraper"})
+     * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $codigo;
 
     /**
      * @ORM\Column(type="string", length=75)
      * @Assert\NotNull(message="Ingrese nombre del estudio")
-     * @Groups({"main", "scraper"})
+     * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $nombre;
 
@@ -38,13 +38,13 @@ class Estudio implements HvEntity
      * @ORM\ManyToOne(targetEntity="App\Entity\EstudioInstituto")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotNull(message="Seleccione instituto. Si no lo encuentra seleccione opción 'NO APLICA'")
-     * @Groups({"main", "scraper"})
+     * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $instituto;
 
     /**
      * @ORM\Column(type="date", nullable=true)
-     * @Groups({"main", "scraper"})
+     * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $fin;
 
@@ -66,7 +66,7 @@ class Estudio implements HvEntity
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
-     * @Groups({"main", "scraper"})
+     * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $graduado;
 
@@ -77,7 +77,7 @@ class Estudio implements HvEntity
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
-     * @Groups({"main", "scraper"})
+     * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $cancelo;
 

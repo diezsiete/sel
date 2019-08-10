@@ -22,14 +22,14 @@ class Idioma implements HvEntity
     /**
      * @ORM\Column(type="string", length=3)
      * @Assert\NotNull(message="Ingrese idioma")
-     * @Groups({"main", "scraper"})
+     * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $idiomaCodigo;
 
     /**
      * @ORM\Column(type="string", length=2)
      * @Assert\NotNull(message="Ingrese nivel destreza")
-     * @Groups({"main", "scraper"})
+     * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $destreza;
 

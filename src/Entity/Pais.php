@@ -17,11 +17,13 @@ class Pais
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups("main")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Groups("main")
      */
     private $nombre;
 
@@ -37,7 +39,7 @@ class Pais
 
     /**
      * @ORM\Column(type="string", length=7, nullable=true)
-     * @Groups({"scraper", "scraper-hv"})
+     * @Groups({"scraper", "scraper-hv", "scraper-hv-child"})
      * @SerializedName("id")
      */
     private $nId;

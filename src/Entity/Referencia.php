@@ -22,28 +22,28 @@ class Referencia implements HvEntity
     /**
      * @ORM\Column(type="smallint")
      * @Assert\NotNull(message="Ingrese el tipo de referencia")
-     * @Groups({"main", "scraper"})
+     * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $tipo;
 
     /**
      * @ORM\Column(type="string", length=105)
      * @Assert\NotNull(message="Ingrese nombre")
-     * @Groups({"main", "scraper"})
+     * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $nombre;
 
     /**
      * @ORM\Column(type="string", length=145)
      * @Assert\NotNull(message="Ingrese ocupación")
-     * @Groups({"main", "scraper"})
+     * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $ocupacion;
 
     /**
      * @ORM\Column(type="string", length=45, nullable=true)
      * @Assert\NotNull(message="Ingrese parentesco")
-     * @Groups({"main", "scraper"})
+     * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $parentesco;
 
@@ -51,7 +51,7 @@ class Referencia implements HvEntity
      * @ORM\Column(type="string", length=20)
      * @Assert\NotNull(message="Ingrese celular de la referencia")
      * @Assert\Positive(message="Ingrese valor numerico")
-     * @Groups({"main", "scraper"})
+     * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $celular;
 
@@ -59,19 +59,19 @@ class Referencia implements HvEntity
      * @ORM\Column(type="string", length=20, nullable=true)
      * @Assert\NotNull(message="Ingrese telefono de la referencia")
      * @Assert\Positive(message="Ingrese valor numerico")
-     * @Groups({"main", "scraper"})
+     * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $telefono;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
-     * @Groups({"main", "scraper"})
+     * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $direccion;
 
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
-     * @Groups({"main", "scraper"})
+     * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $entidad;
 

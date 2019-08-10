@@ -32,7 +32,7 @@ class Usuario implements UserInterface
     /**
      * @Assert\NotBlank(message="Por favor ingrese identificación")
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Groups({"scraper", "scraper-hv"})
+     * @Groups({"scraper", "scraper-hv", "scraper-hv-child"})
      */
     private $identificacion;
 

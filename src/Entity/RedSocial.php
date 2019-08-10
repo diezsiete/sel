@@ -22,14 +22,14 @@ class RedSocial implements HvEntity
     /**
      * @ORM\Column(type="smallint")
      * @Assert\NotNull(message="Ingrese tipo de red social")
-     * @Groups({"main", "scraper"})
+     * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $tipo;
 
     /**
      * @ORM\Column(type="string", length=145)
      * @Assert\NotNull(message="Ingrese cuenta")
-     * @Groups({"main", "scraper"})
+     * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $cuenta;
 

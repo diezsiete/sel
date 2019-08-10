@@ -22,7 +22,7 @@ class Hv implements HvEntity
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Usuario", cascade={"persist", "remove"})
-     * @Groups({"scraper", "scraper-hv"})
+     * @Groups({"scraper", "scraper-hv", "scraper-hv-child"})
      */
     private $usuario;
 
@@ -218,43 +218,43 @@ class Hv implements HvEntity
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Estudio", mappedBy="hv", orphanRemoval=true)
-     * @Groups({"scraper"})
+     * @Groups({"scraper", "estudios"})
      */
     private $estudios;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Experiencia", mappedBy="hv", orphanRemoval=true)
-     * @Groups({"scraper"})
+     * @Groups({"scraper", "experiencia"})
      */
     private $experiencia;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Familiar", mappedBy="hv", orphanRemoval=true)
-     * @Groups({"scraper"})
+     * @Groups({"scraper", "familiares"})
      */
     private $familiares;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Idioma", mappedBy="hv", orphanRemoval=true)
-     * @Groups({"scraper"})
+     * @Groups({"scraper", "idiomas"})
      */
     private $idiomas;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\RedSocial", mappedBy="hv", orphanRemoval=true)
-     * @Groups({"scraper"})
+     * @Groups({"scraper", "redesSociales"})
      */
     private $redesSociales;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Referencia", mappedBy="hv", orphanRemoval=true)
-     * @Groups({"scraper"})
+     * @Groups({"scraper", "referencias"})
      */
     private $referencias;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Vivienda", mappedBy="hv", orphanRemoval=true)
-     * @Groups({"scraper"})
+     * @Groups({"scraper", "viviendas"})
      */
     private $viviendas;
 

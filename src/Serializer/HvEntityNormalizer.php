@@ -24,11 +24,12 @@ class HvEntityNormalizer implements NormalizerInterface
     /**
      * @var ObjectNormalizer
      */
-    private $normalizer;
+    protected $normalizer;
     /**
      * @var EntityManagerInterface
      */
-    private $em;
+    protected $em;
+
 
     public function __construct(ObjectNormalizer $normalizer, EntityManagerInterface $em)
     {
@@ -62,9 +63,25 @@ class HvEntityNormalizer implements NormalizerInterface
                 $callbacks[$mapping['fieldName']] = [$this, 'normalizeDate'];
             }
         }
+
         foreach($targetMetadata->associationMappings as $mapping) {
-            if($mapping['type'] !== ClassMetadataInfo::ONE_TO_MANY) {
+            // relaciones hv child o usuario no normalizamos
+            if($mapping['type'] !== ClassMetadataInfo::ONE_TO_MANY && $mapping['type'] !== ClassMetadataInfo::ONE_TO_ONE) {
                 $callbacks[$mapping['fieldName']] = [$this, 'normalizeAssociation'];
+            }
+        }
+
+
+        if(isset($context['scraper-hv-child'])) {
+            $scraperHvChild = $context['scraper-hv-child'];
+            $childClass = is_object($scraperHvChild) ? get_class($scraperHvChild) : $scraperHvChild;
+            foreach($targetMetadata->associationMappings as $mapping) {
+                if($mapping['targetEntity'] === $childClass ) {
+                    $context['groups'][] = $mapping['fieldName'];
+                    if(is_object($scraperHvChild)) {
+                        $callbacks[$mapping['fieldName']] = [$this, 'filterChild'];
+                    }
+                }
             }
         }
 
@@ -96,8 +113,8 @@ class HvEntityNormalizer implements NormalizerInterface
      */
     public function normalizeAssociation($innerObject, $outerObject, string $attributeName, string $format = null, array $context = [])
     {
-        $data = $this->normalizer->normalize($innerObject, $format, $context);
 
+        $data = $this->normalizer->normalize($innerObject, $format, $context);
         if(is_array($data)) {
             if(count($data) === 1) {
                 $data = $data[array_key_first($data)];
@@ -108,4 +125,17 @@ class HvEntityNormalizer implements NormalizerInterface
 
         return $data;
     }
+
+    public function filterChild($innerObject, $outerObject, string $attributeName, string $format = null, array $context = [])
+    {
+        $response = [];
+        foreach($innerObject as $child) {
+            if($child->getId() === $context['scraper-hv-child']->getId()) {
+                 $response[] = self::normalize($child, $format, $context);
+            }
+        }
+        return $response;
+    }
+
+
 }

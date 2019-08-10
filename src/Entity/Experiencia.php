@@ -22,14 +22,14 @@ class Experiencia implements HvEntity
     /**
      * @ORM\Column(type="string", length=55)
      * @Assert\NotNull(message="Ingrese nombre de la empresa")
-     * @Groups({"main", "scraper"})
+     * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $empresa;
 
     /**
      * @ORM\Column(type="string", length=45)
      * @Assert\NotNull(message="Ingrese cargo")
-     * @Groups({"main", "scraper"})
+     * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $cargo;
 
@@ -37,65 +37,65 @@ class Experiencia implements HvEntity
      * @ORM\ManyToOne(targetEntity="App\Entity\Area", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotNull(message="Selecione area")
-     * @Groups({"main", "scraper"})
+     * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $area;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\NotNull(message="Ingrese descripcion")
-     * @Groups({"main", "scraper"})
+     * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $descripcion;
 
     /**
      * @ORM\Column(type="smallint")
-     * @Groups({"main", "scraper"})
+     * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $duracion;
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @Groups({"main", "scraper"})
+     * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $logrosObtenidos;
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @Groups({"main", "scraper"})
+     * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $motivoRetiro;
 
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
      * @Assert\NotNull(message="Ingrese nombre del jefe")
-     * @Groups({"main", "scraper"})
+     * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $jefeInmediato;
 
     /**
      * @ORM\Column(type="string", length=20, nullable=true)
-     * @Groups({"main", "scraper"})
+     * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $salarioBasico;
 
     /**
      * @ORM\Column(type="string", length=20, nullable=true)
      * @Assert\NotNull(message="Ingrese telefono del jefe inmediato")
-     * @Groups({"main", "scraper"})
+     * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $telefonoJefe;
 
     /**
      * @ORM\Column(type="date", nullable=true)
      * @Assert\NotNull(message="Ingrese fecha")
-     * @Groups({"main", "scraper"})
+     * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $fechaIngreso;
 
     /**
      * @ORM\Column(type="date", nullable=true)
-     * @Groups({"main", "scraper"})
+     * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $fechaRetiro;
 

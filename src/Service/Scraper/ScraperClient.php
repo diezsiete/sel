@@ -66,7 +66,8 @@ class ScraperClient
         $response = $this->request('POST', $url, [
             'json' => $jsonData
         ]);
-        return ResponseManager::instance($response->toArray());
+        return ResponseManager::catchError($response);
+        // return ResponseManager::instance($response->toArray());
     }
 
     /**

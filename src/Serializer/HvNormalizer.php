@@ -11,7 +11,6 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class HvNormalizer extends HvEntityNormalizer implements NormalizerInterface
 {
 
-
     public function normalize($object, $format = null, array $context = [])
     {
         $data = parent::normalize($object, $format, $context);
@@ -25,4 +24,5 @@ class HvNormalizer extends HvEntityNormalizer implements NormalizerInterface
     {
         return $data instanceof Hv;
     }
+
 }

@@ -40,12 +40,12 @@ class HvController extends BaseController
     /**
      * @var HvScraper
      */
-    private $scrapper;
+    private $scraper;
 
-    public function __construct(HvResolver $hvResolver, HvScraper $scrapper)
+    public function __construct(HvResolver $hvResolver, HvScraper $scraper)
     {
         $this->hvResolver = $hvResolver;
-        $this->scrapper = $scrapper;
+        $this->scraper = $scraper;
     }
 
     /**
@@ -75,7 +75,7 @@ class HvController extends BaseController
             $em->flush();
 
 
-            $this->scrapper->updateHv($hv);
+            $this->scraper->updateHv($hv);
 
 
             $this->addFlash('success', "Datos guardados exitosamente");
@@ -177,21 +177,29 @@ class HvController extends BaseController
         if ($data === null) {
             throw new BadRequestHttpException('Invalid JSON');
         }
-
+        $entityId = $entity->getId();
+        
         $entity->setHv($hvResolver->getHv());
-
+        
         $form = $this->createForm($formType, $entity);
         $form->submit($data);
         if (!$form->isValid()) {
             return $this->json(['errors' => $this->getErrorsFromForm($form)], 400);
         }
 
+        /** @var HvEntity $entity */
         $entity = $form->getData();
+        
         $em = $this->getDoctrine()->getManager();
         $em->persist($entity);
         $em->flush();
 
-        $this->scrapper->update($entity);
+        // si el usuario ya esta registrado
+        if($entity->getHv()->getUsuario()) {
+            if(!$entityId) {
+                $this->scraper->insertChild($entity);
+            }
+        }
 
         return $this->json(['ok' => 1]);
     }

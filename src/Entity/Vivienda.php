@@ -22,7 +22,7 @@ class Vivienda implements HvEntity
     /**
      * @ORM\Column(type="string", length=40)
      * @Assert\NotNull(message="Ingrese dirección")
-     * @Groups({"main", "scraper"})
+     * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $direccion;
 
@@ -30,47 +30,47 @@ class Vivienda implements HvEntity
      * @ORM\ManyToOne(targetEntity="App\Entity\Pais")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotNull(message="Seleccione pais donde se ubica la vivienda")
-     * @Groups({"main", "scraper"})
+     * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $pais;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Dpto")
      * @Assert\NotNull(message="Seleccione departamento donde se ubica la vivienda")
-     * @Groups({"main", "scraper"})
+     * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $dpto;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Ciudad")
      * @Assert\NotNull(message="Seleccione ciudad donde se ubica la vivienda")
-     * @Groups({"main", "scraper"})
+     * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $ciudad;
 
     /**
      * @ORM\Column(type="smallint", nullable=true)
-     * @Groups({"main", "scraper"})
+     * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $estrato;
 
     /**
      * @ORM\Column(type="smallint", nullable=true)
      * @Assert\NotNull(message="Seleccione tipo de vivienda")
-     * @Groups({"main", "scraper"})
+     * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $tipoVivienda;
 
     /**
      * @ORM\Column(type="smallint", nullable=true)
      * @Assert\NotNull(message="Ingrese valor")
-     * @Groups({"main", "scraper"})
+     * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $tenedor;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
-     * @Groups({"main", "scraper"})
+     * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $viviendaActual;
 

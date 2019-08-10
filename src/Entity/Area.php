@@ -15,7 +15,7 @@ class Area
     /**
      * @ORM\Id()
      * @ORM\Column(type="string", length=7)
-     * @Groups({"main", "scraper"})
+     * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $id;
 
