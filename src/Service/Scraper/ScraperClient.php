@@ -1,14 +1,15 @@
 <?php
 
 
-namespace App\Service\Scrapper;
+namespace App\Service\Scraper;
 
 
 use App\Service\Configuracion\Configuracion;
-use App\Service\Scrapper\Exception\ScrapperException;
-use App\Service\Scrapper\Exception\ScrapperNotFoundException;
-use App\Service\Scrapper\Response\ResponseManager;
-use App\Service\Scrapper\Response\ScrapperResponse;
+use App\Service\Scraper\Exception\ScraperException;
+use App\Service\Scraper\Exception\ScraperNotFoundException;
+use App\Service\Scraper\Exception\ScraperConflictException;
+use App\Service\Scraper\Response\ResponseManager;
+use App\Service\Scraper\Response\ScraperResponse;
 use Exception;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
@@ -16,8 +17,9 @@ use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
-class ScrapperClient
+class ScraperClient
 {
     /**
      * @var HttpClientInterface
@@ -44,9 +46,9 @@ class ScrapperClient
     /**
      * @param string $url
      * @param array $options
-     * @return ScrapperResponse
-     * @throws ScrapperException
-     * @throws ScrapperNotFoundException
+     * @return ScraperResponse
+     * @throws ScraperException
+     * @throws ScraperNotFoundException
      * @throws TransportExceptionInterface
      * @throws ClientExceptionInterface
      * @throws DecodingExceptionInterface
@@ -65,6 +67,25 @@ class ScrapperClient
             'json' => $jsonData
         ]);
         return ResponseManager::instance($response->toArray());
+    }
+
+    /**
+     * @param string $url
+     * @param $data
+     * @return array
+     * @throws ClientExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws ScraperConflictException
+     * @throws RedirectionExceptionInterface
+     * @throws ScraperException
+     * @throws ScraperNotFoundException
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
+     */
+    public function put(string $url, $data)
+    {
+        $response = $this->request('PUT', $url, ['json' => $data]);
+        return ResponseManager::catchError($response);
     }
 
     /**

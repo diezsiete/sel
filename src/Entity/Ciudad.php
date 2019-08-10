@@ -39,7 +39,7 @@ class Ciudad
 
     /**
      * @ORM\Column(type="string", length=7, nullable=true)
-     * @Groups({"scrapper"})
+     * @Groups({"scraper", "scraper-hv"})
      * @SerializedName("id")
      */
     private $nId;

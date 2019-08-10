@@ -22,21 +22,21 @@ class Familiar implements HvEntity
     /**
      * @ORM\Column(type="string", length=15)
      * @Assert\NotNull(message="Ingrese primer apellido")
-     * @Groups("main")
+     * @Groups({"main", "scraper"})
      */
     private $primerApellido;
 
     /**
      * @ORM\Column(type="string", length=15)
      * @Assert\NotNull(message="Ingrese segundo apellido")
-     * @Groups("main")
+     * @Groups({"main", "scraper"})
      */
     private $segundoApellido;
 
     /**
      * @ORM\Column(type="string", length=30)
      * @Assert\NotNull(message="Ingrese nombre")
-     * @Groups("main")
+     * @Groups({"main", "scraper"})
      */
     private $nombre;
 
@@ -44,54 +44,54 @@ class Familiar implements HvEntity
      * @ORM\Column(type="date", nullable=true)
      * @Assert\NotNull(message="Ingrese fecha de nacimiento")
      * @Assert\Date(message="Ingrese fecha valida")
-     * @Groups("main")
+     * @Groups({"main", "scraper"})
      */
     private $nacimiento;
 
     /**
      * @ORM\Column(type="string", length=2)
      * @Assert\NotNull(message="Ingrese parentesco")
-     * @Groups("main")
+     * @Groups({"main", "scraper"})
      */
     private $parentesco;
 
     /**
      * @ORM\Column(type="smallint")
      * @Assert\NotNull(message="Ingrese ocupación")
-     * @Groups("main")
+     * @Groups({"main", "scraper"})
      */
     private $ocupacion;
 
     /**
      * @ORM\Column(type="smallint", nullable=true)
      * @Assert\NotNull(message="Ingrese genero")
-     * @Groups("main")
+     * @Groups({"main", "scraper"})
      */
     private $genero;
 
     /**
      * @ORM\Column(type="smallint", nullable=true)
      * @Assert\NotNull(message="Ingrese estado civil")
-     * @Groups("main")
+     * @Groups({"main", "scraper"})
      */
     private $estadoCivil;
 
     /**
      * @ORM\Column(type="string", length=35, nullable=true)
-     * @Groups("main")
+     * @Groups({"main", "scraper"})
      */
     private $identificacion;
 
     /**
      * @ORM\Column(type="string", length=2, nullable=true)
-     * @Groups("main")
+     * @Groups({"main", "scraper"})
      */
     private $identificacionTipo;
 
     /**
      * @ORM\Column(type="string", length=3, nullable=true)
      * @Assert\NotNull(message="Ingrese nivel academico")
-     * @Groups("main")
+     * @Groups({"main", "scraper"})
      */
     private $nivelAcademico;
 

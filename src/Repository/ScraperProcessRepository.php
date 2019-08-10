@@ -2,17 +2,17 @@
 
 namespace App\Repository;
 
-use App\Entity\ScrapperProcess;
+use App\Entity\ScraperProcess;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
- * @method ScrapperProcess|null find($id, $lockMode = null, $lockVersion = null)
- * @method ScrapperProcess|null findOneBy(array $criteria, array $orderBy = null)
- * @method ScrapperProcess[]    findAll()
- * @method ScrapperProcess[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method ScraperProcess|null find($id, $lockMode = null, $lockVersion = null)
+ * @method ScraperProcess|null findOneBy(array $criteria, array $orderBy = null)
+ * @method ScraperProcess[]    findAll()
+ * @method ScraperProcess[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ScrapperProcessRepository extends ServiceEntityRepository
+class ScraperProcessRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {

@@ -22,28 +22,28 @@ class Referencia implements HvEntity
     /**
      * @ORM\Column(type="smallint")
      * @Assert\NotNull(message="Ingrese el tipo de referencia")
-     * @Groups("main")
+     * @Groups({"main", "scraper"})
      */
     private $tipo;
 
     /**
      * @ORM\Column(type="string", length=105)
      * @Assert\NotNull(message="Ingrese nombre")
-     * @Groups("main")
+     * @Groups({"main", "scraper"})
      */
     private $nombre;
 
     /**
      * @ORM\Column(type="string", length=145)
      * @Assert\NotNull(message="Ingrese ocupación")
-     * @Groups("main")
+     * @Groups({"main", "scraper"})
      */
     private $ocupacion;
 
     /**
      * @ORM\Column(type="string", length=45, nullable=true)
      * @Assert\NotNull(message="Ingrese parentesco")
-     * @Groups("main")
+     * @Groups({"main", "scraper"})
      */
     private $parentesco;
 
@@ -51,7 +51,7 @@ class Referencia implements HvEntity
      * @ORM\Column(type="string", length=20)
      * @Assert\NotNull(message="Ingrese celular de la referencia")
      * @Assert\Positive(message="Ingrese valor numerico")
-     * @Groups("main")
+     * @Groups({"main", "scraper"})
      */
     private $celular;
 
@@ -59,19 +59,19 @@ class Referencia implements HvEntity
      * @ORM\Column(type="string", length=20, nullable=true)
      * @Assert\NotNull(message="Ingrese telefono de la referencia")
      * @Assert\Positive(message="Ingrese valor numerico")
-     * @Groups("main")
+     * @Groups({"main", "scraper"})
      */
     private $telefono;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
-     * @Groups("main")
+     * @Groups({"main", "scraper"})
      */
     private $direccion;
 
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
-     * @Groups("main")
+     * @Groups({"main", "scraper"})
      */
     private $entidad;
 

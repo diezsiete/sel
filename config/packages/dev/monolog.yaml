@@ -24,3 +24,9 @@ monolog:
             path: "%kernel.logs_dir%/sel.log"
             level: debug
             channels: ["sel"]
+
+        scraper:
+            type: stream
+            path: "%kernel.logs_dir%/scraper.log"
+            level: debug
+            channels: ["scraper"]

@@ -32,7 +32,7 @@ class Usuario implements UserInterface
     /**
      * @Assert\NotBlank(message="Por favor ingrese identificación")
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Groups({"scrapper"})
+     * @Groups({"scraper", "scraper-hv"})
      */
     private $identificacion;
 
@@ -52,33 +52,33 @@ class Usuario implements UserInterface
      * @Assert\NotBlank(message="Por favor ingrese correo")
      * @Assert\Email()
      * @ORM\Column(type="string", length=140, nullable=true)
-     * @Groups({"scrapper"})
+     * @Groups({"scraper", "scraper-hv"})
      */
     private $email;
 
     /**
      * @Assert\NotBlank(message="Por favor ingrese su nombre")
      * @ORM\Column(type="string", length=60)
-     * @Groups({"scrapper"})
+     * @Groups({"scraper", "scraper-hv"})
      */
     private $primerNombre;
 
     /**
      * @ORM\Column(type="string", length=60, nullable=true)
-     * @Groups({"scrapper"})
+     * @Groups({"scraper", "scraper-hv"})
      */
     private $segundoNombre;
 
     /**
      * @Assert\NotBlank(message="Por favor ingrese su apellido")
      * @ORM\Column(type="string", length=60)
-     * @Groups({"scrapper"})
+     * @Groups({"scraper", "scraper-hv"})
      */
     private $primerApellido;
 
     /**
      * @ORM\Column(type="string", length=60, nullable=true)
-     * @Groups({"scrapper"})
+     * @Groups({"scraper", "scraper-hv"})
      */
     private $segundoApellido;
 

@@ -6,10 +6,15 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ScrapperProcessRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ScraperProcessRepository")
  */
-class ScrapperProcess
+class ScraperProcess
 {
+    const WAITING = 3;
+    const EXECUTING = 2;
+    const SUCCESS = 1;
+    const FAILED = 0;
+
     use TimestampableEntity;
 
     /**

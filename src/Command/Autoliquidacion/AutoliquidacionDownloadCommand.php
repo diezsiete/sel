@@ -14,11 +14,11 @@ use App\Command\Helpers\TraitableCommand\TraitableCommand;
 use App\Repository\Autoliquidacion\AutoliquidacionEmpleadoRepository;
 use App\Repository\Autoliquidacion\AutoliquidacionRepository;
 use App\Service\Configuracion\Configuracion;
-use App\Service\Scrapper\AutoliquidacionScrapper;
-use App\Service\Scrapper\Exception\ScrapperConflictException;
-use App\Service\Scrapper\Exception\ScrapperException;
-use App\Service\Scrapper\Exception\ScrapperNotFoundException;
-use App\Service\Scrapper\Response\ResponseManager;
+use App\Service\Scraper\AutoliquidacionScraper;
+use App\Service\Scraper\Exception\ScraperConflictException;
+use App\Service\Scraper\Exception\ScraperException;
+use App\Service\Scraper\Exception\ScraperNotFoundException;
+use App\Service\Scraper\Response\ResponseManager;
 use Doctrine\Common\Annotations\Reader;
 use Exception;
 use Symfony\Component\Console\Input\InputInterface;
@@ -41,7 +41,7 @@ class AutoliquidacionDownloadCommand extends TraitableCommand
      */
     private $autoliquidacionRepository;
     /**
-     * @var AutoliquidacionScrapper
+     * @var AutoliquidacionScraper
      */
     private $scrapper;
 
@@ -62,7 +62,7 @@ class AutoliquidacionDownloadCommand extends TraitableCommand
     public function __construct(Reader $annotationReader, EventDispatcherInterface $eventDispatcher,
                                 AutoliquidacionRepository $autoliquidacionRepository,
                                 AutoliquidacionEmpleadoRepository $autoliquidacionEmpleadoRepository,
-                                AutoliquidacionScrapper $scrapper, Configuracion $configuracion)
+                                AutoliquidacionScraper $scrapper, Configuracion $configuracion)
     {
         parent::__construct($annotationReader, $eventDispatcher);
 
@@ -101,10 +101,10 @@ class AutoliquidacionDownloadCommand extends TraitableCommand
                             $this->scrapper->generatePdf($ident, $periodo);
                             $this->scrapper->downloadPdf($ident, $periodo);
                             $this->scrapper->deletePdf($ident, $periodo);
-                        } catch (ScrapperNotFoundException $e) {
+                        } catch (ScraperNotFoundException $e) {
                             $code = ResponseManager::NOTFOUND;
                             $salida = $e->getMessage();
-                        } catch (ScrapperException $e) {
+                        } catch (ScraperException $e) {
                             $exito = false;
                             $code = ResponseManager::ERROR;
                             $salida = $e->getMessage();
@@ -116,10 +116,10 @@ class AutoliquidacionDownloadCommand extends TraitableCommand
 
                         try {
                             $this->scrapper->clearIdent();
-                        } catch (ScrapperConflictException $e) {
+                        } catch (ScraperConflictException $e) {
                             $this->scrapper->reload();
                         }
-                    } catch (ScrapperException $e) {
+                    } catch (ScraperException $e) {
                         $this->scrapper
                             ->logout()
                             ->close()

@@ -23,14 +23,14 @@ class Estudio implements HvEntity
      * @ORM\ManyToOne(targetEntity="App\Entity\EstudioCodigo")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotNull(message="Seleccione el area de estudio")
-     * @Groups("main")
+     * @Groups({"main", "scraper"})
      */
     private $codigo;
 
     /**
      * @ORM\Column(type="string", length=75)
      * @Assert\NotNull(message="Ingrese nombre del estudio")
-     * @Groups("main")
+     * @Groups({"main", "scraper"})
      */
     private $nombre;
 
@@ -38,13 +38,13 @@ class Estudio implements HvEntity
      * @ORM\ManyToOne(targetEntity="App\Entity\EstudioInstituto")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotNull(message="Seleccione instituto. Si no lo encuentra seleccione opción 'NO APLICA'")
-     * @Groups("main")
+     * @Groups({"main", "scraper"})
      */
     private $instituto;
 
     /**
      * @ORM\Column(type="date", nullable=true)
-     * @Groups("main")
+     * @Groups({"main", "scraper"})
      */
     private $fin;
 
@@ -66,7 +66,7 @@ class Estudio implements HvEntity
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
-     * @Groups("main")
+     * @Groups({"main", "scraper"})
      */
     private $graduado;
 
@@ -77,7 +77,7 @@ class Estudio implements HvEntity
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
-     * @Groups("main")
+     * @Groups({"main", "scraper"})
      */
     private $cancelo;
 

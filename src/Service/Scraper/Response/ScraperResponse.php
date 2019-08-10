@@ -1,10 +1,10 @@
 <?php
 
 
-namespace App\Service\Scrapper\Response;
+namespace App\Service\Scraper\Response;
 
 
-class ScrapperResponse
+class ScraperResponse
 {
     private $ok = false;
     private $message = "";

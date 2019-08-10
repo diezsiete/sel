@@ -23,7 +23,7 @@ use App\Form\RedSocialFormType;
 use App\Form\ReferenciaFormType;
 use App\Form\ViviendaFormType;
 use App\Service\Hv\HvResolver;
-use App\Service\Scrapper\HvScrapper;
+use App\Service\Scraper\HvScraper;
 use Omines\DataTablesBundle\DataTableFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,11 +38,11 @@ class HvController extends BaseController
      */
     private $hvResolver;
     /**
-     * @var HvScrapper
+     * @var HvScraper
      */
     private $scrapper;
 
-    public function __construct(HvResolver $hvResolver, HvScrapper $scrapper)
+    public function __construct(HvResolver $hvResolver, HvScraper $scrapper)
     {
         $this->hvResolver = $hvResolver;
         $this->scrapper = $scrapper;
@@ -75,7 +75,7 @@ class HvController extends BaseController
             $em->flush();
 
 
-            $this->scrapper->insert($hv);
+            $this->scrapper->updateHv($hv);
 
 
             $this->addFlash('success', "Datos guardados exitosamente");
@@ -186,10 +186,12 @@ class HvController extends BaseController
             return $this->json(['errors' => $this->getErrorsFromForm($form)], 400);
         }
 
-        $estudio = $form->getData();
+        $entity = $form->getData();
         $em = $this->getDoctrine()->getManager();
-        $em->persist($estudio);
+        $em->persist($entity);
         $em->flush();
+
+        $this->scrapper->update($entity);
 
         return $this->json(['ok' => 1]);
     }

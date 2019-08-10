@@ -22,14 +22,14 @@ class Experiencia implements HvEntity
     /**
      * @ORM\Column(type="string", length=55)
      * @Assert\NotNull(message="Ingrese nombre de la empresa")
-     * @Groups("main")
+     * @Groups({"main", "scraper"})
      */
     private $empresa;
 
     /**
      * @ORM\Column(type="string", length=45)
      * @Assert\NotNull(message="Ingrese cargo")
-     * @Groups("main")
+     * @Groups({"main", "scraper"})
      */
     private $cargo;
 
@@ -37,65 +37,65 @@ class Experiencia implements HvEntity
      * @ORM\ManyToOne(targetEntity="App\Entity\Area", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotNull(message="Selecione area")
-     * @Groups("main")
+     * @Groups({"main", "scraper"})
      */
     private $area;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\NotNull(message="Ingrese descripcion")
-     * @Groups("main")
+     * @Groups({"main", "scraper"})
      */
     private $descripcion;
 
     /**
      * @ORM\Column(type="smallint")
-     * @Groups("main")
+     * @Groups({"main", "scraper"})
      */
     private $duracion;
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @Groups("main")
+     * @Groups({"main", "scraper"})
      */
     private $logrosObtenidos;
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @Groups("main")
+     * @Groups({"main", "scraper"})
      */
     private $motivoRetiro;
 
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
      * @Assert\NotNull(message="Ingrese nombre del jefe")
-     * @Groups("main")
+     * @Groups({"main", "scraper"})
      */
     private $jefeInmediato;
 
     /**
      * @ORM\Column(type="string", length=20, nullable=true)
-     * @Groups("main")
+     * @Groups({"main", "scraper"})
      */
     private $salarioBasico;
 
     /**
      * @ORM\Column(type="string", length=20, nullable=true)
      * @Assert\NotNull(message="Ingrese telefono del jefe inmediato")
-     * @Groups("main")
+     * @Groups({"main", "scraper"})
      */
     private $telefonoJefe;
 
     /**
      * @ORM\Column(type="date", nullable=true)
      * @Assert\NotNull(message="Ingrese fecha")
-     * @Groups("main")
+     * @Groups({"main", "scraper"})
      */
     private $fechaIngreso;
 
     /**
      * @ORM\Column(type="date", nullable=true)
-     * @Groups("main")
+     * @Groups({"main", "scraper"})
      */
     private $fechaRetiro;
 

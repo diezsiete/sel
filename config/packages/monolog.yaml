@@ -1,3 +1,4 @@
 monolog:
   channels:
     - 'sel'
+    - 'scraper'
