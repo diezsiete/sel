@@ -14,12 +14,14 @@
             </div>
             <div class="header-column justify-content-end">
                 <div class="header-row">
+                    {% set registro_class = app.request.attributes.get('_route') is same as('registro_datos_basicos') ? 'btn-secondary' : 'text-color-secondary' %}
                     <a href="{{ path('registro_datos_basicos') }}"
-                       class="btn btn-tertiary rounded-0 font-weight-bold d-none d-sm-inline-flex align-items-center align-self-stretch px-4">
-                        <span class="font-weight-light mx-1"> Registrarse !
-                        </span>
+                       class="btn rounded-0 d-none d-sm-inline-flex align-items-center align-self-stretch px-4 {{ registro_class }}">
+                         Registrarse
                     </a>
-                    <a href="{{ path('app_login') }}" class="btn btn-quaternary rounded-0 d-flex align-items-center align-self-stretch">
+                    {% set login_class = app.request.attributes.get('_route') is same as('app_login') ? 'btn-primary' : 'text-color-primary' %}
+                    <a href="{{ path('app_login') }}"
+                       class="btn rounded-0 d-flex align-items-center align-self-stretch pr-5 {{ login_class }}">
                         Iniciar sesion
                     </a>
                 </div>

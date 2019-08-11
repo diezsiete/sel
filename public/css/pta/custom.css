@@ -1,3 +1,6 @@
+#header .header-top {
+    min-height: auto;
+}
 .page-header.no-header{
     padding: 1px 0;
 }
