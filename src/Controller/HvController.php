@@ -212,9 +212,18 @@ class HvController extends BaseController
      */
     public function entityDelete(HvEntity $entity)
     {
+        $class_entity = get_class($entity);
+        $hv = $entity->getHv();
+
         $em = $this->getDoctrine()->getManager();
         $em->remove($entity);
         $em->flush();
+
+        // si el usuario ya esta registrado
+        if($hv->getUsuario()) {
+            $this->scraper->deleteChild($hv, $class_entity);
+        }
+
         return $this->json(['ok' => 1]);
     }
 

@@ -8,6 +8,7 @@ use App\Entity\Hv;
 use App\Entity\HvEntity;
 use App\Entity\ScraperProcess;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -21,6 +22,8 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  *      @see HvScraper::__insertChild
  * @method null updateChild(HvEntity $hvEntity)
  *      @see HvScraper::__updateChild
+ * @method null deleteChild(Hv $hv, string $childClass)
+ *      @see HvScraper::__deleteChild
  */
 class HvScraper
 {
@@ -58,8 +61,9 @@ class HvScraper
             if(method_exists($this, "__$name")) {
                 /** @var HvEntity $hvEntity */
                 $hvEntity = $arguments[0];
-                $response = call_user_func([$this, "__$name"], $hvEntity);
-                if ($response['id']) {
+                $response = call_user_func_array([$this, "__$name"], $arguments);
+
+                if (isset($response['id'])) {
                     $process = new ScraperProcess($response['id'], $response['estado'], $response['porcentaje'], $hvEntity->getHv()->getUsuario());
                     $this->em->persist($process);
                     $this->em->flush();
@@ -98,6 +102,26 @@ class HvScraper
             'groups' => ['scraper-hv-child'], 'scraper-hv-child' => get_class($hvEntity)]);
 
         return $this->scraperClient->put('/hv/child', $data);
+    }
+
+    public function __deleteChild(Hv $hv, string $childClass)
+    {
+        $data = $this->normalizer->normalize($hv, null, [
+            'groups' => ['scraper-hv-child'], 'scraper-hv-child' => $childClass]);
+
+        /** @var ClassMetadataInfo $targetMetadata */
+        $targetMetadata = $this->em->getMetadataFactory()->getMetadataFor(Hv::class);
+        $deleteAll = false;
+        foreach($targetMetadata->associationMappings as $mapping) {
+            if($mapping['targetEntity'] === $childClass) {
+                $deleteAll = count($data[$mapping['fieldName']]) === 0;
+            }
+        }
+        if($deleteAll) {
+            return $this->scraperClient->delete('/hv/child', $data);
+        } else {
+            return $this->scraperClient->put('/hv/child', $data);
+        }
     }
     
 }

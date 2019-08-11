@@ -89,6 +89,12 @@ class ScraperClient
         return ResponseManager::catchError($response);
     }
 
+    public function delete(string $url, $data)
+    {
+        $response = $this->request('DELETE', $url, ['json' => $data]);
+        return ResponseManager::catchError($response);
+    }
+
     /**
      * @param string $url
      * @return resource
