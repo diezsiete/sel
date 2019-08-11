@@ -67,6 +67,9 @@ abstract class TraitableCommand extends Command
     protected function configure()
     {
         $this->eventDispatcher->dispatch(new ConfigureEvent());
+
+        $this->removeListeners(Configure::class);
+
         parent::configure();
     }
 
@@ -97,6 +100,21 @@ abstract class TraitableCommand extends Command
                         if($methodAnnotation instanceof $annotationClass) {
                             $this->eventDispatcher->addListener($eventClass, [$this, $methodName]);
                         }
+                    }
+                }
+            }
+        }
+    }
+
+    private function removeListeners($annotationClass)
+    {
+        $methods = get_class_methods($this);
+        foreach($methods as $methodName) {
+            $reflectionMethod = new ReflectionMethod($this, $methodName);
+            if($methodAnnotations = $this->annotationReader->getMethodAnnotations($reflectionMethod)) {
+                foreach($methodAnnotations as $methodAnnotation) {
+                    if($methodAnnotation instanceof $annotationClass) {
+                        $this->eventDispatcher->removeListener(static::$annotationsEvents[$annotationClass], [$this, $methodName]);
                     }
                 }
             }
