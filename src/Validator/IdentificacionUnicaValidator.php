@@ -23,12 +23,13 @@ class IdentificacionUnicaValidator extends ConstraintValidator
         $identificacion = is_object($value) ? $value->identificacion : $value;
         $existingUser = $this->usuarioRepository->findOneBy(['identificacion' => $identificacion]);
 
-        if(is_object($value) && $existingUser->getId() === $value->id) {
-            return null;
-        }
         if(!$existingUser) {
             return null;
         }
+        if(is_object($value) && $existingUser->getId() === $value->id) {
+            return null;
+        }
+
         $this->context->buildViolation($constraint->message)
             ->addViolation();
     }
