@@ -17,7 +17,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class MigrationUsuarioCommand extends MigrationCommand
 {
-    protected static $defaultName = 'migration:usuario';
+    protected static $defaultName = 'sel:migration:usuario';
     /**
      * @var ManagerRegistry
      */

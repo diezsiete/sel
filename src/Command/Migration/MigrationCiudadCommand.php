@@ -24,7 +24,7 @@ class MigrationCiudadCommand extends MigrationCommand
      */
     private $lastDpto = null;
 
-    protected static $defaultName = 'migration:ciudad';
+    protected static $defaultName = 'sel:migration:ciudad';
 
     protected function configure()
     {

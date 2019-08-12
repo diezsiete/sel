@@ -16,6 +16,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class MigrationDefaultsCommand extends MigrationCommand
 {
+    protected static $defaultName = 'sel:migration:defaults';
+
     private $entitiesData = [
         [
             'sql' => "SELECT * FROM `estudio_codigo`",
@@ -60,8 +62,6 @@ class MigrationDefaultsCommand extends MigrationCommand
             'columnName' => 'name'
         ],
     ];
-
-    protected static $defaultName = 'migration:defaults';
 
     protected function configure()
     {

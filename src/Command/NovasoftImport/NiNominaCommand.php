@@ -85,7 +85,7 @@ class NiNominaCommand extends PeriodoCommand
                 $empleado->getUsuario()->getNombreCompleto(true)));
             
             $reportesNomina = $this->novasoftSsrs
-                ->setSsrsDb($this->getEmpleadoSsrsDb($empleado))
+                ->setSsrsDb($this->getEmpleadoSsrsDb($empleado)->getNombre())
                 ->getReporteNomina($empleado->getUsuario(), $desde, $hasta);
             
             foreach($reportesNomina as $reporteNomina) {

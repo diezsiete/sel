@@ -9,7 +9,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class NiConvenioCommand extends NiCommand
 {
-    protected static $defaultName = 'ni:convenio';
+    protected static $defaultName = 'sel:ni:convenio';
 
 
     protected function configure()
@@ -26,7 +26,7 @@ class NiConvenioCommand extends NiCommand
                 $this->io->writeln("SsrsDb: " . $db->getNombre());
                 $this->io->writeln(" convenios:");
                 if($db->hasConvenios()) {
-                    $convenios = $this->reportesServicioEmpleados->setSsrsDb($db)->getConvenios();
+                    $convenios = $this->reportesServicioEmpleados->setSsrsDb($db->getNombre())->getConvenios();
                     foreach($convenios as $convenio) {
                         $convenio->setSsrsDb($db->getNombre());
                         $persisted = $this->persistConvenio($convenio);
