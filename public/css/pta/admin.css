@@ -1,0 +1,42 @@
+.header-nav-bar {
+    background: #38414a;
+}
+
+
+
+
+#header .header-nav-admin nav > ul > li > a {
+    display: block;
+    color: rgba(255,255,255,.7);
+    font-size: 15px;
+    -webkit-transition: all .5s ease;
+    transition: all .5s ease;
+    line-height: 20px;
+    padding: 20px;
+    position: relative;
+
+}
+
+#header .header-nav-admin nav > ul > li > a:after {
+    display: none;
+}
+
+#header .header-nav-admin nav > ul > li > a:active {
+    background-color: transparent;
+    text-decoration: none;
+    color: #CCC;
+}
+
+#header .header-nav-admin nav > ul > li > a.dropdown-toggle .fa-chevron-down {
+    display: none;
+}
+
+#header .header-nav-admin nav > ul > li > a.active {
+    background-color: transparent;
+}
+
+#header .header-nav-admin nav > ul > li.open > a, #header .header-nav-admin nav > ul > li:hover > a {
+    background: #CCC;
+    color: #FFF;
+}
+
