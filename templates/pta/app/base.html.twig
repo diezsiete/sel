@@ -1,0 +1,20 @@
+{% extends 'pta/base.html.twig' %}
+{% block body_header_class %}page-header page-header-modern page-header-sm{% endblock %}
+{% block body_header_title_class %}col-md-8 order-2 order-md-1 align-self-center p-static{% endblock %}
+{% block body_header_attrs %}class="text-dark"{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/pta/admin.css') }}">
+{% endblock %}
+
+{% block main %}
+    {% block body_header %}
+        {{ parent() }}
+    {% endblock %}
+    <div class="container pb-1">
+        {% block body %}
+            {{ parent() }}
+        {% endblock %}
+    </div>
+{% endblock %}

@@ -57,8 +57,9 @@
 
         <!-- Theme Custom CSS -->
         <link rel="stylesheet" href="{{ asset('/css/pta/custom.css') }}">
+
         {% if app.user %}
-            <link rel="stylesheet" href="{{ asset('css/pta/admin.css') }}">
+            <link rel="stylesheet" href="{{ asset('css/pta/admin-nav.css') }}">
         {% endif %}
 
 
@@ -71,27 +72,36 @@
 <body>
 
 <div class="body">
-    <header id="header" class="header-effect-shrink"
-            data-plugin-options="{'stickyEnabled': true, 'stickyEffect': 'shrink', 'stickyEnableOnBoxed': true, 'stickyEnableOnMobile': true, 'stickyChangeLogo': true, 'stickyStartAt': 120, 'stickyHeaderContainerHeight': 70}">
+
     {{ include('pta/blocks/header/_base-header.html.twig') }}
-    </header>
-
-
 
     <div role="main" class="main">
-        {% block body_header %}
-            <section class="page-header page-header-classic page-header-md no-header">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12 order-2 order-md-1 align-self-center p-static">
-                            <h1 data-title-border></h1>
+        {% block main %}
+            {% block body_header %}
+                <section
+                        class="{% block body_header_class %}page-header page-header-classic page-header-md no-header{% endblock %}">
+                    <div class="container">
+                        <div class="row">
+                            <div class="{% block body_header_title_class %}col-md-12 order-2 order-md-1 align-self-center p-static{% endblock %}">
+                                <h1 {% block body_header_attrs %}data-title-border{% endblock %}>
+                                    {% block body_header_title %}{% endblock %}
+                                </h1>
+                            </div>
+                            {#<div class="col-md-4 order-1 order-md-2 align-self-center">
+                                <ul class="breadcrumb d-block text-md-right">
+                                    <li><a href="#">Home</a></li>
+                                    <li class="active">Features</li>
+                                </ul>
+                            </div>#}
+                            {% block body_header_right %}
+                            {% endblock %}
                         </div>
                     </div>
-                </div>
-            </section>
-        {% endblock %}
+                </section>
+            {% endblock %}
 
-        {% block body %}
+            {% block body %}
+            {% endblock %}
         {% endblock %}
     </div>
 

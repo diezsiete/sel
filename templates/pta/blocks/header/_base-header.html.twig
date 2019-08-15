@@ -1,38 +1,42 @@
+<header id="header" class="header-effect-shrink"
+        data-plugin-options="{'stickyEnabled': true, 'stickyEffect': 'shrink', 'stickyEnableOnBoxed': true, 'stickyEnableOnMobile': true, 'stickyChangeLogo': true, 'stickyStartAt': 120, 'stickyHeaderContainerHeight': 70}">
 
-<div class="header-body border-top-0">
-    {% if not app.user %}
-        {{ include('pta/blocks/header/_header-topv2.html.twig') }}
-    {% endif %}
-    <div class="header-container container">
-        <div class="header-row">
-            <div class="header-column">
-                <div class="header-row">
-                    <div class="header-logo">
-                        <a href="{{ path('pta_index') }}">
-                            <img alt="Porto" width="125" height="48" data-sticky-width="107" data-sticky-height="40" src="{{ asset('/img/pta/logo-PTA3.png') }}">
-                        </a>
+    <div class="header-body border-top-0">
+        {% if not app.user %}
+            {{ include('pta/blocks/header/_header-topv2.html.twig') }}
+        {% endif %}
+        <div class="header-container container">
+            <div class="header-row">
+                <div class="header-column">
+                    <div class="header-row">
+                        <div class="header-logo">
+                            <a href="{{ path('pta_index') }}">
+                                <img alt="Porto" width="125" height="48" data-sticky-width="107" data-sticky-height="40" src="{{ asset('/img/pta/logo-PTA3.png') }}">
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="header-column justify-content-end">
-                <div class="header-row">
-                    <div class="header-nav header-nav-stripe order-2 order-lg-1">
-                        <div class="header-nav-main header-nav-main-square header-nav-main-effect-1 header-nav-main-sub-effect-1">
-                            {{ include('pta/blocks/header/_nav.html.twig') }}
+                <div class="header-column justify-content-end">
+                    <div class="header-row">
+                        <div class="header-nav header-nav-stripe order-2 order-lg-1">
+                            <div class="header-nav-main header-nav-main-square header-nav-main-effect-1 header-nav-main-sub-effect-1">
+                                {{ include('pta/blocks/header/_nav.html.twig') }}
+                            </div>
+                            <button class="btn header-btn-collapse-nav" data-toggle="collapse" data-target=".header-nav-main nav">
+                                <i class="fas fa-bars"></i>
+                            </button>
                         </div>
-                        <button class="btn header-btn-collapse-nav" data-toggle="collapse" data-target=".header-nav-main nav">
-                            <i class="fas fa-bars"></i>
-                        </button>
+                        {% if app.user %}
+                            {{ include('pta/blocks/header/_logged.html.twig') }}
+                        {% endif %}
                     </div>
-                    {% if app.user %}
-                        {{ include('pta/blocks/header/_logged.html.twig') }}
-                    {% endif %}
                 </div>
             </div>
         </div>
+        {% if app.user %}
+            {{ include('pta/blocks/header/_nav-admin.html.twig') }}
+        {% endif %}
     </div>
-    {% if app.user %}
-        {{ include('pta/blocks/header/_nav-admin.html.twig') }}
-    {% endif %}
-</div>
+
+</header>

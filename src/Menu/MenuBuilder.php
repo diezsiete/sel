@@ -69,6 +69,10 @@ class MenuBuilder
 
         }
 
+        if($this->security->isGranted(['ROLE_VER_AUTOLIQUIDACIONES'], $user)) {
+            $this->createAutoliquidacionesMenu($menu);
+        }
+
         if($this->security->isGranted(['ROLE_ADMIN_USUARIOS'], $user)) {
             $menu->addChild('Administración')
                 ->setUri('#')
@@ -77,11 +81,6 @@ class MenuBuilder
                 ->addChild('Usuarios', ['route' => 'admin_usuarios'])
                 ->setExtra('icon', 'fas fa-users');
         }
-
-        if($this->security->isGranted(['ROLE_VER_AUTOLIQUIDACIONES'], $user)) {
-            $this->createAutoliquidacionesMenu($menu);
-        }
-
 
         return $menu;
     }
