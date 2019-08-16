@@ -1,0 +1,62 @@
+<nav class="js-mega-menu navbar navbar-expand-lg g-brd-y g-brd-2 g-pa-0 admin">
+    <div class="container">
+        <!-- Responsive Toggle Button -->
+        <button class="navbar-toggler navbar-toggler-right btn g-line-height-1 g-brd-none g-pa-0" type="button"
+                aria-label="Toggle navigation"
+                aria-expanded="false"
+                aria-controls="navBar"
+                data-toggle="collapse"
+                data-target="#navBar">
+                        <span class="hamburger hamburger--slider g-px-0">
+                            <span class="hamburger-box">
+                                <span class="hamburger-inner"></span>
+                            </span>
+                        </span>
+        </button>
+        <!-- End Responsive Toggle Button -->
+
+        <!-- Navigation -->
+        <div id="navBar"
+             class="collapse navbar-collapse align-items-center order-lg-last g-brd-top g-brd-none--lg g-brd-primary-dark-v1">
+
+            {{ knp_menu_render(
+                'main', {
+                    'icons': false,
+                    'currentClass': 'nav-active',
+                    'ancestorClass': 'nav-expanded nav-active',
+                    'branch_class': 'hs-has-sub-menu',
+                    'root': {
+                        'attributes': {
+                            'class': 'navbar-nav g-py-30 g-py-0--lg',
+                        }
+                    },
+                    'list': {
+                        'attributes': {
+                            'class': 'hs-sub-menu list-unstyled u-shadow-v11 g-min-width-220 g-mt-2 animated'
+                        }
+                    },
+                    'item': {
+                        'attributes': {
+                            'class': {
+                                'getLevel' : {
+                                    1: 'nav-item',
+                                    2: 'dropdown-item'
+                                }
+                            }
+                        }
+                    },
+                    'link': {
+                        'attributes': {
+                            'class': {
+                                'getLevel' : {
+                                    1: 'nav-link g-color-white g-brd-x--lg g-brd-primary-dark-v1 g-bg-primary-dark-v1--hover g-font-weight-600 g-font-size-default g-px-17 g-px-23--xl g-py-15',
+                                    2: 'nav-link g-color-text g-font-weight-600'
+                                }
+                            }
+                        }
+                    }
+                }, 'custom') }}
+        </div>
+        <!-- End Navigation -->
+    </div>
+</nav>

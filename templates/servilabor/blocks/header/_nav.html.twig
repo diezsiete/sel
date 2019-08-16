@@ -1,0 +1,190 @@
+<nav class="js-mega-menu navbar navbar-expand-lg hs-menu-initialized hs-menu-horizontal">
+    <div class="container">
+        <!-- Responsive Toggle Button -->
+        <button class="navbar-toggler navbar-toggler-right btn g-line-height-1 g-brd-none g-pa-0 g-pos-abs g-top-minus-3 g-right-0"
+                type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="navBar"
+                data-toggle="collapse" data-target="#navBar">
+                        <span class="hamburger hamburger--slider">
+                            <span class="hamburger-box">
+                                <span class="hamburger-inner"></span>
+                            </span>
+                        </span>
+        </button>
+        <!-- End Responsive Toggle Button -->
+
+        <!-- Logo -->
+        <a href="{{ path('servilabor_inicio') }}" class="navbar-brand d-flex">
+            <img src="{{ asset('img/servilabor/logo-servilabor.png') }}" alt="mainlogo"/>
+        </a>
+        <!-- End Logo -->
+
+        <!-- Navigation -->
+        <div class="collapse navbar-collapse align-items-center flex-sm-row g-pt-10 g-pt-5--lg g-mr-40--lg"
+             id="navBar">
+            <ul class="navbar-nav text-uppercase g-pos-rel g-font-weight-600 ml-auto">
+                <!-- Intro -->
+                <li class="nav-item  g-mx-10--lg g-mx-15--xl">
+                    <a href="{{ path('servilabor_inicio') }}" class="nav-link g-py-7 g-px-0">Inicio</a>
+                </li>
+                <!-- End Intro -->
+
+                <!-- Nosotros -->
+                <li class="nav-item  g-mx-10--lg g-mx-15--xl">
+                    <a href="{{ path('servilabor_nosotros') }}" class="nav-link g-py-7 g-px-0">Nosotros</a>
+                </li>
+                <!-- End Nosotros -->
+
+
+                <!-- Servicios -->
+                <li class="hs-has-sub-menu nav-item  g-mx-10--lg g-mx-15--xl" data-animation-in="fadeIn"
+                    data-animation-out="fadeOut">
+                    <a id="nav-link-pages" class="nav-link g-py-7 g-px-0"
+                       href="{{ path('servilabor_servicios') }}" aria-haspopup="true" aria-expanded="false"
+                       aria-controls="nav-submenu-pages">
+                        Servicios
+                    </a>
+
+                    <ul class="hs-sub-menu list-unstyled u-shadow-v11 g-brd-top g-brd-primary g-brd-top-2 g-min-width-220 g-mt-18 g-mt-8--lg--scrolling"
+                        id="nav-submenu-pages" aria-labelledby="nav-link-pages">
+                        <li class="dropdown-item ">
+                            <a class="nav-link"
+                               href="{{ path('servilabor_servicio', {servicio: 'outsourcing'}) }}">
+                                Outsourcing
+                            </a>
+                        </li>
+                        <li class="dropdown-item ">
+                            <a class="nav-link" href="{{ path('servilabor_servicio', {servicio: 'rpo'}) }}">
+                                Rpo
+                            </a>
+                        </li>
+                        <li class="dropdown-item ">
+                            <a class="nav-link"
+                               href="{{ path('servilabor_servicio', {servicio: 'payroll'}) }}">
+                                Payroll
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <!-- End Servicios -->
+
+                <!-- Candidatos -->
+                <li class="nav-item  g-mx-10--lg g-mx-15--xl">
+                    <a href="{{ path('servilabor_candidatos') }}"
+                       class="nav-link g-py-7 g-px-0">Candidatos</a>
+                </li>
+                <!-- End Candidatos -->
+
+                <!-- Blog / news -->
+                <li class="hs-has-sub-menu nav-item  g-mx-10--lg g-mx-15--xl" data-animation-in="fadeIn"
+                    data-animation-out="fadeOut">
+                    <a id="nav-link-pages" class="nav-link g-py-7 g-px-0" href="#" aria-haspopup="true"
+                       aria-expanded="false" aria-controls="nav-submenu-pages">
+                        Blog / news
+                    </a>
+
+                    <ul class="hs-sub-menu list-unstyled u-shadow-v11 g-brd-top g-brd-primary g-brd-top-2 g-min-width-220 g-mt-18 g-mt-8--lg--scrolling"
+                        id="nav-submenu-pages" aria-labelledby="nav-link-pages">
+                        <li class="dropdown-item ">
+                            <a class="nav-link" href="../../unify-main/pages/page-about-1.html">
+                                Reglamento interno
+                            </a>
+                        </li>
+                        <li class="dropdown-item ">
+                            <a class="nav-link" href="../../unify-main/pages/page-about-2.html">
+                                Política de seguridad y salud
+                            </a>
+                        </li>
+                        <li class="dropdown-item ">
+                            <a class="nav-link" href="../../unify-main/pages/page-about-3.html">
+                                Reglamento de higiene y salud
+                            </a>
+                        </li>
+                        <li class="dropdown-item ">
+                            <a class="nav-link" href="../../unify-main/pages/page-about-4.html">
+                                Política prevensión de sustancias psicoactivas
+                            </a>
+                        </li>
+                        <li class="dropdown-item ">
+                            <a class="nav-link" href="../../unify-main/pages/page-about-4.html">
+                                Política de seguridad vial
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <!-- End Blog / news -->
+
+
+                <!-- Contacto -->
+                <li class="nav-item  g-mx-10--lg g-mx-15--xl">
+                    <a href="{{ path('servilabor_contacto') }}" class="nav-link g-py-7 g-px-0">
+                        Contacto
+                    </a>
+                </li>
+                <!-- End Contacto -->
+            </ul>
+        </div>
+        <!-- End Navigation -->
+
+        {% if not app.user %}
+            <div class="d-inline-block g-hidden-md-down g-pos-rel g-valign-middle g-pl-30 g-pl-0--lg">
+                <a class="btn u-btn-outline-primary g-font-size-13 text-uppercase g-py-10 g-px-15"
+                   href="{{ path('app_login') }}">
+                    Iniciar sesión
+                </a>
+            </div>
+        {% else %}
+            <!-- Basket -->
+            <div class="u-basket d-inline-block g-valign-middle g-pt-6 g-ml-30 g-ml-0--lg g-pos-abs g-top-12 g-right-65 g-pos-rel--lg g-top-0--lg g-right-0--lg">
+                <a href="#" id="basket-bar-invoker" class="u-icon-v1 g-color-main g-text-underline--none--hover g-width-20 g-height-20" aria-controls="basket-bar" aria-haspopup="true" aria-expanded="false" data-dropdown-event="hover" data-dropdown-target="#basket-bar"
+                   data-dropdown-type="css-animation" data-dropdown-duration="500" data-dropdown-hide-on-scroll="false" data-dropdown-animation-in="fadeIn" data-dropdown-animation-out="fadeOut">
+                    <i class="far fa-user"></i>
+                </a>
+
+                <div id="basket-bar" class="u-basket__bar u-dropdown--css-animation u-dropdown--hidden g-brd-top g-brd-2 g-brd-primary g-color-main g-mt-25--lg g-mt-15--lg--scrolling" aria-labelledby="basket-bar-invoker">
+                    <div class="js-scrollbar">
+                        <!-- Product -->
+                        <div class="u-basket__product">
+                            <div class="row align-items-center no-gutters">
+                                <div class="col-12">
+                                    <h6 class="g-font-weight-600 g-mb-0">
+                                        {{ app.user.nombreCompleto(true) }}
+                                    </h6>
+                                    <small class="g-color-gray-dark-v5 g-font-size-14">
+                                        {{ app.user.identificacion }}
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Product -->
+
+                        <!-- Product -->
+                        <div class="u-basket__product">
+                            <div class="row align-items-center no-gutters">
+                                <div class="col-12">
+                                    <a href="{{ path('app_profile') }}"
+                                       class="g-color-main g-color-main--hover g-text-underline--none--hover">
+                                        Mi Perfil
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Product -->
+                        <!-- Product -->
+                        <div class="u-basket__product">
+                            <div class="row align-items-center no-gutters">
+                                <div class="col-12">
+                                    <a href="{{ path('app_logout') }}"
+                                       class="g-color-main g-color-main--hover g-text-underline--none--hover">
+                                        Cerrar sesión
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Product -->
+                    </div>
+                </div>
+            </div>
+            <!-- End Basket -->
+        {% endif %}
+    </div>
+</nav>

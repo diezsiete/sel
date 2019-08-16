@@ -53,7 +53,7 @@
 <body>
 <main>
 
-    {{ include('servilabor/blocks/_header.html.twig') }}
+    {{ include('servilabor/blocks/header/_header.html.twig') }}
 
     {% block body %}
     {% endblock %}
@@ -293,6 +293,7 @@
     <script src="{{ asset('js/servilabor/unify/components/hs.popup.js') }}"></script>
     <script src="{{ asset('js/servilabor/unify/components/text-animation/hs.text-slideshow.js') }}"></script>
     <script src="{{ asset('js/servilabor/unify/components/hs.go-to.js') }}"></script>
+    <script src="{{ asset('js/servilabor/unify/components/hs.dropdown.js') }}"></script>
 
     <!-- JS Customization -->
     <script src="{{ asset('js/servilabor/custom.js') }}"></script>
@@ -311,6 +312,9 @@
 
             // initialization of go to
             $.HSCore.components.HSGoTo.init('.js-go-to');
+
+            // initialization of HSDropdown component
+            $.HSCore.components.HSDropdown.init($('[data-dropdown-target]'));
 
             // initialization of text animation (typing)
             $(".u-text-animation.u-text-animation--typing").typed({
