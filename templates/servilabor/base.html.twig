@@ -11,7 +11,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="{{ asset('img/servilabor/favicon.ico')}}">
+    <link rel="shortcut icon" href="{{ asset('img/servilabor/favicon.ico') }}">
     <!-- Google Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800">
 
@@ -42,141 +42,18 @@
         <!-- CSS Customization -->
         <link rel="stylesheet" href="{{ asset('css/servilabor/theme-colors/servilabor.css') }}">
         <link rel="stylesheet" href="{{ asset('css/servilabor/custom.css') }}">
+
+        {% if app.user %}
+            <link rel="stylesheet" href="{{ asset('css/servilabor/admin-nav.css') }}">
+        {% endif %}
+
     {% endblock %}
 </head>
 
 <body>
 <main>
 
-    <!-- Header -->
-    <header id="js-header" class="u-header u-header--static">
-        <div class="u-header__section u-header__section--light g-bg-white g-transition-0_3 g-py-10">
-            <nav class="js-mega-menu navbar navbar-expand-lg hs-menu-initialized hs-menu-horizontal">
-                <div class="container">
-                    <!-- Responsive Toggle Button -->
-                    <button class="navbar-toggler navbar-toggler-right btn g-line-height-1 g-brd-none g-pa-0 g-pos-abs g-top-minus-3 g-right-0" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="navBar" data-toggle="collapse" data-target="#navBar">
-              <span class="hamburger hamburger--slider">
-            <span class="hamburger-box">
-              <span class="hamburger-inner"></span>
-              </span>
-              </span>
-                    </button>
-                    <!-- End Responsive Toggle Button -->
-
-                    <!-- Logo -->
-                    <a href="{{ path('servilabor_inicio') }}" class="navbar-brand d-flex">
-                        <img src="{{ asset('img/servilabor/logo-servilabor.png') }}" alt="mainlogo" />
-
-                    </a>
-                    <!-- End Logo -->
-
-                    <!-- Navigation -->
-                    <div class="collapse navbar-collapse align-items-center flex-sm-row g-pt-10 g-pt-5--lg g-mr-40--lg" id="navBar">
-                        <ul class="navbar-nav text-uppercase g-pos-rel g-font-weight-600 ml-auto">
-                            <!-- Intro -->
-                            <li class="nav-item  g-mx-10--lg g-mx-15--xl">
-                                <a href="{{ path('servilabor_inicio') }}" class="nav-link g-py-7 g-px-0">Inicio</a>
-                            </li>
-                            <!-- End Intro -->
-
-                            <!-- Nosotros -->
-                            <li class="nav-item  g-mx-10--lg g-mx-15--xl">
-                                <a href="{{ path('servilabor_nosotros') }}" class="nav-link g-py-7 g-px-0">Nosotros</a>
-                            </li>
-                            <!-- End Nosotros -->
-
-
-                            <!-- Servicios -->
-                            <li class="hs-has-sub-menu nav-item  g-mx-10--lg g-mx-15--xl" data-animation-in="fadeIn" data-animation-out="fadeOut">
-                                <a id="nav-link-pages" class="nav-link g-py-7 g-px-0" href="{{ path('servilabor_servicios') }}" aria-haspopup="true" aria-expanded="false" aria-controls="nav-submenu-pages">
-                                    Servicios
-                                </a>
-
-                                <ul class="hs-sub-menu list-unstyled u-shadow-v11 g-brd-top g-brd-primary g-brd-top-2 g-min-width-220 g-mt-18 g-mt-8--lg--scrolling" id="nav-submenu-pages" aria-labelledby="nav-link-pages">
-                                    <li class="dropdown-item ">
-                                        <a class="nav-link" href="{{ path('servilabor_servicio', {servicio: 'outsourcing'}) }}">
-                                            Outsourcing
-                                        </a>
-                                    </li>
-                                    <li class="dropdown-item ">
-                                        <a class="nav-link" href="{{ path('servilabor_servicio', {servicio: 'rpo'}) }}">
-                                            Rpo
-                                        </a>
-                                    </li>
-                                    <li class="dropdown-item ">
-                                        <a class="nav-link" href="{{ path('servilabor_servicio', {servicio: 'payroll'}) }}">
-                                            Payroll
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <!-- End Servicios -->
-
-                            <!-- Candidatos -->
-                            <li class="nav-item  g-mx-10--lg g-mx-15--xl">
-                                <a href="{{ path('servilabor_candidatos') }}" class="nav-link g-py-7 g-px-0">Candidatos</a>
-                            </li>
-                            <!-- End Candidatos -->
-
-                            <!-- Blog / news -->
-                            <li class="hs-has-sub-menu nav-item  g-mx-10--lg g-mx-15--xl" data-animation-in="fadeIn" data-animation-out="fadeOut">
-                                <a id="nav-link-pages" class="nav-link g-py-7 g-px-0" href="#" aria-haspopup="true" aria-expanded="false" aria-controls="nav-submenu-pages">
-                                    Blog / news
-                                </a>
-
-                                <ul class="hs-sub-menu list-unstyled u-shadow-v11 g-brd-top g-brd-primary g-brd-top-2 g-min-width-220 g-mt-18 g-mt-8--lg--scrolling" id="nav-submenu-pages" aria-labelledby="nav-link-pages">
-                                    <li class="dropdown-item ">
-                                        <a class="nav-link" href="../../unify-main/pages/page-about-1.html">
-                                            Reglamento interno
-                                        </a>
-                                    </li>
-                                    <li class="dropdown-item ">
-                                        <a class="nav-link" href="../../unify-main/pages/page-about-2.html">
-                                            Política de seguridad y salud
-                                        </a>
-                                    </li>
-                                    <li class="dropdown-item ">
-                                        <a class="nav-link" href="../../unify-main/pages/page-about-3.html">
-                                            Reglamento de higiene y salud
-                                        </a>
-                                    </li>
-                                    <li class="dropdown-item ">
-                                        <a class="nav-link" href="../../unify-main/pages/page-about-4.html">
-                                            Política prevensión de sustancias psicoactivas
-                                        </a>
-                                    </li>
-                                    <li class="dropdown-item ">
-                                        <a class="nav-link" href="../../unify-main/pages/page-about-4.html">
-                                            Política de seguridad vial
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <!-- End Blog / news -->
-
-
-                            <!-- Contacto -->
-                            <li class="nav-item  g-mx-10--lg g-mx-15--xl">
-                                <a href="{{ path('servilabor_contacto') }}" class="nav-link g-py-7 g-px-0">
-                                    Contacto
-                                </a>
-                            </li>
-                            <!-- End Contacto -->
-                        </ul>
-                    </div>
-                    <!-- End Navigation -->
-
-                    <div class="d-inline-block g-hidden-md-down g-pos-rel g-valign-middle g-pl-30 g-pl-0--lg">
-                        <a class="btn u-btn-outline-primary g-font-size-13 text-uppercase g-py-10 g-px-15"
-                           href="{{ path('app_login') }}">
-                            Iniciar sesión
-                        </a>
-                    </div>
-                </div>
-            </nav>
-        </div>
-    </header>
-    <!-- End Header -->
+    {{ include('servilabor/blocks/_header.html.twig') }}
 
     {% block body %}
     {% endblock %}
@@ -225,7 +102,8 @@
 
                     <article>
                         <h3 class="h6 g-mb-2">
-                            <a class="g-color-white-opacity-0_8 g-color-white--hover" href="#">New terms and conditions</a>
+                            <a class="g-color-white-opacity-0_8 g-color-white--hover" href="#">New terms and
+                                conditions</a>
                         </h3>
                         <div class="small g-color-white-opacity-0_6">September 15, 2017</div>
                     </article>
@@ -242,7 +120,8 @@
                         <ul class="list-unstyled g-mt-minus-10 mb-0">
                             <li class="g-pos-rel g-brd-bottom g-brd-white-opacity-0_1 g-py-10">
                                 <h4 class="h6 g-pr-20 mb-0">
-                                    <a class="g-color-white-opacity-0_8 g-color-white--hover" href="{{ path('servilabor_nosotros') }}">
+                                    <a class="g-color-white-opacity-0_8 g-color-white--hover"
+                                       href="{{ path('servilabor_nosotros') }}">
                                         Nosotros
                                     </a>
                                     <i class="fa fa-angle-right g-absolute-centered--y g-right-0"></i>
@@ -250,7 +129,8 @@
                             </li>
                             <li class="g-pos-rel g-brd-bottom g-brd-white-opacity-0_1 g-py-10">
                                 <h4 class="h6 g-pr-20 mb-0">
-                                    <a class="g-color-white-opacity-0_8 g-color-white--hover" href="{{ path('servilabor_servicios') }}">
+                                    <a class="g-color-white-opacity-0_8 g-color-white--hover"
+                                       href="{{ path('servilabor_servicios') }}">
                                         Servicios
                                     </a>
                                     <i class="fa fa-angle-right g-absolute-centered--y g-right-0"></i>
@@ -258,7 +138,8 @@
                             </li>
                             <li class="g-pos-rel g-brd-bottom g-brd-white-opacity-0_1 g-py-10">
                                 <h4 class="h6 g-pr-20 mb-0">
-                                    <a class="g-color-white-opacity-0_8 g-color-white--hover" href="{{ path('servilabor_candidatos') }}">
+                                    <a class="g-color-white-opacity-0_8 g-color-white--hover"
+                                       href="{{ path('servilabor_candidatos') }}">
                                         Candidatos
                                     </a>
                                     <i class="fa fa-angle-right g-absolute-centered--y g-right-0"></i>
@@ -266,7 +147,8 @@
                             </li>
                             <li class="g-pos-rel g-brd-bottom g-brd-white-opacity-0_1 g-py-10">
                                 <h4 class="h6 g-pr-20 mb-0">
-                                    <a class="g-color-white-opacity-0_8 g-color-white--hover" href="{{ path('servilabor_blog')}}">
+                                    <a class="g-color-white-opacity-0_8 g-color-white--hover"
+                                       href="{{ path('servilabor_blog') }}">
                                         Blog / News
                                     </a>
                                     <i class="fa fa-angle-right g-absolute-centered--y g-right-0"></i>
@@ -274,7 +156,8 @@
                             </li>
                             <li class="g-pos-rel g-py-10">
                                 <h4 class="h6 g-pr-20 mb-0">
-                                    <a class="g-color-white-opacity-0_8 g-color-white--hover" href="{{ path('servilabor_contacto') }}">
+                                    <a class="g-color-white-opacity-0_8 g-color-white--hover"
+                                       href="{{ path('servilabor_contacto') }}">
                                         Contacto
                                     </a>
                                     <i class="fa fa-angle-right g-absolute-centered--y g-right-0"></i>
@@ -291,7 +174,8 @@
                         <h2 class="u-heading-v2__title h6 text-uppercase mb-0">Contacto</h2>
                     </div>
 
-                    <address class="g-bg-no-repeat g-font-size-12 mb-0" style="background-image: url({{ asset('img/servilabor/map2.png') }});">
+                    <address class="g-bg-no-repeat g-font-size-12 mb-0"
+                             style="background-image: url({{ asset('img/servilabor/map2.png') }});">
                         <!-- Location -->
                         <div class="d-flex g-mb-20">
                             <div class="g-mr-10">
@@ -322,7 +206,8 @@
               </span>
                             </div>
                             <p class="mb-0">
-                                <a class="g-color-white-opacity-0_8 g-color-white--hover" href="mailto:{{ configuracion.mail }}">
+                                <a class="g-color-white-opacity-0_8 g-color-white--hover"
+                                   href="mailto:{{ configuracion.mail }}">
                                     {{ configuracion.mail }}
                                 </a>
                                 <br>
@@ -344,10 +229,11 @@
             <div class="row">
                 <div class="col-md-4 text-center text-md-left g-mb-10 g-mb-0--md">
                     <div class="d-lg-flex">
-                        <small class="d-block g-font-size-default g-mr-10 g-mb-10 g-mb-0--md">{{ "now"|date('Y') }} &copy; Todos los derechos reservados.</small>
+                        <small class="d-block g-font-size-default g-mr-10 g-mb-10 g-mb-0--md">{{ "now"|date('Y') }}
+                            &copy; Todos los derechos reservados.
+                        </small>
                     </div>
                 </div>
-
 
 
                 <div class="col-md-8 align-self-center">

@@ -19,7 +19,8 @@ class MenuRenderer extends ListRenderer
     protected function renderLabel(ItemInterface $item, array $options)
     {
         $html = parent::renderLabel($item, $options);
-        if($icon = $item->getExtra('icon')) {
+        $renderIcon = isset($options['icons']) ? $options['icons'] : true;
+        if($renderIcon && $icon = $item->getExtra('icon')) {
             $html = '<i class="'.$icon.'" aria-hidden="true"></i><span>'.$html.'</span>';
         }
         return $html;
@@ -28,7 +29,6 @@ class MenuRenderer extends ListRenderer
     protected function renderLinkElement(ItemInterface $item, array $options)
     {
         $this->addAttributesToItem($item, 'link', $options);
-
         return parent::renderLinkElement($item, $options);
     }
 
@@ -42,6 +42,13 @@ class MenuRenderer extends ListRenderer
             }
         }
         return parent::renderList($item, $attributes, $options);
+    }
+
+    protected function renderItem(ItemInterface $item, array $options)
+    {
+        $attributes = $this->addAttributesToItem($item, 'item', $options, []);
+        $item->setAttributes($attributes);
+        return parent::renderItem($item, $options);
     }
 
     private function addAttributesToItem(ItemInterface $item, $itemName, array $options, $attributes = null)
@@ -66,10 +73,18 @@ class MenuRenderer extends ListRenderer
                             $attributeValue = $newValue;
                         }
                     } else {
-                        if ($item->$conditionMethod() != $condition[$conditionMethod]) {
-                            continue;
+                        if(isset($condition['value'])) {
+                            if ($item->$conditionMethod() != $condition[$conditionMethod]) {
+                                continue;
+                            } else {
+                                $attributeValue = $condition['value'];
+                            }
                         } else {
-                            $attributeValue = $condition['value'];
+                            if ($item->$conditionMethod()) {
+                                $attributeValue = $condition[$conditionMethod];
+                            } else {
+                                continue;
+                            }
                         }
                     }
                 }

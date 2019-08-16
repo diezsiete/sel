@@ -1,0 +1,8 @@
+.u-header__section {
+    padding-bottom: 0 !important;
+}
+.navbar.admin {
+    margin-top: 0.71429rem;
+    background: #38414a;
+    z-index: 9;
+}
