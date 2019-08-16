@@ -2,6 +2,9 @@
 
 {% block title %} Servilabor - {{ servicio }} {% endblock %}
 
+{% block body_header %}
+{% endblock %}
+
 {% block body %}
     {{ include('servilabor/servicios/_'~servicio~'.html.twig') }}
 {% endblock %}

@@ -1,23 +1,26 @@
 {% extends 'servilabor/base.html.twig' %}
 
+
+{% block body_header %}
+    <!-- Promo Block -->
+    <section class="dzsparallaxer auto-init height-is-based-on-content use-loading mode-scroll loaded dzsprx-readyall " data-options='{direction: "fromtop", animation_duration: 25, direction: "reverse"}'>
+        <!-- Parallax Image -->
+        <div class="divimage dzsparallaxer--target w-100 u-bg-overlay g-bg-black-opacity-0_3--after"
+             style="height: 140%; background-image: url({{ asset('img/servilabor/breadcrumbs/velas-56.jpg') }});"></div>
+        <!-- End Parallax Image -->
+
+        <!-- Promo Block Content -->
+        <div class="container g-color-white text-center g-py-120">
+            <h3 class="h1 g-font-weight-600 text-uppercase mb-2">Empresa de outsourcing con trayectoria</h3>
+            <p class="g-font-weight-300 g-font-size-22 text-uppercase">Descubre mas sobre nosotros</p>
+        </div>
+        <!-- Promo Block Content -->
+    </section>
+    <!-- End Promo Block -->
+{% endblock %}
+
+
 {% block body %}
-<!-- Promo Block -->
-<section class="dzsparallaxer auto-init height-is-based-on-content use-loading mode-scroll loaded dzsprx-readyall " data-options='{direction: "fromtop", animation_duration: 25, direction: "reverse"}'>
-    <!-- Parallax Image -->
-    <div class="divimage dzsparallaxer--target w-100 u-bg-overlay g-bg-black-opacity-0_3--after"
-         style="height: 140%; background-image: url({{ asset('img/servilabor/breadcrumbs/velas-56.jpg') }});"></div>
-    <!-- End Parallax Image -->
-
-    <!-- Promo Block Content -->
-    <div class="container g-color-white text-center g-py-120">
-        <h3 class="h1 g-font-weight-600 text-uppercase mb-2">Empresa de outsourcing con trayectoria</h3>
-        <p class="g-font-weight-300 g-font-size-22 text-uppercase">Descubre mas sobre nosotros</p>
-    </div>
-    <!-- Promo Block Content -->
-</section>
-<!-- End Promo Block -->
-
-
 
     <!-- Timeline #02 -->
     <section class="g-py-100">

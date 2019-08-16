@@ -1,0 +1,25 @@
+{% extends 'servilabor/base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/sel/base.css') }}">
+{% endblock %}
+
+
+{% block main %}
+    {% block body_header %}
+        {{ parent() }}
+    {% endblock %}
+    <section class="g-py-20">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    {{ include('default/_flash_messages.html.twig') }}
+                </div>
+            </div>
+            {% block body %}
+                {{ parent() }}
+            {% endblock %}
+        </div>
+    </section>
+{% endblock %}

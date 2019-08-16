@@ -1,0 +1,11 @@
+{% macro search(idText, idButton) %}
+
+    <div class="input-group">
+        <input type="text" class="form-control rounded-0 form-control-md" placeholder="Buscar..." id="{{ idText }}">
+        <div class="input-group-append">
+            <button class="btn btn-md u-btn-outline-cyan rounded-0" type="button" id="{{ idButton }}">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </div>
+{% endmacro %}

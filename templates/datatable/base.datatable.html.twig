@@ -1,13 +1,19 @@
 {% extends 'base.html.twig' %}
+{% import 'datatable/input.datatable.html.twig' as input %}
+
+{% set searching = datatable.options.searching is defined and datatable.options.searching == true %}
+
+{% block body_header_right %}
+    {% if searching %}
+        {{ input.search("search-dt-text", "search-dt-button") }}
+    {% endif %}
+{% endblock %}
+
 
 {% block body %}
     <div class="row">
         <div class="col">
-            <section class="card">
-                <div class="card-body">
-                    <div id="datatable">Loading...</div>
-                </div>
-            </section>
+            <div id="datatable">Loading...</div>
         </div>
     </div>
 {% endblock %}
@@ -17,6 +23,21 @@
     {{ parent() }}
 
     {% embed 'datatable/javascripts.datatable.html.twig' %}
+        {% block script_datatable %}
+            <script>
+                $(function () {
+                    $('#datatable')
+                        .initDataTables({{ datatable_settings(datatable) }})
+                        .then(dt => {
+                            {% if searching %}
+                            const search = () => dt.search($('#search-dt-text').val()).draw();
+                            $('#search-dt-button').click(search);
+                            $('#search-dt-text').on('keypress', e => e.which === 13 ? search() : null)
+                            {% endif %}
+                        });
+                });
+            </script>
+        {% endblock %}
     {% endembed %}
 
 {% endblock %}

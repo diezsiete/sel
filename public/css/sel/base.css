@@ -1,0 +1,19 @@
+.body {
+    background: #ecedf0;
+    width: 100%;
+}
+
+.page-header {
+    background: transparent;
+    margin: 0;
+}
+
+table {
+    background: #fdfdfd;
+}
+
+.table .actions a, .table .actions-hover a {
+    display: inline-block;
+    margin-right: 5px;
+    color: #666;
+}
