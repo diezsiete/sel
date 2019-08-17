@@ -73,6 +73,7 @@ class UsuarioDataTableType implements DataTableTypeInterface
             $dataTable->add('actions', ButtonColumn::class, [
                 'label' => '',
                 'field' => 'u.identificacion',
+                'orderable' => false,
                 'buttons' => [
                     new ButtonTypeRoute('app_comprobantes', ['_switch_user'], 'fas fa-user-cog'),
                     new ButtonTypeRoute('admin_usuarios_editar',
