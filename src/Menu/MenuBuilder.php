@@ -83,10 +83,17 @@ class MenuBuilder
     {
         $menu->addChild('Comprobantes de pago', ['route' => 'app_comprobantes'])
             ->setExtra('icon', 'fas fa-dollar-sign');
-        $menu->addChild('Certificado laboral', ['route' => 'app_certificado_laboral'])
+
+        $menu->addChild('Certificados')
+            ->setUri('#')
             ->setExtra('icon', 'fas fa-file-invoice');
-        $menu->addChild('Certificado ingresos', ['route' => 'app_certificados_ingresos'])
+        $menu['Certificados']
+            ->addChild('Laboral', ['route' => 'app_certificado_laboral'])
+            ->setExtra('icon', 'fas fa-file-invoice');
+        $menu['Certificados']
+            ->addChild('Ingresos y retenciones', ['route' => 'app_certificados_ingresos'])
             ->setExtra('icon', 'fas fa-file-alt');
+
         $menu->addChild('Liquidación de contrato', ['route' => 'app_liquidaciones_de_contrato'])
             ->setExtra('icon', 'fas fa-strikethrough');
     }
