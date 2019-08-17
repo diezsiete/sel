@@ -1,6 +1,11 @@
 <aside class="sidebar mt-2" id="sidebar">
     <ul class="nav nav-list flex-column mb-5" id="accordion">
-        <li class="nav-item"><a class="nav-link text-dark active" href="#">Mi Perfil</a></li>
+        <li class="nav-item">
+            <a class="nav-link {{ app.request.attributes.get('_route') is same as('app_profile') ? 'text-dark active' : '' }}"
+               href="{{ path('app_profile') }}">
+                Mi Perfil
+            </a>
+        </li>
 
         <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" data-parent="#accordion"
