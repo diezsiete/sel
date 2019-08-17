@@ -9,9 +9,13 @@
 {% endblock %}
 
 {% block main %}
+
+    {{ include('default/_flash_messages.html.twig') }}
+
     {% block body_header %}
         {{ parent() }}
     {% endblock %}
+
     <div class="container pb-1">
         {% block body %}
             {{ parent() }}

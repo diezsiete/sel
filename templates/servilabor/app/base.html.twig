@@ -7,16 +7,13 @@
 
 
 {% block main %}
+    {{ include('default/_flash_messages.html.twig') }}
+    
     {% block body_header %}
         {{ parent() }}
     {% endblock %}
     <section class="g-py-20">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    {{ include('default/_flash_messages.html.twig') }}
-                </div>
-            </div>
             {% block body %}
                 {{ parent() }}
             {% endblock %}
