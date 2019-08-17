@@ -6,7 +6,7 @@ use App\Command\Helpers\ConsoleTrait;
 use App\Command\Helpers\Loggable;
 use App\Command\Helpers\PeriodoOption;
 use App\Command\Helpers\RangoPeriodoOption;
-use App\Command\Helpers\SearchByConvenioOrIdent;
+use App\Command\Helpers\SearchByConvenioOrEmpleado;
 use App\Command\Helpers\TraitableCommand\TraitableCommand;
 use App\Entity\Empleado;
 use App\Entity\Usuario;
@@ -24,7 +24,7 @@ class NiEmpleadoCommand extends TraitableCommand
     use Loggable,
         PeriodoOption,
         RangoPeriodoOption,
-        SearchByConvenioOrIdent,
+        SearchByConvenioOrEmpleado,
         ConsoleTrait;
 
     protected static $defaultName = 'sel:ni:empleado';

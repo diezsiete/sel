@@ -42,19 +42,13 @@ class MenuBuilder
 
         $user = $this->security->getUser();
 
-        $menu->addChild('Mi hoja de vida', ['route' => 'hv_datos_basicos'])
-            ->setExtra('icon', 'far fa-address-card');
 
         if ($this->security->isGranted(['ROLE_VER_SE_REPORTES'], $user)) {
-            $menu->addChild('Comprobantes de pago', ['route' => 'app_comprobantes'])
-                ->setExtra('icon', 'fas fa-dollar-sign');
-            $menu->addChild('Certificado laboral', ['route' => 'app_certificado_laboral'])
-                ->setExtra('icon', 'fas fa-file-invoice');
-            $menu->addChild('Certificado ingresos', ['route' => 'app_certificados_ingresos'])
-                ->setExtra('icon', 'fas fa-file-alt');
-            $menu->addChild('Liquidación de contrato', ['route' => 'app_liquidaciones_de_contrato'])
-                ->setExtra('icon', 'fas fa-strikethrough');
+            $this->createSelMenu($menu);
         }
+
+        $menu->addChild('Mi hoja de vida', ['route' => 'hv_datos_basicos'])
+            ->setExtra('icon', 'far fa-address-card');
 
         if($this->security->isGranted(['ROLE_CREAR_VACANTE'], $user)) {
             $menu->addChild('Vacantes')
@@ -83,6 +77,18 @@ class MenuBuilder
         }
 
         return $menu;
+    }
+
+    public function createSelMenu(ItemInterface $menu)
+    {
+        $menu->addChild('Comprobantes de pago', ['route' => 'app_comprobantes'])
+            ->setExtra('icon', 'fas fa-dollar-sign');
+        $menu->addChild('Certificado laboral', ['route' => 'app_certificado_laboral'])
+            ->setExtra('icon', 'fas fa-file-invoice');
+        $menu->addChild('Certificado ingresos', ['route' => 'app_certificados_ingresos'])
+            ->setExtra('icon', 'fas fa-file-alt');
+        $menu->addChild('Liquidación de contrato', ['route' => 'app_liquidaciones_de_contrato'])
+            ->setExtra('icon', 'fas fa-strikethrough');
     }
 
     public function createHvMenu(array $options)

@@ -7,7 +7,7 @@ namespace App\Command\Autoliquidacion;
 use App\Command\Helpers\ConsoleProgressBar;
 use App\Command\Helpers\ConsoleTrait;
 use App\Command\Helpers\PeriodoOption;
-use App\Command\Helpers\SearchByConvenioOrIdent;
+use App\Command\Helpers\SearchByConvenioOrEmpleado;
 use App\Command\Helpers\TraitableCommand\TraitableCommand;
 use App\Entity\Autoliquidacion\Autoliquidacion;
 use App\Repository\Autoliquidacion\AutoliquidacionRepository;
@@ -22,7 +22,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class AutoliquidacionDeleteCommand extends TraitableCommand
 {
     use PeriodoOption,
-        SearchByConvenioOrIdent,
+        SearchByConvenioOrEmpleado,
         ConsoleProgressBar,
         ConsoleTrait;
 

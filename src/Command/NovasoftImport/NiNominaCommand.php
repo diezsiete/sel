@@ -2,39 +2,36 @@
 
 namespace App\Command\NovasoftImport;
 
-use App\Entity\Convenio;
-use App\Entity\Empleado;
+use App\Command\Helpers\ConsoleTrait;
+use App\Command\Helpers\PeriodoOption;
+use App\Command\Helpers\RangoPeriodoOption;
+use App\Command\Helpers\SearchByConvenioOrEmpleado;
+use App\Command\Helpers\TraitableCommand\TraitableCommand;
 use App\Entity\ReporteNomina;
-use App\Entity\Usuario;
-use App\Repository\ConvenioRepository;
-use App\Repository\EmpleadoRepository;
 use App\Repository\ReporteNominaRepository;
-use App\Repository\UsuarioRepository;
-use App\Service\Configuracion\SsrsDb;
-use App\Service\NovasoftImport\ReporteNominaImport;
 use App\Service\NovasoftSsrs\NovasoftSsrs;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Console\Input\InputArgument;
+use Doctrine\Common\Annotations\Reader;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class NiNominaCommand extends PeriodoCommand
+
+class NiNominaCommand extends TraitableCommand
 {
+    use RangoPeriodoOption,
+        PeriodoOption,
+        SearchByConvenioOrEmpleado,
+        ConsoleTrait;
+
     protected static $defaultName = 'sel:ni:nomina';
 
-    protected $optionDesdeDescription = 'fecha desde Y-m-d. [omita y se toma desde 2017-02-01]';
 
     /**
      * @var NovasoftSsrs
      */
     private $novasoftSsrs;
-    /**
-     * @var EmpleadoRepository
-     */
-    private $empleadoRepository;
+
 
     /**
      * @var ReporteNominaRepository
@@ -45,13 +42,14 @@ class NiNominaCommand extends PeriodoCommand
     private $empleadoSsrsDbs = [];
 
 
-    public function __construct(EmpleadoRepository $empleadoRepository, NovasoftSsrs $novasoftSsrs,
-                                ReporteNominaRepository $reporteNominaRepository)
+    public function __construct(Reader $annotationReader, EventDispatcherInterface $eventDispatcher,
+                                NovasoftSsrs $novasoftSsrs, ReporteNominaRepository $reporteNominaRepository)
     {
-        parent::__construct();
+        $this->optionInicioDescription = 'fecha desde Y-m-d. [omita y se toma desde 2017-02-01]';
+
+        parent::__construct($annotationReader, $eventDispatcher);
 
         $this->novasoftSsrs = $novasoftSsrs;
-        $this->empleadoRepository = $empleadoRepository;
         $this->reporteNominaRepository = $reporteNominaRepository;
     }
 
@@ -60,8 +58,6 @@ class NiNominaCommand extends PeriodoCommand
         parent::configure();
         $this
             ->setDescription('Actualizar reportes de nomina')
-            ->addArgument('codigos', InputArgument::IS_ARRAY,
-                'convenio codigos o identificaciones de empleados')
             ->addOption('dont-update', null, InputOption::VALUE_NONE,
                 'Si certificado ya existe no actualiza');
     }
@@ -69,25 +65,24 @@ class NiNominaCommand extends PeriodoCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $empleados = $this->getEmpleados();
 
         $desde = $this->getInicio($input, true);
         $hasta = $this->getFin($input);
-        $dontUpdate = $input->getOption('dont-update');
-    
-        $empleados = $this->getEmpleados($input->getArgument('codigos'));
 
+        $dontUpdate = $input->getOption('dont-update');
 
         foreach($empleados as $empleado) {
-            $this->io->writeln(sprintf("%s %d %d %s", 
-                $empleado->getConvenio()->getNombre(), 
-                $empleado->getUsuario()->getId(), 
-                $empleado->getUsuario()->getIdentificacion(), 
+            $this->io->writeln(sprintf("%s %d %d %s",
+                $empleado->getConvenio()->getNombre(),
+                $empleado->getUsuario()->getId(),
+                $empleado->getUsuario()->getIdentificacion(),
                 $empleado->getUsuario()->getNombreCompleto(true)));
-            
+
             $reportesNomina = $this->novasoftSsrs
-                ->setSsrsDb($this->getEmpleadoSsrsDb($empleado)->getNombre())
+                ->setSsrsDb($empleado->getSsrsDb())
                 ->getReporteNomina($empleado->getUsuario(), $desde, $hasta);
-            
+
             foreach($reportesNomina as $reporteNomina) {
                 $reporteNominaDb = $this->exists($reporteNomina);
                 $update = $reporteNominaDb && !$dontUpdate;
@@ -106,37 +101,6 @@ class NiNominaCommand extends PeriodoCommand
             }
             $this->em->flush();
         }
-    }
-
-    /**
-     * @param array $codigos
-     * @return Empleado[]
-     */
-    protected function getEmpleados($codigos)
-    {
-        if($codigos) {
-            if (is_numeric($codigos[0])) {
-                $empleados = $this->empleadoRepository->findByIdentificacion($codigos);
-            } else {
-                $empleados = $this->empleadoRepository->findByConvenio($codigos);
-            }
-        } else {
-            $empleados = $this->empleadoRepository->findAll();
-        }
-        return $empleados;
-    }
-
-    /**
-     * @param Empleado $empleado
-     * @return SsrsDb
-     * @throws \Exception
-     */
-    private function getEmpleadoSsrsDb(Empleado $empleado)
-    {
-        if(!isset($this->empleadoSsrsDbs[$empleado->getSsrsDb()])) {
-            $this->empleadoSsrsDbs[$empleado->getSsrsDb()] = $this->configuracion->getSsrsDb($empleado->getSsrsDb());
-        }
-        return $this->empleadoSsrsDbs[$empleado->getSsrsDb()];
     }
 
     private function exists(ReporteNomina $reporteNomina)

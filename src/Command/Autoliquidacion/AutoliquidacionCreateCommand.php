@@ -8,7 +8,7 @@ use App\Command\Helpers\ConsoleProgressBar;
 use App\Command\Helpers\ConsoleTrait;
 use App\Command\Helpers\Loggable;
 use App\Command\Helpers\PeriodoOption;
-use App\Command\Helpers\SearchByConvenioOrIdent;
+use App\Command\Helpers\SearchByConvenioOrEmpleado;
 use App\Command\Helpers\TraitableCommand\TraitableCommand;
 use App\Entity\Autoliquidacion\Autoliquidacion;
 use App\Entity\Autoliquidacion\AutoliquidacionEmpleado;
@@ -28,7 +28,7 @@ class AutoliquidacionCreateCommand extends TraitableCommand
 {
     use Loggable,
         PeriodoOption,
-        SearchByConvenioOrIdent,
+        SearchByConvenioOrEmpleado,
         ConsoleProgressBar,
         ConsoleTrait;
 

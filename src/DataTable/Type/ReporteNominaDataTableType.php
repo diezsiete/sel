@@ -36,10 +36,15 @@ class ReporteNominaDataTableType implements DataTableTypeInterface
 
         $dataTable
             ->add('fecha', DateTimeColumn::class, ['label' => 'Fecha', 'format' => 'Y-m-d'])
-            ->add('convenioCodigoNombre', TextColumn::class, ['label' => 'Convenio'])
-            ->add('identificacion', TextColumn::class, ['label' => 'Identificación', 'field' => 'usuario.identificacion'])
+            ->add('convenioCodigoNombre', TextColumn::class, ['label' => 'Convenio', 'orderable' => false])
+            ->add('identificacion', TextColumn::class, [
+                'label' => 'Identificación',
+                'field' => 'usuario.identificacion',
+                'orderable' => false
+            ])
             ->add('id', TextColumn::class, [
                 'label' => 'PDF',
+                'orderable' => false,
                 'render' => function ($id) {
                     $route = $this->router->generate('app_comprobante', ['comprobante' => $id]);
                     return sprintf('<a href="%s" target="_blank"><i class="fas fa-file-pdf fa-2x"></i></a>', $route);

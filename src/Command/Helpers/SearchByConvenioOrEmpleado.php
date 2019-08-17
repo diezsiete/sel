@@ -12,8 +12,10 @@ use App\Entity\Empleado;
 use App\Repository\ConvenioRepository;
 use App\Repository\EmpleadoRepository;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
-trait SearchByConvenioOrIdent
+trait SearchByConvenioOrEmpleado
 {
 
     protected $searchName = 'search';
@@ -110,7 +112,7 @@ trait SearchByConvenioOrIdent
     }
 
     /**
-     * @return Empleado[]
+     * @return Empleado|Empleado[]|null
      */
     protected function getEmpleados()
     {
@@ -119,5 +121,33 @@ trait SearchByConvenioOrIdent
         } else {
             return $this->empleadoRepository->findByConvenio($this->searchValue);
         }
+    }
+
+
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        if($this->isSearchConvenio()) {
+            $this->executeConvenios($this->getConveniosCodigos());
+        } else {
+            $this->executeEmpleados($this->getEmpleados());
+        }
+    }
+
+    /**
+     * @param string[] $conveniosCodigos
+     * @return mixed
+     */
+    protected function executeConvenios($conveniosCodigos)
+    {
+
+    }
+
+    /**
+     * @param Empleado|Empleado[]|null
+     * @return mixed
+     */
+    protected function executeEmpleados($empleados)
+    {
+
     }
 }

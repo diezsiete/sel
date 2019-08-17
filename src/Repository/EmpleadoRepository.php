@@ -58,17 +58,20 @@ class EmpleadoRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param string|string[] $codigoConvenio
+     * @param string|string[]|null $codigoConvenio
      * @return Empleado[]
      */
-    public function findByConvenio($codigoConvenio)
+    public function findByConvenio($codigoConvenio = null)
     {
-        $qb = $this->createQueryBuilder('e')
-            ->join('e.convenio', 'c');
-        if(is_array($codigoConvenio)) {
-            $qb->andWhere($qb->expr()->in('c.codigo', ':codigoConvenio'));
-        } else {
-            $qb->andWhere('c.codigo = :codigoConvenio');
+        $qb = $this->createQueryBuilder('e');
+
+        if($codigoConvenio) {
+            $qb->join('e.convenio', 'c');
+            if (is_array($codigoConvenio)) {
+                $qb->andWhere($qb->expr()->in('c.codigo', ':codigoConvenio'));
+            } else {
+                $qb->andWhere('c.codigo = :codigoConvenio');
+            }
         }
         return $qb->setParameter('codigoConvenio', $codigoConvenio)
             ->getQuery()
