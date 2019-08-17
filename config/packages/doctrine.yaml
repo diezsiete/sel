@@ -56,3 +56,7 @@ doctrine:
                 hydrators:
                     FETCH_COLUMN: App\Hydrators\FetchColumnHydrator
                     FETCH_KEY_PAIR: App\Hydrators\FechKeyPairHydrator
+
+                dql:
+                    numeric_functions:
+                        rand: DoctrineExtensions\Query\Mysql\Rand

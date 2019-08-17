@@ -2,11 +2,16 @@
 
 namespace App\Controller;
 
+use App\Entity\Post;
+use App\Entity\Tag;
 use App\Form\CandidatoFormType;
 use App\Form\ContactoFormType;
+use App\Repository\PostRepository;
+use App\Repository\TagRepository;
 use App\Service\Configuracion\Configuracion;
 use App\Service\Mailer;
 use App\Service\UploaderHelper;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -55,9 +60,42 @@ class ServilaborController extends AbstractController
     /**
      * @Route("/blog", name="servilabor_blog", host="%empresa.SERVILABOR.host%")
      */
-    public function blog()
+    public function blog(PostRepository $postRepo, TagRepository $tagRepo, PaginatorInterface $paginator, Request $request)
     {
-        return $this->render('servilabor/blog.html.twig');
+        return $this->blogList($postRepo, $tagRepo, $paginator, $request);
+    }
+
+    /**
+     * @Route("/blog/tag/{slug}", name="servilabor_blog_tag", host="%empresa.SERVILABOR.host%")
+     */
+    public function blogTag(PostRepository $postRepo, TagRepository $tagRepo, PaginatorInterface $paginator, Request $request, Tag $tag)
+    {
+        return $this->blogList($postRepo, $tagRepo, $paginator, $request, $tag);
+    }
+
+    private function blogList(PostRepository $postRepo, TagRepository $tagRepo, PaginatorInterface $paginator, Request $request, ?Tag $tag = null)
+    {
+        $qb = $postRepo->searchQueryBuilder($tag);
+
+        $pagination = $paginator->paginate($qb, $request->get('page', 1), 5);
+
+        return $this->render('servilabor/blog/list.html.twig', [
+            'pagination' => $pagination,
+            'tagSelected' => $tag,
+            'tags' => $tagRepo->findAll()
+        ]);
+    }
+
+    /**
+     * @Route("/blog/{slug}", name="servilabor_blog_item", host="%empresa.SERVILABOR.host%")
+     */
+    public function blogItem(Post $post, PostRepository $repository)
+    {
+        $recomendados = $repository->findRandom(3, $post);
+        return $this->render('servilabor/blog/item.html.twig', [
+            'post' => $post,
+            'recomendados' => $recomendados
+        ]);
     }
 
     /**
