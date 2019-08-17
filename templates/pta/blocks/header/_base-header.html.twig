@@ -1,7 +1,19 @@
-<header id="header" class="header-effect-shrink"
-        data-plugin-options="{'stickyEnabled': true, 'stickyEffect': 'shrink', 'stickyEnableOnBoxed': true, 'stickyEnableOnMobile': true, 'stickyChangeLogo': true, 'stickyStartAt': 120, 'stickyHeaderContainerHeight': 70}">
+{% set header_class = app.user ? '' : 'header-effect-shrink' %}
+{% set header_data_plugin_options = app.user ? {} : {
+    'stickyEnabled': true,
+    'stickyEffect': 'shrink',
+    'stickyEnableOnBoxed': true,
+    'stickyEnableOnMobile': true,
+    'stickyChangeLogo': true,
+    'stickyStartAt': 10,
+    'stickyHeaderContainerHeight': 70
+} %}
 
-    <div class="header-body border-top-0">
+<header id="header" class="{{ header_class }}"
+        data-plugin-options="{{ header_data_plugin_options | json_encode() }}">
+
+    {% set header_body_class = app.user ? 'border-top-0' : 'header-body border-top-0' %}
+    <div class="{{ header_body_class }}">
         {% if not app.user %}
             {{ include('pta/blocks/header/_header-topv2.html.twig') }}
         {% endif %}

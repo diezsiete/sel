@@ -2,7 +2,9 @@
     background: #ecedf0;
     width: 100%;
 }
-
+#header{
+    background: #FFFFFF;
+}
 .page-header {
     background: transparent;
     margin: 0;

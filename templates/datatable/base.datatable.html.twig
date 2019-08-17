@@ -3,6 +3,12 @@
 
 {% set searching = datatable.options.searching is defined and datatable.options.searching == true %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('vendor/DataTables2/datatables.min.css') }}">
+{% endblock %}
+
+
 {% block body_header_right %}
     {% if searching %}
         {{ input.search("search-dt-text", "search-dt-button") }}
@@ -27,13 +33,14 @@
             <script>
                 $(function () {
                     $('#datatable')
-                        .initDataTables({{ datatable_settings(datatable) }})
+                        .initDataTables({{ datatable_settings(datatable) }}, {fixedHeader: true})
                         .then(dt => {
                             {% if searching %}
                             const search = () => dt.search($('#search-dt-text').val()).draw();
                             $('#search-dt-button').click(search);
                             $('#search-dt-text').on('keypress', e => e.which === 13 ? search() : null)
                             {% endif %}
+                            dt.fixedHeader.adjust();
                         });
                 });
             </script>

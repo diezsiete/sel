@@ -11,6 +11,7 @@ datatables:
             <'row'<'col-sm-12 col-md-5'><'col-sm-12 col-md-7'p>>
         #dom: "<'row' <'col-sm-12' tr>><'row' <'col-sm-6'l><'col-sm-6 text-right'pi>>"
 
+
     template_parameters:
         # Example classes to integrate nicely with Bootstrap 3.x
         className: 'table table-striped table-bordered table-hover data-table'
