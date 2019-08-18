@@ -20,6 +20,16 @@ use Symfony\Component\Routing\Annotation\Route;
 class ServilaborController extends AbstractController
 {
     /**
+     * @var PostRepository
+     */
+    private $postRepo;
+
+    public function __construct(PostRepository $postRepo)
+    {
+        $this->postRepo = $postRepo;
+    }
+
+    /**
      * @Route("/", name="servilabor_inicio", host="%empresa.SERVILABOR.host%")
      */
     public function inicio()
@@ -95,6 +105,14 @@ class ServilaborController extends AbstractController
         return $this->render('servilabor/blog/item.html.twig', [
             'post' => $post,
             'recomendados' => $recomendados
+        ]);
+    }
+
+    public function recentBlogs($max = 3)
+    {
+        $posts = $this->postRepo->findBy([], ['id' => 'DESC'], $max, 0);
+        return $this->render('servilabor/blog/recent.html.twig', [
+            'posts' => $posts
         ]);
     }
 

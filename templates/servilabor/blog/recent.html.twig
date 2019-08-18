@@ -1,0 +1,16 @@
+{% for post in posts %}
+    <article>
+        <h3 class="h6 g-mb-2">
+            <a class="g-color-white-opacity-0_8 g-color-white--hover"
+               href="{{ path('servilabor_blog_item', {slug: post.slug}) }}">
+                {{ post.title }}
+            </a>
+        </h3>
+        <div class="small g-color-white-opacity-0_6">
+            {{ post.date | date('M d, Y') }}
+        </div>
+    </article>
+    {% if not loop.last %}
+        <hr class="g-brd-white-opacity-0_1 g-my-10">
+    {% endif %}
+{% endfor %}
