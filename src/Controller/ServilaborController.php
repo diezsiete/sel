@@ -153,4 +153,12 @@ class ServilaborController extends AbstractController
     {
         return $this->render('servilabor/politica-tratamiento-datos-personales.html.twig');
     }
+
+    /**
+     * @Route("/aviso-privacidad", name="aviso_privacidad", host="%empresa.SERVILABOR.host%")
+     */
+    public function avisoPrivacidad()
+    {
+        return $this->render('servilabor/aviso-privacidad.html.twig');
+    }
 }
