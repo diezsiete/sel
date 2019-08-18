@@ -48,7 +48,7 @@ class PtaController extends AbstractController
     /**
      * @Route("/noticias", name="pta_noticias", host="%empresa.PTA.host%")
      */
-    public function noticias(PostRepository $postRepo, TagRepository $tagRepo, PaginatorInterface $paginator, Request $request)
+    public function noticias(PostRepository $postRepo, TagRepository $tagRepo, PaginatorInterface $paginator, Request $request, Configuracion $config)
     {
         return $this->blogList($postRepo, $tagRepo, $paginator, $request);
     }

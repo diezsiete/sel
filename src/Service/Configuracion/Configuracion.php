@@ -6,6 +6,7 @@ namespace App\Service\Configuracion;
 
 
 use App\Service\Hv\HvWizard\HvWizardRoute;
+use Exception;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 
 class Configuracion
@@ -60,6 +61,8 @@ class Configuracion
      */
     private $scrapper = null;
 
+    private $documentosLaborales = [];
+
     public function __construct(ContainerBagInterface $bag, $webDir)
     {
         $this->bag = $bag;
@@ -71,7 +74,7 @@ class Configuracion
     /**
      * @param bool|string $filter
      * @return SsrsDb[]|SsrsDb
-     * @throws \Exception
+     * @throws Exception
      */
     public function getSsrsDb($filter = false)
     {
@@ -87,7 +90,7 @@ class Configuracion
                 return $ssrsDb->getNombre() === $filter;
             }));
             if(!$return) {
-                throw new \Exception("Base de datos " . $filter . " no existe");
+                throw new Exception("Base de datos " . $filter . " no existe");
             }
             return $return;
         } else {
@@ -195,5 +198,28 @@ class Configuracion
             );
         }
         return $this->scrapper;
+    }
+
+    /**
+     * @param null|string $searchKey
+     * @return DocumentoLaboral[]|DocumentoLaboral
+     * @throws Exception
+     */
+    public function getDocumentosLaborales($searchKey = null)
+    {
+        if(!$this->documentosLaborales) {
+            foreach($this->parameters['documentos_laborales'] as $key => $documentoLaboralData) {
+                $documentoLaboralData['key'] = $key;
+                $this->documentosLaborales[$key] = new DocumentoLaboral($this->empresa, $documentoLaboralData);
+            }
+        }
+        if($searchKey) {
+            if(isset($this->documentosLaborales[$searchKey])) {
+                return $this->documentosLaborales[$searchKey];
+            } else {
+                throw new Exception("documento laboral '$key' doesn't exists'");
+            }
+        }
+        return $this->documentosLaborales;
     }
 }

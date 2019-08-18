@@ -55,6 +55,7 @@ class Configuration implements ConfigurationInterface
                         ->append($this->addOficinasNode())
                         ->append($this->addHvWizardRoutes())
                         ->append($this->addScrapperEmpresaNode())
+                        ->append($this->addDocumentosLaborales())
                     ->end()
                 ->end()
             ->end()
@@ -142,6 +143,25 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end();
+        return $node;
+    }
+
+    protected function addDocumentosLaborales()
+    {
+        $treeBuilder = new TreeBuilder('documentos_laborales');
+
+        $node = $treeBuilder->getRootNode()
+            ->requiresAtLeastOneElement()
+            ->useAttributeAsKey('nombre')
+            ->normalizeKeys(false)
+            ->arrayPrototype()
+                ->children()
+                    ->scalarNode('date')->end()
+                    ->scalarNode('title')->end()
+                    ->scalarNode('pdf')->defaultValue(null)->end()
+                ->end()
+            ->end()
+        ;
         return $node;
     }
 

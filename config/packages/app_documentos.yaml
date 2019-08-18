@@ -1,0 +1,31 @@
+app:
+  empresas:
+    PTA:
+      documentos_laborales:
+        requisitos-incapacidades:
+          date: 2019-05-13
+          title: Requisitos incapacidades
+        que-hacer-despues-de-atencion-urgencias-por-accidente-de-trabajo:
+          date: 2019-03-13
+          title: '¿Qué debo hacer después de la atención de Urgencias por un Accidente de Trabajo?'
+        politica-de-tratamiento-de-datos-personales:
+          date: 2018-01-01
+          title: Política de Tratamiento de Datos Personales
+          pdf: POLITICA-TRATAMIENTO-DATOS-PERSONALES
+        circular-interna:
+          date: 2017-12-15
+          title: Circular interna PTA SAS
+          pdf: CIRCULAR-INTERNA
+        reglamento-interno:
+          date: 2017-12-15
+          title: Reglamento interno PTA SAS
+          pdf: RIT-2017
+        politica-para-la-prevencion-del-consumo-de-sustancias-psicoactivas:
+          date: 2016-12-14
+          title: Política prevención consumo sustancias psicoactivas
+        reglamento-de-higiene-y-seguridad-industrial:
+          date: 2016-12-14
+          title: Reglamento de higiene y seguridad industrial
+        politica-de-seguridad-y-salud-en-el-trabajo:
+          date: 2016-12-14
+          title: Política de seguridad y salud en el trabajo

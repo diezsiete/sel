@@ -69,8 +69,6 @@ app:
         ael:
           empleador: pta
 
-
-
     SERVILABOR:
       host: '%env(HOST_SERVILABOR)%'
       razon: SERVILABOR S.A.S
