@@ -29,3 +29,26 @@ app:
         politica-de-seguridad-y-salud-en-el-trabajo:
           date: 2016-12-14
           title: Política de seguridad y salud en el trabajo
+
+    SERVILABOR:
+      documentos_laborales:
+        politica-de-seguridad-vial:
+          date: 2018-12-12
+          title: Política de seguridad vial
+          pdf: POLITICA-DE-SEGURIDAD-VIAL-2019
+        politica-para-la-prevencion-del-consumo-de-sustancias-psicoactivas:
+          date: 2018-08-14
+          title: Política prevención consumo de sustancias psicoactivas
+          pdf: POLITICA-PARA-LA-PREVENCION-DEL-CONSUMO-DE-SUSTANCIAS-PSICOACTIVAS-2019
+        politica-sst:
+          date: 2018-07-30
+          title: Politica de seguridad y salud
+          pdf: POLITICA-SST-2019
+        reglamento-de-higiene-y-seguridad-industrial:
+          date: 2018-01-02
+          title: Reglamento de higiene y seguridad
+          pdf: REGLAMENTO-DE-HIGIENE-Y-SEGURIDAD-INDUSTRIAL
+        reglamento-interno-de-trabajo:
+          date: 2015-11-06
+          title: Reglamento interno de trabajo
+          pdf: REGLAMENTO-INTERNO-DE-TRABAJO

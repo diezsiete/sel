@@ -22,11 +22,11 @@
         <div class="collapse navbar-collapse align-items-center flex-sm-row g-pt-10 g-pt-5--lg g-mr-40--lg"
              id="navBar">
             <ul class="navbar-nav text-uppercase g-pos-rel g-font-weight-600 ml-auto">
-                <!-- Intro -->
+                <!-- Intro
                 <li class="nav-item  g-mx-10--lg g-mx-15--xl">
                     <a href="{{ path('servilabor_inicio') }}" class="nav-link g-py-7 g-px-0">Inicio</a>
                 </li>
-                <!-- End Intro -->
+                End Intro -->
 
                 <!-- Nosotros -->
                 <li class="nav-item  g-mx-10--lg g-mx-15--xl">
@@ -79,36 +79,19 @@
                     data-animation-out="fadeOut">
                     <a id="nav-link-pages" class="nav-link g-py-7 g-px-0" href="{{ path('servilabor_blog') }}" aria-haspopup="true"
                        aria-expanded="false" aria-controls="nav-submenu-pages">
-                        Blog / news
+                        Blog / Laborales
                     </a>
 
                     <ul class="hs-sub-menu list-unstyled u-shadow-v11 g-brd-top g-brd-primary g-brd-top-2 g-min-width-220 g-mt-18 g-mt-8--lg--scrolling"
                         id="nav-submenu-pages" aria-labelledby="nav-link-pages">
-                        <li class="dropdown-item ">
-                            <a class="nav-link" href="../../unify-main/pages/page-about-1.html">
-                                Reglamento interno
-                            </a>
-                        </li>
-                        <li class="dropdown-item ">
-                            <a class="nav-link" href="../../unify-main/pages/page-about-2.html">
-                                Política de seguridad y salud
-                            </a>
-                        </li>
-                        <li class="dropdown-item ">
-                            <a class="nav-link" href="../../unify-main/pages/page-about-3.html">
-                                Reglamento de higiene y salud
-                            </a>
-                        </li>
-                        <li class="dropdown-item ">
-                            <a class="nav-link" href="../../unify-main/pages/page-about-4.html">
-                                Política prevensión de sustancias psicoactivas
-                            </a>
-                        </li>
-                        <li class="dropdown-item ">
-                            <a class="nav-link" href="../../unify-main/pages/page-about-4.html">
-                                Política de seguridad vial
-                            </a>
-                        </li>
+                        {% for documentoLaboral in configuracion.documentosLaborales %}
+                            <li class="dropdown-item ">
+                                <a class="nav-link" target="_blank"
+                                   href="{{ path('documento_laboral', {key: documentoLaboral.key}) }}">
+                                    {{ documentoLaboral.title }}
+                                </a>
+                            </li>
+                        {% endfor %}
                     </ul>
                 </li>
                 <!-- End Blog / news -->
