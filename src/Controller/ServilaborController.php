@@ -145,4 +145,12 @@ class ServilaborController extends AbstractController
             'form' => $form->createView()
         ]);
     }
+
+    /**
+     * @Route("/politica-tratamiento-datos-personales", name="politica", host="%empresa.SERVILABOR.host%")
+     */
+    public function politicaTratamientoDatosPersonales()
+    {
+        return $this->render('servilabor/politica-tratamiento-datos-personales.html.twig');
+    }
 }
