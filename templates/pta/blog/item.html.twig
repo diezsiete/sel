@@ -1,0 +1,55 @@
+{% extends 'pta/base.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/pta/theme-blog.css') }}">
+{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    <div class="row">
+        {{ include('pta/blog/_sidebar.html.twig') }}
+
+        <div class="col-lg-9 order-lg-1">
+            <div class="blog-posts single-post">
+
+                <article class="post post-large blog-single-post border-0 m-0 p-0">
+
+                    {% if showImage %}
+                        <div class="post-image ml-0">
+                            <img src="{{ asset('img/pta/blog/' ~ post.img ~ '.jpg') }}" class="img-fluid img-thumbnail img-thumbnail-no-borders rounded-0" alt="" />
+                        </div>
+                    {% endif %}
+
+                    <div class="post-date ml-0">
+                        <span class="day">{{ post.date | date('d') }}</span>
+                        <span class="month">{{ post.date | date('M') }}</span>
+                    </div>
+
+                    <div class="post-content ml-0">
+
+                        <h2 class="font-weight-bold">
+                            {{ post.title }}
+                        </h2>
+
+                        <div class="post-meta">
+                            <span><i class="far fa-folder"></i>
+                                {% for tag in post.tags %}
+                                    <a href="{{ path('pta_noticias_categoria', {slug: tag.slug}) }}">
+                                        {{ tag.name }}
+                                    </a> {% if not loop.last  %}, {% endif %}
+                                {% endfor %}
+                            </span>
+                        </div>
+
+                        {{ post.content|raw }}
+                    </div>
+                </article>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+

@@ -2,10 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\Post;
+use App\Entity\Tag;
 use App\Form\ContactoFormType;
+use App\Repository\PostRepository;
+use App\Repository\TagRepository;
 use App\Service\Configuracion\Configuracion;
 use App\Service\Configuracion\Oficina;
 use App\Service\Mailer;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -43,9 +48,53 @@ class PtaController extends AbstractController
     /**
      * @Route("/noticias", name="pta_noticias", host="%empresa.PTA.host%")
      */
-    public function noticias()
+    public function noticias(PostRepository $postRepo, TagRepository $tagRepo, PaginatorInterface $paginator, Request $request)
     {
-        return $this->render('pta/noticias.html.twig');
+        return $this->blogList($postRepo, $tagRepo, $paginator, $request);
+    }
+
+    /**
+     * @Route("/noticias/categoria/{slug}", name="pta_noticias_categoria", host="%empresa.PTA.host%")
+     */
+    public function noticiasCategoria(PostRepository $postRepo, TagRepository $tagRepo, PaginatorInterface $paginator, Request $request, Tag $tag)
+    {
+        return $this->blogList($postRepo, $tagRepo, $paginator, $request, $tag);
+    }
+
+    private function blogList(PostRepository $postRepo, TagRepository $tagRepo, PaginatorInterface $paginator, Request $request, ?Tag $tag = null)
+    {
+        $qb = $postRepo->searchQueryBuilder($tag);
+
+        $pagination = $paginator->paginate($qb, $request->get('page', 1), 5);
+
+        return $this->render('pta/blog/list.html.twig', [
+            'pagination' => $pagination,
+            'tagSelected' => $tag,
+            'tags' => $tagRepo->findAllOrderBySize()
+        ]);
+    }
+
+    /**
+     * @Route("/noticias/{slug}", name="pta_noticia", host="%empresa.PTA.host%")
+     */
+    public function noticia(Post $post, PostRepository $repository, TagRepository $tagRepo)
+    {
+        $showImage = !in_array($post->getSlug(), [
+            'tips-evitar-gripe',
+            '7-tips-para-evitar-estres-laboral',
+            'feliz-y-sano-en-el-trabajo',
+            'tips-de-seguridad-y-salud-en-el-trabajo',
+            'dieta-magica'
+        ]);
+
+        $recomendados = $repository->findRandom(3, $post);
+        return $this->render('pta/blog/item.html.twig', [
+            'post' => $post,
+            'recomendados' => $recomendados,
+            'showImage' => $showImage,
+            'tags' => $tagRepo->findAllOrderBySize(),
+            'tagSelected' => null
+        ]);
     }
 
     /**

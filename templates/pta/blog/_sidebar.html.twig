@@ -1,0 +1,89 @@
+<div class="col-lg-3 order-lg-2">
+    <aside class="sidebar">
+        {#<form action="page-search-results.html" method="get">
+            <div class="input-group mb-3 pb-1">
+                <input class="form-control text-1" placeholder="Search..." name="s" id="s" type="text">
+                <span class="input-group-append">
+                                <button type="submit" class="btn btn-dark text-1 p-2"><i class="fas fa-search m-2"></i></button>
+                            </span>
+            </div>
+        </form>#}
+        <h5 class="font-weight-bold pt-4">Categorias</h5>
+        <ul class="nav nav-list flex-column mb-5">
+            {% for tag in tags %}
+                <li class="nav-item">
+                    {% set tagClass = 'nav-link' %}
+                    {% set tagHref = path('pta_noticias_categoria', { slug: tag.slug }) %}
+                    {% if tagSelected is not null and tagSelected.id == tag.id %}
+                        {% set tagClass = 'nav-link active' %}
+                        {% set tagHref = path('pta_noticias') %}
+                    {% endif %}
+
+                    <a class="{{ tagClass }}" href="{{ tagHref }}">
+                        {{ tag.name }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+        <div class="tabs tabs-dark mb-4 pb-2">
+            <ul class="nav nav-tabs">
+                <li class="nav-item active">
+                    <a class="nav-link show active text-1 font-weight-bold text-uppercase" href="#popularPosts" data-toggle="tab">
+                        Documentos laborales
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="popularPosts">
+                    <ul class="simple-post-list">
+                        <li>
+                            <div class="post-image">
+                                <div class="img-thumbnail img-thumbnail-no-borders d-block">
+                                    <a href="blog-post.html">
+                                        <img src="img/blog/square/blog-11.jpg" width="50" height="50" alt="">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="post-info">
+                                <a href="blog-post.html">Nullam Vitae Nibh Un Odiosters</a>
+                                <div class="post-meta">
+                                    Nov 10, 2018
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="post-image">
+                                <div class="img-thumbnail img-thumbnail-no-borders d-block">
+                                    <a href="blog-post.html">
+                                        <img src="img/blog/square/blog-24.jpg" width="50" height="50" alt="">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="post-info">
+                                <a href="blog-post.html">Vitae Nibh Un Odiosters</a>
+                                <div class="post-meta">
+                                    Nov 10, 2018
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="post-image">
+                                <div class="img-thumbnail img-thumbnail-no-borders d-block">
+                                    <a href="blog-post.html">
+                                        <img src="img/blog/square/blog-42.jpg" width="50" height="50" alt="">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="post-info">
+                                <a href="blog-post.html">Odiosters Nullam Vitae</a>
+                                <div class="post-meta">
+                                    Nov 10, 2018
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </aside>
+</div>

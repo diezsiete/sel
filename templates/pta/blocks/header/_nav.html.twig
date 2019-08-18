@@ -26,7 +26,8 @@
             </a>
         </li>
         <li class="dropdown">
-            <a class="dropdown-item dropdown-toggle {{ app.request.attributes.get('_route') is same as('pta_noticias') ? 'active' : '' }}"
+            {% set active = app.request.attributes.get('_route') in ['pta_noticias', 'pta_noticias_categoria', 'pta_noticia'] %}
+            <a class="dropdown-item dropdown-toggle {{ active ? 'active' : '' }}"
                href="{{ path('pta_noticias') }}">
                 Blog / Noticias
             </a>

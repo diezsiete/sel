@@ -19,6 +19,17 @@ class TagRepository extends ServiceEntityRepository
         parent::__construct($registry, Tag::class);
     }
 
+    public function findAllOrderBySize()
+    {
+        return $this->createQueryBuilder('t')
+            ->join('t.post', 'p')
+            ->select('t, COUNT(p) AS HIDDEN c')
+            ->groupBy('t.id')
+            ->orderBy('c', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
     // /**
     //  * @return Tag[] Returns an array of Tag objects
     //  */
