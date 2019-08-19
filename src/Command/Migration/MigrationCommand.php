@@ -176,7 +176,8 @@ abstract class MigrationCommand extends TraitableCommand
                 $count = (int)$matches[1];
             }
         } else {
-            $sqlCount = preg_replace('/(SELECT)(.*)(FROM.*)/', '$1 COUNT(*) $3', $sql);
+            $noNlSql = preg_replace( "/\r|\n/", "", $sql);
+            $sqlCount = preg_replace('/(SELECT)(.*)(FROM.*)/', '$1 COUNT(*) $3', $noNlSql);
             $count = (int) $conn->fetchColumn($sqlCount);
         }
         return $count;

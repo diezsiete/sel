@@ -18,7 +18,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class MigrationAutoliquidacion extends MigrationCommand
+class MigrationAutoliquidacionCommand extends MigrationCommand
 {
     use SelCommandTrait,
         PeriodoOption;
@@ -180,8 +180,8 @@ class MigrationAutoliquidacion extends MigrationCommand
         $empleado = $empleadoRepo->findByIdentificacion($row['identificacion']);
         if(!$empleado) {
             // try search by email
-            $this->io->warning("empleado '" . $row['identificacion'] . "' not found, searching by email '" . $row['email'] . "'");
-            $empleado = $empleadoRepo->findByEmail($row['email']);
+//            $this->io->warning("empleado '" . $row['identificacion'] . "' not found, searching by email '" . $row['email'] . "'");
+//            $empleado = $empleadoRepo->findByEmail($row['email']);
             if($empleado) {
                 $this->io->success("found");
             } else {
@@ -199,7 +199,7 @@ class MigrationAutoliquidacion extends MigrationCommand
         if($this->filesystem->has($path)) {
             return $this->filesystem->readStream($path);
         } else {
-            $this->io->error("empleado '$ident' no autoliquidacion found for period '$periodo'");
+            $this->io->error("empleado '$ident' no autoliquidacion file found for period '$periodo'");
             return null;
         }
     }
