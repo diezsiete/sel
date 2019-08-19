@@ -6,6 +6,7 @@ use App\Entity\Hv;
 use App\Entity\HvAdjunto;
 use App\Repository\HvRepository;
 use App\Service\UploaderHelper;
+use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use League\Flysystem\FilesystemInterface;
 use Symfony\Component\Console\Command\Command;
@@ -14,6 +15,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\File\File;
 
 class MigrationHvAdjuntoCommand extends MigrationCommand
@@ -36,10 +38,11 @@ class MigrationHvAdjuntoCommand extends MigrationCommand
      */
     private $uploaderHelper;
 
-    public function __construct(ManagerRegistry $managerRegistry, FilesystemInterface $privateUploadFilesystem,
+    public function __construct(Reader $annotationReader, EventDispatcherInterface $eventDispatcher,
+                                ManagerRegistry $managerRegistry, FilesystemInterface $privateUploadFilesystem,
                                 UploaderHelper $uploaderHelper, string $kernelProjectDir)
     {
-        parent::__construct($managerRegistry);
+        parent::__construct($annotationReader, $eventDispatcher, $managerRegistry);
         $this->privateFileSystem = $privateUploadFilesystem;
         $this->projectDir = $kernelProjectDir;
         $this->uploaderHelper = $uploaderHelper;

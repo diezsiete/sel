@@ -27,7 +27,7 @@ doctrine:
                 default_table_options:
                     charset: utf8mb4
                     collate: utf8mb4_general_ci
-                url: '%env(resolve:DATABASE_SE_URL)%'
+                url: '%env(migrationdb:DATABASE_SE_URL)%'
 
             se_vacantes:
                 # configure these for your database server

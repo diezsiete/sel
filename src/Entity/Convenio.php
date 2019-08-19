@@ -20,7 +20,7 @@ class Convenio
     private $codigo;
 
     /**
-     * @ORM\Column(type="string", length=45)
+     * @ORM\Column(type="string", length=45, nullable=true)
      */
     private $codigoCliente;
 
@@ -30,7 +30,7 @@ class Convenio
     private $nombre;
 
     /**
-     * @ORM\Column(type="string", length=145)
+     * @ORM\Column(type="string", length=145, nullable=true)
      */
     private $direccion;
 

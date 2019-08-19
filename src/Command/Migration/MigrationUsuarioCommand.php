@@ -3,6 +3,7 @@
 namespace App\Command\Migration;
 
 use App\Entity\Usuario;
+use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -13,24 +14,23 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class MigrationUsuarioCommand extends MigrationCommand
 {
     protected static $defaultName = 'sel:migration:usuario';
-    /**
-     * @var ManagerRegistry
-     */
-    private $doctrine;
+
     /**
      * @var UserPasswordEncoderInterface
      */
     private $passwordEncoder;
 
 
-    public function __construct(ManagerRegistry $doctrine, UserPasswordEncoderInterface $passwordEncoder)
+    public function __construct(Reader $annotationReader, EventDispatcherInterface $eventDispatcher,
+                                ManagerRegistry $doctrine, UserPasswordEncoderInterface $passwordEncoder)
     {
-        parent::__construct($doctrine);
+        parent::__construct($annotationReader, $eventDispatcher, $doctrine);
         $this->passwordEncoder = $passwordEncoder;
     }
 
@@ -106,6 +106,11 @@ class MigrationUsuarioCommand extends MigrationCommand
             $persisted = 1;
         }
         return $persisted;
+    }
+
+    protected function down(InputInterface $input, OutputInterface $output)
+    {
+        $this->truncateTable(Usuario::class);
     }
 
     private function migrateRoles($roles)

@@ -2,7 +2,7 @@
 
 namespace App\Command\NovasoftImport;
 
-use App\Command\Helpers\ConsoleTrait;
+use App\Command\Helpers\SelCommandTrait;
 use App\Command\Helpers\Loggable;
 use App\Command\Helpers\PeriodoOption;
 use App\Command\Helpers\RangoPeriodoOption;
@@ -10,7 +10,6 @@ use App\Command\Helpers\SearchByConvenioOrEmpleado;
 use App\Command\Helpers\TraitableCommand\TraitableCommand;
 use App\Entity\Empleado;
 use App\Entity\Usuario;
-use App\Repository\UsuarioRepository;
 use App\Service\ReportesServicioEmpleados;
 use Doctrine\Common\Annotations\Reader;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,25 +18,26 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
+
+/**
+ * Class NiEmpleadoCommand
+ * @package App\Command\NovasoftImport
+ */
 class NiEmpleadoCommand extends TraitableCommand
 {
     use Loggable,
         PeriodoOption,
         RangoPeriodoOption,
         SearchByConvenioOrEmpleado,
-        ConsoleTrait;
+        SelCommandTrait;
 
     protected static $defaultName = 'sel:ni:empleado';
-
 
     /**
      * @var UserPasswordEncoderInterface
      */
     private $passwordEncoder;
-    /**
-     * @var UsuarioRepository
-     */
-    private $usuarioRepository;
+
     /**
      * @var ReportesServicioEmpleados
      */
@@ -46,11 +46,10 @@ class NiEmpleadoCommand extends TraitableCommand
 
     public function __construct(Reader $reader, EventDispatcherInterface $dispatcher,
                                 ReportesServicioEmpleados $reportesServicioEmpleados,
-                                UsuarioRepository $usuarioRepository, UserPasswordEncoderInterface $passwordEncoder)
+                                UserPasswordEncoderInterface $passwordEncoder)
     {
         parent::__construct($reader, $dispatcher);
         $this->passwordEncoder = $passwordEncoder;
-        $this->usuarioRepository = $usuarioRepository;
         $this->reportesServicioEmpleados = $reportesServicioEmpleados;
     }
 
@@ -148,7 +147,8 @@ class NiEmpleadoCommand extends TraitableCommand
 
     private function updateUsuario(Usuario $usuario)
     {
-        $usuarioDb = $this->usuarioRepository->findOneBy(['identificacion' => $usuario->getIdentificacion()]);
+        $usuarioDb = $this->em->getRepository(Usuario::class)
+            ->findOneBy(['identificacion' => $usuario->getIdentificacion()]);
         $updated = false;
         if($usuarioDb) {
             $usuarioDb

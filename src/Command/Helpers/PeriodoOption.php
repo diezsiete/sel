@@ -18,12 +18,14 @@ trait PeriodoOption
      */
     private $periodo = null;
 
+    protected $periodoDescription = 'Especifique mes en formato Y-m';
+
     /**
      * @Configure
      */
     public function addOptionPeriodo()
     {
-        $this->addOption('periodo', 'p', InputOption::VALUE_REQUIRED, 'Especifique mes en formato Y-m');
+        $this->addOption('periodo', 'p', InputOption::VALUE_REQUIRED, $this->periodoDescription);
     }
 
 

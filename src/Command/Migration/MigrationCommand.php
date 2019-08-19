@@ -4,20 +4,22 @@
 namespace App\Command\Migration;
 
 
+use App\Command\Helpers\TraitableCommand\TraitableCommand;
+use App\Entity\Autoliquidacion\Autoliquidacion;
 use App\Entity\Usuario;
 use App\Repository\UsuarioRepository;
+use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\DBAL\Connection;
-use Symfony\Component\Console\Command\Command;
+use Doctrine\DBAL\Driver\Statement;
 use Symfony\Component\Console\Helper\ProgressBar;
-use Symfony\Component\Console\Input\Input;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-abstract class MigrationCommand extends Command
+abstract class MigrationCommand extends TraitableCommand
 {
     const CONNECTION_DEFAULT = "default";
     const CONNECTION_SE = "se";
@@ -57,9 +59,11 @@ abstract class MigrationCommand extends Command
     protected $batchSize = 20;
 
     /**
-     * @var \Doctrine\DBAL\Driver\Statement
+     * @var Statement[]
      */
-    protected $currentStmt = null;
+    protected $currentStmt = [];
+
+    protected $currentStmtQueries = [];
 
     /**
      * @var int
@@ -80,9 +84,9 @@ abstract class MigrationCommand extends Command
 
     protected $connections = [];
 
-    public function __construct(ManagerRegistry $managerRegistry)
+    public function __construct(Reader $annotationReader, EventDispatcherInterface $eventDispatcher, ManagerRegistry $managerRegistry)
     {
-        parent::__construct();
+        parent::__construct($annotationReader, $eventDispatcher);
         $this->doctrine = $managerRegistry;
     }
 
@@ -119,7 +123,7 @@ abstract class MigrationCommand extends Command
 
     protected function down(InputInterface $input, OutputInterface $output)
     {
-        $this->io->warning("Metodo down vacio");
+        $this->truncateTable(Autoliquidacion::class);
     }
 
     protected function configure()
@@ -128,7 +132,8 @@ abstract class MigrationCommand extends Command
         $this
             ->addOption('offset', 'o',InputOption::VALUE_OPTIONAL, 'offset')
             ->addOption('limit','l', InputOption::VALUE_OPTIONAL, 'limit')
-            ->addOption('down', 'd', InputOption::VALUE_NONE);
+            ->addOption('down', 'd', InputOption::VALUE_NONE,
+                'Truncates all tables targets');
         ;
     }
 
@@ -239,26 +244,35 @@ abstract class MigrationCommand extends Command
 
     /**
      * @param $connectionName
-     * @return Connection|object
+     * @return Connection
      */
     protected function getConnection($connectionName = self::CONNECTION_SE)
     {
         if(!isset($this->connections[$connectionName]) || $this->connections[$connectionName] === null) {
-            $this->connections[$connectionName] = $this->doctrine->getConnection($connectionName);
+            /** @var Connection $connection */
+            $connection = $this->doctrine->getConnection($connectionName);
+            $this->connections[$connectionName] = $connection;
         }
         return $this->connections[$connectionName];
     }
 
     protected function fetch($sql, $connectionName = self::CONNECTION_SE)
     {
-        if(!$this->currentStmt) {
-            $this->currentStmt = $this->getConnection($connectionName)->query($sql);
+        $statementIndex = array_search($sql, $this->currentStmtQueries);
+        if($statementIndex === false) {
+            $this->currentStmtQueries[] = $sql;
+            $statementIndex = count($this->currentStmtQueries) - 1;
         }
 
-        $row = $this->currentStmt->fetch();
+
+        if(!isset($this->currentStmt[$statementIndex])) {
+            $this->currentStmt[$statementIndex] = $this->getConnection($connectionName)->query($sql);
+        }
+
+        $row = $this->currentStmt[$statementIndex]->fetch();
         if(!$row) {
             $this->flushAndClear();
-            $this->currentStmt = null;
+            unset($this->currentStmt[$statementIndex]);
             $this->batchCount = 0;
         }
         return $row;

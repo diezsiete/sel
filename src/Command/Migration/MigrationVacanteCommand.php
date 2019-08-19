@@ -2,38 +2,23 @@
 
 namespace App\Command\Migration;
 
+use App\Command\Helpers\SelCommandTrait;
 use App\Entity\Cargo;
 use App\Entity\Ciudad;
-use App\Entity\Dpto;
-use App\Entity\Hv;
 use App\Entity\LicenciaConduccion;
-use App\Entity\Pais;
 use App\Entity\Profesion;
-use App\Entity\Usuario;
 use App\Entity\Vacante;
 use App\Entity\VacanteArea;
 use App\Entity\VacanteRedSocial;
-use App\Repository\CiudadRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 
 class MigrationVacanteCommand extends MigrationCommand
 {
+    use SelCommandTrait;
+
     protected static $defaultName = 'migration:vacante';
-    /**
-     * @var EntityManagerInterface
-     */
-    private $em;
-
-
-    public function __construct(ManagerRegistry $managerRegistry, EntityManagerInterface $em)
-    {
-        parent::__construct($managerRegistry);
-        $this->em = $em;
-    }
 
     protected function configure()
     {

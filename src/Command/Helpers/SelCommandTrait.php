@@ -5,17 +5,15 @@ namespace App\Command\Helpers;
 
 
 use App\Entity\Usuario;
-use Doctrine\Common\Persistence\ObjectRepository;
+use App\Service\Configuracion\Configuracion;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 
-/**
- * Trait ConsoleTrait
- * @package App\Command\Helpers
- * @deprecated
- */
-trait ConsoleTrait
+trait SelCommandTrait
 {
+    /**
+     * @var null|Usuario
+     */
     private $superAdmin = null;
 
     /**
@@ -24,11 +22,24 @@ trait ConsoleTrait
     protected $em;
 
     /**
+     * @var Configuracion
+     */
+    protected $configuracion;
+
+    /**
      * @required
      */
-    public function setContainer(EntityManagerInterface $em)
+    public function setEntityManager(EntityManagerInterface $em)
     {
         $this->em = $em;
+    }
+
+    /**
+     * @required
+     */
+    public function setConfiguracion(Configuracion $configuracion)
+    {
+        $this->configuracion = $configuracion;
     }
 
     /**

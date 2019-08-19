@@ -2,20 +2,40 @@
 
 namespace App\Command\NovasoftImport;
 
+use App\Command\Helpers\SelCommandTrait;
+use App\Command\Helpers\TraitableCommand\TraitableCommand;
 use App\Entity\Convenio;
+use App\Service\Configuracion\SsrsDb;
+use App\Service\ReportesServicioEmpleados;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
 
-class NiConvenioCommand extends NiCommand
+class NiConvenioCommand extends TraitableCommand
 {
+    use SelCommandTrait;
+
     protected static $defaultName = 'sel:ni:convenio';
 
+    /**
+     * @var ReportesServicioEmpleados
+     */
+    protected $reportesServicioEmpleados;
+
+    /**
+     * @required
+     */
+    public function setReportesServicioEmpleados(ReportesServicioEmpleados $reportesServicioEmpleados)
+    {
+        $this->reportesServicioEmpleados = $reportesServicioEmpleados;
+    }
 
     protected function configure()
     {
         parent::configure();
-        $this->setDescription('Actualizar convenios desde novasoft');
+        $this->setDescription('Actualizar convenios desde novasoft')
+            ->addOption('ssrs_db', null,InputOption::VALUE_OPTIONAL|InputOption::VALUE_IS_ARRAY,
+                'Novasoft database');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -29,18 +49,37 @@ class NiConvenioCommand extends NiCommand
                     $convenios = $this->reportesServicioEmpleados->setSsrsDb($db->getNombre())->getConvenios();
                     foreach($convenios as $convenio) {
                         $convenio->setSsrsDb($db->getNombre());
-                        $persisted = $this->persistConvenio($convenio);
-                        $this->em->flush();
-                        $this->io->writeln("  [".$convenio->getCodigo()."] " . $convenio->getNombre()
-                            . " [" . ($persisted ? 'insert' : 'update') . "]");
+                        $this->persistConvenio($convenio);
                     }
                 } else {
-                    $this->io->writeln("  no tiene");
+                    $convenio = (new Convenio())
+                        ->setCodigo($db->getNombre())
+                        ->setSsrsDb($db->getNombre())
+                        ->setNombre($db->getNombre());
+                    $this->persistConvenio($convenio);
                 }
             }
         } catch (\Exception $e) {
             $this->io->error($e->getMessage());
         }
+    }
+
+    /**
+     * @return SsrsDb[]
+     * @throws \Exception
+     */
+    protected function getSsrsDbs()
+    {
+        $ssrsDbOption = $this->input->getOption('ssrs_db');
+        $ssrsDbs = [];
+        if($ssrsDbOption) {
+            foreach($ssrsDbOption as $ssrsDb) {
+                $ssrsDbs[] = $this->configuracion->getSsrsDb($ssrsDb);
+            }
+        } else {
+            $ssrsDbs = $this->configuracion->getSsrsDb();
+        }
+        return $ssrsDbs;
     }
 
     /**
@@ -61,6 +100,10 @@ class NiConvenioCommand extends NiCommand
         } else {
             $this->em->persist($convenio);
         }
+
+        $this->em->flush();
+        $this->io->writeln("  [".$convenio->getCodigo()."] " . $convenio->getNombre()
+            . " [" . ($persisted ? 'insert' : 'update') . "]");
         return $persisted;
     }
 }

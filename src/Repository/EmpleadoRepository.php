@@ -7,6 +7,7 @@ use App\Entity\Usuario;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\AbstractQuery;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Query\QueryException;
 use phpDocumentor\Reflection\Types\Static_;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -43,6 +44,24 @@ class EmpleadoRepository extends ServiceEntityRepository
             ->getQuery();
 
         return is_array($identificacion) ? $query->getResult() : $query->getOneOrNullResult();
+    }
+
+    /**
+     * @param string $email
+     * @return Usuario|null
+     */
+    public function findByEmail($email)
+    {
+        try {
+            return $this->createQueryBuilder('e')
+                ->join('e.usuario', 'u')
+                ->andWhere('u.email = :email')
+                ->setParameter('email', $email)
+                ->getQuery()
+                ->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+            return null;
+        }
     }
 
     /**
