@@ -186,6 +186,31 @@ class Usuario implements UserInterface
     }
 
     /**
+     * @param array|string $rol_nombre
+     * @return bool
+     */
+    public function esRol($rol_nombre)
+    {
+        $rol_nombre = is_array($rol_nombre) ? $rol_nombre : [$rol_nombre];
+        $es_rol = false;
+        if(!$rol_nombre)
+            $es_rol = true;
+        else {
+            foreach ($rol_nombre as $rol) {
+                if (strpos($rol, '/') !== false) {
+                    $es_rol = count(preg_grep($rol, $this->roles)) > 0;
+                } else if (in_array($rol, $this->roles)) {
+                    $es_rol = true;
+                }
+                if($es_rol) {
+                    break;
+                }
+            }
+        }
+        return $es_rol;
+    }
+
+    /**
      * @see UserInterface
      */
     public function getPassword(): string
@@ -404,4 +429,6 @@ class Usuario implements UserInterface
 
         return $this;
     }
+
+
 }

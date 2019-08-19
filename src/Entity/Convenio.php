@@ -10,8 +10,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ConvenioRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
-class Convenio
+class Convenio implements \JsonSerializable
 {
     /**
      * @ORM\Id()
@@ -53,6 +54,9 @@ class Convenio
      * @ORM\OneToMany(targetEntity="App\Entity\Representante", mappedBy="convenio", orphanRemoval=true)
      */
     private $representantes;
+
+    private $representantesByType = [];
+
 
     public function __construct()
     {
@@ -175,9 +179,22 @@ class Convenio
     /**
      * @return Collection|Representante[]
      */
-    public function getRepresentantes(): Collection
+    public function getRepresentantes($type = null): Collection
     {
-        return $this->representantes;
+        if($type) {
+            if(!isset($this->representantesByType[$type])) {
+                $this->representantesByType[$type] = new ArrayCollection();
+                foreach($this->getRepresentantes() as $representante) {
+                    if ($representante->isType($type)) {
+                        $this->representantesByType[$type]->add($representante);
+                    }
+                }
+            }
+            return $this->representantesByType[$type];
+        } else {
+            return $this->representantes;
+        }
+
     }
 
     public function addRepresentante(Representante $representante): self
@@ -201,5 +218,24 @@ class Convenio
         }
 
         return $this;
+    }
+
+    /**
+     * @ORM\PreFlush
+     */
+    public function preFlush()
+    {
+        $this->representantesByType = [];
+    }
+
+
+    public function jsonSerialize()
+    {
+        return [
+            "codigo" => $this->codigo,
+            "nombre" => $this->nombre,
+            "codigoCliente" => $this->codigoCliente,
+            "direccion" => $this->direccion
+        ];
     }
 }

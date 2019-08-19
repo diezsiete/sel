@@ -11,7 +11,6 @@ use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
 use Omines\DataTablesBundle\Column\DateTimeColumn;
 use Omines\DataTablesBundle\Column\TextColumn;
 use Omines\DataTablesBundle\DataTable;
-use Omines\DataTablesBundle\DataTableState;
 use Omines\DataTablesBundle\DataTableTypeInterface;
 use Symfony\Component\Routing\RouterInterface;
 

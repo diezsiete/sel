@@ -11,6 +11,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Representante
 {
+    const TYPE_CLIENTE = "CLIENTE";
+    const TYPE_SERVICIO = "SERVICIO";
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -24,6 +27,7 @@ class Representante
      */
     private $convenio;
 
+    //fetch="EAGER"
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Usuario")
      * @ORM\JoinColumn(nullable=false)
@@ -149,5 +153,10 @@ class Representante
         $this->email = $email;
 
         return $this;
+    }
+
+    public function isType($type)
+    {
+        return $this->getUsuario()->esRol('ROLE_REPRESENTANTE_' . $type);
     }
 }

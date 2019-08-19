@@ -120,8 +120,8 @@ class MigrationUsuarioCommand extends MigrationCommand
         $roles = $this->replaceRol($roles, 'ROLE_USUARIO');
         $roles = $this->replaceRol($roles, 'ROLE_VACANTES_ASPIRANTE', 'ROLE_ASPIRANTE');
         $roles = $this->replaceRol($roles, 'ROLE_VACANTES_EDITOR', 'ROLE_VACANTES');
-        $roles = $this->replaceRol($roles, 'ROLE_CLIENTES_CLIENTE_REPRESENTANTE', 'ROLE_CLIENTE_REPRESENTANTE');
-        $roles = $this->replaceRol($roles, 'ROLE_CLIENTES_EMPRESA_SERVICIO', 'ROLE_EMPRESA_SERVICIO');
+        $roles = $this->replaceRol($roles, 'ROLE_CLIENTES_CLIENTE_REPRESENTANTE', 'ROLE_REPRESENTANTE_CLIENTE');
+        $roles = $this->replaceRol($roles, 'ROLE_CLIENTES_EMPRESA_SERVICIO', 'ROLE_REPRESENTANTE_SERVICIO');
 
         return array_values($roles);
     }

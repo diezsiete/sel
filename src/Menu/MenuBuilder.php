@@ -67,14 +67,7 @@ class MenuBuilder
             $this->createAutoliquidacionesMenu($menu);
         }
 
-        if($this->security->isGranted(['ROLE_ADMIN_USUARIOS'], $user)) {
-            $menu->addChild('Administración')
-                ->setUri('#')
-                ->setExtra('icon', 'fas fa-cog');
-            $menu['Administración']
-                ->addChild('Usuarios', ['route' => 'admin_usuarios'])
-                ->setExtra('icon', 'fas fa-users');
-        }
+        $this->createAdminMenu($menu, $user);
 
         return $menu;
     }
@@ -134,5 +127,28 @@ class MenuBuilder
         $menu['Autoliquidaciones']
             ->addChild('Autoliquidaciones', ['route' => 'admin_autoliquidaciones'])
             ->setExtra('icon', 'fas fa-clock');
+    }
+
+    public function createAdminMenu(ItemInterface $menu, $user)
+    {
+        $roles = ['ROLE_ADMIN_USUARIOS', 'ROLE_ADMIN_AUTOLIQUIDACIONES'];
+        if($this->security->isGranted($roles, $user)) {
+            $menu->addChild('Administración')
+                ->setUri('#')
+                ->setExtra('icon', 'fas fa-cog');
+
+            if($this->security->isGranted([$roles[0]], $user)) {
+                $menu['Administración']
+                    ->addChild('Usuarios', ['route' => 'admin_usuarios'])
+                    ->setExtra('icon', 'fas fa-users');
+            }
+
+            if($this->security->isGranted([$roles[1]], $user)) {
+                $menu['Administración']
+                    ->addChild('Convenios', ['route' => 'admin_convenio_list'])
+                    ->setExtra('icon', 'fas fa-building');
+            }
+        }
+
     }
 }

@@ -8,7 +8,7 @@ datatables:
         dom: >
             <'row'<'d-sm-none d-md-block col-md-6'>>
             <'row'<'col-sm-12'tr>>
-            <'row'<'col-sm-12 col-md-5'><'col-sm-12 col-md-7'p>>
+            <'row'<'col-sm-12 col-md-5' i><'col-sm-12 col-md-7'p>>
         #dom: "<'row' <'col-sm-12' tr>><'row' <'col-sm-6'l><'col-sm-6 text-right'pi>>"
 
 
