@@ -27,9 +27,8 @@ class Representante
      */
     private $convenio;
 
-    //fetch="EAGER"
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Usuario")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Usuario", fetch="EAGER")
      * @ORM\JoinColumn(nullable=false)
      */
     private $usuario;
