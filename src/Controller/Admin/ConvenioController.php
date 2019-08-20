@@ -50,7 +50,6 @@ class ConvenioController extends AbstractController
             'searching' => false
         ]);
         $table->handleRequest($request);
-
         if ($table->isCallback()) {
             return $table->getResponse();
         }
@@ -61,7 +60,20 @@ class ConvenioController extends AbstractController
     }
 
     /**
-     * @Route("/sel/admin/convenio/{codigo}/representante/{rid}", name="admin_convenio_representante_edit")
+     * @Route("/sel/admin/convenio/{codigo}/representante/agregar", name="admin_convenio_representante_add")
+     */
+    public function representanteAdd(Convenio $convenio, Request $request)
+    {
+        return $this->render('admin/convenio/representante/add.html.twig', [
+            'convenio' => $convenio
+        ]);
+    }
+
+    /**
+     * @Route("/sel/admin/convenio/{codigo}/representante/{rid}",
+     *     name="admin_convenio_representante_edit",
+     *     requirements={"rid"="\d+"}
+     * )
      * @ParamConverter("convenio", options={"mapping": {"codigo": "codigo"}})
      * @ParamConverter("representante", options={"mapping": {"rid": "id"}})
      */

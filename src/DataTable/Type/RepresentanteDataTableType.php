@@ -29,8 +29,11 @@ class RepresentanteDataTableType implements DataTableTypeInterface
     {
         $convenio = $options['convenio'];
         $dataTable
-            ->add('nombre', TextColumn::class, ['label' => 'Nombre', 'field' => 'u.nombreCompleto'])
-            ->add('correo', TextColumn::class, ['label' => 'Correo', 'field' => 'r.email'])
+            ->add('nombre', TextColumn::class, ['label' => 'Nombre', 'field' => 'u.primerNombre',
+                'data' => function(Representante $representante) {
+                    return $representante->getUsuario()->getNombreCompleto(true);
+                }])
+            ->add('correo', TextColumn::class, ['label' => 'Correo', 'field' => 'r.email', 'orderable' => false])
             ->add('rol', TextColumn::class, ['label' => 'Rol', 'field' => 'r.type', 'orderable' => false, 'render' => function($value){
                 return "<span class='badge'>$value</span>";
             }])
