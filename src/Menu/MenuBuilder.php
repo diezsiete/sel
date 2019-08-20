@@ -151,4 +151,22 @@ class MenuBuilder
         }
 
     }
+
+    public function createConvenioMenu(array $options)
+    {
+        $menu = $this->factory->createItem('convenio');
+        $menu->addChild('Representantes', [
+            'route' => 'admin_convenio_representantes',
+            'routeParameters' => [
+                'codigo' => $options['codigo']
+            ]])
+            ->setExtra('icon', 'fas fa-user-circle');
+        $menu->addChild('Empleados', [
+            'route' => 'admin_convenio_empleados',
+            'routeParameters' => ['codigo' => $options['codigo']]
+        ])
+            ->setExtra('icon', 'fas fa-columns');
+
+        return $menu;
+    }
 }

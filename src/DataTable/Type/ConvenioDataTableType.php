@@ -65,7 +65,7 @@ class ConvenioDataTableType implements DataTableTypeInterface
                 'propertyPath' => '[0].codigo',
                 'orderable' => false,
                 'buttons' => [
-                    new ButtonTypeRoute('admin_convenio', [
+                    new ButtonTypeRoute('admin_convenio_representantes', [
                         'codigo' => new DatatablePropertyAccessor('[0].codigo')
                     ], 'fas fa-eye'),
                 ]

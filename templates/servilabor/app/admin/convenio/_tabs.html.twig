@@ -1,0 +1,30 @@
+{% set menu = knp_menu_get('convenio', [], {codigo: convenio.codigo}) %}
+
+{{ knp_menu_render(
+    menu, {
+        'icons': false,
+        'root': {
+            'attributes': {
+                'class': 'nav u-nav-v4-1',
+                'role':'tablist',
+                'data-target':"nav-4-1-default-hor-left",
+                'data-tabs-mobile-type': "slide-up-down",
+                'data-btn-classes': "btn btn-md btn-block rounded-0 u-btn-outline-lightgray"
+            }
+        },
+        'item': {
+            'attributes': {
+                'class': 'nav-item'
+            }
+        },
+        'link': {
+            'attributes': {
+                'class': {
+                    'isCurrent' : [
+                        'nav-link', 'nav-link active'
+                    ]
+                }
+            }
+        }
+    }, 'custom') }}
+

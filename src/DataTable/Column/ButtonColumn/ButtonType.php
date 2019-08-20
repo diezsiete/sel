@@ -93,4 +93,12 @@ abstract class ButtonType
     }
 
 
+    protected function renderIcon()
+    {
+        $icon = "undefined";
+        if($this->icon){
+            $icon = "<i class='$this->icon'></i>";
+        }
+        return $icon;
+    }
 }

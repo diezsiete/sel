@@ -53,6 +53,7 @@ class MenuRenderer extends ListRenderer
 
     private function addAttributesToItem(ItemInterface $item, $itemName, array $options, $attributes = null)
     {
+
         if(isset($options[$itemName]) && isset($options[$itemName]['attributes'])) {
             foreach($options[$itemName]['attributes'] as $attributeName => $attributeValue) {
 
@@ -63,7 +64,7 @@ class MenuRenderer extends ListRenderer
                     if(is_array($condition[$conditionMethod])) {
                         $newValue = null;
                         foreach ($condition[$conditionMethod] as $met => $value) {
-                            if($item->$conditionMethod() == $met) {
+                            if($this->executeMethodOnItem($item, $conditionMethod) == $met) {
                                 $newValue = $value;
                             }
                         }
@@ -74,13 +75,13 @@ class MenuRenderer extends ListRenderer
                         }
                     } else {
                         if(isset($condition['value'])) {
-                            if ($item->$conditionMethod() != $condition[$conditionMethod]) {
+                            if ($this->executeMethodOnItem($item, $conditionMethod) != $condition[$conditionMethod]) {
                                 continue;
                             } else {
                                 $attributeValue = $condition['value'];
                             }
                         } else {
-                            if ($item->$conditionMethod()) {
+                            if ($this->executeMethodOnItem($item, $conditionMethod)) {
                                 $attributeValue = $condition[$conditionMethod];
                             } else {
                                 continue;
@@ -88,7 +89,6 @@ class MenuRenderer extends ListRenderer
                         }
                     }
                 }
-
                 if(is_array($attributes)) {
                     $attributes[$attributeName] = $attributeValue;
                 } else {
@@ -98,5 +98,14 @@ class MenuRenderer extends ListRenderer
         }
 
         return is_array($attributes) ? $attributes : $item;
+    }
+
+    private function executeMethodOnItem($item, $method)
+    {
+        if($method === "isCurrent") {
+            return $this->matcher->isCurrent($item);
+        } else {
+            return $item->$method();
+        }
     }
 }

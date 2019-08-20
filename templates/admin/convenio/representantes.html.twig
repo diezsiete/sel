@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'datatable/base.datatable.html.twig' %}
 
 {% block title %}
     Convenio
@@ -10,8 +10,8 @@
 
 {% block body %}
     {{ include('admin/convenio/_tabs.html.twig') }}
-
-
+    {{ parent() }}
+    {{ include('default/_modal-borrar.html.twig') }}
 {% endblock %}
 
 

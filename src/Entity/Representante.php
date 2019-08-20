@@ -154,8 +154,25 @@ class Representante
         return $this;
     }
 
+    /**
+     * @param $type
+     * @return bool
+     */
     public function isType($type)
     {
         return $this->getUsuario()->esRol('ROLE_REPRESENTANTE_' . $type);
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getType()
+    {
+        foreach([static::TYPE_SERVICIO, static::TYPE_CLIENTE] as $type) {
+            if($this->isType($type)) {
+                return $type;
+            }
+        }
+        return null;
     }
 }
