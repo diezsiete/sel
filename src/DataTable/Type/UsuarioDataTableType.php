@@ -69,16 +69,20 @@ class UsuarioDataTableType implements DataTableTypeInterface
                 ]
             ])
         ;
-        if($this->security->isGranted(['ROLE_ALLOWED_TO_SWITCH'], $this->security->getUser())) {
+        if($this->security->isGranted(['ROLE_ADMIN_USUARIOS'], $this->security->getUser())) {
+            $buttons = [
+                new ButtonTypeRoute('admin_usuarios_editar',
+                    ['id' => new DatatablePropertyAccessor('id')], 'fas fa-pencil-alt')
+            ];
+            if($this->security->isGranted(['ROLE_ALLOWED_TO_SWITCH'], $this->security->getUser())) {
+                array_unshift($buttons,
+                    new ButtonTypeRoute('app_comprobantes', ['_switch_user'], 'fas fa-user-cog'));
+            }
             $dataTable->add('actions', ButtonColumn::class, [
                 'label' => '',
                 'field' => 'u.identificacion',
                 'orderable' => false,
-                'buttons' => [
-                    new ButtonTypeRoute('app_comprobantes', ['_switch_user'], 'fas fa-user-cog'),
-                    new ButtonTypeRoute('admin_usuarios_editar',
-                        ['id' => new DatatablePropertyAccessor('id')], 'fas fa-pencil-alt')
-                ]
+                'buttons' => $buttons
             ]);
         }
     }

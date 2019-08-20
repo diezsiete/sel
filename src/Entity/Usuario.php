@@ -38,6 +38,7 @@ class Usuario implements UserInterface
 
     /**
      * @ORM\Column(type="json")
+     * @Assert\NotBlank(message="El usuario debe tener al menos un rol asignado")
      */
     private $roles = [];
 

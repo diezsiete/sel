@@ -1,0 +1,40 @@
+<section class="card">
+    <header class="card-header">
+        <h2 class="card-title">Información de la cuenta</h2>
+    </header>
+    <div class="card-body">
+        {{ form_start(profileForm, {attr: {novalidate: 'novalidate'}}) }}
+
+        {{ form_row(profileForm.identificacion) }}
+        <div class="form-row">
+            {{ form_row(profileForm.primerNombre, {container_attr: {class: 'col-md-3'}}) }}
+            {{ form_row(profileForm.segundoNombre, {container_attr: {class: 'col-md-3'}}) }}
+            {{ form_row(profileForm.primerApellido, {container_attr: {class: 'col-md-3'}}) }}
+            {{ form_row(profileForm.segundoApellido, {container_attr: {class: 'col-md-3'}}) }}
+        </div>
+
+        {{ form_row(profileForm.email) }}
+
+        <hr class="dotted tall">
+
+        <h4 class="mb-3">{{ passTitle }}</h4>
+        <div class="form-row">
+            {{ form_row(profileForm.plainPassword.first, {container_attr: {class: 'col-md-6'}}) }}
+            {{ form_row(profileForm.plainPassword.second, {container_attr: {class: 'col-md-6'}}) }}
+        </div>
+
+        {% if profileForm.roles is defined %}
+            <hr class="dotted tall">
+            <h4 class="mb-3">Roles</h4>
+            {{ form_row(profileForm.roles) }}
+        {% endif %}
+
+        <div class="form-row">
+            <div class="col-md-12 text-right mt-3">
+                <button class="btn btn-primary modal-confirm">Guardar</button>
+            </div>
+        </div>
+
+        {{ form_end(profileForm) }}
+    </div>
+</section>

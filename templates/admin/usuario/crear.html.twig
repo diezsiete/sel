@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block body_header_title %}
+    Crear usuario
+{% endblock %}
+
+{% block body_header_right %}
+    <a href="{{ path('admin_usuarios') }}" class="btn  btn-secondary rounded-0 g-mb-5">
+        Cancelar
+    </a>
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-xl-12">
+            {{ include('admin/usuario/_form.html.twig', {
+                passTitle: 'Asignar contraseña'
+            }) }}
+        </div>
+    </div>
+{% endblock %}
