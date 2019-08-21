@@ -3,7 +3,6 @@
 namespace App\Form;
 
 use App\Entity\Usuario;
-use Doctrine\DBAL\Types\TextType;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -14,14 +13,11 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class ProfileFormType extends AbstractType
 {
-
-
     /**
      * @var ContainerBagInterface
      */
@@ -34,6 +30,14 @@ class ProfileFormType extends AbstractType
      * @var Security
      */
     private $security;
+    /**
+     * @var FormBuilderInterface
+     */
+    private $builder;
+    /**
+     * @var array
+     */
+    private $removeFields;
 
     public function __construct(ContainerBagInterface $bag, UserPasswordEncoderInterface $passwordEncoder, Security $security)
     {
@@ -44,19 +48,29 @@ class ProfileFormType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $roles = array_keys($this->bag->get('security.role_hierarchy.roles'));
+        $this->builder = $builder;
+        $this->removeFields = $options['removeFields'];
+        $this->buildFormInternal($builder, $options);
+
+    }
+    protected function buildFormInternal(FormBuilderInterface $builder, array $options)
+    {
+        $roles = $options['roles'];
+        $singleRole = $options['singleRol'];
+        $allowPasswordField = !in_array('password', $this->removeFields);
+
         $usuario = $options['data'] ?? null;
 
-        $passwordConstraints = $usuario ? [] : [ new NotBlank(['message' => 'Ingrese contraseña']) ];
-
-        $builder
+        $this
             ->add('identificacion')
             ->add('email')
             ->add('primerNombre')
             ->add('segundoNombre')
             ->add('primerApellido')
-            ->add('segundoApellido')
-            ->add('plainPassword', RepeatedType::class, [
+            ->add('segundoApellido');
+
+        if($allowPasswordField) {
+            $builder->add('plainPassword', RepeatedType::class, [
                 'mapped' => false,
                 'type' => PasswordType::class,
                 'first_options'  => ['label' => 'Contraseña'],
@@ -64,39 +78,32 @@ class ProfileFormType extends AbstractType
                 'help' => 'Asigne aqui su nueva contraseña en caso que desee cambiarla',
                 'required' => false,
                 'invalid_message' => 'Las contraseñas deben coincidir',
-                'constraints' => $passwordConstraints
+                'constraints' => $usuario && $usuario->getId() ? [] : [ new NotBlank(['message' => 'Ingrese contraseña']) ]
             ]);
+        }
 
-        if($this->security->isGranted(['ROLE_ALLOWED_TO_SWITCH'], $this->security->getUser())) {
+        if($roles) {
             $builder->add('roles', ChoiceType::class, [
                 'choices' => array_combine(array_map(function ($rol) {
                     return trim(str_replace(['ROLE', '_'], ' ', $rol));
                 }, $roles), $roles),
-                'multiple' => true,
-                'expanded' => true
+                'multiple' => !$singleRole,
+                'expanded' => true,
             ]);
+            if($singleRole){
+                $builder->get('roles')->addModelTransformer($singleRole);
+            }
         }
 
-
-
-
-        /*$builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($usuario) {
-            if(!$usuario && $event->getData()['plainPassword']['first'] && $event->getData()['plainPassword']['second']) {
-                $event->getForm()->add('password', null, [
-                    'data' => 'popo'
-                ]);
-            }
-        });*/
-
         $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) use ($usuario) {
-            if(!$usuario) {
+            if(!$usuario || !$usuario->getId()) {
                 $event->getData()->setPassword("undefined");
                 $event->getData()->aceptarTerminos();
             }
         });
 
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use ($usuario) {
-            if($event->getForm()->isValid()) {
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use ($usuario, $allowPasswordField) {
+            if($event->getForm()->isValid() && $allowPasswordField) {
                 if($plainPassword = $event->getForm()['plainPassword']->getData()) {
                     $encodedPassword = $this->passwordEncoder->encodePassword($event->getData(), $plainPassword);
                     $event->getData()->setPassword($encodedPassword);
@@ -107,8 +114,23 @@ class ProfileFormType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
+        $roles = [];
+        if($this->security->isGranted(['ROLE_ALLOWED_TO_SWITCH'], $this->security->getUser())) {
+            $roles = array_keys($this->bag->get('security.role_hierarchy.roles'));
+        }
         $resolver->setDefaults([
             'data_class' => Usuario::class,
+            'roles' => $roles,
+            'singleRol' => false,
+            'password' => true,
+            'removeFields' => []
         ]);
+    }
+
+    public function add($child, $type = null, array $options = []) {
+        if(!in_array($child, $this->removeFields)) {
+            $this->builder->add($child, $type, $options);
+        }
+        return $this;
     }
 }

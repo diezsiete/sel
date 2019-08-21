@@ -17,7 +17,7 @@
 
         <hr class="dotted tall">
 
-        <h4 class="mb-3">{{ passTitle }}</h4>
+        <h4 class="mb-3">{{ passTitle|default("Contraseña") }}</h4>
         <div class="form-row">
             {{ form_row(profileForm.plainPassword.first, {container_attr: {class: 'col-md-6'}}) }}
             {{ form_row(profileForm.plainPassword.second, {container_attr: {class: 'col-md-6'}}) }}

@@ -1,0 +1,16 @@
+{% extends "base.html.twig" %}
+
+{% block body_header_title %}
+    Editar representante <small>a <i>{{ convenio.codigo }}</i></small>
+{% endblock %}
+
+{% block body_header_right %}
+    <a href="{{ path('admin_convenio_representantes', {codigo: convenio.codigo}) }}" class="btn btn-secondary">
+        Cancelar
+    </a>
+{% endblock %}
+
+{% block body %}
+    {{ include('admin/convenio/representante/_form.html.twig') }}
+{% endblock %}
+

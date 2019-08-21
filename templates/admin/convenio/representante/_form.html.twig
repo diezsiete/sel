@@ -1,0 +1,38 @@
+<section class="card">
+    <header class="card-header">
+        <h2 class="card-title">Información de la cuenta</h2>
+    </header>
+    <div class="card-body">
+        {{ form_start(representanteForm, {attr: {novalidate: 'novalidate'}}) }}
+
+        {{ form_row(representanteForm.usuario.identificacion) }}
+        <div class="form-row">
+            {{ form_row(representanteForm.usuario.primerNombre, {container_attr: {class: 'col-md-3'}}) }}
+            {{ form_row(representanteForm.usuario.segundoNombre, {container_attr: {class: 'col-md-3'}}) }}
+            {{ form_row(representanteForm.usuario.primerApellido, {container_attr: {class: 'col-md-3'}}) }}
+            {{ form_row(representanteForm.usuario.segundoApellido, {container_attr: {class: 'col-md-3'}}) }}
+        </div>
+
+        {% if representanteForm.usuario.email is defined %}
+            {{ form_row(representanteForm.usuario.email) }}
+        {% else %}
+            {{ form_row(representanteForm.email) }}
+            {{ form_row(representanteForm.emailUnico) }}
+        {% endif %}
+
+        <hr class="dotted tall">
+
+        <div class="form-row">
+            {{ form_row(representanteForm.usuario.roles, {container_attr: {class: 'col-md-6'}}) }}
+            {{ form_row(representanteForm.encargado, {container_attr: {class: 'col-md-6'}}) }}
+        </div>
+
+        <div class="form-row">
+            <div class="col-md-12 text-right mt-3">
+                <button class="btn btn-primary modal-confirm">Guardar</button>
+            </div>
+        </div>
+
+        {{ form_end(representanteForm) }}
+    </div>
+</section>

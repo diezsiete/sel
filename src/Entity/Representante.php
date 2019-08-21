@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\RepresentanteRepository")
@@ -28,8 +29,9 @@ class Representante
     private $convenio;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Usuario", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Usuario", fetch="EAGER", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\Valid
      */
     private $usuario;
 
@@ -50,6 +52,8 @@ class Representante
 
     /**
      * @ORM\Column(type="string", length=140, nullable=true)
+     * @Assert\NotBlank(message="Por favor ingrese correo")
+     * @Assert\Email()
      */
     private $email;
 
@@ -95,7 +99,7 @@ class Representante
     public function setEncargado(bool $encargado): self
     {
         $this->encargado = $encargado;
-
+        $this->bcc = !$this->encargado;
         return $this;
     }
 

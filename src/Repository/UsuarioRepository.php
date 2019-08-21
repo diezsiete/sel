@@ -29,13 +29,26 @@ class UsuarioRepository extends ServiceEntityRepository
     public function findByIdentificacionCached($identificacion)
     {
         if(!isset($this->usuariosCached[$identificacion])) {
-            $this->usuariosCached[$identificacion] = $this->createQueryBuilder('u')
+            $this->usuariosCached[$identificacion] = $this->findByIdentificacion($identificacion);
+        }
+        return $this->usuariosCached[$identificacion];
+    }
+
+    /**
+     * @param $identificacion
+     * @return Usuario|null
+     */
+    public function findByIdentificacion($identificacion)
+    {
+        try {
+            return $this->createQueryBuilder('u')
                 ->andWhere('u.identificacion = :identificacion')
                 ->setParameter('identificacion', $identificacion)
                 ->getQuery()
                 ->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+            return null;
         }
-        return $this->usuariosCached[$identificacion];
     }
 
     /**

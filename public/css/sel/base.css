@@ -23,3 +23,17 @@ table {
     margin-right: 5px;
     color: #666;
 }
+
+/* FORM --------------------------------------------------------------------------------------------------------------*/
+.sel.checkbox-custom{
+    height: 100%;
+}
+.sel.checkbox-custom label {
+    height: 100%;
+    position: absolute;
+    z-index: 1;
+}
+.sel.checkbox-custom .form-text.text-muted{
+    position: absolute;
+    bottom: 0;
+}
