@@ -11,6 +11,7 @@ use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use PhpParser\Node\Expr\AssignOp\Mod;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @method Progreso|null find($id, $lockMode = null, $lockVersion = null)
@@ -26,13 +27,13 @@ class ProgresoRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Usuario $usuario
+     * @param UserInterface $usuario
      * @param Evaluacion $evaluacion
      * @return Progreso
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
-    public function findByUsuarioElseNew(Usuario $usuario, Evaluacion $evaluacion)
+    public function findByUsuarioElseNew(UserInterface $usuario, Evaluacion $evaluacion)
     {
         $progreso = $this->createQueryBuilder('p')
             ->andWhere('p.usuario = :usuario')
@@ -48,13 +49,13 @@ class ProgresoRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Usuario $usuario
+     * @param UserInterface $usuario
      * @param Evaluacion $evaluacion
      * @return Progreso
      * @throws NonUniqueResultException
      * @throws NoResultException
      */
-    private function instanceNewProgreso(Usuario $usuario, Evaluacion $evaluacion)
+    private function instanceNewProgreso(UserInterface $usuario, Evaluacion $evaluacion)
     {
         $modulo = $this->_em->getRepository(Modulo::class)->findFirst();
         $diapositiva = $modulo->getDiapositivas()->first();

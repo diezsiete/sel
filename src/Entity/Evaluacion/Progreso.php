@@ -5,6 +5,7 @@ namespace App\Entity\Evaluacion;
 use App\Entity\Evaluacion\Pregunta\Pregunta;
 use App\Entity\Usuario;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Evaluacion\ProgresoRepository")
@@ -76,7 +77,7 @@ class Progreso
         return $this->usuario;
     }
 
-    public function setUsuario(Usuario $usuario): self
+    public function setUsuario(UserInterface $usuario): self
     {
         $this->usuario = $usuario;
 
