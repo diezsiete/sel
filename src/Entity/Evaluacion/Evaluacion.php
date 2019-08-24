@@ -7,6 +7,7 @@ use App\Entity\Usuario;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Evaluacion\EvaluacionRepository")
@@ -26,6 +27,7 @@ class Evaluacion
     private $nombre;
 
     /**
+     * @Gedmo\Slug(fields={"nombre"})
      * @ORM\Column(type="string", length=100)
      */
     private $slug;

@@ -6,6 +6,7 @@ use App\Entity\Evaluacion\Pregunta\Pregunta;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Evaluacion\ModuloRepository")
@@ -51,6 +52,12 @@ class Modulo
      * @ORM\Column(type="boolean")
      */
     private $repetirEnFallo;
+
+    /**
+     * @Gedmo\Slug(fields={"nombre"})
+     * @ORM\Column(type="string", length=100)
+     */
+    private $slug;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Evaluacion\Pregunta\Pregunta", mappedBy="modulo")
@@ -153,6 +160,25 @@ class Modulo
 
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param mixed $slug
+     * @return Modulo
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+        return $this;
+    }
+
 
     /**
      * @return Collection|Pregunta[]

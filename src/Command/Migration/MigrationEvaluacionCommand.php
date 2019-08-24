@@ -245,7 +245,8 @@ class MigrationEvaluacionCommand extends MigrationCommand
             ->setTexto($rowPregunta['texto'])
             ->setIndice((int)$rowPregunta['indice'])
             ->setPorcentajeExito((int)$rowPregunta['porcentaje_exito'])
-            ->setNumeroIntentos((int)$rowPregunta['numero_intentos']);
+            ->setNumeroIntentos((int)$rowPregunta['numero_intentos'])
+            ->setMensajeAyuda($rowPregunta['mensaje_ayuda']);
 
         return $pregunta;
     }

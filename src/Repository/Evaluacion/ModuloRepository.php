@@ -4,6 +4,8 @@ namespace App\Repository\Evaluacion;
 
 use App\Entity\Evaluacion\Modulo;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -17,6 +19,20 @@ class ModuloRepository extends ServiceEntityRepository
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Modulo::class);
+    }
+
+    /**
+     * @return Modulo
+     * @throws NoResultException
+     * @throws NonUniqueResultException
+     */
+    public function findFirst()
+    {
+        return $this->createQueryBuilder('m')
+            ->orderBy('m.id', 'ASC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getSingleResult();
     }
 
     // /**

@@ -3,6 +3,7 @@
 namespace App\Entity\Evaluacion;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Evaluacion\DiapositivaRepository")
@@ -29,9 +30,16 @@ class Diapositiva
     private $indice;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255)
      */
     private $nombre;
+
+    /**
+     * @Gedmo\Slug(fields={"nombre"})
+     * @ORM\Column(type="string", length=100)
+     */
+    private $slug;
+
 
     public function getId(): ?int
     {
@@ -73,4 +81,24 @@ class Diapositiva
 
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param mixed $slug
+     * @return Diapositiva
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+        return $this;
+    }
+
+
 }

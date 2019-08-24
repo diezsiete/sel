@@ -74,5 +74,6 @@ security:
         - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/change-password$, roles: IS_AUTHENTICATED_FULLY}
         - { path: ^/sel/admin, roles: ROLE_OPERADOR}
+        - { path: ^/evaluacion, roles: IS_AUTHENTICATED_REMEMBERED }
         # las demas paginas serán restringidas
         - { path: ^/sel, roles: IS_AUTHENTICATED_REMEMBERED }

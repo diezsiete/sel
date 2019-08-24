@@ -56,11 +56,17 @@ abstract class Pregunta
      */
     protected $numeroIntentos;
 
+    
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Evaluacion\Diapositiva")
      * @ORM\JoinTable(name="evaluacion_pregunta_diapositiva")
      */
     protected $diapositivas;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $mensajeAyuda;
 
 
     public function __construct()
@@ -167,6 +173,18 @@ abstract class Pregunta
         if ($this->diapositivas->contains($diapositiva)) {
             $this->diapositivas->removeElement($diapositiva);
         }
+
+        return $this;
+    }
+
+    public function getMensajeAyuda(): ?string
+    {
+        return $this->mensajeAyuda;
+    }
+
+    public function setMensajeAyuda(?string $mensajeAyuda): self
+    {
+        $this->mensajeAyuda = $mensajeAyuda;
 
         return $this;
     }
