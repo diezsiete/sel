@@ -232,7 +232,7 @@
         }
         //End Pin
 
-        //Multiple markers
+        //MultipleUnica markers
         if (gMapMultipleMarkers == true) {
           var infowindow = new google.maps.InfoWindow(),
             marker,
@@ -252,7 +252,7 @@
             })(marker, i2));
           }
         }
-        //End Multiple markers
+        //End MultipleUnica markers
 
         //Auto Center markers on window resize
         if (!gMapGeolocation) {

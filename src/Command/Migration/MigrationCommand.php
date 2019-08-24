@@ -11,6 +11,7 @@ use App\Repository\UsuarioRepository;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Driver\Statement;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
@@ -162,25 +163,34 @@ abstract class MigrationCommand extends TraitableCommand
 
 
     /**
-     * @param Connection $conn
-     * @param string $sql
+     * @param $sql
+     * @param string $connectionName
      * @return int
+     * @throws DBALException
      */
     protected function countSql($sql, $connectionName = self::CONNECTION_SE)
     {
-        $conn = $this->getConnection($connectionName);
-        if (preg_match('/LIMIT *(\d+)(?:, *(\d+)|)/', $sql, $matches)) {
-            if(count($matches) === 3) {
-                $count = (int)$matches[2];
-            } else {
-                $count = (int)$matches[1];
+        if(is_array($sql)) {
+            $count = 0;
+            foreach($sql as $query) {
+                $count += $this->countSql($query, $connectionName);
             }
+            return $count;
         } else {
-            $noNlSql = preg_replace( "/\r|\n/", "", $sql);
-            $sqlCount = preg_replace('/(SELECT)(.*)(FROM.*)/', '$1 COUNT(*) $3', $noNlSql);
-            $count = (int) $conn->fetchColumn($sqlCount);
+            $conn = $this->getConnection($connectionName);
+            if (preg_match('/LIMIT *(\d+)(?:, *(\d+)|)/', $sql, $matches)) {
+                if (count($matches) === 3) {
+                    $count = (int)$matches[2];
+                } else {
+                    $count = (int)$matches[1];
+                }
+            } else {
+                $noNlSql = preg_replace("/\r|\n/", "", $sql);
+                $sqlCount = preg_replace('/(SELECT)(.*)(FROM.*)/', '$1 COUNT(*) $3', $noNlSql);
+                $count = (int)$conn->fetchColumn($sqlCount);
+            }
+            return $count;
         }
-        return $count;
     }
 
     protected function persistAndFlush($object)
