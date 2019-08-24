@@ -9,6 +9,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Evaluacion\ProgresoRepository")
+ * @ORM\Table(name="evaluacion_progreso")
  */
 class Progreso
 {
@@ -65,6 +66,11 @@ class Progreso
      * @ORM\Column(type="string", length=140)
      */
     private $descripcion;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Evaluacion\Diapositiva")
+     */
+    private $preguntaDiapositiva;
 
 
     public function getId(): ?int
@@ -176,6 +182,18 @@ class Progreso
     public function setDescripcion(string $descripcion): self
     {
         $this->descripcion = $descripcion;
+
+        return $this;
+    }
+
+    public function getPreguntaDiapositiva(): ?Diapositiva
+    {
+        return $this->preguntaDiapositiva;
+    }
+
+    public function setPreguntaDiapositiva(?Diapositiva $preguntaDiapositiva): self
+    {
+        $this->preguntaDiapositiva = $preguntaDiapositiva;
 
         return $this;
     }

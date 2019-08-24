@@ -137,6 +137,24 @@ class Modulo
         return $this;
     }
 
+    public function getNextDiapositiva(Diapositiva $diapositiva)
+    {
+        $index = $this->diapositivas->indexOf($diapositiva);
+        if($index !== false && $index < $this->diapositivas->count() - 1) {
+            return $this->diapositivas->get($index + 1);
+        }
+        return false;
+    }
+
+    public function getPrevDiapositiva(Diapositiva $diapositiva)
+    {
+        $index = $this->diapositivas->indexOf($diapositiva);
+        if($index !== false && $index > 0) {
+            return $this->diapositivas->get($index - 1);
+        }
+        return false;
+    }
+
     public function getNumeroIntentos(): ?int
     {
         return $this->numeroIntentos;
