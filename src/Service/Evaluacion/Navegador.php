@@ -70,7 +70,7 @@ class Navegador
                 $progreso
                     ->setModulo($modulo)
                     ->setDiapositiva($diapositiva);
-                // $this->em->flush();
+                $this->em->flush();
             }
         }
     }
@@ -83,7 +83,7 @@ class Navegador
                 $progreso
                     ->setModulo($modulo)
                     ->setPregunta($pregunta);
-                // $this->em->flush();
+                $this->em->flush();
             }
         }
     }
@@ -223,6 +223,10 @@ class Navegador
     {
         if(!$this->progreso) {
             $this->progreso = $this->progresoRepository->findByUsuarioElseNew($this->user, $this->evaluacion);
+            if(!$this->progreso->getId()) {
+                $this->em->persist($this->progreso);
+                $this->em->flush();
+            }
         }
         return $this->progreso;
     }

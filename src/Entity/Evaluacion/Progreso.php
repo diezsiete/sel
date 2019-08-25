@@ -44,12 +44,12 @@ class Progreso
     /**
      * @ORM\Column(type="smallint")
      */
-    private $porcentajeCompletitud;
+    private $porcentajeCompletitud = 0;
 
     /**
      * @ORM\Column(type="smallint")
      */
-    private $porcentajeExito;
+    private $porcentajeExito = 0;
 
     /**
      * @var Modulo|null
@@ -78,7 +78,7 @@ class Progreso
     /**
      * @ORM\Column(type="string", length=140)
      */
-    private $descripcion;
+    private $descripcion = "Inicial";
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Evaluacion\Respuesta\Respuesta", mappedBy="progreso", orphanRemoval=true)
