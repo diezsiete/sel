@@ -79,12 +79,28 @@ class Navegador
 
     public function setRoutePregunta(Modulo $modulo, Pregunta $pregunta)
     {
+
         $progreso = $this->getProgreso();
-        if(!$progreso->getPregunta() || $progreso->getPregunta()->getId() !== $pregunta->getId()) {
+        if(!$progreso->getPregunta() || $progreso->getPregunta()->getId() !== $pregunta->getId() || $progreso->getPreguntaDiapositiva()) {
             if($this->hasAccessToPregunta($pregunta)) {
                 $progreso
                     ->setModulo($modulo)
                     ->setPregunta($pregunta);
+                $this->em->flush();
+            }
+        }
+    }
+
+    public function setRoutePreguntaDiapositiva(Modulo $modulo, Pregunta $pregunta, Diapositiva $preguntaDiapositiva)
+    {
+        $progreso = $this->getProgreso();
+        if(!$progreso->getPreguntaDiapositiva() || $progreso->getPreguntaDiapositiva()->getId() !== $preguntaDiapositiva->getId()) {
+            if($this->hasAccessToPregunta($pregunta)) {
+                $progreso
+                    ->setModulo($modulo)
+                    ->setPregunta($pregunta)
+                    ->setPreguntaDiapositiva($preguntaDiapositiva);
+
                 $this->em->flush();
             }
         }
@@ -137,15 +153,21 @@ class Navegador
                 }
             } else {
                 if($this->progreso->getPreguntaDiapositiva()) {
-                    // TODO
-                    return false;
+                    return $this->buildRoute(
+                        $this->progreso->getModulo(),
+                        $this->progreso->getPregunta(),
+                        $this->progreso->getPregunta()->getNextDiapositiva($this->progreso->getPreguntaDiapositiva()));
                 } else {
-                    $sigPregunta = $this->progreso->getModulo()->getNextPregunta($this->progreso->getPregunta());
-                    if($sigPregunta) {
-                        return $this->buildRoute($this->progreso->getModulo(), $sigPregunta);
+                    if($preguntaDiapositiva = $this->evaluador->getPreguntaDiapositiva($this->progreso->getPregunta())) {
+                        return $this->buildRoute($this->progreso->getModulo(), $this->progreso->getPregunta(), $preguntaDiapositiva);
                     } else {
-                        $nextModulo = $this->progreso->getNextModulo();
-                        return $this->buildRoute($nextModulo, $nextModulo->getDiapositivas()->first());
+                        $sigPregunta = $this->progreso->getModulo()->getNextPregunta($this->progreso->getPregunta());
+                        if ($sigPregunta) {
+                            return $this->buildRoute($this->progreso->getModulo(), $sigPregunta);
+                        } else {
+                            $nextModulo = $this->progreso->getNextModulo();
+                            return $this->buildRoute($nextModulo, $nextModulo->getDiapositivas()->first());
+                        }
                     }
                 }
             }
@@ -162,8 +184,7 @@ class Navegador
             return $this->progreso->getDiapositiva()->getIndice() > 1;
         } else {
             if($this->progreso->getPreguntaDiapositiva()) {
-                // TODO
-                return false;
+                return !$this->progreso->getPregunta()->isFirstDiapositiva($this->progreso->getPreguntaDiapositiva());
             } else {
                 return true;
             }
@@ -184,14 +205,20 @@ class Navegador
                 }
             } else {
                 if($this->progreso->getPreguntaDiapositiva()) {
-                    // TODO
-                    return false;
-                } else {
-                    $pregunta = $this->progreso->getModulo()->getPrevPregunta($this->progreso->getPregunta());
-                    if($pregunta) {
-                        return $this->buildRoute($this->progreso->getModulo(), $pregunta);
+                    if($prevDiapositiva = $this->progreso->getPregunta()->getPrevDiapositiva($this->progreso->getPreguntaDiapositiva())) {
+                        return $this->buildRoute($this->progreso->getModulo(), $this->progreso->getPregunta(), $prevDiapositiva);
                     }
-                    return $this->buildRoute($this->progreso->getModulo(), $this->progreso->getModulo()->getUltimaDiapositiva());
+                } else {
+                    //si esta repitiendo una pregunta que fallo con diapositivas, vuelve a las diapositivas de la pregunta
+                    if($this->evaluador->isPreguntaRepeticion() && $this->progreso->getPregunta()->hasDiapositivas() && !$this->evaluador->evaluarRespuesta()) {
+                        return $this->buildRoute($this->progreso->getModulo(), $this->progreso->getPregunta(), $this->progreso->getPregunta()->getUltimaDiapositiva());
+                    } else {
+                        $pregunta = $this->progreso->getModulo()->getPrevPregunta($this->progreso->getPregunta());
+                        if ($pregunta) {
+                            return $this->buildRoute($this->progreso->getModulo(), $pregunta);
+                        }
+                        return $this->buildRoute($this->progreso->getModulo(), $this->progreso->getModulo()->getUltimaDiapositiva());
+                    }
                 }
             }
         }
@@ -203,7 +230,7 @@ class Navegador
      */
     public function esPregunta()
     {
-        return $this->progreso->getDiapositiva() ? false : true;
+        return $this->progreso->getDiapositiva() || $this->progreso->getPreguntaDiapositiva() ? false : true;
     }
 
     /**
@@ -246,19 +273,30 @@ class Navegador
         return true;
     }
 
-    private function buildRoute(Modulo $modulo, $diapositivaOPregunta)
+    /**
+     * @param Modulo $modulo
+     * @param Diapositiva|Pregunta $diapositivaOPregunta
+     * @param Diapositiva|null $preguntaDiapositiva
+     * @return string
+     */
+    private function buildRoute(Modulo $modulo, $diapositivaOPregunta, ?Diapositiva $preguntaDiapositiva = null)
     {
         $evaluacion = $this->progreso->getEvaluacion();
         $routeParams = ['evaluacionSlug' => $evaluacion->getSlug(), 'moduloSlug' => $modulo->getSlug()];
+
         if($diapositivaOPregunta instanceof Pregunta) {
-            return $this->router->generate('evaluacion_pregunta', $routeParams + [
-                'preguntaId' => $diapositivaOPregunta->getId()
-            ]);
+            $name = 'evaluacion_pregunta';
+            $routeParams += ['preguntaId' => $diapositivaOPregunta->getId()];
+            if($preguntaDiapositiva) {
+                $name = 'evaluacion_pregunta_diapositiva';
+                $routeParams += ['preguntaDiapositivaSlug' => $preguntaDiapositiva->getSlug()];
+            }
         } else {
-            return $this->router->generate('evaluacion_diapositiva', $routeParams + [
-                'diapositivaSlug' => $diapositivaOPregunta->getSlug()
-            ]);
+            $name = 'evaluacion_diapositiva';
+            $routeParams += ['diapositivaSlug' => $diapositivaOPregunta->getSlug()];
         }
+
+        return $this->router->generate($name, $routeParams);
     }
 
     /**
@@ -294,5 +332,10 @@ class Navegador
     public function getEvaluador(): Evaluador
     {
         return $this->evaluador;
+    }
+
+    public function getPreguntaDiapositiva(): ?Diapositiva
+    {
+        return $this->getProgreso()->getPreguntaDiapositiva();
     }
 }

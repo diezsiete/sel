@@ -9,6 +9,7 @@ use App\Repository\Evaluacion\Respuesta\RespuestaRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -82,7 +83,7 @@ class Progreso
     private $descripcion = "Inicial";
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Evaluacion\Respuesta\Respuesta", mappedBy="progreso", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Evaluacion\Respuesta\Respuesta", mappedBy="progreso", orphanRemoval=true, cascade={"persist", "remove"})
      */
     private $respuestas;
 
@@ -144,6 +145,12 @@ class Progreso
         return $this;
     }
 
+    public function addPorcentajeCompletitud(int $porcentaje): self
+    {
+        $this->porcentajeCompletitud += $porcentaje;
+        return $this;
+    }
+
     public function getPorcentajeExito(): ?int
     {
         return $this->porcentajeExito;
@@ -152,7 +159,17 @@ class Progreso
     public function setPorcentajeExito(int $porcentajeExito): self
     {
         $this->porcentajeExito = $porcentajeExito;
+        return $this;
+    }
 
+    public function addPorcentajeExito(int $porcentajeExito): self
+    {
+        $this->porcentajeExito += $porcentajeExito;
+        return $this;
+    }
+    public function restPorcentajeExito(int $porcentajeExito): self
+    {
+        $this->porcentajeExito -= $porcentajeExito;
         return $this;
     }
 
@@ -274,12 +291,19 @@ class Progreso
         return $this;
     }
 
-    public function getRespuesta()
+    /**
+     * @param Pregunta|null $pregunta
+     * @return Respuesta|null
+     * @throws Exception
+     */
+    public function getRespuesta(?Pregunta $pregunta = null)
     {
-        if($this->pregunta) {
-            $result = $this->respuestas->matching(RespuestaRepository::getByPreguntaCriteria($this->pregunta));
+        $pregunta = $pregunta ? $pregunta : $this->pregunta;
+        if($pregunta) {
+            $result = $this->respuestas->matching(RespuestaRepository::getByPreguntaCriteria($pregunta));
             return $result->count() === 0 ? null : $result->first();
+        } else {
+            throw new Exception("Asking for respuesta without pregunta");
         }
-        return false;
     }
 }

@@ -12,7 +12,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Entity(repositoryClass="App\Repository\Evaluacion\ModuloRepository")
  * @ORM\Table(name="evaluacion_modulo")
  */
-class Modulo
+class Modulo extends HasDiapositivas
 {
     /**
      * @ORM\Id()
@@ -41,7 +41,7 @@ class Modulo
      * @ORM\ManyToMany(targetEntity="App\Entity\Evaluacion\Diapositiva")
      * @ORM\JoinTable(name="evaluacion_modulo_diapositiva")
      */
-    private $diapositivas;
+    protected $diapositivas;
 
     /**
      * @ORM\Column(type="smallint")
@@ -66,7 +66,7 @@ class Modulo
 
     public function __construct()
     {
-        $this->diapositivas = new ArrayCollection();
+        parent::__construct();
         $this->preguntas = new ArrayCollection();
     }
 
@@ -109,60 +109,6 @@ class Modulo
         $this->indice = $indice;
 
         return $this;
-    }
-
-    /**
-     * @return Collection|Diapositiva[]
-     */
-    public function getDiapositivas(): Collection
-    {
-        return $this->diapositivas;
-    }
-
-    public function addDiapositiva(Diapositiva $diapositiva): self
-    {
-        if (!$this->diapositivas->contains($diapositiva)) {
-            $this->diapositivas[] = $diapositiva;
-        }
-
-        return $this;
-    }
-
-    public function removeDiapositiva(Diapositiva $diapositiva): self
-    {
-        if ($this->diapositivas->contains($diapositiva)) {
-            $this->diapositivas->removeElement($diapositiva);
-        }
-
-        return $this;
-    }
-
-    public function getNextDiapositiva(Diapositiva $diapositiva)
-    {
-        $index = $this->diapositivas->indexOf($diapositiva);
-        if($index !== false && $index < $this->diapositivas->count() - 1) {
-            return $this->diapositivas->get($index + 1);
-        }
-        return false;
-    }
-
-    public function getPrevDiapositiva(Diapositiva $diapositiva)
-    {
-        $index = $this->diapositivas->indexOf($diapositiva);
-        if($index !== false && $index > 0) {
-            return $this->diapositivas->get($index - 1);
-        }
-        return false;
-    }
-
-    public function isLastDiapositiva(Diapositiva $diapositiva)
-    {
-        return $this->diapositivas->last() === $diapositiva;
-    }
-
-    public function getUltimaDiapositiva()
-    {
-        return $this->diapositivas->last();
     }
 
     public function getNumeroIntentos(): ?int

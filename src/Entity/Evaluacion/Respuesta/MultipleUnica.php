@@ -16,6 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class MultipleUnica extends Respuesta
 {
     /**
+     * @var Opcion[]|ArrayCollection
      * @ORM\OneToMany(targetEntity="App\Entity\Evaluacion\Respuesta\Opcion", mappedBy="respuesta", orphanRemoval=true, cascade={"persist"})
      * @Assert\Count(
      *      min = 1,
@@ -67,5 +68,23 @@ class MultipleUnica extends Respuesta
     public function getPregunta()
     {
         return parent::getPregunta();
+    }
+
+    public function evaluar(): bool
+    {
+        $ok = false;
+        foreach($this->opciones as $opcion) {
+            $ok = (bool)$opcion->getPreguntaOpcion()->getRespuesta();
+        }
+        return $ok;
+    }
+
+    public function __clone()
+    {
+        $opciones = new ArrayCollection();
+        foreach($this->opciones as $opcion) {
+            $opciones->add(clone $opcion);
+        }
+        $this->opciones = $opciones;
     }
 }

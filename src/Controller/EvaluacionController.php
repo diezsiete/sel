@@ -29,7 +29,7 @@ class EvaluacionController extends AbstractController
 
     /**
      * @Route("/evaluacion/{evaluacionSlug}/{moduloSlug}/{preguntaId}", name="evaluacion_pregunta", requirements={
-            "preguntaId": "\d+"
+     *      "preguntaId": "\d+"
      * })
      */
     public function pregunta(Navegador $navegador, Request $request)
@@ -43,24 +43,34 @@ class EvaluacionController extends AbstractController
         if($form->isSubmitted() && $form->isValid()) {
             /** @var Respuesta $respuesta */
             $respuesta = $form->getData();
-            if(!$respuesta->getId()) {
-                $this->getDoctrine()->getManager()->persist($respuesta);
-            }
+
+            $navegador->getEvaluador()->updateProgreso($respuesta);
             $this->getDoctrine()->getManager()->flush();
             return $this->redirect($navegador->getNextRoute());
         }
 
-        $template = str_replace("_", "-",
-            (new CamelCaseToSnakeCaseNameConverter(null))->normalize(
-                substr(strrchr(get_class($pregunta), "\\"), 1)
-            ));
-
+        $template = $pregunta->getWidgetAsKebabCase();
         $view = "evaluacion/widget/$template.html.twig";
         return $this->render($view, [
             'evaluacion' => $navegador->getEvaluacion(),
             'navegador' => $navegador,
             'pregunta' => $pregunta,
             'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/evaluacion/{evaluacionSlug}/{moduloSlug}/{preguntaId}/{preguntaDiapositivaSlug}", name="evaluacion_pregunta_diapositiva", requirements={
+     *      "preguntaId": "\d+"
+     * })
+     */
+    public function preguntaDiapositiva(Navegador $navegador)
+    {
+        dump("OK");
+        $view = "evaluacion/{$navegador->getEvaluacion()->getSlug()}/{$navegador->getPreguntaDiapositiva()->getSlug()}.html.twig";
+        return $this->render($view, [
+            'evaluacion' => $navegador->getEvaluacion(),
+            'navegador' => $navegador
         ]);
     }
 

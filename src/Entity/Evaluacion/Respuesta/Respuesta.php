@@ -58,12 +58,15 @@ abstract class Respuesta
         return $this;
     }
 
+    /**
+     * @return Pregunta
+     */
     public function getPregunta()
     {
         return $this->pregunta;
     }
 
-    public function setPregunta(?Pregunta $pregunta): self
+    public function setPregunta(Pregunta $pregunta): self
     {
         $this->pregunta = $pregunta;
 
@@ -81,4 +84,6 @@ abstract class Respuesta
 
         return $this;
     }
+
+    public abstract function evaluar(): bool;
 }

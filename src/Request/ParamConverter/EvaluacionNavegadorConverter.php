@@ -72,10 +72,16 @@ class EvaluacionNavegadorConverter implements ParamConverterInterface
                 $this->findBySlug(Diapositiva::class, $diapositivaSlug)
             );
         } else if ($preguntaId = $request->attributes->get('preguntaId')) {
-            $navegador->setRoutePregunta(
-                $this->findBySlug(Modulo::class, $this->getRequiredAttribute($request, 'moduloSlug')),
-                $this->findById(Pregunta::class, $preguntaId)
-            );
+            $modulo = $this->findBySlug(Modulo::class, $this->getRequiredAttribute($request, 'moduloSlug'));
+            $pregunta = $this->findById(Pregunta::class, $preguntaId);
+
+            if($preguntaDiapositivaSlug = $request->attributes->get('preguntaDiapositivaSlug')) {
+                $preguntaDiapositiva = $this->findBySlug(Diapositiva::class, $preguntaDiapositivaSlug);
+                $navegador->setRoutePreguntaDiapositiva($modulo, $pregunta, $preguntaDiapositiva);
+            }
+            else {
+                $navegador->setRoutePregunta($modulo, $pregunta);
+            }
         }
 
         $request->attributes->set($configuration->getName(), $navegador);

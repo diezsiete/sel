@@ -4,10 +4,12 @@ namespace App\Entity\Evaluacion\Pregunta;
 
 use App\Entity\Evaluacion\Diapositiva;
 use App\Entity\Evaluacion\Evaluacion;
+use App\Entity\Evaluacion\HasDiapositivas;
 use App\Entity\Evaluacion\Modulo;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Evaluacion\Pregunta\PreguntaRepository")
@@ -16,7 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\DiscriminatorColumn(name="widget", type="string")
  * @ORM\DiscriminatorMap({"MultipleUnica" = "MultipleUnica", "MultipleOrdenar": "MultipleOrdenar"})
  */
-abstract class Pregunta
+abstract class Pregunta extends HasDiapositivas
 {
     /**
      * @ORM\Id()
@@ -68,11 +70,6 @@ abstract class Pregunta
      */
     private $mensajeAyuda;
 
-
-    public function __construct()
-    {
-        $this->diapositivas = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -151,32 +148,6 @@ abstract class Pregunta
         return $this;
     }
 
-    /**
-     * @return Collection|Diapositiva[]
-     */
-    public function getDiapositivas(): Collection
-    {
-        return $this->diapositivas;
-    }
-
-    public function addDiapositiva(Diapositiva $diapositiva): self
-    {
-        if (!$this->diapositivas->contains($diapositiva)) {
-            $this->diapositivas[] = $diapositiva;
-        }
-
-        return $this;
-    }
-
-    public function removeDiapositiva(Diapositiva $diapositiva): self
-    {
-        if ($this->diapositivas->contains($diapositiva)) {
-            $this->diapositivas->removeElement($diapositiva);
-        }
-
-        return $this;
-    }
-
     public function getMensajeAyuda(): ?string
     {
         return $this->mensajeAyuda;
@@ -187,5 +158,13 @@ abstract class Pregunta
         $this->mensajeAyuda = $mensajeAyuda;
 
         return $this;
+    }
+
+    public function getWidgetAsKebabCase()
+    {
+        return str_replace("_", "-",
+            (new CamelCaseToSnakeCaseNameConverter(null))->normalize(
+                substr(strrchr(get_class($this), "\\"), 1)
+            ));
     }
 }
