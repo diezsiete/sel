@@ -65,7 +65,7 @@ class Navegador
     public function setRouteDiapositiva(Modulo $modulo, Diapositiva $diapositiva)
     {
         $progreso = $this->getProgreso();
-        if($progreso->getDiapositiva()->getId() !== $diapositiva->getId()) {
+        if(!$progreso->getDiapositiva() || $progreso->getDiapositiva()->getId() !== $diapositiva->getId()) {
             if($this->hasAccessToDiapositiva($diapositiva)) {
                 $progreso
                     ->setModulo($modulo)
