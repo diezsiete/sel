@@ -10,6 +10,12 @@ oneup_flysystem:
         migration_autoliquidacion_adapter:
             local:
                 directory: '%env(empresa:MIGRATION_PATH_AUTOLIQUIDACIONES)%'
+        migration_evaluacion_template:
+            local:
+                directory: '%env(MIGRATION_EVALUACION_TEMPLATES)%'
+        migration_evaluacion_template_target:
+            local:
+                directory: '%kernel.project_dir%/templates/%env(lowercase:EMPRESA)%/app/evaluacion'
     filesystems:
         public_uploads_filesystem:
             adapter: public_uploads_adapter
@@ -17,3 +23,7 @@ oneup_flysystem:
             adapter: private_uploads_adapter
         migration_autoliquidacion_adapter:
             adapter: migration_autoliquidacion_adapter
+        migration_evaluacion_template:
+            adapter: migration_evaluacion_template
+        migration_evaluacion_template_target:
+            adapter: migration_evaluacion_template_target

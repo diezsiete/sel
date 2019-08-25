@@ -98,9 +98,9 @@ class Configuracion
         }
     }
 
-    public function getEmpresa()
+    public function getEmpresa($lowerCased = false)
     {
-        return $this->empresa;
+        return $lowerCased ? strtolower($this->empresa) : $this->empresa;
     }
     public function getRazon()
     {
