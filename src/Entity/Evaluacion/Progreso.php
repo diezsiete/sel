@@ -3,7 +3,10 @@
 namespace App\Entity\Evaluacion;
 
 use App\Entity\Evaluacion\Pregunta\Pregunta;
+use App\Entity\Evaluacion\Respuesta\Respuesta;
 use App\Entity\Usuario;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -76,6 +79,16 @@ class Progreso
      * @ORM\Column(type="string", length=140)
      */
     private $descripcion;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Evaluacion\Respuesta\Respuesta", mappedBy="progreso", orphanRemoval=true)
+     */
+    private $respuestas;
+
+    public function __construct()
+    {
+        $this->respuestas = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -227,5 +240,36 @@ class Progreso
     public function getPrevModulo()
     {
         return $this->evaluacion->getPrevModulo($this->modulo);
+    }
+
+    /**
+     * @return Collection|Respuesta[]
+     */
+    public function getRespuestas(): Collection
+    {
+        return $this->respuestas;
+    }
+
+    public function addRespuesta(Respuesta $respuesta): self
+    {
+        if (!$this->respuestas->contains($respuesta)) {
+            $this->respuestas[] = $respuesta;
+            $respuesta->setProgreso($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRespuesta(Respuesta $respuesta): self
+    {
+        if ($this->respuestas->contains($respuesta)) {
+            $this->respuestas->removeElement($respuesta);
+            // set the owning side to null (unless already changed)
+            if ($respuesta->getProgreso() === $this) {
+                $respuesta->setProgreso(null);
+            }
+        }
+
+        return $this;
     }
 }

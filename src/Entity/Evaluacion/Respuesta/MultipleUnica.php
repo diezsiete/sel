@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Entity\Evaluacion\Pregunta;
+namespace App\Entity\Evaluacion\Respuesta;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -10,25 +10,23 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class MultipleUnica
- * @package App\Entity\Evaluacion\Pregunta
+ * @package App\Entity\Evaluacion\Respuesta
  * @ORM\Entity
  */
-class MultipleUnica extends Pregunta
+class MultipleUnica extends Respuesta
 {
     /**
-     * @var Collection|Opcion[]
-     * @ORM\OneToMany(targetEntity="App\Entity\Evaluacion\Pregunta\Opcion", mappedBy="pregunta", orphanRemoval=true, cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="App\Entity\Evaluacion\Respuesta\Opcion", mappedBy="respuesta", orphanRemoval=true)
      * @Assert\Count(
      *      min = 1,
      *      max = 1,
-     *      exactMessage = "Seleccione una opcion",
+     *      exactMessage = "Seleccione perro",
      * )
      */
-    protected $opciones;
+    private $opciones;
 
     public function __construct()
     {
-        parent::__construct();
         $this->opciones = new ArrayCollection();
     }
 
@@ -44,7 +42,7 @@ class MultipleUnica extends Pregunta
     {
         if (!$this->opciones->contains($opcion)) {
             $this->opciones[] = $opcion;
-            $opcion->setPregunta($this);
+            $opcion->setRespuesta($this);
         }
 
         return $this;
@@ -55,8 +53,8 @@ class MultipleUnica extends Pregunta
         if ($this->opciones->contains($opcion)) {
             $this->opciones->removeElement($opcion);
             // set the owning side to null (unless already changed)
-            if ($opcion->getPregunta() === $this) {
-                $opcion->setPregunta(null);
+            if ($opcion->getRespuesta() === $this) {
+                $opcion->setRespuesta(null);
             }
         }
 
