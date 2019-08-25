@@ -155,6 +155,11 @@ class Modulo
         return false;
     }
 
+    public function isLastDiapositiva(Diapositiva $diapositiva)
+    {
+        return $this->diapositivas->last() === $diapositiva;
+    }
+
     public function getNumeroIntentos(): ?int
     {
         return $this->numeroIntentos;
@@ -227,5 +232,10 @@ class Modulo
         }
 
         return $this;
+    }
+
+    public function tienePreguntas()
+    {
+        return $this->getPreguntas()->count() > 0;
     }
 }

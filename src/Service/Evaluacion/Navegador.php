@@ -85,6 +85,25 @@ class Navegador
         return $this->buildRoute($progreso->getEvaluacion(), $progreso->getModulo(), $diapositivaOPregunta);
     }
 
+    /**
+     * @return bool
+     */
+    public function hasNextRoute()
+    {
+        if($this->progreso->getDiapositiva()) {
+            // si es ultima diapositiva del modulo
+            if($this->progreso->getModulo()->isLastDiapositiva($this->progreso->getDiapositiva())) {
+                // si el modulo tiene preguntas o no es el ultimo modulo, hasNextRoute
+                return
+                    $this->progreso->moduloTienePreguntas() ||
+                    !$this->progreso->getEvaluacion()->isLastModulo($this->progreso->getModulo());
+            }
+            return true;
+        } else {
+            return true;
+        }
+    }
+
     public function getNextRoute()
     {
         if($this->hasNextRoute()) {
@@ -93,24 +112,13 @@ class Navegador
                 if($diapositiva) {
                     return $this->buildRoute($this->progreso->getEvaluacion(), $this->progreso->getModulo(), $diapositiva);
                 } else {
-                    // TODO
-                }
-            } else {
-                // TODO
-            }
-        }
-        return false;
-    }
-
-    public function getPrevRoute()
-    {
-        if($this->hasPrevRoute()) {
-            if ($this->progreso->getDiapositiva()) {
-                $diapositiva = $this->progreso->getModulo()->getPrevDiapositiva($this->progreso->getDiapositiva());
-                if($diapositiva) {
-                    return $this->buildRoute($this->progreso->getEvaluacion(), $this->progreso->getModulo(), $diapositiva);
-                } else {
-                    // TODO
+                    if($this->progreso->moduloTienePreguntas()) {
+                        // TODO
+                        return false;
+                    } else {
+                        $nextModulo = $this->progreso->getNextModulo();
+                        return $this->buildRoute($this->progreso->getEvaluacion(), $nextModulo, $nextModulo->getDiapositivas()->first());
+                    }
                 }
             } else {
                 // TODO
@@ -132,16 +140,27 @@ class Navegador
         }
     }
 
-    /**
-     * @return bool
-     */
-    public function hasNextRoute()
+    public function getPrevRoute()
     {
-        if($this->progreso->getDiapositiva()) {
-            //TODO
-            return true;
+        if($this->hasPrevRoute()) {
+            if ($this->progreso->getDiapositiva()) {
+                $diapositiva = $this->progreso->getModulo()->getPrevDiapositiva($this->progreso->getDiapositiva());
+                if($diapositiva) {
+                    return $this->buildRoute($this->progreso->getEvaluacion(), $this->progreso->getModulo(), $diapositiva);
+                } else {
+                    $prevModulo = $this->progreso->getPrevModulo();
+                    if($prevModulo->tienePreguntas()) {
+                        // TODO
+                        return false;
+                    } else {
+                        return $this->buildRoute($this->progreso->getEvaluacion(), $prevModulo, $prevModulo->getDiapositivas()->last());
+                    }
+                }
+            } else {
+                // TODO
+            }
         }
-        return true;
+        return false;
     }
 
     /**

@@ -40,9 +40,9 @@ class EvaluacionNavegadorExtension extends AbstractExtension
     {
         $hasRouteMethod = "has" . ucfirst($type) . "Route";
         $getRouteMethod = "get" . ucfirst($type) . "Route";
-        if ($navegador->$hasRouteMethod()) {
+        if ($navegador->$hasRouteMethod() && $href = $navegador->$getRouteMethod()) {
             $tag = 'a';
-            $attributes['href'] = $navegador->$getRouteMethod();
+            $attributes['href'] = $href;
         } else {
             $tag = 'span';
             !isset($attributes['class']) ? $attributes['class'] = "" : $attributes['class'] .= " ";

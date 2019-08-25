@@ -208,6 +208,29 @@ class Evaluacion
         return $this;
     }
 
+    public function isLastModulo(Modulo $modulo)
+    {
+        return $this->modulos->last() === $modulo;
+    }
+
+    public function getNextModulo(Modulo $modulo)
+    {
+        $index = $this->modulos->indexOf($modulo);
+        if($index !== false && $index < $this->modulos->count() - 1) {
+            return $this->modulos->get($index + 1);
+        }
+        return false;
+    }
+
+    public function getPrevModulo(Modulo $modulo)
+    {
+        $index = $this->modulos->indexOf($modulo);
+        if($index !== false && $index > 0) {
+            return $this->modulos->get($index - 1);
+        }
+        return false;
+    }
+
     /**
      * @return Collection|Pregunta[]
      */

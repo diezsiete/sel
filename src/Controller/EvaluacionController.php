@@ -28,7 +28,10 @@ class EvaluacionController extends AbstractController
      */
     public function diapositiva(Navegador $navegador)
     {
-        return $this->render('evaluacion/diapositiva/' . $navegador->getDiapositiva()->getSlug() . '.html.twig', [
+        dump($navegador->hasPrevRoute());
+        dump($navegador->getPrevRoute());
+        return $this->render(
+            "evaluacion/{$navegador->getEvaluacion()->getSlug()}/{$navegador->getDiapositiva()->getSlug()}.html.twig", [
             'evaluacion' => $navegador->getEvaluacion(),
             'navegador' => $navegador
         ]);

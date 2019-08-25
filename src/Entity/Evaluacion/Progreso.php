@@ -27,6 +27,7 @@ class Progreso
     private $usuario;
 
     /**
+     * @var Evaluacion
      * @ORM\ManyToOne(targetEntity="App\Entity\Evaluacion\Evaluacion")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -48,30 +49,33 @@ class Progreso
     private $porcentajeExito;
 
     /**
+     * @var Modulo|null
      * @ORM\ManyToOne(targetEntity="App\Entity\Evaluacion\Modulo")
      */
     private $modulo;
 
     /**
+     * @var Diapositiva|null
      * @ORM\ManyToOne(targetEntity="App\Entity\Evaluacion\Diapositiva")
      */
     private $diapositiva;
 
     /**
+     * @var Pregunta|null
      * @ORM\ManyToOne(targetEntity="App\Entity\Evaluacion\Pregunta\Pregunta")
      */
     private $pregunta;
 
     /**
-     * @ORM\Column(type="string", length=140)
-     */
-    private $descripcion;
-
-    /**
+     * @var Diapositiva|null
      * @ORM\ManyToOne(targetEntity="App\Entity\Evaluacion\Diapositiva")
      */
     private $preguntaDiapositiva;
 
+    /**
+     * @ORM\Column(type="string", length=140)
+     */
+    private $descripcion;
 
     public function getId(): ?int
     {
@@ -196,5 +200,29 @@ class Progreso
         $this->preguntaDiapositiva = $preguntaDiapositiva;
 
         return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function moduloTienePreguntas()
+    {
+        return $this->modulo ? $this->modulo->tienePreguntas() : false;
+    }
+
+    /**
+     * @return Modulo|false
+     */
+    public function getNextModulo()
+    {
+        return $this->evaluacion->getNextModulo($this->modulo);
+    }
+
+    /**
+     * @return Modulo|false
+     */
+    public function getPrevModulo()
+    {
+        return $this->evaluacion->getPrevModulo($this->modulo);
     }
 }

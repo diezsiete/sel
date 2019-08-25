@@ -23,7 +23,7 @@ class Opcion
     private $texto;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Evaluacion\Pregunta\Pregunta", inversedBy="opciones")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Evaluacion\Pregunta\MultipleUnica", inversedBy="opciones")
      * @ORM\JoinColumn(nullable=false)
      */
     private $pregunta;
