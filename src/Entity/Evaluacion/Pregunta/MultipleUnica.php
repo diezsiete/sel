@@ -6,6 +6,7 @@ namespace App\Entity\Evaluacion\Pregunta;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class MultipleUnica
@@ -17,6 +18,11 @@ class MultipleUnica extends Pregunta
     /**
      * @var Collection|Opcion[]
      * @ORM\OneToMany(targetEntity="App\Entity\Evaluacion\Pregunta\Opcion", mappedBy="pregunta", orphanRemoval=true, cascade={"persist"})
+     * @Assert\Count(
+     *      min = 1,
+     *      max = 1,
+     *      exactMessage = "Seleccione perro",
+     * )
      */
     protected $opciones;
 

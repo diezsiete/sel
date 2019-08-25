@@ -29,8 +29,9 @@ class EvaluacionNavegadorExtension extends AbstractExtension
     public function next(Navegador $navegador, array $attributes = [])
     {
         if($navegador->esPregunta()) {
-            // TODO
-            return "";
+            $attributes += ['type' => 'submit', 'value' => 'Responder'];
+            $parsedAttributes = $this->parseAttributes($attributes);
+            return '<input '.$parsedAttributes.'/>';
         } else {
             return $this->getLink($navegador, static::LINK_NEXT, $attributes);
         }

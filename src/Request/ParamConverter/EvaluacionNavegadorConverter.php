@@ -7,6 +7,7 @@ namespace App\Request\ParamConverter;
 use App\Entity\Evaluacion\Diapositiva;
 use App\Entity\Evaluacion\Evaluacion;
 use App\Entity\Evaluacion\Modulo;
+use App\Entity\Evaluacion\Pregunta\Pregunta;
 use App\Entity\Evaluacion\Progreso;
 use App\Repository\Evaluacion\ProgresoRepository;
 use App\Service\Evaluacion\Navegador;
@@ -71,7 +72,10 @@ class EvaluacionNavegadorConverter implements ParamConverterInterface
                 $this->findBySlug(Diapositiva::class, $diapositivaSlug)
             );
         } else if ($preguntaId = $request->attributes->get('preguntaId')) {
-            // TODO
+            $navegador->setRoutePregunta(
+                $this->findBySlug(Modulo::class, $this->getRequiredAttribute($request, 'moduloSlug')),
+                $this->findById(Pregunta::class, $preguntaId)
+            );
         }
 
         $request->attributes->set($configuration->getName(), $navegador);
@@ -92,6 +96,11 @@ class EvaluacionNavegadorConverter implements ParamConverterInterface
     private function findBySlug($fullClassName, $slug)
     {
         return $this->checkNotNull($this->getRepo($fullClassName)->findOneBy(['slug' => $slug]));
+    }
+
+    private function findById($fullClassName, $id)
+    {
+        return $this->checkNotNull($this->getRepo($fullClassName)->find($id));
     }
 
     private function getRepo($fullClassName)

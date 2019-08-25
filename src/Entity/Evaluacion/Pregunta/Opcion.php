@@ -73,4 +73,9 @@ class Opcion
 
         return $this;
     }
+
+    public function __toString()
+    {
+        return $this->texto;
+    }
 }

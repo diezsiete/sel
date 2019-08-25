@@ -75,6 +75,19 @@ class Navegador
         }
     }
 
+    public function setRoutePregunta(Modulo $modulo, Pregunta $pregunta)
+    {
+        $progreso = $this->getProgreso();
+        if(!$progreso->getPregunta() || $progreso->getPregunta()->getId() !== $pregunta->getId()) {
+            if($this->hasAccessToPregunta($pregunta)) {
+                $progreso
+                    ->setModulo($modulo)
+                    ->setPregunta($pregunta);
+                // $this->em->flush();
+            }
+        }
+    }
+
     public function getCurrentRoute()
     {
         $progreso = $this->getProgreso();
@@ -82,7 +95,7 @@ class Navegador
         if(!$diapositivaOPregunta) {
             $diapositivaOPregunta = $this->progreso->getPregunta() ?? $this->progreso->getPreguntaDiapositiva();
         }
-        return $this->buildRoute($progreso->getEvaluacion(), $progreso->getModulo(), $diapositivaOPregunta);
+        return $this->buildRoute($progreso->getModulo(), $diapositivaOPregunta);
     }
 
     /**
@@ -100,6 +113,7 @@ class Navegador
             }
             return true;
         } else {
+            // valido para induccion
             return true;
         }
     }
@@ -110,18 +124,28 @@ class Navegador
             if ($this->progreso->getDiapositiva()) {
                 $diapositiva = $this->progreso->getModulo()->getNextDiapositiva($this->progreso->getDiapositiva());
                 if($diapositiva) {
-                    return $this->buildRoute($this->progreso->getEvaluacion(), $this->progreso->getModulo(), $diapositiva);
+                    return $this->buildRoute($this->progreso->getModulo(), $diapositiva);
                 } else {
                     if($this->progreso->moduloTienePreguntas()) {
-                        // TODO
-                        return false;
+                        return $this->buildRoute($this->progreso->getModulo(), $this->progreso->getModulo()->getPreguntas()->first());
                     } else {
                         $nextModulo = $this->progreso->getNextModulo();
-                        return $this->buildRoute($this->progreso->getEvaluacion(), $nextModulo, $nextModulo->getDiapositivas()->first());
+                        return $this->buildRoute($nextModulo, $nextModulo->getDiapositivas()->first());
                     }
                 }
             } else {
-                // TODO
+                if($this->progreso->getPreguntaDiapositiva()) {
+                    // TODO
+                    return false;
+                } else {
+                    $sigPregunta = $this->progreso->getModulo()->getNextPregunta($this->progreso->getPregunta());
+                    if($sigPregunta) {
+                        return $this->buildRoute($this->progreso->getModulo(), $sigPregunta);
+                    } else {
+                        $nextModulo = $this->progreso->getNextModulo();
+                        return $this->buildRoute($nextModulo, $nextModulo->getDiapositivas()->first());
+                    }
+                }
             }
         }
         return false;
@@ -135,8 +159,12 @@ class Navegador
         if($this->progreso->getDiapositiva()) {
             return $this->progreso->getDiapositiva()->getIndice() > 1;
         } else {
-            // TODO
-            return false;
+            if($this->progreso->getPreguntaDiapositiva()) {
+                // TODO
+                return false;
+            } else {
+                return true;
+            }
         }
     }
 
@@ -146,18 +174,23 @@ class Navegador
             if ($this->progreso->getDiapositiva()) {
                 $diapositiva = $this->progreso->getModulo()->getPrevDiapositiva($this->progreso->getDiapositiva());
                 if($diapositiva) {
-                    return $this->buildRoute($this->progreso->getEvaluacion(), $this->progreso->getModulo(), $diapositiva);
+                    return $this->buildRoute($this->progreso->getModulo(), $diapositiva);
                 } else {
                     $prevModulo = $this->progreso->getPrevModulo();
-                    if($prevModulo->tienePreguntas()) {
-                        // TODO
-                        return false;
-                    } else {
-                        return $this->buildRoute($this->progreso->getEvaluacion(), $prevModulo, $prevModulo->getDiapositivas()->last());
-                    }
+                    return $this->buildRoute($prevModulo, $prevModulo->tienePreguntas()
+                        ? $prevModulo->getUltimaPregunta() : $prevModulo->getUltimaDiapositiva());
                 }
             } else {
-                // TODO
+                if($this->progreso->getPreguntaDiapositiva()) {
+                    // TODO
+                    return false;
+                } else {
+                    $pregunta = $this->progreso->getModulo()->getPrevPregunta($this->progreso->getPregunta());
+                    if($pregunta) {
+                        return $this->buildRoute($this->progreso->getModulo(), $pregunta);
+                    }
+                    return $this->buildRoute($this->progreso->getModulo(), $this->progreso->getModulo()->getUltimaDiapositiva());
+                }
             }
         }
         return false;
@@ -200,8 +233,15 @@ class Navegador
         return true;
     }
 
-    private function buildRoute(Evaluacion $evaluacion, Modulo $modulo, $diapositivaOPregunta)
+    private function hasAccessToPregunta(Pregunta $pregunta)
     {
+        // TODO
+        return true;
+    }
+
+    private function buildRoute(Modulo $modulo, $diapositivaOPregunta)
+    {
+        $evaluacion = $this->progreso->getEvaluacion();
         $routeParams = ['evaluacionSlug' => $evaluacion->getSlug(), 'moduloSlug' => $modulo->getSlug()];
         if($diapositivaOPregunta instanceof Pregunta) {
             return $this->router->generate('evaluacion_pregunta', $routeParams + [
@@ -229,6 +269,16 @@ class Navegador
     public function getDiapositiva()
     {
         return $this->getProgreso()->getDiapositiva();
+    }
+
+    /**
+     * @return Pregunta|null
+     * @throws NoResultException
+     * @throws NonUniqueResultException
+     */
+    public function getPregunta()
+    {
+        return $this->getProgreso()->getPregunta();
     }
 
 }

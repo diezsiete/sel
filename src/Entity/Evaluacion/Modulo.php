@@ -160,6 +160,11 @@ class Modulo
         return $this->diapositivas->last() === $diapositiva;
     }
 
+    public function getUltimaDiapositiva()
+    {
+        return $this->diapositivas->last();
+    }
+
     public function getNumeroIntentos(): ?int
     {
         return $this->numeroIntentos;
@@ -234,8 +239,31 @@ class Modulo
         return $this;
     }
 
+    public function getNextPregunta(Pregunta $pregunta)
+    {
+        $index = $this->preguntas->indexOf($pregunta);
+        if($index !== false && $index < $this->preguntas->count() - 1) {
+            return $this->preguntas->get($index + 1);
+        }
+        return false;
+    }
+
+    public function getPrevPregunta(Pregunta $pregunta)
+    {
+        $index = $this->preguntas->indexOf($pregunta);
+        if($index !== false && $index > 0) {
+            return $this->preguntas->get($index - 1);
+        }
+        return false;
+    }
+
     public function tienePreguntas()
     {
-        return $this->getPreguntas()->count() > 0;
+        return $this->preguntas->count() > 0;
+    }
+
+    public function getUltimaPregunta()
+    {
+        return $this->preguntas->last();
     }
 }

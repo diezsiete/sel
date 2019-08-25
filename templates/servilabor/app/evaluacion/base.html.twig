@@ -28,6 +28,10 @@
         <section class="g-py-20 g-pt-60">
             <div id="evaluacion" class="container">
                 <div id="wrapper">
+                    {% if form is defined %}
+                        {{ form_start(form, {attr: {'novalidate': 'novalidate'}}) }}
+                    {% endif %}
+
                     {% block body %}
                         {{ parent() }}
                     {% endblock %}
@@ -62,6 +66,9 @@
                         </footer>
                         <!-- End Footer -->
                     {% endblock %}
+                    {% if form is defined %}
+                        {{ form_end(form) }}
+                    {% endif %}
                 </div>
             </div>
         </section>
