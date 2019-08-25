@@ -16,11 +16,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 class MultipleUnica extends Respuesta
 {
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Evaluacion\Respuesta\Opcion", mappedBy="respuesta", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Evaluacion\Respuesta\Opcion", mappedBy="respuesta", orphanRemoval=true, cascade={"persist"})
      * @Assert\Count(
      *      min = 1,
      *      max = 1,
-     *      exactMessage = "Seleccione perro",
+     *      exactMessage = "Seleccione una opcion",
      * )
      */
     private $opciones;
@@ -59,5 +59,13 @@ class MultipleUnica extends Respuesta
         }
 
         return $this;
+    }
+
+    /**
+     * @return MultipleUnica
+     */
+    public function getPregunta()
+    {
+        return parent::getPregunta();
     }
 }

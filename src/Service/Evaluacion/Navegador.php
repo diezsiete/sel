@@ -31,6 +31,11 @@ class Navegador
      */
     private $progreso;
     /**
+     * @var Evaluador
+     */
+    private $evaluador;
+
+    /**
      * @var RouterInterface
      */
     private $router;
@@ -42,10 +47,7 @@ class Navegador
      * @var Evaluacion
      */
     private $evaluacion;
-    /**
-     * @var Modulo
-     */
-    private $modulo;
+
     /**
      * @var EntityManagerInterface
      */
@@ -227,6 +229,7 @@ class Navegador
                 $this->em->persist($this->progreso);
                 $this->em->flush();
             }
+            $this->evaluador = new Evaluador($this->progreso);
         }
         return $this->progreso;
     }
@@ -285,4 +288,11 @@ class Navegador
         return $this->getProgreso()->getPregunta();
     }
 
+    /**
+     * @return Evaluador
+     */
+    public function getEvaluador(): Evaluador
+    {
+        return $this->evaluador;
+    }
 }

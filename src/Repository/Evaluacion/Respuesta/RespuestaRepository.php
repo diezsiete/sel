@@ -4,6 +4,7 @@ namespace App\Repository\Evaluacion\Respuesta;
 
 use App\Entity\Evaluacion\Respuesta\Respuesta;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\Criteria;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -17,6 +18,13 @@ class RespuestaRepository extends ServiceEntityRepository
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Respuesta::class);
+    }
+
+    public static function getByPreguntaCriteria($pregunta)
+    {
+        return Criteria::create()->where(
+            Criteria::expr()->eq('pregunta', $pregunta)
+        );
     }
 
     // /**

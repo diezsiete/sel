@@ -2,7 +2,8 @@
 
 namespace App\Controller;
 
-use App\Form\EvaluacionPreguntaFormType;
+use App\Entity\Evaluacion\Respuesta\Respuesta;
+use App\Form\EvaluacionRespuestaFormType;
 use App\Service\Evaluacion\Navegador;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,12 +34,19 @@ class EvaluacionController extends AbstractController
      */
     public function pregunta(Navegador $navegador, Request $request)
     {
+        $respuesta = $navegador->getEvaluador()->getRespuesta();
+        $form = $this->createForm(EvaluacionRespuestaFormType::class, $respuesta);
+
         $pregunta = $navegador->getPregunta();
-        $form = $this->createForm(EvaluacionPreguntaFormType::class, $pregunta);
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
-            // TODO guardar respuesta
+            /** @var Respuesta $respuesta */
+            $respuesta = $form->getData();
+            if(!$respuesta->getId()) {
+                $this->getDoctrine()->getManager()->persist($respuesta);
+            }
+            $this->getDoctrine()->getManager()->flush();
             return $this->redirect($navegador->getNextRoute());
         }
 

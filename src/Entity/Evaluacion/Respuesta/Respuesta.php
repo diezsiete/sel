@@ -20,24 +20,24 @@ abstract class Respuesta
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    protected $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Evaluacion\Progreso", inversedBy="respuestas")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $progreso;
+    protected $progreso;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Evaluacion\Pregunta\Pregunta")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $pregunta;
+    protected $pregunta;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $respondidaEn;
+    protected $respondidaEn;
 
 
 
@@ -58,7 +58,7 @@ abstract class Respuesta
         return $this;
     }
 
-    public function getPregunta(): ?Pregunta
+    public function getPregunta()
     {
         return $this->pregunta;
     }

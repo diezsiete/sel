@@ -5,6 +5,7 @@ namespace App\Entity\Evaluacion;
 use App\Entity\Evaluacion\Pregunta\Pregunta;
 use App\Entity\Evaluacion\Respuesta\Respuesta;
 use App\Entity\Usuario;
+use App\Repository\Evaluacion\Respuesta\RespuestaRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -271,5 +272,14 @@ class Progreso
         }
 
         return $this;
+    }
+
+    public function getRespuesta()
+    {
+        if($this->pregunta) {
+            $result = $this->respuestas->matching(RespuestaRepository::getByPreguntaCriteria($this->pregunta));
+            return $result->count() === 0 ? null : $result->first();
+        }
+        return false;
     }
 }
