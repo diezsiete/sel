@@ -63,6 +63,16 @@ abstract class HasDiapositivas
         return null;
     }
 
+    public function getFirstDiapositiva()
+    {
+        return $this->diapositivas->first();
+    }
+
+    public function getUltimaDiapositiva()
+    {
+        return $this->diapositivas->last();
+    }
+
     public function isLastDiapositiva(Diapositiva $diapositiva)
     {
         return $this->diapositivas->last() === $diapositiva;
@@ -71,11 +81,6 @@ abstract class HasDiapositivas
     public function isFirstDiapositiva(Diapositiva $diapositiva)
     {
         return $this->diapositivas->first() === $diapositiva;
-    }
-
-    public function getUltimaDiapositiva()
-    {
-        return $this->diapositivas->last();
     }
 
     public function hasDiapositivas()

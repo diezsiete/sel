@@ -87,6 +87,12 @@ class Progreso
      */
     private $respuestas;
 
+    /**
+     * @var bool
+     * @ORM\Column(type="boolean")
+     */
+    private $moduloRepeticion = false;
+
     public function __construct()
     {
         $this->respuestas = new ArrayCollection();
@@ -180,7 +186,10 @@ class Progreso
 
     public function setModulo(?Modulo $modulo): self
     {
-        $this->modulo = $modulo;
+        if(!$this->modulo || $this->modulo->getId() !== $modulo->getId()) {
+            $this->modulo = $modulo;
+            $this->moduloRepeticion = false;
+        }
 
         return $this;
     }
@@ -292,16 +301,38 @@ class Progreso
     }
 
     /**
-     * @param Pregunta|null $pregunta
-     * @return Respuesta|null
+     * @return bool
+     */
+    public function isModuloRepeticion(): bool
+    {
+        return $this->moduloRepeticion;
+    }
+
+    /**
+     * @param bool $moduloRepeticion
+     * @return Progreso
+     */
+    public function setModuloRepeticion(bool $moduloRepeticion): Progreso
+    {
+        $this->moduloRepeticion = $moduloRepeticion;
+        return $this;
+    }
+
+
+    /**
+     * @param Pregunta|null|ArrayCollection<Pregunta> $pregunta
+     * @return Respuesta|Respuesta[]
      * @throws Exception
      */
-    public function getRespuesta(?Pregunta $pregunta = null)
+    public function getRespuesta($pregunta = null)
     {
         $pregunta = $pregunta ? $pregunta : $this->pregunta;
         if($pregunta) {
             $result = $this->respuestas->matching(RespuestaRepository::getByPreguntaCriteria($pregunta));
-            return $result->count() === 0 ? null : $result->first();
+            if($pregunta instanceof Pregunta) {
+                $result = $result->count() === 0 ? null : $result->first();
+            }
+            return $result;
         } else {
             throw new Exception("Asking for respuesta without pregunta");
         }

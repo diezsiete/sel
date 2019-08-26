@@ -123,7 +123,7 @@ class Modulo extends HasDiapositivas
         return $this;
     }
 
-    public function getRepetirEnFallo(): ?bool
+    public function isRepetirEnFallo(): bool
     {
         return $this->repetirEnFallo;
     }
@@ -208,8 +208,18 @@ class Modulo extends HasDiapositivas
         return $this->preguntas->count() > 0;
     }
 
+    public function getPrimeraPregunta()
+    {
+        return $this->preguntas->first();
+    }
+
     public function getUltimaPregunta()
     {
         return $this->preguntas->last();
+    }
+
+    public function isLastPregunta(Pregunta $pregunta)
+    {
+        return $this->preguntas->last() === $pregunta;
     }
 }

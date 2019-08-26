@@ -9,6 +9,7 @@ use App\Entity\Evaluacion\Evaluacion;
 use App\Entity\Evaluacion\Modulo;
 use App\Entity\Evaluacion\Pregunta\Pregunta;
 use App\Entity\Evaluacion\Progreso;
+use App\Entity\Evaluacion\Respuesta\Respuesta;
 use App\Entity\Usuario;
 use App\Repository\Evaluacion\ProgresoRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -145,7 +146,7 @@ class Navegador
                     return $this->buildRoute($this->progreso->getModulo(), $diapositiva);
                 } else {
                     if($this->progreso->moduloTienePreguntas()) {
-                        return $this->buildRoute($this->progreso->getModulo(), $this->progreso->getModulo()->getPreguntas()->first());
+                        return $this->buildRoute($this->progreso->getModulo(), $this->getPreguntasContainer()->getPrimeraPregunta());
                     } else {
                         $nextModulo = $this->progreso->getNextModulo();
                         return $this->buildRoute($nextModulo, $nextModulo->getDiapositivas()->first());
@@ -158,13 +159,18 @@ class Navegador
                         $this->progreso->getPregunta(),
                         $this->progreso->getPregunta()->getNextDiapositiva($this->progreso->getPreguntaDiapositiva()));
                 } else {
+                    // si fallo la respuesta y pregunta tiene diapositivas
                     if($preguntaDiapositiva = $this->evaluador->getPreguntaDiapositiva($this->progreso->getPregunta())) {
                         return $this->buildRoute($this->progreso->getModulo(), $this->progreso->getPregunta(), $preguntaDiapositiva);
                     } else {
-                        $sigPregunta = $this->progreso->getModulo()->getNextPregunta($this->progreso->getPregunta());
+                        $sigPregunta = $this->getPreguntasContainer()->getNextPregunta($this->progreso->getPregunta());
                         if ($sigPregunta) {
                             return $this->buildRoute($this->progreso->getModulo(), $sigPregunta);
                         } else {
+                            // modulo habilitado con repeticion en fallo, validamos respuestas ok
+                            if($this->progreso->getModulo()->isRepetirEnFallo() && !$this->evaluador->evaluarModulo()) {
+                                return $this->buildRoute($this->progreso->getModulo(), $this->progreso->getModulo()->getFirstDiapositiva());
+                            }
                             $nextModulo = $this->progreso->getNextModulo();
                             return $this->buildRoute($nextModulo, $nextModulo->getDiapositivas()->first());
                         }
@@ -213,7 +219,7 @@ class Navegador
                     if($this->evaluador->isPreguntaRepeticion() && $this->progreso->getPregunta()->hasDiapositivas() && !$this->evaluador->evaluarRespuesta()) {
                         return $this->buildRoute($this->progreso->getModulo(), $this->progreso->getPregunta(), $this->progreso->getPregunta()->getUltimaDiapositiva());
                     } else {
-                        $pregunta = $this->progreso->getModulo()->getPrevPregunta($this->progreso->getPregunta());
+                        $pregunta = $this->getPreguntasContainer()->getPrevPregunta($this->progreso->getPregunta());
                         if ($pregunta) {
                             return $this->buildRoute($this->progreso->getModulo(), $pregunta);
                         }
@@ -244,6 +250,46 @@ class Navegador
     }
 
     /**
+     * @return Evaluacion
+     */
+    public function getEvaluacion()
+    {
+        return $this->evaluacion;
+    }
+    /**
+     * @return Diapositiva
+     * @throws NoResultException
+     * @throws NonUniqueResultException
+     */
+    public function getDiapositiva()
+    {
+        return $this->getProgreso()->getDiapositiva();
+    }
+
+    /**
+     * @return Pregunta|null
+     * @throws NoResultException
+     * @throws NonUniqueResultException
+     */
+    public function getPregunta()
+    {
+        return $this->getProgreso()->getPregunta();
+    }
+
+    /**
+     * @return Evaluador
+     */
+    public function getEvaluador(): Evaluador
+    {
+        return $this->evaluador;
+    }
+
+    public function getPreguntaDiapositiva(): ?Diapositiva
+    {
+        return $this->getProgreso()->getPreguntaDiapositiva();
+    }
+
+    /**
      * @return Progreso
      * @throws NoResultException
      * @throws NonUniqueResultException
@@ -256,7 +302,7 @@ class Navegador
                 $this->em->persist($this->progreso);
                 $this->em->flush();
             }
-            $this->evaluador = new Evaluador($this->progreso);
+            $this->evaluador = new Evaluador($this->progreso, $this->em->getRepository(Respuesta::class));
         }
         return $this->progreso;
     }
@@ -300,42 +346,11 @@ class Navegador
     }
 
     /**
-     * @return Evaluacion
+     * @return Modulo|ModuloRepeticionDecorator|null
+     * @throws \Exception
      */
-    public function getEvaluacion()
+    private function getPreguntasContainer()
     {
-        return $this->evaluacion;
-    }
-    /**
-     * @return Diapositiva
-     * @throws NoResultException
-     * @throws NonUniqueResultException
-     */
-    public function getDiapositiva()
-    {
-        return $this->getProgreso()->getDiapositiva();
-    }
-
-    /**
-     * @return Pregunta|null
-     * @throws NoResultException
-     * @throws NonUniqueResultException
-     */
-    public function getPregunta()
-    {
-        return $this->getProgreso()->getPregunta();
-    }
-
-    /**
-     * @return Evaluador
-     */
-    public function getEvaluador(): Evaluador
-    {
-        return $this->evaluador;
-    }
-
-    public function getPreguntaDiapositiva(): ?Diapositiva
-    {
-        return $this->getProgreso()->getPreguntaDiapositiva();
+        return $this->evaluador->isModuloRepeticion() ? $this->evaluador->getModuloRepeticion() : $this->progreso->getModulo();
     }
 }

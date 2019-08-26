@@ -34,7 +34,7 @@ class EvaluacionController extends AbstractController
      */
     public function pregunta(Navegador $navegador, Request $request)
     {
-        $respuesta = $navegador->getEvaluador()->getRespuesta();
+        $respuesta = $navegador->getEvaluador()->buildRespuesta();
         $form = $this->createForm(EvaluacionRespuestaFormType::class, $respuesta);
 
         $pregunta = $navegador->getPregunta();
@@ -66,7 +66,6 @@ class EvaluacionController extends AbstractController
      */
     public function preguntaDiapositiva(Navegador $navegador)
     {
-        dump("OK");
         $view = "evaluacion/{$navegador->getEvaluacion()->getSlug()}/{$navegador->getPreguntaDiapositiva()->getSlug()}.html.twig";
         return $this->render($view, [
             'evaluacion' => $navegador->getEvaluacion(),

@@ -2,9 +2,13 @@
 
 namespace App\Repository\Evaluacion\Respuesta;
 
+use App\Entity\Evaluacion\Pregunta\Pregunta;
+use App\Entity\Evaluacion\Progreso;
 use App\Entity\Evaluacion\Respuesta\Respuesta;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -22,37 +26,41 @@ class RespuestaRepository extends ServiceEntityRepository
 
     public static function getByPreguntaCriteria($pregunta)
     {
-        return Criteria::create()->where(
-            Criteria::expr()->eq('pregunta', $pregunta)
-        );
+        if($pregunta instanceof Pregunta) {
+            return Criteria::create()->where(
+                Criteria::expr()->eq('pregunta', $pregunta)
+            );
+        } else {
+            return Criteria::create()->where(
+                Criteria::expr()->in('pregunta', $pregunta->toArray())
+            );
+        }
     }
 
-    // /**
-    //  * @return Respuesta[] Returns an array of Respuesta objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @param Progreso $progreso
+     * @param Pregunta|Pregunta[]|ArrayCollection $pregunta
+     * @return Respuesta|Respuesta[]|null
+     * @throws NonUniqueResultException
+     */
+    public function getRespuesta(Progreso $progreso, $pregunta)
     {
-        return $this->createQueryBuilder('r')
-            ->andWhere('r.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('r.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $qb = $this->createQueryBuilder('r')
+            ->andWhere('r.progreso = :progreso')
+            ->join('r.pregunta', 'p')
+            ->setParameter('progreso', $progreso)
+            ->orderBy('p.indice', 'ASC')
+            ->setParameter('pregunta', $pregunta);
 
-    /*
-    public function findOneBySomeField($value): ?Respuesta
-    {
-        return $this->createQueryBuilder('r')
-            ->andWhere('r.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        if($pregunta instanceof Pregunta) {
+            return $qb->andWhere('r.pregunta = :pregunta')
+                ->getQuery()
+                ->getOneOrNullResult();
+        } else {
+            return $qb
+                ->andWhere('r.pregunta IN (:pregunta)')
+                ->getQuery()
+                ->getResult();
+        }
     }
-    */
 }
