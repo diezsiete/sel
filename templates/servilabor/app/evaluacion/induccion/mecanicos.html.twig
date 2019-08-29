@@ -1,0 +1,35 @@
+{% extends 'evaluacion/base.html.twig' %}
+
+{% block body %}
+
+<div class="content-diapositiva-mt15">
+    <p class="mb40">
+        <strong class="underline">MECÁNICOS:</strong>&nbsp;&nbsp; Conjunto de factores físicos que pueden dar lugar a
+        una lesión por la acción mecánica de elementos de máquinas, herramientas, piezas a trabajar o materiales
+        proyectados. Pueden ser mecanismos en movimiento, elementos cortantes o punzantes, elementos que se desprenden.
+    </p>
+    <ul>
+        <li>
+            Uso de herramientas y equipos de oficina
+        </li>
+        <li>
+            Manipulación de materiales o mobiliario con riesgo de atrapamiento
+        </li>
+        <li>
+            Proyección de partículas o salpicaduras
+        </li>
+    </ul>
+    <div class="row">
+        <div class="col-sm-6 text-center">
+            <img src="{{ asset('img/sel/evaluacion/induccion/mecanicos1.png') }}"
+                 alt="mecanicos1" style="width: 400px"
+                 class="mecanicos1 width400">
+        </div>
+        <div class="col-sm-6 text-center">
+            <img src="{{ asset('img/sel/evaluacion/induccion/mecanicos2.png') }}"
+                 alt="mecanicos2" style="width: 400px"
+                 class="mecanicos2 width400">
+        </div>
+    </div>
+</div>
+{% endblock %}

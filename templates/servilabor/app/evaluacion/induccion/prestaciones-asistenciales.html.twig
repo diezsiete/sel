@@ -1,0 +1,52 @@
+{% extends 'evaluacion/base.html.twig' %}
+
+{% block body %}
+
+
+<div class="content-diapositiva">
+    <h1>
+        Prestaciones asistenciales.
+    </h1>
+    <div class="row">
+        <div class="col-sm-8">
+            <p class="mb20">
+                Todo trabajador que sufra un accidente de trabajo o una enfermedad profesional tendrá derecho, según sea
+                el caso, a:
+            </p>
+            <ol type="a">
+                <li>
+                    Asistencia médica, quirúrgica, terapéutica y farmacéutica.
+                </li>
+                <li>
+                    Servicios de hospitalización.
+                </li>
+                <li>
+                    Servicio odontológico.
+                </li>
+                <li>
+                    Suministro de medicamentos.
+                </li>
+                <li>
+                    Servicios auxiliares de diagnóstico y tratamiento.
+                </li>
+                <li>
+                    Prótesis y órtesis, su reparación, y su reposición sólo en casos de deterioro o desadaptación,
+                    cuando a criterio de rehabilitación se recomiende.
+                </li>
+                <li>
+                    Rehabilitaciones física y profesional.
+                </li>
+                <li>
+                    Gastos de traslado, en condiciones normales, que sean necesarios para la prestación de estos
+                    servicios.
+                </li>
+            </ol>
+        </div>
+        <div class="col-sm-4">
+            <img src="{{ asset('img/sel/evaluacion/induccion/prestaciones-asistenciales.png') }}"
+                 alt="prestaciones-asistenciales"
+                 class="prestaciones-asistenciales">
+        </div>
+    </div>
+</div>
+{% endblock %}

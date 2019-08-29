@@ -1,0 +1,49 @@
+{% extends 'evaluacion/base.html.twig' %}
+
+{% block body %}
+
+<div class="content-diapositiva">
+    <div class="row">
+        <div class="col-md-12">
+            <p>
+                <strong class="underline">PSICOLABORALES:</strong> Aspectos de la persona y de la organización del
+                trabajo y las relaciones humanas, que al interactuar con factores humanos tienen la capacidad potencial
+                de producir cambios sicológicos del comportamiento (agresividad, ansiedad, insatisfacción) o trastornos
+                físicos o psicosomáticos (fatiga, dolor de cabeza, tensión muscular, úlcera, hipertensión, etc).
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-8">
+            <ol type="a">
+                <li>
+                    Trabajo repetitivo, monotonía.
+                </li>
+                <li>
+                    Atención al público
+                </li>
+                <li>
+                    Jornada laboral
+                </li>
+                <li>
+                    Manejo de información
+                </li>
+                <li>
+                    Remuneración.
+                </li>
+                <li>
+                    Posibilidad de participación.
+                </li>
+                <li>
+                    Responsabilidades y toma de decisiones
+                </li>
+            </ol>
+        </div>
+        <div class="col-sm-4">
+            <img src="{{ asset('img/sel/evaluacion/induccion/psicolaborales.png') }}"
+                 alt="psicolaborales" style="width: 400px"
+                 class="psicolaborales">
+        </div>
+    </div>
+</div>
+{% endblock %}

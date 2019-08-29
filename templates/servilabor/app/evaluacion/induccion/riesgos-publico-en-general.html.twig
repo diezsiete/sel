@@ -1,0 +1,48 @@
+{% extends 'evaluacion/base.html.twig' %}
+
+{% block body %}
+
+
+<div class="content-diapositiva-mt15">
+    <div class="row">
+        <div class="col-sm-12">
+            <p><strong class="underline">PÚBLICOS:</strong> Riesgos a los que está expuesto también el público en general</p>
+        </div>
+    </div>
+    <div class="row mb40">
+        <div class="col-sm-6">
+            <ul>
+                <li>
+                    Accidentes de Tránsito
+                </li>
+                <li>
+                    Robos.
+                </li>
+                <li>
+                    Atracos.
+                </li>
+                <li>
+                    Lesiones personales.
+                </li>
+            </ul>
+        </div>
+        <div class="col-sm-6 text-center">
+            <img src="{{ asset('img/sel/evaluacion/induccion/accidentes-publicos1.png') }}"
+                 alt="accidentes-publicos1" style="width: 400px"
+                 class="accidentes-publicos1 width400">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6 text-center">
+            <img src="{{ asset('img/sel/evaluacion/induccion/accidentes-publicos2.png') }}"
+                 alt="accidentes-publicos2" style="width: 400px"
+                 class="accidentes-publicos2 width400">
+        </div>
+        <div class="col-sm-6 text-center">
+            <img src="{{ asset('img/sel/evaluacion/induccion/accidentes-publicos3.png') }}"
+                 alt="accidentes-publicos3" style="width: 400px"
+                 class="accidentes-publicos3 width400">
+        </div>
+    </div>
+</div>
+{% endblock %}
