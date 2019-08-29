@@ -43,7 +43,6 @@ class EvaluacionController extends AbstractController
         if($form->isSubmitted() && $form->isValid()) {
             /** @var Respuesta $respuesta */
             $respuesta = $form->getData();
-
             $navegador->getEvaluador()->updateProgreso($respuesta);
             $this->getDoctrine()->getManager()->flush();
             return $this->redirect($navegador->getNextRoute());

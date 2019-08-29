@@ -33,6 +33,11 @@ class Opcion
      */
     private $respuesta;
 
+    /**
+     * @var int
+     */
+    private $indice;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -78,4 +83,24 @@ class Opcion
     {
         return $this->texto;
     }
+
+    /**
+     * @return int
+     */
+    public function getIndice(): int
+    {
+        return $this->indice;
+    }
+
+    /**
+     * @param int $indice
+     * @return Opcion
+     */
+    public function setIndice(int $indice): Opcion
+    {
+        $this->indice = $indice;
+        return $this;
+    }
+
+
 }

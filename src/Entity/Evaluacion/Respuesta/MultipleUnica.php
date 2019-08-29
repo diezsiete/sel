@@ -3,6 +3,7 @@
 
 namespace App\Entity\Evaluacion\Respuesta;
 
+use App\Entity\Evaluacion\Pregunta\MultipleUnica as PreguntaMultipleUnica;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,6 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class MultipleUnica
  * @package App\Entity\Evaluacion\Respuesta
  * @ORM\Entity
+ * @method PreguntaMultipleUnica getPregunta()
  */
 class MultipleUnica extends Respuesta
 {
@@ -20,11 +22,10 @@ class MultipleUnica extends Respuesta
      * @ORM\OneToMany(targetEntity="App\Entity\Evaluacion\Respuesta\Opcion", mappedBy="respuesta", orphanRemoval=true, cascade={"persist"})
      * @Assert\Count(
      *      min = 1,
-     *      max = 1,
      *      exactMessage = "Seleccione una opcion",
      * )
      */
-    private $opciones;
+    protected $opciones;
 
     public function __construct()
     {
@@ -62,12 +63,15 @@ class MultipleUnica extends Respuesta
         return $this;
     }
 
-    /**
-     * @return MultipleUnica
-     */
-    public function getPregunta()
+    public function removeOpciones(): self
     {
-        return parent::getPregunta();
+        foreach($this->opciones as $opcion) {
+            if ($opcion->getRespuesta() === $this) {
+                $opcion->setRespuesta(null);
+            }
+        }
+        $this->opciones->clear();
+        return $this;
     }
 
     public function evaluar(): bool
