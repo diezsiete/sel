@@ -4,7 +4,7 @@
 namespace App\Entity\Evaluacion\Respuesta;
 
 use App\Entity\Evaluacion\Pregunta\MultipleOrdenar as PreguntaMultipleOrdenar;
-use App\Repository\Evaluacion\Pregunta\OpcionRepository;
+use App\Validator\EvaluacionMultipleOrdenar;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -14,6 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @package App\Entity\Evaluacion\Respuesta
  * @ORM\Entity()
  * @method PreguntaMultipleOrdenar getPregunta()
+ * @EvaluacionMultipleOrdenar()
  */
 class MultipleOrdenar extends MultipleUnica
 {
