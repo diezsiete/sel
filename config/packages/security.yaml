@@ -58,11 +58,15 @@ security:
             - ROLE_REPRESENTANTE_CLIENTE
             - ROLE_ADMIN_AUTOLIQUIDACIONES
 
+        ROLE_EVALUACION_ADMIN:
+            - ROLE_ADMIN_EVALUACIONES
+
         ROLE_ADMIN:
             - ROLE_OPERADOR
             - ROLE_VACANTES
             - ROLE_REPRESENTANTE_SERVICIO
             - ROLE_ALLOWED_TO_SWITCH
+            - ROLE_EVALUACION_ADMIN
         ROLE_SUPERADMIN:
             - ROLE_ADMIN
 

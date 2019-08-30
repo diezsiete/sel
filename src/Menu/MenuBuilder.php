@@ -8,6 +8,7 @@ use App\Service\Hv\HvResolver;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class MenuBuilder
 {
@@ -129,29 +130,6 @@ class MenuBuilder
             ->setExtra('icon', 'fas fa-clock');
     }
 
-    public function createAdminMenu(ItemInterface $menu, $user)
-    {
-        $roles = ['ROLE_ADMIN_USUARIOS', 'ROLE_ADMIN_AUTOLIQUIDACIONES'];
-        if($this->security->isGranted($roles, $user)) {
-            $menu->addChild('Administración')
-                ->setUri('#')
-                ->setExtra('icon', 'fas fa-cog');
-
-            if($this->security->isGranted([$roles[0]], $user)) {
-                $menu['Administración']
-                    ->addChild('Usuarios', ['route' => 'admin_usuarios'])
-                    ->setExtra('icon', 'fas fa-users');
-            }
-
-            if($this->security->isGranted([$roles[1]], $user)) {
-                $menu['Administración']
-                    ->addChild('Convenios', ['route' => 'admin_convenio_list'])
-                    ->setExtra('icon', 'fas fa-building');
-            }
-        }
-
-    }
-
     public function createConvenioMenu(array $options)
     {
         $menu = $this->factory->createItem('convenio');
@@ -168,5 +146,34 @@ class MenuBuilder
             ->setExtra('icon', 'fas fa-columns');
 
         return $menu;
+    }
+
+    public function createAdminMenu(ItemInterface $menu, $user)
+    {
+        $roles = ['ROLE_ADMIN_USUARIOS', 'ROLE_ADMIN_AUTOLIQUIDACIONES', 'ROLE_ADMIN_EVALUACIONES'];
+        if($this->security->isGranted($roles, $user)) {
+            $menu->addChild('Administración')
+                ->setUri('#')
+                ->setExtra('icon', 'fas fa-cog');
+
+            if($this->security->isGranted([$roles[0]], $user)) {
+                $menu['Administración']
+                    ->addChild('Usuarios', ['route' => 'admin_usuarios'])
+                    ->setExtra('icon', 'fas fa-users');
+            }
+
+            if($this->security->isGranted([$roles[1]], $user)) {
+                $menu['Administración']
+                    ->addChild('Convenios', ['route' => 'admin_convenio_list'])
+                    ->setExtra('icon', 'fas fa-building');
+            }
+
+            if($this->security->isGranted([$roles[2]], $user)) {
+                $menu['Administración']
+                    ->addChild('Evaluaciones', ['route' => 'admin_evaluacion_resultados'])
+                    ->setExtra('icon', 'fas fa-clipboard-list');
+            }
+        }
+
     }
 }

@@ -26,15 +26,27 @@ class ButtonTypeRoute extends ButtonType
     {
         $route = $this->generateRoute($value, $context);
         $buttonText = "undefined";
+        $tag = "a";
+        $target = "";
         if($buttonIcon = $this->icon) {
             $buttonText = "<i class='$buttonIcon'></i>";
         }
-        $target = $this->target ? " target='$this->target'" : "";
-        return sprintf('<a href="%s"%s>%s</a>', $route, $target, $buttonText);
+        if($route) {
+            $route = 'href="' . $route . '"';
+            $target = $this->target ? " target='$this->target'" : "";
+        } else {
+            $tag = 'span';
+            $route = 'class="disabled"';
+        }
+
+        return sprintf('<%s %s %s>%s</%s>',$tag, $route, $target, $buttonText, $tag);
     }
 
     protected function generateRoute($value, $context)
     {
-        return $this->attrRoute->setRouter($this->column->getRouter())->render($value, $context);
+        if($value) {
+            return $this->attrRoute->setRouter($this->column->getRouter())->render($value, $context);
+        }
+        return null;
     }
 }

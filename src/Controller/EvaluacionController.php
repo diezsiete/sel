@@ -36,7 +36,7 @@ class EvaluacionController extends BaseController
     public function culminar(Progreso $progreso)
     {
         if($progreso->getPorcentajeCompletitud() < 100) {
-            return $this->createAccessDeniedException("No tiene acceso");
+            throw $this->createAccessDeniedException("No tiene acceso");
         } else {
             if(!$progreso->getCulminacion()) {
                 $progreso->setCulminacion(new DateTime());
@@ -55,6 +55,9 @@ class EvaluacionController extends BaseController
      */
     public function certificado(Progreso $progreso, EvaluacionCertificado $pdf)
     {
+        if(!$progreso->getPorcentajeCompletitud()) {
+            throw $this->createAccessDeniedException("Evaluación no culminada");
+        }
         return $this->renderPdf($pdf->render($progreso));
     }
 

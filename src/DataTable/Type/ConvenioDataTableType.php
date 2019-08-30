@@ -48,7 +48,8 @@ class ConvenioDataTableType implements DataTableTypeInterface
                         $data .= "<p>" . $representante->getUsuario()->getNombreCompleto(true) . "</p>";
                     }
                     return $data;
-                }] )
+                }
+            ])
             ->add('servicio', TextColumn::class, [
                 'label' => 'Servicio',
                 'propertyPath' => '[0]',
