@@ -50,6 +50,19 @@ class ProgresoRepository extends ServiceEntityRepository
         return $progreso;
     }
 
+    public function findByEvaluacionSlug($id, $evaluacionSlug)
+    {
+        return $this->createQueryBuilder('p')
+            ->addSelect('e')
+            ->join('p.evaluacion', 'e')
+            ->where('e.slug = :slug')
+            ->andWhere('p.id = :id')
+            ->setParameter('slug', $evaluacionSlug)
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getSingleResult();
+    }
+
     /**
      * @param UserInterface $usuario
      * @param Evaluacion $evaluacion
@@ -67,4 +80,5 @@ class ProgresoRepository extends ServiceEntityRepository
             ->setModulo($modulo)
             ->setDiapositiva($diapositiva);
     }
+
 }

@@ -231,6 +231,19 @@ class Navegador
         return false;
     }
 
+    public function isLastRoute()
+    {
+        return $this->progreso->getEvaluacion()->isLastModulo($this->progreso->getModulo());
+    }
+
+    public function getExitRoute()
+    {
+        return $this->router->generate('evaluacion_culminar', [
+            'evaluacionSlug' => $this->progreso->getEvaluacion()->getSlug(),
+            'progresoId' => $this->progreso->getId()
+        ]);
+    }
+
     /**
      * @return bool
      */

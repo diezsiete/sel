@@ -8,6 +8,11 @@ use App\Service\NovasoftSsrs\Entity\ReporteCertificadoLaboral;
 
 class PdfCartaLaboral extends PdfBase
 {
+
+    public function Header()
+    {
+
+    }
     public function render(ReporteCertificadoLaboral $certificado)
     {
         $compania = $this->configuracion->getRazon();

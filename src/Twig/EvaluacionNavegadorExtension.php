@@ -45,9 +45,14 @@ class EvaluacionNavegadorExtension extends AbstractExtension
             $tag = 'a';
             $attributes['href'] = $href;
         } else {
-            $tag = 'span';
-            !isset($attributes['class']) ? $attributes['class'] = "" : $attributes['class'] .= " ";
-            $attributes['class'] .= "disabled";
+            if($navegador->isLastRoute()) {
+                $tag = 'a';
+                $attributes['href'] = $navegador->getExitRoute();
+            } else {
+                $tag = 'span';
+                !isset($attributes['class']) ? $attributes['class'] = "" : $attributes['class'] .= " ";
+                $attributes['class'] .= "disabled";
+            }
         }
 
         $parsedAttributes = $this->parseAttributes($attributes);

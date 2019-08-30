@@ -2,15 +2,18 @@
 
 namespace App\Controller;
 
+use App\Entity\Evaluacion\Progreso;
 use App\Entity\Evaluacion\Respuesta\Respuesta;
 use App\Form\EvaluacionRespuestaFormType;
 use App\Service\Evaluacion\Navegador;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Service\Pdf\EvaluacionCertificado;
+use DateTime;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 
-class EvaluacionController extends AbstractController
+class EvaluacionController extends BaseController
 {
 
     /**
@@ -25,6 +28,36 @@ class EvaluacionController extends AbstractController
             'evaluacion' => $evaluacion,
         ]);*/
     }
+
+    /**
+     * @Route("/evaluacion/{evaluacionSlug}/culminar/{progresoId}", name="evaluacion_culminar")
+     * @Entity("progreso", expr="repository.findByEvaluacionSlug(progresoId, evaluacionSlug)")
+     */
+    public function culminar(Progreso $progreso)
+    {
+        if($progreso->getPorcentajeCompletitud() < 100) {
+            return $this->createAccessDeniedException("No tiene acceso");
+        } else {
+            if(!$progreso->getCulminacion()) {
+                $progreso->setCulminacion(new DateTime());
+                $this->getDoctrine()->getManager()->flush();
+            }
+        }
+        return $this->render("evaluacion/culminar.html.twig", [
+            'evaluacion' => $progreso->getEvaluacion(),
+            'progreso' => $progreso
+        ]);
+    }
+
+    /**
+     * @Route("/evaluacion/{evaluacionSlug}/certificado/{progresoId}", name="evaluacion_certificado")
+     * @Entity("progreso", expr="repository.findByEvaluacionSlug(progresoId, evaluacionSlug)")
+     */
+    public function certificado(Progreso $progreso, EvaluacionCertificado $pdf)
+    {
+        return $this->renderPdf($pdf->render($progreso));
+    }
+
 
     /**
      * @Route("/evaluacion/{evaluacionSlug}/{moduloSlug}/{preguntaId}", name="evaluacion_pregunta", requirements={
@@ -82,4 +115,6 @@ class EvaluacionController extends AbstractController
             'navegador' => $navegador
         ]);
     }
+
+
 }

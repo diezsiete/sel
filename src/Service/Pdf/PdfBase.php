@@ -6,13 +6,20 @@ namespace App\Service\Pdf;
 
 use App\Service\Configuracion\Configuracion;
 use App\Service\Utils;
+use FPDF;
 
-abstract class PdfBase extends \FPDF
+abstract class PdfBase extends FPDF
 {
     /**
      * @var Configuracion
      */
     protected $configuracion;
+
+    protected $lineHeight = 10;
+
+    public $customLineHeight = 8;
+    public $customFontSize = 12;
+    public $customFontFamily = 'Arial';
 
     /**
      * @var Utils
@@ -49,6 +56,14 @@ abstract class PdfBase extends \FPDF
         return $this->lMargin;
     }
 
+    public function Header()
+    {
+        $logoImg = $this->configuracion->getLogoPdf();
+        $imageWidth = 38;
+
+        $this->Image($logoImg ,$this->GetX() + 149, $this->getY() + 3, $imageWidth);
+        $this->Cell(0, $this->lineHeight + 15 , '', 0, 1);
+    }
 
     public function Footer()
     {
@@ -72,6 +87,22 @@ abstract class PdfBase extends \FPDF
         // Page number
         $txt3 = $compania . ". ".utf8_decode("Bogotá")." : " . utf8_decode($compania_dir) . ". " . $compania_web;
         $this->Cell(0,10,$txt3,0,0,'C');
+    }
+
+    public function bold()
+    {
+        $this->SetFont($this->customFontFamily,'B',$this->customFontSize);
+    }
+
+    public function unBold()
+    {
+        $this->SetFont($this->customFontFamily,'',$this->customFontSize);
+    }
+
+    public function setFontSize($fontSize)
+    {
+        $this->customFontSize = $fontSize;
+        $this->SetFont($this->customFontFamily,'',$this->customFontSize);
     }
 
 }
