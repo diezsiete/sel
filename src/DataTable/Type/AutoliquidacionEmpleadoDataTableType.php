@@ -52,6 +52,8 @@ class AutoliquidacionEmpleadoDataTableType implements DataTableTypeInterface
                         ->andWhere('ae.exito = 1')
                         ->setParameter('id', $id);
                 },
-            ]);
+            ])
+        ;
+        $dataTable->setName('autoliquidacion-empleado');
     }
 }

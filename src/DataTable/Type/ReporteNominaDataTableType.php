@@ -61,5 +61,6 @@ class ReporteNominaDataTableType implements DataTableTypeInterface
                         ->setParameter('id', $id);
                 },
             ]);
+        $dataTable->setName('reporte-nomina');
     }
 }
