@@ -18,9 +18,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
- * TextColumn.
- *
- * @author Niels Keurentjes <niels.keurentjes@omines.com>
+ * @deprecated
  */
 class ButtonColumn extends AbstractColumn
 {

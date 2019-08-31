@@ -2,12 +2,14 @@
 
 namespace App\Controller;
 
+use App\DataTable\Type\EvaluacionProgresoDataTableType;
 use App\Entity\Evaluacion\Progreso;
 use App\Entity\Evaluacion\Respuesta\Respuesta;
 use App\Form\EvaluacionRespuestaFormType;
 use App\Service\Evaluacion\Navegador;
 use App\Service\Pdf\EvaluacionCertificado;
 use DateTime;
+use Omines\DataTablesBundle\DataTableFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,16 +19,40 @@ class EvaluacionController extends BaseController
 {
 
     /**
+     * @Route("/evaluacion/{evaluacionSlug}/menu-redirect", name="evaluacion_menu_redirect")
+     */
+    public function menuRedirect(Navegador $navegador)
+    {
+        if(!$navegador->getProgreso()->getId() || !$navegador->getProgreso()->getCulminacion()) {
+            return $this->redirect($navegador->getCurrentRoute());
+        } else {
+            return $this->redirectToRoute('evaluacion_resultados');
+        }
+    }
+
+    /**
+     * @Route("/evaluacion/resultados", name="evaluacion_resultados")
+     */
+    public function resultados(DataTableFactory $dataTableFactory, Request $request)
+    {
+        $table = $dataTableFactory
+            ->createFromType(EvaluacionProgresoDataTableType::class, ['usuario' => $this->getUser()], ['searching' => true])
+            ->handleRequest($request);
+
+        if ($table->isCallback()) {
+            return $table->getResponse();
+        }
+
+        return $this->render('evaluacion/resultados.html.twig', ['datatable' => $table]);
+    }
+
+    /**
      * @Route("/evaluacion/{evaluacionSlug}", name="evaluacion")
      */
     public function presentar(Navegador $navegador)
     {
         $currentRoute = $navegador->getCurrentRoute();
         return $this->redirect($currentRoute);
-
-        /*return $this->render('evaluacion/presentar.html.twig', [
-            'evaluacion' => $evaluacion,
-        ]);*/
     }
 
     /**
@@ -118,6 +144,4 @@ class EvaluacionController extends BaseController
             'navegador' => $navegador
         ]);
     }
-
-
 }

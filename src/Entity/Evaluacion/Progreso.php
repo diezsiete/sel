@@ -206,11 +206,9 @@ class Progreso
         return $this->diapositiva;
     }
 
-    public function setDiapositiva(Diapositiva $diapositiva): self
+    public function setDiapositiva(?Diapositiva $diapositiva): self
     {
         $this->diapositiva = $diapositiva;
-        $this->pregunta = null;
-        $this->preguntaDiapositiva = null;
         return $this;
     }
 
@@ -219,12 +217,9 @@ class Progreso
         return $this->pregunta;
     }
 
-    public function setPregunta(Pregunta $pregunta): self
+    public function setPregunta(?Pregunta $pregunta): self
     {
         $this->pregunta = $pregunta;
-        $this->diapositiva = null;
-        $this->preguntaDiapositiva = null;
-
         return $this;
     }
 
@@ -248,7 +243,6 @@ class Progreso
     public function setPreguntaDiapositiva(?Diapositiva $preguntaDiapositiva): self
     {
         $this->preguntaDiapositiva = $preguntaDiapositiva;
-
         return $this;
     }
 

@@ -21,6 +21,11 @@
 .header .topbar ul.loginbar > li > a, .header .topbar ul.loginbar > li > a:hover{
     color: #cccccc;
 }
+.btn-outline-primary.disabled {
+    color: #24135f;
+    background-color: white;
+    cursor: not-allowed;
+}
 
 /*----------------------------------------------------------------------------------------------------------------------
                                                        Inicio

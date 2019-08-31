@@ -4,6 +4,7 @@
 namespace App\DataTable\Type;
 
 
+use App\DataTable\Column\ActionsColumn\ActionsColumn;
 use App\DataTable\Column\ButtonColumn\ButtonColumn;
 use App\DataTable\Column\ButtonColumn\ButtonTypeRoute;
 use App\DataTable\Column\ButtonColumn\DatatablePropertyAccessor;
@@ -36,6 +37,32 @@ class EvaluacionProgresoDataTableType implements DataTableTypeInterface
      */
     public function configure(DataTable $dataTable, array $options)
     {
+        $usuario = $options['usuario'] ?? null;
+
+        $actions = [[
+            'route' => ['evaluacion_certificado', [
+                'evaluacionSlug' => 'evaluacion.slug',
+                'progresoId' => 'id'
+            ]],
+            'icon' => 'fas fa-file-pdf',
+            'target' => '_blank',
+            'data' => function (Progreso $progreso, $id) {
+                return $progreso->getCulminacion() ? $id : 'disabled';
+            }
+        ]];
+
+        if($usuario) {
+            $actions[] = [
+                'route' => ['evaluacion', [
+                    'evaluacionSlug' => 'evaluacion.slug',
+                ]],
+                'icon' => 'fas fa-pencil-alt',
+                'data' => function (Progreso $progreso, $id) {
+                    return $progreso->getCulminacion() ? false : $id;
+                }
+            ];
+        }
+
         $dataTable
             ->add('nombre', TextColumn::class, ['label' => 'Evaluacion', 'field' => 'evaluacion.nombre'])
             // ->add('descripción', TextColumn::class, ['label' => 'Descripción', 'field' => 'evaluacion.descripcion'])
@@ -50,29 +77,23 @@ class EvaluacionProgresoDataTableType implements DataTableTypeInterface
             ])
             ->add('porcentajeCompletitud', TextColumn::class, ['label' => 'Completitud %', 'orderable' => false])
             ->add('porcentajeExito', TextColumn::class, ['label' => 'Exito %', 'orderable' => false])
-
-            ->add('actions', ButtonColumn::class, [
+            ->add('actions', ActionsColumn::class, [
                 'label' => '',
                 'field' => 'progreso.id',
                 'orderable' => false,
-                'buttons' => [
-                    new ButtonTypeRoute('evaluacion_certificado', [
-                        'evaluacionSlug' => new DatatablePropertyAccessor('evaluacion.slug'),
-                        'progresoId' => new DatatablePropertyAccessor('id')
-                    ], 'fas fa-file-pdf', '_blank'),
-                ],
-                'data' => function (Progreso $progreso, $id) {
-                    return $progreso->getCulminacion() ? $id : false;
-                }
+                'actions' => $actions
             ])
             ->createAdapter(ORMAdapter::class, [
                 'entity' => Progreso::class,
-                'query' => function (QueryBuilder $builder) {
+                'query' => function (QueryBuilder $builder) use ($usuario) {
                     $builder
                         ->select('progreso, evaluacion, usuario')
                         ->from(Progreso::class, 'progreso')
                         ->join('progreso.evaluacion', 'evaluacion')
                         ->join('progreso.usuario', 'usuario');
+                    if($usuario){
+                        $builder->andWhere('usuario = :usuario')->setParameter('usuario', $usuario);
+                    }
                 },
                 'criteria' => [
                     function(QueryBuilder $builder, DataTableState $state) {

@@ -10,12 +10,9 @@ use App\Entity\Evaluacion\Modulo;
 use App\Entity\Evaluacion\Pregunta\Pregunta;
 use App\Entity\Evaluacion\Progreso;
 use App\Entity\Evaluacion\Respuesta\Respuesta;
-use App\Entity\Usuario;
 use App\Repository\Evaluacion\ProgresoRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\NonUniqueResultException;
-use Doctrine\ORM\NoResultException;
-use PhpParser\Node\Expr\AssignOp\Mod;
+use Exception;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -23,14 +20,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class Navegador
 {
     /**
-     * @var ProgresoRepository
-     */
-    private $progresoRepository;
-
-    /**
      * @var Progreso
      */
     private $progreso;
+
     /**
      * @var Evaluador
      */
@@ -40,10 +33,12 @@ class Navegador
      * @var RouterInterface
      */
     private $router;
+
     /**
      * @var UserInterface|null
      */
     private $user;
+
     /**
      * @var Evaluacion
      */
@@ -57,64 +52,51 @@ class Navegador
     public function __construct(ProgresoRepository $progresoRepository, Evaluacion $evaluacion,
                                 Security $security, RouterInterface $router, EntityManagerInterface $em)
     {
-        $this->progresoRepository = $progresoRepository;
         $this->router = $router;
         $this->user = $security->getUser();
         $this->evaluacion = $evaluacion;
         $this->em = $em;
+        $this->progreso = $progresoRepository->findByUsuarioElseNew($this->user, $this->evaluacion);
+        $this->evaluador = new Evaluador($this->progreso, $this->em->getRepository(Respuesta::class));
     }
 
 
     public function setRouteDiapositiva(Modulo $modulo, Diapositiva $diapositiva)
     {
-        $progreso = $this->getProgreso();
-        if(!$progreso->getDiapositiva() || $progreso->getDiapositiva()->getId() !== $diapositiva->getId()) {
+        if(!$this->progreso->getDiapositiva() || $this->progreso->getDiapositiva()->getId() !== $diapositiva->getId()) {
             if($this->hasAccessToDiapositiva($diapositiva)) {
-                $progreso
-                    ->setModulo($modulo)
-                    ->setDiapositiva($diapositiva);
-                $this->em->flush();
+                $this->flushProgreso($modulo, $diapositiva);
             }
         }
     }
 
     public function setRoutePregunta(Modulo $modulo, Pregunta $pregunta)
     {
-
-        $progreso = $this->getProgreso();
+        $progreso = $this->progreso;
         if(!$progreso->getPregunta() || $progreso->getPregunta()->getId() !== $pregunta->getId() || $progreso->getPreguntaDiapositiva()) {
             if($this->hasAccessToPregunta($pregunta)) {
-                $progreso
-                    ->setModulo($modulo)
-                    ->setPregunta($pregunta);
-                $this->em->flush();
+                $this->flushProgreso($modulo, null, $pregunta);
             }
         }
     }
 
     public function setRoutePreguntaDiapositiva(Modulo $modulo, Pregunta $pregunta, Diapositiva $preguntaDiapositiva)
     {
-        $progreso = $this->getProgreso();
+        $progreso = $this->progreso;
         if(!$progreso->getPreguntaDiapositiva() || $progreso->getPreguntaDiapositiva()->getId() !== $preguntaDiapositiva->getId()) {
             if($this->hasAccessToPregunta($pregunta)) {
-                $progreso
-                    ->setModulo($modulo)
-                    ->setPregunta($pregunta)
-                    ->setPreguntaDiapositiva($preguntaDiapositiva);
-
-                $this->em->flush();
+                $this->flushProgreso($modulo, null, $pregunta, $preguntaDiapositiva);
             }
         }
     }
 
     public function getCurrentRoute()
     {
-        $progreso = $this->getProgreso();
         $diapositivaOPregunta = $this->progreso->getDiapositiva();
         if(!$diapositivaOPregunta) {
             $diapositivaOPregunta = $this->progreso->getPregunta() ?? $this->progreso->getPreguntaDiapositiva();
         }
-        return $this->buildRoute($progreso->getModulo(), $diapositivaOPregunta);
+        return $this->buildRoute($this->progreso->getModulo(), $diapositivaOPregunta);
     }
 
     /**
@@ -269,24 +251,32 @@ class Navegador
     {
         return $this->evaluacion;
     }
+
     /**
-     * @return Diapositiva
-     * @throws NoResultException
-     * @throws NonUniqueResultException
+     * @return Diapositiva|null
+     * @throws Exception
      */
     public function getDiapositiva()
     {
-        return $this->getProgreso()->getDiapositiva();
+        return $this->progreso->getDiapositiva();
     }
 
     /**
      * @return Pregunta|null
-     * @throws NoResultException
-     * @throws NonUniqueResultException
+     * @throws Exception
      */
     public function getPregunta()
     {
-        return $this->getProgreso()->getPregunta();
+        return $this->progreso->getPregunta();
+    }
+
+    /**
+     * @return Diapositiva|null
+     * @throws Exception
+     */
+    public function getPreguntaDiapositiva(): ?Diapositiva
+    {
+        return $this->progreso->getPreguntaDiapositiva();
     }
 
     /**
@@ -297,28 +287,14 @@ class Navegador
         return $this->evaluador;
     }
 
-    public function getPreguntaDiapositiva(): ?Diapositiva
-    {
-        return $this->getProgreso()->getPreguntaDiapositiva();
-    }
-
     /**
      * @return Progreso
-     * @throws NoResultException
-     * @throws NonUniqueResultException
      */
-    private function getProgreso()
+    public function getProgreso()
     {
-        if(!$this->progreso) {
-            $this->progreso = $this->progresoRepository->findByUsuarioElseNew($this->user, $this->evaluacion);
-            if(!$this->progreso->getId()) {
-                $this->em->persist($this->progreso);
-                $this->em->flush();
-            }
-            $this->evaluador = new Evaluador($this->progreso, $this->em->getRepository(Respuesta::class));
-        }
         return $this->progreso;
     }
+
 
     private function hasAccessToDiapositiva(Diapositiva $diapositiva)
     {
@@ -360,10 +336,26 @@ class Navegador
 
     /**
      * @return Modulo|ModuloRepeticionDecorator|null
-     * @throws \Exception
+     * @throws Exception
      */
     private function getPreguntasContainer()
     {
         return $this->evaluador->isModuloRepeticion() ? $this->evaluador->getModuloRepeticion() : $this->progreso->getModulo();
+    }
+
+
+    private function flushProgreso(?Modulo $modulo = null, ?Diapositiva $diapositiva = null,
+                                   ?Pregunta $pregunta = null, ?Diapositiva $preguntaDiapositiva = null)
+    {
+        $this->progreso
+            ->setModulo($modulo)
+            ->setDiapositiva($diapositiva)
+            ->setPregunta($pregunta)
+            ->setPreguntaDiapositiva($preguntaDiapositiva);
+
+        if(!$this->progreso->getId()) {
+            $this->em->persist($this->progreso);
+        }
+        $this->em->flush();
     }
 }

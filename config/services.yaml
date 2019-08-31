@@ -54,6 +54,10 @@ services:
     App\Service\Hv\HvWizard\HvWizard:
         factory: '@App\Service\Hv\HvWizard\HvWizardFactory'
 
+    App\DataTable\Column\ActionsColumn\ActionRoute:
+        public: true
+        shared: false
+
     Knp\Menu\Twig\MenuExtension:
         alias: knp_menu.twig.extension
 
