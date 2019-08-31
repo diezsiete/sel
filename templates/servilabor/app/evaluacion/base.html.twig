@@ -11,12 +11,17 @@
     </style>
 {% endblock %}
 
-{% block nav_admin %}
-{% endblock %}
-
 {% block title %}
     Evaluacion - {{ evaluacion.nombre }}
 {% endblock %}
+
+{% block nav %}
+    {{ include('servilabor/app/evaluacion/_nav.html.twig') }}
+{% endblock %}
+
+{% block nav_admin %}
+{% endblock %}
+
 
 {% block main %}
     {{ include('default/_flash_messages.html.twig') }}

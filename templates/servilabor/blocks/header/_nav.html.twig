@@ -4,11 +4,11 @@
         <button class="navbar-toggler navbar-toggler-right btn g-line-height-1 g-brd-none g-pa-0 g-pos-abs g-top-minus-3 g-right-0"
                 type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="navBar"
                 data-toggle="collapse" data-target="#navBar">
-                        <span class="hamburger hamburger--slider">
-                            <span class="hamburger-box">
-                                <span class="hamburger-inner"></span>
-                            </span>
-                        </span>
+            <span class="hamburger hamburger--slider">
+                <span class="hamburger-box">
+                    <span class="hamburger-inner"></span>
+                </span>
+            </span>
         </button>
         <!-- End Responsive Toggle Button -->
 
@@ -116,58 +116,7 @@
                 </a>
             </div>
         {% else %}
-            <!-- Basket -->
-            <div class="u-basket d-inline-block g-valign-middle g-pt-6 g-ml-30 g-ml-0--lg g-pos-abs g-top-12 g-right-65 g-pos-rel--lg g-top-0--lg g-right-0--lg">
-                <a href="#" id="basket-bar-invoker" class="u-icon-v1 g-color-main g-text-underline--none--hover g-width-20 g-height-20" aria-controls="basket-bar" aria-haspopup="true" aria-expanded="false" data-dropdown-event="hover" data-dropdown-target="#basket-bar"
-                   data-dropdown-type="css-animation" data-dropdown-duration="500" data-dropdown-hide-on-scroll="false" data-dropdown-animation-in="fadeIn" data-dropdown-animation-out="fadeOut">
-                    <i class="far fa-user"></i>
-                </a>
-
-                <div id="basket-bar" class="u-basket__bar u-dropdown--css-animation u-dropdown--hidden g-brd-top g-brd-2 g-brd-primary g-color-main g-mt-25--lg g-mt-15--lg--scrolling" aria-labelledby="basket-bar-invoker">
-                    <div class="js-scrollbar">
-                        <!-- Product -->
-                        <div class="u-basket__product">
-                            <div class="row align-items-center no-gutters">
-                                <div class="col-12">
-                                    <h6 class="g-font-weight-600 g-mb-0">
-                                        {{ app.user.nombreCompleto(true) }}
-                                    </h6>
-                                    <small class="g-color-gray-dark-v5 g-font-size-14">
-                                        {{ app.user.identificacion }}
-                                    </small>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- End Product -->
-
-                        <!-- Product -->
-                        <div class="u-basket__product">
-                            <div class="row align-items-center no-gutters">
-                                <div class="col-12">
-                                    <a href="{{ path('app_profile') }}"
-                                       class="g-color-main g-color-main--hover g-text-underline--none--hover">
-                                        Mi Perfil
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- End Product -->
-                        <!-- Product -->
-                        <div class="u-basket__product">
-                            <div class="row align-items-center no-gutters">
-                                <div class="col-12">
-                                    <a href="{{ path('app_logout') }}"
-                                       class="g-color-main g-color-main--hover g-text-underline--none--hover">
-                                        Cerrar sesión
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- End Product -->
-                    </div>
-                </div>
-            </div>
-            <!-- End Basket -->
+            {{ include('servilabor/blocks/header/_nav-user.html.twig') }}
         {% endif %}
     </div>
 </nav>
