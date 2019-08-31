@@ -22,6 +22,7 @@ class Modulo extends HasDiapositivas
     private $id;
 
     /**
+     * @var Evaluacion
      * @ORM\ManyToOne(targetEntity="App\Entity\Evaluacion\Evaluacion", inversedBy="modulos")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -75,12 +76,12 @@ class Modulo extends HasDiapositivas
         return $this->id;
     }
 
-    public function getEvaluacion(): ?Evaluacion
+    public function getEvaluacion(): Evaluacion
     {
         return $this->evaluacion;
     }
 
-    public function setEvaluacion(?Evaluacion $evaluacion): self
+    public function setEvaluacion(Evaluacion $evaluacion): self
     {
         $this->evaluacion = $evaluacion;
 
@@ -205,7 +206,7 @@ class Modulo extends HasDiapositivas
 
     public function tienePreguntas()
     {
-        return $this->preguntas->count() > 0;
+        return $this->evaluacion->isPreguntasEnabled() && $this->preguntas->count() > 0;
     }
 
     public function getPrimeraPregunta()

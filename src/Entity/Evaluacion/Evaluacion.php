@@ -70,6 +70,12 @@ class Evaluacion
      */
     private $preguntas;
 
+    /**
+     * @var boolean
+     * @ORM\Column(type="boolean")
+     */
+    private $preguntasEnabled = true;
+
     public function __construct()
     {
         $this->modulos = new ArrayCollection();
@@ -259,6 +265,24 @@ class Evaluacion
             }
         }
 
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPreguntasEnabled(): bool
+    {
+        return $this->preguntasEnabled;
+    }
+
+    /**
+     * @param bool $preguntasEnabled
+     * @return Evaluacion
+     */
+    public function setPreguntasEnabled(bool $preguntasEnabled): Evaluacion
+    {
+        $this->preguntasEnabled = $preguntasEnabled;
         return $this;
     }
 }

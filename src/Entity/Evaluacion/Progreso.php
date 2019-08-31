@@ -6,6 +6,7 @@ use App\Entity\Evaluacion\Pregunta\Pregunta;
 use App\Entity\Evaluacion\Respuesta\Respuesta;
 use App\Entity\Usuario;
 use App\Repository\Evaluacion\Respuesta\RespuestaRepository;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -93,6 +94,12 @@ class Progreso
      */
     private $moduloRepeticion = false;
 
+    /**
+     * @var boolean
+     * @ORM\Column(type="boolean")
+     */
+    private $preguntasEnabled = true;
+
     public function __construct()
     {
         $this->respuestas = new ArrayCollection();
@@ -127,15 +134,15 @@ class Progreso
         return $this;
     }
 
-    public function getCulminacion(): ?\DateTimeInterface
+    public function getCulminacion(): ?DateTimeInterface
     {
         return $this->culminacion;
     }
 
-    public function setCulminacion(?\DateTimeInterface $culminacion): self
+    public function setCulminacion(?DateTimeInterface $culminacion): self
     {
         $this->culminacion = $culminacion;
-
+        $this->preguntasEnabled = $culminacion ? false : true;
         return $this;
     }
 
@@ -336,5 +343,23 @@ class Progreso
         } else {
             throw new Exception("Asking for respuesta without pregunta");
         }
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPreguntasEnabled(): bool
+    {
+        return $this->preguntasEnabled;
+    }
+
+    /**
+     * @param bool $preguntasEnabled
+     * @return Progreso
+     */
+    public function setPreguntasEnabled(bool $preguntasEnabled): Progreso
+    {
+        $this->preguntasEnabled = $preguntasEnabled;
+        return $this;
     }
 }
