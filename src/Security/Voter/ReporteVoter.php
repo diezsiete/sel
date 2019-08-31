@@ -2,6 +2,7 @@
 
 namespace App\Security\Voter;
 
+use App\Entity\Autoliquidacion\AutoliquidacionEmpleado;
 use App\Entity\HvEntity;
 use App\Entity\ReporteNomina;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -20,7 +21,8 @@ class ReporteVoter extends Voter
 
     protected function supports($attribute, $subject)
     {
-        return in_array($attribute, ['REPORTE_MANAGE']) && $subject instanceof ReporteNomina;
+        return in_array($attribute, ['REPORTE_MANAGE']) && (
+            $subject instanceof ReporteNomina || $subject instanceof AutoliquidacionEmpleado);
     }
 
     /**

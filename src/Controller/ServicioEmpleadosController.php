@@ -3,13 +3,17 @@
 namespace App\Controller;
 
 
+use App\DataTable\Type\AutoliquidacionEmpleadoDataTableType;
 use App\DataTable\Type\ReporteNominaDataTableType;
+use App\Entity\Autoliquidacion\AutoliquidacionEmpleado;
 use App\Entity\ReporteNomina;
+use App\Service\AutoliquidacionService;
 use App\Service\Pdf\PdfCartaLaboral;
 use App\Service\ReportesServicioEmpleados;
 use Omines\DataTablesBundle\DataTableFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ServicioEmpleadosController extends BaseController
@@ -86,6 +90,40 @@ class ServicioEmpleadosController extends BaseController
         $identificacion = $this->getUser()->getIdentificacion();
         $reportePdf = $reportes->getCertificadoIngresosPdf($periodo, $identificacion);
         return $this->renderPdf($reportePdf);
+    }
+
+    /**
+     * @Route("/sel/se/certificados-aportes", name="app_certificados_aportes")
+     */
+    public function certificadosAportes(DataTableFactory $dataTableFactory, Request $request)
+    {
+        $id = $this->getUser()->getId();
+        $table = $dataTableFactory->createFromType(AutoliquidacionEmpleadoDataTableType::class,
+            ['id' => $id], ['searching' => false, 'paging' => false])
+            ->handleRequest($request);
+
+        if($table->isCallback()) {
+            return $table->getResponse();
+        }
+
+        return $this->render('servicio_empleados/certificados-aportes.html.twig', ['datatable' => $table]);
+    }
+
+    /**
+     * @Route("/sel/se/certificado-aporte/{id}", name="app_certificado_aporte")
+     * @IsGranted("REPORTE_MANAGE", subject="autoliquidacionEmpleado")
+     */
+    public function certificadoAporte(AutoliquidacionEmpleado $autoliquidacionEmpleado, AutoliquidacionService $autoliquidacionService)
+    {
+        $response = new StreamedResponse(function() use ($autoliquidacionEmpleado, $autoliquidacionService){
+            $outputStream = fopen('php://output', 'wb');
+            $fileStream = $autoliquidacionService->readStream($autoliquidacionEmpleado);
+
+            stream_copy_to_stream($fileStream, $outputStream);
+        });
+        $response->headers->set('Content-Type', 'application/pdf');
+
+        return $response;
     }
 
     /**

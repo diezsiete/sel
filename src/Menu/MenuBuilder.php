@@ -82,6 +82,9 @@ class MenuBuilder
         $menu['Certificados']
             ->addChild('Ingresos y retenciones', ['route' => 'app_certificados_ingresos'])
             ->setExtra('icon', 'fas fa-file-alt');
+        $menu['Certificados']
+            ->addChild('Aportes seguridad social', ['route' => 'app_certificados_aportes'])
+            ->setExtra('icon', 'fas fa-lock');
 
         $menu->addChild('Liquidación de contrato', ['route' => 'app_liquidaciones_de_contrato'])
             ->setExtra('icon', 'fas fa-strikethrough');

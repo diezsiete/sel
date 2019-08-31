@@ -14,7 +14,10 @@ use App\Repository\Autoliquidacion\AutoliquidacionRepository;
 use App\Repository\UsuarioRepository;
 use DateTimeInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
+use League\Flysystem\FileNotFoundException;
 use League\Flysystem\FilesystemInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class AutoliquidacionService
 {
@@ -66,6 +69,29 @@ class AutoliquidacionService
         if($this->privateFilesystem->has($path)) {
             $ident ? $this->privateFilesystem->delete($path) : $this->privateFilesystem->deleteDir($path);
         }
+    }
+
+    /**
+     * @resource
+     * @param DateTimeInterface|AutoliquidacionEmpleado $periodo
+     * @param string|null $ident
+     * @return false|resource
+     * @throws FileNotFoundException
+     */
+    public function readStream($periodo, $ident = null)
+    {
+        if($ident === null || $periodo instanceof AutoliquidacionEmpleado) {
+            $autoliquidacionEmpleado = $periodo;
+            $periodo = $autoliquidacionEmpleado->getAutoliquidacion()->getPeriodo();
+            $ident = $autoliquidacionEmpleado->getEmpleado()->getUsuario()->getIdentificacion();
+        }
+
+        $path = $this->getPdfPath($periodo, $ident);
+        $resource = $this->privateFilesystem->readStream($path);
+        if($resource === false) {
+            throw new Exception(sprintf("Error abriendo stream para '%s'", $path));
+        }
+        return $resource;
     }
 
     protected function getPdfPath(?DateTimeInterface $periodo = null, $ident = null)

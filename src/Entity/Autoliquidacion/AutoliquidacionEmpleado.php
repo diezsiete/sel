@@ -3,6 +3,7 @@
 namespace App\Entity\Autoliquidacion;
 
 use App\Entity\Empleado;
+use App\Entity\Usuario;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -18,6 +19,7 @@ class AutoliquidacionEmpleado
     private $id;
 
     /**
+     * @var Empleado
      * @ORM\ManyToOne(targetEntity="App\Entity\Empleado", inversedBy="autoliquidacion")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -108,5 +110,13 @@ class AutoliquidacionEmpleado
         $this->code = $code;
 
         return $this;
+    }
+
+    /**
+     * @return Usuario
+     */
+    public function getUsuario()
+    {
+        return $this->empleado->getUsuario();
     }
 }
