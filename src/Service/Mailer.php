@@ -4,6 +4,7 @@
 namespace App\Service;
 
 
+use App\Entity\RestaurarClave;
 use App\Form\Model\ContactoModel;
 use App\Service\Configuracion\Configuracion;
 use Psr\Container\ContainerInterface;
@@ -53,5 +54,16 @@ class Mailer
     {
         $this->send($this->configuracion->getRazon() . '. Pagina web formulario contacto', $contacto->from, $contacto->to,
             'emails/contacto.html.twig', ['contacto' => $contacto]);
+    }
+
+    public function sendOlvido(RestaurarClave $restaurarClave)
+    {
+        $this->send(
+            $this->configuracion->getRazon() . '. Pagina web restaurar clave',
+            $this->configuracion->getMail(),
+            $restaurarClave->getUsuario()->getEmail(),
+            'emails/olvido.html.twig', [
+                'restaurarClave' => $restaurarClave
+            ]);
     }
 }

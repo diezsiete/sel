@@ -1,0 +1,58 @@
+{% extends 'servilabor/base.html.twig' %}
+
+{% block body %}
+<!-- Login -->
+<section class="g-bg-gray-light-v5">
+    <div class="container g-py-100">
+        <div class="row justify-content-center">
+            <div class="col-sm-8 col-lg-5">
+                <div class="u-shadow-v21 g-bg-white rounded g-py-40 g-px-30">
+                    <header class="text-center mb-4">
+                        <h2 class="h2 g-color-black g-font-weight-600">Restaurar contraseña</h2>
+                    </header>
+
+                    {% if email is null %}
+                        {% if not form.vars.valid %}
+                            <div class="alert alert-danger">
+                                {{ form_errors(form.usuario) }}
+                            </div>
+                        {% endif %}
+
+                        {{ form_start(form, {attr: {
+                            class:"g-py-15",
+                            novalidate: 'novalidate'
+                        }}) }}
+
+                        <div class="form-group g-mb-20">
+                            <label class="g-mb-10">Ingrese su identificación</label>
+                            <div class="input-group g-brd-primary--focus">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text g-width-45 g-brd-right-none g-brd-gray-light-v4 g-color-gray-dark-v5">
+                                        <i class="icon-finance-067 u-line-icon-pro"></i>
+                                    </span>
+                                </div>
+                                {{ form_widget(form.usuario, {attr: {
+                                    class: 'form-control g-color-black g-bg-white g-brd-gray-light-v4 g-py-15 g-px-15'
+                                }}) }}
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <button class="btn btn-md btn-block u-btn-primary rounded g-py-13" type="submit">
+                                Enviar correo
+                            </button>
+                        </div>
+
+                        {{ form_end(form) }}
+
+                    {% else %}
+                        <div class="alert alert-success text-center">
+                            Un correo se ha enviado a <strong>{{ email }}</strong> con instrucciones para restaurar contraseña
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Login -->
+{% endblock %}

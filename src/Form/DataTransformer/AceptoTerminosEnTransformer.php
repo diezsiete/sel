@@ -4,6 +4,7 @@
 namespace App\Form\DataTransformer;
 
 
+use DateTime;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
@@ -23,6 +24,6 @@ class AceptoTerminosEnTransformer implements DataTransformerInterface
         if(!$value) {
             throw new TransformationFailedException("Debe aceptar los terminos");
         }
-        return new \DateTime();
+        return new DateTime();
     }
 }

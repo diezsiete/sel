@@ -5,6 +5,7 @@ namespace App\Controller;
 
 
 use App\Entity\Usuario;
+use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -54,5 +55,13 @@ class BaseController extends AbstractController
         }
 
         return $errors;
+    }
+
+    /**
+     * @return ObjectManager
+     */
+    protected function em()
+    {
+        return $this->getDoctrine()->getManager();
     }
 }

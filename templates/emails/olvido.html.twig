@@ -1,0 +1,12 @@
+<p>
+    Se ha solicitado un cambio de contraseña desde la pagina web de
+    {{ configuracion.razon }} para {{ restaurarClave.usuario.nombreCompleto }} {{ restaurarClave.usuario.identificacion }}
+</p>
+<p>
+    Si solicitó este cambio, por favor ingrese al siguiente link
+    {% set link = url('security_restaurar', {id: restaurarClave.usuario.id, token: restaurarClave.token|url_encode }) %}
+    <a href='{{ link }}'>
+        {{ link }}
+    </a>
+</p>
+<p>Si no realizó ninguna solicitud para cambio de contraseña, haga caso omiso a este mensaje</p>
