@@ -4,19 +4,15 @@
 namespace App\DataTable\Type;
 
 
-use App\DataTable\Column\ButtonColumn\ButtonColumn;
-use App\DataTable\Column\ButtonColumn\ButtonTypeRoute;
-use App\DataTable\Column\ButtonColumn\DatatablePropertyAccessor;
+use App\DataTable\Column\ActionsColumn\ActionsColumn;
 use App\Entity\Usuario;
 use App\Repository\UsuarioRepository;
 use Doctrine\ORM\QueryBuilder;
-use Omines\DataTablesBundle\Adapter\Doctrine\ORM\SearchCriteriaProvider;
 use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
 use Omines\DataTablesBundle\Column\TextColumn;
 use Omines\DataTablesBundle\DataTable;
 use Omines\DataTablesBundle\DataTableState;
 use Omines\DataTablesBundle\DataTableTypeInterface;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Security;
 
 class UsuarioDataTableType implements DataTableTypeInterface
@@ -70,19 +66,21 @@ class UsuarioDataTableType implements DataTableTypeInterface
             ])
         ;
         if($this->security->isGranted(['ROLE_ADMIN_USUARIOS'], $this->security->getUser())) {
-            $buttons = [
-                new ButtonTypeRoute('admin_usuarios_editar',
-                    ['id' => new DatatablePropertyAccessor('id')], 'fas fa-pencil-alt')
-            ];
+            $actions = [[
+                'route' => ['admin_usuarios_editar', ['id' => 'id']],
+                'icon' => 'fas fa-pencil-alt'
+            ]];
             if($this->security->isGranted(['ROLE_ALLOWED_TO_SWITCH'], $this->security->getUser())) {
-                array_unshift($buttons,
-                    new ButtonTypeRoute('app_comprobantes', ['_switch_user'], 'fas fa-user-cog'));
+                $actions[] = [
+                    'route' => ['app_comprobantes', ['_switch_user']],
+                    'icon' => 'fas fa-user-cog'
+                ];
             }
-            $dataTable->add('actions', ButtonColumn::class, [
+            $dataTable->add('actions', ActionsColumn::class, [
                 'label' => '',
                 'field' => 'u.identificacion',
                 'orderable' => false,
-                'buttons' => $buttons
+                'actions' => $actions
             ]);
         }
     }

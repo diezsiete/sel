@@ -70,7 +70,7 @@ class MenuBuilder
 
     public function createSelMenu(ItemInterface $menu)
     {
-        $menu->addChild('Comprobantes de pago', ['route' => 'app_comprobantes'])
+        $menu->addChild('Comprobantes', ['route' => 'app_comprobantes'])
             ->setExtra('icon', 'fas fa-dollar-sign');
 
         $menu->addChild('Certificados')

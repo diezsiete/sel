@@ -4,9 +4,7 @@
 namespace App\DataTable\Type;
 
 
-use App\DataTable\Column\ButtonColumn\ButtonColumn;
-use App\DataTable\Column\ButtonColumn\ButtonTypeRoute;
-use App\DataTable\Column\ButtonColumn\DatatablePropertyAccessor;
+use App\DataTable\Column\ActionsColumn\ActionsColumn;
 use App\Entity\Autoliquidacion\AutoliquidacionEmpleado;
 use Doctrine\ORM\QueryBuilder;
 use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
@@ -27,17 +25,16 @@ class AutoliquidacionEmpleadoDataTableType implements DataTableTypeInterface
 
         $dataTable
             ->add('periodo', DateTimeColumn::class, ['label' => 'Fecha', 'format' => 'Y-m', 'field' => 'a.periodo'])
-            ->add('PDF', ButtonColumn::class, [
+            ->add('PDF', ActionsColumn::class, [
                 'label' => 'PDF',
                 'orderable' => false,
                 'field' => 'ae.id',
-                'buttons' => [
-                    new ButtonTypeRoute('app_certificado_aporte', [
-                        'id' => new DatatablePropertyAccessor('id'),
-                    ], 'fas fa-file-pdf', '_blank'),
-                ],
+                'actions' => [
+                    'route' => ['app_certificado_aporte', ['id' => 'id']],
+                    'icon' => 'fas fa-file-pdf',
+                    'target' => '_blank'
+                ]
             ])
-
             ->addOrderBy('periodo', DataTable::SORT_DESCENDING)
             ->createAdapter(ORMAdapter::class, [
                 'entity' => AutoliquidacionEmpleado::class,

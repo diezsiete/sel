@@ -37,6 +37,10 @@ class ActionsColumn extends AbstractColumn
     public function initialize(string $name, int $index, array $options = [], DataTable $dataTable)
     {
         parent::initialize($name, $index, $options, $dataTable);
+
+        if(!is_int(array_key_first($options['actions']))) {
+            $options['actions'] = [$options['actions']];
+        }
         foreach($options['actions'] as $action) {
             if(isset($action['route'])) {
                 if ($this->locator->has(ActionRoute::class)) {
@@ -76,7 +80,7 @@ class ActionsColumn extends AbstractColumn
         $html = "";
         foreach($actionsAttributes as $actionAttributes) {
             $tag = "a";
-            $actionAttributes['class'] = "btn btn-outline-primary g-mr-10 g-mb-15";
+            $actionAttributes['class'] = "btn btn-outline-primary g-mr-10";
             if(isset($actionAttributes['disabled'])) {
                 $tag = "span";
                 $actionAttributes['class'] = (isset($actionAttributes['class']) ? $actionAttributes['class'] . ' ' : '') . 'disabled';

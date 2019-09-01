@@ -5,9 +5,7 @@ namespace App\DataTable\Type;
 
 
 use App\DataTable\Adapter\GroupByORMAdapter;
-use App\DataTable\Column\ButtonColumn\ButtonColumn;
-use App\DataTable\Column\ButtonColumn\ButtonTypeRoute;
-use App\DataTable\Column\ButtonColumn\DatatablePropertyAccessor;
+use App\DataTable\Column\ActionsColumn\ActionsColumn;
 use App\Entity\Convenio;
 use App\Entity\Representante;
 use Doctrine\ORM\QueryBuilder;
@@ -61,14 +59,13 @@ class ConvenioDataTableType implements DataTableTypeInterface
                     }
                     return $data;
                 }])
-            ->add('actions', ButtonColumn::class, [
+            ->add('actions', ActionsColumn::class, [
                 'label' => '',
                 'propertyPath' => '[0].codigo',
                 'orderable' => false,
-                'buttons' => [
-                    new ButtonTypeRoute('admin_convenio_representantes', [
-                        'codigo' => new DatatablePropertyAccessor('[0].codigo')
-                    ], 'fas fa-eye'),
+                'actions' => [
+                    'route' => ['admin_convenio_representantes', ['codigo' => '[0].codigo']],
+                    'icon' => 'fas fa-eye'
                 ]
             ])
             ->createAdapter(GroupByORMAdapter::class, [

@@ -4,8 +4,8 @@
 namespace App\DataTable\Type;
 
 
+use App\DataTable\Column\ActionsColumn\ActionsColumn;
 use App\Entity\ReporteNomina;
-use App\Entity\Usuario;
 use Doctrine\ORM\QueryBuilder;
 use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
 use Omines\DataTablesBundle\Column\DateTimeColumn;
@@ -41,13 +41,15 @@ class ReporteNominaDataTableType implements DataTableTypeInterface
                 'field' => 'usuario.identificacion',
                 'orderable' => false
             ])
-            ->add('id', TextColumn::class, [
+            ->add('actions', ActionsColumn::class, [
                 'label' => 'PDF',
                 'orderable' => false,
-                'render' => function ($id) {
-                    $route = $this->router->generate('app_comprobante', ['comprobante' => $id]);
-                    return sprintf('<a href="%s" target="_blank"><i class="fas fa-file-pdf fa-2x"></i></a>', $route);
-                }
+                'field' => 'usuario.identificacion',
+                'actions' => [
+                    'route' => ['app_comprobante', ['comprobante' => 'id']],
+                    'icon' => 'fas fa-file-pdf',
+                    'target' => '_blank'
+                ]
             ])
             ->addOrderBy('fecha', DataTable::SORT_DESCENDING)
             ->createAdapter(ORMAdapter::class, [
