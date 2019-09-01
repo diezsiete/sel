@@ -10,6 +10,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @IsGranted("ASPIRANTES_MODULE", statusCode=404, message="Resource not found")
+ */
 class VacanteAdminController extends BaseController
 {
 

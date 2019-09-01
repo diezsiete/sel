@@ -3,24 +3,23 @@
 namespace App\Controller;
 
 use App\Entity\Vacante;
-use App\Event\HvWizardRoutesEvent;
 use App\Repository\VacanteRepository;
-use App\Service\Configuracion\Configuracion;
-use App\Service\Hv\HvResolver;
-use App\Service\Hv\HvValidator;
 use App\Service\Hv\HvWizard\HvWizard;
 use App\Service\Hv\HvWizard\HvWizardRoutesAplicar;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\TwigBundle\Loader\NativeFilesystemLoader;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
+/**
+ * @IsGranted("ASPIRANTES_MODULE", statusCode=404, message="Resource not found")
+ */
 class VacanteController extends AbstractController
 {
     use TargetPathTrait;

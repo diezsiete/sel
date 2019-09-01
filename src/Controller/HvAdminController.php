@@ -2,15 +2,17 @@
 
 namespace App\Controller;
 
-use App\DataTable\Type\Hv\HvDataTableType;
 use App\Entity\Hv;
 use App\Repository\HvRepository;
 use Knp\Component\Pager\PaginatorInterface;
-use Omines\DataTablesBundle\DataTableFactory;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @IsGranted("ASPIRANTES_MODULE", statusCode=404, message="Resource not found")
+ */
 class HvAdminController extends AbstractController
 {
     /**

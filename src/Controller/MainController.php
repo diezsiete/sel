@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Service\ServicioEmpleados\DataTable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class MainController extends AbstractController
@@ -12,7 +11,7 @@ class MainController extends AbstractController
     /**
      * @Route("/sel", name="app_main")
      */
-    public function index(DataTable $dataTable, Request $request)
+    public function index(DataTable $dataTable)
     {
         $datatables = [];
         if($this->isGranted(['ROLE_EMPLEADO'], $this->getUser())) {

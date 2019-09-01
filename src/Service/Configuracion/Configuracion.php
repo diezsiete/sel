@@ -178,6 +178,9 @@ class Configuracion
         return $this->emails;
     }
 
+    /**
+     * @return HvWizardRoute[]
+     */
     public function getHvWizardRoutes()
     {
         if(!$this->hvWizardRoutes) {

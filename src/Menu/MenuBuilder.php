@@ -38,30 +38,31 @@ class MenuBuilder
     {
         $menu = $this->factory->createItem('main');
 
-        $menu->addChild('Dashboard', ['route' => 'app_main'])
-            ->setExtra('icon', 'fas fa-home');
+        // $menu->addChild('Dashboard', ['route' => 'app_main'])->setExtra('icon', 'fas fa-home');
 
         $user = $this->security->getUser();
-
 
         if ($this->security->isGranted(['ROLE_VER_SE_REPORTES'], $user)) {
             $this->createSelMenu($menu);
         }
 
-        $menu->addChild('Mi hoja de vida', ['route' => 'hv_datos_basicos'])
-            ->setExtra('icon', 'far fa-address-card');
-
-        if($this->security->isGranted(['ROLE_CREAR_VACANTE'], $user)) {
-            $menu->addChild('Vacantes')
-                ->setUri('#')
-                ->setExtra('icon', 'fas fa-business-time');
-            $menu['Vacantes']
-                ->addChild('Vacantes', ['route' => 'admin_vacante_listado'])
-                ->setExtra('icon', 'fas fa-clipboard-list');
-            $menu['Vacantes']
-                ->addChild('Hojas de vida', ['route' => 'admin_hv_listado'])
+        if($this->security->isGranted(['ASPIRANTES_MODULE'])) {
+            $menu->addChild('Mi hoja de vida', ['route' => 'hv_datos_basicos'])
                 ->setExtra('icon', 'far fa-address-card');
+
+            if ($this->security->isGranted(['ROLE_CREAR_VACANTE'], $user)) {
+                $menu->addChild('Vacantes')
+                    ->setUri('#')
+                    ->setExtra('icon', 'fas fa-business-time');
+                $menu['Vacantes']
+                    ->addChild('Vacantes', ['route' => 'admin_vacante_listado'])
+                    ->setExtra('icon', 'fas fa-clipboard-list');
+                $menu['Vacantes']
+                    ->addChild('Hojas de vida', ['route' => 'admin_hv_listado'])
+                    ->setExtra('icon', 'far fa-address-card');
+            }
         }
+
         $this->createEvaluacionMenu($menu, $user);
         $this->createAdminMenu($menu, $user);
 

@@ -30,9 +30,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
+
+/**
+ * @IsGranted("ASPIRANTES_MODULE", statusCode=404, message="Resource not found")
+ */
 class HvController extends BaseController
 {
-
     /**
      * @var HvResolver
      */
