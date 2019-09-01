@@ -157,30 +157,32 @@ class MenuBuilder
         $roles = ['ROLE_ADMIN_USUARIOS', 'ROLE_ADMIN_AUTOLIQUIDACIONES', 'ROLE_ADMIN_EVALUACIONES', 'ROLE_VER_AUTOLIQUIDACIONES'];
         $roles = array_combine($roles, $roles);
         if($this->security->isGranted($roles, $user)) {
-            $menu->addChild('Administración')
-                ->setUri('#')
-                ->setExtra('icon', 'fas fa-cog');
+            if($this->security->isGranted(['ROLE_EMPLEADO'], $user)) {
+                $menu->addChild('Administración')
+                    ->setUri('#')
+                    ->setExtra('icon', 'fas fa-cog');
+                $menu = $menu['Administración'];
+            }
 
             if($this->security->isGranted([$roles['ROLE_ADMIN_USUARIOS']], $user)) {
-                $menu['Administración']
+                $menu
                     ->addChild('Usuarios', ['route' => 'admin_usuarios'])
                     ->setExtra('icon', 'fas fa-users');
             }
 
             if($this->security->isGranted([$roles['ROLE_ADMIN_AUTOLIQUIDACIONES']], $user)) {
-                $menu['Administración']
+                $menu
                     ->addChild('Convenios', ['route' => 'admin_convenio_list'])
                     ->setExtra('icon', 'fas fa-building');
             }
             if($this->security->isGranted([$roles['ROLE_VER_AUTOLIQUIDACIONES']], $user)) {
-                $menu['Administración']
+                $menu
                     ->addChild('Autoliquidaciones', ['route' => 'admin_autoliquidaciones'])
                     ->setExtra('icon', 'fas fa-clock');
             }
 
-
             if($this->security->isGranted([$roles['ROLE_ADMIN_EVALUACIONES']], $user)) {
-                $menu['Administración']
+                $menu
                     ->addChild('Evaluaciones', ['route' => 'admin_evaluacion_resultados'])
                     ->setExtra('icon', 'fas fa-clipboard-list');
             }
