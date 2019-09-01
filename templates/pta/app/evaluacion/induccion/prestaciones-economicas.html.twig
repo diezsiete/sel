@@ -1,0 +1,46 @@
+{% extends 'evaluacion/base.html.twig' %}
+
+{% block body %}
+
+
+
+<div class="content-diapositiva">
+    <h1>
+        Prestaciones económicas.
+    </h1>
+    <div class="row">
+        <div class="col-md-12">
+            <p>
+                Todo trabajador que sufra un accidente de trabajo o una enfermedad profesional tendrá derecho al
+                reconocimiento y pago de las siguientes prestaciones económicas:
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-8">
+            <ol type="a">
+                <li>
+                    Subsidio por incapacidad temporal;
+                </li>
+                <li>
+                    Indemnización por incapacidad permanente parcial;
+                </li>
+                <li>
+                    Pensión de Invalidez;
+                </li>
+                <li>
+                    Pensión de sobrevivientes; y,
+                </li>
+                <li>
+                    Auxilio funerario.
+                </li>
+            </ol>
+        </div>
+        <div class="col-sm-4">
+            <img src="{{ asset('img/sel/evaluacion/induccion/prestaciones-economicas.png') }}"
+                 alt="prestaciones-economicas"
+                 class="prestaciones-economicas">
+        </div>
+    </div>
+</div>
+{% endblock %}

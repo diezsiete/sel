@@ -2,6 +2,7 @@
 
 namespace App\Twig;
 
+use App\Service\Utils;
 use Knp\Menu\Twig\MenuExtension;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -36,6 +37,7 @@ class SelExtension extends AbstractExtension implements ServiceSubscriberInterfa
     public function getFilters(): array
     {
         return [
+            new TwigFilter('mes', [$this, 'mesFilter'])
             // If your filter generates SAFE HTML, you should add a third
             // parameter: ['is_safe' => ['html']]
             // Reference: https://twig.symfony.com/doc/2.x/advanced.html#automatic-escaping
@@ -55,11 +57,18 @@ class SelExtension extends AbstractExtension implements ServiceSubscriberInterfa
         return $this->container->get(RequestStack::class)->getMasterRequest();
     }
 
+    public function mesFilter($n)
+    {
+        dump($n);
+        return $this->container->get(Utils::class)->meses($n - 1);
+    }
+
 
     public static function getSubscribedServices()
     {
         return [
             RequestStack::class,
+            Utils::class
         ];
     }
 }

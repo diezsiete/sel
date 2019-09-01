@@ -1,0 +1,36 @@
+{% extends 'evaluacion/base.html.twig' %}
+
+{% block body %}
+
+<div class="content-diapositiva-mt15">
+    <p>
+        <strong class="underline">BIOLÓGICOS:</strong> Microorganismos de origen vegetal, animal o humano y sustancias
+        derivadas de éstos, que en contacto con el hombre pueden generar enfermedades, procesos infecciosos, tóxicos o
+        alérgicos.
+    </p>
+    <ul>
+        <li>
+            Animales domésticos en vías públicas o instalaciones de clientes (mordeduras de perro, gato, picaduras de
+            parásitos en ellos).
+        </li>
+        <li>
+            Exposición a residuos que contienen fluidos corporales (papel higiénico, toallas sanitarias) e inadecuada
+            disposición de materiales contaminados (guantes, gasas, agujas, etc)
+        </li>
+        <li>
+            Picaduras de insectos o animales (zancudos, garrapatas, serpientes, arañas, alacranes, etc).
+        </li>
+        <li>
+            Consumo de agua no potable o contaminada.
+        </li>
+        <li>
+            Practicas higiénicas inadecuadas (en lavado de manos, higiene y preparación de alimentos, etc).
+        </li>
+    </ul>
+    <div class="mt40 text-center">
+        <img src="{{ asset('img/sel/evaluacion/induccion/peligros-biologicos.png') }}"
+             alt="peligros-biologicos"
+             class="peligros-biologicos">
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,43 @@
+<div class="header-container container">
+    <div class="header-row">
+        <div class="header-column">
+            <div class="header-row">
+                <div class="header-logo">
+                    <a href="{{ path('pta_index') }}">
+                        <img alt="Porto" width="125" height="48" data-sticky-width="107" data-sticky-height="40" src="{{ asset('/img/pta/logo-PTA3.png') }}">
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="header-column justify-content-end">
+            <div class="header-row">
+                <div class="header-nav header-nav-stripe order-2 order-lg-1">
+                    <div class="header-nav-main header-nav-main-square header-nav-main-effect-1 header-nav-main-sub-effect-1">
+                        <nav class="collapse">
+                            <ul class="nav nav-pills" id="mainNav">
+                                <li class="dropdown">
+                                    <a class="dropdown-item dropdown-toggle" >
+                                        {{ evaluacion.nombre }}
+                                    </a>
+                                </li>
+                                <li class="dropdown">
+                                    <a class="dropdown-item dropdown-toggle" >|</a>
+                                </li>
+                                <li class="dropdown">
+                                    <a class="dropdown-item dropdown-toggle"
+                                       href="{{ path('evaluacion_resultados') }}">
+                                        Salir
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <button class="btn header-btn-collapse-nav" data-toggle="collapse" data-target=".header-nav-main nav">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

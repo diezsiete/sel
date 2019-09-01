@@ -4,11 +4,6 @@
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/sel/evaluacion/evaluacion.css') }}">
     <link rel="stylesheet" href="{{ asset('css/sel/evaluacion/' ~ evaluacion.slug ~ '.css') }}">
-    <style>
-        .g-py-10 {
-            padding-bottom: 0.71429rem !important;
-        }
-    </style>
 {% endblock %}
 
 {% block title %}
@@ -16,7 +11,7 @@
 {% endblock %}
 
 {% block nav %}
-    {{ include('servilabor/app/evaluacion/_nav.html.twig') }}
+    {{ include('pta/app/evaluacion/_nav.html.twig') }}
 {% endblock %}
 
 {% block nav_admin %}
@@ -30,7 +25,7 @@
     {% endblock %}
 
     {% block evaluacion_content %}
-        <section class="g-py-20 g-pt-60">
+        <section class="e-py-20 e-pt-60">
             <div id="evaluacion" class="container">
                 <div id="wrapper">
                     {% if form is defined %}

@@ -1,0 +1,57 @@
+{% extends 'evaluacion/base.html.twig' %}
+
+{% block body %}
+
+<div class="content-diapositiva">
+    <div class="row">
+        <div class="col-md-12">
+            <p>
+                <strong class="underline">ELÉCTRICOS: </strong> Trabajo en o con sistemas, elementos, máquinas y
+                herramientas energizadas que al entrar en contacto con las personas o instalaciones pueden causar
+                lesiones o daños en la propiedad.
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-8">
+            <ol type="a">
+                <li>
+                    Instalaciones eléctricas sin polo a tierra.
+                </li>
+                <li>
+                    Instalaciones sin para rayos.
+                </li>
+                <li>
+                    Sobre carga de tomas.
+                </li>
+                <li>
+                    Conexiones eléctricas inadecuadas o sin aislar.
+                </li>
+                <li>
+                    Trabajos con elementos energizados (baja, media o alta tensión).
+                </li>
+                <li>
+                    No mantener distancias de seguridad.
+                </li>
+                <li>
+                    Ausencia de bloqueo y etiquetado.
+                </li>
+                <li>
+                    Ausencia de normas y protocolos de seguridad u omisión de estos.
+                </li>
+                <li>
+                    Trabajos realizados por personal no idóneo o competente.
+                </li>
+                <li>
+                    Falta de advertencia y señalización de peligro en tableros de energía y circuitos (tacos o breakers)
+                </li>
+            </ol>
+        </div>
+        <div class="col-sm-4">
+            <img src="{{ asset('img/sel/evaluacion/induccion/peligros-electricos.png') }}"
+                 alt="peligros-electricos"
+                 class="peligros-electricos">
+        </div>
+    </div>
+</div>
+{% endblock %}

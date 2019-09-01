@@ -1,0 +1,38 @@
+{% extends 'evaluacion/base.html.twig' %}
+
+{% block body %}
+
+<div class="diapositiva-30 content-diapositiva pt60">
+    <p>
+        En concordancia con lo anterior, PTA S.A.S, se compromete con los siguientes objetivos:
+    </p>
+    <ul>
+        <li>
+            Identificar los peligros, evaluar y valorar los riesgos presentes en sus actividades, así como a establecer
+            e implementar las acciones necesarias para su control.
+        </li>
+        <li>
+            Proteger la seguridad y salud de todos sus trabajadores y colaboradores independiente de su forma de
+            vinculación a nivel nacional, mediante la mejora continua del Sistema de Gestión de la Seguridad y
+            Salud en el Trabajo, con el fin de prevenir los accidentes de trabajo y las enfermedades laborales.
+        </li>
+        <li>
+            Dar cumplimiento a la normatividad legal vigente aplicable en materia de riesgos laborales.
+        </li>
+    </ul>
+    <p>
+        Esta política se dará a conocer a todos los trabajadores de PTA S.A.S., en la inducción y reinducción,
+        así mismo, se mantendrá publicada en sus instalaciones, sedes y página web
+        <a href="https://www.pta.com.co" target="_blank">www.pta.com.co</a> ,
+        para conocimiento de todos sus proveedores, contratistas, subcontratistas, estudiantes en práctica y
+        visitantes, entre otros.
+    </p>
+    <div class="col-md-12 mt40 mb60">
+        <p class="text-center firma">
+            JAIME GUERRERO GARCÍA<br>
+            REPRESENTANTE LEGAL PTA S.A.S<br>
+            {{ 'now'|date('n')|mes }} de {{ 'now'|date('Y') }}
+        </p>
+    </div>
+</div>
+{% endblock %}

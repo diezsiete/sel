@@ -1,0 +1,38 @@
+{% extends 'evaluacion/base.html.twig' %}
+
+{% block body %}
+
+
+<div class="diapositiva-6 content-diapositiva">
+    <div class="row">
+        <div class="col-sm-4">
+            <table clas="table table-bordered">
+                <tr><th>Agencias</th></tr>
+                <tr><td>Baranquilla</td></tr>
+                <tr><td>Medellín</td></tr>
+                <tr><td>Cali</td></tr>
+                <tr><td>Bucaramanga</td></tr>
+                <tr><td>Duitama</td></tr>
+                <tr><td>Ibagué</td></tr>
+                <tr><td>Pereira</td></tr>
+            </table>
+        </div>
+        <div class="col-sm-4 text-center">
+            <img src="{{ asset('img/sel/evaluacion/induccion/colombia-agencias.png') }}" alt="colombia-agencias" class="colombia-agencias">
+        </div>
+        <div class="col-sm-4 text-center">
+            <h3>
+                <strong>SEDE PRINCIPAL<br><br>Bogotá D.C.</strong>
+                <br><br>
+                Calle 72 A # 20 A-57
+            </h3>
+        </div>
+        <div class="col-sm-12">
+            <p>
+                Para mayor información de nuestras agencias, consulte
+                <a href="{{ path('pta_contacto') }}" target="_blank">Aquí</a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

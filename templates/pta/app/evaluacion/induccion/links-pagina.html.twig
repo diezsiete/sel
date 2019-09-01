@@ -1,0 +1,26 @@
+{% extends 'evaluacion/base.html.twig' %}
+
+{% block body %}
+
+<div class="diapositiva-35 content-diapositiva">
+    <p class="mb40">
+        Los trabajadores de PTA SAS, pueden tener acceso a los reglamentos en la Página de web de PTA, así:
+    </p>
+
+    <p class="mb40">
+        Reglamento Interno de Trabajo<br>
+        <a href="{{path('documento_laboral', {key :'reglamento-interno' }) }}" target="_blank">
+            {{ path('documento_laboral', {key :'reglamento-interno' }) }}
+        </a>
+    </p>
+    <p class="mb40">
+        Reglamento de Higiene y Seguridad Industrial<br>
+        <a href="{{ path('documento_laboral', {key :'reglamento-de-higiene-y-seguridad-industrial'}) }}" target="_blank">
+            {{ path('documento_laboral', {key :'reglamento-de-higiene-y-seguridad-industrial'}) }}
+        </a>
+    </p>
+    <p class="mb30">
+        A continuación se extraen algunos apartes del Reglamento Interno de Trabajo, que son muy importantes.
+    </p>
+</div>
+{% endblock %}

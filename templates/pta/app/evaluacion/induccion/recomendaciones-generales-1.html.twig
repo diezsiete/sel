@@ -1,0 +1,33 @@
+{% extends 'evaluacion/base.html.twig' %}
+
+{% block body %}
+<div class="diapositiva-9 content-diapositiva">
+    <ul>
+        <li>
+            Reporte inmediatamente  a PTA cualquier novedad que se presente (incapacidades, vacaciones,
+            cambios de EPS, AFP, cambios de dirección y teléfonos, restricciones o recomendaciones médicas laborales, etc).
+        </li>
+        <li>
+            ¿Cómo deben presentar las incapacidades? En el siguiente link encuentra toda la información para la presentación
+            y entrega de las incapacidades en PTA SAS, y evitar inconvenientes como devoluciones, rechazo o no pago de las mismas.<br>
+            <a href="{{ path('documento_laboral', { key: 'requisitos-incapacidades' }) }}" target="_blank">
+                Requisitos incapacidades
+            </a>
+        </li>
+        <li>
+            Al terminar su contrato solicite el paz y salvo en la empresa usuaria, con el fin de agilizar el pago de su
+            liquidación.
+        </li>
+        <li>
+            Entregue en contratación oportunamente los documentos de sus beneficiarios al sistema de seguridad social y
+            caja de compensación familiar, par garantizar el pago de subsidio familiar y cobertura en los servicios.
+        </li>
+        <li>
+            Porte siempre el carnet de la EPS, ARL y la cédula de ciudadanía.
+        </li>
+        <li>
+            Las citas médicas deben ser notificadas a su jefe inmediato con 12 horas de anticipación.
+        </li>
+    </ul>
+</div>
+{% endblock %}

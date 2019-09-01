@@ -73,10 +73,49 @@
 
 <div class="body">
 
-    {{ include('pta/blocks/header/_base-header.html.twig') }}
+    {% block header %}
+        {% set header_class = app.user ? '' : 'header-effect-shrink' %}
+        {% set header_data_plugin_options = app.user ? {} : {
+            'stickyEnabled': true,
+            'stickyEffect': 'shrink',
+            'stickyEnableOnBoxed': true,
+            'stickyEnableOnMobile': true,
+            'stickyChangeLogo': true,
+            'stickyStartAt': 10,
+            'stickyHeaderContainerHeight': 70
+        } %}
 
-    <div role="main" class="main">
-        {% block main %}
+        <header id="header" class="{{ header_class }}"
+                data-plugin-options="{{ header_data_plugin_options | json_encode() }}">
+
+            {% set header_body_class = app.user ? 'border-top-0' : 'header-body border-top-0' %}
+            <div class="{{ header_body_class }}">
+
+                {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
+                    {{ include('pta/blocks/header/_switch-user.html.twig') }}
+                {% endif %}
+
+                {% if not app.user %}
+                    {{ include('pta/blocks/header/_header-topv2.html.twig') }}
+                {% endif %}
+
+                {% block nav %}
+                    {{ include('pta/blocks/header/_nav.html.twig') }}
+                {% endblock %}
+
+                {% block nav_admin %}
+                    {% if app.user %}
+                        {{ include('pta/blocks/header/_nav-admin.html.twig') }}
+                    {% endif %}
+                {% endblock %}
+            </div>
+
+        </header>
+
+    {% endblock %}
+
+    {% block main %}
+        <div role="main" class="main">
             {% block body_header %}
                 <section
                         class="{% block body_header_class %}page-header page-header-classic page-header-md no-header{% endblock %}">
@@ -104,63 +143,63 @@
 
             {% block body %}
             {% endblock %}
-        {% endblock %}
-    </div>
+        </div>
 
-    {% block footer %}
-        <footer id="footer" class="{% block footer_class %}{% endblock %}">
-            <div class="container">
-                <div class="row pt-5">
-                    <div class="col-md-12 justify-content-center justify-content-md-start mb-4 mb-lg-0">
-                        <div class="row">
-                            {% for oficina in configuracion.oficinas %}
-                                <div class="col-md-3 mb-5">
-                                    <div class="ml-3 text-center text-md-left">
-                                        <h5 class="text-3 mb-0 text-color-light">{{ oficina.ciudad }}</h5>
-                                        <p class="text-4 mb-0">
-                                            <i class="fas fa-map-marker-alt text-color-primary top-1 p-relative"></i>
-                                            <span class="pl-1">{{ oficina.direccion }}</span><br>
-                                            <i class="fas fa-phone text-color-secondary top-1 p-relative"></i>
-                                            <span class="pl-1">{{ oficina.telefono }}</span><br>
-                                            <i class="fas fa-envelope text-color-tertiary top-1 p-relative"></i>
-                                            <span class="pl-1">{{ oficina.email }}</span>
-                                        </p>
+        {% block footer %}
+            <footer id="footer" class="{% block footer_class %}{% endblock %}">
+                <div class="container">
+                    <div class="row pt-5">
+                        <div class="col-md-12 justify-content-center justify-content-md-start mb-4 mb-lg-0">
+                            <div class="row">
+                                {% for oficina in configuracion.oficinas %}
+                                    <div class="col-md-3 mb-5">
+                                        <div class="ml-3 text-center text-md-left">
+                                            <h5 class="text-3 mb-0 text-color-light">{{ oficina.ciudad }}</h5>
+                                            <p class="text-4 mb-0">
+                                                <i class="fas fa-map-marker-alt text-color-primary top-1 p-relative"></i>
+                                                <span class="pl-1">{{ oficina.direccion }}</span><br>
+                                                <i class="fas fa-phone text-color-secondary top-1 p-relative"></i>
+                                                <span class="pl-1">{{ oficina.telefono }}</span><br>
+                                                <i class="fas fa-envelope text-color-tertiary top-1 p-relative"></i>
+                                                <span class="pl-1">{{ oficina.email }}</span>
+                                            </p>
+                                        </div>
                                     </div>
-                                </div>
-                            {% endfor %}
+                                {% endfor %}
 
 
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="footer-copyright">
-                <div class="container py-2">
-                    <div class="row py-4">
-                        <div class="col-lg-1 d-flex align-items-center justify-content-center justify-content-lg-start mb-2 mb-lg-0">
-                            <a href="{{ path('pta_index') }}" class="logo pr-0 pr-lg-3">
-                                <img alt="Porto Website Template" src="{{asset('img/pta/logo-PTA-footer.png')}}" class="opacity-5" height="16">
-                            </a>
-                        </div>
-                        <div class="col-lg-5 d-flex align-items-center justify-content-center justify-content-lg-start mb-4 mb-lg-0">
-                            <p>© {{ 'now'|date('Y') }}. Todos los derechos reservados.</p>
-                        </div>
-                        <div class="col-lg-6 d-flex align-items-center justify-content-center justify-content-lg-end">
-                            <nav id="sub-menu">
-                                <ul>
-                                    <li><i class="fas fa-angle-right"></i><a href="{{ path('pta_aviso_privacidad') }}" class="ml-1 text-decoration-none">
-                                            Aviso de privacidad
-                                    </a></li>
-                                    <li><i class="fas fa-angle-right"></i><a href="{{ path('pta_politica') }}" class="ml-1 text-decoration-none">
-                                            Política de tratamiento de datos personales
-                                    </a></li>
-                                </ul>
-                            </nav>
+                <div class="footer-copyright">
+                    <div class="container py-2">
+                        <div class="row py-4">
+                            <div class="col-lg-1 d-flex align-items-center justify-content-center justify-content-lg-start mb-2 mb-lg-0">
+                                <a href="{{ path('pta_index') }}" class="logo pr-0 pr-lg-3">
+                                    <img alt="Porto Website Template" src="{{asset('img/pta/logo-PTA-footer.png')}}" class="opacity-5" height="16">
+                                </a>
+                            </div>
+                            <div class="col-lg-5 d-flex align-items-center justify-content-center justify-content-lg-start mb-4 mb-lg-0">
+                                <p>© {{ 'now'|date('Y') }}. Todos los derechos reservados.</p>
+                            </div>
+                            <div class="col-lg-6 d-flex align-items-center justify-content-center justify-content-lg-end">
+                                <nav id="sub-menu">
+                                    <ul>
+                                        <li><i class="fas fa-angle-right"></i><a href="{{ path('pta_aviso_privacidad') }}" class="ml-1 text-decoration-none">
+                                                Aviso de privacidad
+                                        </a></li>
+                                        <li><i class="fas fa-angle-right"></i><a href="{{ path('pta_politica') }}" class="ml-1 text-decoration-none">
+                                                Política de tratamiento de datos personales
+                                        </a></li>
+                                    </ul>
+                                </nav>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </footer>
+            </footer>
+        {% endblock %}
     {% endblock %}
 </div>
 

@@ -1,4 +1,4 @@
-main {
+main, div.body {
     background-image: url("../../../img/sel/evaluacion/startup-reunion-main.jpg");
     /* Full height */
     height: 100%;

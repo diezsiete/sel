@@ -1,0 +1,17 @@
+<div class="header-top header-top-no-min-height" style="background: #fafafa;">
+    <div class="container-fluid px-0">
+        <div class="header-row py-0">
+            <div class="header-column justify-content-end">
+                <div class="header-row">
+                    <span class="btn btn-secondary rounded-0 font-weight-bold d-none d-sm-inline-flex align-items-center align-self-stretch px-4">
+                        VIENDO A <span class="font-weight-light mx-1">{{ app.token.user.nombreCompleto(true) }}</span>
+                    </span>
+                    <a href="{{ path('admin_usuarios', {'_switch_user': '_exit'}) }}"
+                       class="close-theme-switcher-bar btn btn-quaternary rounded-0 d-flex align-items-center align-self-stretch">
+                        <i class="fa fa-times text-4 px-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
