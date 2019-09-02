@@ -10,4 +10,4 @@ twig:
         configuracion: '@App\Service\Configuracion\Configuracion'
 
     paths:
-        - '%kernel.project_dir%/templates/%env(EMPRESA)%/app'
+        - '%kernel.project_dir%/templates/%env(lowercase:EMPRESA)%/app'
