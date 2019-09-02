@@ -25,6 +25,7 @@
         "symfony/form": "^4.0",
         "symfony/framework-bundle": "^4.0",
         "symfony/http-client": "^4.0",
+        "symfony/monolog-bundle": "^3.0",
         "symfony/orm-pack": "^1.0",
         "symfony/security-bundle": "^4.0",
         "symfony/serializer-pack": "^1.0",
@@ -80,10 +81,12 @@
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.1",
+        "easycorp/easy-log-handler": "^1.0.7",
         "fzaninotto/faker": "^1.8",
-        "symfony/debug-pack": "^1.0",
+        "symfony/debug-bundle": "*",
         "symfony/maker-bundle": "^1.11",
-        "symfony/profiler-pack": "^1.0",
+        "symfony/profiler-pack": "*",
+        "symfony/var-dumper": "*",
         "symfony/web-server-bundle": "^4.0"
     }
 }
