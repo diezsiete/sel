@@ -130,7 +130,9 @@ class MigrationAutoliquidacionCommand extends MigrationCommand
                 ->setConvenio($convenio)
                 ->setUsuario($this->getSuperAdmin())
                 ->setPeriodo(\DateTime::createFromFormat('Y-m-d', $row['periodo']))
-                ->setFechaEjecucion(\DateTime::createFromFormat('Y-m-d H:i:s', $row['fecha_ejecucion']));
+                ->setFechaEjecucion(\DateTime::createFromFormat('Y-m-d H:i:s', $row['fecha_ejecucion']))
+                ->setPorcentajeEjecucion($row['porcentaje_ejecucion'])
+                ->setEmailSended($row['email_sended']);
 
         } else {
             $this->io->error("convenio codigo '".$row['novasoft_convenio_codigo']."' no existe");
