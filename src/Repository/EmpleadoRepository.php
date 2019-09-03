@@ -91,10 +91,9 @@ class EmpleadoRepository extends ServiceEntityRepository
             } else {
                 $qb->andWhere('c.codigo = :codigoConvenio');
             }
+            $qb->setParameter('codigoConvenio', $codigoConvenio);
         }
-        return $qb->setParameter('codigoConvenio', $codigoConvenio)
-            ->getQuery()
-            ->getResult();
+        return $qb->getQuery()->getResult();
     }
 
     public function findBySsrsDb($ssrsDb)
