@@ -13,6 +13,7 @@ class PdfCartaLaboral extends PdfBase
     {
 
     }
+
     public function render(ReporteCertificadoLaboral $certificado)
     {
         $compania = $this->configuracion->getRazon();
@@ -54,7 +55,8 @@ class PdfCartaLaboral extends PdfBase
         $line_height = 8;
         $font_size = 12;
         $image_width = 38;
-        $firma_img_width = 58;
+        // $firma_img_width = 58;
+        $firma_img_width = 28;
 
         $this->AddPage();
         $this->SetFont('Arial', '', $font_size);
@@ -97,7 +99,8 @@ class PdfCartaLaboral extends PdfBase
         $this->Image($firmaImg , $this->getLMargin() + 3, $this->getY(), $firma_img_width + 15);
         $this->Ln();
         $this->Ln();
-
+        $this->Ln();
+        $this->Ln();
         $this->Cell(0, $line_height - 2, $firmante, 0, 1);
         $this->Cell(0, $line_height - 2, $firmanteCargo, 0, 1);
         $this->Cell(0, $line_height - 2, $firmanteContacto, 0, 1);
