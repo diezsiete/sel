@@ -29,6 +29,7 @@ class ReportesServicioEmpleados
     /**
      * @param $empleadoIdent
      * @return ReporteNomina[]|null
+     * @deprecated
      */
     public function getComprobantesDePago($empleadoIdent)
     {
@@ -46,6 +47,7 @@ class ReportesServicioEmpleados
      * @param string|\DateTimeInterface $fecha
      * @param $empleadoIdent
      * @return mixed
+     * @deprecated
      */
     public function getComprobanteDePagoPdf($fecha, $empleadoIdent)
     {
@@ -86,6 +88,7 @@ class ReportesServicioEmpleados
     /**
      * @param $empleadoIdent
      * @return ReporteCertificadoIngresos[]
+     * @deprecated
      */
     public function getCertificadosIngresos($empleadoIdent)
     {
@@ -106,6 +109,7 @@ class ReportesServicioEmpleados
      * @param $periodo
      * @param $empleadoIdent
      * @return mixed
+     * @deprecated
      */
     public function getCertificadoIngresosPdf($periodo, $empleadoIdent)
     {

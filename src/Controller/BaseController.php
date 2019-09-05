@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
  * Class BaseController
@@ -63,5 +64,18 @@ class BaseController extends AbstractController
     protected function em()
     {
         return $this->getDoctrine()->getManager();
+    }
+
+
+    protected function renderStream($callbackStream, $contentType = 'application/pdf')
+    {
+        $response = new StreamedResponse(function() use ($callbackStream){
+            $outputStream = fopen('php://output', 'wb');
+            $fileStream = $callbackStream();
+            stream_copy_to_stream($fileStream, $outputStream);
+        });
+        $response->headers->set('Content-Type', $contentType);
+
+        return $response;
     }
 }

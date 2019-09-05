@@ -80,12 +80,13 @@ class ReportNom92117 extends Report
 
     /**
      * @param string $ano
-     * return $this
+     * @return ReportNom92117
      */
     public function setParameterAno(string $ano)
     {
         $this->parameter_Fec_ini = str_replace("2017", $ano, $this->parameter_Fec_ini);
         $this->parameter_Fec_fin = str_replace("2017", $ano, $this->parameter_Fec_fin);
+        return $this;
     }
 
     /**

@@ -10,6 +10,7 @@ use App\Entity\ReporteNomina;
 use App\Service\AutoliquidacionService;
 use App\Service\Pdf\PdfCartaLaboral;
 use App\Service\ReportesServicioEmpleados;
+use App\Service\ServicioEmpleados\Reportes;
 use Omines\DataTablesBundle\DataTableFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,12 +40,11 @@ class ServicioEmpleadosController extends BaseController
      * @Route("/sel/se/comprobante/{comprobante}", name="app_comprobante")
      * @IsGranted("REPORTE_MANAGE", subject="comprobante")
      */
-    public function comprobante(ReportesServicioEmpleados $reportes, ReporteNomina $comprobante)
+    public function comprobante(Reportes $reportes, ReporteNomina $comprobante)
     {
-        $comprobantePdf = $reportes
-            ->getComprobanteDePagoPdf($comprobante->getFecha(), $comprobante->getUsuario()->getIdentificacion());
-
-        return $this->renderPdf($comprobantePdf);
+        return $this->renderStream(function () use ($reportes, $comprobante) {
+            return $reportes->comprobanteStream($comprobante->getFecha(), $comprobante->getUsuario()->getIdentificacion());
+        });
     }
 
     /**
@@ -85,11 +85,13 @@ class ServicioEmpleadosController extends BaseController
     /**
      * @Route("/sel/se/certificado-ingresos/{periodo}", name="app_certificado_ingresos")
      */
-    public function certificadoIngreso(ReportesServicioEmpleados $reportes, $periodo)
+    public function certificadoIngreso(Reportes $reportes, $periodo)
     {
-        $identificacion = $this->getUser()->getIdentificacion();
-        $reportePdf = $reportes->getCertificadoIngresosPdf($periodo, $identificacion);
-        return $this->renderPdf($reportePdf);
+        return $this->renderStream(function () use ($reportes, $periodo) {
+            $identificacion = $this->getUser()->getIdentificacion();
+            $periodo = \DateTime::createFromFormat('Y-m-d', $periodo . "-01-01");
+            return $reportes->certificadoIngresosStream($periodo, $identificacion);
+        });
     }
 
     /**
@@ -115,15 +117,9 @@ class ServicioEmpleadosController extends BaseController
      */
     public function certificadoAporte(AutoliquidacionEmpleado $autoliquidacionEmpleado, AutoliquidacionService $autoliquidacionService)
     {
-        $response = new StreamedResponse(function() use ($autoliquidacionEmpleado, $autoliquidacionService){
-            $outputStream = fopen('php://output', 'wb');
-            $fileStream = $autoliquidacionService->readStream($autoliquidacionEmpleado);
-
-            stream_copy_to_stream($fileStream, $outputStream);
+        return $this->renderStream(function () use ($autoliquidacionEmpleado, $autoliquidacionService) {
+            return $autoliquidacionService->readStream($autoliquidacionEmpleado);
         });
-        $response->headers->set('Content-Type', 'application/pdf');
-
-        return $response;
     }
 
     /**
