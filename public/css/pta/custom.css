@@ -198,17 +198,11 @@ section.ciudades-nav {
 .table .actions-hover a {
     display: inline-block;
     margin-right: 5px;
-    color: #666;
 }
 
 .table .actions a:last-child,
 .table .actions-hover a:last-child {
     margin-right: 0;
-}
-
-.table .actions a:hover,
-.table .actions-hover a:hover {
-    color: #333;
 }
 
 .table .actions-hover a {

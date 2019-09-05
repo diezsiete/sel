@@ -643,7 +643,8 @@ html .btn-primary-scale-2 {
 }
 
 html .btn-primary-scale-2:hover,
-html .btn-primary-scale-2.hover {
+html .btn-primary-scale-2.hover,
+html .btn-outline-primary:hover{
 	background-color: #3a2d74;
 	border-color: #3f317d #3f317d #2d2358;
 	color: #FFF;
@@ -673,6 +674,12 @@ html .show > .btn-primary-scale-2.dropdown-toggle {
 	background-image: none !important;
 	border-color: #2d2358 #2d2358 #1a1434 !important;
 }
+
+.btn-outline-primary {
+	color: #312662;
+	border-color: #2d2358 #2d2358 #1a1434;
+}
+
 
 html .btn-secondary {
 	background-color: #e36159;

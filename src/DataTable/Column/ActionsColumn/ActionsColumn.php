@@ -80,7 +80,7 @@ class ActionsColumn extends AbstractColumn
         $html = "";
         foreach($actionsAttributes as $actionAttributes) {
             $tag = "a";
-            $actionAttributes['class'] = "btn btn-outline-primary g-mr-10";
+            $actionAttributes['class'] = "btn btn-outline-primary mr-3";
             if(isset($actionAttributes['disabled'])) {
                 $tag = "span";
                 $actionAttributes['class'] = (isset($actionAttributes['class']) ? $actionAttributes['class'] . ' ' : '') . 'disabled';
