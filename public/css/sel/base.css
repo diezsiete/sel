@@ -36,3 +36,83 @@ table {
     position: absolute;
     bottom: 0;
 }
+
+
+/* PANEL PRINCIPAL */
+.card {
+    background: transparent;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border: none;
+}
+
+.card-featured-left {
+    border-left: 3px solid #CCC;
+}
+
+.card-featured-primary {
+    border-color: #CCC;
+}
+
+.card-featured-primary .card-title {
+    color: #CCC;
+}
+
+
+.card-body {
+    background: #fdfdfd;
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+    border-radius: 5px;
+}
+.widget-summary {
+    display: table;
+    width: 100%;
+}
+.widget-summary .widget-summary-col {
+    display: table-cell;
+    vertical-align: top;
+    width: 100%;
+}
+.widget-summary .widget-summary-col.widget-summary-col-icon {
+    width: 1%;
+}
+.widget-summary .summary-icon {
+    margin-right: 15px;
+    width: 90px;
+    height: 90px;
+    line-height: 90px;
+    font-size: 3.2rem;
+    text-align: center;
+    color: #fff;
+    border-radius: 55px;
+}
+.widget-summary .summary {
+    min-height: 65px;
+    word-break: break-all;
+}
+.widget-summary .summary .title {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #333;
+    font-weight: 500;
+    line-height: 1.5;
+}
+.widget-summary .summary .info {
+    font-size: 0.85rem;
+}
+.widget-summary .summary .amount {
+    margin-right: .2em;
+    font-weight: 600;
+    color: #333;
+    vertical-align: middle;
+    font-size: 1.4rem;
+}
+.widget-summary .summary .info span {
+    vertical-align: middle;
+}
+.widget-summary .summary-footer {
+    padding: 5px 0 0;
+    border-top: 1px dotted #ddd;
+    text-align: right;
+}

@@ -679,7 +679,9 @@ html .show > .btn-primary-scale-2.dropdown-toggle {
 	color: #312662;
 	border-color: #2d2358 #2d2358 #1a1434;
 }
-
+.btn-outline-primary.disabled{
+	color: #312662;
+}
 
 html .btn-secondary {
 	background-color: #e36159;

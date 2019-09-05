@@ -15,7 +15,7 @@ class MainController extends AbstractController
     {
         $datatables = [];
         if($this->isGranted(['ROLE_EMPLEADO'], $this->getUser())) {
-            $tableComprobantes = $dataTable->comprobantes(['dom' => 'l', 'pageLength' => 5]);
+            $tableComprobantes = $dataTable->comprobantes(['dom' => 'l', 'pageLength' => 2]);
             if($tableComprobantes->isCallback()) {
                 return $tableComprobantes->getResponse();
             }
