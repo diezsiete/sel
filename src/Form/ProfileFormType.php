@@ -107,6 +107,7 @@ class ProfileFormType extends AbstractType
                 if($plainPassword = $event->getForm()['plainPassword']->getData()) {
                     $encodedPassword = $this->passwordEncoder->encodePassword($event->getData(), $plainPassword);
                     $event->getData()->setPassword($encodedPassword);
+                    $event->getData()->setType(2);
                 }
             }
         });
