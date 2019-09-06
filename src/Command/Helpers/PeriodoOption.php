@@ -25,7 +25,7 @@ trait PeriodoOption
      */
     public function addOptionPeriodo()
     {
-        $this->addOption('periodo', 'p', InputOption::VALUE_REQUIRED, $this->periodoDescription);
+        $this->addOption('periodo', 'p', InputOption::VALUE_OPTIONAL, $this->periodoDescription, false);
     }
 
 
@@ -35,6 +35,8 @@ trait PeriodoOption
             $periodo = $input->getOption('periodo');
             if($periodo) {
                 $this->periodo = DateTime::createFromFormat('Y-m-d', "$periodo-01");
+            }else if($periodo !== false) {
+                $this->periodo = DateTime::createFromFormat('Y-m-d', (new DateTime())->format('Y-m') . '-01');
             }
             else if($required) {
                 throw new RuntimeException(sprintf('The "--%s" option is required.', 'periodo'));

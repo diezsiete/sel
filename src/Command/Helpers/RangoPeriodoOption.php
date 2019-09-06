@@ -19,9 +19,8 @@ trait RangoPeriodoOption
      */
     public function addOptionRango()
     {
-        $this
-            ->addOption('inicio', 'i', InputOption::VALUE_REQUIRED, $this->optionInicioDescription)
-            ->addOption('fin', 'f', InputOption::VALUE_REQUIRED, $this->optionFinDescription);
+        $this->addOption('inicio', 'i', InputOption::VALUE_REQUIRED, $this->optionInicioDescription);
+        $this->addOption('fin', 'f', InputOption::VALUE_REQUIRED, $this->optionFinDescription);
     }
 
 

@@ -3,14 +3,19 @@
 namespace App\Command\NovasoftImport;
 
 use App\Command\Helpers\ConsoleTrait;
+use App\Command\Helpers\Loggable;
 use App\Command\Helpers\PeriodoOption;
 use App\Command\Helpers\RangoPeriodoOption;
 use App\Command\Helpers\SearchByConvenioOrEmpleado;
+use App\Command\Helpers\SelCommandTrait;
+use App\Command\Helpers\TraitableCommand\Annotation\Configure;
 use App\Command\Helpers\TraitableCommand\TraitableCommand;
 use App\Entity\ReporteNomina;
 use App\Repository\ReporteNominaRepository;
 use App\Service\NovasoftSsrs\NovasoftSsrs;
+use DateTime;
 use Doctrine\Common\Annotations\Reader;
+use Symfony\Component\Console\Exception\RuntimeException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -19,10 +24,11 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class NiNominaCommand extends TraitableCommand
 {
-    use RangoPeriodoOption,
+    use Loggable,
+        RangoPeriodoOption,
         PeriodoOption,
         SearchByConvenioOrEmpleado,
-        ConsoleTrait;
+        SelCommandTrait;
 
     protected static $defaultName = 'sel:ni:nomina';
 
@@ -53,6 +59,7 @@ class NiNominaCommand extends TraitableCommand
         $this->reporteNominaRepository = $reporteNominaRepository;
     }
 
+
     protected function configure()
     {
         parent::configure();
@@ -73,32 +80,41 @@ class NiNominaCommand extends TraitableCommand
         $dontUpdate = $input->getOption('dont-update');
 
         foreach($empleados as $empleado) {
-            $this->io->writeln(sprintf("%s %d %d %s",
-                $empleado->getConvenio()->getNombre(),
+            $dataLog = sprintf("%s %d %d %s",
+                $empleado->getConvenio()->getCodigo(),
                 $empleado->getUsuario()->getId(),
                 $empleado->getUsuario()->getIdentificacion(),
-                $empleado->getUsuario()->getNombreCompleto(true)));
+                $empleado->getUsuario()->getNombreCompleto(true));
+
+            $this->periodo ?
+                $this->info($this->periodo->format('Y-m') . " $dataLog") :
+                $this->info($dataLog, [$desde ? $desde->format('Y-m-d') : null, $hasta->format('Y-m-d')]);
 
             $reportesNomina = $this->novasoftSsrs
                 ->setSsrsDb($empleado->getSsrsDb())
                 ->getReporteNomina($empleado->getUsuario(), $desde, $hasta);
 
-            foreach($reportesNomina as $reporteNomina) {
-                $reporteNominaDb = $this->exists($reporteNomina);
-                $update = $reporteNominaDb && !$dontUpdate;
-                if($reporteNominaDb) {
-                    $message = "not updated";
-                    if($update) {
-                        $message = "updated";
-                        $this->update($reporteNominaDb, $reporteNomina);
+            if(count($reportesNomina)) {
+                foreach ($reportesNomina as $reporteNomina) {
+                    $reporteNominaDb = $this->exists($reporteNomina);
+                    $update = $reporteNominaDb && !$dontUpdate;
+                    if ($reporteNominaDb) {
+                        $message = "not updated";
+                        if ($update) {
+                            $message = "updated";
+                            $this->update($reporteNominaDb, $reporteNomina);
+                        }
+                    } else {
+                        $message = "inserted";
+                        $this->insert($reporteNomina);
                     }
-                } else {
-                    $message = "inserted";
-                    $this->insert($reporteNomina);
-                }
 
-                $this->io->writeln(sprintf("%10s %s", $reporteNomina->getFecha()->format('Y-m'), $message));
+                    $this->info(sprintf("%10s %s", $reporteNomina->getFecha()->format('Y-m'), $message));
+                }
+            } else {
+                $this->info(sprintf("%18s", "no hay reportes"));
             }
+
             $this->em->flush();
         }
     }

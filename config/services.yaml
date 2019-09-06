@@ -40,6 +40,9 @@ services:
     App\Command\NovasoftImport\NiEmpleadoCommand:
         calls:
             - [setLogger, ['@monolog.logger.ni_empleado']]
+    App\Command\NovasoftImport\NiNominaCommand:
+        calls:
+            - [setLogger, ['@monolog.logger.ni_nomina']]
 
 
     # add more service definitions when explicit configuration is needed

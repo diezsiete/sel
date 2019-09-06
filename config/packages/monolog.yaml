@@ -3,10 +3,16 @@ monolog:
         - 'sel'
         - 'scraper'
         - 'ni_empleado'
+        - 'ni_nomina'
     handlers:
         ni_empleado:
             type: stream
             path: "%kernel.logs_dir%/ni/empleado.log"
             level: debug
             channels: ni_empleado
+        ni_nomina:
+            type: stream
+            path: "%kernel.logs_dir%/ni/nomina.log"
+            level: debug
+            channels: ni_nomina
 
