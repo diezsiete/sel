@@ -1,4 +1,12 @@
 monolog:
-  channels:
-    - 'sel'
-    - 'scraper'
+    channels:
+        - 'sel'
+        - 'scraper'
+        - 'ni_empleado'
+    handlers:
+        ni_empleado:
+            type: stream
+            path: "%kernel.logs_dir%/ni/empleado.log"
+            level: debug
+            channels: ni_empleado
+

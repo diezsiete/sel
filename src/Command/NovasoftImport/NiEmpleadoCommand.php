@@ -74,12 +74,9 @@ class NiEmpleadoCommand extends TraitableCommand
                 $codigo = $convenio->getCodigo();
                 $ssrsDb = $convenio->getSsrsDb();
 
-                $this->io->writeln($codigo);
-
                 $empleados = $this->reportesServicioEmpleados->setSsrsDb($ssrsDb)->getEmpleados($codigo, $desde, $hasta);
 
                 foreach ($empleados as $empleado) {
-                    $this->io->writeln($empleado->getConvenio()->getCodigo());
                     $this->importEmpleado($empleado, $ssrsDb);
                 }
                 $this->em->flush();
@@ -115,7 +112,7 @@ class NiEmpleadoCommand extends TraitableCommand
             $this->em->persist($empleado);
             $empleadoMessage = "[empleado insert]";
         }
-        $this->io->writeln(sprintf("    %s %s %s %s",
+        $this->info(sprintf("%s %s %s %s %s", $empleado->getConvenio()->getCodigo(),
             $empleado->getUsuario()->getNombreCompleto(), $empleado->getUsuario()->getIdentificacion(), $usuarioMessage, $empleadoMessage));
     }
 
