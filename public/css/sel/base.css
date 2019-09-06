@@ -23,6 +23,7 @@ table {
     margin-right: 5px;
 }
 
+
 /* FORM --------------------------------------------------------------------------------------------------------------*/
 .sel.checkbox-custom{
     height: 100%;
@@ -38,7 +39,7 @@ table {
 }
 
 
-/* PANEL PRINCIPAL */
+/* PANEL PRINCIPAL -------------------------------------------------------------------------------------------------- */
 .card {
     background: transparent;
     -webkit-box-shadow: none;

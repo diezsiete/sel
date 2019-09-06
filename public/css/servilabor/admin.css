@@ -1,0 +1,17 @@
+.bg-primary {
+    background-color: #3f317d !important;
+}
+.bg-tertiary {
+    background-color: #2baab1 !important;
+}
+
+/* NAV ---------------------------------------------------------------------------------------------------------------*/
+.u-header__section {
+    padding-bottom: 0 !important;
+}
+
+.navbar.admin {
+    margin-top: 0.71429rem;
+    background: #38414a;
+    z-index: 9;
+}
