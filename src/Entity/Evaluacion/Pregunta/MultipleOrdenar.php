@@ -4,6 +4,7 @@
 namespace App\Entity\Evaluacion\Pregunta;
 
 use App\Repository\Evaluacion\Pregunta\OpcionRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -26,5 +27,13 @@ class MultipleOrdenar extends MultipleUnica
     public function getOpcionByIndice(int $indice)
     {
         return $this->opciones->get($indice - 1);
+    }
+
+    /**
+     * @return Opcion[]|ArrayCollection
+     */
+    public function getOpcionRespuesta()
+    {
+        return $this->opciones->matching(OpcionRepository::getByRespuestaTrueCriteria());
     }
 }

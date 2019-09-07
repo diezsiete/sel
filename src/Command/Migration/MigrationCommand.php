@@ -210,7 +210,7 @@ abstract class MigrationCommand extends TraitableCommand
     /**
      * @param $idOld
      * @param null|string|false $errorMessage
-     * @return Usuario|object|null
+     * @return Usuario|null
      */
     protected function getUsuarioByIdOld($idOld, $errorMessage = null)
     {

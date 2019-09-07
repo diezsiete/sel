@@ -3,6 +3,7 @@
 
 namespace App\Entity\Evaluacion\Pregunta;
 
+use App\Repository\Evaluacion\Pregunta\OpcionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -61,5 +62,13 @@ class MultipleUnica extends Pregunta
         }
 
         return $this;
+    }
+
+    /**
+     * @return Opcion
+     */
+    public function getOpcionRespuesta()
+    {
+        return $this->opciones->matching(OpcionRepository::getByRespuestaTrueCriteria())->first();
     }
 }

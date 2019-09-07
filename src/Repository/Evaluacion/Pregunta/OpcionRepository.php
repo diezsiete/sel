@@ -20,9 +20,20 @@ class OpcionRepository extends ServiceEntityRepository
         parent::__construct($registry, Opcion::class);
     }
 
+    /**
+     * @param int $orden
+     * @return Criteria
+     */
     public static function getByOrderCriteria(int $orden)
     {
         return Criteria::create()->where(Criteria::expr()->eq('respuesta', $orden));
+    }
+
+    public static function getByRespuestaTrueCriteria()
+    {
+        return Criteria::create()
+            ->where(Criteria::expr()->neq('respuesta', 0))
+            ->orderBy(['respuesta' => 'ASC']);
     }
 
     // /**

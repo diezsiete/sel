@@ -27,7 +27,7 @@ class Progreso
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Usuario", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Usuario", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $usuario;
