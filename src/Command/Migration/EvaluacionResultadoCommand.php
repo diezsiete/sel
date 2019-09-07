@@ -69,15 +69,15 @@ class EvaluacionResultadoCommand extends MigrationCommand
         
         while($row = $this->fetch($sqlResultado)) {
             if($usuario = $this->getUsuario($row['usuario_id'])) {
-                $progresoObject = $this->instanceProgreso($usuario, $row);
-                $this->selPersist($progresoObject);
-
-                $sqlRespuestaFiltered = $sqlRespuesta . " WHERE er.resultado_id = " . $row['id'];
-                while($rowRespuesta = $this->fetch($sqlRespuestaFiltered)) {
-                    $pregunta = $this->findPregunta($rowRespuesta);
-                    $progreso = $this->findProgreso($progresoObject->getId());
-                    $respuesta = $this->instanceRespuesta($progreso, $pregunta, $rowRespuesta);
-                    $this->selPersist($respuesta);
+                if($progresoObject = $this->instanceProgreso($usuario, $row)) {
+                    $this->selPersist($progresoObject);
+                    $sqlRespuestaFiltered = $sqlRespuesta . " WHERE er.resultado_id = " . $row['id'];
+                    while ($rowRespuesta = $this->fetch($sqlRespuestaFiltered)) {
+                        $pregunta = $this->findPregunta($rowRespuesta);
+                        $progreso = $this->findProgreso($progresoObject->getId());
+                        $respuesta = $this->instanceRespuesta($progreso, $pregunta, $rowRespuesta);
+                        $this->selPersist($respuesta);
+                    }
                 }
             }
         }
@@ -93,24 +93,21 @@ class EvaluacionResultadoCommand extends MigrationCommand
     /**
      * @param Usuario $usuario
      * @param array $rowResultado
-     * @return Progreso
+     * @return Progreso|null
      */
     private function instanceProgreso(Usuario $usuario, $rowResultado)
     {
+        $progreso = null;
         $culminacion = $rowResultado['culminacion'];
-        $progreso = (new Progreso())
-            ->setUsuario($usuario)
-            ->setEvaluacion($this->getEvaluacion())
-            ->setCulminacion($culminacion ? DateTime::createFromFormat('Y-m-d H:i:s', $culminacion) : null)
-            ->setPorcentajeCompletitud($rowResultado['porcentaje_completitud'])
-            ->setPorcentajeExito($rowResultado['porcentaje_exito'])
-            ->setDescripcion($rowResultado['descripcion']);
-        if(!$culminacion) {
-            $posicionExplode = explode(':', $rowResultado['posicion']);
-            $modulo = $this->em->getRepository(Modulo::class)->findOneBy(['indice' => $posicionExplode[0]]);
-            $progreso->setModulo($modulo);
-        } else {
-            $progreso->setPreguntasEnabled(false);
+        if($culminacion) {
+            $progreso = (new Progreso())
+                ->setUsuario($usuario)
+                ->setEvaluacion($this->getEvaluacion())
+                ->setCulminacion($culminacion ? DateTime::createFromFormat('Y-m-d H:i:s', $culminacion) : null)
+                ->setPorcentajeCompletitud($rowResultado['porcentaje_completitud'])
+                ->setPorcentajeExito($rowResultado['porcentaje_exito'])
+                ->setDescripcion($rowResultado['descripcion'])
+                ->setPreguntasEnabled(false);
         }
         return $progreso;
     }
