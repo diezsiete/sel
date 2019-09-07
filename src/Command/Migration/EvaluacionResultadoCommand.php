@@ -109,6 +109,8 @@ class EvaluacionResultadoCommand extends MigrationCommand
             $posicionExplode = explode(':', $rowResultado['posicion']);
             $modulo = $this->em->getRepository(Modulo::class)->findOneBy(['indice' => $posicionExplode[0]]);
             $progreso->setModulo($modulo);
+        } else {
+            $progreso->setPreguntasEnabled(false);
         }
         return $progreso;
     }
