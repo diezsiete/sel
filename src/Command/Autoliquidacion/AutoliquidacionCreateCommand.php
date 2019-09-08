@@ -9,6 +9,7 @@ use App\Command\Helpers\ConsoleTrait;
 use App\Command\Helpers\Loggable;
 use App\Command\Helpers\PeriodoOption;
 use App\Command\Helpers\SearchByConvenioOrEmpleado;
+use App\Command\Helpers\SelCommandTrait;
 use App\Command\Helpers\TraitableCommand\TraitableCommand;
 use App\Entity\Autoliquidacion\Autoliquidacion;
 use App\Entity\Autoliquidacion\AutoliquidacionEmpleado;
@@ -30,7 +31,7 @@ class AutoliquidacionCreateCommand extends TraitableCommand
         PeriodoOption,
         SearchByConvenioOrEmpleado,
         ConsoleProgressBar,
-        ConsoleTrait;
+        SelCommandTrait;
 
 
     protected static $defaultName = 'sel:autoliquidacion:create';
@@ -56,6 +57,8 @@ class AutoliquidacionCreateCommand extends TraitableCommand
                                 AutoliquidacionRepository $autoliquidacionRepository,
                                 AutoliquidacionEmpleadoRepository $autoliquidacionEmpleadoRepository)
     {
+        $this->periodoDescription = 'Especifique mes en formato Y-m. Sin especificar genera periodo segun fecha hoy';
+
         parent::__construct($reader, $dispatcher);
         $this->autoliquidacionService = $autoliquidacionService;
         $this->autoliquidacionRepository = $autoliquidacionRepository;
@@ -72,8 +75,7 @@ class AutoliquidacionCreateCommand extends TraitableCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
 
-        $rango = $this->getRangoFromPeriodo($input);
-
+        $rango = $this->getRangoFromPeriodo($input, false);
 
         $overwrite = !$input->getOption('not_overwrite');
 
@@ -175,7 +177,7 @@ class AutoliquidacionCreateCommand extends TraitableCommand
 
     protected function progressBarCount(InputInterface $input, OutputInterface $output): int
     {
-        $rango = $this->getRangoFromPeriodo($input);
+        $rango = $this->getRangoFromPeriodo($input, false);
         return $this->empleadoRepository->countByRango($rango->start, $rango->end, $this->searchValue);
     }
 
