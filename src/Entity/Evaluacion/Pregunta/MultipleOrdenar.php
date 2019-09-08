@@ -36,4 +36,15 @@ class MultipleOrdenar extends MultipleUnica
     {
         return $this->opciones->matching(OpcionRepository::getByRespuestaTrueCriteria());
     }
+
+    public function getMensajeAyuda(): string
+    {
+        $mensajeAyuda = "Determine el orden de los enunciados. Seleccione para cada uno la posisición correcta";
+        return $mensajeAyuda;
+        /*$mensajeAyuda = $this->mensajeAyuda;
+        if(!$mensajeAyuda) {
+            $mensajeAyuda = "Determine el orden de los enunciados. Seleccione para cada uno la posisición correcta";
+        }
+        return $mensajeAyuda;*/
+    }
 }

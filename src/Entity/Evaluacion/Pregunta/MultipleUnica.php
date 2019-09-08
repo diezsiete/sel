@@ -71,4 +71,13 @@ class MultipleUnica extends Pregunta
     {
         return $this->opciones->matching(OpcionRepository::getByRespuestaTrueCriteria())->first();
     }
+
+    public function getMensajeAyuda(): string
+    {
+        $mensajeAyuda = parent::getMensajeAyuda();
+        if(!$mensajeAyuda) {
+            $mensajeAyuda = "Seleccione la respuesta correcta";
+        }
+        return $mensajeAyuda;
+    }
 }

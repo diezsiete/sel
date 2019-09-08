@@ -253,8 +253,15 @@ class Navegador
     }
 
     /**
+     * @return Modulo
+     */
+    public function getModulo()
+    {
+        return $this->progreso->getModulo();
+    }
+
+    /**
      * @return Diapositiva|null
-     * @throws Exception
      */
     public function getDiapositiva()
     {
@@ -263,7 +270,6 @@ class Navegador
 
     /**
      * @return Pregunta|null
-     * @throws Exception
      */
     public function getPregunta()
     {
@@ -272,7 +278,6 @@ class Navegador
 
     /**
      * @return Diapositiva|null
-     * @throws Exception
      */
     public function getPreguntaDiapositiva(): ?Diapositiva
     {

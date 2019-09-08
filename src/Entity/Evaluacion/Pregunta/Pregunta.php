@@ -68,7 +68,7 @@ abstract class Pregunta extends HasDiapositivas
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $mensajeAyuda;
+    protected $mensajeAyuda;
 
 
     public function getId(): ?int

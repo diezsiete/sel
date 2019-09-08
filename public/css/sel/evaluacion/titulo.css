@@ -1,12 +1,9 @@
 main, div.body {
     background-image: url("../../../img/sel/evaluacion/startup-reunion-main.jpg");
-    /* Full height */
-    height: 100%;
-
-    /* Center and scale the image nicely */
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+
 }
 
 .cuadrados {
@@ -19,19 +16,22 @@ main, div.body {
     opacity: 0.5;
 }
 
-.content-diapositiva-titulo-back{
+div.background-titulo{
+    background: rgba(36, 19, 95, 0.9);
     position: absolute;
     top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background: rgba(36, 19, 95, 0.9);
+    right:0;
+    bottom:0;
+    left:0;
+    z-index:1;
 }
-.content-diapositiva-titulo{
-    padding-top: 200px;
+.content-diapositiva-titulo-back, .alert, #evaluacion-footer{
     z-index: 2;
+}
+.content-diapositiva-titulo-back{
     position: relative;
 }
+
 
 .caja-centro-titulo {
     font-size: 35px;

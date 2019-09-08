@@ -33,6 +33,7 @@ services:
         tags: ['controller.service_arguments']
 
 
+
     App\Command\Autoliquidacion\AutoliquidacionCreateCommand:
         calls:
             - [setLogger, ['@monolog.logger.sel']]
@@ -60,6 +61,9 @@ services:
 
     App\Service\Hv\HvWizard\HvWizard:
         factory: '@App\Service\Hv\HvWizard\HvWizardFactory'
+
+    App\Service\Evaluacion\Mensaje:
+        autowire: false
 
     App\DataTable\Column\ActionsColumn\ActionRoute:
         public: true

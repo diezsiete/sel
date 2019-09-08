@@ -59,7 +59,6 @@ class SelExtension extends AbstractExtension implements ServiceSubscriberInterfa
 
     public function mesFilter($n)
     {
-        dump($n);
         return $this->container->get(Utils::class)->meses($n - 1);
     }
 

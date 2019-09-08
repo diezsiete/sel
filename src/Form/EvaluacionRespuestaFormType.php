@@ -37,6 +37,7 @@ class EvaluacionRespuestaFormType extends AbstractType
                 'choices' => $respuesta->getPregunta()->getOpciones(),
                 'multiple' => false,
                 'expanded' => true,
+                'label' => false
             ]);
 
             $builder->get('opciones')->addModelTransformer(new CallbackTransformer(

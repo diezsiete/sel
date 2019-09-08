@@ -6,6 +6,7 @@ use App\DataTable\Type\EvaluacionProgresoDataTableType;
 use App\Entity\Evaluacion\Progreso;
 use App\Entity\Evaluacion\Respuesta\Respuesta;
 use App\Form\EvaluacionRespuestaFormType;
+use App\Service\Evaluacion\Mensaje;
 use App\Service\Evaluacion\Navegador;
 use App\Service\Pdf\EvaluacionCertificado;
 use DateTime;
@@ -93,7 +94,7 @@ class EvaluacionController extends BaseController
      *      "preguntaId": "\d+"
      * })
      */
-    public function pregunta(Navegador $navegador, Request $request)
+    public function pregunta(Navegador $navegador, Request $request, Mensaje $mensaje)
     {
         $respuesta = $navegador->getEvaluador()->buildRespuesta();
         $form = $this->createForm(EvaluacionRespuestaFormType::class, $respuesta);
@@ -109,6 +110,9 @@ class EvaluacionController extends BaseController
             return $this->redirect($navegador->getNextRoute());
         }
 
+        if($mensaje->hasFlashMessage()) {
+            $this->addFlash($mensaje->flashMessageType(), $mensaje->flashMessage());
+        }
         $template = $pregunta->getWidgetAsKebabCase();
         $view = "evaluacion/widget/$template.html.twig";
         return $this->render($view, [
@@ -124,8 +128,11 @@ class EvaluacionController extends BaseController
      *      "preguntaId": "\d+"
      * })
      */
-    public function preguntaDiapositiva(Navegador $navegador)
+    public function preguntaDiapositiva(Navegador $navegador, Mensaje $mensaje)
     {
+        if($mensaje->hasFlashMessage()) {
+            $this->addFlash($mensaje->flashMessageType(), $mensaje->flashMessage());
+        }
         $view = "evaluacion/{$navegador->getEvaluacion()->getSlug()}/{$navegador->getPreguntaDiapositiva()->getSlug()}.html.twig";
         return $this->render($view, [
             'evaluacion' => $navegador->getEvaluacion(),
@@ -136,8 +143,11 @@ class EvaluacionController extends BaseController
     /**
      * @Route("/evaluacion/{evaluacionSlug}/{moduloSlug}/{diapositivaSlug}", name="evaluacion_diapositiva")
      */
-    public function diapositiva(Navegador $navegador)
+    public function diapositiva(Navegador $navegador, Mensaje $mensaje)
     {
+        if($mensaje->hasFlashMessage()) {
+            $this->addFlash($mensaje->flashMessageType(), $mensaje->flashMessage());
+        }
         $view = "evaluacion/{$navegador->getEvaluacion()->getSlug()}/{$navegador->getDiapositiva()->getSlug()}.html.twig";
         return $this->render($view, [
             'evaluacion' => $navegador->getEvaluacion(),
