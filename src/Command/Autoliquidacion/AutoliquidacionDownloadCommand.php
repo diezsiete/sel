@@ -6,10 +6,10 @@ namespace App\Command\Autoliquidacion;
 
 
 use App\Command\Helpers\ConsoleProgressBar;
-use App\Command\Helpers\ConsoleTrait;
 use App\Command\Helpers\Loggable;
 use App\Command\Helpers\PeriodoOption;
 use App\Command\Helpers\SearchByConvenioOrEmpleado;
+use App\Command\Helpers\SelCommandTrait;
 use App\Command\Helpers\TraitableCommand\TraitableCommand;
 use App\Repository\Autoliquidacion\AutoliquidacionEmpleadoRepository;
 use App\Repository\Autoliquidacion\AutoliquidacionRepository;
@@ -32,7 +32,7 @@ class AutoliquidacionDownloadCommand extends TraitableCommand
         PeriodoOption,
         SearchByConvenioOrEmpleado,
         ConsoleProgressBar,
-        ConsoleTrait;
+        SelCommandTrait;
 
     protected static $defaultName = 'sel:autoliquidacion:download';
 

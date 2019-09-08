@@ -5,7 +5,6 @@ namespace App\Command\Autoliquidacion;
 
 
 use App\Command\Helpers\ConsoleProgressBar;
-use App\Command\Helpers\ConsoleTrait;
 use App\Command\Helpers\Loggable;
 use App\Command\Helpers\PeriodoOption;
 use App\Command\Helpers\SearchByConvenioOrEmpleado;

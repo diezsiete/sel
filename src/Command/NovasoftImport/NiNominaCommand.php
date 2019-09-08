@@ -2,20 +2,16 @@
 
 namespace App\Command\NovasoftImport;
 
-use App\Command\Helpers\ConsoleTrait;
 use App\Command\Helpers\Loggable;
 use App\Command\Helpers\PeriodoOption;
 use App\Command\Helpers\RangoPeriodoOption;
 use App\Command\Helpers\SearchByConvenioOrEmpleado;
 use App\Command\Helpers\SelCommandTrait;
-use App\Command\Helpers\TraitableCommand\Annotation\Configure;
 use App\Command\Helpers\TraitableCommand\TraitableCommand;
 use App\Entity\ReporteNomina;
 use App\Repository\ReporteNominaRepository;
 use App\Service\NovasoftSsrs\NovasoftSsrs;
-use DateTime;
 use Doctrine\Common\Annotations\Reader;
-use Symfony\Component\Console\Exception\RuntimeException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
