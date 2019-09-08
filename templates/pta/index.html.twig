@@ -1,117 +1,117 @@
 {% extends 'pta/base.html.twig' %}
 
-{% set btn_y, btn_width, btn_height, btn_padding, btn_empr_x, btn_empl_x = 190, 540, 220, 50, 45, 585 %}
-
 {% block body_header %}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/pta/hero3.css') }}">
+{% endblock %}
 
 
 {% block body %}
     <!-- SLIDER -->
-    <div class="slider-container rev_slider_wrapper">
-        <div id="revolutionSlider" class="slider rev_slider" data-version="5.4.8"
-             data-plugin-revolution-slider data-plugin-options="{'delay': 9000, 'gridwidth': 1170, 'gridheight': 500, 'responsiveLevels': [4096,1200,992,500], 'navigation' : {'arrows': { 'enable': true, 'style': 'arrows-style-2', 'left': {'h_align': 'center', 'v_align' : 'bottom', 'v_offset': 30, 'h_offset': 90}, 'right': {'h_align': 'center', 'v_align' : 'bottom', 'v_offset': 30, 'h_offset': 125}}, 'bullets': {'enable': false}}}">
-            <ul>
+    <section class="center-text text-center twin-hero">
+        <!-- <div class="hero-shadow">
+        </div> -->
+        <div class="hero-container">
+            <div class="left-hero" id="left-hero">
+                <div class="left-hero-tilt left-hero-tilt-expanded">
+                    <div class="side-container">
+                        <div class="initial active">
+                            <h2>Empresas</h2>
+                            <p>Consiga el personal que su empresa necesita</p>
+                            <span class="round-icon">+</span>
+                        </div>
+                        <div class="collapsed">
+                            <h2>Empresas</h2>
+                            <span class="round-filled-icon">+</span>
+                        </div>
+                        <div class="expanded">
 
-                <li data-transition="fade">
-                    <img src="{{ asset('/img/pta/slides/slide-corporate-2-1.jpg') }}"
-                         alt=""
-                         data-bgposition="center center"
-                         data-bgfit="cover"
-                         data-bgrepeat="no-repeat"
-                         class="rev-slidebg">
+                            <h2>Empresas</h2>
 
-                    <!-- Empresas -->
-                    <!-- LAYER SHAPE -->
-                    <a class="tp-caption tp-shape tp-shapewrapper tp-resizeme btn-empr-bg"
-                       href="{{ path('pta_servicios') }}"
-                         data-x="{{ btn_empr_x }}"
-                         data-hoffset="200"
-                         data-y="{{ btn_y }}"
-                         data-voffset="200"
-                         data-width="{{  btn_width }}"
-                         data-height="{{ btn_height }}"
-                         data-whitespace="nowrap"
-                         data-transform_idle="o:1;"
-                         data-style_hover="cursor:pointer;"
-                         data-transform_in="opacity:0;s:300;e:Power2.easeInOut;"
-                         data-transform_out="opacity:0;s:300;s:300;"
-                         data-start="500"
-                         data-responsive_offset="on" >
-                    </a>
+                            <p>Suministramos personal calificado para todos los sectores economicos</p>
 
+                            <div class="hero-twin-items">
+                                <div class="hero-twin-item">
+                                    <i class="icon-featured icon-user icons text-color-light"></i>
+                                    <p>Reclutamiento, evaluación y selección de personal</p>
+                                </div>
+                                <div class="hero-twin-item">
+                                    <i class="icon-featured icon-layers icons text-color-light"></i>
+                                    <p>Contratación y administración</p>
+                                </div>
+                                <div class="hero-twin-item">
+                                    <i class="icon-featured icon-phone icons text-color-light"></i>
+                                    <p>Atención y soporte</p>
+                                </div>
+                            </div>
+                            <a class="btn btn-white btn-twin-hero"
+                               href="{{ path('pta_servicios') }}"
+                               data-ga-twin-label="| Business CTA" data-pa-click="hero|Business CTA">
+                                Conozca mas sobre nosotros</a>
+                            <div class="legal-container">
+                                <p class="legal-notes">¿Ya es cliente?<br>
+                                    <a href="{{ path('app_login') }}">
+                                        Ingrese al portal de clientes
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="right-hero" id="right-hero">
+                <div class="right-hero-tilt">
+                    <div class="side-container">
+                        <div class="initial active">
 
-                    <a class="tp-caption top-label text-decoration-none"
-                       href="{{ path('pta_servicios') }}"
-                         data-x="{{ btn_empr_x + btn_padding }}"
-                         data-y="{{ btn_y + 40 }}"
-                         data-start="500"
-                         data-transform_in="y:[-300%];opacity:0;s:500;">SU ALIADO EN</a>
+                            <h2>Trabajadores</h2>
+                            <p>Encuentre el trabajo que mas se ajusta a sus cualidades</p>
+                            <span class="round-icon">+</span>
+                        </div>
+                        <div class="collapsed">
 
+                            <h2>Trabajadores</h2>
+                            <span class="round-filled-icon">+</span>
+                        </div>
+                        <div class="expanded">
 
-                    <a class="tp-caption main-label  text-decoration-none"
-                       href="{{ path('pta_servicios') }}"
-                         data-x="{{ btn_empr_x + btn_padding }}"
-                         data-y="{{ btn_y + 70 }}"
-                         data-start="1500"
-                         data-whitespace="nowrap"
-                         data-transform_in="y:[100%];s:500;"
-                         data-transform_out="opacity:0;s:500;"
-                         data-mask_in="x:0px;y:0px;">SOLUCIONES <br />EMPRESARIALES</a>
+                            <h2>Trabajadores</h2>
+                            <p>Trabaje con nosotros para establidad y seguridad laboral</p>
 
-                    <a class="tp-caption bottom-label text-decoration-none"
-                       href="{{ path('pta_servicios') }}"
-                         data-x="{{ btn_empr_x + btn_padding }}"
-                         data-y="{{ btn_y + 170 }}"
-                         data-start="2000"
-                         data-transform_in="y:[100%];opacity:0;s:500;">Descubra nuestros servicios.</a>
+                            <div class="hero-twin-items">
+                                <div class="hero-twin-item">
+                                    <i class="icon-featured icon-docs icons text-color-light"></i>
+                                    <p>Contrato laboral, seguridad social y prestaciones sociales</p>
+                                </div>
+                                <div class="hero-twin-item">
+                                    <i class="icon-featured icon-umbrella icons text-color-light"></i>
+                                    <p>Salud, Pensión, ARL y Caja de compensación familiar</p>
+                                </div>
+                                <div class="hero-twin-item">
+                                    <i class="icon-featured icon-like icons text-color-light"></i>
+                                    <p>Convenios especiales y beneficios para nuestros trabajadores.</p>
+                                </div>
+                            </div>
+                            <a class="btn btn-white btn-twin-hero"
+                               href="{{ path('vacante_listado') }}"
+                               data-ga-twin-label="| Personal CTA" data-pa-click="hero|Personal CTA">
+                                Buscar trabajo</a>
 
-
-
-                    <!-- Trabajadores -->
-                    <a class="tp-caption tp-shape tp-shapewrapper tp-resizeme btn-empl-bg"
-                       href="{{ path('vacante_listado') }}"
-                         data-x="{{ btn_empl_x}}"
-                         data-hoffset="200"
-                         data-y="{{ btn_y }}"
-                         data-voffset="200"
-                         data-width="{{ btn_width }}"
-                         data-height="{{ btn_height }}"
-                         data-whitespace="nowrap"
-                         data-transform_idle="o:1;"
-                         data-style_hover="cursor:pointer;"
-                         data-transform_in="opacity:0;s:300;e:Power2.easeInOut;"
-                         data-transform_out="opacity:0;s:300;s:300;"
-                         data-start="500"
-                         data-responsive_offset="on" >
-                    </a>
-
-                    <a class="tp-caption top-label text-decoration-none"
-                       href="{{ path('vacante_listado') }}"
-                         data-x="{{ btn_empl_x + btn_padding }}"
-                         data-y="{{ btn_y + 40 }}"
-                         data-start="500"
-                         data-transform_in="y:[-300%];opacity:0;s:500;">¿BUSCA TRABAJO?</a>
-
-                    <a class="tp-caption main-label text-decoration-none"
-                       href="{{ path('vacante_listado') }}"
-                         data-x="{{ btn_empl_x + btn_padding }}"
-                         data-y="{{ btn_y + 70 }}"
-                         data-start="1500"
-                         data-whitespace="nowrap"
-                         data-transform_in="y:[100%];s:500;"
-                         data-transform_out="opacity:0;s:500;"
-                         data-mask_in="x:0px;y:0px;">OFERTAS <br /> LABORALES</a>
-
-                    <a class="tp-caption bottom-label text-decoration-none"
-                       href="{{ path('vacante_listado') }}"
-                         data-x="{{ btn_empl_x + btn_padding }}"
-                         data-y="{{ btn_y + 170 }}"
-                         data-start="2000"
-                         data-transform_in="y:[100%];opacity:0;s:500;">Para un empleo digno y seguro.</a>
-                </li>
-            </ul>
+                            <div class="legal-container">
+                                <p class="legal-notes">¿Ya es empleado?.<br>
+                                <a href="{{ path('app_login') }}">
+                                    Ingrese al servicio de empleados
+                                </a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
+    </section>
     <!-- /SLIDER -->
 
     <div class="home-intro mb-0" id="home-intro">
@@ -252,5 +252,11 @@
     </section>
 
 {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/pta/6d-hero.js') }}"></script>
+{% endblock %}
+
 
 {% block footer_class %}mt-0{% endblock %}
