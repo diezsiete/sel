@@ -179,4 +179,12 @@ class ServilaborController extends AbstractController
     {
         return $this->render('servilabor/aviso-privacidad.html.twig');
     }
+
+    /**
+     * @Route("/paypal", name="servilabor_paypal")
+     */
+    public function paypal()
+    {
+        return $this->render('servilabor/paypal.html.twig');
+    }
 }
