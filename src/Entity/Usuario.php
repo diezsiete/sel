@@ -379,6 +379,11 @@ class Usuario implements UserInterface
         return $return;
     }
 
+    public function getNombrePrimeros()
+    {
+        return $this->getNombreCompleto(true, true);
+    }
+
     public function getType(): ?int
     {
         return $this->type;

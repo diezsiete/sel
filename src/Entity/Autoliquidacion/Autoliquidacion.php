@@ -4,6 +4,7 @@ namespace App\Entity\Autoliquidacion;
 
 use App\Entity\Convenio;
 use App\Entity\Usuario;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -33,6 +34,7 @@ class Autoliquidacion
     private $usuario;
 
     /**
+     * @var DateTime
      * @ORM\Column(type="date")
      */
     private $periodo;
@@ -99,6 +101,11 @@ class Autoliquidacion
     public function getPeriodo(): ?\DateTimeInterface
     {
         return $this->periodo;
+    }
+
+    public function getPeriodoFormat($format = "Y-m")
+    {
+        return $this->periodo ? $this->periodo->format($format) : $this->periodo;
     }
 
     public function setPeriodo(\DateTimeInterface $periodo): self

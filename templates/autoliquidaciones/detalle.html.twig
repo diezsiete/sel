@@ -1,0 +1,6 @@
+{% extends 'datatable/base.datatable.html.twig' %}
+
+{% block title %}Autoliquidaciones{% endblock %}
+{% block body_header_title %}Autoliquidaciones - {{ periodo|mes ~ " " ~ periodo|date('Y') }}<br>
+    <small>{{ convenio.nombre }}  </small>
+{% endblock %}

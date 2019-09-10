@@ -4,23 +4,16 @@
 namespace App\DataTable\Type;
 
 
-use App\DataTable\Column\ButtonColumn\ButtonColumn;
-use App\DataTable\Column\ButtonColumn\ButtonTypeRoute;
-use App\DataTable\Column\ButtonColumn\DatatablePropertyAccessor;
+use App\DataTable\Column\ActionsColumn\ActionsColumn;
 use App\Entity\Autoliquidacion\Autoliquidacion;
-use App\Entity\Usuario;
 use App\Repository\Autoliquidacion\AutoliquidacionRepository;
-use App\Repository\UsuarioRepository;
 use Doctrine\ORM\QueryBuilder;
-use Omines\DataTablesBundle\Adapter\Doctrine\ORM\SearchCriteriaProvider;
 use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
 use Omines\DataTablesBundle\Column\DateTimeColumn;
 use Omines\DataTablesBundle\Column\NumberColumn;
 use Omines\DataTablesBundle\Column\TextColumn;
 use Omines\DataTablesBundle\DataTable;
-use Omines\DataTablesBundle\DataTableState;
 use Omines\DataTablesBundle\DataTableTypeInterface;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Security;
 
 class AutoliquidacionDataTableType implements DataTableTypeInterface
@@ -51,17 +44,33 @@ class AutoliquidacionDataTableType implements DataTableTypeInterface
         $dataTable
             ->add('id', TextColumn::class, ['label' => 'id'])
             ->add('periodo', DateTimeColumn::class,
-                ['label' => 'Nombre', 'format' => 'Y-m'])
+                ['label' => 'Periodo', 'format' => 'Y-m'])
             ->add('codigo', TextColumn::class,
                 ['label' => 'Convenio codigo', 'field' => 'convenio.codigo'])
             ->add('nombre', TextColumn::class,[
                 'label' => 'Convenio nombre', 'field' => 'convenio.nombre'
             ])
-            ->add('porcentajeEjecucion', NumberColumn::class, ['label' => '%'])
+            ->add('porcentajeEjecucion', NumberColumn::class, ['label' => '%', 'orderable' => false])
+            ->add('actions', ActionsColumn::class, [
+                'label' => '',
+                'field' => 'a.id',
+                'orderable' => false,
+                'actions' => [
+                    'route' => ['admin_autoliquidacion_detalle', ['codigo' => 'convenio.codigo', 'periodo' => 'periodoFormat']],
+                    'icon' => 'fas fa-eye'
+                ]
+            ])
             ->addOrderBy('id', DataTable::SORT_DESCENDING)
             ->createAdapter(ORMAdapter::class, [
                 'entity' => Autoliquidacion::class,
+                'query' => function (QueryBuilder $builder){
+                    $builder
+                        ->select('a, convenio')
+                        ->from(Autoliquidacion::class, 'a')
+                        ->join('a.convenio', 'convenio');
+                },
             ])
+
         ;
 //        if($this->security->isGranted(['ROLE_ALLOWED_TO_SWITCH'], $this->security->getUser())) {
 //

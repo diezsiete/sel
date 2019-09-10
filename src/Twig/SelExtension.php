@@ -3,6 +3,7 @@
 namespace App\Twig;
 
 use App\Service\Utils;
+use DateTime;
 use Knp\Menu\Twig\MenuExtension;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -57,8 +58,15 @@ class SelExtension extends AbstractExtension implements ServiceSubscriberInterfa
         return $this->container->get(RequestStack::class)->getMasterRequest();
     }
 
+    /**
+     * @param int|DateTime $n
+     * @return array|mixed
+     */
     public function mesFilter($n)
     {
+        if(is_object($n)) {
+            $n = $n->format('m');
+        }
         return $this->container->get(Utils::class)->meses($n - 1);
     }
 
