@@ -57,9 +57,9 @@ class Configuracion
     private $hvWizardRoutes = null;
 
     /**
-     * @var null
+     * @var ScraperConfiguracion
      */
-    private $scrapper = null;
+    private $scraper = null;
 
     private $documentosLaborales = [];
 
@@ -192,15 +192,15 @@ class Configuracion
         return $this->hvWizardRoutes;
     }
 
-    public function getScrapper()
+    public function getScraper()
     {
-        if(!$this->scrapper) {
-            $this->scrapper = new ScrapperConfiguracion(
-                $this->bag->get('scrapper'),
-                $this->parameters['scrapper']
+        if(!$this->scraper) {
+            $this->scraper = new ScraperConfiguracion(
+                $this->bag->get('scraper'),
+                $this->parameters['scraper']
             );
         }
-        return $this->scrapper;
+        return $this->scraper;
     }
 
     /**

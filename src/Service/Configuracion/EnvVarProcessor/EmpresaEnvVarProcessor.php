@@ -4,7 +4,9 @@
 namespace App\Service\Configuracion\EnvVarProcessor;
 
 
+use Closure;
 use Symfony\Component\DependencyInjection\EnvVarProcessorInterface;
+use Symfony\Component\DependencyInjection\Exception\EnvNotFoundException;
 use Symfony\Component\DependencyInjection\Exception\RuntimeException;
 
 class EmpresaEnvVarProcessor implements EnvVarProcessorInterface
@@ -15,16 +17,20 @@ class EmpresaEnvVarProcessor implements EnvVarProcessorInterface
      *
      * @param string $prefix The namespace of the variable
      * @param string $name The name of the variable within the namespace
-     * @param \Closure $getEnv A closure that allows fetching more env vars
+     * @param Closure $getEnv A closure that allows fetching more env vars
      *
      * @return mixed
      *
      * @throws RuntimeException on error
      */
-    public function getEnv($prefix, $name, \Closure $getEnv)
+    public function getEnv($prefix, $name, Closure $getEnv)
     {
         $empresa = $getEnv('EMPRESA');
-        return $getEnv($name . "_" . $empresa);
+        try {
+            return $getEnv($name . "_" . $empresa);
+        } catch (EnvNotFoundException $envNotFoundException) {
+            return $getEnv($name);
+        }
     }
 
     /**

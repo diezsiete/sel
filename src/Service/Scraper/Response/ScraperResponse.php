@@ -14,11 +14,13 @@ class ScraperResponse
      * ScrapperResponse constructor.
      * @param $data
      */
-    public function __construct($data)
+    public function __construct(?array $data = null)
     {
-        $this->ok = $data['ok'];
-        $this->message = $data['message'];
-        $this->code = $data['code'];
+        if($data) {
+            $this->ok = $data['ok'];
+            $this->message = $data['message'];
+            $this->code = $data['code'];
+        }
     }
 
     /**
@@ -45,4 +47,33 @@ class ScraperResponse
         return $this->code;
     }
 
+    /**
+     * @param bool|mixed $ok
+     * @return ScraperResponse
+     */
+    public function setOk($ok)
+    {
+        $this->ok = $ok;
+        return $this;
+    }
+
+    /**
+     * @param mixed|string $message
+     * @return ScraperResponse
+     */
+    public function setMessage($message)
+    {
+        $this->message = $message;
+        return $this;
+    }
+
+    /**
+     * @param int|mixed $code
+     * @return ScraperResponse
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
+        return $this;
+    }
 }

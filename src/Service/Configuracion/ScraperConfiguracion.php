@@ -6,7 +6,7 @@ namespace App\Service\Configuracion;
 
 use StdClass;
 
-class ScrapperConfiguracion
+class ScraperConfiguracion
 {
     public $url;
 

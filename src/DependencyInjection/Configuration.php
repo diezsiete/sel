@@ -20,7 +20,7 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->getRootNode();
 
         $rootNode->children()
-            ->append($this->addScrapperNode())
+            ->append($this->addScraperNode())
             ->arrayNode('empresas')
                 ->useAttributeAsKey('name')
                 ->arrayPrototype()
@@ -54,7 +54,7 @@ class Configuration implements ConfigurationInterface
                         ->append($this->addEmailsNode())
                         ->append($this->addOficinasNode())
                         ->append($this->addHvWizardRoutes())
-                        ->append($this->addScrapperEmpresaNode())
+                        ->append($this->addScraperEmpresaNode())
                         ->append($this->addDocumentosLaborales())
                     ->end()
                 ->end()
@@ -120,9 +120,9 @@ class Configuration implements ConfigurationInterface
         return $node;
     }
 
-    protected function addScrapperNode()
+    protected function addScraperNode()
     {
-        $treeBuilder = new TreeBuilder('scrapper');
+        $treeBuilder = new TreeBuilder('scraper');
         $node =
             $treeBuilder->getRootNode()
                 ->children()
@@ -131,14 +131,16 @@ class Configuration implements ConfigurationInterface
         return $node;
     }
 
-    protected function addScrapperEmpresaNode()
+    protected function addScraperEmpresaNode()
     {
-        $treeBuilder = new TreeBuilder('scrapper');
+        $treeBuilder = new TreeBuilder('scraper');
         $node =
             $treeBuilder->getRootNode()
                 ->children()
                     ->arrayNode('ael')
                         ->children()
+                            ->scalarNode('user')->end()
+                            ->scalarNode('password')->end()
                             ->scalarNode('empleador')->end()
                         ->end()
                     ->end()

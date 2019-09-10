@@ -45,12 +45,15 @@ class AutoliquidacionRepository extends ServiceEntityRepository
     }
 
 
-    public function getIdentificacionesByPeriodo(DateTimeInterface $periodo, $noExito = false)
+    public function getIdentificacionesByPeriodo(DateTimeInterface $periodo, $overwrite = false, $identsFilter = [])
     {
         $qb = $this
             ->createQueryBuilder('a')
             ->addCriteria(static::periodoCriteria($periodo));
-        return $this->fetchIdentificaciones($qb, $noExito);
+        if($identsFilter) {
+            $qb->andWhere($qb->expr()->in('u.identificacion', $identsFilter));
+        }
+        return $this->fetchIdentificaciones($qb, $overwrite);
     }
 
     /**
@@ -60,14 +63,14 @@ class AutoliquidacionRepository extends ServiceEntityRepository
      * @return string[]
      * @throws QueryException
      */
-    public function getIdentificacionesByConvenio($convenio, DateTimeInterface $periodo, $noExito = false)
+    public function getIdentificacionesByConvenio($convenio, DateTimeInterface $periodo, $overwrite = false)
     {
         $qb = $this->createQueryBuilder('a');
         $qb
             ->join('a.convenio', 'c')
             ->andWhere($qb->expr()->in('c.codigo', $convenio))
             ->addCriteria(static::periodoCriteria($periodo));
-        return $this->fetchIdentificaciones($qb, $noExito);
+        return $this->fetchIdentificaciones($qb, $overwrite);
     }
 
     /**
@@ -174,15 +177,21 @@ class AutoliquidacionRepository extends ServiceEntityRepository
      * @param QueryBuilder $qb
      * @return string[]
      */
-    protected function fetchIdentificaciones(QueryBuilder $qb, $noExito = false)
+    protected function fetchIdentificaciones(QueryBuilder $qb, $overwrite = false)
     {
         $qb = $qb->select('u.identificacion')
             ->join('a.empleados', 'ae')
             ->join('ae.empleado', 'e')
             ->join('e.usuario', 'u');
 
-        if($noExito) {
+        if(!$overwrite) {
             $qb->andWhere($qb->expr()->eq('ae.exito', $qb->expr()->literal(false)));
+        }
+        else if($overwrite !== true) {
+            $expr = preg_match('/^!(.+)/', $overwrite, $matches)
+                ? $qb->expr()->neq('ae.code', $matches[1])
+                : $qb->expr()->eq('ae.code', $overwrite);
+            $qb->andWhere($expr);
         }
 
         return $qb->getQuery()->getResult('FETCH_COLUMN');

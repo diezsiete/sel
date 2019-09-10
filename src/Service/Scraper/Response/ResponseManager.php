@@ -4,9 +4,11 @@
 namespace App\Service\Scraper\Response;
 
 
+use App\Service\Scraper\Exception\ScraperClientException;
 use App\Service\Scraper\Exception\ScraperConflictException;
 use App\Service\Scraper\Exception\ScraperException;
 use App\Service\Scraper\Exception\ScraperNotFoundException;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
@@ -21,13 +23,18 @@ class ResponseManager
     const TIMEOUT = 408;
     const CONFLICT = 409;
     const ERROR = 500;
+    /**
+     * @var PropertyAccessorInterface
+     */
+    private $propertyAccessor;
+
+
+    public function __construct(PropertyAccessorInterface $propertyAccessor)
+    {
+        $this->propertyAccessor = $propertyAccessor;
+    }
 
     /**
-     * @param $data
-     * @return mixed
-     * @throws ScraperException
-     * @throws ScraperConflictException
-     * @throws ScraperNotFoundException
      * @deprecated
      */
     public static function instance($data)
@@ -42,23 +49,39 @@ class ResponseManager
 
     /**
      * @param ResponseInterface $response
-     * @return array
+     * @param null $responseClass
+     * @return mixed
+     * @throws ScraperClientException
      * @throws ScraperConflictException
      * @throws ScraperException
      * @throws ScraperNotFoundException
-     * @throws ClientExceptionInterface
-     * @throws DecodingExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws TransportExceptionInterface
      */
-    public static function catchError($response)
+    public function handleResponse($response, $responseClass = null)
     {
-        $responseArray = $response->toArray(false);
-        if($response->getStatusCode() !== 200) {
-            $message = $responseArray['message'] ?? "Error " . $response->getStatusCode();
-            throw ScraperException::create($message, $data['code'] ??  static::ERROR);
+        try {
+            $responseBody = $response->toArray(false);
+            if($response->getStatusCode() !== 200) {
+                $message = $responseBody['message'] ?? "Error " . $response->getStatusCode();
+                throw ScraperException::create($message, $responseBody['code'] ??  static::ERROR);
+            }
+            if($responseClass) {
+                $responseBody = $this->convertResponseBodyToObject($responseBody, $responseClass);
+            }
+            return $responseBody;
+        } catch (DecodingExceptionInterface | TransportExceptionInterface | RedirectionExceptionInterface |
+                 ClientExceptionInterface | ServerExceptionInterface $e) {
+            throw ScraperClientException::instance($e);
         }
-        return $responseArray;
+    }
+
+    private function convertResponseBodyToObject($responseBody, $responseClass)
+    {
+        $response = !is_object($responseClass) ? new $responseClass() : $responseClass;
+        foreach($responseBody as $key => $value) {
+            if($this->propertyAccessor->isWritable($response, $key)) {
+                $this->propertyAccessor->setValue($response, $key, $value);
+            }
+        }
+        return $response;
     }
 }

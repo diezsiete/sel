@@ -3,14 +3,14 @@
 
 namespace App\Command\Autoliquidacion;
 
-
-
 use App\Command\Helpers\ConsoleProgressBar;
 use App\Command\Helpers\Loggable;
 use App\Command\Helpers\PeriodoOption;
 use App\Command\Helpers\SearchByConvenioOrEmpleado;
 use App\Command\Helpers\SelCommandTrait;
 use App\Command\Helpers\TraitableCommand\TraitableCommand;
+use App\Entity\Autoliquidacion\Autoliquidacion;
+use App\Entity\Autoliquidacion\AutoliquidacionEmpleado;
 use App\Repository\Autoliquidacion\AutoliquidacionEmpleadoRepository;
 use App\Repository\Autoliquidacion\AutoliquidacionRepository;
 use App\Service\Configuracion\Configuracion;
@@ -37,70 +37,56 @@ class AutoliquidacionDownloadCommand extends TraitableCommand
     protected static $defaultName = 'sel:autoliquidacion:download';
 
     /**
-     * @var AutoliquidacionRepository
-     */
-    private $autoliquidacionRepository;
-    /**
      * @var AutoliquidacionScraper
      */
-    private $scrapper;
+    private $scraper;
 
     /**
      * @var string[]
      */
     private $identificaciones = null;
 
-    /**
-     * @var Configuracion
-     */
-    private $configuracion;
-    /**
-     * @var AutoliquidacionEmpleadoRepository
-     */
-    private $autoliquidacionEmpleadoRepository;
 
-    public function __construct(Reader $annotationReader, EventDispatcherInterface $eventDispatcher,
-                                AutoliquidacionRepository $autoliquidacionRepository,
-                                AutoliquidacionEmpleadoRepository $autoliquidacionEmpleadoRepository,
-                                AutoliquidacionScraper $scrapper, Configuracion $configuracion)
+
+    public function __construct(Reader $annotationReader, EventDispatcherInterface $eventDispatcher, AutoliquidacionScraper $scraper)
     {
         parent::__construct($annotationReader, $eventDispatcher);
-
-        $this->autoliquidacionRepository = $autoliquidacionRepository;
-        $this->scrapper = $scrapper;
-        $this->configuracion = $configuracion;
-        $this->autoliquidacionEmpleadoRepository = $autoliquidacionEmpleadoRepository;
+        $this->scraper = $scraper;
     }
 
     protected function configure()
     {
         parent::configure();
-        $this->addOption('overwrite', 'o', InputOption::VALUE_NONE,
-            'Vuelve y descarga la autoliquidacion aun halla sido exitosa');
+        $this->addOption('overwrite', 'o', InputOption::VALUE_OPTIONAL,
+            'Vuelve y descarga la autoliquidacion aun halla sido exitosa. 
+            Si especifica codigo sobrescribe las que tengan ese codigo (ej: -o\!200)', false);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $periodo = $this->getPeriodo($input);
-        $identificaciones = $this->getIdentificaciones($periodo);
-        $empleador = $this->configuracion->getScrapper()->ael()->empleador;
+        $identificaciones = $this->getIdentificaciones($periodo, $input->getOption('overwrite'));
+        $empleador = $this->configuracion->getScraper()->ael()->empleador;
+        $user = $this->configuracion->getScraper()->ael()->user;
+        $password = $this->configuracion->getScraper()->ael()->password;
 
         if($identificaciones) {
-            $this->scrapper->launch($empleador);
+            $this->scraper->launch($user, $password, $empleador);
             try {
                 foreach ($identificaciones as $ident) {
+                    $autoliquidacionEmpleado = $this->em->getRepository(AutoliquidacionEmpleado::class)
+                        ->findByIdentPeriodo($ident, $periodo);
+                    $autoliquidacion = $autoliquidacionEmpleado->getAutoliquidacion();
                     try {
-                        $autoliquidacionEmpleado = $this->autoliquidacionEmpleadoRepository->findByIdentPeriodo($ident, $periodo);
-                        $autoliquidacion = $autoliquidacionEmpleado->getAutoliquidacion();
-
                         $exito = true;
                         $code = ResponseManager::OK;
                         $salida = "PDF descargado exitosamente";
 
                         try {
-                            $this->scrapper->generatePdf($ident, $periodo);
-                            $this->scrapper->downloadPdf($ident, $periodo);
-                            $this->scrapper->deletePdf($ident, $periodo);
+                            $this->scraper
+                                ->generatePdf($ident, $periodo)
+                                ->downloadPdf($ident, $periodo)
+                                ->deletePdf($ident, $periodo);
                         } catch (ScraperNotFoundException $e) {
                             $code = ResponseManager::NOTFOUND;
                             $salida = $e->getMessage();
@@ -115,25 +101,26 @@ class AutoliquidacionDownloadCommand extends TraitableCommand
                         $this->em->flush();
 
                         try {
-                            $this->scrapper->clearIdent();
+                            $this->scraper->clearIdent();
                         } catch (ScraperConflictException $e) {
-                            $this->scrapper->reload();
+                            $this->scraper->reload();
                         }
+
                     } catch (ScraperException $e) {
-                        $this->scrapper
+                        $this->scraper
                             ->logout()
                             ->close()
-                            ->launch($empleador);
+                            ->launch($user, $password, $empleador);
                     }
 
                     $this->progressBarAdvance();
                 }
-                $this->scrapper->close();
+                $this->scraper->close();
 
             } catch (Exception $e) {
                 $this->error($e->getMessage());
             }
-            $this->scrapper->close();
+            $this->scraper->close();
         } else {
             $this->io->writeln("No hay autolquidaciones para descargar");
         }
@@ -147,19 +134,16 @@ class AutoliquidacionDownloadCommand extends TraitableCommand
 
     protected function getIdentificaciones($periodo, $overwrite = false)
     {
-        $noExito = !$overwrite;
+        $overwrite = $overwrite === null ? true : $overwrite;
+
+        $autliquidacionRepo = $this->em->getRepository(Autoliquidacion::class);
         if(!is_array($this->identificaciones)) {
             $this->identificaciones = [];
-            if($this->isSearchConvenio()) {
-                if(!$this->searchValue) {
-                    $this->identificaciones = $this->autoliquidacionRepository
-                        ->getIdentificacionesByPeriodo($periodo, $noExito);
-                } else {
-                    $this->identificaciones = $this->autoliquidacionRepository
-                        ->getIdentificacionesByConvenio($this->searchValue, $periodo, $noExito);
-                }
+            if($this->isSearchConvenio() && $this->searchValue) {
+                $this->identificaciones = $autliquidacionRepo->getIdentificacionesByConvenio($this->searchValue, $periodo, $overwrite);
             } else {
-                $this->identificaciones = $this->getIdents();
+                $idents = $this->isSearchConvenio() ? [] : $this->getIdents();
+                $this->identificaciones = $autliquidacionRepo->getIdentificacionesByPeriodo($periodo, $overwrite, $idents);
             }
         }
         return $this->identificaciones;

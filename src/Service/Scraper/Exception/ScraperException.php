@@ -10,6 +10,11 @@ use App\Service\Scraper\Response\ResponseManager;
 class ScraperException extends \Exception
 {
 
+    /**
+     * @param $message
+     * @param $code
+     * @return ScraperConflictException|ScraperException|ScraperNotFoundException
+     */
     public static function create($message, $code)
     {
         switch($code) {

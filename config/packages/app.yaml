@@ -1,5 +1,5 @@
 app:
-  scrapper:
+  scraper:
     url: http://localhost:8666
 
   empresas:
@@ -65,8 +65,10 @@ app:
           route: registro_cuenta
           titulo: Cuenta
 
-      scrapper:
+      scraper:
         ael:
+          user: '%env(empresa:SCRAPER_AEL_USER)%'
+          password: '%env(empresa:SCRAPER_AEL_PASSWORD)%'
           empleador: pta
 
     SERVILABOR:
@@ -97,6 +99,8 @@ app:
         EMPLEADOS_SOS:
           convenios: false
 
-      scrapper:
+      scraper:
         ael:
+          user: '%env(empresa:SCRAPER_AEL_USER)%'
+          password: '%env(empresa:SCRAPER_AEL_PASSWORD)%'
           empleador: servilabor
