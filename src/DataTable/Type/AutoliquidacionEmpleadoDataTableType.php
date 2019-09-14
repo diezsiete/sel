@@ -56,7 +56,8 @@ class AutoliquidacionEmpleadoDataTableType implements DataTableTypeInterface
                 'actions' => [
                     'route' => ['app_certificado_aporte', ['id' => 'id']],
                     'icon' => 'fas fa-file-pdf',
-                    'target' => '_blank'
+                    'target' => '_blank',
+                    'tooltip' => 'Ver'
                 ]
             ])
 

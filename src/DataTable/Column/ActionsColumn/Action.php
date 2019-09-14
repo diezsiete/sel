@@ -20,6 +20,16 @@ abstract class Action
             $attributes['icon'] = $this->options['icon'];
         }
 
+        if(!isset($attributes['disabled']) && isset($this->options['target'])){
+            $attributes['target'] = $this->options['target'];
+        }
+
+        if(isset($this->options['tooltip'])) {
+            $attributes['data-toggle'] = "tooltip";
+            $attributes['title'] = $this->options['tooltip'];
+            $attributes['data-placement'] = 'top';
+        }
+
         $data = $this->options['data'] ?? null;
         if (is_callable($data)) {
             $value = call_user_func($data, $context, $value);
@@ -31,10 +41,6 @@ abstract class Action
             }
         } elseif (null === $value) {
             $attributes = false;
-        }
-
-        if(!isset($attributes['disabled']) && isset($this->options['target'])){
-            $attributes['target'] = $this->options['target'];
         }
 
         return $attributes;

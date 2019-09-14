@@ -33,7 +33,7 @@
             <script>
                 $(function () {
                     $('#datatable')
-                        .initDataTables({{ datatable_settings(datatable) }}, {fixedHeader: true})
+                        .selInitDataTables({{ sel_datatable_settings(datatable) }})
                         .then(dt => {
                             {% if searching %}
                             const search = () => dt.search($('#search-dt-text').val()).draw();

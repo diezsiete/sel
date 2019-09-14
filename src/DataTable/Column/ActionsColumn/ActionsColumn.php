@@ -41,6 +41,7 @@ class ActionsColumn extends AbstractColumn
         if(!is_int(array_key_first($options['actions']))) {
             $options['actions'] = [$options['actions']];
         }
+
         foreach($options['actions'] as $action) {
             if(isset($action['route'])) {
                 if ($this->locator->has(ActionRoute::class)) {

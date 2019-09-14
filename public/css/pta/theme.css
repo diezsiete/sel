@@ -7153,10 +7153,6 @@ html.dark .progress {
 	background: #333940;
 }
 
-html.dark .arrow {
-	background-image: url(../img/arrows-dark.png);
-}
-
 html.dark .thumbnail,
 html.dark .img-thumbnail,
 html.dark .thumb-info {

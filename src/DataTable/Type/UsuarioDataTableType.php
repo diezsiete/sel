@@ -68,12 +68,14 @@ class UsuarioDataTableType implements DataTableTypeInterface
         if($this->security->isGranted(['ROLE_ADMIN_USUARIOS'], $this->security->getUser())) {
             $actions = [[
                 'route' => ['admin_usuarios_editar', ['id' => 'id']],
-                'icon' => 'fas fa-pencil-alt'
+                'icon' => 'fas fa-pencil-alt',
+                'tooltip' => 'Editar'
             ]];
             if($this->security->isGranted(['ROLE_ALLOWED_TO_SWITCH'], $this->security->getUser())) {
                 $actions[] = [
                     'route' => ['app_comprobantes', ['_switch_user']],
-                    'icon' => 'fas fa-user-cog'
+                    'icon' => 'fas fa-user-cog',
+                    'tooltip' => 'Impersonar'
                 ];
             }
             $dataTable->add('actions', ActionsColumn::class, [

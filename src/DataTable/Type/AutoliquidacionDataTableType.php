@@ -57,7 +57,8 @@ class AutoliquidacionDataTableType implements DataTableTypeInterface
                 'orderable' => false,
                 'actions' => [
                     'route' => ['admin_autoliquidacion_detalle', ['codigo' => 'convenio.codigo', 'periodo' => 'periodoFormat']],
-                    'icon' => 'fas fa-eye'
+                    'icon' => 'fas fa-eye',
+                    'tooltip' => 'Ver'
                 ]
             ])
             ->addOrderBy('id', DataTable::SORT_DESCENDING)
