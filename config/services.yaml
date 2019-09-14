@@ -49,9 +49,16 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-    App\Service\Scraper\HvScraper:
-        arguments:
-            $logger: '@monolog.logger.scraper'
+
+    App\DataTable\Column\ActionsColumn\ActionRoute:
+        public: true
+        shared: false
+
+    App\Service\Evaluacion\Mensaje:
+        autowire: false
+
+    App\Service\Hv\HvWizard\HvWizard:
+        factory: '@App\Service\Hv\HvWizard\HvWizardFactory'
 
     App\Service\NovasoftSsrs\ReportServer:
         arguments:
@@ -59,19 +66,19 @@ services:
             - '%env(NOVASOFT_SSRS_PASSWORD)%'
             - '%env(NOVASOFT_SSRS_URL)%'
 
-    App\Service\Hv\HvWizard\HvWizard:
-        factory: '@App\Service\Hv\HvWizard\HvWizardFactory'
-
-    App\Service\Evaluacion\Mensaje:
-        autowire: false
-
-    App\DataTable\Column\ActionsColumn\ActionRoute:
+    App\Service\Pdf\PdfCartaLaboral:
         public: true
-        shared: false
+    App\Service\Pdf\PdfCartaLaboralServilabor:
+        public: true
+
+    App\Service\Scraper\HvScraper:
+        arguments:
+            $logger: '@monolog.logger.scraper'
+
+
 
     Knp\Menu\Twig\MenuExtension:
         alias: knp_menu.twig.extension
-
 
     app.menu_builder:
         class: App\Menu\MenuBuilder

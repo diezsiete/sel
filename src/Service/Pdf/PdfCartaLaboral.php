@@ -8,10 +8,11 @@ use App\Service\NovasoftSsrs\Entity\ReporteCertificadoLaboral;
 
 class PdfCartaLaboral extends PdfBase
 {
+    protected $lineHeight = 8;
+    protected $firmaImageWidth = 73;
 
     public function Header()
     {
-
     }
 
     public function render(ReporteCertificadoLaboral $certificado)
@@ -19,10 +20,6 @@ class PdfCartaLaboral extends PdfBase
         $compania = $this->configuracion->getRazon();
         $nit = $this->configuracion->getNit();
         $logoImg = $this->configuracion->getLogoPdf();
-        $firmaImg = $this->configuracion->certificadoLaboral()->getFirma(true);
-        $firmante = $this->configuracion->certificadoLaboral()->getFirmante();
-        $firmanteCargo = $this->configuracion->certificadoLaboral()->getCargo();
-        $firmanteContacto = $this->configuracion->certificadoLaboral()->getContacto();
 
         $eusuaria = $certificado->getEmpresaUsuaria();
         $cargo = $certificado->getCargo();
@@ -55,8 +52,6 @@ class PdfCartaLaboral extends PdfBase
         $line_height = 8;
         $font_size = 12;
         $image_width = 38;
-        // $firma_img_width = 58;
-        $firma_img_width = 28;
 
         $this->AddPage();
         $this->SetFont('Arial', '', $font_size);
@@ -96,16 +91,30 @@ class PdfCartaLaboral extends PdfBase
         $this->Ln();
         $this->Cell(0, $line_height, 'Atentamente, ', 0, 1);
         $this->Ln();
-        $this->Image($firmaImg , $this->getLMargin() + 3, $this->getY(), $firma_img_width + 15);
-        $this->Ln();
-        $this->Ln();
-        $this->Ln();
-        $this->Ln();
-        $this->Cell(0, $line_height - 2, $firmante, 0, 1);
-        $this->Cell(0, $line_height - 2, $firmanteCargo, 0, 1);
-        $this->Cell(0, $line_height - 2, $firmanteContacto, 0, 1);
 
-
-        return $this->Output();
+        return $this
+            ->firma()
+            ->Output();
     }
+
+    protected function firma()
+    {
+        $this->Image(
+            $this->configuracion->certificadoLaboral()->getFirma(true),
+            $this->getLMargin() + 3,
+            $this->getY(),
+            $this->firmaImageWidth
+        );
+        $this->Ln();
+        $this->Ln();
+        // $this->Ln();
+        // $this->Ln();
+        $this->Cell(0, $this->lineHeight - 2, $this->configuracion->certificadoLaboral()->getFirmante(), 0, 1);
+        $this->Cell(0, $this->lineHeight - 2, $this->configuracion->certificadoLaboral()->getCargo(), 0, 1);
+        $this->Cell(0, $this->lineHeight - 2, $this->configuracion->certificadoLaboral()->getContacto(), 0, 1);
+
+        return $this;
+    }
+
+
 }
