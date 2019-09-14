@@ -8,12 +8,14 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class ProfileFormType extends AbstractType
@@ -62,7 +64,10 @@ class ProfileFormType extends AbstractType
         $usuario = $options['data'] ?? null;
 
         $this
-            ->add('identificacion')
+            ->add('identificacion', TextType::class, [
+                'disabled' => $this->getUser()->esRol('ROLE_EMPLEADO') &&
+                              !$this->security->isGranted(['ROLE_ALLOWED_TO_SWITCH'], $this->getUser())
+            ])
             ->add('email')
             ->add('primerNombre')
             ->add('segundoNombre')
@@ -133,5 +138,13 @@ class ProfileFormType extends AbstractType
             $this->builder->add($child, $type, $options);
         }
         return $this;
+    }
+
+    /**
+     * @return Usuario|UserInterface
+     */
+    private function getUser()
+    {
+        return $this->security->getUser();
     }
 }

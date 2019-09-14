@@ -22,11 +22,11 @@
 
         <div class="col-lg-9">
             {{- form_widget(form, widget_attr) -}}
+            {{- form_errors(form) -}}
             {{- form_help(form) -}}
         </div>
     </div>
 {%- endblock form_row %}
-
 
 
 {% block body_header %}
