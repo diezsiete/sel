@@ -66,7 +66,9 @@ class ServicioEmpleadosController extends BaseController
     {
         $identificacion = $this->getUser()->getIdentificacion();
         $certificado = $reportes->getCertificadoLaboral($identificacion);
-        // TODO no hay certificado
+        if(!$certificado) {
+            throw $this->createNotFoundException("Recurso no existe");
+        }
         return $this->renderPdf($pdf->render($certificado));
     }
 
