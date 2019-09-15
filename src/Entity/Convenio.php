@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Entity\Autoliquidacion\Autoliquidacion;
 use App\Repository\EmpleadoRepository;
+use App\Repository\RepresentanteRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -194,7 +195,6 @@ class Convenio implements \JsonSerializable
         } else {
             return $this->representantes;
         }
-
     }
 
     public function addRepresentante(Representante $representante): self
@@ -218,6 +218,28 @@ class Convenio implements \JsonSerializable
         }
 
         return $this;
+    }
+
+    /**
+     * @return ArrayCollection|Representante[]
+     */
+    public function getEncargados()
+    {
+        return $this->representantes->matching(RepresentanteRepository::encargadoCriteria());
+    }
+
+    /**
+     * @return ArrayCollection|Representante[]|string[]
+     */
+    public function getBcc($emails = false)
+    {
+        $bccs = $this->representantes->matching(RepresentanteRepository::bccCriteria());
+        if($emails) {
+            $bccs = array_map(function (Representante $item) {
+                return $item->getEmail();
+            }, $bccs->toArray());
+        }
+        return $bccs;
     }
 
     /**

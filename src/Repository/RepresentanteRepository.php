@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Representante;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\Criteria;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -17,6 +18,16 @@ class RepresentanteRepository extends ServiceEntityRepository
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Representante::class);
+    }
+
+    public static function encargadoCriteria()
+    {
+        return Criteria::create()->where(Criteria::expr()->eq('encargado', true));
+    }
+
+    public static function bccCriteria()
+    {
+        return Criteria::create()->where(Criteria::expr()->eq('bcc', true));
     }
 
     // /**

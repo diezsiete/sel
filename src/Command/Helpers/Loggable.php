@@ -113,25 +113,29 @@ trait Loggable
      *
      * Example: User logs in, SQL logs.
      *
-     * @param string $message
-     * @param array  $context
+     * @param string|int $message
+     * @param array|string  $context
      *
      * @return void
      */
-    public function info($message, array $context = array())
+    public function info($message, $context = [])
     {
+        if(is_int($message)) {
+            $message = str_pad($context, strlen($context) + $message, " ", STR_PAD_LEFT);
+            $context = func_get_arg(2);
+        }
         $this->logger->info($message, $context);
     }
 
     /**
      * Detailed debug information.
      *
-     * @param string $message
-     * @param array  $context
+     * @param int|string $message
+     * @param string|array  $context
      *
      * @return void
      */
-    public function debug($message, array $context = array())
+    public function debug($message, $context = array())
     {
         $this->logger->debug($message, $context);
     }

@@ -12,7 +12,7 @@ use ZipArchive;
 class ExportZip extends Export
 {
 
-    public function generate(Autoliquidacion $autoliquidacion, ?Usuario $usuario = null)
+    public function generate(Autoliquidacion $autoliquidacion, $usuario = null)
     {
         $empleados = $this->getAutoliquidacionEmpleadosByRepresentante($autoliquidacion, $usuario);
 
@@ -38,5 +38,13 @@ class ExportZip extends Export
     public function stream(Autoliquidacion $autoliquidacion, ?Usuario $usuario = null)
     {
         return null;
+    }
+
+    public function getSize(Autoliquidacion $autoliquidacion, ?Usuario $usuario = null)
+    {
+        return $this->fileManager->getFileSize(
+            $autoliquidacion->getPeriodo(),
+            $autoliquidacion->getConvenio()->getCodigo(),
+            FileManager::DIR_EXPORT_ZIP, 'MB');
     }
 }

@@ -3,6 +3,7 @@
 
 namespace App\Service\Autoliquidacion;
 
+use App\Service\Utils;
 use DateTimeInterface;
 use Exception;
 use League\Flysystem\FileNotFoundException;
@@ -20,12 +21,17 @@ class FileManager
     private $privateFilesystem;
     private $kernelProjectDir;
     private $privateUploadsBaseUrl;
+    /**
+     * @var Utils
+     */
+    private $utils;
 
-    public function __construct(FilesystemInterface $privateUploadFilesystem, $kernelProjectDir, $privateUploadsBaseUrl)
+    public function __construct(FilesystemInterface $privateUploadFilesystem, $kernelProjectDir, $privateUploadsBaseUrl, Utils $utils)
     {
         $this->privateFilesystem = $privateUploadFilesystem;
         $this->kernelProjectDir = $kernelProjectDir;
         $this->privateUploadsBaseUrl = $privateUploadsBaseUrl;
+        $this->utils = $utils;
     }
 
     public function uploadPdfResource(DateTimeInterface $periodo, $ident, $resource)
@@ -116,5 +122,11 @@ class FileManager
             $this->privateFilesystem->write($path, "");
         }
         return $this->kernelProjectDir . $this->privateUploadsBaseUrl . $path;
+    }
+
+    public function getFileSize(DateTimeInterface $periodo, $name, $dir = null, $format = 'B')
+    {
+        $size = $this->privateFilesystem->getSize($this->getPath($periodo, $name, $dir));
+        return $format === 'B' ? $size : $this->utils->byteToSize($size, 1, $format);
     }
 }

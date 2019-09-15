@@ -139,7 +139,7 @@ class Autoliquidacion
         return $this;
     }
 
-    public function getEmailSended(): ?bool
+    public function isEmailSended(): ?bool
     {
         return $this->emailSended;
     }
