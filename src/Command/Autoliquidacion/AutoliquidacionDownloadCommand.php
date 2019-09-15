@@ -11,10 +11,7 @@ use App\Command\Helpers\SelCommandTrait;
 use App\Command\Helpers\TraitableCommand\TraitableCommand;
 use App\Entity\Autoliquidacion\Autoliquidacion;
 use App\Entity\Autoliquidacion\AutoliquidacionEmpleado;
-use App\Repository\Autoliquidacion\AutoliquidacionEmpleadoRepository;
-use App\Repository\Autoliquidacion\AutoliquidacionRepository;
-use App\Service\Configuracion\Configuracion;
-use App\Service\Scraper\AutoliquidacionScraper;
+use App\Service\Autoliquidacion\Scraper;
 use App\Service\Scraper\Exception\ScraperConflictException;
 use App\Service\Scraper\Exception\ScraperException;
 use App\Service\Scraper\Exception\ScraperNotFoundException;
@@ -37,7 +34,7 @@ class AutoliquidacionDownloadCommand extends TraitableCommand
     protected static $defaultName = 'sel:autoliquidacion:download';
 
     /**
-     * @var AutoliquidacionScraper
+     * @var Scraper
      */
     private $scraper;
 
@@ -48,7 +45,7 @@ class AutoliquidacionDownloadCommand extends TraitableCommand
 
 
 
-    public function __construct(Reader $annotationReader, EventDispatcherInterface $eventDispatcher, AutoliquidacionScraper $scraper)
+    public function __construct(Reader $annotationReader, EventDispatcherInterface $eventDispatcher, Scraper $scraper)
     {
         parent::__construct($annotationReader, $eventDispatcher);
         $this->scraper = $scraper;

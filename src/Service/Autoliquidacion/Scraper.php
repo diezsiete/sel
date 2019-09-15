@@ -1,34 +1,26 @@
 <?php
 
+namespace App\Service\Autoliquidacion;
 
-namespace App\Service\Scraper;
-
-
-use App\Service\AutoliquidacionService;
 use App\Service\Scraper\Exception\ScraperClientException;
 use App\Service\Scraper\Exception\ScraperConflictException;
 use App\Service\Scraper\Exception\ScraperException;
 use App\Service\Scraper\Exception\ScraperNotFoundException;
-use App\Service\Scraper\Response\ScraperResponse;
+use App\Service\Scraper\ScraperClient;
 use DateTimeInterface;
-use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
-class AutoliquidacionScraper
+class Scraper
 {
     /**
      * @var ScraperClient
      */
     private $scraperClient;
     /**
-     * @var AutoliquidacionService
+     * @var FileManager
      */
     private $autoliquidacionService;
 
-    public function __construct(ScraperClient $scraperClient, AutoliquidacionService $autoliquidacionService)
+    public function __construct(ScraperClient $scraperClient, FileManager $autoliquidacionService)
     {
         $this->scraperClient = $scraperClient;
         $this->autoliquidacionService = $autoliquidacionService;

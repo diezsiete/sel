@@ -15,7 +15,7 @@ use App\Entity\Autoliquidacion\AutoliquidacionEmpleado;
 use App\Entity\Convenio;
 use App\Repository\Autoliquidacion\AutoliquidacionEmpleadoRepository;
 use App\Repository\Autoliquidacion\AutoliquidacionRepository;
-use App\Service\AutoliquidacionService;
+use App\Service\Autoliquidacion\DatabaseActions;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\ORMException;
@@ -37,7 +37,7 @@ class AutoliquidacionCreateCommand extends TraitableCommand
 
 
     /**
-     * @var AutoliquidacionService
+     * @var DatabaseActions
      */
     private $autoliquidacionService;
     /**
@@ -52,7 +52,7 @@ class AutoliquidacionCreateCommand extends TraitableCommand
 
 
     public function __construct(Reader $reader, EventDispatcherInterface $dispatcher,
-                                AutoliquidacionService $autoliquidacionService,
+                                DatabaseActions $autoliquidacionService,
                                 AutoliquidacionRepository $autoliquidacionRepository,
                                 AutoliquidacionEmpleadoRepository $autoliquidacionEmpleadoRepository)
     {
@@ -118,20 +118,6 @@ class AutoliquidacionCreateCommand extends TraitableCommand
             $this->em->clear();
         }
     }
-
-//    protected function xxxx()
-//    {
-//        if($overwrite) {
-//            $this->autoliquidacionService->deleteAutoliquidacion($periodo, $convenio);
-//        } else {
-//            $oldAutoliquidacion = $this->autoliquidacionRepository->findBy(['convenio' => $convenio, 'periodo' => $periodo]);
-//            if($oldAutoliquidacion) {
-//                throw new \Exception(sprintf("Autoliquidacion del periodo '%s' para el convenio '%s' ya existe"),
-//                    $periodo->format('Y-m'), $convenio->getCodigo());
-//            }
-//        }
-//
-//    }
 
     /**
      * @param string|Convenio $convenio codigo o objeto

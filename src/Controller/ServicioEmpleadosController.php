@@ -7,14 +7,13 @@ use App\DataTable\Type\AutoliquidacionEmpleadoDataTableType;
 use App\DataTable\Type\ReporteNominaDataTableType;
 use App\Entity\Autoliquidacion\AutoliquidacionEmpleado;
 use App\Entity\ReporteNomina;
-use App\Service\AutoliquidacionService;
+use App\Service\Autoliquidacion\FileManager;
 use App\Service\Pdf\PdfCartaLaboral;
 use App\Service\ReportesServicioEmpleados;
 use App\Service\ServicioEmpleados\Reportes;
 use Omines\DataTablesBundle\DataTableFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ServicioEmpleadosController extends BaseController
@@ -117,7 +116,7 @@ class ServicioEmpleadosController extends BaseController
      * @Route("/sel/se/certificado-aporte/{id}", name="app_certificado_aporte")
      * @IsGranted("REPORTE_MANAGE", subject="autoliquidacionEmpleado")
      */
-    public function certificadoAporte(AutoliquidacionEmpleado $autoliquidacionEmpleado, AutoliquidacionService $autoliquidacionService)
+    public function certificadoAporte(AutoliquidacionEmpleado $autoliquidacionEmpleado, FileManager $autoliquidacionService)
     {
         return $this->renderStream(function () use ($autoliquidacionEmpleado, $autoliquidacionService) {
             return $autoliquidacionService->readStream($autoliquidacionEmpleado);

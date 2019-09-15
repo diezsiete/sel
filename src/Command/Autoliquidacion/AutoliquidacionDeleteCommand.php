@@ -11,7 +11,7 @@ use App\Command\Helpers\SelCommandTrait;
 use App\Command\Helpers\TraitableCommand\TraitableCommand;
 use App\Entity\Autoliquidacion\Autoliquidacion;
 use App\Repository\Autoliquidacion\AutoliquidacionRepository;
-use App\Service\AutoliquidacionService;
+use App\Service\Autoliquidacion\FileManager;
 use DateTimeInterface;
 use Doctrine\Common\Annotations\Reader;
 use Symfony\Component\Console\Input\InputInterface;
@@ -38,13 +38,13 @@ class AutoliquidacionDeleteCommand extends TraitableCommand
      */
     private $autoliquidaciones;
     /**
-     * @var AutoliquidacionService
+     * @var FileManager
      */
     private $autoliquidacionService;
 
     public function __construct(Reader $reader, EventDispatcherInterface $dispatcher,
                                 AutoliquidacionRepository $autoliquidacionRepository,
-                                AutoliquidacionService $autoliquidacionService)
+                                FileManager $autoliquidacionService)
     {
         parent::__construct($reader, $dispatcher);
         $this->autoliquidacionRepository = $autoliquidacionRepository;

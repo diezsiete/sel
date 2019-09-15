@@ -10,7 +10,7 @@ use App\Entity\Autoliquidacion\Autoliquidacion;
 use App\Entity\Autoliquidacion\AutoliquidacionEmpleado;
 use App\Entity\Convenio;
 use App\Entity\Empleado;
-use App\Service\AutoliquidacionService;
+use App\Service\Autoliquidacion\FileManager;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use League\Flysystem\FilesystemInterface;
@@ -34,13 +34,13 @@ class MigrationAutoliquidacionCommand extends MigrationCommand
      */
     private $filesystem;
     /**
-     * @var AutoliquidacionService
+     * @var FileManager
      */
     private $autoliquidacionService;
 
 
     public function __construct(Reader $annotationReader, EventDispatcherInterface $eventDispatcher,
-                                ManagerRegistry $managerRegistry, AutoliquidacionService $autoliquidacionService,
+                                ManagerRegistry $managerRegistry, FileManager $autoliquidacionService,
                                 FilesystemInterface $migrationAutoliquidacionAdapterFilesystem)
     {
         $this->periodoDescription = 'El periodo desde donde se empiza a migrar. Especifique mes en formato Y-m';

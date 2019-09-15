@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Service;
+namespace App\Service\Autoliquidacion;
 
 
 use App\Entity\Autoliquidacion\Autoliquidacion;
@@ -14,17 +14,9 @@ use App\Repository\Autoliquidacion\AutoliquidacionRepository;
 use App\Repository\UsuarioRepository;
 use DateTimeInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
-use League\Flysystem\FileNotFoundException;
-use League\Flysystem\FilesystemInterface;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class AutoliquidacionService
+class DatabaseActions
 {
-    /**
-     * @var FilesystemInterface
-     */
-    private $privateFilesystem;
     /**
      * @var EntityManagerInterface
      */
@@ -41,69 +33,21 @@ class AutoliquidacionService
      * @var AutoliquidacionEmpleadoRepository
      */
     private $autoliquidacionEmpleadoRepository;
+    /**
+     * @var FileManager
+     */
+    private $fileManager;
 
-    public function __construct(FilesystemInterface $privateUploadFilesystem, EntityManagerInterface $em,
+    public function __construct(EntityManagerInterface $em,
                                 UsuarioRepository $usuarioRepository, AutoliquidacionRepository $autoliquidacionRepository,
-                                AutoliquidacionEmpleadoRepository $autoliquidacionEmpleadoRepository)
+                                AutoliquidacionEmpleadoRepository $autoliquidacionEmpleadoRepository, FileManager $fileManager)
     {
-        $this->privateFilesystem = $privateUploadFilesystem;
         $this->em = $em;
         $this->usuarioRepository = $usuarioRepository;
         $this->autoliquidacionRepository = $autoliquidacionRepository;
         $this->autoliquidacionEmpleadoRepository = $autoliquidacionEmpleadoRepository;
+        $this->fileManager = $fileManager;
     }
-
-    public function uploadPdfResource(DateTimeInterface $periodo, $ident, $resource)
-    {
-        $path = $this->getPdfPath($periodo, $ident);
-        $this->privateFilesystem->putStream($path, $resource);
-
-        if (is_resource($resource)) {
-            fclose($resource);
-        }
-    }
-
-    public function deletePdf(?DateTimeInterface $periodo = null, $ident = null)
-    {
-        $path = $this->getPdfPath($periodo, $ident);
-        if($this->privateFilesystem->has($path)) {
-            $ident ? $this->privateFilesystem->delete($path) : $this->privateFilesystem->deleteDir($path);
-        }
-    }
-
-    /**
-     * @resource
-     * @param DateTimeInterface|AutoliquidacionEmpleado $periodo
-     * @param string|null $ident
-     * @return false|resource
-     * @throws FileNotFoundException
-     */
-    public function readStream($periodo, $ident = null)
-    {
-        if($ident === null || $periodo instanceof AutoliquidacionEmpleado) {
-            $autoliquidacionEmpleado = $periodo;
-            $periodo = $autoliquidacionEmpleado->getAutoliquidacion()->getPeriodo();
-            $ident = $autoliquidacionEmpleado->getEmpleado()->getUsuario()->getIdentificacion();
-        }
-
-        $path = $this->getPdfPath($periodo, $ident);
-        $resource = $this->privateFilesystem->readStream($path);
-        if($resource === false) {
-            throw new Exception(sprintf("Error abriendo stream para '%s'", $path));
-        }
-        return $resource;
-    }
-
-    protected function getPdfPath(?DateTimeInterface $periodo = null, $ident = null)
-    {
-        $path = "/autoliquidaciones/pdfs/";
-        if($periodo) {
-            $periodoDir = $periodo->format('Y-m');
-            $path .= "/$periodoDir" . ($ident ? "/$ident.pdf" : "");
-        }
-        return $path;
-    }
-
 
     public function createAutoliquidacion(Convenio $convenio, DateTimeInterface $periodo, ?Usuario $usuario)
     {
@@ -130,14 +74,14 @@ class AutoliquidacionService
         if($convenio) {
             $criteria['convenio'] = $convenio;
         } else {
-            $this->deletePdf($periodo);
+            $this->fileManager->deletePdf($periodo);
         }
         $autoliquidaciones = $this->autoliquidacionRepository->findBy($criteria);
         foreach($autoliquidaciones as $autoliquidacion) {
             if($convenio) {
                 $empleadosIdentificaciones = $this->autoliquidacionRepository->getEmpleadosIdentificaciones($autoliquidacion);
                 foreach($empleadosIdentificaciones as $ident) {
-                    $this->deletePdf($periodo, $ident);
+                    $this->fileManager->deletePdf($periodo, $ident);
                 }
             }
             $this->em->remove($autoliquidacion);
@@ -157,7 +101,7 @@ class AutoliquidacionService
             $empleado = $autoliquidacionEmpleado->getEmpleado();
         }
         $autoliquidacion = $autoliquidacionEmpleado->getAutoliquidacion();
-        $this->deletePdf($periodo, $empleado->getUsuario()->getIdentificacion());
+        $this->fileManager->deletePdf($periodo, $empleado->getUsuario()->getIdentificacion());
         $autoliquidacion->removeEmpleado($autoliquidacionEmpleado);
         $autoliquidacion->calcularPorcentajeEjecucion();
     }
