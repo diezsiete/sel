@@ -85,4 +85,20 @@ class BaseController extends AbstractController
 
         return $response;
     }
+
+    protected function renderZip($filePath, $fileName)
+    {
+        ob_start();
+        readfile($filePath);
+        return new Response(ob_get_clean(), Response::HTTP_OK,[
+            "Pragma" =>  "public",
+            "Expires: 0",
+            "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
+            "Content-Description" => "File Transfer",
+            "Content-type" => "application/octet-stream",
+            "Content-Disposition" => "attachment; filename=\"" . $fileName . "\"",
+            "Content-Transfer-Encoding" => "binary",
+            "Content-Length" => filesize($filePath)
+        ]);
+    }
 }

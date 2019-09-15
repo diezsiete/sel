@@ -53,7 +53,12 @@ abstract class Export
         }
     }
 
-    public abstract function generate(Autoliquidacion $autoliquidacion, ?Usuario $usuario = null): Export;
+    /**
+     * @param Autoliquidacion $autoliquidacion
+     * @param Usuario|null $usuario
+     * @return string
+     */
+    public abstract function generate(Autoliquidacion $autoliquidacion, ?Usuario $usuario = null);
 
     public abstract function stream(Autoliquidacion $autoliquidacion, ?Usuario $usuario = null);
 }

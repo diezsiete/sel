@@ -10,7 +10,7 @@ use FPDI;
 
 class ExportPdf extends Export
 {
-    public function generate(Autoliquidacion $autoliquidacion, ?Usuario $usuario = null): Export
+    public function generate(Autoliquidacion $autoliquidacion, ?Usuario $usuario = null)
     {
         $empleados = $this->getAutoliquidacionEmpleadosByRepresentante($autoliquidacion, $usuario);
 
@@ -41,7 +41,8 @@ class ExportPdf extends Export
             FileManager::DIR_EXPORT_PDF
         );
 
-        return $this;
+        return $this->fileManager->getPath(
+            $autoliquidacion->getPeriodo(), $autoliquidacion->getConvenio()->getCodigo(), FileManager::DIR_EXPORT_PDF);
     }
 
     public function stream(Autoliquidacion $autoliquidacion, ?Usuario $usuario = null)

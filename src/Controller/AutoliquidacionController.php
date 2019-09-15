@@ -53,14 +53,17 @@ class AutoliquidacionController extends BaseController
     }
 
     /**
-     * @Route("/sel/admin/autoliquidaciones/export/{id}/{type}", name="admin_autoliquidacion_export", defaults={"type"="zip"})
+     * @Route("/sel/admin/autoliquidaciones/export/{id}/{type}", name="admin_autoliquidacion_export")
      */
     public function export(Autoliquidacion $autoliquidacion, $type, Export $export)
     {
-        return $this->renderStream(function () use($autoliquidacion, $export) {
-            return $export
-                ->generate($autoliquidacion, $this->getUser())
-                ->stream($autoliquidacion, $this->getUser());
-        }, 'application/pdf', $autoliquidacion->getConvenio()->getCodigo() . ".$type");
+        if($type === 'pdf') {
+            return $this->renderStream(function () use ($autoliquidacion, $export) {
+                $export->generate($autoliquidacion, $this->getUser());
+                return $export->stream($autoliquidacion, $this->getUser());
+            }, 'application/' . $type, $autoliquidacion->getConvenio()->getCodigo() . ".$type");
+        } else {
+            return $this->renderZip($export->generate($autoliquidacion), $autoliquidacion->getConvenio()->getCodigo() . ".zip");
+        }
     }
 }

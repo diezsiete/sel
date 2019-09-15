@@ -30,7 +30,7 @@ class FileManager
 
     public function uploadPdfResource(DateTimeInterface $periodo, $ident, $resource)
     {
-        $path = $this->getPdfPath($periodo, $ident);
+        $path = $this->getPath($periodo, $ident);
         $this->privateFilesystem->putStream($path, $resource);
 
         if (is_resource($resource)) {
@@ -40,13 +40,13 @@ class FileManager
 
     public function uploadPdfContents(DateTimeInterface $periodo, string $name, string $contents, $dir = null)
     {
-        $path = $this->getPdfPath($periodo, $name, $dir);
+        $path = $this->getPath($periodo, $name, $dir);
         $this->privateFilesystem->put($path, $contents);
     }
 
     public function deletePdf(?DateTimeInterface $periodo = null, $ident = null)
     {
-        $path = $this->getPdfPath($periodo, $ident);
+        $path = $this->getPath($periodo, $ident);
         if($this->privateFilesystem->has($path)) {
             $ident ? $this->privateFilesystem->delete($path) : $this->privateFilesystem->deleteDir($path);
         }
@@ -62,7 +62,7 @@ class FileManager
      */
     public function readStream(DateTimeInterface $periodo, $ident, $dir = null)
     {
-        $path = $this->getPdfPath($periodo, $ident, $dir);
+        $path = $this->getPath($periodo, $ident, $dir);
         $resource = $this->privateFilesystem->readStream($path);
         if($resource === false) {
             throw new Exception(sprintf("Error abriendo stream para '%s'", $path));
@@ -77,10 +77,15 @@ class FileManager
      */
     public function fileExists(DateTimeInterface $periodo, $ident)
     {
-        $archivoPath = $this->getPdfPath($periodo, $ident);
+        $archivoPath = $this->getPath($periodo, $ident);
         return $this->privateFilesystem->has($archivoPath)
-            ? $this->kernelProjectDir . $this->privateUploadsBaseUrl . $archivoPath
+            ? $this->getBasePath() . $archivoPath
             : false;
+    }
+
+    public function getBasePath()
+    {
+        return $this->kernelProjectDir . $this->privateUploadsBaseUrl;
     }
 
     /**
@@ -89,14 +94,27 @@ class FileManager
      * @param string $dir
      * @return string
      */
-    protected function getPdfPath(?DateTimeInterface $periodo = null, $ident = null, $dir = null)
+    public function getPath(?DateTimeInterface $periodo = null, $ident = null, $dir = null)
     {
+        $extension = 'pdf';
         $dir = $dir ? $dir : static::DIR_PDF;
+        if($dir === static::DIR_EXPORT_ZIP) {
+            $extension = 'zip';
+        }
         $path = "/autoliquidaciones". $dir;
         if($periodo) {
             $periodoDir = $periodo->format('Y-m');
-            $path .= "/$periodoDir" . ($ident ? "/$ident.pdf" : "");
+            $path .= "/$periodoDir" . ($ident ? "/$ident.{$extension}" : "");
         }
         return $path;
+    }
+
+    public function absoluteZipPath(DateTimeInterface $periodo, string $codigo)
+    {
+        $path = $this->getPath($periodo, $codigo, static::DIR_EXPORT_ZIP);
+        if (!$this->privateFilesystem->has($path)) {
+            $this->privateFilesystem->write($path, "");
+        }
+        return $this->kernelProjectDir . $this->privateUploadsBaseUrl . $path;
     }
 }
