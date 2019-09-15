@@ -34,13 +34,15 @@
                                         Servicios
                                     </a>
                                 </li>
-                                <li class="dropdown">
-                                    {% set active = app.request.attributes.get('_route') in ['vacante_listado', 'vacante_detalle', 'vacante_aplicar'] %}
-                                    <a class="dropdown-item dropdown-toggle {{ active ? 'active' : '' }}"
-                                       href="{{ path('vacante_listado') }}">
-                                        Ofertas de empleo
-                                    </a>
-                                </li>
+                                {% if is_granted('ASPIRANTES_MODULE') %}
+                                    <li class="dropdown">
+                                        {% set active = app.request.attributes.get('_route') in ['vacante_listado', 'vacante_detalle', 'vacante_aplicar'] %}
+                                        <a class="dropdown-item dropdown-toggle {{ active ? 'active' : '' }}"
+                                           href="{{ path('vacante_listado') }}">
+                                            Ofertas de empleo
+                                        </a>
+                                    </li>
+                                {% endif %}
                                 <li class="dropdown">
                                     {% set active = app.request.attributes.get('_route') in ['pta_noticias', 'pta_noticias_categoria', 'pta_noticia'] %}
                                     <a class="dropdown-item dropdown-toggle {{ active ? 'active' : '' }}"
