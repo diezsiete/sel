@@ -56,7 +56,11 @@ class ActionRoute extends Action
             if(is_int($routeParamKey)) {
                 $routeParams[$routeParamValue] = $value;
             } else {
-                $routeParams[$routeParamKey] = $this->propertyAccessor->getValue($context, $routeParamValue);
+                if(preg_match('/"(.+)"/', $routeParamValue, $matches)) {
+                    $routeParams[$routeParamKey] = $matches[1];
+                } else {
+                    $routeParams[$routeParamKey] = $this->propertyAccessor->getValue($context, $routeParamValue);
+                }
             }
         }
         return $this->router->generate($this->route, $routeParams);

@@ -119,7 +119,10 @@ class ServicioEmpleadosController extends BaseController
     public function certificadoAporte(AutoliquidacionEmpleado $autoliquidacionEmpleado, FileManager $autoliquidacionService)
     {
         return $this->renderStream(function () use ($autoliquidacionEmpleado, $autoliquidacionService) {
-            return $autoliquidacionService->readStream($autoliquidacionEmpleado);
+            return $autoliquidacionService->readStream(
+                $autoliquidacionEmpleado->getAutoliquidacion()->getPeriodo(),
+                $autoliquidacionEmpleado->getEmpleado()->getUsuario()->getIdentificacion()
+            );
         });
     }
 

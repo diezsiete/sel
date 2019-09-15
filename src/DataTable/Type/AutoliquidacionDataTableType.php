@@ -56,9 +56,22 @@ class AutoliquidacionDataTableType implements DataTableTypeInterface
                 'field' => 'a.id',
                 'orderable' => false,
                 'actions' => [
-                    'route' => ['admin_autoliquidacion_detalle', ['codigo' => 'convenio.codigo', 'periodo' => 'periodoFormat']],
-                    'icon' => 'fas fa-eye',
-                    'tooltip' => 'Ver'
+                    [
+                        'route' => ['admin_autoliquidacion_detalle', ['codigo' => 'convenio.codigo', 'periodo' => 'periodoFormat']],
+                        'icon' => 'fas fa-eye',
+                        'tooltip' => 'Ver'
+                    ],
+                    [
+                        'route' => ['admin_autoliquidacion_export', ['id' => 'id', 'type' => '"pdf"']],
+                        'icon' => 'fas fa-file-pdf',
+                        'tooltip' => 'PDF Unificado'
+                    ],
+                    [
+                        'route' => ['admin_autoliquidacion_export', ['id' => 'id', 'type' => '"zip"']],
+                        'icon' => 'far fa-file-archive',
+                        'target' => '_blank',
+                        'tooltip' => 'Comprimido Zip'
+                    ]
                 ]
             ])
             ->addOrderBy('id', DataTable::SORT_DESCENDING)

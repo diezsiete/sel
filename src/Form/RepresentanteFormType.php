@@ -64,7 +64,7 @@ class RepresentanteFormType extends AbstractType
                     'Bcc' => false,
                 ],
                 'expanded' => true,
-                'data' => !!$representante->getEncargado(),
+                'data' => !!$representante->isEncargado(),
                 "help" => "Es encargado de empleados o solo recibe copia de autoliquidaciones"
             ])
             ->add('usuario', ProfileFormType::class, [

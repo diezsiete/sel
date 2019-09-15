@@ -91,7 +91,7 @@ class Representante
         return $this;
     }
 
-    public function getEncargado(): ?bool
+    public function isEncargado(): ?bool
     {
         return $this->encargado;
     }

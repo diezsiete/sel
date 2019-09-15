@@ -3,8 +3,6 @@
 
 namespace App\Service\Autoliquidacion;
 
-
-use App\Entity\Autoliquidacion\AutoliquidacionEmpleado;
 use DateTimeInterface;
 use Exception;
 use League\Flysystem\FileNotFoundException;
@@ -12,14 +10,22 @@ use League\Flysystem\FilesystemInterface;
 
 class FileManager
 {
+    const DIR_PDF = "/pdfs";
+    const DIR_EXPORT_PDF = "/export/pdf";
+    const DIR_EXPORT_ZIP = "/export/zip";
+    
     /**
      * @var FilesystemInterface
      */
     private $privateFilesystem;
+    private $kernelProjectDir;
+    private $privateUploadsBaseUrl;
 
-    public function __construct(FilesystemInterface $privateUploadFilesystem)
+    public function __construct(FilesystemInterface $privateUploadFilesystem, $kernelProjectDir, $privateUploadsBaseUrl)
     {
         $this->privateFilesystem = $privateUploadFilesystem;
+        $this->kernelProjectDir = $kernelProjectDir;
+        $this->privateUploadsBaseUrl = $privateUploadsBaseUrl;
     }
 
     public function uploadPdfResource(DateTimeInterface $periodo, $ident, $resource)
@@ -32,6 +38,12 @@ class FileManager
         }
     }
 
+    public function uploadPdfContents(DateTimeInterface $periodo, string $name, string $contents, $dir = null)
+    {
+        $path = $this->getPdfPath($periodo, $name, $dir);
+        $this->privateFilesystem->put($path, $contents);
+    }
+
     public function deletePdf(?DateTimeInterface $periodo = null, $ident = null)
     {
         $path = $this->getPdfPath($periodo, $ident);
@@ -42,20 +54,15 @@ class FileManager
 
     /**
      * @resource
-     * @param DateTimeInterface|AutoliquidacionEmpleado $periodo
-     * @param string|null $ident
+     * @param DateTimeInterface $periodo
+     * @param string $ident
+     * @param null $dir
      * @return false|resource
      * @throws FileNotFoundException
      */
-    public function readStream($periodo, $ident = null)
+    public function readStream(DateTimeInterface $periodo, $ident, $dir = null)
     {
-        if($ident === null || $periodo instanceof AutoliquidacionEmpleado) {
-            $autoliquidacionEmpleado = $periodo;
-            $periodo = $autoliquidacionEmpleado->getAutoliquidacion()->getPeriodo();
-            $ident = $autoliquidacionEmpleado->getEmpleado()->getUsuario()->getIdentificacion();
-        }
-
-        $path = $this->getPdfPath($periodo, $ident);
+        $path = $this->getPdfPath($periodo, $ident, $dir);
         $resource = $this->privateFilesystem->readStream($path);
         if($resource === false) {
             throw new Exception(sprintf("Error abriendo stream para '%s'", $path));
@@ -63,9 +70,29 @@ class FileManager
         return $resource;
     }
 
-    protected function getPdfPath(?DateTimeInterface $periodo = null, $ident = null)
+    /**
+     * @param DateTimeInterface $periodo
+     * @param $ident
+     * @return string|false
+     */
+    public function fileExists(DateTimeInterface $periodo, $ident)
     {
-        $path = "/autoliquidaciones/pdfs/";
+        $archivoPath = $this->getPdfPath($periodo, $ident);
+        return $this->privateFilesystem->has($archivoPath)
+            ? $this->kernelProjectDir . $this->privateUploadsBaseUrl . $archivoPath
+            : false;
+    }
+
+    /**
+     * @param DateTimeInterface|null $periodo
+     * @param null $ident
+     * @param string $dir
+     * @return string
+     */
+    protected function getPdfPath(?DateTimeInterface $periodo = null, $ident = null, $dir = null)
+    {
+        $dir = $dir ? $dir : static::DIR_PDF;
+        $path = "/autoliquidaciones". $dir;
         if($periodo) {
             $periodoDir = $periodo->format('Y-m');
             $path .= "/$periodoDir" . ($ident ? "/$ident.pdf" : "");

@@ -8,6 +8,7 @@ use App\Entity\Usuario;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -67,7 +68,7 @@ class BaseController extends AbstractController
     }
 
 
-    protected function renderStream($callbackStream, $contentType = 'application/pdf')
+    protected function renderStream($callbackStream, $contentType = 'application/pdf', $dispositionAttachment = null)
     {
         $response = new StreamedResponse(function() use ($callbackStream){
             $outputStream = fopen('php://output', 'wb');
@@ -75,6 +76,12 @@ class BaseController extends AbstractController
             stream_copy_to_stream($fileStream, $outputStream);
         });
         $response->headers->set('Content-Type', $contentType);
+
+        if($dispositionAttachment) {
+            $disposition = HeaderUtils::makeDisposition(
+                HeaderUtils::DISPOSITION_ATTACHMENT, $dispositionAttachment);
+            $response->headers->set('Content-Disposition', $disposition);
+        }
 
         return $response;
     }
