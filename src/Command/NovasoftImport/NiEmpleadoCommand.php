@@ -8,6 +8,7 @@ use App\Command\Helpers\PeriodoOption;
 use App\Command\Helpers\RangoPeriodoOption;
 use App\Command\Helpers\SearchByConvenioOrEmpleado;
 use App\Command\Helpers\TraitableCommand\TraitableCommand;
+use App\Entity\Convenio;
 use App\Entity\Empleado;
 use App\Entity\Usuario;
 use App\Service\ReportesServicioEmpleados;
@@ -81,7 +82,6 @@ class NiEmpleadoCommand extends TraitableCommand
                 }
                 $this->em->flush();
             }
-
         } else {
             foreach($this->getEmpleados() as $empleado) {
                 $ssrsDb = $empleado->getSsrsDb();
@@ -109,7 +109,7 @@ class NiEmpleadoCommand extends TraitableCommand
 
         $empleadoMessage = "[empleado update]";
         if (!$this->updateEmpleado($empleado)) {
-            $this->em->persist($empleado);
+            $this->insertEmpleado($empleado);
             $empleadoMessage = "[empleado insert]";
         }
         $this->info(sprintf("%s %s %s %s %s", $empleado->getConvenio()->getCodigo(),
@@ -136,9 +136,20 @@ class NiEmpleadoCommand extends TraitableCommand
                 ->setFechaRetiro($empleado->getFechaRetiro())
                 ->setCargo($empleado->getCargo());
 
+            if(!$empleadoDb->getRepresentante() && $empleadoDb->getConvenio()->hasEncargados()) {
+                $empleadoDb->setRepresentante($empleado->getConvenio()->getEncargados()->first());
+            }
             $updated = true;
         }
         return $updated;
+    }
+
+    private function insertEmpleado(Empleado $empleado)
+    {
+        if($empleado->getConvenio()->hasEncargados()) {
+            $empleado->setRepresentante($empleado->getConvenio()->getEncargados()->first());
+        }
+        $this->em->persist($empleado);
     }
 
 

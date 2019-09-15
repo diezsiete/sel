@@ -229,6 +229,14 @@ class Convenio implements \JsonSerializable
     }
 
     /**
+     * @return bool
+     */
+    public function hasEncargados()
+    {
+        return $this->getEncargados()->count() > 0;
+    }
+
+    /**
      * @return ArrayCollection|Representante[]|string[]
      */
     public function getBcc($emails = false)
