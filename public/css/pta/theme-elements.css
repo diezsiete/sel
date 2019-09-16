@@ -6715,10 +6715,10 @@ html.lightbox-opened.sticky-header-active #header .header-body {
 	padding-right: 0 !important;
 }
 
-/* List */
+/* List
 .list li {
 	margin-bottom: 13px;
-}
+} */
 
 .list.pull-left li {
 	text-align: left;
@@ -10191,9 +10191,9 @@ html.boxed .slider-container {
 	text-decoration: none;
 }
 
-.sort-source.sort-source-style-2 {
+/*.sort-source.sort-source-style-2 {
 	margin: -10px auto;
-}
+}*/
 
 .sort-source.sort-source-style-2 > li {
 	float: none;

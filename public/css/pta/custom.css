@@ -88,13 +88,14 @@ html .featured-boxes-full .featured-box-full p{
 
 section.ciudades-nav {
     margin: 0;
-    padding: 10px 0;
+    padding: 0px 0;
     text-align: center;
     z-index: 3;
 }
 .ciudades-nav ul{
     padding-inline-start: 0;
     position: relative;
+    margin-bottom: 0;
 }
 .ciudades-nav .sort-source.sort-source-style-2 > li > a {
     padding-top: 30px;

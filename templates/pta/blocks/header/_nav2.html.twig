@@ -1,0 +1,161 @@
+<nav id="main-menu" class="main-menu" role="navigation">
+    <ul>
+        <li>
+            <a class="no-drop" href="{{ path('pta_servicios') }}">
+                Servicios
+            </a>
+        </li>
+        <li>
+            <a class="no-drop" href="{{ path('pta_nosotros') }}">
+                Nosotros
+            </a>
+        </li>
+        {% if is_granted('ASPIRANTES_MODULE') %}
+            <li>
+                {% set active = app.request.attributes.get('_route') in ['vacante_listado', 'vacante_detalle', 'vacante_aplicar'] %}
+                <a class="no-drop {{ active ? 'active' : '' }}" href="{{ path('vacante_listado') }}">
+                    Vacantes
+                </a>
+            </li>
+        {% endif %}
+        <li>
+            {% set active = app.request.attributes.get('_route') in ['pta_noticias', 'pta_noticias_categoria', 'pta_noticia'] %}
+            <a class="no-drop {{ active ? 'active' : '' }}" href="{{ path('pta_noticias') }}">
+                Noticias
+            </a>
+        </li>
+        <li>
+            <a class="no-drop" href="{{ path('pta_contacto') }}">
+                Contacto
+            </a>
+        </li>
+        {#<li><a href="https://www.paypal.com/us/webapps/mpp/home" id="header-personal" rel="menuitem"
+               aria-controls="submenu-personal" data-pa-click="header|personal"
+               aria-expanded="false">Personal</a>
+            <div class="menu-wrapper" id="submenu-personal" aria-labelledby="header-personal"
+                 role="region">
+                <a href="https://www.paypal.com/us/webapps/mpp/home" id="header-closing-personal"
+                   rel="menuitem" aria-controls="header-personal-menu"
+                   data-pa-click="header|closing|personal" tabindex="-1">Personal</a>
+                <ul id="header-personal-menu" class="subnav list">
+                    <li><a href="https://www.paypal.com/us/webapps/mpp/how-paypal-works/overview"
+                           data-pa-click="sub|what-is-paypal" data-highlight="header-personal"
+                           tabindex="-1">What is PayPal? <em>Learn how PayPal works
+                                in your
+                                everyday life</em></a></li>
+                    <li><a href="https://www.paypal.com/us/webapps/mpp/pay-online"
+                           data-pa-click="sub|pay_online" data-highlight="header-personal"
+                           tabindex="-1">Check Out Securely Online <em>Use your
+                                credit cards or other
+                                funds</em></a></li>
+                    <li><a href="https://www.paypal.com/us/webapps/mpp/credit-line-and-card-services"
+                           data-pa-click="sub|paypal-credit-cards" data-highlight="header-personal"
+                           tabindex="-1">PayPal Credit &amp; Cards <em>Our credit,
+                                debit,
+                                prepaid cards &amp; PayPal Credit</em></a></li>
+                    <li><a href="https://www.paypal.com/us/webapps/mpp/mobile-apps/paypal-app"
+                           data-pa-click="sub|mobile-apps" data-highlight="header-personal"
+                           tabindex="-1">PayPal App <em>Transfer money and track
+                                activity with our
+                                app</em></a></li>
+                    <li><a href="https://www.paypal.com/us/webapps/mpp/what-can-paypal-do"
+                           data-pa-click="sub|paypal-can-do-that" data-highlight="header-personal"
+                           tabindex="-1">PayPal Can Do That <em>Discover ways to
+                                manage and
+                                move your money</em></a></li>
+                    <li><a href="https://www.paypal.com/us/webapps/mpp/about-paypal-products"
+                           data-pa-click="sub|about-paypal-products"
+                           data-highlight="header-personal" tabindex="-1">Shopping
+                            and More <em>Deals, gift cards and
+                                donations</em></a></li>
+                </ul><a href="#Close" class="closer" role="button" title="Close"
+                        data-pa-click="header|close"><span
+                            class="accessAid">Close</span></a>
+            </div>
+        </li>
+        <li><a href="https://www.paypal.com/us/webapps/mpp/merchant" id="header-business"
+               rel="menuitem" aria-controls="submenu-business" data-pa-click="header|business"
+               aria-expanded="false">Business</a>
+            <div class="menu-wrapper" id="submenu-business" aria-labelledby="header-business"
+                 role="region">
+                <a href="https://www.paypal.com/us/webapps/mpp/merchant"
+                   id="header-closing-business" rel="menuitem" aria-controls="header-business-menu"
+                   data-pa-click="header|closing|business" tabindex="-1">Business</a>
+                <ul id="header-business-menu" class="subnav list lvl-2">
+                    <li><a href="https://www.paypal.com/us/webapps/mpp/merchant"
+                           data-pa-click="sub|merchant" data-highlight="header-business"
+                           tabindex="-1">All Solutions <em>Our business products and
+                                services</em></a></li>
+                    <li><a href="https://www.paypal.com/us/webapps/mpp/business-loans"
+                           data-pa-click="sub|business-loans" data-highlight="header-business"
+                           tabindex="-1">Business Loans <em>Fast and fair
+                                financing</em></a>
+                    </li>
+                    <li><a href="https://www.paypal.com/us/webapps/mpp/payment-methods"
+                           data-pa-click="sub|payment-methods" data-highlight="header-business"
+                           tabindex="-1">Payments <em>Take payments online and
+                                in-person</em></a></li>
+                    <li><a href="https://www.paypal.com/us/webapps/mpp/promotional-financing"
+                           data-pa-click="sub|promotional-financing"
+                           data-highlight="header-business" tabindex="-1">Credit for
+                            Your Customers <em>Promote financing to
+                                help sell more</em></a></li>
+                    <li><a href="https://www.paypal.com/us/webapps/mpp/business-services"
+                           data-pa-click="sub|online-business-services"
+                           data-highlight="header-business" tabindex="-1">Online
+                            Business Services <em>Solutions to build,
+                                run, and expand</em></a></li>
+                    <li><a href="https://www.paypal.com/us/webapps/mpp/commerce-platform"
+                           data-pa-click="sub|PayPal-commerce-platform"
+                           data-highlight="header-business" tabindex="-1">PayPal
+                            Commerce Platform <em>Marketplaces &amp;
+                                ecommerce providers</em></a></li>
+                    <li>
+                        <ul>
+                            <li><a href="https://www.paypal.com/us/smarthelp/home"
+                                   data-pa-click="sub-nav|help" data-highlight="header-business"
+                                   tabindex="-1">Help</a></li>
+                            <li><a href="https://www.paypal.com/us/webapps/mpp/merchant-fees"
+                                   data-pa-click="sub-nav|fees" data-highlight="header-business"
+                                   tabindex="-1">Fees</a></li>
+                            <li><a href="https://www.paypal.com/us/brc" data-pa-click="sub-nav|brc"
+                                   data-highlight="header-business" tabindex="-1"
+                                  >Business
+                                    Resource Center</a></li>
+                            <li><a href="https://www.paypal.com/us/webapps/mpp/set-up-paypal-business-account"
+                                   data-pa-click="sub-nav|setup-center"
+                                   data-highlight="header-business" tabindex="-1"
+                                  >Setup Center</a></li>
+                        </ul>
+                    </li>
+                </ul><a href="#Close" class="closer" role="button" title="Close"
+                        data-pa-click="header|close"><span
+                            class="accessAid">Close</span></a>
+            </div>
+        </li>
+        <li><a href="https://www.paypal.com/us/for-you/transfer-money/send-money"
+               data-pa-click="header|send-money-online" id="header-send" class="no-drop"
+               data-highlight="header-send">Send</a>
+        </li>#}
+    </ul>
+    <ul class="sublist">
+        <li><a href="https://www.paypal.com/webapps/mpp/account-selection" id="signup-button-mobile"
+               name="SignUp_header" class="btn btn-small btn-white-border signup-mobile"
+               data-pa-click="header|signup-mobile">Sign Up for Free</a></li>
+    </ul>
+
+</nav>
+
+
+<div id="header-buttons" class="header-buttons">
+
+    {% if is_granted('ASPIRANTES_MODULE') %}
+        <a href="{{ path('registro_datos_basicos') }}" id="signup-button" class="btn btn-small btn-signup">
+            Registrarse
+        </a>
+    {% endif %}
+
+    <a href="{{ path('app_login') }}" id="ul-btn" class="btn btn-small btn-primary">
+        Iniciar sesión
+    </a>
+</div>
