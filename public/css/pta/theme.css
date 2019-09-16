@@ -4973,9 +4973,9 @@ html.ie #header .header-column .header-extra-info .feature-box .feature-box-info
 	z-index: 5;
 }
 
-.page-header.page-header-sm {
+/*.page-header.page-header-sm {
 	padding: 30px 0;
-}
+}*/
 
 .page-header.page-header-sm h1 {
 	font-size: 22px;

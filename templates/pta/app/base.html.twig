@@ -3,6 +3,7 @@
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/sel/base.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/pta/admin.css') }}">
 {% endblock %}
 
 {% block main %}
@@ -31,7 +32,7 @@
         </div>
     </section>
 
-    <div class="container pb-1">
+    <div class="container pb-5">
         {% block body %}
             {{ parent() }}
         {% endblock %}

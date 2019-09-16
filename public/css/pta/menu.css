@@ -13,9 +13,6 @@
     clear: both
 }
 
-body.pp-header-open {
-    overflow-x: hidden
-}
 
 body #body {
     -webkit-transition: all .3s ease-out;
@@ -25,12 +22,18 @@ body #body {
 }
 
 @media (min-width: 1152px) {
-    body #main {
+    body #main{
         padding-top:0;
         -webkit-transition: padding-top .3s ease-out;
         -moz-transition: padding-top .3s ease-out;
         -ms-transition: padding-top .3s ease-out;
         transition: padding-top .3s ease-out
+    }
+    .pp-header+section[data-building-block=organism]:first-of-type {
+        -webkit-transition: top .3s ease-out;
+        -moz-transition: top .3s ease-out;
+        -ms-transition: top .3s ease-out;
+        transition: top .3s ease-out
     }
 }
 
@@ -71,6 +74,9 @@ body #body.menu-open #menu-button:after {
     body #body.menu-open #main {
         padding-top:160px
     }
+    body #body.menu-open .pp-header+section, body #body.menu-open .pp-header+section+.container, body #body.menu-open .pp-header+section+.container+footer{
+        top: 158px;
+    }
 }
 
 @media (min-width: 1152px) {
@@ -93,8 +99,6 @@ body #body.menu-close .pp-header.table-row>div {
 }
 
 .pp-header.table-row {
-    font-family: "pp-sans-small-regular",Helvetica Neue,Arial,sans-serif;
-    font-weight: normal;
     font-variant: normal;
     font-weight: bold;
     position: absolute;
@@ -175,13 +179,11 @@ body #body.menu-close .pp-header.table-row>div {
     cursor: pointer;
     display: inline-block;
     font-size: 12px;
-    font-family: "pp-sans-small-regular",Helvetica Neue,Arial,sans-serif;
-    font-weight: normal;
     font-variant: normal;
     line-height: 12px;
     min-width: 84px;
     overflow: hidden;
-    padding: 12px 15px;
+    padding: 12px 15px 12px 32px;
     position: absolute;
     text-align: center;
     text-decoration: none;
@@ -192,7 +194,6 @@ body #body.menu-close .pp-header.table-row>div {
     box-shadow: 0 0 0 1px #fff,0 0 0 1px #fff;
     top: 18px;
     left: 3.75%;
-    padding-left: 32px;
     z-index: 10
 }
 
@@ -361,7 +362,7 @@ body #body.menu-close .pp-header.table-row>div {
 
 @media (min-width: 1152px) {
     .pp-header.table-row .main-menu>ul>li>a {
-        padding:25px
+        padding:24px 25px
     }
 
     .pp-header.table-row .main-menu>ul>li>a:active,.pp-header.table-row .main-menu>ul>li>a:focus,.pp-header.table-row .main-menu>ul>li>a:hover,.pp-header.table-row .main-menu>ul>li>a.highlight,.pp-header.table-row .main-menu>ul>li>a.is-open {
@@ -416,16 +417,9 @@ body #body.menu-close .pp-header.table-row>div {
     box-sizing: border-box;
     color: #fff;
     cursor: pointer;
-    display: inline-block;
-    font-size: 12px;
-    font-family: "pp-sans-small-regular",Helvetica Neue,Arial,sans-serif;
-    font-weight: normal;
     font-variant: normal;
-    line-height: 12px;
     min-width: 84px;
     overflow: hidden;
-    padding: 12px 15px;
-    position: absolute;
     text-align: center;
     text-decoration: none;
     -ms-touch-action: none;
@@ -534,8 +528,6 @@ body #body.menu-close .pp-header.table-row>div {
 }
 
 .pp-header.table-row .main-menu .menu-wrapper a[rel="menuitem"] {
-    font-family: "pp-sans-small-regular",Helvetica Neue,Arial,sans-serif;
-    font-weight: normal;
     font-variant: normal;
     text-transform: uppercase;
     line-height: 2.7;
@@ -572,7 +564,6 @@ body #body.menu-close .pp-header.table-row>div {
     display: block;
     text-align: left;
     font-size: 15px;
-    font-family: "pp-sans-small-regular",Helvetica Neue,Arial,sans-serif;
     font-weight: normal;
     font-variant: normal;
     padding: 10px 0 10px 10px
@@ -580,8 +571,6 @@ body #body.menu-close .pp-header.table-row>div {
 
 @media (min-width: 1152px) {
     .pp-header.table-row .main-menu .menu-wrapper a {
-        font-family:"pp-sans-small-regular",Helvetica Neue,Arial,sans-serif;
-        font-weight: normal;
         font-variant: normal;
         font-weight: 300;
         -webkit-font-smoothing: auto;
@@ -666,7 +655,6 @@ body #body.menu-close .pp-header.table-row>div {
     }
 
     .pp-header.table-row .main-menu .menu-wrapper .subnav.lvl-2 li ul li a {
-        font-family: pp-sans-big-light,Helvetica Neue,Arial,sans-serif;
         padding: 0 0 5px 0
     }
 }
@@ -768,8 +756,6 @@ body #body.menu-close .pp-header.table-row>div {
         cursor: pointer;
         display: inline-block;
         font-size: 12px;
-        font-family: "pp-sans-small-regular",Helvetica Neue,Arial,sans-serif;
-        font-weight: normal;
         font-variant: normal;
         line-height: 12px;
         min-width: 84px;
@@ -966,5 +952,13 @@ nav ul{
 
     100% {
         background-image: none
+    }
+}
+
+@media (min-width: 1152px) {
+    .pp-header~* {
+        position:relative;
+        top:0;
+        transition:all .3s ease-out;
     }
 }

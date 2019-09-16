@@ -5,7 +5,12 @@
 
 .page-header {
     background: transparent;
-    margin: 0;
+    padding-top: 112px;
+}
+@media (min-width: 1152px) {
+    body #body.menu-open .page-header  {
+        top: 158px;
+    }
 }
 
 table {
