@@ -41,7 +41,8 @@ class MigrationUsuarioCommand extends MigrationCommand
         $this->addOption('rol', null, InputOption::VALUE_OPTIONAL,
             'Importar usuarios solo de un rol especifico')
             ->addOption('id', null, InputOption::VALUE_OPTIONAL,
-                'Importar solo un id');
+                'Importar solo un id')
+            ->addOption('from', null, InputOption::VALUE_REQUIRED, 'Importar desde el id en adelante');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -54,7 +55,10 @@ class MigrationUsuarioCommand extends MigrationCommand
         }
         if($id = $input->getOption('id')) {
             $sql .= "AND id = ".$id;
+        } else if($id = $input->getOption('from')) {
+            $sql .= "AND id >= " . $id;
         }
+
 
         $sql = $this->addLimitToSql($sql);
         $this->initProgressBar($this->countSql($sql));
