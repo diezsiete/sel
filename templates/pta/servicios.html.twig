@@ -4,23 +4,38 @@
     PTA - Servicios
 {% endblock %}
 
-{% block body %}
-    <div class="container pb-1">
-        <div class="row">
-            <div class="col-lg-10">
-                <div class="overflow-hidden mb-3">
-                    <h2 class="font-weight-bold text-8 mb-3 appear-animation" data-appear-animation="maskUp">
-                        Servicios que dan <strong>solución</strong> a sus <strong>necesidades</strong>
-                    </h2>
-                    <p class="lead mb-0 appear-animation" data-appear-animation="maskUp" data-appear-animation-delay="200">
-                        Somos una empresa de trabajos temporales con trayectoria y experiencia de mas de 35 años.
-                    </p>
+{% block main %}
+    <section data-building-block="organism" class="product-hero-organism">
+        <div class="product-hero theme-background-image-dark" style="position:relative">
+            <div style="background-position: center center; position: absolute; top: 0px; right: 0px; bottom: 0px; left: 0px; background-image: url(&quot;https://www.paypalobjects.com/digitalassets/c/website/marketing/na/us/for-you/transfer-money/send-money/hero-send_money.jpg&quot;); background-size: cover; transition: all 1s linear 0s;">
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 col-sm-12 product-hero__container">
+                        <div>
+                            <h2 class="font-weight-bold text-8 mb-3 appear-animation" data-appear-animation="maskUp">
+                                Servicios que dan <strong>solución</strong> a sus <strong>necesidades</strong>
+                            </h2>
+                            <p class="lead mb-0 appear-animation" data-appear-animation="maskUp" data-appear-animation-delay="200">
+                                Somos una empresa de trabajos temporales con trayectoria y <br> experiencia de mas de 35 años.
+                            </p>
+                            <div class="col-lg-2 appear-animation mt-3 pl-0 mb-1" data-appear-animation="fadeIn" data-appear-animation-delay="500">
+                                <a href="{{ path('pta_contacto') }}" class="btn btn-modern btn-primary mt-1">Contactenos</a>
+                            </div>
+                            <p data-reactid="101">
+                                ó Llamenos para empezar:
+                                <a href="tel:756-98-40">
+                                    <i class="fas fa-phone"></i> (1) 756-98-40
+                                </a>
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="col-lg-2 appear-animation mt-3" data-appear-animation="fadeIn" data-appear-animation-delay="500">
-                <a href="{{ path('pta_contacto') }}" class="btn btn-modern btn-primary mt-1">Contactenos!</a>
-            </div>
         </div>
+    </section>
+
+    <div class="container pb-1">
 
         <div class="row">
             <div class="col py-3">
@@ -306,6 +321,8 @@
 
     </div>
 
+    {% block footer %}
+        {{ parent() }}
+    {% endblock %}
 
-    </div>
 {% endblock %}

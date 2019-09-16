@@ -75,28 +75,27 @@
 <div class="body" id="body">
 
     {% block header %}
-    <header class="table-row pp-header" role="banner">
-        <div>
-            <div class="containerCentered ">
+        <header class="table-row pp-header" role="banner">
+            <div>
+                <div class="containerCentered ">
 
-                <a href="#Menu" id="menu-button" role="button">Menu</a>
+                    <a href="#Menu" id="menu-button" role="button">Menu</a>
 
 
-                <a href="{{ path('pta_index') }}" class="pta-img-logo">PTA</a>
+                    <a href="{{ path('pta_index') }}" class="pta-img-logo">PTA</a>
 
-                {% block nav %}
-                    {{ include('pta/blocks/header/_nav2.html.twig') }}
-                {% endblock %}
+                    {% block nav %}
+                        {{ include('pta/blocks/header/_nav2.html.twig') }}
+                    {% endblock %}
 
-                {% block nav_admin %}
-                    {% if app.user %}
-                        {{ include('pta/blocks/header/_nav-admin.html.twig') }}
-                    {% endif %}
-                {% endblock %}
+                    {% block nav_admin %}
+                        {% if app.user %}
+                            {{ include('pta/blocks/header/_nav-admin.html.twig') }}
+                        {% endif %}
+                    {% endblock %}
+                </div>
             </div>
-        </div>
-    </header>
-
+        </header>
     {% endblock %}
 
     {% block main %}

@@ -1,12 +1,14 @@
 <nav id="main-menu" class="main-menu" role="navigation">
     <ul>
         <li>
-            <a class="no-drop" href="{{ path('pta_servicios') }}">
+            <a href="{{ path('pta_servicios') }}"
+               class="no-drop {{ app.request.attributes.get('_route') is same as('pta_servicios') ? 'is-open' : '' }}">
                 Servicios
             </a>
         </li>
         <li>
-            <a class="no-drop" href="{{ path('pta_nosotros') }}">
+            <a href="{{ path('pta_nosotros') }}"
+               class="no-drop {{ app.request.attributes.get('_route') is same as('pta_nosotros') ? 'is-open' : '' }}" >
                 Nosotros
             </a>
         </li>
@@ -20,12 +22,13 @@
         {% endif %}
         <li>
             {% set active = app.request.attributes.get('_route') in ['pta_noticias', 'pta_noticias_categoria', 'pta_noticia'] %}
-            <a class="no-drop {{ active ? 'active' : '' }}" href="{{ path('pta_noticias') }}">
+            <a class="no-drop {{ active ? 'is-open' : '' }}" href="{{ path('pta_noticias') }}">
                 Noticias
             </a>
         </li>
         <li>
-            <a class="no-drop" href="{{ path('pta_contacto') }}">
+            <a href="{{ path('pta_contacto') }}"
+               class="no-drop {{ app.request.attributes.get('_route') is same as('pta_contacto') ? 'is-open' : '' }}">
                 Contacto
             </a>
         </li>

@@ -6,7 +6,27 @@
 {% endblock %}
 
 
-{% block body %}
+{% block main %}
+    <section class="home-hero-organism" data-building-block="organism">
+        <div class="home-hero short theme-background-image-dark"
+             style="background-image:url(https://www.paypalobjects.com/digitalassets/c/website/marketing/na/us/business-services/hero-biz-services.jpg);background-position:center">
+            <div class="container">
+                <div class="row">
+                    <div class="home-hero__container col-xs-12 col-lg-8 center-block text-xs-center">
+                        <div>
+                            <h2 class="font-weight-bold text-8 mb-3 appear-animation pypl-heading home-hero__headline" data-appear-animation="maskUp">
+                                Noticias y documentos laborales
+                            </h2>
+                            <p class="lead mb-0 appear-animation home-hero__paragraph" data-appear-animation="maskUp" data-appear-animation-delay="200">
+                                Encuentre aqui información actualizada del sector y nuestra empresa
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <div class="container py-4">
 
         <div class="row">
@@ -78,5 +98,9 @@
         </div>
 
     </div>
+    {% block footer %}
+        {{ parent() }}
+    {% endblock %}
+
 {% endblock %}
 

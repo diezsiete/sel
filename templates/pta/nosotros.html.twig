@@ -5,36 +5,38 @@
 {% endblock %}
 
 
-{% block body %}
+{% block main %}
 
+    <section data-building-block="organism" class="product-hero-organism">
+        <div class="product-hero theme-background-image-dark" style="position:relative">
+            <div style="background-position: center center; position: absolute; top: 0px; right: 0px; bottom: 0px; left: 0px; background-image: url(&quot;https://www.paypalobjects.com/digitalassets/c/website/marketing/na/us/for-you/transfer-money/send-money/hero-send_money.jpg&quot;); background-size: cover; transition: all 1s linear 0s;">
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 col-sm-12 product-hero__container">
+                        <div>
+                            <h2 class="word-rotator slide font-weight-bold text-8 mb-0 appear-animation" data-appear-animation="maskUp">
+                                <span>PTA SAS 30 Años de</span>
+                                <span class="word-rotator-words bg-primary">
+                                    <b class="is-visible">calidad.</b>
+                                    <b>progreso.</b>
+                                    <b>solidez.</b>
+                                </span>
+                            </h2>
+                            <p class="lead mb-0 appear-animation" data-appear-animation="maskUp" data-appear-animation-delay="250">
+                                Somos una organización responsable y comprometida en aportar talento humano de excelencia,
+                                con el propósito de superar las expectativas de las empresas usuarias aliadas, generando
+                                desarrollo social y humano apoyados en la innovación y la tecnología
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 <div class="container pb-1">
 
-    <div class="row pt-4">
-        <div class="col">
-            <div class="overflow-hidden mb-3">
-                <h2 class="word-rotator slide font-weight-bold text-8 mb-0 appear-animation" data-appear-animation="maskUp">
-                    <span>PTA SAS 30 Años de</span>
-                    <span class="word-rotator-words bg-primary">
-                        <b class="is-visible">calidad.</b>
-                        <b>progreso.</b>
-                        <b>solidez.</b>
-                    </span>
-                </h2>
-            </div>
-        </div>
-    </div>
 
-    <div class="row mb-2">
-        <div class="col-lg-12">
-            <div class="overflow-hidden">
-                <p class="lead mb-0 appear-animation" data-appear-animation="maskUp" data-appear-animation-delay="250">
-                    Somos una organización responsable y comprometida en aportar talento humano de excelencia,
-                    con el propósito de superar las expectativas de las empresas usuarias aliadas, generando
-                    desarrollo social y humano apoyados en la innovación y la tecnología
-                </p>
-            </div>
-        </div>
-    </div>
     <div class="row">
         <div class="col py-4">
             <hr class="solid">
@@ -245,4 +247,7 @@
     <!-- /ALIADOS ESTRATEGICOS -->
 
 </div>
+    {% block footer %}
+        {{ parent() }}
+    {% endblock %}
 {% endblock %}
