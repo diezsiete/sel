@@ -32,50 +32,42 @@
                 Contacto
             </a>
         </li>
-        <li><a href="https://www.paypal.com/us/webapps/mpp/home" id="header-personal" rel="menuitem"
-               aria-controls="submenu-personal" data-pa-click="header|personal"
-               aria-expanded="false">Personal</a>
-            <div class="menu-wrapper" id="submenu-personal" aria-labelledby="header-personal"
-                 role="region">
-                <a href="https://www.paypal.com/us/webapps/mpp/home" id="header-closing-personal"
-                   rel="menuitem" aria-controls="header-personal-menu"
-                   data-pa-click="header|closing|personal" tabindex="-1">Personal</a>
-                <ul id="header-personal-menu" class="subnav list">
-                    <li><a href="https://www.paypal.com/us/webapps/mpp/how-paypal-works/overview"
-                           data-pa-click="sub|what-is-paypal" data-highlight="header-personal"
-                           tabindex="-1">What is PayPal? <em>Learn how PayPal works
-                                in your
-                                everyday life</em></a></li>
-                    <li><a href="https://www.paypal.com/us/webapps/mpp/pay-online"
-                           data-pa-click="sub|pay_online" data-highlight="header-personal"
-                           tabindex="-1">Check Out Securely Online <em>Use your
-                                credit cards or other
-                                funds</em></a></li>
-                    <li><a href="https://www.paypal.com/us/webapps/mpp/credit-line-and-card-services"
-                           data-pa-click="sub|paypal-credit-cards" data-highlight="header-personal"
-                           tabindex="-1">PayPal Credit &amp; Cards <em>Our credit,
-                                debit,
-                                prepaid cards &amp; PayPal Credit</em></a></li>
-                    <li><a href="https://www.paypal.com/us/webapps/mpp/mobile-apps/paypal-app"
-                           data-pa-click="sub|mobile-apps" data-highlight="header-personal"
-                           tabindex="-1">PayPal App <em>Transfer money and track
-                                activity with our
-                                app</em></a></li>
-                    <li><a href="https://www.paypal.com/us/webapps/mpp/what-can-paypal-do"
-                           data-pa-click="sub|paypal-can-do-that" data-highlight="header-personal"
-                           tabindex="-1">PayPal Can Do That <em>Discover ways to
-                                manage and
-                                move your money</em></a></li>
-                    <li><a href="https://www.paypal.com/us/webapps/mpp/about-paypal-products"
-                           data-pa-click="sub|about-paypal-products"
-                           data-highlight="header-personal" tabindex="-1">Shopping
-                            and More <em>Deals, gift cards and
-                                donations</em></a></li>
-                </ul><a href="#Close" class="closer" role="button" title="Close"
-                        data-pa-click="header|close"><span
-                            class="accessAid">Close</span></a>
-            </div>
-        </li>
+        {% if app.user %}
+            <li><a href="https://www.paypal.com/us/webapps/mpp/home" id="header-personal" rel="menuitem"
+                   aria-controls="submenu-personal" data-pa-click="header|personal"
+                   aria-expanded="{{ is_sel() ? "true" : "false" }}" class="{{ is_sel() ? "is-open" : "" }}">
+                    Servicio empleados
+                </a>
+                <div class="menu-wrapper open" id="submenu-personal" aria-labelledby="header-personal"
+                     role="region">
+                    <a href="https://www.paypal.com/us/webapps/mpp/home" id="header-closing-personal"
+                       rel="menuitem" aria-controls="header-personal-menu"
+                       data-pa-click="header|closing|personal" tabindex="-1">Personal</a>
+
+                    {{ knp_menu_render(
+                        'main', {
+                            'currentClass': 'nav-active',
+                            'ancestorClass': 'nav-expanded nav-active',
+                            'branch_class': 'dropdown',
+                            'root': {
+                                'attributes': {
+                                    'class': 'subnav list',
+                                    'id': 'header-personal-menu'
+                                }
+                            },
+                            'list': {
+                                'attributes': {
+                                    'class': 'dropdown-menu'
+                                }
+                            },
+                        }, 'custom') }}
+
+                    <a href="#Close" class="closer" role="button" title="Close"
+                            data-pa-click="header|close"><span
+                                class="accessAid">Close</span></a>
+                </div>
+            </li>
+        {% endif %}
         {#<li><a href="https://www.paypal.com/us/webapps/mpp/merchant" id="header-business"
                rel="menuitem" aria-controls="submenu-business" data-pa-click="header|business"
                aria-expanded="false">Business</a>
@@ -150,15 +142,18 @@
 </nav>
 
 
-<div id="header-buttons" class="header-buttons">
+<div id="header-buttons" class="header-buttons{{ app.user ? " admin" : "" }}">
 
     {% if is_granted('ASPIRANTES_MODULE') %}
         <a href="{{ path('registro_datos_basicos') }}" id="signup-button" class="btn btn-small btn-signup">
             Registrarse
         </a>
     {% endif %}
-
-    <a href="{{ path('app_login') }}" id="ul-btn" class="btn btn-small btn-primary">
-        Iniciar sesión
-    </a>
+    {% if app.user %}
+        {{ include('pta/blocks/header/_logged.html.twig') }}
+    {% else %}
+        <a href="{{ path('app_login') }}" id="ul-btn" class="btn btn-small btn-primary">
+            Iniciar sesión
+        </a>
+    {% endif %}
 </div>

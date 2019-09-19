@@ -63,6 +63,11 @@ class Configuracion
 
     private $documentosLaborales = [];
 
+    /**
+     * @var SelRoutes
+     */
+    private $selRoutes = null;
+
     public function __construct(ContainerBagInterface $bag, $webDir)
     {
         $this->bag = $bag;
@@ -224,5 +229,13 @@ class Configuracion
             }
         }
         return $this->documentosLaborales;
+    }
+
+    public function getSelRoutes()
+    {
+        if(!$this->selRoutes) {
+            $this->selRoutes = new SelRoutes($this->bag->get('sel_routes'));
+        }
+        return $this->selRoutes;
     }
 }

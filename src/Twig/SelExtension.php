@@ -2,6 +2,7 @@
 
 namespace App\Twig;
 
+use App\Service\Configuracion\Configuracion;
 use App\Service\Utils;
 use DateTime;
 use Knp\Menu\Twig\MenuExtension;
@@ -50,12 +51,21 @@ class SelExtension extends AbstractExtension implements ServiceSubscriberInterfa
     {
         return [
             new TwigFunction('master_request', [$this, 'masterRequest']),
+            new TwigFunction('is_sel', [$this, 'isSel'])
         ];
     }
 
     public function masterRequest()
     {
         return $this->container->get(RequestStack::class)->getMasterRequest();
+    }
+
+    public function isSel()
+    {
+        return !in_array(
+            $this->container->get(RequestStack::class)->getCurrentRequest()->attributes->get('_route'),
+            $this->container->get(Configuracion::class)->getSelRoutes()->ignore
+        );
     }
 
     /**
@@ -75,7 +85,8 @@ class SelExtension extends AbstractExtension implements ServiceSubscriberInterfa
     {
         return [
             RequestStack::class,
-            Utils::class
+            Utils::class,
+            Configuracion::class
         ];
     }
 }

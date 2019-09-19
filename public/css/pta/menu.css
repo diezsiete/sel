@@ -72,10 +72,12 @@ body #body.menu-open #menu-button:after {
 
 @media (min-width: 1152px) {
     body #body.menu-open #main {
-        padding-top:160px
+        /*padding-top:160px*/
+        padding-top: 60px;
     }
     body #body.menu-open .pp-header+section, body #body.menu-open .pp-header+section+.container, body #body.menu-open .pp-header+section+.container+footer{
-        top: 158px;
+        /*top: 160px;*/
+        top: 60px;
     }
 }
 
@@ -123,10 +125,13 @@ body #body.menu-close .pp-header.table-row>div {
     }
 
     #body.menu-open .pp-header.table-row {
-        background-color: #3f317d;
-        height: 230px;
+        /*height: 230px;*/
+        height: 130px;
         overflow: hidden;
-        background-image: radial-gradient(circle farthest-side at center bottom, #1f1840, #3f317d 125%)
+    }
+    #body.menu-open .pp-header.table-row, #body .pp-header.table-row.sel {
+        background-color: #3f317d;
+        background-image: radial-gradient(circle farthest-side at center bottom, #1f1840, #3f317d 125%);
     }
 }
 
@@ -465,7 +470,7 @@ body #body.menu-close .pp-header.table-row>div {
         display: none;
         height: auto;
         min-height: auto;
-        top: 72px;
+        top: 62px;
         -webkit-transform: none;
         -ms-transform: none;
         transform: none;
@@ -566,7 +571,8 @@ body #body.menu-close .pp-header.table-row>div {
     font-size: 15px;
     font-weight: normal;
     font-variant: normal;
-    padding: 10px 0 10px 10px
+    /*padding: 10px 0 10px 10px*/
+    padding: 10px 30px 10px 0;
 }
 
 @media (min-width: 1152px) {
@@ -575,6 +581,11 @@ body #body.menu-close .pp-header.table-row>div {
         font-weight: 300;
         -webkit-font-smoothing: auto;
         -moz-osx-font-smoothing: auto
+    }
+    .pp-header.table-row .main-menu .menu-wrapper a [class*="fa-"]{
+        font-size: 1.1rem;
+        margin-right: 0.38rem;
+        margin-top: 0.1rem;
     }
 }
 
@@ -592,22 +603,21 @@ body #body.menu-close .pp-header.table-row>div {
 
 @media (min-width: 1152px) {
     .pp-header.table-row .main-menu .menu-wrapper .subnav {
-        -ms-flex:1 0 0;
+        /*-ms-flex:1 0 0;
         -webkit-align-items: center;
         -ms-flex-align: center;
         align-items: center;
-        display: -webkit-flex;
-        display: -ms-flexbox;
-        display: flex;
         -webkit-flex-flow: column wrap;
         -ms-flex-flow: column wrap;
         flex-flow: column wrap;
         -webkit-justify-content: space-around;
         -ms-flex-pack: distribute;
         justify-content: flex-start;
+        height: 125px;*/
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
         margin: 0 auto;
-        height: 125px;
-        max-width: 1092px;
         max-width: 1090px
     }
 }
@@ -618,12 +628,14 @@ body #body.menu-close .pp-header.table-row>div {
 
 @media (min-width: 1152px) {
     .pp-header.table-row .main-menu .menu-wrapper .subnav li {
-        -webkit-flex-grow:0;
+        /*-webkit-flex-grow:0;
         -ms-flex-positive: 0;
         flex-grow: 0;
         width: 31%;
-        height: 50%
+        height: 50%*/
+        display: inline-block
     }
+
 }
 
 @media (min-width: 1152px) {
@@ -710,6 +722,9 @@ body #body.menu-close .pp-header.table-row>div {
     top: 18px;
     right: 3.75%
 }
+.pp-header.table-row .header-buttons.admin {
+    top: 0;
+}
 
 .pp-header.table-row .header-buttons #logout-button {
     display: none
@@ -773,6 +788,10 @@ body #body.menu-close .pp-header.table-row>div {
 
 .pp-header.table-row .header-buttons .btn-signup:hover,.pp-header.table-row .header-buttons .btn-signup:focus,.pp-header.table-row .header-buttons .btn-signup:active {
     background-color: #eaeced
+}
+
+.pp-header.table-row .header-buttons a {
+    color: white;
 }
 
 .no-svg .pp-header.table-row .header-buttons .btn-signup {

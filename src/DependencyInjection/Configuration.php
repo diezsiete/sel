@@ -21,6 +21,7 @@ class Configuration implements ConfigurationInterface
 
         $rootNode->children()
             ->append($this->addScraperNode())
+            ->append($this->addSelRoutesNode())
             ->arrayNode('empresas')
                 ->useAttributeAsKey('name')
                 ->arrayPrototype()
@@ -127,6 +128,21 @@ class Configuration implements ConfigurationInterface
             $treeBuilder->getRootNode()
                 ->children()
                     ->scalarNode('url')->end()
+                ->end();
+        return $node;
+    }
+
+    protected function addSelRoutesNode()
+    {
+        $treeBuilder = new TreeBuilder('sel_routes');
+        $node =
+            $treeBuilder->getRootNode()
+                // ->canBeEnabled()
+                ->children()
+                    ->arrayNode('ignore')
+                        // ->canBeEnabled()
+                        ->scalarPrototype()->end()
+                    ->end()
                 ->end();
         return $node;
     }

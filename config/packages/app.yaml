@@ -2,6 +2,11 @@ app:
   scraper:
     url: http://localhost:8666
 
+  sel_routes:
+      ignore: [
+        'pta_index', 'pta_servicios', 'pta_nosotros', 'vacante_listado', 'vacante_detalle', 'vacante_aplicar',
+        'pta_noticias', 'pta_noticias_categoria', 'pta_noticia', 'pta_contacto', 'app_login']
+
   empresas:
     PTA:
       host: '%env(HOST_PTA)%'

@@ -60,6 +60,7 @@
         <link rel="stylesheet" href="{{ asset('/css/pta/menu.css') }}">
 
         {% if app.user %}
+            <link rel="stylesheet" href="{{ asset('css/pta/theme-header-nav-features.css') }}">
             <link rel="stylesheet" href="{{ asset('css/pta/admin-nav.css') }}">
         {% endif %}
 
@@ -70,12 +71,16 @@
     {% endblock %}
 
 </head>
-<body>
 
-<div class="body" id="body">
+
+
+<body class="{{ is_sel() ? 'pp-header-open' : '' }}">
+
+<div class="body{{ is_sel() ? ' menu-open' : '' }}" id="body">
 
     {% block header %}
-        <header class="table-row pp-header" role="banner">
+
+        <header class="table-row pp-header{{ is_sel() ? ' sel' : '' }}" role="banner">
             <div>
                 <div class="containerCentered ">
 
