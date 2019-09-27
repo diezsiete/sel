@@ -8,6 +8,7 @@ use App\Entity\Representante;
 use App\Entity\Usuario;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\AbstractQuery;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -103,23 +104,24 @@ class ConvenioRepository extends ServiceEntityRepository
     }
 
 
-    public function findConveniosWithUsuariosByRol2(QueryBuilder $qb)
+    /**
+     * @param $ident
+     * @return Convenio|null
+     */
+    public function findConvenioByIdent($ident)
     {
-
-        $qb
-            ->select('c')
-            ->from($this->_entityName, 'c')
-            ->addSelect($qb->expr()->count('e') . ' AS empleados, e, r, u')
-            ->leftJoin('c.empleados', 'e')
-            ->leftJoin('c.representantes', 'r')
-            ->leftJoin('r.usuario', 'u')
-            ->groupBy('c.codigo')
-            ->having('empleados > 0');
-
-
-
-
-
+        try {
+            return $this
+                ->createQueryBuilder('c')
+                ->join('c.empleados', 'e')
+                ->join('e.usuario', 'u')
+                ->where('u.identificacion = :ident')
+                ->setParameter('ident', $ident)
+                ->getQuery()
+                ->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+            return null;
+        }
     }
 
 }

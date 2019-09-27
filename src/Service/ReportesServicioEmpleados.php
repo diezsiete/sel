@@ -83,9 +83,9 @@ class ReportesServicioEmpleados
      * @param $empleadoIdent
      * @return ReporteCertificadoLaboral[]|null
      */
-    public function getCertificadosLaborales($empleadoIdent)
+    public function getCertificadosLaborales($empleadoIdent, $ssrsDb)
     {
-        $reporte = $this->getCertificadoLaboral($empleadoIdent);
+        $reporte = $this->getCertificadoLaboral($empleadoIdent, $ssrsDb);
         return $reporte ? [$reporte] : [];
     }
 
@@ -93,9 +93,9 @@ class ReportesServicioEmpleados
      * @param $empleadoIdent
      * @return ReporteCertificadoLaboral|null
      */
-    public function getCertificadoLaboral($empleadoIdent)
+    public function getCertificadoLaboral($empleadoIdent, $ssrsDb)
     {
-        $reporteNovasoft = $this->novasoftSsrs->getReportNom932();
+        $reporteNovasoft = $this->novasoftSsrs->setSsrsDb($ssrsDb)->getReportNom932();
         $reporteNovasoft->setParameterCodigoEmpleado($empleadoIdent);
         return $reporteNovasoft->renderCertificado();
     }
@@ -105,9 +105,9 @@ class ReportesServicioEmpleados
      * @return ReporteCertificadoIngresos[]
      * @deprecated
      */
-    public function getCertificadosIngresos($empleadoIdent)
+    public function getCertificadosIngresos($empleadoIdent, $ssrsDb)
     {
-        $reporteNovasoft = $this->novasoftSsrs->getReportNom92117();
+        $reporteNovasoft = $this->novasoftSsrs->setSsrsDb($ssrsDb)->getReportNom92117();
         $reporteNovasoft->setParameterCodigoEmpleado($empleadoIdent);
 
         $certificados = [];

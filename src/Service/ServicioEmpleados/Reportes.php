@@ -46,14 +46,16 @@ class Reportes
     }
 
 
-    public function comprobanteStream($fecha, $empleadoIdent)
+    public function comprobanteStream($fecha, $empleadoIdent, $ssrsDb)
     {
         if(is_string($fecha)) {
             $fecha = DateTime::createFromFormat('Y-m-d', $fecha);
         }
 
-        return $this->cacheFileStream('comprobante', $fecha, $empleadoIdent, function ($fecha, $empleadoIdent) {
-            return $this->novasoftSsrs->getReportNom204()
+        return $this->cacheFileStream('comprobante', $fecha, $empleadoIdent, function ($fecha, $empleadoIdent) use ($ssrsDb){
+            return $this->novasoftSsrs
+                ->setSsrsDb($ssrsDb)
+                ->getReportNom204()
                 ->setParameterCodigoEmpleado($empleadoIdent)
                 ->setParameterFechaInicio($fecha)
                 ->setParameterFechaFin($fecha)
@@ -79,10 +81,12 @@ class Reportes
 
 
 
-    public function certificadoIngresosStream(DateTimeInterface $periodo, $empleadoIdent)
+    public function certificadoIngresosStream(DateTimeInterface $periodo, $empleadoIdent, $ssrsDb)
     {
-        return $this->cacheFileStream('certificado-ingresos', $periodo, $empleadoIdent, function ($periodo, $empleadoIdent) {
-            return $this->novasoftSsrs->getReportNom92117()
+        return $this->cacheFileStream('certificado-ingresos', $periodo, $empleadoIdent, function ($periodo, $empleadoIdent) use($ssrsDb) {
+            return $this->novasoftSsrs
+                ->setSsrsDb($ssrsDb)
+                ->getReportNom92117()
                 ->setParameterCodigoEmpleado($empleadoIdent)
                 ->setParameterAno($periodo->format('Y'))
                 ->renderPdf();

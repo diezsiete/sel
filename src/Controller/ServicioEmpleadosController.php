@@ -7,6 +7,7 @@ use App\DataTable\Type\AutoliquidacionEmpleadoDataTableType;
 use App\DataTable\Type\ReporteNominaDataTableType;
 use App\Entity\Autoliquidacion\AutoliquidacionEmpleado;
 use App\Entity\ReporteNomina;
+use App\Repository\ConvenioRepository;
 use App\Service\Autoliquidacion\FileManager;
 use App\Service\Pdf\PdfCartaLaboral;
 use App\Service\ReportesServicioEmpleados;
@@ -18,6 +19,16 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ServicioEmpleadosController extends BaseController
 {
+    /**
+     * @var ConvenioRepository
+     */
+    private $convenioRepository;
+
+    public function __construct(ConvenioRepository $convenioRepository)
+    {
+        $this->convenioRepository = $convenioRepository;
+    }
+
     /**
      * @Route("/sel/se/comprobantes", name="app_comprobantes", defaults={"header": "Comprobantes de pago"})
      */
@@ -41,9 +52,16 @@ class ServicioEmpleadosController extends BaseController
      */
     public function comprobante(Reportes $reportes, ReporteNomina $comprobante)
     {
-        return $this->renderStream(function () use ($reportes, $comprobante) {
-            return $reportes->comprobanteStream($comprobante->getFecha(), $comprobante->getUsuario()->getIdentificacion());
+        $ssrsDb = $this->getSsrsDb();
+
+        return $this->renderStream(function () use ($reportes, $comprobante, $ssrsDb) {
+            return $reportes->comprobanteStream(
+                $comprobante->getFecha(),
+                $comprobante->getUsuario()->getIdentificacion(),
+                $ssrsDb
+            );
         });
+
     }
 
     /**
@@ -52,7 +70,7 @@ class ServicioEmpleadosController extends BaseController
     public function certificadoLaboral(ReportesServicioEmpleados $reportes)
     {
         $identificacion = $this->getUser()->getIdentificacion();
-        $certificados = $reportes->getCertificadosLaborales($identificacion);
+        $certificados = $reportes->getCertificadosLaborales($identificacion, $this->getSsrsDb());
         return $this->render('servicio_empleados/certificado-laboral.html.twig', [
             'tieneCertificado' => count($certificados) > 0,
         ]);
@@ -64,7 +82,7 @@ class ServicioEmpleadosController extends BaseController
     public function certificadoLaboralPdf(ReportesServicioEmpleados $reportes, PdfCartaLaboral $pdf)
     {
         $identificacion = $this->getUser()->getIdentificacion();
-        $certificado = $reportes->getCertificadoLaboral($identificacion);
+        $certificado = $reportes->getCertificadoLaboral($identificacion, $this->getSsrsDb());
         if(!$certificado) {
             throw $this->createNotFoundException("Recurso no existe");
         }
@@ -77,7 +95,7 @@ class ServicioEmpleadosController extends BaseController
     public function certificadosIngresos(ReportesServicioEmpleados $reportes)
     {
         $identificacion = $this->getUser()->getIdentificacion();
-        $certificados = $reportes->getCertificadosIngresos($identificacion);
+        $certificados = $reportes->getCertificadosIngresos($identificacion, $this->getSsrsDb());
         return $this->render('servicio_empleados/certificado-ingresos.html.twig', [
             'certificados' => $certificados
         ]);
@@ -91,7 +109,7 @@ class ServicioEmpleadosController extends BaseController
         return $this->renderStream(function () use ($reportes, $periodo) {
             $identificacion = $this->getUser()->getIdentificacion();
             $periodo = \DateTime::createFromFormat('Y-m-d', $periodo . "-01-01");
-            return $reportes->certificadoIngresosStream($periodo, $identificacion);
+            return $reportes->certificadoIngresosStream($periodo, $identificacion, $this->getSsrsDb());
         });
     }
 
@@ -146,5 +164,18 @@ class ServicioEmpleadosController extends BaseController
         $identificacion = $this->getUser()->getIdentificacion();
         $reportePdf = $reportes->getLiquidacionDeContratoPdf($identificacion, $fechaIngreso, $fechaRetiro);
         return $this->renderPdf($reportePdf);
+    }
+
+    /**
+     * @return string|null
+     */
+    private function getSsrsDb()
+    {
+        $convenio = $this->convenioRepository->findConvenioByIdent($this->getUser()->getIdentificacion());
+        if($convenio) {
+            return $convenio->getSsrsDb();
+        } else {
+            throw $this->createNotFoundException();
+        }
     }
 }
