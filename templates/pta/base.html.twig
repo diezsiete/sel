@@ -79,9 +79,12 @@
 <div class="body{{ is_sel() ? ' menu-open' : '' }}" id="body">
 
     {% block header %}
-
+        {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
+            {{ include('pta/blocks/header/_switch-user.html.twig') }}
+        {% endif %}
         <header class="table-row pp-header{{ is_sel() ? ' sel' : '' }}" role="banner">
             <div>
+
                 <div class="containerCentered ">
 
                     <a href="#Menu" id="menu-button" role="button">Menu</a>

@@ -8,6 +8,9 @@
     display: block;
     font-size: 1px;
 }
+#header .header-row{
+    background: #212529;
+}
 /** Index ---------------------------------------------------------------------------------------------------------- **/
 /** --- Slider --- **/
 .slider-container {

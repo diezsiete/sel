@@ -229,7 +229,7 @@ li {
 	-webkit-box-align: center;
 	-ms-flex-align: center;
 	align-items: center;
-	border-bottom: 2px solid rgba(0, 0, 0, 0.06);
+/*	border-bottom: 2px solid rgba(0, 0, 0, 0.06);*/
 	min-height: 47px;
 }
 
