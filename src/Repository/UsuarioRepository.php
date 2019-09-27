@@ -63,18 +63,6 @@ class UsuarioRepository extends ServiceEntityRepository
     }
 
 
-    /*
-    public function findOneBySomeField($value): ?Usuario
-    {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
-
     public function userSearchExpression(QueryBuilder $qb, $search, $alias = 'u', $parameterKey = 'search')
     {
         $expr = $qb->expr()->orX(
@@ -90,7 +78,7 @@ class UsuarioRepository extends ServiceEntityRepository
                     ),
                     $qb->expr()->concat(
                         $alias.'.primerApellido',
-                        'COALESCE(' . $qb->expr()->concat($qb->expr()->literal(' '), $alias.'.segundoNombre') . ', \'\')'
+                        'COALESCE(' . $qb->expr()->concat($qb->expr()->literal(' '), $alias.'.segundoApellido') . ', \'\')'
                     )
                 ),
                 ':'.$parameterKey
