@@ -44,14 +44,7 @@ class Configuration implements ConfigurationInterface
                                 ->scalarNode('firmante_contacto')->end()
                             ->end()
                         ->end()
-                        ->arrayNode('ssrs_db')
-                            ->useAttributeAsKey('name')
-                            ->arrayPrototype()
-                                ->children()
-                                    ->booleanNode('convenios')->defaultValue(true)->end()
-                                ->end()
-                            ->end()
-                        ->end()
+                        ->append($this->addSsrsDbNode())
                         ->append($this->addEmailsNode())
                         ->append($this->addOficinasNode())
                         ->append($this->addHvWizardRoutes())
@@ -84,6 +77,27 @@ class Configuration implements ConfigurationInterface
                 ->end()
             ->end()
         ;
+        return $node;
+    }
+
+    protected function addSsrsDbNode()
+    {
+        $treeBuilder = new TreeBuilder('ssrs_db');
+        $node =
+            $treeBuilder->getRootNode()
+                ->useAttributeAsKey('name')
+                ->arrayPrototype()
+                    ->children()
+                        ->booleanNode('convenios')->defaultValue(true)->end()
+                        ->arrayNode('reportes')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->scalarNode('empleado')->defaultValue('NomU1503')->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end();
+
         return $node;
     }
 

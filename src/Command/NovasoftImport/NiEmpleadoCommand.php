@@ -76,8 +76,11 @@ class NiEmpleadoCommand extends TraitableCommand
                 $ssrsDb = $convenio->getSsrsDb();
 
                 $empleados = $this->reportesServicioEmpleados->setSsrsDb($ssrsDb)->getEmpleados($codigo, $desde, $hasta);
-
                 foreach ($empleados as $empleado) {
+                    //empleados provenientes de nom933 no tienen convenio
+                    if(!$empleado->getConvenio()) {
+                        $empleado->setConvenio($convenio);
+                    }
                     $this->importEmpleado($empleado, $ssrsDb);
                 }
                 $this->em->flush();

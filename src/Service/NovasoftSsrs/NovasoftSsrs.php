@@ -7,6 +7,7 @@ namespace App\Service\NovasoftSsrs;
 use App\Entity\Usuario;
 use App\Service\Configuracion\Configuracion;
 use App\Service\Configuracion\SsrsDb;
+use App\Service\NovasoftSsrs\Report\Report;
 use App\Service\NovasoftSsrs\Report\ReportNom204;
 use App\Service\NovasoftSsrs\Report\ReportNom701;
 use App\Service\NovasoftSsrs\Report\ReportNom92117;
@@ -131,13 +132,16 @@ class NovasoftSsrs
     }
 
     /**
-     * @param string $ssrsDb
+     * @param string|SsrsDb $ssrsDb
      * @return NovasoftSsrs
      * @throws \Exception
      */
-    public function setSsrsDb(string $ssrsDb): NovasoftSsrs
+    public function setSsrsDb($ssrsDb): NovasoftSsrs
     {
-        $this->ssrsDb = $this->configuracion->getSsrsDb($ssrsDb);
+        if(is_string($ssrsDb)) {
+            $ssrsDb = $this->configuracion->getSsrsDb($ssrsDb);
+        }
+        $this->ssrsDb = $ssrsDb;
         return $this;
     }
 
@@ -195,6 +199,16 @@ class NovasoftSsrs
     public function getReportNomU1503(): ReportNomU1503
     {
         return $this->reportNomU1503->setDb($this->ssrsDb);
+    }
+
+    /**
+     * @param $reportName
+     * @return Report
+     */
+    public function getReport($reportName)
+    {
+        $reportName = "report" . ucfirst($reportName);
+        return $this->$reportName->setDb($this->ssrsDb);
     }
 
 

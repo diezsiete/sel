@@ -7,12 +7,17 @@ namespace App\Service;
 use App\Entity\Convenio;
 use App\Entity\Empleado;
 use App\Entity\ReporteNomina;
+use App\Service\Configuracion\Configuracion;
 use App\Service\Configuracion\SsrsDb;
 use App\Service\NovasoftSsrs\Entity\ReporteCertificadoIngresos;
 use App\Service\NovasoftSsrs\Entity\ReporteCertificadoLaboral;
 use App\Service\NovasoftSsrs\Entity\ReporteLiquidacion;
 use App\Service\NovasoftSsrs\NovasoftSsrs;
 use App\Service\NovasoftSsrs\Report\Report;
+use App\Service\NovasoftSsrs\Report\ReportNom933;
+use App\Service\NovasoftSsrs\Report\ReportNomU1503;
+use DateTime;
+use Exception;
 
 class ReportesServicioEmpleados
 {
@@ -20,10 +25,20 @@ class ReportesServicioEmpleados
      * @var NovasoftSsrs
      */
     private $novasoftSsrs;
+    /**
+     * @var SsrsDb
+     */
+    private $ssrsDb;
+    /**
+     * @var Configuracion
+     */
+    private $configuracion;
 
-    public function __construct(NovasoftSsrs $novasoftSsrs)
+    public function __construct(NovasoftSsrs $novasoftSsrs, Configuracion $configuracion)
     {
         $this->novasoftSsrs = $novasoftSsrs;
+        $this->configuracion = $configuracion;
+        $this->ssrsDb = $configuracion->getSsrsDb(true);
     }
 
     /**
@@ -54,7 +69,7 @@ class ReportesServicioEmpleados
         $reporteNovasoft = $this->novasoftSsrs->getReportNom204();
 
         if(is_string($fecha)) {
-            $fecha = \DateTime::createFromFormat('Y-m-d', $fecha);
+            $fecha = DateTime::createFromFormat('Y-m-d', $fecha);
         }
 
         $reporteNovasoft->setParameterCodigoEmpleado($empleadoIdent)
@@ -150,16 +165,24 @@ class ReportesServicioEmpleados
 
     /**
      * @param string $convenioCodigo
-     * @param \DateTime $desde
-     * @param \DateTime $hasta
+     * @param DateTime $desde
+     * @param DateTime $hasta
      * @return Empleado[]
+     * @throws Exception
      */
-    public function getEmpleados(string $convenioCodigo, $desde, $hasta)
+    public function getEmpleados(string $convenioCodigo, $desde = null, $hasta = null)
     {
-        $reportNovasoft = $this->novasoftSsrs->getReportNomU1503();
-        $reportNovasoft->setParameterCodigoConvenio($convenioCodigo);
-        $reportNovasoft->setParameterFechaDesde($desde);
-        $reportNovasoft->setParameterFechaHasta($hasta);
+        /** @var ReportNomU1503|ReportNom933 $reportNovasoft */
+        $reportNovasoft = $this->novasoftSsrs->getReport($this->ssrsDb->getReporteEmpleado());
+
+        if($reportNovasoft instanceof ReportNomU1503) {
+            if(!$convenioCodigo || !$desde || !$hasta) {
+                throw new Exception("Parametros incompletos");
+            }
+            $reportNovasoft->setParameterCodigoConvenio($convenioCodigo);
+            $reportNovasoft->setParameterFechaDesde($desde);
+            $reportNovasoft->setParameterFechaHasta($hasta);
+        }
 
         return $reportNovasoft->renderMap();
     }
@@ -175,6 +198,7 @@ class ReportesServicioEmpleados
 
     public function setSsrsDb(string $ssrsDb): ReportesServicioEmpleados
     {
+        $this->ssrsDb = $this->configuracion->getSsrsDb($ssrsDb);
         $this->novasoftSsrs->setSsrsDb($ssrsDb);
         return $this;
     }

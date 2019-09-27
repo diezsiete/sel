@@ -31,13 +31,4 @@ class ReportNom933 extends Report
     {
         $this->parameter_cod_emp = $identificacion . '%';
     }
-
-    /**
-     * @return Empleado[]
-     */
-    public function renderMap()
-    {
-        $csv = $this->renderCSV();
-        return $this->reportFormatter->mapCsv($csv, $this->getMapperInstance());
-    }
 }

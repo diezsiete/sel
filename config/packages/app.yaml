@@ -101,6 +101,8 @@ app:
         SERVILABOR: ~
         UNIVERSAL:
           convenios: false
+          reportes:
+            empleado: Nom933
         EMPLEADOS_SOS:
           convenios: false
 

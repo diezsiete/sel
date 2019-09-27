@@ -15,10 +15,13 @@ class SsrsDb
      */
     private $convenios;
 
+    private $reportes;
+
     public function __construct($nombre, $ssrsDbConfig)
     {
         $this->nombre = $nombre;
         $this->convenios = $ssrsDbConfig['convenios'];
+        $this->reportes = $ssrsDbConfig['reportes'];
     }
 
     /**
@@ -35,5 +38,10 @@ class SsrsDb
     public function hasConvenios(): bool
     {
         return $this->convenios;
+    }
+
+    public function getReporteEmpleado()
+    {
+        return $this->reportes['empleado'];
     }
 }
