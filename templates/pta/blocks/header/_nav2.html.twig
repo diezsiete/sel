@@ -33,14 +33,14 @@
             </a>
         </li>
         {% if app.user %}
-            <li><a href="https://www.paypal.com/us/webapps/mpp/home" id="header-personal" rel="menuitem"
+            <li><a href="{{ path('app_main') }}" id="header-personal" rel="menuitem"
                    aria-controls="submenu-personal" data-pa-click="header|personal"
-                   aria-expanded="{{ is_sel() ? "true" : "false" }}" class="{{ is_sel() ? "is-open" : "" }}">
+                   aria-expanded="{{ is_sel('app_profile') ? "true" : "false" }}" class="{{ is_sel('app_profile') ? "is-open" : "" }}">
                     Servicio empleados
                 </a>
-                <div class="menu-wrapper open" id="submenu-personal" aria-labelledby="header-personal"
+                <div class="menu-wrapper {{ is_sel('app_profile') ? "open" : "" }}" id="submenu-personal" aria-labelledby="header-personal"
                      role="region">
-                    <a href="https://www.paypal.com/us/webapps/mpp/home" id="header-closing-personal"
+                    <a href="{{ path('app_main') }}" id="header-closing-personal"
                        rel="menuitem" aria-controls="header-personal-menu"
                        data-pa-click="header|closing|personal" tabindex="-1">Personal</a>
 
@@ -65,6 +65,30 @@
                     <a href="#Close" class="closer" role="button" title="Close"
                             data-pa-click="header|close"><span
                                 class="accessAid">Close</span></a>
+                </div>
+            </li>
+            {% set app_profile_open = app.request.attributes.get('_route') is same as('app_profile') %}
+            <li><a href="{{ path('app_main') }}" id="header-perfil" rel="menuitem" aria-controls="submenu-perfil"
+                   aria-expanded="{{ app_profile_open ? "true" : "false" }}"
+                   class="{{ app_profile_open ? "is-open" : "" }}">
+                    <i class="far fa-user"></i> {{ app.user.nombreCompleto(true) }}
+                </a>
+                <div class="menu-wrapper not-close right {{ app_profile_open ? "open" : "" }}" id="submenu-perfil" aria-labelledby="header-perfil" role="region">
+                    <a href="{{ path('app_main') }}" id="header-closing-perfil"
+                       rel="menuitem" aria-controls="header-perfil-menu" tabindex="-1">
+                        <i class="far fa-user"></i> {{ app.user.nombreCompleto(true) }}
+                    </a>
+                    <ul id="header-perfil-menu" class="subnav list">
+                        <li><a href="{{ path('app_profile') }}">
+                            <i class="far fa-user"></i><span>Mi Perfil</span>
+                        </a></li>
+                        <li><a href="{{ path('app_logout') }}">
+                            <i class="fas fa-sign-out-alt"></i><span>Cerrar sesión</span>
+                        </a></li>
+                    </ul>
+                    {# <a href="#Close" class="closer" role="button" title="Close"
+                       data-pa-click="header|close"><span
+                                class="accessAid">Close</span></a> #}
                 </div>
             </li>
         {% endif %}
@@ -150,7 +174,7 @@
         </a>
     {% endif %}
     {% if app.user %}
-        {{ include('pta/blocks/header/_logged.html.twig') }}
+        {# include('pta/blocks/header/_logged.html.twig') #}
     {% else %}
         <a href="{{ path('app_login') }}" id="ul-btn" class="btn btn-small btn-primary">
             Iniciar sesión

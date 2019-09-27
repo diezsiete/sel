@@ -91,7 +91,7 @@ $(function () {
                 e.preventDefault(),
                     u()
             }),
-            n.find(".menu-wrapper").append(o),
+            n.find(".menu-wrapper:not(.not-close)").append(o),
             function () {
                 var e, t = window.location.pathname;
                 if ("/" !== t && (e = i.find("a[href*='" + t + "'][data-highlight]")).length) {

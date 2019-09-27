@@ -60,12 +60,15 @@ class SelExtension extends AbstractExtension implements ServiceSubscriberInterfa
         return $this->container->get(RequestStack::class)->getMasterRequest();
     }
 
-    public function isSel()
+    public function isSel($except = [])
     {
-        return !in_array(
-            $this->container->get(RequestStack::class)->getCurrentRequest()->attributes->get('_route'),
-            $this->container->get(Configuracion::class)->getSelRoutes()->ignore
-        );
+        $except = is_array($except) ? $except : [$except];
+
+        $route = $this->container->get(RequestStack::class)->getCurrentRequest()->attributes->get('_route');
+
+        return !$except || !in_array($route, $except)
+            ? !in_array($route, $this->container->get(Configuracion::class)->getSelRoutes()->ignore)
+            : false;
     }
 
     /**
