@@ -68,6 +68,16 @@ class Configuracion
      */
     private $selRoutes = null;
 
+    /**
+     * @var Compania[]
+     */
+    private $companias = [];
+
+    /**
+     * @var Compania
+     */
+    private $companiaDefault;
+
     public function __construct(ContainerBagInterface $bag, $webDir)
     {
         $this->bag = $bag;
@@ -237,5 +247,33 @@ class Configuracion
             $this->selRoutes = new SelRoutes($this->bag->get('sel_routes'));
         }
         return $this->selRoutes;
+    }
+
+
+    public function getCompania($name)
+    {
+        if(!isset($this->companias[$name])) {
+            if(isset($this->parameters['companias'][$name])) {
+                $data = array_merge($this->parameters['companias'][$name], [
+                    'logo_pdf' => $this->webDir . $this->parameters['companias'][$name]['logo_pdf']
+                ]);
+                $compania = new Compania($data);
+            } else {
+                //si no existe retornamos default
+                if(!$this->companiaDefault) {
+                    $this->companiaDefault = new Compania(
+                        $this->getRazon(),
+                        $this->getNit(),
+                        $this->getDir(),
+                        $this->getTel(),
+                        $this->getWeb(),
+                        $this->getLogoPdf()
+                    );
+                }
+                $compania = $this->companiaDefault;
+            }
+            $this->companias[$name] = $compania;
+        }
+        return $this->companias[$name];
     }
 }

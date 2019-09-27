@@ -50,6 +50,7 @@ class Configuration implements ConfigurationInterface
                         ->append($this->addHvWizardRoutes())
                         ->append($this->addScraperEmpresaNode())
                         ->append($this->addDocumentosLaborales())
+                        ->append($this->addCompaniasNode())
                     ->end()
                 ->end()
             ->end()
@@ -191,6 +192,27 @@ class Configuration implements ConfigurationInterface
                     ->scalarNode('date')->end()
                     ->scalarNode('title')->end()
                     ->scalarNode('pdf')->defaultValue(null)->end()
+                ->end()
+            ->end()
+        ;
+        return $node;
+    }
+
+    private function addCompaniasNode()
+    {
+        $treeBuilder = new TreeBuilder('companias');
+        $node = $treeBuilder->getRootNode()
+            ->requiresAtLeastOneElement()
+            ->useAttributeAsKey('nombre')
+            ->normalizeKeys(false)
+            ->arrayPrototype()
+                ->children()
+                    ->scalarNode('razon')->end()
+                    ->scalarNode('nit')->end()
+                    ->scalarNode('dir')->end()
+                    ->scalarNode('tel')->end()
+                    ->scalarNode('web')->defaultValue(null)->end()
+                    ->scalarNode('logo_pdf')->end()
                 ->end()
             ->end()
         ;

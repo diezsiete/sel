@@ -8,6 +8,23 @@ class PdfCartaLaboralServilabor extends PdfCartaLaboral
 {
     protected $firmaImageWidth = 43;
 
+    protected function contentActivo($sex, $companiaNombre, $contratoTermino, $cargo, $desde, $salarioTexto, $salarioNum, $eusuaria = null)
+    {
+        return " se encuentra vinculad". ($sex ? 'o' : 'a') . " laboralmente con la ".utf8_decode("Compañía")
+            . " $companiaNombre en un contrato por ". $contratoTermino ." ".utf8_decode("desempeñando")." el cargo de"
+            . " $cargo desde el $desde con una ".utf8_decode("asignación")." salarial mensual de $salarioTexto ($$salarioNum)";
+    }
+
+    protected function contentInactivo($contratoTermino, $cargo, $fecing, $fecegr, $eusuaria = null, $companiaNombre = null)
+    {
+
+        return " " . utf8_decode("laboró") . " por medio de contrato de " . $contratoTermino . " "
+            . utf8_decode("desempeñando") . " el cargo de $cargo"
+            . " en la ".utf8_decode("Compañía")." $companiaNombre en los siguientes periodos:\n\n"
+            . "Fecha Ingreso : " . $fecing . " \n"
+            . "Fecha Retiro   : " . $fecegr;
+    }
+
     protected function firma()
     {
         $this->Image(

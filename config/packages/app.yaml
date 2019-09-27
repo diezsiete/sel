@@ -106,6 +106,16 @@ app:
         EMPLEADOS_SOS:
           convenios: false
 
+      companias:
+        UNIVERSAL:
+          razon: UNIVERSAL MUSIC COLOMBIA S.A.S.
+          nit: 800.246.963-6
+          dir: CALLE 103 Nº 21-60
+          tel: 4140077
+          web:
+          logo_pdf: /img/sel/logo-universal.png
+
+
       scraper:
         ael:
           user: '%env(empresa:SCRAPER_AEL_USER)%'

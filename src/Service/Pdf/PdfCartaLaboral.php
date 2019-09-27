@@ -3,7 +3,6 @@
 
 namespace App\Service\Pdf;
 
-
 use App\Service\NovasoftSsrs\Entity\ReporteCertificadoLaboral;
 
 class PdfCartaLaboral extends PdfBase
@@ -17,9 +16,9 @@ class PdfCartaLaboral extends PdfBase
 
     public function render(ReporteCertificadoLaboral $certificado)
     {
-        $compania = $this->configuracion->getRazon();
-        $nit = $this->configuracion->getNit();
-        $logoImg = $this->configuracion->getLogoPdf();
+        $compania = $this->compania->getRazon();
+        $nit = $this->compania->getNit();
+        $logoImg = $this->compania->getLogoPdf();
 
         $eusuaria = $certificado->getEmpresaUsuaria();
         $cargo = $certificado->getCargo();
@@ -34,19 +33,10 @@ class PdfCartaLaboral extends PdfBase
         $main = "" . ($sex ? 'El' : 'La') . utf8_decode(" señor") . ($sex ? '' : 'a') . " " . $certificado->getNombreCompleto()
             . " identificad" . ($sex ? 'o' : 'a') . " con "
             . utf8_decode($certificado->getTipoDocumento()) . " No. " . $certificado->getCedula() . "";
-        if ($certificado->isActivo()) {
-            $main .= " se encuentra vinculad" . ($sex ? 'o' : 'a') . " laboralmente con la " . utf8_decode("Compañía")
-                . " $compania en un contrato por " . $certificado->getContrato() . " como trabajador en " . utf8_decode("misión")
-                . " en la Empresa Usuaria $eusuaria " . utf8_decode("desempeñando") . " el cargo de"
-                . " $cargo desde el $desde con una " . utf8_decode("asignación") . " salarial mensual de $nsalario ($$salario)";
 
-        } else {
-            $main .= " " . utf8_decode("laboró") . " por medio de contrato de " . $certificado->getContrato() . " " . utf8_decode("desempeñando") . " el cargo de $cargo"
-                . " para la Empresa Usuaria $eusuaria en los siguientes periodos:\n\n"
-                . "Fecha Ingreso : " . $fecing . " \n"
-                . "Fecha Retiro   : " . $fecegr;
-        }
-
+        $main .= $certificado->isActivo()
+            ? $this->contentActivo($sex, $compania, $certificado->getContrato(), $cargo, $desde, $nsalario, $salario, $eusuaria)
+            : $this->contentInactivo($certificado->getContrato(), $cargo, $fecing, $fecegr, $eusuaria, $compania);
 
         $logo_height = 0;
         $line_height = 8;
@@ -97,6 +87,23 @@ class PdfCartaLaboral extends PdfBase
             ->Output();
     }
 
+    protected function contentActivo($sex, $companiaNombre, $contratoTermino, $cargo, $desde, $salarioTexto, $salarioNum, $eusuaria = null)
+    {
+        return " se encuentra vinculad" . ($sex ? 'o' : 'a') . " laboralmente con la " . utf8_decode("Compañía")
+            . " $companiaNombre en un contrato por " . $contratoTermino . " como trabajador en " . utf8_decode("misión")
+            . " en la Empresa Usuaria $eusuaria " . utf8_decode("desempeñando") . " el cargo de"
+            . " $cargo desde el $desde con una " . utf8_decode("asignación") . " salarial mensual de $salarioTexto ($$salarioNum)";
+    }
+
+    protected function contentInactivo($contratoTermino, $cargo, $fecing, $fecegr, $eusuaria = null, $companiaNombre = null)
+    {
+        return " " . utf8_decode("laboró") . " por medio de contrato de " . $contratoTermino . " "
+            . utf8_decode("desempeñando") . " el cargo de $cargo"
+            . " para la Empresa Usuaria $eusuaria en los siguientes periodos:\n\n"
+            . "Fecha Ingreso : " . $fecing . " \n"
+            . "Fecha Retiro   : " . $fecegr;
+    }
+
     protected function firma()
     {
         $this->Image(
@@ -107,8 +114,6 @@ class PdfCartaLaboral extends PdfBase
         );
         $this->Ln();
         $this->Ln();
-        // $this->Ln();
-        // $this->Ln();
         $this->Cell(0, $this->lineHeight - 2, $this->configuracion->certificadoLaboral()->getFirmante(), 0, 1);
         $this->Cell(0, $this->lineHeight - 2, $this->configuracion->certificadoLaboral()->getCargo(), 0, 1);
         $this->Cell(0, $this->lineHeight - 2, $this->configuracion->certificadoLaboral()->getContacto(), 0, 1);

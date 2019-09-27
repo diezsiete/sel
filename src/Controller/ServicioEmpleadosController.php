@@ -9,6 +9,7 @@ use App\Entity\Autoliquidacion\AutoliquidacionEmpleado;
 use App\Entity\ReporteNomina;
 use App\Repository\ConvenioRepository;
 use App\Service\Autoliquidacion\FileManager;
+use App\Service\Configuracion\Configuracion;
 use App\Service\Pdf\PdfCartaLaboral;
 use App\Service\ReportesServicioEmpleados;
 use App\Service\ServicioEmpleados\Reportes;
@@ -67,7 +68,7 @@ class ServicioEmpleadosController extends BaseController
     /**
      * @Route("/sel/se/certificado-laboral", name="app_certificado_laboral", defaults={ "header" :"Certificado Laboral"})
      */
-    public function certificadoLaboral(ReportesServicioEmpleados $reportes)
+    public function certificadoLaboral(ReportesServicioEmpleados $reportes, Configuracion $configuracion)
     {
         $identificacion = $this->getUser()->getIdentificacion();
         $certificados = $reportes->getCertificadosLaborales($identificacion, $this->getSsrsDb());

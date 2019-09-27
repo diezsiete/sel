@@ -4,6 +4,7 @@
 namespace App\Service\Pdf;
 
 
+use App\Service\Configuracion\Compania;
 use App\Service\Configuracion\Configuracion;
 use App\Service\Utils;
 use FPDF;
@@ -14,6 +15,10 @@ abstract class PdfBase extends FPDF
      * @var Configuracion
      */
     protected $configuracion;
+    /**
+     * @var Compania
+     */
+    protected $compania;
 
     protected $lineHeight = 10;
 
@@ -35,9 +40,10 @@ abstract class PdfBase extends FPDF
      * @required
      * @param Configuracion $configuracion
      */
-    public function setSelParameters(Configuracion $configuracion)
+    public function setConfiguracion(Configuracion $configuracion)
     {
         $this->configuracion = $configuracion;
+        $this->compania = $configuracion->getCompania($this->configuracion->getEmpresa());
     }
 
     /**
@@ -46,6 +52,16 @@ abstract class PdfBase extends FPDF
     public function setUtils(Utils $utils)
     {
         $this->utils = $utils;
+    }
+
+    /**
+     * @param string $companiaName
+     * @return $this
+     */
+    public function setCompania($companiaName)
+    {
+        $this->compania = $this->configuracion->getCompania($companiaName);
+        return $this;
     }
 
     public function getWritableWidth(){
@@ -68,9 +84,9 @@ abstract class PdfBase extends FPDF
     public function Footer()
     {
         // Position at 1.5 cm from bottom
-        $compania = $this->configuracion->getRazon();
-        $compania_dir = $this->configuracion->getDir();
-        $compania_web = $this->configuracion->getWeb();
+        $compania = $this->compania->getRazon();
+        $compania_dir = $this->compania->getDir();
+        $compania_web = $this->compania->getWeb();
 
         $this->SetY(-20);
         $this->SetFont('Arial','',7);

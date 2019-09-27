@@ -12,6 +12,7 @@ use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @method Convenio|null find($id, $lockMode = null, $lockVersion = null)
@@ -124,4 +125,23 @@ class ConvenioRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * @param $ident
+     * @return Convenio|null
+     */
+    public function findConvenioByUser(UserInterface $user)
+    {
+        try {
+            return $this
+                ->createQueryBuilder('c')
+                ->join('c.empleados', 'e')
+                ->join('e.usuario', 'u')
+                ->where('u = :u')
+                ->setParameter('u', $user)
+                ->getQuery()
+                ->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+            return null;
+        }
+    }
 }
