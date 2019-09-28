@@ -5,7 +5,8 @@ app:
   sel_routes:
       ignore: [
         'pta_index', 'pta_servicios', 'pta_nosotros', 'vacante_listado', 'vacante_detalle', 'vacante_aplicar',
-        'pta_noticias', 'pta_noticias_categoria', 'pta_noticia', 'pta_contacto', 'app_login']
+        'pta_noticias', 'pta_noticias_categoria', 'pta_noticia', 'pta_contacto', 'app_login',
+        'evaluacion', 'evaluacion_culminar', 'evaluacion_pregunta', 'evaluacion_pregunta_diapositiva', 'evaluacion_diapositiva']
 
   empresas:
     PTA:

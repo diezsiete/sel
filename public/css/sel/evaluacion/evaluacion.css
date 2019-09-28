@@ -10,7 +10,7 @@ main, div.body {
     min-height: 100%;
     position: relative;
     background-image: url("../../../img/sel/evaluacion/pta-elemento-grafico-1.2.jpg");
-    background-position: left 10px;
+    background-position: left 0;
     background-repeat: repeat-x;
     font-size: 20px;
     background-color: #FFF;
@@ -18,8 +18,8 @@ main, div.body {
 
 
 #evaluacion.container {
-    padding-bottom: 82px;
-    /* Height of the footer element */
+    /* Height of the footer element + something */
+    padding-bottom: 122px;
 }
 
 #evaluacion-footer {
@@ -37,6 +37,9 @@ header{
 p, label, li{
     line-height: 2.1rem;
     font-weight: 300;
+}
+table{
+    background: transparent;
 }
 
 /* Dark Gray Gradient */

@@ -732,6 +732,9 @@ body #body.menu-close .pp-header.table-row>div {
         top: 13px;
         width: 136px
     }
+    .pp-header.table-row .pta-img-logo.blue {
+        background: transparent url(../../img/pta/SVG/1.svg) center center no-repeat;
+    }
 }
 
 .no-svg .pp-header.table-row .pta-img-logo {
@@ -860,9 +863,9 @@ body #body.menu-close .pp-header.table-row>div {
     }
 }
 
-html[data-device-type="portable"],html[data-device-type="dedicated"] {
+/*html[data-device-type="portable"],html[data-device-type="dedicated"] {
     height: auto
-}
+}*/
 
 html[data-device-type="portable"] header[role="banner"].pp-header+#main>section:not(.hero-pop-out):first-of-type,html[data-device-type="dedicated"] header[role="banner"].pp-header+#main>section:not(.hero-pop-out):first-of-type {
     padding-top: 72px;

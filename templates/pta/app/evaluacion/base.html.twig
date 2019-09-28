@@ -4,6 +4,7 @@
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/sel/evaluacion/evaluacion.css') }}">
     <link rel="stylesheet" href="{{ asset('css/sel/evaluacion/' ~ evaluacion.slug ~ '.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/pta/evaluacion.css') }}">
 {% endblock %}
 
 {% block title %}
@@ -16,7 +17,7 @@
 
 {% block nav_admin %}
 {% endblock %}
-
+{% block header_logo_class %}{{ parent() }} blue{% endblock %}
 
 {% block main %}
     {{ include('default/_flash_messages.html.twig') }}

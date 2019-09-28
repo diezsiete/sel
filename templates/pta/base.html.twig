@@ -86,7 +86,7 @@
                     <a href="#Menu" id="menu-button" role="button">Menu</a>
 
 
-                    <a href="{{ path('pta_index') }}" class="pta-img-logo">PTA</a>
+                    <a href="{{ path('pta_index') }}" class="{% block header_logo_class %}pta-img-logo{% endblock %}">PTA</a>
 
                     {% block nav %}
                         {{ include('pta/blocks/header/_nav2.html.twig') }}

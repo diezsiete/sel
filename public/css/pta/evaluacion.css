@@ -1,0 +1,17 @@
+.pp-header.table-row:before {
+    background: none;
+}
+
+#evaluacion.container {
+    padding-top: 25px;
+}
+
+@media (min-width: 1152px) {
+    .pp-header~* {
+        position:initial;
+    }
+    body #body .pp-header+.alert {
+        top: 72px;
+        position: relative;
+    }
+}
