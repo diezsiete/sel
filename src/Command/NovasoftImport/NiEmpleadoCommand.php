@@ -70,6 +70,7 @@ class NiEmpleadoCommand extends TraitableCommand
         $hasta = $this->getFin($input);
 
 
+
         if($this->isSearchConvenio()) {
             foreach ($this->getConvenios() as $convenio) {
                 $codigo = $convenio->getCodigo();
@@ -82,8 +83,10 @@ class NiEmpleadoCommand extends TraitableCommand
                         $empleado->setConvenio($convenio);
                     }
                     $this->importEmpleado($empleado, $ssrsDb);
+                    // movemos flush aca dado que existe el caso que un convenio traiga empleados repetidos (PTASAS0001: 52985971)
+                    $this->em->flush();
                 }
-                $this->em->flush();
+                //$this->em->flush();
             }
         } else {
             foreach($this->getEmpleados() as $empleado) {
