@@ -299,7 +299,7 @@ body #body.menu-close .pp-header.table-row>div {
     .pp-header.table-row .main-menu>ul {
         text-align:center
     }
-    .pp-header.table-row.sel .main-menu>ul {
+    .pp-header.table-row.sel-active .main-menu>ul {
         text-align: right;
         padding-right: 15px;
     }
@@ -587,12 +587,16 @@ body #body.menu-close .pp-header.table-row>div {
     font-weight: normal;
     font-variant: normal;
     /*padding: 10px 0 10px 10px*/
-    padding: 10px 30px 10px 0;
+    padding: 13px 18px;
 }
 
 .pp-header.table-row .main-menu .menu-wrapper.right a{
     text-align: right;
     padding: 10px 0 10px 30px;
+}
+.pp-header.table-row .main-menu .menu-wrapper li.nav-active a, .pp-header.table-row .main-menu .menu-wrapper a:hover{
+    border-bottom: 2px solid #fff;
+    text-decoration: none;
 }
 
 @media (min-width: 1152px) {

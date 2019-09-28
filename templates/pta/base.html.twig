@@ -78,7 +78,7 @@
         {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
             {{ include('pta/blocks/header/_switch-user.html.twig') }}
         {% endif %}
-        <header class="table-row pp-header{{ is_sel() ? ' sel' : '' }}" role="banner">
+        <header class="table-row pp-header{{ is_sel() ? ' sel' : '' }}{{ app.user ? ' sel-active' : '' }}" role="banner">
             <div>
 
                 <div class="containerCentered ">

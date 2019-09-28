@@ -48,7 +48,8 @@ class EvaluacionProgresoDataTableType implements DataTableTypeInterface
             'target' => '_blank',
             'data' => function (Progreso $progreso, $id) {
                 return $progreso->getCulminacion() ? $id : 'disabled';
-            }
+            },
+            'tooltip' => 'Certificado'
         ]];
 
         if($usuario) {
@@ -59,7 +60,8 @@ class EvaluacionProgresoDataTableType implements DataTableTypeInterface
                 'icon' => 'fas fa-pencil-alt',
                 'data' => function (Progreso $progreso, $id) {
                     return $progreso->getCulminacion() ? false : $id;
-                }
+                },
+                'tooltip' => 'Culminar'
             ];
         }
 
