@@ -2,8 +2,6 @@
 
 namespace App\Command\NovasoftImport;
 
-use App\Command\Helpers\SelCommandTrait;
-use App\Command\Helpers\TraitableCommand\TraitableCommand;
 use App\Entity\Convenio;
 use App\Service\Configuracion\SsrsDb;
 use App\Service\ReportesServicioEmpleados;
@@ -11,10 +9,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class NiConvenioCommand extends TraitableCommand
+class NiConvenioCommand extends NiCommand
 {
-    use SelCommandTrait;
-
     protected static $defaultName = 'sel:ni:convenio';
 
     /**
@@ -40,28 +36,25 @@ class NiConvenioCommand extends TraitableCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        try {
-            $dbs = $this->getSsrsDbs();
-            foreach($dbs as $db) {
-                $this->io->writeln("SsrsDb: " . $db->getNombre());
-                $this->io->writeln(" convenios:");
-                if($db->hasConvenios()) {
-                    $convenios = $this->reportesServicioEmpleados->setSsrsDb($db->getNombre())->getConvenios();
-                    foreach($convenios as $convenio) {
-                        $convenio->setSsrsDb($db->getNombre());
-                        $this->persistConvenio($convenio);
-                    }
-                } else {
-                    $convenio = (new Convenio())
-                        ->setCodigo($db->getNombre())
-                        ->setSsrsDb($db->getNombre())
-                        ->setNombre($db->getNombre());
+        $dbs = $this->getSsrsDbs();
+        foreach($dbs as $db) {
+            $this->info("SsrsDb: " . $db->getNombre());
+            $this->info(" convenios:");
+            if($db->hasConvenios()) {
+                $convenios = $this->reportesServicioEmpleados->setSsrsDb($db->getNombre())->getConvenios();
+                foreach($convenios as $convenio) {
+                    $convenio->setSsrsDb($db->getNombre());
                     $this->persistConvenio($convenio);
                 }
+            } else {
+                $convenio = (new Convenio())
+                    ->setCodigo($db->getNombre())
+                    ->setSsrsDb($db->getNombre())
+                    ->setNombre($db->getNombre());
+                $this->persistConvenio($convenio);
             }
-        } catch (\Exception $e) {
-            $this->io->error($e->getMessage());
         }
+
     }
 
     /**
@@ -102,7 +95,7 @@ class NiConvenioCommand extends TraitableCommand
         }
 
         $this->em->flush();
-        $this->io->writeln("  [".$convenio->getCodigo()."] " . $convenio->getNombre()
+        $this->info("  [".$convenio->getCodigo()."] " . $convenio->getNombre()
             . " [" . ($persisted ? 'insert' : 'update') . "]");
         return $persisted;
     }

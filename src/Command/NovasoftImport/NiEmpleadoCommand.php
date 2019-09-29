@@ -2,13 +2,9 @@
 
 namespace App\Command\NovasoftImport;
 
-use App\Command\Helpers\SelCommandTrait;
-use App\Command\Helpers\Loggable;
 use App\Command\Helpers\PeriodoOption;
 use App\Command\Helpers\RangoPeriodoOption;
 use App\Command\Helpers\SearchByConvenioOrEmpleado;
-use App\Command\Helpers\TraitableCommand\TraitableCommand;
-use App\Entity\Convenio;
 use App\Entity\Empleado;
 use App\Entity\Usuario;
 use App\Service\ReportesServicioEmpleados;
@@ -26,13 +22,11 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
  * Class NiEmpleadoCommand
  * @package App\Command\NovasoftImport
  */
-class NiEmpleadoCommand extends TraitableCommand
+class NiEmpleadoCommand extends NiCommand
 {
-    use Loggable,
-        PeriodoOption,
+    use PeriodoOption,
         RangoPeriodoOption,
-        SearchByConvenioOrEmpleado,
-        SelCommandTrait;
+        SearchByConvenioOrEmpleado;
 
     protected static $defaultName = 'sel:ni:empleado';
 
@@ -68,44 +62,36 @@ class NiEmpleadoCommand extends TraitableCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        try {
-            $desde = $this->getInicio($input);
-            $hasta = $this->getFin($input);
-            $this->info("---------------------------------------------------------------------------------------");
-            if ($this->isSearchConvenio()) {
-                foreach ($this->getConvenios() as $convenio) {
-                    $codigo = $convenio->getCodigo();
-                    $ssrsDb = $convenio->getSsrsDb();
-                    $empleados = $this->reportesServicioEmpleados->setSsrsDb($ssrsDb)->getEmpleados($codigo, $desde, $hasta);
-                    foreach ($empleados as $empleado) {
-                        //empleados provenientes de nom933 no tienen convenio
-                        if (!$empleado->getConvenio()) {
-                            $empleado->setConvenio($convenio);
-                        }
-                        $this->importEmpleado($empleado, $ssrsDb);
-                        // movemos flush aca dado que existe el caso que un convenio traiga empleados repetidos (PTASAS0001: 52985971)
-                        $this->em->flush();
+        $desde = $this->getInicio($input);
+        $hasta = $this->getFin($input);
+        $this->info("---------------------------------------------------------------------------------------");
+        if ($this->isSearchConvenio()) {
+            foreach ($this->getConvenios() as $convenio) {
+                $codigo = $convenio->getCodigo();
+                $ssrsDb = $convenio->getSsrsDb();
+                $empleados = $this->reportesServicioEmpleados->setSsrsDb($ssrsDb)->getEmpleados($codigo, $desde, $hasta);
+                foreach ($empleados as $empleado) {
+                    //empleados provenientes de nom933 no tienen convenio
+                    if (!$empleado->getConvenio()) {
+                        $empleado->setConvenio($convenio);
                     }
-                    //$this->em->flush();
+                    $this->importEmpleado($empleado, $ssrsDb);
+                    // movemos flush aca dado que existe el caso que un convenio traiga empleados repetidos (PTASAS0001: 52985971)
+                    $this->em->flush();
                 }
-            } else {
-                foreach ($this->getEmpleados() as $empleado) {
-                    $ssrsDb = $empleado->getSsrsDb();
-                    $ident = $empleado->getUsuario()->getIdentificacion();
-                    $empleadoNovasoft = $this->reportesServicioEmpleados->setSsrsDb($ssrsDb)->getEmpleado($ident);
-                    if ($empleadoNovasoft) {
-                        $this->importEmpleado($empleadoNovasoft[0], $ssrsDb);
-                    }
-                }
-                $this->em->flush();
-                $this->em->clear();
+                //$this->em->flush();
             }
-        }
-        catch (SSRSReportException $e) {
-            $this->error($e->errorDescription);
-        }
-        catch(Exception $e) {
-            $this->error($e->getMessage());
+        } else {
+            foreach ($this->getEmpleados() as $empleado) {
+                $ssrsDb = $empleado->getSsrsDb();
+                $ident = $empleado->getUsuario()->getIdentificacion();
+                $empleadoNovasoft = $this->reportesServicioEmpleados->setSsrsDb($ssrsDb)->getEmpleado($ident);
+                if ($empleadoNovasoft) {
+                    $this->importEmpleado($empleadoNovasoft[0], $ssrsDb);
+                }
+            }
+            $this->em->flush();
+            $this->em->clear();
         }
     }
 

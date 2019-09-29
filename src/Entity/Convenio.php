@@ -84,7 +84,7 @@ class Convenio implements \JsonSerializable
         return $this->codigoCliente;
     }
 
-    public function setCodigoCliente(string $codigoCliente): self
+    public function setCodigoCliente(?string $codigoCliente): self
     {
         $this->codigoCliente = $codigoCliente;
 
@@ -108,7 +108,7 @@ class Convenio implements \JsonSerializable
         return $this->direccion;
     }
 
-    public function setDireccion(string $direccion): self
+    public function setDireccion(?string $direccion): self
     {
         $this->direccion = $direccion;
 

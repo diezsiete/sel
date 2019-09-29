@@ -79,13 +79,16 @@ abstract class TraitableCommand extends Command
         $this->input = $input;
         $this->output = $output;
 
-        $this->eventDispatcher->dispatch(new BeforeRunEvent($this, $input, $output));
-
         $return = parent::run($input, $output);
 
         $this->eventDispatcher->dispatch(new AfterRunEvent($this, $input, $output));
 
         return $return;
+    }
+
+    public function initialize(InputInterface $input, OutputInterface $output)
+    {
+        $this->eventDispatcher->dispatch(new BeforeRunEvent($this, $input, $output));
     }
 
     private function addListeners()

@@ -4,6 +4,7 @@ monolog:
         - 'scraper'
         - 'ni_empleado'
         - 'ni_nomina'
+        - 'ni_convenio'
     handlers:
         ni_empleado:
             type: stream
@@ -15,4 +16,9 @@ monolog:
             path: "%kernel.logs_dir%/ni/nomina.log"
             level: debug
             channels: ni_nomina
+        ni_convenio:
+            type: stream
+            path: "%kernel.logs_dir%/ni/convenio.log"
+            level: debug
+            channels: ni_convenio
 

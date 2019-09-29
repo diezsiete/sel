@@ -45,6 +45,9 @@ services:
     App\Command\NovasoftImport\NiNominaCommand:
         calls:
             - [setLogger, ['@monolog.logger.ni_nomina']]
+    App\Command\NovasoftImport\NiConvenioCommand:
+        calls:
+            - [setLogger, ['@monolog.logger.ni_convenio']]
 
 
     # add more service definitions when explicit configuration is needed
