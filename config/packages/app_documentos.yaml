@@ -32,22 +32,22 @@ app:
 
     SERVILABOR:
       documentos_laborales:
-        politica-de-seguridad-vial:
-          date: 2018-12-12
-          title: Política de seguridad vial
-          pdf: POLITICA-DE-SEGURIDAD-VIAL-2019
-        politica-para-la-prevencion-del-consumo-de-sustancias-psicoactivas:
-          date: 2018-08-14
-          title: Política prevención consumo de sustancias psicoactivas
-          pdf: POLITICA-PARA-LA-PREVENCION-DEL-CONSUMO-DE-SUSTANCIAS-PSICOACTIVAS-2019
-        politica-sst:
-          date: 2018-07-30
-          title: Politica de seguridad y salud
-          pdf: POLITICA-SST-2019
         reglamento-de-higiene-y-seguridad-industrial:
-          date: 2018-01-02
-          title: Reglamento de higiene y seguridad
+          date: 2019-09-24
+          title: Reglamento de higiene y seguridad industrial
           pdf: REGLAMENTO-DE-HIGIENE-Y-SEGURIDAD-INDUSTRIAL
+        politica-sst:
+          date: 2019-05-13
+          title: Politica de seguridad y salud en el trabajo
+          pdf: SST-PO-01-3-POLITICA-SGSST
+        politica-de-seguridad-vial:
+          date: 2019-05-13
+          title: Política de seguridad vial
+          pdf: SST-PO-03-02-POLITICA-SEGURIDAD-VIAL
+        politica-para-la-prevencion-del-consumo-de-sustancias-psicoactivas:
+          date: 2019-05-13
+          title: Política prevención consumo de sustancias psicoactivas
+          pdf: SST-PO-02-04-POLITICA-PARA-LA-PREVENCION-DE-CONSUMO-DE-TABACO-ALCOHOL-DROGAS-Y-OTRAS-SUSTANCIAS-PSICOACTIVAS
         reglamento-interno-de-trabajo:
           date: 2015-11-06
           title: Reglamento interno de trabajo
