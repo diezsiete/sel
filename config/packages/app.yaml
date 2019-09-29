@@ -96,7 +96,7 @@ app:
         firmante_contacto: PBX 300 31 13
 
       emails:
-        contacto: guerrerojosedario@gmail.com
+        contacto: '%env(empresa:EMAILS_CONTACTO)%'
 
       ssrs_db:
         SERVILABOR: ~
