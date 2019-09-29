@@ -10,6 +10,7 @@ use App\Service\NovasoftSsrs\ReportFormatter;
 use App\Service\NovasoftSsrs\ReportServer;
 use App\Service\Utils;
 use App\Service\NovasoftSsrs\Mapper\GenericMapper;
+use SSRS\SSRSReportException;
 use SSRS\SSRSType\ExecutionInfo2;
 use SSRS\SSRSType\ParameterValue;
 
@@ -42,6 +43,10 @@ abstract class Report
      */
     protected $path = "";
 
+    /**
+     * @var SsrsDb
+     */
+    protected $db;
 
     /**
      * Flag to avoid setting the execution parameters multiple times
@@ -86,13 +91,14 @@ abstract class Report
 
     public function setDb(SsrsDb $db)
     {
-        $this->path = "/". $db->getNombre() . "$this->path";
+        $this->db = $db;
+        // $this->path = "/". $db->getNombre() . "$this->path";
         return $this;
     }
 
     /**
      * @return mixed
-     * @throws \SSRS\SSRSReportException
+     * @throws SSRSReportException
      */
     public function getParameters()
     {
@@ -101,7 +107,7 @@ abstract class Report
 
     /**
      * @return bool|string
-     * @throws \SSRS\SSRSReportException
+     * @throws SSRSReportException
      */
     public function renderCSV()
     {
@@ -113,7 +119,7 @@ abstract class Report
 
     /**
      * @return array
-     * @throws \SSRS\SSRSReportException
+     * @throws SSRSReportException
      */
     public function renderAssociative()
     {
@@ -124,7 +130,7 @@ abstract class Report
 
     /**
      * @return mixed
-     * @throws \SSRS\SSRSReportException
+     * @throws SSRSReportException
      */
     public function renderMap()
     {
@@ -132,7 +138,7 @@ abstract class Report
     }
 
     /**
-     * @throws \SSRS\SSRSReportException
+     * @throws SSRSReportException
      */
     public function renderPdf()
     {
@@ -144,13 +150,11 @@ abstract class Report
 
     /**
      * @return ExecutionInfo2
-     * @throws \SSRS\SSRSReportException
+     * @throws SSRSReportException
      */
     protected function loadReport()
     {
-        if($this->executionInfo === null) {
-            $this->executionInfo = $this->reportServer->loadReport($this->path);
-        }
+        $this->executionInfo = $this->reportServer->loadReport("/". $this->db->getNombre() . $this->path);
         return $this->executionInfo;
     }
 

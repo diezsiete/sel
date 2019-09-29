@@ -106,6 +106,8 @@ app:
             empleado: Nom933
         EMPLEADOS_SOS:
           convenios: false
+          reportes:
+            empleado: Nom933
 
       companias:
         UNIVERSAL:

@@ -20,7 +20,7 @@ class AutoliquidacionEmpleado
 
     /**
      * @var Empleado
-     * @ORM\ManyToOne(targetEntity="App\Entity\Empleado", inversedBy="autoliquidacion")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Empleado", inversedBy="autoliquidaciones")
      * @ORM\JoinColumn(nullable=false)
      */
     private $empleado;
@@ -64,12 +64,12 @@ class AutoliquidacionEmpleado
         return $this;
     }
 
-    public function getAutoliquidacion(): ?Autoliquidacion
+    public function getAutoliquidacion(): Autoliquidacion
     {
         return $this->autoliquidacion;
     }
 
-    public function setAutoliquidacion(?Autoliquidacion $autoliquidacion): self
+    public function setAutoliquidacion(Autoliquidacion $autoliquidacion): self
     {
         $this->autoliquidacion = $autoliquidacion;
 

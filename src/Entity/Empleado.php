@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Entity\Autoliquidacion\AutoliquidacionEmpleado;
 use App\Repository\Autoliquidacion\AutoliquidacionEmpleadoRepository;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -95,7 +96,7 @@ class Empleado
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Autoliquidacion\AutoliquidacionEmpleado", mappedBy="empleado", orphanRemoval=true)
      */
-    private $autoliquidacion;
+    private $autoliquidaciones;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Representante", inversedBy="empleados")
@@ -104,7 +105,7 @@ class Empleado
 
     public function __construct()
     {
-        $this->autoliquidacion = new ArrayCollection();
+        $this->autoliquidaciones = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -130,7 +131,7 @@ class Empleado
         return $this->estadoCivil;
     }
 
-    public function setEstadoCivil(string $estadoCivil): self
+    public function setEstadoCivil(?string $estadoCivil): self
     {
         $this->estadoCivil = $estadoCivil;
 
@@ -142,19 +143,19 @@ class Empleado
         return $this->hijos;
     }
 
-    public function setHijos(int $hijos): self
+    public function setHijos(?int $hijos): self
     {
         $this->hijos = $hijos;
 
         return $this;
     }
 
-    public function getNacimiento(): ?\DateTimeInterface
+    public function getNacimiento(): ?DateTimeInterface
     {
         return $this->nacimiento;
     }
 
-    public function setNacimiento(?\DateTimeInterface $nacimiento): self
+    public function setNacimiento(?DateTimeInterface $nacimiento): self
     {
         $this->nacimiento = $nacimiento;
 
@@ -203,31 +204,31 @@ class Empleado
         return $this->centroCosto;
     }
 
-    public function setCentroCosto(string $centroCosto): self
+    public function setCentroCosto(?string $centroCosto): self
     {
         $this->centroCosto = $centroCosto;
 
         return $this;
     }
 
-    public function getFechaIngreso(): ?\DateTimeInterface
+    public function getFechaIngreso(): ?DateTimeInterface
     {
         return $this->fechaIngreso;
     }
 
-    public function setFechaIngreso(\DateTimeInterface $fechaIngreso): self
+    public function setFechaIngreso(DateTimeInterface $fechaIngreso): self
     {
         $this->fechaIngreso = $fechaIngreso;
 
         return $this;
     }
 
-    public function getFechaRetiro(): ?\DateTimeInterface
+    public function getFechaRetiro(): ?DateTimeInterface
     {
         return $this->fechaRetiro;
     }
 
-    public function setFechaRetiro(?\DateTimeInterface $fechaRetiro): self
+    public function setFechaRetiro(?DateTimeInterface $fechaRetiro): self
     {
         $this->fechaRetiro = $fechaRetiro;
 
@@ -288,21 +289,10 @@ class Empleado
         return $this;
     }
 
-    /**
-     * @return Collection|AutoliquidacionEmpleado[]|AutoliquidacionEmpleado
-     */
-    public function getAutoliquidacion(?\DateTimeInterface $periodo = null): Collection
-    {
-        if($periodo) {
-            $this->autoliquidacion->matching(AutoliquidacionEmpleadoRepository::critireaPeriodo($perido));
-        }
-        return $this->autoliquidacion;
-    }
-
     public function addAutoliquidacion(AutoliquidacionEmpleado $autoliquidacion): self
     {
-        if (!$this->autoliquidacion->contains($autoliquidacion)) {
-            $this->autoliquidacion[] = $autoliquidacion;
+        if (!$this->autoliquidaciones->contains($autoliquidacion)) {
+            $this->autoliquidaciones[] = $autoliquidacion;
             $autoliquidacion->setEmpleado($this);
         }
 
@@ -311,8 +301,8 @@ class Empleado
 
     public function removeAutoliquidacion(AutoliquidacionEmpleado $autoliquidacion): self
     {
-        if ($this->autoliquidacion->contains($autoliquidacion)) {
-            $this->autoliquidacion->removeElement($autoliquidacion);
+        if ($this->autoliquidaciones->contains($autoliquidacion)) {
+            $this->autoliquidaciones->removeElement($autoliquidacion);
             // set the owning side to null (unless already changed)
             if ($autoliquidacion->getEmpleado() === $this) {
                 $autoliquidacion->setEmpleado(null);

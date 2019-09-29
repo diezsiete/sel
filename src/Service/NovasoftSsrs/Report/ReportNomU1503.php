@@ -114,14 +114,6 @@ class ReportNomU1503 extends Report
         return $this;
     }
 
-    /**
-     * @return Empleado[]
-     */
-    public function renderMap()
-    {
-        return parent::renderMap();
-    }
-
     protected function getMapperInstance()
     {
         return new $this->mapperClass($this->convenioRepository);

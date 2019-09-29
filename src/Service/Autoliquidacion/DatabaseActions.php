@@ -100,7 +100,7 @@ class DatabaseActions
             $autoliquidacionEmpleado = $empleado;
             $empleado = $autoliquidacionEmpleado->getEmpleado();
         }
-        $autoliquidacion = $autoliquidacionEmpleado->getAutoliquidacion();
+        $autoliquidacion = $autoliquidacionEmpleado->getAutoliquidacion($periodo);
         $this->fileManager->deletePdf($periodo, $empleado->getUsuario()->getIdentificacion());
         $autoliquidacion->removeEmpleado($autoliquidacionEmpleado);
         $autoliquidacion->calcularPorcentajeEjecucion();

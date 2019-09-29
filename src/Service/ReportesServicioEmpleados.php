@@ -18,6 +18,7 @@ use App\Service\NovasoftSsrs\Report\ReportNom933;
 use App\Service\NovasoftSsrs\Report\ReportNomU1503;
 use DateTime;
 use Exception;
+use SSRS\SSRSReportException;
 
 class ReportesServicioEmpleados
 {
@@ -155,7 +156,7 @@ class ReportesServicioEmpleados
 
     /**
      * @return Convenio[]
-     * @throws \SSRS\SSRSReportException
+     * @throws SSRSReportException
      */
     public function getConvenios()
     {
@@ -168,6 +169,7 @@ class ReportesServicioEmpleados
      * @param DateTime $desde
      * @param DateTime $hasta
      * @return Empleado[]
+     * @throws SSRSReportException
      * @throws Exception
      */
     public function getEmpleados(string $convenioCodigo, $desde = null, $hasta = null)

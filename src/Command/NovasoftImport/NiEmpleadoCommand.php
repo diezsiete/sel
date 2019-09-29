@@ -13,6 +13,8 @@ use App\Entity\Empleado;
 use App\Entity\Usuario;
 use App\Service\ReportesServicioEmpleados;
 use Doctrine\Common\Annotations\Reader;
+use Exception;
+use SSRS\SSRSReportException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -66,39 +68,44 @@ class NiEmpleadoCommand extends TraitableCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $desde = $this->getInicio($input);
-        $hasta = $this->getFin($input);
-
-
-
-        if($this->isSearchConvenio()) {
-            foreach ($this->getConvenios() as $convenio) {
-                $codigo = $convenio->getCodigo();
-                $ssrsDb = $convenio->getSsrsDb();
-
-                $empleados = $this->reportesServicioEmpleados->setSsrsDb($ssrsDb)->getEmpleados($codigo, $desde, $hasta);
-                foreach ($empleados as $empleado) {
-                    //empleados provenientes de nom933 no tienen convenio
-                    if(!$empleado->getConvenio()) {
-                        $empleado->setConvenio($convenio);
+        try {
+            $desde = $this->getInicio($input);
+            $hasta = $this->getFin($input);
+            $this->info("---------------------------------------------------------------------------------------");
+            if ($this->isSearchConvenio()) {
+                foreach ($this->getConvenios() as $convenio) {
+                    $codigo = $convenio->getCodigo();
+                    $ssrsDb = $convenio->getSsrsDb();
+                    $empleados = $this->reportesServicioEmpleados->setSsrsDb($ssrsDb)->getEmpleados($codigo, $desde, $hasta);
+                    foreach ($empleados as $empleado) {
+                        //empleados provenientes de nom933 no tienen convenio
+                        if (!$empleado->getConvenio()) {
+                            $empleado->setConvenio($convenio);
+                        }
+                        $this->importEmpleado($empleado, $ssrsDb);
+                        // movemos flush aca dado que existe el caso que un convenio traiga empleados repetidos (PTASAS0001: 52985971)
+                        $this->em->flush();
                     }
-                    $this->importEmpleado($empleado, $ssrsDb);
-                    // movemos flush aca dado que existe el caso que un convenio traiga empleados repetidos (PTASAS0001: 52985971)
-                    $this->em->flush();
+                    //$this->em->flush();
                 }
-                //$this->em->flush();
-            }
-        } else {
-            foreach($this->getEmpleados() as $empleado) {
-                $ssrsDb = $empleado->getSsrsDb();
-                $ident = $empleado->getUsuario()->getIdentificacion();
-                $empleadoNovasoft = $this->reportesServicioEmpleados->setSsrsDb($ssrsDb)->getEmpleado($ident);
-                if($empleadoNovasoft) {
-                    $this->importEmpleado($empleadoNovasoft[0], $ssrsDb);
+            } else {
+                foreach ($this->getEmpleados() as $empleado) {
+                    $ssrsDb = $empleado->getSsrsDb();
+                    $ident = $empleado->getUsuario()->getIdentificacion();
+                    $empleadoNovasoft = $this->reportesServicioEmpleados->setSsrsDb($ssrsDb)->getEmpleado($ident);
+                    if ($empleadoNovasoft) {
+                        $this->importEmpleado($empleadoNovasoft[0], $ssrsDb);
+                    }
                 }
+                $this->em->flush();
+                $this->em->clear();
             }
-            $this->em->flush();
-            $this->em->clear();
+        }
+        catch (SSRSReportException $e) {
+            $this->error($e->errorDescription);
+        }
+        catch(Exception $e) {
+            $this->error($e->getMessage());
         }
     }
 
@@ -118,6 +125,7 @@ class NiEmpleadoCommand extends TraitableCommand
             $this->insertEmpleado($empleado);
             $empleadoMessage = "[empleado insert]";
         }
+
         $this->info(sprintf("%s %s %s %s %s", $empleado->getConvenio()->getCodigo(),
             $empleado->getUsuario()->getNombreCompleto(), $empleado->getUsuario()->getIdentificacion(), $usuarioMessage, $empleadoMessage));
     }

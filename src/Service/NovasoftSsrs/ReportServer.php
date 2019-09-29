@@ -8,6 +8,7 @@ use SSRS\Common\Credentials;
 use SSRS\RenderType\RenderAsCSV;
 use SSRS\RenderType\RenderAsPDF;
 use SSRS\SSRSReport;
+use SSRS\SSRSReportException;
 use SSRS\SSRSType\ExecutionInfo2;
 use SSRS\SSRSType\PageCountModeEnum;
 use SSRS\SSRSType\ParameterValue;
@@ -43,6 +44,11 @@ class ReportServer
 
     private $renderStreamIds;
 
+    /**
+     * @var ExecutionInfo2
+     */
+    private $currentReport;
+
 
     public function __construct(string $username, string $password, string $url)
     {
@@ -52,13 +58,16 @@ class ReportServer
     }
 
     /**
-     * @param $report_path
+     * @param $reportPath
      * @return ExecutionInfo2
-     * @throws \SSRS\SSRSReportException
+     * @throws SSRSReportException
      */
     public function loadReport($reportPath)
     {
-        return $this->connect()->LoadReport2($reportPath);
+        if(!$this->currentReport || $this->currentReport->ReportPath !== $reportPath) {
+            $this->currentReport = $this->connect()->LoadReport2($reportPath);
+        }
+        return $this->currentReport;
     }
 
 
@@ -83,7 +92,7 @@ class ReportServer
 
     /**
      * @return SSRSReport
-     * @throws \SSRS\SSRSReportException
+     * @throws SSRSReportException
      */
     private function connect()
     {
