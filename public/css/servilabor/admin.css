@@ -15,3 +15,7 @@
     background: #38414a;
     z-index: 9;
 }
+
+.navbar.admin .hamburger-inner, .navbar.admin .hamburger-inner:before, .navbar.admin .hamburger-inner:after {
+    background: white;
+}
