@@ -41,6 +41,9 @@ p, label, li{
 table{
     background: transparent;
 }
+.form-check {
+    margin-bottom: 20px;
+}
 
 /* Dark Gray Gradient */
 #evaluacion-footer{

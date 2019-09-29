@@ -46,11 +46,6 @@ class Mensaje
         $this->evaluador = $evaluador;
     }
 
-    public function test()
-    {
-        return $this->navegador->getProgreso()->getId();
-    }
-
     public function hasFlashMessage()
     {
         return !!$this->findTypeOfMessage();

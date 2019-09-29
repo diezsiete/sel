@@ -169,6 +169,9 @@ class Navegador
     public function hasPrevRoute()
     {
         if($this->progreso->getDiapositiva()) {
+            if($this->progreso->isModuloRepeticion()) {
+                return !$this->getModulo()->isFirstDiapositiva($this->progreso->getDiapositiva());
+            }
             return $this->progreso->getDiapositiva()->getIndice() > 1;
         } else {
             if($this->progreso->getPreguntaDiapositiva()) {

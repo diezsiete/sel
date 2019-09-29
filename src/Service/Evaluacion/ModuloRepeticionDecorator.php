@@ -47,7 +47,7 @@ class ModuloRepeticionDecorator
     public function getPrevPregunta(Pregunta $pregunta)
     {
         $prev = false;
-        for($i = count($this->respuestas) - 1; $i <= 0; $i--) {
+        for($i = count($this->respuestas) - 1; $i >= 0; $i--) {
             if($prev && !$this->respuestas[$i]->evaluar()) {
                 return $this->respuestas[$i]->getPregunta();
             }
