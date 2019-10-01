@@ -8,11 +8,14 @@ use App\DataTable\Type\ReporteNominaDataTableType;
 use App\Entity\Autoliquidacion\AutoliquidacionEmpleado;
 use App\Entity\ReporteNomina;
 use App\Repository\ConvenioRepository;
+use App\Repository\ReporteNominaRepository;
 use App\Service\Autoliquidacion\FileManager;
 use App\Service\Configuracion\Configuracion;
+use App\Service\NovasoftSsrs\NovasoftSsrs;
 use App\Service\Pdf\PdfCartaLaboral;
 use App\Service\ReportesServicioEmpleados;
 use App\Service\ServicioEmpleados\Reportes;
+use DateTime;
 use Omines\DataTablesBundle\DataTableFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,7 +36,8 @@ class ServicioEmpleadosController extends BaseController
     /**
      * @Route("/sel/se/comprobantes", name="app_comprobantes", defaults={"header": "Comprobantes de pago"})
      */
-    public function comprobantes(DataTableFactory $dataTableFactory, Request $request)
+    public function comprobantes(DataTableFactory $dataTableFactory, Request $request, NovasoftSsrs $novasoftSsrs,
+                                 ReporteNominaRepository $reporteNominaRepository)
     {
         $id = $this->getUser()->getId();
         $table = $dataTableFactory->createFromType(ReporteNominaDataTableType::class,
@@ -41,6 +45,24 @@ class ServicioEmpleadosController extends BaseController
             ->handleRequest($request);
 
         if($table->isCallback()) {
+            $desde = DateTime::createFromFormat('Y-m-d', (new DateTime())->format('Y-m') . '-01');
+            $hasta = DateTime::createFromFormat('Y-m-d', (new DateTime())->format('Y-m-t'));
+
+            $reportesNomina = $novasoftSsrs
+                ->setSsrsDb($this->getSsrsDb())
+                ->getReporteNomina($this->getUser(), $desde, $hasta);
+
+            if(count($reportesNomina)) {
+                foreach ($reportesNomina as $reporteNomina) {
+                    $reporteNominaDb = $reporteNominaRepository->findByFecha($reporteNomina->getUsuario(), $reporteNomina->getFecha());
+                    if ($reporteNominaDb) {
+                        $this->em()->remove($reporteNominaDb);
+                    }
+                    $this->em()->persist($reporteNomina);
+                }
+                $this->em()->flush();
+            }
+
             return $table->getResponse();
         }
 
