@@ -24,10 +24,10 @@ class NiMetaCommand extends Command
 
         $this->getApplication()->find('sel:ni:empleado')->run($input, $output);
 
-        $this->getApplication()->find('sel:ni:nomina')
+        /*$this->getApplication()->find('sel:ni:nomina')
             ->run(new ArrayInput([
                 'command' => 'sel:ni:nomina',
                 '-p' => null
-            ]), $output);
+            ]), $output);*/
     }
 }
