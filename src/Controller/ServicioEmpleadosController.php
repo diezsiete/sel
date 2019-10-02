@@ -14,6 +14,7 @@ use App\Service\Configuracion\Configuracion;
 use App\Service\NovasoftSsrs\NovasoftSsrs;
 use App\Service\Pdf\PdfCartaLaboral;
 use App\Service\ReportesServicioEmpleados;
+use App\Service\ServicioEmpleados\Import;
 use App\Service\ServicioEmpleados\Reportes;
 use DateTime;
 use Omines\DataTablesBundle\DataTableFactory;
@@ -30,14 +31,14 @@ class ServicioEmpleadosController extends BaseController
 
     public function __construct(ConvenioRepository $convenioRepository)
     {
+        $this->createNotFoundException();
         $this->convenioRepository = $convenioRepository;
     }
 
     /**
      * @Route("/sel/se/comprobantes", name="app_comprobantes", defaults={"header": "Comprobantes de pago"})
      */
-    public function comprobantes(DataTableFactory $dataTableFactory, Request $request, NovasoftSsrs $novasoftSsrs,
-                                 ReporteNominaRepository $reporteNominaRepository)
+    public function comprobantes(DataTableFactory $dataTableFactory, Request $request, Import $import)
     {
         $id = $this->getUser()->getId();
         $table = $dataTableFactory->createFromType(ReporteNominaDataTableType::class,
@@ -45,24 +46,7 @@ class ServicioEmpleadosController extends BaseController
             ->handleRequest($request);
 
         if($table->isCallback()) {
-            $desde = DateTime::createFromFormat('Y-m-d', (new DateTime())->format('Y-m') . '-01');
-            $hasta = DateTime::createFromFormat('Y-m-d', (new DateTime())->format('Y-m-t'));
-
-            $reportesNomina = $novasoftSsrs
-                ->setSsrsDb($this->getSsrsDb())
-                ->getReporteNomina($this->getUser(), $desde, $hasta);
-
-            if(count($reportesNomina)) {
-                foreach ($reportesNomina as $reporteNomina) {
-                    $reporteNominaDb = $reporteNominaRepository->findByFecha($reporteNomina->getUsuario(), $reporteNomina->getFecha());
-                    if ($reporteNominaDb) {
-                        $this->em()->remove($reporteNominaDb);
-                    }
-                    $this->em()->persist($reporteNomina);
-                }
-                $this->em()->flush();
-            }
-
+            $import->nomina($this->getUser());
             return $table->getResponse();
         }
 
