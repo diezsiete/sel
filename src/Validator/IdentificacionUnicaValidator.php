@@ -18,6 +18,11 @@ class IdentificacionUnicaValidator extends ConstraintValidator
         $this->usuarioRepository = $userRepository;
     }
 
+    /**
+     * @param mixed $value
+     * @param Constraint|IdentificacionUnica $constraint
+     * @return null
+     */
     public function validate($value, Constraint $constraint)
     {
         $identificacion = is_object($value) ? $value->identificacion : $value;
@@ -30,7 +35,10 @@ class IdentificacionUnicaValidator extends ConstraintValidator
             return null;
         }
 
-        $this->context->buildViolation($constraint->message)
-            ->addViolation();
+        $violationBuilder = $this->context->buildViolation($constraint->message);
+        if($constraint->path) {
+            $violationBuilder->atPath($constraint->path);
+        }
+        $violationBuilder->addViolation();
     }
 }

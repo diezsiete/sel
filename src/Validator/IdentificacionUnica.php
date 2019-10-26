@@ -11,6 +11,7 @@ use Symfony\Component\Validator\Constraint;
 class IdentificacionUnica extends Constraint
 {
     public $message = 'Identificación ya registrada';
+    public $path = '';
 
     public function getTargets()
     {

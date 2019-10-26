@@ -139,7 +139,7 @@ class MenuBuilder
 
     public function createEvaluacionMenu(ItemInterface $menu, $user)
     {
-        if($this->security->isGranted(['ROLE_EMPLEADO'], $user)) {
+        // if($this->security->isGranted(['ROLE_EMPLEADO'], $user)) {
             $menu->addChild('Evaluacion')
                 ->setUri('#')
                 ->setExtra('icon', 'fas fa-clipboard-list');
@@ -149,7 +149,7 @@ class MenuBuilder
                     'routeParameters' => ['evaluacionSlug' => 'induccion']
                 ])
                 ->setExtra('icon', 'fas fa-clipboard-list');
-        }
+        // }
     }
 
     public function createAdminMenu(ItemInterface $menu, $user)

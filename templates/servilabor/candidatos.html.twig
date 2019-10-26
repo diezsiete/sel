@@ -19,7 +19,7 @@
 {%- endblock choice_widget_expanded -%}
 
 {% block body_header_title %}
-    Ingresa tus datos para trabajar con nosotros
+    Registrate en nuestra pagina, ingresando tus datos para trabajar con nosotros
 {% endblock %}
 
 {% block body %}
@@ -41,24 +41,14 @@
 
                 <h4 class="h6 g-font-weight-700 g-mb-20">Datos personales</h4>
 
+                <div class="row">
+                    {{ form_row(form.primerNombre, {container_attr: {class: 'col-md-3'}}) }}
+                    {{ form_row(form.segundoNombre, {container_attr: {class: 'col-md-3'}}) }}
+                    {{ form_row(form.primerApellido, {container_attr: {class: 'col-md-3'}}) }}
+                    {{ form_row(form.segundoApellido, {container_attr: {class: 'col-md-3'}}) }}
+                </div>
 
                 <div class="row">
-
-                    <!-- Text Input with Left Appended Icon -->
-                    <div class="form-group g-mb-20 col-md-6">
-                        <label class="g-mb-10">Nombres</label>
-                        <div class="input-group g-brd-primary--focus">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text rounded-0 g-bg-white g-color-gray-light-v1"><i class="icon-user-follow"></i></span>
-                            </div>
-                            {{ form_widget(form.nombre, {attr: {
-                                class: 'form-control-md rounded-0"',
-                                placeholder: 'Ingrese su nombre'
-                            }}) }}
-                            {{ form_errors(form.nombre) }}
-                        </div>
-                    </div>
-                    <!-- End Text Input with Left Appended Icon -->
                     <!-- Text Input with Left Appended Icon -->
                     <div class="form-group g-mb-20 col-md-6">
                         <label class="g-mb-10">Número de documento</label>
@@ -74,12 +64,8 @@
                         </div>
                     </div>
                     <!-- End Text Input with Left Appended Icon -->
-                </div>
-
-                <div class="row">
-
                     <!-- Text Input with Left Appended Icon -->
-                    <div class="form-group g-mb-20 col-md-4">
+                    <div class="form-group g-mb-20 col-md-6">
                         <label class="g-mb-10">Correo</label>
                         <div class="input-group g-brd-primary--focus">
                             <div class="input-group-prepend">
@@ -93,8 +79,11 @@
                         </div>
                     </div>
                     <!-- End Text Input with Left Appended Icon -->
+                </div>
+
+                <div class="row">
                     <!-- Text Input with Left Appended Icon -->
-                    <div class="form-group g-mb-20 col-md-4">
+                    <div class="form-group g-mb-20 col-md-6">
                         <label class="g-mb-10">Teléfono</label>
                         <div class="input-group g-brd-primary--focus">
                             <div class="input-group-prepend">
@@ -109,7 +98,7 @@
                     </div>
                     <!-- End Text Input with Left Appended Icon -->
                     <!-- Text Input with Left Appended Icon -->
-                    <div class="form-group g-mb-20 col-md-4">
+                    <div class="form-group g-mb-20 col-md-6">
                         <label class="g-mb-10">Lugar de residencia</label>
                         <div class="input-group g-brd-primary--focus">
                             <div class="input-group-prepend">
@@ -166,10 +155,20 @@
                     </div>
                 </div>
 
+                <hr class="g-brd-gray-light-v4 g-mx-minus-30">
+                <h4 class="h6 g-font-weight-700 g-mb-20">Información de la cuenta</h4>
+
+                <div class="form-row">
+                    {{ form_row(form.password.first, {container_attr: {class: 'col-md-6'}}) }}
+                    {{ form_row(form.password.second, {container_attr: {class: 'col-md-6'}}) }}
+                </div>
+
+                {{ form_row(form.aceptoTerminosEn) }}
+
                 <div class="g-mb-20">&nbsp;</div>
 
                 <div class="text-center">
-                    <input type="submit" class="btn btn-xl u-btn-primary g-mb-1 " value="Enviar">
+                    <input type="submit" class="btn btn-xl u-btn-primary g-mb-1 " value="Registrarse">
                 </div>
             {{ form_end(form) }}
             <!-- End General Forms -->

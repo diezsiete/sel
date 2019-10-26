@@ -3,13 +3,17 @@
 </h2>
 
 <p>
-    {% for key, value in data %}
-        <strong>{{ key }} : </strong>
-        {% if key == 'nacimiento' %}
-                {{ value|date('Y-m-d') }}
-        {% else %}
-                {{ value }}
-        {% endif %}
-        <br>
-    {% endfor %}
+    <strong>Nombres: </strong> {{data.primerNombre}} {{data.segundoNombre}} {{data.primerApellido}} {{data.segundoApellido}}
+    <br>
+    <strong>Identificacion: </strong> {{data.identificacion}}
+    <br>
+    <strong>Email: </strong> {{ data.email }}
+    <br>
+    <strong>Telefono: </strong> {{ data.telefono }}
+    <br>
+    <strong>Residencia: </strong> {{ data.residencia }}
+    <br>
+    <strong>Nacimiento: </strong> {{ data.nacimiento|date('Y-m-d') }}
+    <br>
+    <strong>Actividad: </strong> {{ data.actividad }}
 </p>

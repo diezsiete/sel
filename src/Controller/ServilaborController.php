@@ -6,8 +6,10 @@ use App\Entity\Post;
 use App\Entity\Tag;
 use App\Form\CandidatoFormType;
 use App\Form\ContactoFormType;
+use App\Form\Model\CandidatosModel;
 use App\Repository\PostRepository;
 use App\Repository\TagRepository;
+use App\Security\LoginFormAuthenticator;
 use App\Service\Configuracion\Configuracion;
 use App\Service\Mailer;
 use App\Service\UploaderHelper;
@@ -16,6 +18,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 
 class ServilaborController extends AbstractController
 {
@@ -119,26 +123,32 @@ class ServilaborController extends AbstractController
     /**
      * @Route("/candidatos", name="servilabor_candidatos", host="%empresa.SERVILABOR.host%")
      */
-    public function candidatos(Request $request, UploaderHelper $uploaderHelper, Mailer $mailer, ContainerBagInterface $bag, Configuracion $configuracion)
+    public function candidatos(Request $request, UploaderHelper $uploaderHelper, Mailer $mailer,
+                               ContainerBagInterface $bag, Configuracion $configuracion, UserPasswordEncoderInterface $passwordEncoder,
+                               GuardAuthenticatorHandler $guard, LoginFormAuthenticator $formAuthenticator)
     {
-        $form = $this->createForm(CandidatoFormType::class);
+        $form = $this->createForm(CandidatoFormType::class, new CandidatosModel());
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
-            if($adjunto = $request->files->get('adjunto')) {
-                $data = $form->getData();
-                $fileMetadata = $uploaderHelper->uploadPrivateFile($adjunto, true, $bag);
+            /** @var CandidatosModel $data */
+            $data = $form->getData();
+            $usuario = $data->getUsuario($passwordEncoder);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($usuario);
+            $em->flush();
 
-                $subject = '[servilabor.com.co/candidatos] ' . $data['nombre'];
-                $from = $data['email'];
+            if($adjunto = $request->files->get('adjunto')) {
+                $fileMetadata = $uploaderHelper->uploadPrivateFile($adjunto, true, $bag);
+                $subject = '[servilabor.com.co/candidatos] ' . $data->primerNombre . " " . $data->primerApellido;
+                $from = $data->email;
                 $to = $configuracion->getEmails()->getContacto();
                 $mailer->send($subject, $from, $to, 'servilabor/emails/candidatos.html.twig', [
                     'data' => $data
                 ], $fileMetadata['fullpath']);
-
-                $this->addFlash('success', 'El mensaje se ha enviado exitosamente, gracias por utilizar nuestros servicios');
-            } else {
-                $this->addFlash('danger', 'Por favor adjunte su hoja de vida');
             }
+
+            $this->addFlash('success', "Registrado exitosamente! Bienvenido al portal de Servilabor");
+            return $guard->authenticateUserAndHandleSuccess($usuario, $request, $formAuthenticator, 'main');
         }
 
         return $this->render('servilabor/candidatos.html.twig', [
@@ -169,6 +179,7 @@ class ServilaborController extends AbstractController
      */
     public function politicaTratamientoDatosPersonales()
     {
+        // $this->generateUrl($route)
         return $this->render('servilabor/politica-tratamiento-datos-personales.html.twig');
     }
 
