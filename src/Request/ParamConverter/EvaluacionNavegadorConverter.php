@@ -9,7 +9,9 @@ use App\Entity\Evaluacion\Evaluacion;
 use App\Entity\Evaluacion\Modulo;
 use App\Entity\Evaluacion\Pregunta\Pregunta;
 use App\Entity\Evaluacion\Progreso;
+use App\Entity\Evaluacion\Respuesta\Respuesta;
 use App\Repository\Evaluacion\ProgresoRepository;
+use App\Service\Evaluacion\Evaluador;
 use App\Service\Evaluacion\Navegador;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -61,10 +63,15 @@ class EvaluacionNavegadorConverter implements ParamConverterInterface
 
         /** @var ProgresoRepository $progresoRepository */
         $progresoRepository = $this->getRepo(Progreso::class);
+
         $evaluacion = $this->findBySlug(Evaluacion::class, $evaluacionSlug);
+        $progreso = $progresoRepository->findByUsuarioElseNew($this->security->getUser(), $evaluacion);
+        $evaluador = new Evaluador($progreso, $this->em->getRepository(Respuesta::class));
 
-        $navegador = new Navegador($progresoRepository, $evaluacion, $this->security, $this->router, $this->em);
-
+        $navegador = (new Navegador($this->router))
+            ->setProgreso($progreso)
+            ->setEvaluador($evaluador)
+            ->setEm($this->em);
 
         if($diapositivaSlug = $request->attributes->get('diapositivaSlug')) {
             $navegador->setRouteDiapositiva(

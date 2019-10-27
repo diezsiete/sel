@@ -70,7 +70,7 @@ class ProgresoRepository extends ServiceEntityRepository
      * @throws NonUniqueResultException
      * @throws NoResultException
      */
-    private function instanceNewProgreso(UserInterface $usuario, Evaluacion $evaluacion)
+    public function instanceNewProgreso(UserInterface $usuario, Evaluacion $evaluacion)
     {
         $modulo = $this->_em->getRepository(Modulo::class)->findFirst();
         $diapositiva = $modulo->getDiapositivas()->first();

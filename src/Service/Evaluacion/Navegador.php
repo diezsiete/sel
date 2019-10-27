@@ -9,13 +9,9 @@ use App\Entity\Evaluacion\Evaluacion;
 use App\Entity\Evaluacion\Modulo;
 use App\Entity\Evaluacion\Pregunta\Pregunta;
 use App\Entity\Evaluacion\Progreso;
-use App\Entity\Evaluacion\Respuesta\Respuesta;
-use App\Repository\Evaluacion\ProgresoRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Security;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 class Navegador
 {
@@ -35,11 +31,6 @@ class Navegador
     private $router;
 
     /**
-     * @var UserInterface|null
-     */
-    private $user;
-
-    /**
      * @var Evaluacion
      */
     private $evaluacion;
@@ -49,17 +40,34 @@ class Navegador
      */
     private $em;
 
-    public function __construct(ProgresoRepository $progresoRepository, Evaluacion $evaluacion,
-                                Security $security, RouterInterface $router, EntityManagerInterface $em)
+    public function __construct(RouterInterface $router)
     {
         $this->router = $router;
-        $this->user = $security->getUser();
-        $this->evaluacion = $evaluacion;
-        $this->em = $em;
-        $this->progreso = $progresoRepository->findByUsuarioElseNew($this->user, $this->evaluacion);
-        $this->evaluador = new Evaluador($this->progreso, $this->em->getRepository(Respuesta::class));
     }
 
+    public function setEvaluacion(Evaluacion $evaluacion)
+    {
+        $this->evaluacion = $evaluacion;
+        return $this;
+    }
+
+    public function setProgreso(Progreso $progreso)
+    {
+        $this->progreso = $progreso;
+        return $this;
+    }
+
+    public function setEvaluador(Evaluador $evaluador)
+    {
+        $this->evaluador = $evaluador;
+        return $this;
+    }
+
+    public function setEm(EntityManagerInterface $em)
+    {
+        $this->em = $em;
+        return $this;
+    }
 
     public function setRouteDiapositiva(Modulo $modulo, Diapositiva $diapositiva)
     {
@@ -142,7 +150,7 @@ class Navegador
                         $this->progreso->getPregunta()->getNextDiapositiva($this->progreso->getPreguntaDiapositiva()));
                 } else {
                     // si fallo la respuesta y pregunta tiene diapositivas
-                    if($preguntaDiapositiva = $this->evaluador->getPreguntaDiapositiva($this->progreso->getPregunta())) {
+                    if($this->evaluador && $preguntaDiapositiva = $this->evaluador->getPreguntaDiapositiva($this->progreso->getPregunta())) {
                         return $this->buildRoute($this->progreso->getModulo(), $this->progreso->getPregunta(), $preguntaDiapositiva);
                     } else {
                         $sigPregunta = $this->getPreguntasContainer()->getNextPregunta($this->progreso->getPregunta());
@@ -150,7 +158,7 @@ class Navegador
                             return $this->buildRoute($this->progreso->getModulo(), $sigPregunta);
                         } else {
                             // modulo habilitado con repeticion en fallo, validamos respuestas ok
-                            if($this->progreso->getModulo()->isRepetirEnFallo() && !$this->evaluador->evaluarModulo()) {
+                            if($this->evaluador && $this->progreso->getModulo()->isRepetirEnFallo() && !$this->evaluador->evaluarModulo()) {
                                 return $this->buildRoute($this->progreso->getModulo(), $this->progreso->getModulo()->getFirstDiapositiva());
                             }
                             $nextModulo = $this->progreso->getNextModulo();
@@ -238,16 +246,6 @@ class Navegador
     }
 
     /**
-     * @param UserInterface $user
-     * @return Navegador
-     */
-    public function setUser(UserInterface $user): Navegador
-    {
-        $this->user = $user;
-        return $this;
-    }
-
-    /**
      * @return Evaluacion
      */
     public function getEvaluacion()
@@ -303,6 +301,14 @@ class Navegador
         return $this->progreso;
     }
 
+    /**
+     * @return RouterInterface
+     */
+    public function getRouter()
+    {
+        return $this->router;
+    }
+
 
     private function hasAccessToDiapositiva(Diapositiva $diapositiva)
     {
@@ -338,7 +344,6 @@ class Navegador
             $name = 'evaluacion_diapositiva';
             $routeParams += ['diapositivaSlug' => $diapositivaOPregunta->getSlug()];
         }
-
         return $this->router->generate($name, $routeParams);
     }
 
@@ -348,7 +353,7 @@ class Navegador
      */
     private function getPreguntasContainer()
     {
-        return $this->evaluador->isModuloRepeticion() ? $this->evaluador->getModuloRepeticion() : $this->progreso->getModulo();
+        return $this->evaluador && $this->evaluador->isModuloRepeticion() ? $this->evaluador->getModuloRepeticion() : $this->progreso->getModulo();
     }
 
 
@@ -360,10 +365,11 @@ class Navegador
             ->setDiapositiva($diapositiva)
             ->setPregunta($pregunta)
             ->setPreguntaDiapositiva($preguntaDiapositiva);
-
-        if(!$this->progreso->getId()) {
-            $this->em->persist($this->progreso);
+        if($this->em) {
+            if (!$this->progreso->getId()) {
+                $this->em->persist($this->progreso);
+            }
+            $this->em->flush();
         }
-        $this->em->flush();
     }
 }
