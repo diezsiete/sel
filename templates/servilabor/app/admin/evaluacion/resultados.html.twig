@@ -1,0 +1,31 @@
+{% extends 'datatable/base.datatable.html.twig' %}
+
+{% block title %}
+    Resultados
+{% endblock %}
+
+{% block body_header_title %}
+    Resultados
+{% endblock %}
+
+{% block body_header_right %}
+    {#{{ parent() }}
+    <a href="{{ path('admin_usuario_crear') }}" class="btn btn-primary">
+        Crear usuario
+    </a>#}
+    <ul class="u-list-inline">
+        <li class="list-inline-item g-mr-7">
+            {{ parent() }}
+        </li>
+        <li class="list-inline-item g-color-primary">
+            <a href="{{ path('admin_evaluacion_pdf', {slug: 'induccion'}) }}"
+               data-toggle="tooltip" data-placement="bottom" title="Descargar evaluación en PDF"
+               class="btn btn-md u-btn-outline-secondary rounded-0 form-control form-control-md g-mb-5">
+                <i class="fas fa-file-pdf"></i>
+            </a>
+        </li>
+    </ul>
+{% endblock %}
+
+
+

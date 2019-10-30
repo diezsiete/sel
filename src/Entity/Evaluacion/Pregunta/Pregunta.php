@@ -16,7 +16,7 @@ use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter
  * @ORM\Table(name="evaluacion_pregunta")
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="widget", type="string")
- * @ORM\DiscriminatorMap({"MultipleUnica" = "MultipleUnica", "MultipleOrdenar": "MultipleOrdenar"})
+ * @ORM\DiscriminatorMap({"MultipleUnica" = "MultipleUnica", "MultipleOrdenar": "MultipleOrdenar", "MultipleUnicaIndexed": "MultipleUnicaIndexed"})
  */
 abstract class Pregunta extends HasDiapositivas
 {

@@ -164,6 +164,12 @@ class Progreso
         return $this;
     }
 
+    public function restPorcentajeCompletitud(int $porcentaje): self
+    {
+        $this->porcentajeCompletitud -= $porcentaje;
+        return $this;
+    }
+
     public function getPorcentajeExito(): ?int
     {
         return $this->porcentajeExito;
@@ -185,6 +191,7 @@ class Progreso
         $this->porcentajeExito -= $porcentajeExito;
         return $this;
     }
+
 
     public function getModulo(): ?Modulo
     {

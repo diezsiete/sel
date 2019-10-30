@@ -1,0 +1,33 @@
+{% extends 'evaluacion/base.html.twig' %}
+
+
+{% form_theme form _self %}
+
+{% block choice_widget_expanded -%}
+    <div {{ block('widget_container_attributes') }}>
+        {%- for child in form %}
+            <b style="float: left; margin-right: 30px">{{ range('A', 'Z')[loop.index0] }}</b>
+            {{- form_widget(child, {
+                parent_label_class: label_attr.class|default(''),
+                translation_domain: choice_translation_domain,
+                valid: valid
+            }) -}}
+        {% endfor -%}
+    </div>
+{%- endblock choice_widget_expanded %}
+
+
+
+
+{% block body %}
+    <style>
+        label{
+            display: block;
+        }
+    </style>
+    <div class="widget-multiple">
+        <p class="texto">
+            {{ pregunta.texto }}
+        </p>
+    </div>
+{% endblock %}

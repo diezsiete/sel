@@ -39,7 +39,7 @@ class MultipleOrdenar extends MultipleUnica
 
     public function getMensajeAyuda(): string
     {
-        $mensajeAyuda = "Determine el orden de los enunciados. Seleccione para cada uno la posisición correcta";
+        $mensajeAyuda = "Determine el orden de los enunciados. Seleccione para cada uno la posición correcta";
         return $mensajeAyuda;
         /*$mensajeAyuda = $this->mensajeAyuda;
         if(!$mensajeAyuda) {

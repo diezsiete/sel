@@ -12,11 +12,14 @@ use App\Repository\Evaluacion\EvaluacionRepository;
 use App\Repository\Evaluacion\ProgresoRepository;
 use App\Service\Evaluacion\Navegador;
 use Doctrine\ORM\EntityManagerInterface;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Twig\Environment;
 
 class ImprimirCommand extends Command
 {
@@ -37,15 +40,22 @@ class ImprimirCommand extends Command
      * @var EntityManagerInterface
      */
     private $em;
+    /**
+     * @var Environment
+     */
+    private $twig;
+    private $kernelProjectDir;
 
-    public function __construct(Navegador $navegador, EvaluacionRepository $evaluacionRepository,
-                                ProgresoRepository $progresoRepository, EntityManagerInterface $em)
+    public function __construct(Navegador $navegador, EvaluacionRepository $evaluacionRepository, Environment $twig,
+                                ProgresoRepository $progresoRepository, EntityManagerInterface $em, $kernelProjectDir)
     {
         parent::__construct();
         $this->navegador = $navegador;
         $this->evaluacionRepository = $evaluacionRepository;
         $this->progresoRepository = $progresoRepository;
         $this->em = $em;
+        $this->twig = $twig;
+        $this->kernelProjectDir = $kernelProjectDir;
     }
 
     protected function configure()
@@ -61,11 +71,18 @@ class ImprimirCommand extends Command
             ->setEvaluacion($evaluacion)
             ->setProgreso($progreso);
 
+        $i = 0;
+
         do {
             $currentRoute = $this->navegador->getCurrentRoute();
+            $html = $this->getHtml();
+            $html = str_replace('href="/', 'href="https://www.servilabor.com.co/', $html);
+            // dump($html);
+            $this->generatePdf($html);
             dump($currentRoute);
-            dump($this->isDiapositiva($currentRoute) ? "DIAPOSITIVA" : "PREGUNTA");
-        } while ($this->advance());
+            $i++;
+        } while ($this->advance() && $i < 10);
+
     }
 
     protected function advance()
@@ -103,5 +120,53 @@ class ImprimirCommand extends Command
     protected function match($route)
     {
         return $this->navegador->getRouter()->match($route);
+    }
+
+    protected function getHtml()
+    {
+        $pregunta = null;
+        if ($this->isDiapositiva($this->navegador->getCurrentRoute())) {
+            $view = "evaluacion/{$this->navegador->getEvaluacion()->getSlug()}/{$this->navegador->getDiapositiva()->getSlug()}.html.twig";
+        } else {
+            $pregunta = $this->navegador->getPregunta();
+            $template = $pregunta->getWidgetAsKebabCase();
+            $view = "evaluacion/widget/$template.html.twig";
+        }
+
+        $context = [
+            'evaluacion' => $this->navegador->getEvaluacion(),
+            'navegador' => $this->navegador,
+            'imprimir' => true,
+        ];
+
+        if($pregunta) {
+            $context['pregunta'] = $pregunta;
+        }
+
+        return $this->twig->render($view, $context);
+    }
+
+    protected function generatePdf($html)
+    {
+        $pdfOptions = new Options();
+        $pdfOptions->set('defaultFont', 'Arial');
+
+        $dompdf = new Dompdf($pdfOptions);
+
+        // Load HTML to Dompdf
+        $dompdf->loadHtml($html);
+
+        // (Optional) Setup the paper size and orientation 'portrait' or 'portrait'
+        $dompdf->setPaper('A4', 'portrait');
+
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        // Store PDF Binary Data
+        $output = $dompdf->output();
+
+        $pdfFilePath = $this->kernelProjectDir . "/var/uploads/evaluacion/{$this->navegador->getDiapositiva()->getSlug()}.pdf";
+
+        file_put_contents($pdfFilePath, $output);
     }
 }

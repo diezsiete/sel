@@ -67,12 +67,14 @@
                 </li>
                 <!-- End Servicios -->
 
-                <!-- Candidatos -->
-                <li class="nav-item  g-mx-10--lg g-mx-15--xl">
-                    <a href="{{ path('servilabor_candidatos') }}"
-                       class="nav-link g-py-7 g-px-0">Candidatos</a>
-                </li>
-                <!-- End Candidatos -->
+                {% if not app.user %}
+                    <!-- Candidatos -->
+                    <li class="nav-item  g-mx-10--lg g-mx-15--xl">
+                        <a href="{{ path('servilabor_candidatos') }}"
+                           class="nav-link g-py-7 g-px-0">Candidatos</a>
+                    </li>
+                    <!-- End Candidatos -->
+                {% endif %}
 
                 <!-- Blog / news -->
                 <li class="hs-has-sub-menu nav-item  g-mx-10--lg g-mx-15--xl" data-animation-in="fadeIn"

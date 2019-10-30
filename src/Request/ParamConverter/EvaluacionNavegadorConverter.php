@@ -69,6 +69,7 @@ class EvaluacionNavegadorConverter implements ParamConverterInterface
         $evaluador = new Evaluador($progreso, $this->em->getRepository(Respuesta::class));
 
         $navegador = (new Navegador($this->router))
+            ->setEvaluacion($evaluacion)
             ->setProgreso($progreso)
             ->setEvaluador($evaluador)
             ->setEm($this->em);

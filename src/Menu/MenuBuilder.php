@@ -181,7 +181,7 @@ class MenuBuilder
                     ->setExtra('icon', 'fas fa-clock');
             }
 
-            if($this->security->isGranted([$roles['ROLE_ADMIN_EVALUACIONES']], $user)) {
+            if($this->security->isGranted([$roles['ROLE_ADMIN_EVALUACIONES'], 'ROLE_OPERADOR'], $user)) {
                 $menu
                     ->addChild('Evaluaciones', ['route' => 'admin_evaluacion_resultados'])
                     ->setExtra('icon', 'fas fa-clipboard-list');
