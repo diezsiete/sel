@@ -59,6 +59,8 @@
         <link rel="stylesheet" href="{{ asset('/css/pta/custom.css') }}">
         <link rel="stylesheet" href="{{ asset('/css/pta/menu.css') }}">
 
+        {{ encore_entry_link_tags('app') }}
+
         {% if app.user %}
             <link rel="stylesheet" href="{{ asset('css/pta/theme-header-nav-features.css') }}">
             <link rel="stylesheet" href="{{ asset('css/pta/admin-nav.css') }}">
@@ -192,8 +194,10 @@
 </div>
 
 {% block javascripts %}
+    {{ encore_entry_script_tags('app') }}
+
+
     <!-- Vendor -->
-    <script src="{{ asset('/vendor/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('/vendor/jquery.appear/jquery.appear.min.js') }}"></script>
     <script src="{{ asset('/vendor/jquery.easing/jquery.easing.min.js') }}"></script>
     <script src="{{ asset('/vendor/jquery.cookie/jquery.cookie.min.js') }}"></script>
@@ -219,6 +223,8 @@
     <!-- Theme Initialization Files -->
     <script src="{{ asset('/js/pta/theme.init.js') }}"></script>
     <script src="{{ asset('/js/pta/6d-menu.js') }}"></script>
+
+
 
     <!-- Google Analytics: Change UA-XXXXX-X to be your site's ID. Go to http://www.google.com/analytics/ for more information.
     <script>
