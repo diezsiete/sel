@@ -1,0 +1,61 @@
+/* Dialog */
+.dialog {
+  background: white;
+  padding: 20px 30px;
+  text-align: left;
+  margin: 40px auto;
+  position: relative;
+  max-width: 600px;
+}
+
+.dialog.dialog-xs {
+  max-width: 200px;
+}
+
+.dialog.dialog-sm {
+  max-width: 400px;
+}
+
+.dialog.dialog-md {
+  max-width: 600px;
+}
+
+.dialog.dialog-lg {
+  max-width: 900px;
+}
+
+/* White Popup Block */
+.white-popup-block {
+  background: #FFF;
+  padding: 20px 30px;
+  text-align: left;
+  max-width: 600px;
+  margin: 40px auto;
+  position: relative;
+}
+
+.white-popup-block.white-popup-block-xs {
+  max-width: 200px;
+}
+
+.white-popup-block.white-popup-block-sm {
+  max-width: 400px;
+}
+
+.white-popup-block.white-popup-block-md {
+  max-width: 600px;
+}
+
+.white-popup-block.white-popup-block-lg {
+  max-width: 900px;
+}
+
+/* Lightbox Opened */
+html.lightbox-opened.sticky-header-active #header .header-body {
+  padding-right: 17px;
+}
+
+/* Modal Opened */
+.modal-open {
+  padding-right: 0 !important;
+}

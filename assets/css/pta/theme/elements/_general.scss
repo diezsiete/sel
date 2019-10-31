@@ -1,0 +1,168 @@
+/* Blockquotes */
+blockquote {
+  border-left: 5px solid #eee;
+  margin: 0 0 16px 0;
+  margin: 0 0 1rem 0;
+  padding: 8px 16px;
+  padding: 0.5rem 1rem;
+  font-size: 1em;
+}
+
+blockquote.with-borders {
+  border-radius: 6px;
+  border-top: 1px solid #DFDFDF;
+  border-bottom: 1px solid #DFDFDF;
+  border-left: 1px solid #ECECEC;
+  border-right: 1px solid #ECECEC;
+  -webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.04);
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.04);
+  padding: 20.8px;
+  padding: 1.3rem;
+}
+
+blockquote.blockquote-reverse {
+  text-align: right;
+  border-right: 5px solid #eee;
+  border-left: 0px !important;
+}
+
+/* Small */
+small, .small {
+  font-size: 70%;
+}
+
+/* Paragraphs */
+p {
+  color: #777;
+  line-height: 26px;
+  margin: 0 0 20px;
+}
+
+p.featured {
+  font-size: 1.6em;
+  line-height: 1.5em;
+}
+
+p.lead {
+  line-height: 28.8px;
+  line-height: 1.8rem;
+}
+
+p .alternative-font {
+  display: inline-block;
+  margin-top: -15px;
+  position: relative;
+  top: 3px;
+  margin-bottom: -6px;
+}
+
+/* Lead */
+.lead {
+  letter-spacing: -.05em;
+  font-size: 19.2px;
+  font-size: 1.2rem;
+}
+
+.lead-2 {
+  font-size: 17.92px;
+  font-size: 1.12rem;
+}
+
+/* Links */
+a, a:hover, a:focus {
+  color: #CCC;
+}
+
+/* Drop Caps */
+p.drop-caps:first-letter {
+  float: left;
+  font-size: 75px;
+  line-height: 60px;
+  padding: 4px;
+  margin-right: 5px;
+  margin-top: 5px;
+  font-family: Georgia;
+}
+
+p.drop-caps.drop-caps-style-2:first-letter {
+  background-color: #CCC;
+  color: #FFF;
+  padding: 6px;
+  margin-right: 5px;
+  border-radius: 4px;
+}
+
+/* Default Font Style */
+.default-font {
+  font-family: "Open Sans", Arial, sans-serif;
+}
+
+/* Alternative Font Style */
+.alternative-font {
+  color: #CCC;
+  font-family: "Shadows Into Light", cursive;
+  font-size: 1.6em;
+}
+
+.alternative-font-2 {
+  font-family: "Oswald", sans-serif;
+}
+
+/* Gradient Text */
+.gradient-text-color {
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+.no-backgroundcliptext .gradient-text-color {
+  background: transparent !important;
+}
+
+/* Small Sup style */
+.sup-text-small {
+  font-size: 0.5em;
+  font-weight: 500;
+  top: -.7em;
+}
+
+/* Text Color Default */
+.text-default,
+.text-color-default {
+  color: #777 !important;
+}
+
+/* Video */
+section.video {
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  padding: 50px 0;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+section.video .container {
+  position: relative;
+  z-index: 3;
+}
+
+html.boxed section.video > div:first-child {
+  z-index: 0 !important;
+}
+
+html.boxed section.video > div:first-child video {
+  z-index: 0 !important;
+}
+
+/* Custom Map */
+section.section-custom-map {
+  background: transparent url(../../../../img/pta/theme/map.png) center 0 no-repeat;
+  padding: 129px 0 0;
+  margin: 20px 0 0;
+  border: 0;
+}
+
+section.section-custom-map section.section {
+  border-top: 0;
+  background: rgba(247, 247, 247, 0.5);
+}

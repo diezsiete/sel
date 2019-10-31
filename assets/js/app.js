@@ -6,15 +6,17 @@
  */
 
 // any CSS you require will output into a single css file (app.css in this case)
-import '../css/app.css';
+import '../css/app.scss';
 
 import getNiceMessage from './get_nice_message';
 
 import $ from 'jquery';
+import 'bootstrap'; // add functions to jQuery
+
 
 // uncomment for legacy code
-global.jQuery = $;
-global.$ = $;
+// global.jQuery = $;
+// global.$ = $;
 
 // Need jQuery? Install it with "yarn add jquery", then uncomment to require it.
 // const $ = require('jquery');

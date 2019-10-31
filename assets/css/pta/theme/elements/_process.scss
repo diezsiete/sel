@@ -1,0 +1,171 @@
+/* Process */
+.process {
+  text-align: center;
+}
+
+.process .process-step {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: relative;
+}
+
+.process .process-step-circle {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 90px;
+  text-align: center;
+  width: 90px;
+  border: 2px solid #CCC;
+  border-radius: 50%;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: relative;
+  background-color: transparent;
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+
+.process .process-step-content {
+  padding-top: 20px;
+}
+
+.process .process-step-circle-content {
+  font-weight: bold;
+  color: #212529;
+  font-size: 1.6em;
+  letter-spacing: -1px;
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+
+.process .process-step:hover .process-step-circle {
+  background-color: #CCC;
+}
+
+.process .process-step:hover .process-step-circle .process-step-circle-content {
+  color: #FFF;
+}
+
+.process .process-step:hover .process-step-circle .process-step-circle-content .icons {
+  color: #FFF !important;
+}
+
+@media (min-width: 992px) {
+  .process .process-step:before {
+    height: 2px;
+    display: block;
+    background-color: #EDEDED;
+    position: absolute;
+    content: '';
+    width: 50%;
+    top: 45px;
+    left: 75%;
+  }
+
+  .process .process-step:last-child:before {
+    display: none;
+  }
+}
+
+.process-vertical {
+  text-align: left;
+}
+
+.process-vertical .process-step {
+  width: 100%;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
+  justify-content: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  position: relative;
+  padding-bottom: 60px;
+}
+
+.process-vertical .process-step:before {
+  display: none;
+}
+
+.process-vertical .process-step:after {
+  width: 2px;
+  display: block;
+  background-color: #EDEDED;
+  position: absolute;
+  content: '';
+  height: calc(100% - 80px);
+  top: 70px;
+  left: 30px;
+}
+
+.process-vertical .process-step:last-child:after {
+  display: none;
+}
+
+.process-vertical .process-step-circle {
+  height: 60px;
+  width: 60px;
+  margin: 0 15px 0 0;
+  min-height: 60px;
+  min-width: 60px;
+}
+
+.process-vertical .process-step-content {
+  padding-top: 0;
+}
+
+.process-connecting-line {
+  position: relative;
+  text-align: left;
+}
+
+.process-connecting-line .connecting-line {
+  content: '';
+  position: absolute;
+  top: 25px;
+  left: 15px;
+  right: 15px;
+  height: 3px;
+  background: #CCC;
+}
+
+.process-connecting-line .process-step {
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: flex-start;
+  padding-right: 48px;
+  padding-right: 3rem;
+  padding-left: 48px;
+  padding-left: 3rem;
+}
+
+.process-connecting-line .process-step:before {
+  content: none;
+}
+
+.process-connecting-line .process-step-circle {
+  background: #FFF;
+  width: 50px;
+  height: 50px;
+  border: 3px solid #CCC;
+}

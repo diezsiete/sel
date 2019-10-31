@@ -1,0 +1,320 @@
+/* Sort Source Wrapper */
+.sort-source-wrapper {
+  padding: 8px 0;
+  position: relative;
+}
+
+.sort-source-wrapper .nav {
+  margin: -100px 0 5px;
+}
+
+.sort-source-wrapper .nav > li > a {
+  color: #FFF;
+  background: transparent;
+}
+
+.sort-source-wrapper .nav > li > a:hover, .sort-source-wrapper .nav > li > a:focus {
+  background: transparent;
+}
+
+.sort-source-wrapper .nav > li.active > a {
+  background: transparent;
+}
+
+.sort-source-wrapper .nav > li.active > a:hover, .sort-source-wrapper .nav > li.active > a:focus {
+  background: transparent;
+}
+
+/* Sort Source */
+.sort-source {
+  clear: both;
+}
+
+.sort-source > li > a {
+  padding: 6px 12px;
+  text-decoration: none;
+}
+
+/*.sort-source.sort-source-style-2 {
+	margin: -10px auto;
+}*/
+
+.sort-source.sort-source-style-2 > li {
+  float: none;
+  display: inline-block;
+}
+
+.sort-source.sort-source-style-2 > li > a, .sort-source.sort-source-style-2 > li > a:focus, .sort-source.sort-source-style-2 > li > a:hover {
+  background: transparent;
+  color: #FFF;
+  display: inline-block;
+  border-radius: 0;
+  margin: 0;
+  padding: 18px 28px;
+  position: relative;
+  text-decoration: none;
+}
+
+.sort-source.sort-source-style-2 > li > a:after {
+  -webkit-transition: margin 0.3s;
+  transition: margin 0.3s;
+  width: 0;
+  height: 0;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  border-top: 15px solid #CCC;
+  content: " ";
+  display: block;
+  position: absolute;
+  left: 50%;
+  margin-left: -20px;
+  margin-top: 0;
+  opacity: 0;
+}
+
+.sort-source.sort-source-style-2 > li.active > a, .sort-source.sort-source-style-2 > li.active > a:focus, .sort-source.sort-source-style-2 > li.active > a:hover {
+  background: transparent;
+}
+
+.sort-source.sort-source-style-2 > li.active > a:after {
+  opacity: 1;
+  margin-top: 18px;
+}
+
+/* Sort Source Style 2 */
+@media (max-width: 991px) {
+  .sort-source.sort-source-style-2 > li {
+    display: block;
+  }
+
+  .sort-source.sort-source-style-2 > li.active > a:after {
+    display: none !important;
+  }
+}
+/* Sort Source Style 3 */
+.sort-source.sort-source-style-3 > li > a {
+  color: #777;
+}
+
+.sort-source.sort-source-style-3 > li.active > a {
+  background: transparent !important;
+  border-bottom: 3px solid #CCC;
+  border-radius: 0;
+}
+
+/* Sort Destination */
+.sort-destination {
+  overflow: hidden;
+}
+
+.sort-destination .isotope-item {
+  min-width: 1px;
+}
+
+.sort-destination.full-width {
+  position: relative;
+}
+
+.sort-destination.full-width .isotope-item {
+  width: 20%;
+  float: left;
+}
+
+.sort-destination.full-width .isotope-item.w2 {
+  width: 40%;
+}
+
+.sort-destination.full-width .isotope-item .img-thumbnail, .sort-destination.full-width .isotope-item a, .sort-destination.full-width .isotope-item .thumb-info img {
+  border-radius: 0;
+}
+
+.sort-destination.full-width-spaced {
+  margin-top: 50px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.sort-destination.full-width-spaced .portfolio-item {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.sort-source-wrapper + .sort-destination.full-width {
+  margin: 0 0 -81px;
+  top: -51px;
+}
+
+.sort-source-wrapper + .sort-destination-loader .full-width {
+  margin: 0 0 -81px;
+  top: -51px;
+}
+
+/* Sort Loading */
+.sort-destination-loader {
+  height: auto;
+  overflow: hidden;
+  position: relative;
+}
+
+.sort-destination-loader:after {
+  -webkit-transition: opacity 0.3s;
+  transition: opacity 0.3s;
+  content: ' ';
+  background: #FFF;
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 1;
+  opacity: 0;
+}
+
+.sort-destination-loader .bounce-loader {
+  display: none;
+}
+
+.sort-destination-loader.sort-destination-loader-showing {
+  max-height: 200px;
+}
+
+.sort-destination-loader.sort-destination-loader-showing:after {
+  opacity: 1;
+}
+
+.sort-destination-loader.sort-destination-loader-showing .bounce-loader {
+  display: block;
+}
+
+.sort-destination-loader.loader-showing-dark:after {
+  background: #181818;
+}
+
+.sort-destination-loader.sort-destination-loader-loaded {
+  overflow: visible;
+}
+
+.sort-destination-loader.sort-destination-loader-loaded:after {
+  display: none;
+}
+
+.sort-destination-loader-full-width {
+  overflow: visible;
+}
+
+.sort-destination-loader-full-width:after {
+  bottom: -81px;
+  top: -51px;
+}
+
+.sort-destination-loader-full-width.sort-destination-loader-showing {
+  overflow: hidden;
+  height: 600px;
+}
+
+.sort-destination-loader-lg.sort-destination-loader-showing {
+  height: 600px;
+}
+
+.portfolio-load-more-loader.portfolio-load-more-loader-showing .bounce-loader {
+  display: block !important;
+}
+
+/* Responsive */
+@media (min-width: 992px) {
+  .col-md-6.isotope-item:nth-child(2n+1) {
+    clear: both;
+  }
+
+  .col-md-4.isotope-item:nth-child(3n+1) {
+    clear: both;
+  }
+
+  .col-md-3.isotope-item:nth-child(4n+1) {
+    clear: both;
+  }
+
+  .col-md-1-5.isotope-item:nth-child(5n+1) {
+    clear: both;
+  }
+
+  .col-md-2.isotope-item:nth-child(6n+1) {
+    clear: both;
+  }
+
+  .sort-destination.full-width .isotope-item:nth-child(5n+1) {
+    clear: both;
+  }
+}
+
+@media (max-width: 991px) {
+  .sort-destination.isotope {
+    overflow: visible !important;
+    height: auto !important;
+  }
+
+  .sort-destination.isotope.full-width {
+    overflow: hidden !important;
+  }
+
+  .isotope-hidden {
+    display: none !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .isotope-item {
+    position: static !important;
+    text-align: center;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    -webkit-transform: none !important;
+    transform: none !important;
+  }
+
+  .isotope-item.product {
+    position: relative !important;
+  }
+
+  .sort-source-wrapper {
+    background: #151719;
+    clear: both;
+    margin-top: -35px;
+  }
+
+  .sort-source-wrapper .nav {
+    margin: 0;
+  }
+
+  .sort-destination {
+    height: auto !important;
+  }
+
+  .sort-destination.full-width,
+  .sort-source-wrapper + .sort-destination.full-width {
+    max-width: none;
+    margin: 0 0 -30px;
+    top: 0;
+  }
+
+  .sort-destination.full-width .isotope-item,
+  .sort-source-wrapper + .sort-destination.full-width .isotope-item {
+    max-width: 100%;
+  }
+
+  .sort-source-wrapper + .sort-destination-loader .full-width {
+    margin: 0 0 -30px;
+    top: 0;
+  }
+}
+
+@media (max-width: 575px) {
+  .sort-destination.full-width .isotope-item,
+  .sort-source-wrapper + .sort-destination.full-width .isotope-item {
+    position: static !important;
+    clear: both;
+    float: none;
+    width: auto;
+  }
+}

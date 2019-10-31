@@ -23,19 +23,18 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800%7CShadows+Into+Light%7CPlayfair+Display:400" rel="stylesheet" type="text/css">
 
     {% block stylesheets %}
+
+        {{ encore_entry_link_tags('app') }}
+
         <!-- Vendor CSS -->
-        <link rel="stylesheet" href="{{ asset('/vendor/bootstrap/css/bootstrap.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('/vendor/font-awesome/css/all.min.css') }}"/>
+
+
         <link rel="stylesheet" href="{{ asset('/vendor/animate/animate.min.css') }}">
         <link rel="stylesheet" href="{{ asset('/vendor/simple-line-icons/css/simple-line-icons.min.css') }}">
         <link rel="stylesheet" href="{{ asset('/vendor/owl.carousel/assets/owl.carousel.min.css') }}">
         <link rel="stylesheet" href="{{ asset('/vendor/owl.carousel/assets/owl.theme.default.min.css') }}">
         <link rel="stylesheet" href="{{ asset('/vendor/magnific-popup/magnific-popup.css') }}">
-
-
-        <!-- Theme CSS -->
-        <link rel="stylesheet" href="{{ asset('/css/pta/theme.css') }}">
-        <link rel="stylesheet" href="{{ asset('/css/pta/theme-elements.css') }}">
+        
 
         {#        {% if app.user %}#}
         {#            {% block admin_extension_stylesheets %}#}
@@ -57,9 +56,9 @@
 
         <!-- Theme Custom CSS -->
         <link rel="stylesheet" href="{{ asset('/css/pta/custom.css') }}">
-        <link rel="stylesheet" href="{{ asset('/css/pta/menu.css') }}">
 
-        {{ encore_entry_link_tags('app') }}
+
+
 
         {% if app.user %}
             <link rel="stylesheet" href="{{ asset('css/pta/theme-header-nav-features.css') }}">
@@ -201,8 +200,6 @@
     <script src="{{ asset('/vendor/jquery.appear/jquery.appear.min.js') }}"></script>
     <script src="{{ asset('/vendor/jquery.easing/jquery.easing.min.js') }}"></script>
     <script src="{{ asset('/vendor/jquery.cookie/jquery.cookie.min.js') }}"></script>
-    <script src="{{ asset('/vendor/popper/umd/popper.min.js') }}"></script>
-    <script src="{{ asset('/vendor/bootstrap/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('/vendor/common/common.min.js') }}"></script>
     <script src="{{ asset('/vendor/jquery.validation/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('/vendor/jquery.easy-pie-chart/jquery.easypiechart.min.js') }}"></script>

@@ -1,0 +1,53 @@
+/* Labels */
+.badge-primary {
+  background-color: #CCC;
+  color: #FFF;
+}
+
+.badge-success {
+  background-color: #28a745;
+  color: #FFF;
+}
+
+.badge-warning {
+  background-color: #ffc107;
+  color: #FFF;
+}
+
+.badge-danger {
+  background-color: #dc3545;
+  color: #FFF;
+}
+
+.badge-info {
+  background-color: #17a2b8;
+  color: #FFF;
+}
+
+.badge-dark {
+  background-color: #212529;
+  color: #FFF;
+}
+
+.badge.badge-xs {
+  padding: 0.3em 0.5em;
+}
+
+.badge.badge-sm {
+  padding: 0.5em 0.8em;
+}
+
+.badge.badge-md {
+  padding: 1em 1.6em;
+  font-size: 85%;
+}
+
+.badge.badge-lg {
+  padding: 1.5em 2em;
+  font-size: 90%;
+}
+
+.badge.badge-xl {
+  padding: 2em 2.5em;
+  font-size: 100%;
+}

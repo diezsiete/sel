@@ -1,0 +1,314 @@
+/* Section Featured */
+section.section {
+  background: #f7f7f7;
+  border-top: 5px solid #f1f1f1;
+  margin: 30px 0;
+  padding: 50px 0;
+}
+
+section.section.section-height-1 {
+  padding: 12.307px 0;
+  padding: 0.7692307692rem 0;
+}
+
+section.section.section-height-2 {
+  padding: 36.923px 0;
+  padding: 2.3076923077rem 0;
+}
+
+section.section.section-height-3 {
+  padding: 73.846px 0;
+  padding: 4.6153846154rem 0;
+}
+
+section.section.section-height-4 {
+  padding: 110.769px 0;
+  padding: 6.9230769231rem 0;
+}
+
+section.section.section-height-5 {
+  padding: 147.692px 0;
+  padding: 9.2307692308rem 0;
+}
+
+section.section.section-bg-strong-grey {
+  background: #EDEDED;
+}
+
+section.section.section-no-background {
+  background: transparent;
+  border-top-color: transparent;
+}
+
+section.section.section-center {
+  text-align: center;
+}
+
+section.section.section-text-light h1, section.section.section-text-light h2, section.section.section-text-light h3, section.section.section-text-light h4, section.section.section-text-light h5, section.section.section-text-light h6 {
+  color: #FFF;
+}
+
+section.section.section-text-light p {
+  color: #e6e6e6;
+}
+
+section.section.section-background {
+  background-repeat: repeat;
+  border: 0;
+}
+
+section.section.section-background-change-anim {
+  -webkit-animation-name: colorTransition;
+  animation-name: colorTransition;
+  -webkit-animation-duration: 25s;
+  animation-duration: 25s;
+  -webkit-animation-direction: alternate;
+  animation-direction: alternate;
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+  -webkit-animation-timing-function: linear;
+  animation-timing-function: linear;
+}
+
+section.section.section-angled {
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+}
+
+section.section.section-angled .section-angled-layer-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 48px 0;
+  padding: 3rem 0;
+  -webkit-transform: skewY(-0.7deg) translate3d(0, -50%, 0);
+  transform: skewY(-0.7deg) translate3d(0, -50%, 0);
+}
+
+section.section.section-angled .section-angled-layer-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 48px 0;
+  padding: 3rem 0;
+  -webkit-transform: skewY(0.7deg) translate3d(0, 50%, 0);
+  transform: skewY(0.7deg) translate3d(0, 50%, 0);
+}
+
+section.section.section-angled .section-angled-layer-top + .section-angled-content,
+section.section.section-angled .section-angled-layer-top + .section-angled-layer-bottom + .section-angled-content {
+  margin-top: 40px;
+  margin-top: 2.5rem;
+}
+
+section.section.section-angled .section-angled-layer-bottom + .section-angled-content,
+section.section.section-angled .section-angled-layer-bottom + .section-angled-layer-top + .section-angled-content {
+  margin-bottom: 40px;
+  margin-bottom: 2.5rem;
+}
+
+section.section.section-angled.section-angled-reverse .section-angled-layer-top {
+  -webkit-transform: skewY(0.7deg) translate3d(0, -50%, 0);
+  transform: skewY(0.7deg) translate3d(0, -50%, 0);
+}
+
+section.section.section-angled.section-angled-reverse .section-angled-layer-bottom {
+  -webkit-transform: skewY(-0.7deg) translate3d(0, 50%, 0);
+  transform: skewY(-0.7deg) translate3d(0, 50%, 0);
+}
+
+section.section.section-angled + .section-angled {
+  padding-top: 0;
+}
+
+section.section.overlay .section-angled-layer-top,
+section.section.overlay .section-angled-layer-bottom {
+  z-index: 99 !important;
+}
+
+section.section.section-overlay {
+  position: relative;
+}
+
+section.section.section-overlay:before {
+  content: "";
+  display: block;
+  background: rgba(33, 37, 41, 0.8);
+  bottom: 0;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 100%;
+}
+
+section.section.section-overlay .section-angled-layer-top,
+section.section.section-overlay .section-angled-layer-bottom {
+  z-index: 99 !important;
+}
+
+section.section.section-overlay-dot:before {
+  background: url(../../../../img/pta/theme/overlay-dot.png) repeat scroll 0 0 transparent;
+}
+
+section.section.section-overlay-opacity {
+  position: relative;
+}
+
+section.section.section-overlay-opacity:before {
+  content: "";
+  display: block;
+  background: rgba(0, 0, 0, 0.5);
+  bottom: 0;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 100%;
+}
+
+section.section.section-overlay-opacity.section-overlay-opacity-scale-1:before {
+  background: rgba(33, 37, 41, 0.1);
+}
+
+section.section.section-overlay-opacity.section-overlay-opacity-scale-2:before {
+  background: rgba(33, 37, 41, 0.2);
+}
+
+section.section.section-overlay-opacity.section-overlay-opacity-scale-3:before {
+  background: rgba(33, 37, 41, 0.3);
+}
+
+section.section.section-overlay-opacity.section-overlay-opacity-scale-4:before {
+  background: rgba(33, 37, 41, 0.4);
+}
+
+section.section.section-overlay-opacity.section-overlay-opacity-scale-5:before {
+  background: rgba(33, 37, 41, 0.5);
+}
+
+section.section.section-overlay-opacity.section-overlay-opacity-scale-6:before {
+  background: rgba(33, 37, 41, 0.6);
+}
+
+section.section.section-overlay-opacity.section-overlay-opacity-scale-7:before {
+  background: rgba(33, 37, 41, 0.7);
+}
+
+section.section.section-overlay-opacity.section-overlay-opacity-scale-8:before {
+  background: rgba(33, 37, 41, 0.8);
+}
+
+section.section.section-overlay-opacity.section-overlay-opacity-scale-9:before {
+  background: rgba(33, 37, 41, 0.9);
+}
+
+section.section.section-overlay-opacity-light:before {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+section.section.section-overlay-opacity-light.section-overlay-opacity-light-scale-1:before {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+section.section.section-overlay-opacity-light.section-overlay-opacity-light-scale-2:before {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+section.section.section-overlay-opacity-light.section-overlay-opacity-light-scale-3:before {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+section.section.section-overlay-opacity-light.section-overlay-opacity-light-scale-4:before {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+section.section.section-overlay-opacity-light.section-overlay-opacity-light-scale-5:before {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+section.section.section-overlay-opacity-light.section-overlay-opacity-light-scale-6:before {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+section.section.section-overlay-opacity-light.section-overlay-opacity-light-scale-7:before {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+section.section.section-overlay-opacity-light.section-overlay-opacity-light-scale-8:before {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+section.section.section-overlay-opacity-light.section-overlay-opacity-light-scale-9:before {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+section.section.section-overlay-opacity-gradient:before {
+  opacity: 0.85;
+}
+
+section.section.section-video {
+  background: none !important;
+  border: 0;
+}
+
+section.section.section-parallax {
+  background-color: transparent;
+  background-position: 50% 50%;
+  background-repeat: repeat;
+  background-attachment: fixed;
+  border: 0;
+}
+
+section.section.section-parallax.parallax-disabled {
+  background-attachment: scroll !important;
+  background-position: 50% 50% !important;
+}
+
+section.section.section-no-border {
+  border: 0;
+}
+
+section.section.section-with-divider {
+  margin: 56px 0 35px;
+}
+
+section.section.section-with-divider .divider {
+  margin: -56px 0 44px;
+}
+
+section.section.section-footer {
+  margin-bottom: -50px;
+}
+
+section.section.section-with-mockup {
+  margin-top: 120px;
+}
+
+section.section.section-front {
+  position: relative;
+  z-index: 1;
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+  .container-fluid > .row > .p-0 section.section {
+    margin-bottom: 0;
+    margin-top: 0;
+  }
+
+  .container-fluid > .row > .p-0:first-child section.section {
+    margin-bottom: 0;
+    margin-top: 30px;
+  }
+
+  .container-fluid > .row > .p-0:last-child section.section {
+    margin-bottom: 30px;
+    margin-top: 0;
+  }
+}

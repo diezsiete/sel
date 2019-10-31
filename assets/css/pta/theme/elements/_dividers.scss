@@ -1,0 +1,277 @@
+/* Dividers */
+hr {
+  background: rgba(0, 0, 0, 0.06);
+  border: 0;
+  height: 1px;
+  margin: 22px 0;
+}
+
+hr.short {
+  margin: 11px 0;
+}
+
+hr.tall {
+  margin: 44px 0;
+}
+
+hr.taller {
+  margin: 66px 0;
+}
+
+hr.gratient {
+  background: none;
+  background-image: -webkit-gradient(linear, right top, left top, from(transparent), color-stop(rgba(0, 0, 0, 0.06)), to(transparent));
+  background-image: linear-gradient(to left, transparent, rgba(0, 0, 0, 0.06), transparent);
+}
+
+hr.gradient-to-right {
+  background: none;
+  background-image: -webkit-gradient(linear, right top, left top, from(rgba(0, 0, 0, 0.06)), to(transparent));
+  background-image: linear-gradient(to left, rgba(0, 0, 0, 0.06), transparent);
+}
+
+hr.gradient-to-left {
+  background: none;
+  background-image: -webkit-gradient(linear, right top, left top, from(transparent), to(rgba(0, 0, 0, 0.06)));
+  background-image: linear-gradient(to left, transparent, rgba(0, 0, 0, 0.06));
+}
+
+hr.solid {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+hr.light {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+hr.invisible {
+  background: none;
+}
+
+.divider {
+  border: 0;
+  height: 1px;
+  margin: 44px auto;
+  background: rgba(0, 0, 0, 0.06);
+  text-align: center;
+  position: relative;
+  clear: both;
+}
+
+.divider.taller {
+  margin: 66px auto;
+}
+
+.divider [class*="fa-"], .divider .icons {
+  text-align: center;
+  background: #FFF;
+  border-radius: 50px;
+  color: #a9a9a9;
+  display: inline-block;
+  height: 50px;
+  line-height: 50px;
+  position: absolute;
+  text-align: center;
+  width: 50px;
+  font-size: 20px;
+  margin: 0 auto 0 -25px;
+  top: -25px;
+  left: 50%;
+  z-index: 1;
+}
+
+.divider.divider-solid {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.divider.divider-icon-sm [class*="fa-"], .divider.divider-icon-sm .icons {
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  top: -15px;
+  font-size: 15px;
+  margin-left: -16px;
+}
+
+.divider.divider-icon-lg {
+  margin: 86px 0;
+}
+
+.divider.divider-icon-lg [class*="fa-"], .divider.divider-icon-lg .icons {
+  width: 60px;
+  height: 60px;
+  line-height: 60px;
+  top: -30px;
+  font-size: 30px;
+  margin-left: -30px;
+}
+
+.divider.divider-icon-lg.taller {
+  margin: 100px auto;
+}
+
+.divider.divider-xs {
+  width: 35%;
+}
+
+.divider.divider-sm {
+  width: 67%;
+}
+
+.divider.divider-left [class*="fa-"], .divider.divider-left .icons {
+  left: 0;
+  margin-left: 0;
+  margin-right: 0;
+  right: auto;
+}
+
+.divider.divider-right [class*="fa-"], .divider.divider-right .icons {
+  left: auto;
+  margin-left: 0;
+  margin-right: 0;
+  right: 0;
+}
+
+.divider.divider-style-2 [class*="fa-"], .divider.divider-style-2 .icons {
+  background: #f7f7f7;
+  color: #a9a9a9;
+}
+
+.divider.divider-style-3 [class*="fa-"], .divider.divider-style-3 .icons {
+  border: 1px solid #CECECE;
+}
+
+.divider.divider-style-4 [class*="fa-"], .divider.divider-style-4 .icons {
+  border: 1px solid #CECECE;
+}
+
+.divider.divider-style-4 [class*="fa-"]:after, .divider.divider-style-4 .icons:after {
+  border: 3px solid #f7f7f7;
+  border-radius: 50%;
+  -webkit-box-sizing: content-box;
+  box-sizing: content-box;
+  content: "";
+  display: block;
+  height: 100%;
+  left: -4px;
+  padding: 1px;
+  position: absolute;
+  top: -4px;
+  width: 100%;
+}
+
+.divider.divider-small {
+  margin: 22px auto;
+  background: transparent;
+}
+
+.divider.divider-small hr {
+  width: 50px;
+  height: 3px;
+  background: #555;
+}
+
+.divider.divider-small.divider-small-center {
+  text-align: center;
+}
+
+.divider.divider-small.divider-small-center hr {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.divider.divider-small.divider-small-right {
+  text-align: right;
+}
+
+.divider.divider-small.divider-small-right hr {
+  margin-left: auto;
+}
+
+.divider.divider-small.divider-light hr {
+  background: #DDD;
+}
+
+.divider.divider-small.divider-small-sm hr {
+  height: 1px;
+}
+
+.divider.divider-small.divider-small-lg hr {
+  height: 6px;
+}
+
+.divider.divider-small.tall {
+  margin: 34px 0;
+}
+
+.divider.divider-small.taller {
+  margin: 46px 0;
+}
+
+hr.dashed, .divider.dashed {
+  background: none;
+  position: relative;
+}
+
+hr.dashed:after, .divider.dashed:after {
+  border-top: 1px dashed rgba(0, 0, 0, 0.06);
+  content: "";
+  display: block;
+  height: 0;
+  position: absolute;
+  top: 50%;
+  margin-top: -1px;
+  width: 100%;
+}
+
+hr.pattern, .divider.pattern {
+  background: none;
+  position: relative;
+}
+
+hr.pattern:after, .divider.pattern:after {
+  background: transparent url(../../../../img/pta/theme/patterns/worn_dots.png) repeat 0 0;
+  content: "";
+  display: block;
+  height: 15px;
+  position: absolute;
+  top: 50%;
+  margin-top: -7px;
+  width: 100%;
+}
+
+hr.pattern.pattern-2:after, .divider.pattern.pattern-2:after {
+  background-image: url(../../../../img/pta/theme/patterns/az_subtle.png);
+}
+
+@-webkit-keyframes dividerProgress25 {
+  from {
+    width: 0;
+  }
+
+  to {
+    width: 25%;
+  }
+}
+
+@keyframes dividerProgress25 {
+  from {
+    width: 0;
+  }
+
+  to {
+    width: 25%;
+  }
+}
+
+.dividerProgress25 {
+  -webkit-animation-name: dividerProgress25;
+  animation-name: dividerProgress25;
+}
+
+/* Vertical Divider */
+.vertical-divider {
+  display: inline;
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  border-right: 1px solid transparent;
+}

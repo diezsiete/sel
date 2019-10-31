@@ -1,0 +1,158 @@
+/* Background Scales Overlay */
+.bg-color-scale-overlay {
+  position: relative;
+}
+
+.bg-color-scale-overlay:before {
+  content: "";
+  display: block;
+  background: #000;
+  bottom: 0;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 100%;
+  z-index: 1;
+  opacity: 0;
+}
+
+.bg-color-scale-overlay .bg-color-scale-overlay-wrapper {
+  position: relative;
+  z-index: 2;
+}
+
+.bg-color-scale-overlay-1:before {
+  opacity: 0.05 !important;
+}
+
+.bg-color-scale-overlay-2:before {
+  opacity: 0.1 !important;
+}
+
+.bg-color-scale-overlay-3:before {
+  opacity: 0.15 !important;
+}
+
+.bg-color-scale-overlay-4:before {
+  opacity: 0.2 !important;
+}
+
+.bg-color-scale-overlay-5:before {
+  opacity: 0.25 !important;
+}
+
+.bg-color-scale-overlay-6:before {
+  opacity: 0.3 !important;
+}
+
+.bg-color-scale-overlay-7:before {
+  opacity: 0.35 !important;
+}
+
+.bg-color-scale-overlay-8:before {
+  opacity: 0.4 !important;
+}
+
+.bg-color-scale-overlay-9:before {
+  opacity: 0.45 !important;
+}
+
+/* Background Transparent */
+.background-transparent {
+  background: transparent !important;
+}
+
+/* Background White and Black */
+.bg-color-white {
+  background: #FFF !important;
+}
+
+.bg-color-black {
+  background: #000 !important;
+}
+
+/* Grey */
+.bg-color-grey {
+  background-color: #F7F7F7 !important;
+}
+
+.bg-color-grey-scale-1 {
+  background-color: #EDEDED !important;
+}
+
+.bg-color-grey-scale-2 {
+  background-color: #e8e8e8 !important;
+}
+
+.bg-color-grey-scale-3 {
+  background-color: #e3e3e3 !important;
+}
+
+.bg-color-grey-scale-4 {
+  background-color: #dedede !important;
+}
+
+.bg-color-grey-scale-5 {
+  background-color: #d9d9d9 !important;
+}
+
+.bg-color-grey-scale-6 {
+  background-color: #d4d4d4 !important;
+}
+
+.bg-color-grey-scale-7 {
+  background-color: #cecece !important;
+}
+
+.bg-color-grey-scale-8 {
+  background-color: #c9c9c9 !important;
+}
+
+.bg-color-grey-scale-9 {
+  background-color: #c4c4c4 !important;
+}
+
+.bg-color-grey-scale-10 {
+  background-color: #bfbfbf !important;
+}
+
+/* Box Shadow */
+.box-shadow-1:before {
+  display: block;
+  position: absolute;
+  left: 1%;
+  top: 1%;
+  height: 98%;
+  width: 98%;
+  opacity: 0.33;
+  content: '';
+  -webkit-box-shadow: 0 30px 90px #BBB;
+  box-shadow: 0 30px 90px #BBB;
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+
+.box-shadow-1.box-shadow-1-hover:before {
+  opacity: 0;
+}
+
+.box-shadow-1.box-shadow-1-hover:hover:before {
+  opacity: 0.33;
+}
+
+.box-shadow-2 {
+  -webkit-box-shadow: 0 15px 30px -15px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 15px 30px -15px rgba(0, 0, 0, 0.45);
+}
+
+.box-shadow-3 {
+  -webkit-box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.45);
+}
+
+/* Border Radius */
+.border-radius {
+  border-radius: 4px !important;
+}

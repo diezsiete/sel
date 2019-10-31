@@ -1,0 +1,28 @@
+/* Pagination */
+.pagination {
+  position: relative;
+  z-index: 1;
+}
+
+.pagination > li > a,
+.pagination > li > span,
+.pagination > li > a:hover,
+.pagination > li > span:hover,
+.pagination > li > a:focus,
+.pagination > li > span:focus {
+  color: #CCC;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+}
+
+.pagination > .active > a,
+.pagination > .active > span,
+.pagination > .active > a:hover,
+.pagination > .active > span:hover,
+.pagination > .active > a:focus,
+.pagination > .active > span:focus {
+  background-color: #CCC;
+  border-color: #CCC;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+}

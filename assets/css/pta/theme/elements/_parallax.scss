@@ -1,0 +1,43 @@
+/* Parallax */
+.parallax {
+  background-color: transparent;
+  background-position: 50% 50%;
+  background-repeat: repeat;
+  background-attachment: fixed;
+  position: relative;
+  clear: both;
+}
+
+.parallax:not(.page-header):not(.match-height):not([class*="section-height-"]) {
+  margin: 70px 0;
+  padding: 50px 0;
+}
+
+.parallax blockquote {
+  border: 0;
+  padding: 0 10%;
+}
+
+.parallax blockquote i.fa-quote-left {
+  font-size: 34px;
+  position: relative;
+  left: -5px;
+}
+
+.parallax blockquote p {
+  font-size: 24px;
+  line-height: 30px;
+}
+
+.parallax blockquote span {
+  font-size: 16px;
+  line-height: 20px;
+  color: #999;
+  position: relative;
+  left: -5px;
+}
+
+.parallax-disabled .parallax-background {
+  background-attachment: scroll !important;
+  background-position: 50% 50% !important;
+}

@@ -1,0 +1,65 @@
+@import '~bootstrap';
+@import '~@fortawesome/fontawesome-free/css/all.min.css';
+
+@import './pta/theme/layout/base';
+@import './pta/theme/layout/page-header';
+@import './pta/theme/layout/util';
+@import './pta/theme/layout/footer';
+
+@import './pta/theme/elements/general';
+@import './pta/theme/elements/accordion';
+@import './pta/theme/elements/animations';
+@import './pta/theme/elements/backgrounds';
+@import './pta/theme/elements/badge';
+@import './pta/theme/elements/circular-bar';
+@import './pta/theme/elements/progress-bar';
+@import './pta/theme/elements/borders';
+@import './pta/theme/elements/btn';
+@import './pta/theme/elements/call-to-action';
+@import './pta/theme/elements/card';
+@import './pta/theme/elements/owl-carousel';
+@import './pta/theme/elements/countdown';
+@import './pta/theme/elements/counters';
+@import './pta/theme/elements/dividers';
+@import './pta/theme/elements/dropdown';
+@import './pta/theme/elements/featured-box';
+@import './pta/theme/elements/forms';
+@import './pta/theme/elements/simple-search';
+@import './pta/theme/elements/captcha';
+@import './pta/theme/elements/headings';
+@import './pta/theme/elements/icons';
+@import './pta/theme/elements/thumbnail';
+@import './pta/theme/elements/dialog';
+@import './pta/theme/elements/list';
+@import './pta/theme/elements/sitemap';
+@import './pta/theme/elements/loading';
+@import './pta/theme/elements/maps';
+@import './pta/theme/elements/sample-item';
+@import './pta/theme/elements/magnific-popup';
+@import './pta/theme/elements/pagination';
+@import './pta/theme/elements/read-more';
+@import './pta/theme/elements/offset-anchor';
+@import './pta/theme/elements/alert';
+@import './pta/theme/elements/nav';
+@import './pta/theme/elements/overlay';
+@import './pta/theme/elements/parallax';
+@import './pta/theme/elements/pricing-table';
+@import './pta/theme/elements/process';
+@import './pta/theme/elements/section';
+@import './pta/theme/elements/sidebar';
+@import './pta/theme/elements/slider';
+@import './pta/theme/elements/sort';
+@import './pta/theme/elements/table';
+@import './pta/theme/elements/tabs';
+@import './pta/theme/elements/testimonial';
+@import './pta/theme/elements/timeline';
+@import './pta/theme/elements/toggle';
+@import './pta/theme/elements/word-rotator';
+@import './pta/theme/elements/pages';
+
+
+@import './pta/component/menu';
+
+body {
+    background-color: yellow !important;
+}

@@ -1,0 +1,42 @@
+html {
+  direction: ltr;
+  overflow-x: hidden;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+}
+
+body {
+  background-color: #FFF;
+  color: #777;
+  font-family: "Open Sans", Arial, sans-serif;
+  font-size: 14px;
+  line-height: 26px;
+  margin: 0;
+}
+
+body a {
+  outline: none !important;
+}
+
+.body {
+  background-color: #FFF;
+}
+
+html.safari .body {
+  overflow-x: hidden;
+}
+
+li {
+  line-height: 24px;
+}
+
+/* Responsive */
+@media (max-width: 575px) {
+  body {
+    font-size: 13px;
+  }
+}
+
+dl dd {
+  margin-bottom: 15px;
+}

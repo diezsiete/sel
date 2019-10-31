@@ -1,0 +1,79 @@
+/* Overlays */
+.overlay {
+  position: relative;
+  /* Backward */
+}
+
+.overlay:before {
+  content: ' ';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  background: #212529;
+  opacity: 0;
+  pointer-events: none;
+  -webkit-transition: ease opacity 300ms 100ms;
+  transition: ease opacity 300ms 100ms;
+}
+
+.overlay:hover:before, .overlay.overlay-show:before, .overlay.show:before {
+  opacity: 0.8;
+}
+
+.overlay.overlay-op-1:hover:before, .overlay.overlay-op-1.overlay-show:before, .overlay.overlay-op-1.show:before {
+  opacity: 0.1;
+}
+
+.overlay.overlay-op-2:hover:before, .overlay.overlay-op-2.overlay-show:before, .overlay.overlay-op-2.show:before {
+  opacity: 0.2;
+}
+
+.overlay.overlay-op-3:hover:before, .overlay.overlay-op-3.overlay-show:before, .overlay.overlay-op-3.show:before {
+  opacity: 0.3;
+}
+
+.overlay.overlay-op-4:hover:before, .overlay.overlay-op-4.overlay-show:before, .overlay.overlay-op-4.show:before {
+  opacity: 0.4;
+}
+
+.overlay.overlay-op-5:hover:before, .overlay.overlay-op-5.overlay-show:before, .overlay.overlay-op-5.show:before {
+  opacity: 0.5;
+}
+
+.overlay.overlay-op-6:hover:before, .overlay.overlay-op-6.overlay-show:before, .overlay.overlay-op-6.show:before {
+  opacity: 0.6;
+}
+
+.overlay.overlay-op-7:hover:before, .overlay.overlay-op-7.overlay-show:before, .overlay.overlay-op-7.show:before {
+  opacity: 0.7;
+}
+
+.overlay.overlay-op-8:hover:before, .overlay.overlay-op-8.overlay-show:before, .overlay.overlay-op-8.show:before {
+  opacity: 0.8;
+}
+
+.overlay.overlay-op-9:hover:before, .overlay.overlay-op-9.overlay-show:before, .overlay.overlay-op-9.show:before {
+  opacity: 0.9;
+}
+
+.overlay.overlay-backward:hover:before, .overlay.overlay-backward.overlay-show:before, .overlay.overlay-backward.show:before {
+  z-index: 0;
+}
+
+.overlay .container,
+.overlay .container-fluid {
+  position: relative;
+  z-index: 3;
+}
+
+/* Overlay Colors */
+.overlay-light:before {
+  background-color: #FFF !important;
+}
+
+.overlay-dark:before {
+  background-color: #212529 !important;
+}
