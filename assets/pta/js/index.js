@@ -1,35 +1,30 @@
 import '../css/index.scss';
 import './component/index-hero'
 
-import jQuery from 'jquery';
-import 'jquery.appear';
+import $ from 'jquery';
+
 
 import './theme/countTo';
 import './theme/theme';
 import './theme/counter';
 
+import './theme/animate';
+import './theme/animate-init';
+
 // Counter
-(function($) {
+$(function() {
+    $('[data-plugin-counter]:not(.manual), .counters [data-to]').each(function() {
 
-    'use strict';
+        var $this = $(this),
+            opts;
 
-    if ($.isFunction($.fn['themePluginCounter'])) {
+        var pluginOptions = theme.fn.getOptions($this.data('plugin-options'));
+        if (pluginOptions)
+            opts = pluginOptions;
 
-        $(function() {
-            $('[data-plugin-counter]:not(.manual), .counters [data-to]').each(function() {
+        $this.themePluginCounter(opts);
+    });
+});
 
-                var $this = $(this),
-                    opts;
 
-                var pluginOptions = theme.fn.getOptions($this.data('plugin-options'));
-                if (pluginOptions)
-                    opts = pluginOptions;
 
-                console.log($this.themePluginCounter);
-                $this.themePluginCounter(opts);
-            });
-        });
-
-    }
-
-}).apply(window, [jQuery]);

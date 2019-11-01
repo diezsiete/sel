@@ -1,5 +1,6 @@
 // Counter
 import jQuery from 'jquery';
+import 'jquery.appear';
 
 (function(theme, $) {
 
