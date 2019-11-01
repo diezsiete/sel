@@ -32,6 +32,8 @@ Encore
      */
     .addEntry('app', './assets/'+empresa+'/js/app.js')
     .addEntry('index', './assets/'+empresa+'/js/index.js')
+    .addEntry('servicios', './assets/'+empresa+'/js/servicios.js')
+    .addEntry('nosotros', './assets/'+empresa+'/js/nosotros.js')
     //.addEntry('page1', './assets/js/page1.js')
     //.addEntry('page2', './assets/js/page2.js')
 

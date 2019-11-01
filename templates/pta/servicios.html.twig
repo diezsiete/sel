@@ -4,11 +4,22 @@
     PTA - Servicios
 {% endblock %}
 
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('servicios') }}
+    {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('servicios') }}
+{% endblock %}
+
+
 {% block main %}
     <section data-building-block="organism" class="product-hero-organism">
-        <div class="product-hero theme-background-image-dark" style="position:relative">
-            <div style="background-position: center center; position: absolute; top: 0px; right: 0px; bottom: 0px; left: 0px; background-image: url(&quot;https://www.paypalobjects.com/digitalassets/c/website/marketing/na/us/for-you/transfer-money/send-money/hero-send_money.jpg&quot;); background-size: cover; transition: all 1s linear 0s;">
-            </div>
+        <div class="product-hero theme-background-image-dark">
+            <div class="background-image"></div>
             <div class="container">
                 <div class="row">
                     <div class="col-md-8 col-sm-12 product-hero__container">
@@ -316,13 +327,12 @@
                 </div>
             </div>
         </div>
-
-
-
     </div>
 
     {% block footer %}
         {{ parent() }}
     {% endblock %}
-
 {% endblock %}
+
+
+
