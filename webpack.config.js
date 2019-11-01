@@ -6,6 +6,10 @@ if (!Encore.isRuntimeEnvironmentConfigured()) {
     Encore.configureRuntimeEnvironment(process.env.NODE_ENV || 'dev');
 }
 
+const assetDestinationProd = '[name].[hash:8].[ext]';
+const assetDestinationDev = '[name].[ext]';
+const destinationFilename = Encore.isProduction() ? assetDestinationProd : assetDestinationDev;
+
 Encore
     // directory where compiled assets will be stored
     .setOutputPath('public/build/')
@@ -55,6 +59,11 @@ Encore
 
     // enables Sass/SCSS support
     .enableSassLoader()
+
+    .copyFiles({
+        from: './assets/img/pta',
+        to: 'images/pta/[path]'+destinationFilename
+    })
 
     // uncomment if you use TypeScript
     //.enableTypeScriptLoader()

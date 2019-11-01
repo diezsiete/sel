@@ -1,5 +1,8 @@
+@import 'pta/helper/variables';
+
 @import '~bootstrap';
 @import '~@fortawesome/fontawesome-free/css/all.min.css';
+
 
 @import 'pta/theme/theme';
 @import 'pta/theme/skin';
@@ -10,5 +13,5 @@
 @import './pta/component/menu';
 
 body {
-    background-color: yellow !important;
+    background-color: $lightgray !important;
 }
