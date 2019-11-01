@@ -1,12 +1,12 @@
+import $ from 'jquery';
+
 $(function () {
+    const closeString = "Close";
+    
     if ("undefined" == typeof PAYPAL) {
         window.PAYPAL = { Marketing: {} }
     }
-    if ("undefined" == typeof PP_GLOBAL_JS_STRINGS) {
-        PP_GLOBAL_JS_STRINGS = {
-            "CLOSE": "Close"
-        }
-    }
+    
 
     var i, r, a, s, l, c, t;
     function n() {
@@ -82,10 +82,10 @@ $(function () {
             c = i.find('.subnav > a, .menu-wrapper > a[rel="menuitem"]'),
             d(),
             n = i,
-            (o = $('<a><span class="accessAid">' + PP_GLOBAL_JS_STRINGS.CLOSE + "</span></a>")).attr("href", "#" + PP_GLOBAL_JS_STRINGS.CLOSE),
+            (o = $('<a><span class="accessAid">' + closeString + "</span></a>")).attr("href", "#" + closeString),
             o.addClass("closer"),
             o.attr("role", "button"),
-            o.attr("title", PP_GLOBAL_JS_STRINGS.CLOSE),
+            o.attr("title", closeString),
             o.attr("data-pa-click", "header|close"),
             o.on("click", function (e) {
                 e.preventDefault(),
@@ -161,4 +161,4 @@ $(function () {
             $("#body").hasClass("nav-simple") ? new PAYPAL.Marketing.HeaderMenu($("#menu-button"), $("#main-nav")) : new PAYPAL.Marketing.HeaderMenu($("#menu-button"), $("#main-menu")),
             $(window).triggerHandler("heroheightadjust")
     })
-})
+});

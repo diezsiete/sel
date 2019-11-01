@@ -12,6 +12,7 @@ import '../css/app.scss';
 import $ from 'jquery';
 import 'bootstrap'; // add functions to jQuery
 
+import './component/menu.js'
 
 // uncomment for legacy code
 // global.jQuery = $;
