@@ -1,0 +1,15 @@
+@import 'helper/variables';
+
+@import '~bootstrap';
+@import '~@fortawesome/fontawesome-free/css/all.min.css';
+
+
+@import 'theme/theme';
+@import 'theme/skin';
+@import 'theme/custom';
+
+@import 'component/menu';
+
+body {
+    background-color: $lightgray !important;
+}

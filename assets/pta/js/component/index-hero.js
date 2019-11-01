@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 $(function () {
     var s = null
         , l = null

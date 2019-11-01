@@ -230,7 +230,7 @@ hr.pattern, .divider.pattern {
 }
 
 hr.pattern:after, .divider.pattern:after {
-  background: transparent url(../../../../img/pta/theme/patterns/worn_dots.png) repeat 0 0;
+  background: transparent url(../../../img/theme/patterns/worn_dots.png) repeat 0 0;
   content: "";
   display: block;
   height: 15px;
@@ -241,7 +241,7 @@ hr.pattern:after, .divider.pattern:after {
 }
 
 hr.pattern.pattern-2:after, .divider.pattern.pattern-2:after {
-  background-image: url(../../../../img/pta/theme/patterns/az_subtle.png);
+  background-image: url(../../../img/theme/patterns/az_subtle.png);
 }
 
 @-webkit-keyframes dividerProgress25 {

@@ -1,10 +1,13 @@
 var Encore = require('@symfony/webpack-encore');
+var dotenv = require('dotenv').config({ path: '.env.local' });
 
 // Manually configure the runtime environment if not already configured yet by the "encore" command.
 // It's useful when you use tools that rely on webpack.config.js file.
 if (!Encore.isRuntimeEnvironmentConfigured()) {
     Encore.configureRuntimeEnvironment(process.env.NODE_ENV || 'dev');
 }
+
+const empresa = dotenv.parsed.EMPRESA.toLowerCase();
 
 const assetDestinationProd = '[name].[hash:8].[ext]';
 const assetDestinationDev = '[name].[ext]';
@@ -27,7 +30,8 @@ Encore
      * Each entry will result in one JavaScript file (e.g. app.js)
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
-    .addEntry('app', './assets/js/app.js')
+    .addEntry('app', './assets/'+empresa+'/js/app.js')
+    .addEntry('index', './assets/'+empresa+'/js/index.js')
     //.addEntry('page1', './assets/js/page1.js')
     //.addEntry('page2', './assets/js/page2.js')
 
@@ -61,8 +65,8 @@ Encore
     .enableSassLoader()
 
     .copyFiles({
-        from: './assets/img/pta',
-        to: 'images/pta/[path]'+destinationFilename
+        from: './assets/'+empresa+'/img',
+        to: 'images/[path]'+destinationFilename
     })
 
     // uncomment if you use TypeScript
