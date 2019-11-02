@@ -13,6 +13,8 @@ const assetDestinationProd = '[name].[hash:8].[ext]';
 const assetDestinationDev = '[name].[ext]';
 const destinationFilename = Encore.isProduction() ? assetDestinationProd : assetDestinationDev;
 
+require(`./assets/${empresa}/webpack.config`)(Encore);
+
 Encore
     // directory where compiled assets will be stored
     .setOutputPath('public/build/')
@@ -30,12 +32,6 @@ Encore
      * Each entry will result in one JavaScript file (e.g. app.js)
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
-    .addEntry('app', './assets/'+empresa+'/js/app.js')
-    .addEntry('index', './assets/'+empresa+'/js/index.js')
-    .addEntry('servicios', './assets/'+empresa+'/js/servicios.js')
-    .addEntry('nosotros', './assets/'+empresa+'/js/nosotros.js')
-    .addEntry('blog', './assets/'+empresa+'/js/blog.js')
-    .addEntry('contacto', './assets/'+empresa+'/js/contacto.js')
     //.addEntry('page1', './assets/js/page1.js')
     //.addEntry('page2', './assets/js/page2.js')
 
