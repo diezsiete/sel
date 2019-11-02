@@ -1,0 +1,16 @@
+@import "~owl.carousel";
+
+.product-hero.theme-background-image-dark {
+  position: relative
+}
+.product-hero.theme-background-image-dark .background-image{
+  background-position: center center;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-image: url(../img/hero-send_money.jpg);
+  background-size: cover;
+  transition: all 1s linear 0s;
+}

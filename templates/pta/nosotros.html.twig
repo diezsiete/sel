@@ -4,12 +4,22 @@
     PTA - Nosotros
 {% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('nosotros') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('nosotros') }}
+{% endblock %}
+
 
 {% block main %}
 
     <section data-building-block="organism" class="product-hero-organism">
-        <div class="product-hero theme-background-image-dark" style="position:relative">
-            <div style="background-position: center center; position: absolute; top: 0px; right: 0px; bottom: 0px; left: 0px; background-image: url(&quot;https://www.paypalobjects.com/digitalassets/c/website/marketing/na/us/for-you/transfer-money/send-money/hero-send_money.jpg&quot;); background-size: cover; transition: all 1s linear 0s;">
+        <div class="product-hero theme-background-image-dark">
+            <div class="background-image">
             </div>
             <div class="container">
                 <div class="row">
@@ -84,7 +94,7 @@
                      data-appear-animation-delay="1000">
                     <div class="owl-carousel owl-theme nav-inside mb-0" data-plugin-options="{'items': 1, 'margin': 10, 'animateOut': 'fadeOut', 'autoplay': true, 'autoplayTimeout': 6000, 'loop': true}">
                         <div>
-                            <img alt="" class="img-fluid" src="{{ asset('/img/pta/nosotros/nosotros-responsabilidad.jpg')}}">
+                            <img alt="" class="img-fluid" src="{{ asset('/build/images/nosotros/nosotros-responsabilidad.jpg')}}">
                         </div>
                     </div>
                 </div>
@@ -137,7 +147,7 @@
                      data-appear-animation-delay="1000">
                     <div class="owl-carousel owl-theme nav-inside mb-0" data-plugin-options="{'items': 1, 'margin': 10, 'animateOut': 'fadeOut', 'autoplay': true, 'autoplayTimeout': 6000, 'loop': true}">
                         <div>
-                            <img alt="" class="img-fluid" src="{{ asset('/img/pta/nosotros/nosotros-organizacion.jpg')}}">
+                            <img alt="" class="img-fluid" src="{{ asset('/build/images/nosotros/nosotros-organizacion.jpg')}}">
                         </div>
                     </div>
                 </div>
@@ -155,7 +165,7 @@
                      data-appear-animation-delay="1000">
                     <div class="owl-carousel owl-theme nav-inside mb-0" data-plugin-options="{'items': 1, 'margin': 10, 'animateOut': 'fadeOut', 'autoplay': true, 'autoplayTimeout': 6000, 'loop': true}">
                         <div>
-                            <img alt="" class="img-fluid" src="{{ asset('/img/pta/nosotros/nosotros-creatividad.jpg')}}">
+                            <img alt="" class="img-fluid" src="{{ asset('/build/images/nosotros/nosotros-creatividad.jpg')}}">
                         </div>
                     </div>
                 </div>
@@ -206,7 +216,7 @@
                      data-appear-animation-delay="1000">
                     <div class="owl-carousel owl-theme nav-inside mb-0" data-plugin-options="{'items': 1, 'margin': 10, 'animateOut': 'fadeOut', 'autoplay': true, 'autoplayTimeout': 6000, 'loop': true}">
                         <div>
-                            <img alt="" class="img-fluid" src="{{ asset('/img/pta/nosotros/nosotros-servicio.jpg')}}">
+                            <img alt="" class="img-fluid" src="{{ asset('/build/images/nosotros/nosotros-servicio.jpg')}}">
                         </div>
                     </div>
                 </div>
@@ -233,10 +243,10 @@
         <div class="col-md-12 logos">
 
             <a href="http://servilabor.com.co" target="_blank" class="servilabor">
-                <img class="img-1" src="{{ asset('/img/pta/logos/servilabor.png') }}" width="173" alt="logo servilabor">
+                <img class="img-1" src="{{ asset('/build/images/logos/servilabor.png') }}" width="173" alt="logo servilabor">
             </a>
             <a href="http://www.nortempo.com/es/" target="_blank" class="nortempo">
-                <img class="" src="{{ asset('/img/pta/logos/nortempo2.jpg') }}" width="173" alt="">
+                <img class="" src="{{ asset('/build/images/logos/nortempo2.jpg') }}" width="173" alt="">
             </a>
 
         </div>

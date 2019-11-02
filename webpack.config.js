@@ -71,6 +71,12 @@ Encore
         to: 'images/[path]'+destinationFilename
     })
 
+    .autoProvideVariables({
+        $: 'jquery',
+        jQuery: 'jquery',
+        'window.jQuery': 'jquery'
+    })
+
     // uncomment if you use TypeScript
     //.enableTypeScriptLoader()
 
