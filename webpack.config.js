@@ -34,6 +34,8 @@ Encore
     .addEntry('index', './assets/'+empresa+'/js/index.js')
     .addEntry('servicios', './assets/'+empresa+'/js/servicios.js')
     .addEntry('nosotros', './assets/'+empresa+'/js/nosotros.js')
+    .addEntry('blog', './assets/'+empresa+'/js/blog.js')
+    .addEntry('contacto', './assets/'+empresa+'/js/contacto.js')
     //.addEntry('page1', './assets/js/page1.js')
     //.addEntry('page2', './assets/js/page2.js')
 
@@ -76,6 +78,10 @@ Encore
         jQuery: 'jquery',
         'window.jQuery': 'jquery'
     })
+
+    .configureDefinePlugin(options => {
+        options['process.env'].GOOGLEMAPS_KEY = JSON.stringify(dotenv.parsed["GOOGLEMAPS_KEY_"+empresa.toUpperCase()]);
+    });
 
     // uncomment if you use TypeScript
     //.enableTypeScriptLoader()

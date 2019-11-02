@@ -2,14 +2,18 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('css/pta/theme-blog.css') }}">
+    {{ encore_entry_link_tags('blog') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('blog') }}
 {% endblock %}
 
 
 {% block main %}
     <section class="home-hero-organism" data-building-block="organism">
-        <div class="home-hero short theme-background-image-dark"
-             style="background-image:url(https://www.paypalobjects.com/digitalassets/c/website/marketing/na/us/business-services/hero-biz-services.jpg);background-position:center">
+        <div class="home-hero short theme-background-image-dark">
             <div class="container">
                 <div class="row">
                     <div class="home-hero__container col-xs-12 col-lg-8 center-block text-xs-center">

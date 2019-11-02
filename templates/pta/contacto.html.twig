@@ -111,17 +111,17 @@
 
     </div>
 
-    <div id="googlemaps" class="google-map mb-0 mt-3"></div>
+    <div id="googlemaps" class="google-map mb-0 mt-3"
+         data-latitude="{{ currentOficina.latitude }}"
+         data-longitude="{{ currentOficina.longitude }}"
+         data-title="{{ "Agencia " ~ currentOficina.ciudad }}"
+         data-address="{{ currentOficina.direccion }}"
+         data-pin-img="{{ asset('/build/images/pin.png') }}"></div>
 
 {% endblock %}
 
 
 {% block javascripts %}
     {{ parent() }}
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDricqRT23AwWytA8LU4CwFspmE1dh09tg"></script>
-    <script>
-        var oficina = {{ currentOficina|json_encode|raw }};
-        var pinImg = "{{ asset('img/pta/pin.png') }}"
-    </script>
-    <script src="{{ asset('js/pta/contacto.js') }}"></script>
+    {{ encore_entry_script_tags('contacto') }}
 {% endblock %}
