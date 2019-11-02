@@ -1,5 +1,6 @@
 import jQuery from 'jquery';
 import 'jquery.appear';
+import 'animate.css'
 
 // Animate
 (function(theme, $) {
