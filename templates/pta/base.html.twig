@@ -26,28 +26,38 @@
 
         {{ encore_entry_link_tags('app') }}
 
-        <!-- Vendor CSS
+        <!-- Vendor CSS -->
 
 
-        <link rel="stylesheet" href="{{ asset('/vendor/animate/animate.min.css') }}">
+        {# <link rel="stylesheet" href="{{ asset('/vendor/animate/animate.min.css') }}">
         <link rel="stylesheet" href="{{ asset('/vendor/owl.carousel/assets/owl.carousel.min.css') }}">
         <link rel="stylesheet" href="{{ asset('/vendor/owl.carousel/assets/owl.theme.default.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('/vendor/magnific-popup/magnific-popup.css') }}"> -->
+        <link rel="stylesheet" href="{{ asset('/vendor/magnific-popup/magnific-popup.css') }}">
 
 
-        {#        {% if app.user %}#}
-        {#            {% block admin_extension_stylesheets %}#}
-        {#                {{ parent() }}#}
-        {#            {% endblock %}#}
-        {#        {% endif %}#}
+        <!-- Theme CSS -->
+        <link rel="stylesheet" href="{{ asset('/css/pta/theme.css') }}">
+        <link rel="stylesheet" href="{{ asset('/css/pta/theme-elements.css') }}">
+
+                {% if app.user %}
+                    {% block admin_extension_stylesheets %}
+                        {{ parent() }}
+                    {% endblock %}
+                {% endif %}
 
 
-        <!-- Current Page CSS
+        <!-- Current Page CSS -->
         <link rel="stylesheet" href="{{ asset('/vendor/rs-plugin/css/settings.css') }}">
         <link rel="stylesheet" href="{{ asset('/vendor/rs-plugin/css/layers.css') }}">
-        <link rel="stylesheet" href="{{ asset('/vendor/rs-plugin/css/navigation.css') }}"> -->
+        <link rel="stylesheet" href="{{ asset('/vendor/rs-plugin/css/navigation.css') }}">
 
         <!-- Demo CSS -->
+        <!-- Skin CSS -->
+        <link rel="stylesheet" href="{{ asset('/css/pta/skins/skin-corporate-pta.css') }}">
+
+        <!-- Theme Custom CSS -->
+        <link rel="stylesheet" href="{{ asset('/css/pta/custom.css') }}">
+        <link rel="stylesheet" href="{{ asset('/css/pta/menu.css') }}"> #}
 
 
         {% if app.user %}
