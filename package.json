@@ -5,6 +5,10 @@
         "animate.css": "^3.7.2",
         "bootstrap": "^4.3.1",
         "core-js": "^3.0.0",
+        "datatables.net": "^1.10.20",
+        "datatables.net-bs4": "^1.10.20",
+        "datatables.net-fixedheader": "^3.1.6",
+        "datatables.net-fixedheader-bs4": "^3.1.6",
         "jquery": "^3.4.1",
         "jquery.appear": "^1.0.1",
         "load-google-maps-api": "^2.0.1",
@@ -21,6 +25,7 @@
     "scripts": {
         "dev-server": "encore dev-server",
         "dev": "encore dev",
+        "prewatch": "bin/console assets:install --symlink --relative ./assets",
         "watch": "encore dev --watch",
         "build": "encore production --progress"
     },

@@ -20,10 +20,13 @@ class DatatablesExtension extends \Omines\DataTablesBundle\Twig\DataTablesExtens
                 $hasActions = array_reduce($dataTable->getColumns(), function ($prev, $column) {
                     return $prev ? $prev : $column instanceof ActionsColumn;
                 }, false);
-                return $originalCallable($dataTable) . ", " . json_encode([
-                    "fixedHeader" => true,
-                    "hasActions" => $hasActions
-                ]);
+
+                return "data-settings='" . $originalCallable($dataTable) . "' "
+                    . "data-options='" . json_encode([
+                         "fixedHeader" => true,
+                        "hasActions" => $hasActions
+                    ]) . "'";
+
             }, ['is_safe' => ['html']])
         ];
     }

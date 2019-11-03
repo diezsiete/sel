@@ -4,5 +4,6 @@ module.exports = function(encore) {
         .addEntry('servicios', './assets/pta/js/servicios.js')
         .addEntry('nosotros', './assets/pta/js/nosotros.js')
         .addEntry('blog', './assets/pta/js/blog.js')
-        .addEntry('contacto', './assets/pta/js/contacto.js');
+        .addEntry('contacto', './assets/pta/js/contacto.js')
+        .addEntry('admin', './assets/pta/js/admin.js')
 };

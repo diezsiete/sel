@@ -5,7 +5,8 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('vendor/datatables2/datatables.min.css') }}">
+    {{ encore_entry_link_tags('datatable') }}
+
 {% endblock %}
 
 
@@ -19,7 +20,9 @@
 {% block body %}
     <div class="row">
         <div class="col">
-            <div id="datatable">Loading...</div>
+            <div id="datatable" {{ sel_datatable_settings(datatable) }} data-searching="{{ searching }}">
+                Loading...
+            </div>
         </div>
     </div>
 {% endblock %}
@@ -27,24 +30,5 @@
 
 {% block javascripts %}
     {{ parent() }}
-
-    {% embed 'datatable/javascripts.datatable.html.twig' %}
-        {% block script_datatable %}
-            <script>
-                $(function () {
-                    $('#datatable')
-                        .selInitDataTables({{ sel_datatable_settings(datatable) }})
-                        .then(dt => {
-                            {% if searching %}
-                            const search = () => dt.search($('#search-dt-text').val()).draw();
-                            $('#search-dt-button').click(search);
-                            $('#search-dt-text').on('keypress', e => e.which === 13 ? search() : null)
-                            {% endif %}
-                            dt.fixedHeader.adjust();
-                        });
-                });
-            </script>
-        {% endblock %}
-    {% endembed %}
-
+    {{ encore_entry_script_tags('datatable') }}
 {% endblock %}
