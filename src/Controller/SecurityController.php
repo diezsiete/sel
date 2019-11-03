@@ -26,7 +26,7 @@ class SecurityController extends BaseController
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         if ($this->isGranted('ROLE_USER')) {
-            return $this->redirectToRoute('app_main');
+            return $this->redirectToRoute('sel_panel');
         }
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();

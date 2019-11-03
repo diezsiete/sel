@@ -9,34 +9,38 @@ import '../../bundles/datatables/js/datatables';
 import '../css/datatable.scss';
 
 (function($) {
-    $.fn.selInitDataTables = function (config, options) {
-        return this.initDataTables(config, options).then(dt => {
-            dt.on('draw.dt', function (e, settings) {
-                if (settings.oInit.hasActions) {
-                    $("[data-toggle='tooltip']").tooltip();
+    const $searchInput = $('#search-dt-text');
+    const $searchButton = $('#search-dt-button');
+
+    $.fn.selInitDataTables = function () {
+        return this.each((index, element) => {
+            const $this = $(element);
+            const settings = $this.data('settings');
+            const options = $this.data('options');
+            const searching = $this.data('searching');
+
+            return $this.initDataTables(settings, options).then(dt => {
+                dt.on('draw.dt', function (e, settings) {
+                    if (settings.oInit.hasActions) {
+                        $("[data-toggle='tooltip']").tooltip();
+                    }
+                });
+
+                if (searching) {
+                    const search = () => dt.search($searchInput.val()).draw();
+                    $searchButton.click(search);
+                    $searchInput.on('keypress', e => e.which === 13 ? search() : null);
                 }
-            });
-            return dt;
-        })
+
+                dt.fixedHeader.adjust();
+                return dt;
+            })
+        });
+
     };
 
     $(function () {
-
-        const $datatable = $('#datatable');
-        const $searchInput = $('#search-dt-text');
-        const $searchButton = $('#search-dt-button');
-        const settings = $datatable.data('settings');
-        const options = $datatable.data('options');
-        const searching = $datatable.data('searching');
-
-        $datatable
-            .selInitDataTables(settings, options).then(dt => {
-            if (searching) {
-                const search = () => dt.search($searchInput.val()).draw();
-                $searchButton.click(search);
-                $searchInput.on('keypress', e => e.which === 13 ? search() : null);
-            }
-            dt.fixedHeader.adjust();
-        });
+        const $datatable = $('.datatable');
+        $datatable.selInitDataTables();
     });
 }(jQuery));

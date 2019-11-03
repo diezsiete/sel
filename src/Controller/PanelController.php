@@ -7,12 +7,12 @@ use App\Service\ServicioEmpleados\Import;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-class MainController extends AbstractController
+class PanelController extends AbstractController
 {
     /**
-     * @Route("/sel", name="app_main")
+     * @Route("/sel", name="sel_panel")
      */
-    public function index(DataTable $dataTable, Import $import)
+    public function panel(DataTable $dataTable, Import $import)
     {
         $datatables = [];
         if($this->isGranted(['ROLE_EMPLEADO'], $this->getUser())) {
@@ -31,7 +31,7 @@ class MainController extends AbstractController
             ];
         }
 
-        return $this->render('main/index.html.twig', [
+        return $this->render('panel/panel.html.twig', [
             'datatables' => $datatables
         ]);
     }

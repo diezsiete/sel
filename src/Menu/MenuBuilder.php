@@ -38,7 +38,7 @@ class MenuBuilder
     {
         $menu = $this->factory->createItem('main');
 
-        // $menu->addChild('Dashboard', ['route' => 'app_main'])->setExtra('icon', 'fas fa-home');
+        // $menu->addChild('Dashboard', ['route' => 'sel_panel'])->setExtra('icon', 'fas fa-home');
 
         $user = $this->security->getUser();
 

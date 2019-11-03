@@ -6,7 +6,6 @@
 {% block stylesheets %}
     {{ parent() }}
     {{ encore_entry_link_tags('datatable') }}
-
 {% endblock %}
 
 
@@ -20,7 +19,7 @@
 {% block body %}
     <div class="row">
         <div class="col">
-            <div id="datatable" {{ sel_datatable_settings(datatable) }} data-searching="{{ searching }}">
+            <div class="datatable" {{ sel_datatable_settings(datatable) }} data-searching="{{ searching }}">
                 Loading...
             </div>
         </div>
