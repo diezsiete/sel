@@ -35,6 +35,7 @@ Encore
     .addEntry('datatable', './assets/sel/js/datatable.js')
     //.addEntry('page1', './assets/js/page1.js')
     //.addEntry('page2', './assets/js/page2.js')
+    //.addStyleEntry('x', './assets/sel/css/x.scss')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()
@@ -64,6 +65,7 @@ Encore
 
     // enables Sass/SCSS support
     .enableSassLoader()
+    .enablePostCssLoader()
 
     .copyFiles({
         from: './assets/'+empresa+'/img',
