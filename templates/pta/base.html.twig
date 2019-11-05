@@ -60,18 +60,14 @@
         <link rel="stylesheet" href="{{ asset('/css/pta/menu.css') }}"> #}
 
 
-        {% if app.user %}
-            {{ encore_entry_link_tags('admin') }}
-        {% endif %}
-
     {% endblock %}
 </head>
 
 
 
-<body class="{{ is_sel() ? 'pp-header-open' : '' }}">
+<body class="{{ is_sel() ? 'is-sel' : '' }}">  {# class="{{ is_sel() ? 'pp-header-open' : '' }}" #}
 
-<div class="body{{ is_sel() ? ' menu-open' : '' }}" id="body">
+<div class="body" id="body"> {# class="body{{ is_sel() ? ' menu-open' : '' }}" #}
 
     {% block header %}
         {% if is_granted('ROLE_PREVIOUS_ADMIN') %}

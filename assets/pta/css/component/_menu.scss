@@ -21,7 +21,7 @@ body #body {
     transition: all .3s ease-out
 }
 
-@media (min-width: 1152px) {
+@media (min-width: $menu-min-width) {
     body #main{
         padding-top:0;
         -webkit-transition: padding-top .3s ease-out;
@@ -44,7 +44,7 @@ body #body.menu-open {
     transform: translate(240px, 0)
 }
 
-@media (min-width: 1152px) {
+@media (min-width: $menu-min-width) {
     body #body.menu-open {
         -webkit-transform:none;
         -ms-transform: none;
@@ -70,7 +70,7 @@ body #body.menu-open #menu-button:after {
     transform: rotate(-225deg)
 }
 
-@media (min-width: 1152px) {
+@media (min-width: $menu-min-width) {
     body #body.menu-open #main {
         /*padding-top:160px*/
         padding-top: 60px;
@@ -81,7 +81,7 @@ body #body.menu-open #menu-button:after {
     }
 }
 
-@media (min-width: 1152px) {
+@media (min-width: $menu-min-width) {
     body #body.menu-open #fixed-top~#main {
         -webkit-transform:none;
         -moz-transform: none;
@@ -113,7 +113,7 @@ body #body.menu-close .pp-header.table-row>div {
     height: 100%
 }
 
-@media (min-width: 1152px) {
+@media (min-width: $menu-min-width) {
     .pp-header.table-row {
         border-bottom:1px solid rgba(255,255,255,0.3);
         max-height: 230px;
@@ -146,7 +146,7 @@ body #body.menu-close .pp-header.table-row>div {
     z-index: -1
 }
 
-@media (min-width: 1152px) {
+@media (min-width: $menu-min-width) {
     .pp-header.table-row:after {
         border-bottom:1px solid rgba(255,255,255,0.3);
         content: '';
@@ -167,7 +167,7 @@ body #body.menu-close .pp-header.table-row>div {
     padding-right: 0
 }
 
-@media (min-width: 1152px) {
+@media (min-width: $menu-min-width) {
     .pp-header.table-row .containerCentered {
         height:inherit;
         min-width: auto;
@@ -234,7 +234,7 @@ body #body.menu-close .pp-header.table-row>div {
     top: 17px
 }
 
-@media (min-width: 1152px) {
+@media (min-width: $menu-min-width) {
     .pp-header.table-row #menu-button {
         display:none
     }
@@ -278,7 +278,7 @@ body #body.menu-close .pp-header.table-row>div {
     width: auto
 }
 
-@media (min-width: 1152px) {
+@media (min-width: $menu-min-width) {
     .pp-header.table-row .main-menu {
         background:none;
         border-right: none;
@@ -295,7 +295,7 @@ body #body.menu-close .pp-header.table-row>div {
     margin: 0
 }
 
-@media (min-width: 1152px) {
+@media (min-width: $menu-min-width) {
     .pp-header.table-row .main-menu>ul {
         text-align:center
     }
@@ -309,7 +309,7 @@ body #body.menu-close .pp-header.table-row>div {
     width: 100%
 }
 
-@media (min-width: 1152px) {
+@media (min-width: $menu-min-width) {
     .pp-header.table-row .main-menu>ul>li {
         display:inline-block
     }
@@ -352,7 +352,7 @@ body #body.menu-close .pp-header.table-row>div {
     width: 9px
 }
 
-@media (min-width: 1152px) {
+@media (min-width: $menu-min-width) {
     .pp-header.table-row .main-menu>ul>li>a[rel='menuitem']:after {
         top:-4px;
         -webkit-transform: rotate(45deg);
@@ -369,7 +369,7 @@ body #body.menu-close .pp-header.table-row>div {
     color: #fff
 }
 
-@media (min-width: 1152px) {
+@media (min-width: $menu-min-width) {
     .pp-header.table-row .main-menu>ul>li>a {
         padding:24px 25px
     }
@@ -388,7 +388,7 @@ body #body.menu-close .pp-header.table-row>div {
     transform: rotate(-135deg)
 }
 
-@media (min-width: 1152px) {
+@media (min-width: $menu-min-width) {
     .pp-header.table-row .main-menu>ul>li>a.is-open[rel='menuitem']:after {
         top:2px
     }
@@ -401,7 +401,7 @@ body #body.menu-close .pp-header.table-row>div {
     width: 86%
 }
 
-@media (min-width: 1152px) {
+@media (min-width: $menu-min-width) {
     .pp-header.table-row .main-menu .sublist {
         display:none
     }
@@ -466,7 +466,7 @@ body #body.menu-close .pp-header.table-row>div {
     z-index: 10
 }
 
-@media (min-width: 1152px) {
+@media (min-width: $menu-min-width) {
     .pp-header.table-row .main-menu .menu-wrapper {
         background-color:transparent;
         background-image: none;
@@ -502,7 +502,7 @@ body #body.menu-close .pp-header.table-row>div {
     width: 0
 }
 
-@media (min-width: 1152px) {
+@media (min-width: $menu-min-width) {
     .pp-header.table-row .main-menu .menu-wrapper .closer {
         position:absolute;
         top: 18px;
@@ -562,7 +562,7 @@ body #body.menu-close .pp-header.table-row>div {
     margin-right: 10px
 }
 
-@media (min-width: 1152px) {
+@media (min-width: $menu-min-width) {
     .pp-header.table-row .main-menu .menu-wrapper a[rel="menuitem"] {
         display:none
     }
@@ -599,7 +599,7 @@ body #body.menu-close .pp-header.table-row>div {
     text-decoration: none;
 }
 
-@media (min-width: 1152px) {
+@media (min-width: $menu-min-width) {
     .pp-header.table-row .main-menu .menu-wrapper a {
         font-variant: normal;
         font-weight: 300;
@@ -619,13 +619,13 @@ body #body.menu-close .pp-header.table-row>div {
     font-size: 12px
 }
 
-@media (min-width: 1152px) {
+@media (min-width: $menu-min-width) {
     .pp-header.table-row .main-menu .menu-wrapper a em {
         display:block
     }
 }
 
-@media (min-width: 1152px) {
+@media (min-width: $menu-min-width) {
     .pp-header.table-row .main-menu .menu-wrapper .subnav {
         /*-ms-flex:1 0 0;
         -webkit-align-items: center;
@@ -654,7 +654,7 @@ body #body.menu-close .pp-header.table-row>div {
     display: inline-block
 }
 
-@media (min-width: 1152px) {
+@media (min-width: $menu-min-width) {
     .pp-header.table-row .main-menu .menu-wrapper .subnav li {
         /*-webkit-flex-grow:0;
         -ms-flex-positive: 0;
@@ -666,7 +666,7 @@ body #body.menu-close .pp-header.table-row>div {
 
 }
 
-@media (min-width: 1152px) {
+@media (min-width: $menu-min-width) {
     .pp-header.table-row .main-menu .menu-wrapper .subnav.lvl-2 {
         margin:0
     }
@@ -699,7 +699,7 @@ body #body.menu-close .pp-header.table-row>div {
     }
 }
 
-@media (max-width: 1152px - 1px) {
+@media (max-width: $menu-min-width - 1px) {
     .pp-header.table-row .main-menu .menu-wrapper .subnav.lvl-2 li ul {
         padding-top:20px;
         margin-top: 20px;
@@ -724,7 +724,7 @@ body #body.menu-close .pp-header.table-row>div {
     border-radius: 5px
 }
 
-@media (min-width: 1152px) {
+@media (min-width: $menu-min-width) {
     .pp-header.table-row .pta-img-logo {
         /*background:transparent url(https://www.paypalobjects.com/webstatic/i/logo/rebrand/ppcom-white.svg) center center no-repeat;*/
         background:transparent url(../../img/logo-blanco.png) center center no-repeat;
@@ -765,7 +765,7 @@ body #body.menu-close .pp-header.table-row>div {
     background: none
 }
 
-@media (min-width: 1152px) {
+@media (min-width: $menu-min-width) {
     .pp-header.table-row .header-buttons {
         right:2%
     }
@@ -792,7 +792,7 @@ body #body.menu-close .pp-header.table-row>div {
     display: none
 }
 
-@media (min-width: 1152px) {
+@media (min-width: $menu-min-width) {
     .pp-header.table-row .header-buttons .btn-signup {
         background:#fff;
         border: none;
@@ -849,7 +849,7 @@ body #body.menu-close .pp-header.table-row>div {
     width: 100%
 }
 
-@media (min-width: 1152px) {
+@media (min-width: $menu-min-width) {
     .pp-header.table-row .minimal .header-buttons {
         width:auto;
         height: auto;
@@ -1005,7 +1005,7 @@ nav ul{
     }
 }
 
-@media (min-width: 1152px) {
+@media (min-width: $menu-min-width) {
     .pp-header~* {
         position:relative;
         top:0;

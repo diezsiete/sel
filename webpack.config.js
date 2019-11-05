@@ -13,8 +13,6 @@ const assetDestinationProd = '[name].[hash:8].[ext]';
 const assetDestinationDev = '[name].[ext]';
 const destinationFilename = Encore.isProduction() ? assetDestinationProd : assetDestinationDev;
 
-require(`./assets/${empresa}/webpack.config`)(Encore);
-
 Encore
     // directory where compiled assets will be stored
     .setOutputPath('public/build/')
@@ -98,5 +96,7 @@ Encore
     //.enableReactPreset()
     //.addEntry('admin', './assets/js/admin.js')
 ;
+
+require(`./assets/${empresa}/webpack.config`)(Encore);
 
 module.exports = Encore.getWebpackConfig();
