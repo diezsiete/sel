@@ -33,9 +33,11 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('datatable', './assets/sel/js/datatable.js')
+    .addStyleEntry('induccion', './assets/sel/css/evaluacion/induccion.scss')
+    .addStyleEntry('induccion-titulo', './assets/sel/css/evaluacion/induccion-titulo.scss')
     //.addEntry('page1', './assets/js/page1.js')
     //.addEntry('page2', './assets/js/page2.js')
-    //.addStyleEntry('x', './assets/sel/css/x.scss')
+
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()
@@ -67,10 +69,10 @@ Encore
     .enableSassLoader()
     .enablePostCssLoader()
 
-    .copyFiles({
-        from: './assets/'+empresa+'/img',
-        to: 'images/[path]'+destinationFilename
-    })
+    .copyFiles([
+        { from: './assets/' + empresa + '/img', to: 'images/[path]' + destinationFilename },
+        { from: './assets/sel/img', to: 'images/sel/[path]' + destinationFilename }
+    ])
 
     .autoProvideVariables({
         $: 'jquery',

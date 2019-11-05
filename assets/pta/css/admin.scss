@@ -1,2 +1,21 @@
 // @import 'component/admin-header-nav-features';
 // @import 'component/admin-nav';
+
+.body {
+  background: #ecedf0;
+  width: 100%;
+}
+
+.page-header {
+  background: transparent;
+  padding-top: 112px;
+}
+@media (min-width: 1152px) {
+  body #body.menu-open .page-header  {
+    top: 158px;
+  }
+}
+
+table {
+  background: #fdfdfd;
+}

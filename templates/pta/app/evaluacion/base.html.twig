@@ -2,9 +2,8 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('css/sel/evaluacion/evaluacion.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/sel/evaluacion/' ~ evaluacion.slug ~ '.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/pta/evaluacion.css') }}">
+    {{ encore_entry_link_tags(evaluacion.slug) }}
+    {{ encore_entry_link_tags(evaluacion.slug ~ '-pta') }}
 {% endblock %}
 
 {% block title %}
