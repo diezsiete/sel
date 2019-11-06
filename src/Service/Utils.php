@@ -7,8 +7,13 @@
 namespace App\Service;
 
 
+use Egulias\EmailValidator\EmailValidator;
+use Egulias\EmailValidator\Validation\RFCValidation;
+
 class Utils
 {
+    private $emailValidator = null;
+
     /**
      * Formats a string date to a especific format
      * @param string $date_string
@@ -333,5 +338,13 @@ class Utils
         flush();
         readfile($file_path);
         exit;
+    }
+
+    public function emailIsValid($email)
+    {
+        if(!$this->emailValidator) {
+            $this->emailValidator = new EmailValidator();
+        }
+        return $this->emailValidator->isValid($email, new RFCValidation());
     }
 }

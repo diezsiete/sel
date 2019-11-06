@@ -156,6 +156,12 @@
     "league/flysystem": {
         "version": "1.0.52"
     },
+    "markbaker/complex": {
+        "version": "1.4.7"
+    },
+    "markbaker/matrix": {
+        "version": "1.2.0"
+    },
     "monolog/monolog": {
         "version": "1.24.0"
     },
@@ -200,6 +206,9 @@
     },
     "phpdocumentor/type-resolver": {
         "version": "0.4.0"
+    },
+    "phpoffice/phpspreadsheet": {
+        "version": "1.9.0"
     },
     "psr/cache": {
         "version": "1.0.1"
@@ -347,6 +356,15 @@
             "src/Kernel.php"
         ]
     },
+    "symfony/google-mailer": {
+        "version": "4.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "4.3",
+            "ref": "da7b29c169c9de4359a75be96d729438129d7d86"
+        }
+    },
     "symfony/http-client": {
         "version": "v4.3.2"
     },
@@ -364,6 +382,18 @@
     },
     "symfony/intl": {
         "version": "v4.2.8"
+    },
+    "symfony/mailer": {
+        "version": "4.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "4.3",
+            "ref": "6e5921f710bec05533f664e0b9a3d838545edd82"
+        },
+        "files": [
+            "config/packages/mailer.yaml"
+        ]
     },
     "symfony/maker-bundle": {
         "version": "1.0",
