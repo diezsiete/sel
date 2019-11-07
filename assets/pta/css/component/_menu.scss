@@ -772,7 +772,7 @@ body #body.menu-close .pp-header.table-row>div {
 
 @media (min-width: $menu-min-width) {
     .pp-header.table-row .header-buttons {
-        right:2%
+        right: -2%;
     }
 
     .pp-header.table-row .header-buttons #logout-button {

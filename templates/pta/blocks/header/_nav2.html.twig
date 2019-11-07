@@ -35,7 +35,7 @@
         {% if app.user %}
             <li><a href="{{ path('sel_panel') }}" id="header-personal" rel="menuitem"
                    aria-controls="submenu-personal" data-pa-click="header|personal"
-                   aria-expanded="{{ is_sel() ? "true" : "false" }}" class="{{ is_sel('app_profile') ? "is-open" : "" }}">
+                   aria-expanded="{{ is_sel() ? "true" : "false" }}" class="{{ is_sel() ? "is-open" : "" }}">
                     Servicio empleados
                 </a>
                 <div class="menu-wrapper {{ is_sel() ? "open" : "" }} not-close" id="submenu-personal" aria-labelledby="header-personal"
@@ -187,7 +187,7 @@
         {# include('pta/blocks/header/_logged.html.twig') #}
     {% else %}
         {% if is_granted('ASPIRANTES_MODULE') %}
-            <a href="{{ path('registro_datos_basicos') }}" id="signup-button" class="btn btn-small btn-signup">
+            <a href="{{ path('registro_datos_basicos') }}" id="signup-button" class="btn btn-small btn-tertiary">
                 Registrarse
             </a>
         {% endif %}

@@ -1,6 +1,7 @@
-import '../css/index.scss';
-import './component/index-hero'
 
+import '../css/index.scss';
+
+import './component/index-hero'
 import $ from 'jquery';
 
 
@@ -10,6 +11,8 @@ import './theme/counter';
 
 import './theme/animate';
 import './theme/animate-init';
+
+
 
 // Counter
 $(function() {
