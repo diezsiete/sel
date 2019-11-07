@@ -594,6 +594,11 @@ body #body.menu-close .pp-header.table-row>div {
     text-align: right;
     padding: 10px 0 10px 30px;
 }
+.pp-header.table-row .main-menu .menu-wrapper a.right{
+    text-align: right;
+    padding: 10px 0 10px 30px;
+}
+
 .pp-header.table-row .main-menu .menu-wrapper li.nav-active a, .pp-header.table-row .main-menu .menu-wrapper a:hover{
     border-bottom: 2px solid #fff;
     text-decoration: none;
@@ -1011,4 +1016,12 @@ nav ul{
         top:0;
         transition:all .3s ease-out;
     }
+
+    #submenu-perfil {
+        float: right;
+    }
+    #header-personal-menu {
+        float: left;
+    }
 }
+
