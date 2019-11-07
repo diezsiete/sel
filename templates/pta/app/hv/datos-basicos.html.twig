@@ -1,16 +1,11 @@
 {% extends 'pta/base.html.twig' %}
 
-{% use 'default/javascripts.html.twig' %}
 
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('vendor/chosen/chosen.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('vendor/bootstrap-datepicker/css/bootstrap-datepicker3.css') }}" />
+    {{ encore_entry_link_tags('hv') }}
 {% endblock %}
 
-{% block body_header_title %}
-    Mi hoja de vida - Datos básicos
-{% endblock %}
 
 
 {% block body %}
@@ -42,15 +37,6 @@
 {% endblock %}
 
 {% block javascripts %}
-    {% block javascripts_vendor %}
-        {{ parent() }}
-        <script src="{{ asset('vendor/chosen/chosen.jquery.min.js') }}"></script>
-        <script src="{{ asset('vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
-        <script src="{{ asset('vendor/jquery-maskedinput/jquery.maskedinput.js') }}"></script>
-    {% endblock %}
-        {{ parent() }}
-        <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
-        <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
-        <script src="{{ asset('js/sel/hv/hv-form.js') }}"></script>
-        <script src="{{ asset('/vendor/common/common.min.js') }}"></script>
+    {{ parent() }}
+    {{ encore_entry_script_tags('hv') }}
 {% endblock %}

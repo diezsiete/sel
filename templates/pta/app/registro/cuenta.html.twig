@@ -2,14 +2,12 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('vendor/dropzone/min/dropzone.min.css') }}" />
+    {{ encore_entry_link_tags('cuenta') }}
 {% endblock %}
 
-{% block body_header %}{% endblock %}
-
-
 {% block body %}
-    {{ include('pta/registro/_header.html.twig') }}
+
+    {{ include('pta/registro/_process-line.html.twig') }}
 
 <div class="container py-2 registro">
     <div class="row">
@@ -76,21 +74,5 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script src="{{ asset('vendor/dropzone/dropzone.js') }}"></script>
-    <script>
-        Dropzone.autoDiscover = false;
-        $(function(){
-            var dropzone = new Dropzone($('.dropzone')[0], {
-                paramName: 'adjunto',
-                init: function() {
-                    this.on('error', function(file, data){
-                        if(data.detail){
-                            this.emit('error', file, data.detail)
-                        }
-                    });
-                },
-                dictDefaultMessage: "Arrastre aqui archivo para subir"
-            })
-        });
-    </script>
+    {{ encore_entry_script_tags('cuenta') }}
 {% endblock %}

@@ -14,7 +14,7 @@ const assetDestinationDev = '[name].[ext]';
 const destinationFilename = Encore.isProduction() ? assetDestinationProd : assetDestinationDev;
 
 Encore
-    // directory where compiled assets will be stored
+// directory where compiled assets will be stored
     .setOutputPath('public/build/')
     // public path used by the web server to access the output path
     .setPublicPath('/build')
@@ -33,6 +33,9 @@ Encore
     .addEntry('datatable', './assets/sel/js/datatable.js')
     .addStyleEntry('induccion', './assets/sel/css/evaluacion/induccion.scss')
     .addStyleEntry('induccion-titulo', './assets/sel/css/evaluacion/induccion-titulo.scss')
+    .addEntry('hv', './assets/sel/js/hv.js')
+    .addEntry('hv-entity', './assets/sel/js/hv-entity.js')
+    .addEntry('hv-adjunto', './assets/sel/js/hv-adjunto.js')
     //.addEntry('page1', './assets/js/page1.js')
     //.addEntry('page2', './assets/js/page2.js')
 
@@ -58,7 +61,8 @@ Encore
     .enableVersioning(Encore.isProduction())
 
     // enables @babel/preset-env polyfills
-    .configureBabel(() => {}, {
+    .configureBabel(() => {
+    }, {
         useBuiltIns: 'usage',
         corejs: 3
     })
@@ -68,8 +72,8 @@ Encore
     .enablePostCssLoader()
 
     .copyFiles([
-        { from: './assets/' + empresa + '/img', to: 'images/[path]' + destinationFilename },
-        { from: './assets/sel/img', to: 'images/sel/[path]' + destinationFilename }
+        {from: './assets/' + empresa + '/img', to: 'images/[path]' + destinationFilename},
+        {from: './assets/sel/img', to: 'images/sel/[path]' + destinationFilename}
     ])
 
     .autoProvideVariables({
@@ -79,7 +83,7 @@ Encore
     })
 
     .configureDefinePlugin(options => {
-        options['process.env'].GOOGLEMAPS_KEY = JSON.stringify(dotenv.parsed["GOOGLEMAPS_KEY_"+empresa.toUpperCase()]);
+        options['process.env'].GOOGLEMAPS_KEY = JSON.stringify(dotenv.parsed["GOOGLEMAPS_KEY_" + empresa.toUpperCase()]);
     });
 
     // uncomment if you use TypeScript

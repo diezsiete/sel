@@ -1,23 +1,20 @@
 {% extends 'pta/base.html.twig' %}
 
-{% use 'default/javascripts.html.twig' %}
-
 {% block title %}Registro{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('vendor/chosen/chosen.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('vendor/bootstrap-datepicker/css/bootstrap-datepicker3.css') }}" />
+    {{ encore_entry_link_tags('hv') }}
 {% endblock %}
 
 
 {% block body %}
-    {{ include('pta/registro/_header.html.twig') }}
     {{ include('pta/registro/_process-line.html.twig') }}
 
     {{ form_start(hvForm, {attr: {novalidate: 'novalidate'}}) }}
 
     <div class="container py-2">
+
         {{ include('hv/_datos-basicos-form.html.twig') }}
         <div class="row">
             <div class="col-md-12 text-right mt-3">
@@ -35,15 +32,6 @@
 
 
 {% block javascripts %}
-    {% block javascripts_vendor %}
-        {{ parent() }}
-        <script src="{{ asset('vendor/chosen/chosen.jquery.min.js') }}"></script>
-        <script src="{{ asset('vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
-        <script src="{{ asset('vendor/jquery-maskedinput/jquery.maskedinput.js') }}"></script>
-    {% endblock %}
     {{ parent() }}
-    <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
-    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
-    <script src="{{ asset('js/sel/hv/hv-form.js') }}"></script>
-    <script src="{{ asset('/vendor/common/common.min.js') }}"></script>
+    {{ encore_entry_script_tags('hv') }}
 {% endblock %}

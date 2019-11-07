@@ -78,7 +78,7 @@ class HvController extends BaseController
             $em->flush();
 
 
-            $this->scraper->updateHv($hv);
+            // $this->scraper->updateHv($hv);
 
 
             $this->addFlash('success', "Datos guardados exitosamente");
@@ -198,13 +198,13 @@ class HvController extends BaseController
         $em->flush();
 
         // si el usuario ya esta registrado
-        if($entity->getHv()->getUsuario()) {
+        /*if($entity->getHv()->getUsuario()) {
             if(!$entityId) {
                 $this->scraper->insertChild($entity);
             } else {
                 $this->scraper->updateChild($entity);
             }
-        }
+        }*/
 
         return $this->json(['ok' => 1]);
     }
@@ -223,9 +223,9 @@ class HvController extends BaseController
         $em->flush();
 
         // si el usuario ya esta registrado
-        if($hv->getUsuario()) {
+        /*if($hv->getUsuario()) {
             $this->scraper->deleteChild($hv, $class_entity);
-        }
+        }*/
 
         return $this->json(['ok' => 1]);
     }

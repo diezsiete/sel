@@ -168,14 +168,15 @@
 
 <div id="header-buttons" class="header-buttons{{ app.user ? " admin" : "" }}">
 
-    {% if is_granted('ASPIRANTES_MODULE') %}
-        <a href="{{ path('registro_datos_basicos') }}" id="signup-button" class="btn btn-small btn-signup">
-            Registrarse
-        </a>
-    {% endif %}
+
     {% if app.user %}
         {# include('pta/blocks/header/_logged.html.twig') #}
     {% else %}
+        {% if is_granted('ASPIRANTES_MODULE') %}
+            <a href="{{ path('registro_datos_basicos') }}" id="signup-button" class="btn btn-small btn-signup">
+                Registrarse
+            </a>
+        {% endif %}
         <a href="{{ path('app_login') }}" id="ul-btn" class="btn btn-small btn-primary">
             Iniciar sesión
         </a>

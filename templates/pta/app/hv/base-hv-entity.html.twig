@@ -2,25 +2,13 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('vendor/chosen/chosen.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('vendor/pnotify/pnotify.custom.css') }}">
+    {{ encore_entry_link_tags('hv-entity') }}
 {% endblock %}
 
 {% block body_header_title %}
     Hoja de vida
 {% endblock %}
 
-{% block body_header %}
-    <section class="page-header page-header-classic page-header-md mb-0">
-        <div class="container">
-            <div class="row">
-                <div class="col p-static">
-                    <h1 data-title-border>Mi hoja de vida</h1>
-                </div>
-            </div>
-        </div>
-    </section>
-{% endblock %}
 
 {% block body %}
 
@@ -44,7 +32,9 @@
                     </header>
                     <div class="card-body">
                         {% block card_body %}
-                            <div id="datatable">Loading...</div>
+                            <div id="datatable" data-settings='{{ datatable_settings(datatable) }}'>
+                                Loading...
+                            </div>
                         {% endblock %}
                     </div>
                 </section>
@@ -90,27 +80,7 @@
 
 
 {% block javascripts %}
-    {{ parent() }}
-    {{ parent() }}
-    <script src="{{ asset('vendor/chosen/chosen.jquery.min.js') }}"></script>
-    <script src="{{ asset('vendor/pnotify/pnotify.custom.js') }}"></script>
-
-    <script src="{{ asset('js/sel/hv/hv-entity.js') }}"></script>
-
-    {% embed 'datatable/javascripts.datatable.html.twig' %}
-        {% block script_datatable %}
-            <script>
-                $(function () {
-                    $('#datatable')
-                        .initDataTables({{ datatable_settings(datatable) }})
-                        .then(dt => {
-                            $wrapper = $('#modalForm');
-                            new hvEntity($wrapper, $('#modalBasic'), dt);
-                        });
-                });
-            </script>
-        {% endblock %}
-    {% endembed %}
+    {{ encore_entry_script_tags('hv-entity') }}
 {% endblock %}
 
 

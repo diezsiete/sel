@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Class HvDatosBasicosModel
  * @package App\Form\Model
- * @IdentificacionUnica()
+ * @IdentificacionUnica(path="identificacion")
  */
 class HvDatosBasicosModel
 {
