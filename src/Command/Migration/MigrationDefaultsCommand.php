@@ -22,19 +22,19 @@ class MigrationDefaultsCommand extends MigrationCommand
         [
             'sql' => "SELECT * FROM `estudio_codigo`",
             'entity' => EstudioCodigo::class,
-            'connection' => self::CONNECTION_SE,
+            'connection' => self::CONNECTION_SE_ASPIRANTE,
             'columnName' => 'nombre'
         ],
         [
             'sql' => "SELECT * FROM `estudio_instituto`",
             'entity' => EstudioInstituto::class,
-            'connection' => self::CONNECTION_SE,
+            'connection' => self::CONNECTION_SE_ASPIRANTE,
             'columnName' => 'nombre'
         ],
         [
             'sql' => "SELECT * FROM `experiencia_area`",
             'entity' => Area::class,
-            'connection' => self::CONNECTION_SE,
+            'connection' => self::CONNECTION_SE_ASPIRANTE,
             'columnName' => 'nombre'
         ],
         [
@@ -92,9 +92,10 @@ class MigrationDefaultsCommand extends MigrationCommand
     /**
      * @param $query
      * @param string $entityClassName
-     * @throws \Doctrine\DBAL\DBALException
+     * @param string $connectionName
+     * @param string $nombreColumnName
      */
-    protected function executeQuery($query, $entityClassName, $connectionName = self::CONNECTION_SE, $nombreColumnName = 'nombre')
+    protected function executeQuery($query, $entityClassName, $connectionName = self::CONNECTION_SE_ASPIRANTE, $nombreColumnName = 'nombre')
     {
         while ($row = $this->fetch($query, $connectionName)) {
             $entity = new $entityClassName();

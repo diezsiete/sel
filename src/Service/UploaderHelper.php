@@ -36,7 +36,7 @@ class UploaderHelper
         $this->logger = $logger;
     }
 
-    public function uploadHvAdjunto(File $file, ?string $existingFilename): string
+    public function uploadHvAdjunto(File $file, ?string $existingFilename = null): string
     {
         return $this->uploadFile($file, self::HV_ADJUNTO, false, $existingFilename);
     }

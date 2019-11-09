@@ -17,13 +17,15 @@ use App\Entity\RedSocial;
 use App\Entity\Referencia;
 use App\Entity\Vivienda;
 use App\Repository\HvRepository;
+use DateTime;
+use PDO;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class MigrationHvEntityCommand extends MigrationCommand
 {
-    protected static $defaultName = 'migration:hv-entity';
+    protected static $defaultName = 'sel:migration:hv-entity';
 
     private $entites = [
         'estudio' => Estudio::class,
@@ -55,7 +57,7 @@ class MigrationHvEntityCommand extends MigrationCommand
 
         $sql = $this->addLimitToSql("SELECT u.id_old FROM hv join usuario u ON hv.usuario_id = u.id");
         $stmt = $this->getConnection(self::CONNECTION_DEFAULT)->query($sql);
-        $ids = $stmt->fetchAll(\PDO::FETCH_COLUMN);
+        $ids = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
         $sqlLimit = "";
         if($this->offset !== null || $this->limit !== null) {
@@ -64,7 +66,7 @@ class MigrationHvEntityCommand extends MigrationCommand
         $count = 0;
         foreach($entities as $entity) {
             $sql = "SELECT * FROM hv JOIN $entity ON $entity.usuario_id = hv.usuario_id " . $sqlLimit;
-            $count += $this->countSql($sql);
+            $count += $this->countSql($sql, self::CONNECTION_SE_ASPIRANTE);
         }
 
         $this->initProgressBar($count);
@@ -72,7 +74,7 @@ class MigrationHvEntityCommand extends MigrationCommand
         foreach($ids as $id){
             foreach($entities as $entity) {
                 $sql = "SELECT * FROM " . $entity . " WHERE usuario_id = $id";
-                while ($row = $this->fetch($sql)) {
+                while ($row = $this->fetch($sql, self::CONNECTION_SE_ASPIRANTE)) {
                     if(!$this->cachedHv) {
                         $this->cachedHv = $this->getHvByUsuarioIdOld($id);
                     }
@@ -155,7 +157,7 @@ class MigrationHvEntityCommand extends MigrationCommand
             ->setNumeroTarjeta($row['numero_tarjeta'])
             ->setHv($hv);
         if ($row['fin']) {
-            $estudio->setFin(\DateTime::createFromFormat('Y-m-d', $row['fin']));
+            $estudio->setFin(DateTime::createFromFormat('Y-m-d', $row['fin']));
         }
         if ($row['institucion_nombre_alt']) {
             $estudio->setInstitutoNombreAlt($row['institucion_nombre_alt']);
@@ -186,10 +188,10 @@ class MigrationHvEntityCommand extends MigrationCommand
             ->setSalarioBasico($row['salario_basico'])
             ->setTelefonoJefe($row['telefono_jefe']);
         if ($row['fecha_ingreso']) {
-            $experiencia->setFechaIngreso(\DateTime::createFromFormat('Y-m-d', $row['fecha_ingreso']));
+            $experiencia->setFechaIngreso(DateTime::createFromFormat('Y-m-d', $row['fecha_ingreso']));
         }
         if ($row['fecha_retiro']) {
-            $experiencia->setFechaIngreso(\DateTime::createFromFormat('Y-m-d', $row['fecha_retiro']));
+            $experiencia->setFechaIngreso(DateTime::createFromFormat('Y-m-d', $row['fecha_retiro']));
         }
         return $experiencia;
     }
@@ -210,7 +212,7 @@ class MigrationHvEntityCommand extends MigrationCommand
             ->setIdentificacion($row['ident'])
             ->setIdentificacionTipo($row['ident_tipo_id']);
         if ($row['nacimiento']) {
-            $familiar->setNacimiento(\DateTime::createFromFormat('Y-m-d', $row['nacimiento']));
+            $familiar->setNacimiento(DateTime::createFromFormat('Y-m-d', $row['nacimiento']));
         }
         return $familiar;
     }

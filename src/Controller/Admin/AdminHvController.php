@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
 use App\Entity\Hv;
 use App\Repository\HvRepository;
@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @IsGranted("ASPIRANTES_MODULE", statusCode=404, message="Resource not found")
  */
-class HvAdminController extends AbstractController
+class AdminHvController extends AbstractController
 {
     /**
      * @Route("/sel/admin/hv/listado", name="admin_hv_listado")
@@ -24,6 +24,7 @@ class HvAdminController extends AbstractController
         $qb = $hvRepository->searchQueryBuilder($search);
 
         $pagination = $paginator->paginate($qb, $request->get('page', 1), 25);
+
 
         return $this->render('hv_admin/listado.html.twig', [
             'pagination' => $pagination,

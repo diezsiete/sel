@@ -24,6 +24,7 @@ abstract class MigrationCommand extends TraitableCommand
 {
     const CONNECTION_DEFAULT = "default";
     const CONNECTION_SE = "se";
+    const CONNECTION_SE_ASPIRANTE = "se_aspirante";
     const CONNECTION_SE_VACANTES = "se_vacantes";
 
     /**

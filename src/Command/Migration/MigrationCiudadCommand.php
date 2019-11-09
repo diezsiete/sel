@@ -40,21 +40,21 @@ class MigrationCiudadCommand extends MigrationCommand
         $sqlDpto = "SELECT * FROM `dpto` WHERE id != 0 ORDER BY pais_id";
         $sqlCiudad = "SELECT * FROM `ciudad` WHERE id != 0 ORDER BY pais_id, dpto_id";
 
-        $count = $this->countSql($sqlPais);
-        $count += $this->countSql($sqlDpto);
-        $count += $this->countSql($sqlCiudad);
+        $count = $this->countSql($sqlPais, static::CONNECTION_SE_ASPIRANTE);
+        $count += $this->countSql($sqlDpto, static::CONNECTION_SE_ASPIRANTE);
+        $count += $this->countSql($sqlCiudad, static::CONNECTION_SE_ASPIRANTE);
         $count += count($this->ciudadesAdicionales);
 
         $this->initProgressBar($count);
 
-        while($row = $this->fetch($sqlPais)) {
+        while($row = $this->fetch($sqlPais, static::CONNECTION_SE_ASPIRANTE)) {
             $pais = (new Pais())
                 ->setNombre($row['nombre'])
                 ->setNId($row['id']);
             $this->selPersist($pais);
         }
 
-        while($row = $this->fetch($sqlDpto)) {
+        while($row = $this->fetch($sqlDpto, static::CONNECTION_SE_ASPIRANTE)) {
             $lasPais = $this->getLastPais($row['pais_id']);
 
             $dpto = (new Dpto())
@@ -68,7 +68,7 @@ class MigrationCiudadCommand extends MigrationCommand
 
         $this->lastPais = null;
 
-        while($row = $this->fetch($sqlCiudad)) {
+        while($row = $this->fetch($sqlCiudad, static::CONNECTION_SE_ASPIRANTE)) {
             $lastPais = $this->getLastPais($row['pais_id']);
             $lastDpto = $this->getLastDpto($row['dpto_id'], $row['pais_id']);
 

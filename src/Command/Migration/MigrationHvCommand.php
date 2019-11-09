@@ -8,6 +8,7 @@ use App\Entity\Dpto;
 use App\Entity\Hv;
 use App\Entity\Pais;
 use App\Entity\Usuario;
+use DateTime;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -17,27 +18,28 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class MigrationHvCommand extends MigrationCommand
 {
-    protected static $defaultName = 'migration:hv';
+    protected static $defaultName = 'sel:migration:hv';
 
     protected function configure()
     {
         parent::configure();
         $this->setDescription('Migracion de hv')
-            ->addOption('import_usuario', null, InputOption::VALUE_NONE,
+            ->addOption('import_usuario', 'i', InputOption::VALUE_NONE,
                 'Si activado, si el usuario no existe lo importa');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $sql = "SELECT hv.*, u.nacimiento "
-             . "FROM `hv` hv "
-             . "JOIN `usuario` u ON hv.usuario_id = u.id ";
+             . "FROM se_pta_aspirante.hv hv "
+             . "JOIN se_pta.usuario u ON hv.usuario_id = u.id ";
 
         $sql = $this->addLimitToSql($sql);
 
-        $this->initProgressBar($this->countSql($sql));
+        $count = $this->countSql($sql, self::CONNECTION_SE_ASPIRANTE);
+        $this->initProgressBar($count);
 
-        while ($row = $this->fetch($sql)) {
+        while ($row = $this->fetch($sql, self::CONNECTION_SE_ASPIRANTE)) {
             $usuario = $this->getUsuarioByIdOld($row['usuario_id']);
             if($usuario) {
                 $hv = (new Hv())->setUsuario($usuario);
@@ -64,7 +66,7 @@ class MigrationHvCommand extends MigrationCommand
                 
                 $nacimiento = $row['nacimiento'];
                 if($nacimiento){
-                    $hv->setNacimiento(\DateTime::createFromFormat('Y-m-d', $nacimiento));
+                    $hv->setNacimiento(DateTime::createFromFormat('Y-m-d', $nacimiento));
                 }
                 $hv
                     ->setLmilitarClase($row['lmilitar_clase'])
@@ -163,14 +165,14 @@ class MigrationHvCommand extends MigrationCommand
 
         if(!$usuario && $importUsuario) {
             $this->io->writeln($idOld . " not found");
-            $command = $this->getApplication()->find('migration:usuario');
+            $command = $this->getApplication()->find('sel:migration:usuario');
             $arguments = [
-                'command' => 'migration:usuario',
+                'command' => 'sel:migration:usuario',
                 '--id'    => $idOld,
             ];
             $commandInput = new ArrayInput($arguments);
             $code = $command->run($commandInput, new NullOutput());
-            $this->io->writeln("migration:usuario -> " . $code);
+            $this->io->writeln("sel:migration:usuario -> " . $code);
 
             $usuario = parent::getUsuarioByIdOld($idOld);
         }
