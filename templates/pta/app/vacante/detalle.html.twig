@@ -3,13 +3,18 @@
 {% block title %}
     PTA - {{ vacante.titulo }}
 {% endblock %}
+{% block body_header_class %}page-header page-header-classic page-header-md no-header mb-0{% endblock %}
+
+
 
 {% block body_header %}
-    <section class="page-header page-header-classic page-header-md mb-0">
+    {{ parent() }}
+    {{ include('default/_flash_messages.html.twig') }}
+    <section class="page-header page-header-modern bg-color-light-scale-1 page-header-sm mb-0">
         <div class="container">
             <div class="row">
-                <div class="col-md-12 order-2 order-md-1 align-self-center p-static">
-                    <h1 data-title-border>
+                <div class="col-md-8 order-2 order-md-1 align-self-center p-static">
+                    <h1 class="text-dark">
                         {{ vacante.titulo }}
                     </h1>
                 </div>
@@ -20,17 +25,7 @@
 
 
 {% block body %}
-    {% if app.request.hasPreviousSession %}
-        {% for type, messages in app.flashes %}
-            {% for message in messages %}
-                <div class="alert alert-{{ type }} alert-lg mb-0">
-                    <div class="container py-2">
-                        <strong>{{ type is same as('info') ? 'Exito! ' : 'Atención! ' }}</strong> {{ message }}
-                    </div>
-                </div>
-            {% endfor %}
-        {% endfor %}
-    {% endif %}
+
     <div class="container-fluid">
 
         <div class="row featured-boxes-full featured-boxes-full-scale">
@@ -111,10 +106,8 @@
             </div>
             <div class="col-lg-4 detalle-left">
                 <aside class="sidebar ml-4">
-                    <h2>&nbsp;</h2>
-
                     <a href="{{ path('vacante_aplicar', {'slug': vacante.slug}) }}"
-                       class="btn btn-3d btn-tertiary btn-xl my-5 btn-block">
+                       class="btn btn-3d btn-tertiary btn-xl mb-5 btn-block">
                         Aplicar
                     </a>
 
