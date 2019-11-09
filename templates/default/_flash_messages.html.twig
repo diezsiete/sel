@@ -17,9 +17,11 @@
 {% if app.request.hasPreviousSession is defined and app.request.hasPreviousSession %}
     {% for type, messages in app.flashes %}
         {% for message in messages %}
-            <div class="alert alert-{{ type }}">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                {{ message|raw }}
+            <div class="alert alert-{{ type }}" id="main-alert">
+                <div class="container">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    {{ message|raw }}
+                </div>
             </div>
         {% endfor %}
     {% endfor %}

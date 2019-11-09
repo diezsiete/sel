@@ -1,5 +1,6 @@
 // @import 'component/admin-header-nav-features';
 // @import 'component/admin-nav';
+@import 'helper/variables';
 
 .body {
   background: #ecedf0;
@@ -10,7 +11,7 @@
   background: transparent;
   padding-top: 112px;
 }
-@media (min-width: 1152px) {
+@media (min-width: $menu-min-width) {
   body #body.menu-open .page-header  {
     top: 158px;
   }
@@ -19,3 +20,4 @@
 table {
   background: #fdfdfd;
 }
+

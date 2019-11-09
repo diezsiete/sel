@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\DataTable\Type;
-
 
 use App\DataTable\Column\ActionsColumn\ActionsColumn;
 use App\Entity\Vacante;
@@ -55,19 +53,6 @@ class VacanteDataTableType implements DataTableTypeInterface
                     ]
                 ]
             ])
-            /*
-            ->add('id', TextColumn::class, [
-                'label' => 'Acciones',
-                'className' => 'actions',
-                'render' => function($id) {
-                    $routeEditar = $this->router->generate('admin_vacante_editar', ['vacante' => $id]);
-                    $routeBorrar = $this->router->generate('admin_vacante_borrar', ['vacante' => $id]);
-                    return sprintf(
-                        '<a href="%s"><i class="fas fa-pencil-alt"></i></a>' .
-                               '<a href="#" data-toggle="modal" data-target="#modal-borrar" data-path="%s">'.
-                               '<i class="far fa-trash-alt"></i></a>', $routeEditar, $routeBorrar);
-                }
-            ])*/
             ->createAdapter(ORMAdapter::class, [
                 'entity' => Vacante::class,
                 'query' => function (QueryBuilder $builder) {
