@@ -141,17 +141,17 @@ class MenuBuilder
 
     public function createEvaluacionMenu(ItemInterface $menu, $user)
     {
-        // if($this->security->isGranted(['ROLE_EMPLEADO'], $user)) {
-            $menu->addChild('Evaluacion')
+        if(!$this->security->isGranted(['ROLE_ADMIN_EVALUACIONES', 'ROLE_OPERADOR'], $user)) {
+            /*$menu->addChild('Evaluacion')
                 ->setUri('#')
                 ->setExtra('icon', 'fas fa-clipboard-list');
-            $menu['Evaluacion']
-                ->addChild('Inducción', [
+            $menu['Evaluacion']*/
+            $menu->addChild('Inducción', [
                     'route' => 'evaluacion_menu_redirect',
                     'routeParameters' => ['evaluacionSlug' => 'induccion']
                 ])
                 ->setExtra('icon', 'fas fa-clipboard-list');
-        // }
+        }
     }
 
     public function createAdminMenu(ItemInterface $menu, $user)
