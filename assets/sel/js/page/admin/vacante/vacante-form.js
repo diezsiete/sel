@@ -1,11 +1,15 @@
+import $ from 'jquery';
+import 'chosen-js';
+import 'chosen-js/chosen.css'
+
 $(function(){
     $("#vacante_form_ciudad").chosen();
     $("#vacante_form_area").chosen();
     $("#vacante_form_cargo").chosen();
     $("#vacante_form_profesion").chosen();
 
-    var $nivelSelect = $('.js-vacante-form-nivel');
-    var $subnivelTarget = $('.js-subnivel-target');
+    const $nivelSelect = $('.js-vacante-form-nivel');
+    const $subnivelTarget = $('.js-subnivel-target');
 
     $nivelSelect.on('change', function(e) {
         $.ajax({
@@ -28,11 +32,11 @@ $(function(){
     });
 
 
-    var $idiomaSelect = $('.js-vacante-form-idioma');
-    var $idiomaDestrezaSelect = $('.js-vacante-form-idioma-destreza');
+    const $idiomaSelect = $('.js-vacante-form-idioma');
+    const $idiomaDestrezaSelect = $('.js-vacante-form-idioma-destreza');
 
     $idiomaSelect.on('change', function(e){
-        var idiomaVal = $idiomaSelect.val();
+        const idiomaVal = $idiomaSelect.val();
         console.log(idiomaVal);
         changeDisableStateSelectNotRequired($idiomaDestrezaSelect, idiomaVal);
     })
@@ -44,7 +48,7 @@ function changeDisableStateSelectNotRequired($select, val) {
         $select.find('option:first').remove();
     } else {
         $select.attr('disabled', true);
-        $option = $("<option></option>");
+        const $option = $("<option></option>");
         $select.prepend($option).val("");
     }
 }

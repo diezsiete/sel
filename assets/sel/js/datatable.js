@@ -5,6 +5,7 @@ import 'datatables.net';
 import 'datatables.net-bs4';
 import 'datatables.net-fixedheader';
 import '../../bundles/datatables/js/datatables';
+import dataTableModal from './component/datatable-modal'
 
 import '../css/datatable.scss';
 
@@ -33,6 +34,8 @@ $.fn.selInitDataTables = function () {
             }
 
             dt.fixedHeader.adjust();
+
+            dataTableModal(dt);
             return dt;
         })
     });

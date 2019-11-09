@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
+use App\Controller\BaseController;
 use App\DataTable\Type\VacanteDataTableType;
 use App\Entity\Vacante;
 use App\Form\VacanteFormType;
@@ -13,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @IsGranted("ASPIRANTES_MODULE", statusCode=404, message="Resource not found")
  */
-class VacanteAdminController extends BaseController
+class VacanteController extends BaseController
 {
 
     /**
@@ -28,7 +29,7 @@ class VacanteAdminController extends BaseController
             return $table->getResponse();
         }
 
-        return $this->render('vacante_admin/listado.html.twig', ['datatable' => $table]);
+        return $this->render('admin/vacante/listado.html.twig', ['datatable' => $table]);
     }
 
     /**
@@ -53,7 +54,7 @@ class VacanteAdminController extends BaseController
             return $this->redirectToRoute('admin_vacante_listado');
         }
 
-        return $this->render('vacante_admin/crear.html.twig', [
+        return $this->render('admin/vacante/crear.html.twig', [
             'vacanteForm' => $form->createView()
         ]);
     }
@@ -75,7 +76,7 @@ class VacanteAdminController extends BaseController
             $this->addFlash('success', "Vacante actualizada exitosamente!");
             return $this->redirectToRoute('admin_vacante_listado');
         }
-        return $this->render('vacante_admin/editar.html.twig', [
+        return $this->render('admin/vacante/editar.html.twig', [
             'vacanteForm' => $form->createView()
         ]);
     }
@@ -103,7 +104,7 @@ class VacanteAdminController extends BaseController
 
         $form = $this->createForm(VacanteFormType::class, $vacante);
 
-        return $this->render('vacante_admin/_subnivel.html.twig', ['vacanteForm' => $form->createView()]);
+        return $this->render('admin/vacante/_subnivel.html.twig', ['vacanteForm' => $form->createView()]);
 
     }
 }

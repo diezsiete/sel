@@ -4,6 +4,7 @@
 namespace App\DataTable\Type;
 
 
+use App\DataTable\Column\ActionsColumn\ActionsColumn;
 use App\Entity\Vacante;
 use Doctrine\ORM\QueryBuilder;
 use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
@@ -36,6 +37,25 @@ class VacanteDataTableType implements DataTableTypeInterface
                 $row['nombreCompleto'] = $vacante->getUsuario()->getNombreCompleto(true, true);
                 return $row;
             })
+            ->add('id', ActionsColumn::class, [
+                'label' => 'Acciones',
+                'className' => 'actions',
+                'orderable' => false,
+                'actions' => [
+                    [
+                        'route' => ['admin_vacante_editar', ['vacante' => 'id']],
+                        'icon' => 'fas fa-pencil-alt',
+                        'tooltip' => 'Editar'
+                    ],
+                    [
+                        'modal' => '#modalBasic',
+                        'confirm' => ['admin_vacante_borrar', ['vacante' => 'id']],
+                        'icon' => 'far fa-trash-alt',
+                        'tooltip' => 'Borrar'
+                    ]
+                ]
+            ])
+            /*
             ->add('id', TextColumn::class, [
                 'label' => 'Acciones',
                 'className' => 'actions',
@@ -47,7 +67,7 @@ class VacanteDataTableType implements DataTableTypeInterface
                                '<a href="#" data-toggle="modal" data-target="#modal-borrar" data-path="%s">'.
                                '<i class="far fa-trash-alt"></i></a>', $routeEditar, $routeBorrar);
                 }
-            ])
+            ])*/
             ->createAdapter(ORMAdapter::class, [
                 'entity' => Vacante::class,
                 'query' => function (QueryBuilder $builder) {

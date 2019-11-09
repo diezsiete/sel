@@ -42,13 +42,9 @@ class ActionsColumn extends AbstractColumn
             $options['actions'] = [$options['actions']];
         }
 
-        foreach($options['actions'] as $action) {
-            if(isset($action['route'])) {
-                if ($this->locator->has(ActionRoute::class)) {
-                    $actionObject = $this->locator->get(ActionRoute::class);
-                    $actionObject->setOptions($action);
-                    $this->actions[] = $actionObject;
-                }
+        foreach($options['actions'] as $actionConfig) {
+            if($action = $this->getAction($actionConfig)) {
+                $this->actions[] = $action;
             }
         }
     }
@@ -81,10 +77,10 @@ class ActionsColumn extends AbstractColumn
         $html = "";
         foreach($actionsAttributes as $actionAttributes) {
             $tag = "a";
-            $actionAttributes['class'] = "btn btn-outline-primary mr-3";
+            $actionAttributes['class'] = (isset($actionAttributes['class']) ? $actionAttributes['class'] . ' ' : '') . "btn btn-outline-primary mr-3";
             if(isset($actionAttributes['disabled'])) {
                 $tag = "span";
-                $actionAttributes['class'] = (isset($actionAttributes['class']) ? $actionAttributes['class'] . ' ' : '') . 'disabled';
+                $actionAttributes['class'] .= ' disabled';
             }
             $buttonText = "undefined";
             if(isset($actionAttributes['icon'])) {
@@ -131,5 +127,20 @@ class ActionsColumn extends AbstractColumn
             }
         }
         return $parse;
+    }
+
+    private function getAction($actionConfig)
+    {
+        $actionObject = null;
+        if(isset($actionConfig['route'])) {
+            $actionObject = $this->locator->get(ActionRoute::class);
+        }
+        else if(isset($actionConfig['modal'])) {
+            $actionObject = $this->locator->get(ActionModal::class);
+        }
+        if($actionObject) {
+            $actionObject->setOptions($actionConfig);
+        }
+        return $actionObject;
     }
 }

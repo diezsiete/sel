@@ -1,0 +1,29 @@
+{% extends 'datatable/base.datatable.html.twig' %}
+
+{% block title %}Vacantes{% endblock %}
+{% block body_header_title %}Vacantes{% endblock %}
+{% block body_header_right %}
+    <ul class="u-list-inline">
+        <li class="list-inline-item mr-4">
+            {{ parent() }}
+        </li>
+        <li class="list-inline-item">
+            <a href="#" class="btn btn-md btn-primary u-btn-outline-primary rounded-0 form-control form-control-lg">
+                Exportar
+            </a>
+        </li>
+        <li class="list-inline-item">
+            <a href="{{ path('admin_vacante_crear') }}"
+               class="btn btn-md btn-primary u-btn-outline-primary rounded-0 form-control form-control-lg">
+                Crear
+            </a>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+    {{ include('default/_modal-borrar.html.twig') }}
+{% endblock %}
+
+

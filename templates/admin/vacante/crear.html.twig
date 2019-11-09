@@ -5,17 +5,16 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('vendor/chosen/chosen.min.css') }}">
+    {{ encore_entry_link_tags('admin-vacante-form') }}
 {% endblock %}
 
 {% block body %}
-    {{ include('vacante_admin/_vacante-form.html.twig', {
+    {{ include('admin/vacante/_vacante-form.html.twig', {
         button_text: 'Crear'
     }) }}
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
-    <script src="{{ asset('vendor/chosen/chosen.jquery.min.js') }}"></script>
-    <script src="{{ asset('js/sel/vacante/vacante-form.js') }}"></script>
+    {{ encore_entry_script_tags('admin-vacante-form') }}
 {% endblock %}

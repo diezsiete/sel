@@ -58,6 +58,10 @@ services:
         public: true
         shared: false
 
+    App\DataTable\Column\ActionsColumn\ActionModal:
+        public: true
+        shared: false
+
     App\Service\Autoliquidacion\ExportPdf:
         public: true
     App\Service\Autoliquidacion\ExportZip:
