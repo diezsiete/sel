@@ -18,12 +18,6 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @package App\Service\Scraper
  * @method null updateHv(Hv $hv)
  *      @see HvScraper::__updateHv
- * @method null insertChild(HvEntity $hvEntity)
- *      @see HvScraper::__insertChild
- * @method null updateChild(HvEntity $hvEntity)
- *      @see HvScraper::__updateChild
- * @method null deleteChild(Hv $hv, string $childClass)
- *      @see HvScraper::__deleteChild
  */
 class HvScraper
 {
@@ -80,48 +74,36 @@ class HvScraper
         }
     }
 
-    public function __updateHv(Hv $hv)
+    public function putHv(Hv $hv)
     {
         $data = $this->normalizer->normalize($hv, null, [
             'groups' => ['scraper-hv']
         ]);
-        return $this->scraperClient->put('/hv', $data);
+        return $this->scraperClient->put('/novasoft/hv/datos-basicos', $data);
     }
 
-    public function __insertChild(HvEntity $hvEntity)
+    public function insertChild(HvEntity $hvEntity)
     {
         $data = $this->normalizer->normalize($hvEntity->getHv(), null, [
             'groups' => ['scraper-hv-child'], 'scraper-hv-child' => $hvEntity]);
 
-        return $this->scraperClient->post('/hv/child', $data);
+        return $this->scraperClient->post('/novasoft/hv/child', $data);
     }
 
-    public function __updateChild(HvEntity $hvEntity)
+    public function updateChild(HvEntity $hvEntity)
     {
         $data = $this->normalizer->normalize($hvEntity->getHv(), null, [
             'groups' => ['scraper-hv-child'], 'scraper-hv-child' => get_class($hvEntity)]);
 
-        return $this->scraperClient->put('/hv/child', $data);
+        return $this->scraperClient->put('/novasoft/hv/child', $data);
     }
 
-    public function __deleteChild(Hv $hv, string $childClass)
+    public function deleteChild(Hv $hv, string $childClass)
     {
         $data = $this->normalizer->normalize($hv, null, [
             'groups' => ['scraper-hv-child'], 'scraper-hv-child' => $childClass]);
 
-        /** @var ClassMetadataInfo $targetMetadata */
-        $targetMetadata = $this->em->getMetadataFactory()->getMetadataFor(Hv::class);
-        $deleteAll = false;
-        foreach($targetMetadata->associationMappings as $mapping) {
-            if($mapping['targetEntity'] === $childClass) {
-                $deleteAll = count($data[$mapping['fieldName']]) === 0;
-            }
-        }
-        if($deleteAll) {
-            return $this->scraperClient->delete('/hv/child', $data);
-        } else {
-            return $this->scraperClient->put('/hv/child', $data);
-        }
+        return $this->scraperClient->put('/novasoft/hv/child', $data);
     }
     
 }

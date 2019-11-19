@@ -1,6 +1,6 @@
 app:
   scraper:
-    url: http://localhost:8666
+    url: http://localhost:8667
 
   sel_routes:
       ignore: [

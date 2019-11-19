@@ -22,12 +22,14 @@ use App\Form\Model\HvDatosBasicosModel;
 use App\Form\RedSocialFormType;
 use App\Form\ReferenciaFormType;
 use App\Form\ViviendaFormType;
+use App\Message\UploadToNovasoft;
 use App\Service\Hv\HvResolver;
 use App\Service\Scraper\HvScraper;
 use Omines\DataTablesBundle\DataTableFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 
@@ -40,22 +42,17 @@ class HvController extends BaseController
      * @var HvResolver
      */
     private $hvResolver;
-    /**
-     * @var HvScraper
-     */
-    private $scraper;
 
-    public function __construct(HvResolver $hvResolver, HvScraper $scraper)
+    public function __construct(HvResolver $hvResolver)
     {
         $this->hvResolver = $hvResolver;
-        $this->scraper = $scraper;
     }
 
     /**
      * @Route("/sel/hv/datos-basicos", name="hv_datos_basicos")
      * @IsGranted("HV_MANAGE", subject="hvResolver")
      */
-    public function datosBasicos(Request $request, HvResolver $hvResolver)
+    public function datosBasicos(Request $request, HvResolver $hvResolver, MessageBusInterface $messageBus)
     {
         $hvdto = (new HvDatosBasicosModel())
             ->fillFromEntities($this->getUser(), $hvResolver->getHv());
@@ -77,9 +74,7 @@ class HvController extends BaseController
             }
             $em->flush();
 
-
-            // $this->scraper->updateHv($hv);
-
+            //$messageBus->dispatch(new UploadToNovasoft($hv->getId()));
 
             $this->addFlash('success', "Datos guardados exitosamente");
             $this->redirectToRoute('hv_datos_basicos');
@@ -174,7 +169,7 @@ class HvController extends BaseController
      * @Route("/hv/entity/update/{entity}/{id}", name="hv_entity_update", defaults={"id"=null})
      * @IsGranted("HV_MANAGE", subject="entity")
      */
-    public function entityUpdate(HvEntity $entity, Request $request, HvResolver $hvResolver, $formType)
+    public function entityUpdate(HvEntity $entity, Request $request, HvResolver $hvResolver, $formType, MessageBusInterface $messageBus)
     {
         $data = json_decode($request->getContent(), true);
         if ($data === null) {
@@ -198,13 +193,11 @@ class HvController extends BaseController
         $em->flush();
 
         // si el usuario ya esta registrado
-        /*if($entity->getHv()->getUsuario()) {
-            if(!$entityId) {
-                $this->scraper->insertChild($entity);
-            } else {
-                $this->scraper->updateChild($entity);
-            }
-        }*/
+        if($entity->getHv()->getUsuario()) {
+            $childMethod = $entityId ? UploadToNovasoft::CHILD_METHOD_UPDATE : UploadToNovasoft::CHILD_METHOD_INSERT;
+            $message = new UploadToNovasoft($entity->getHv()->getId(), $entity->getId(), get_class($entity), $childMethod);
+            $messageBus->dispatch($message);
+        }
 
         return $this->json(['ok' => 1]);
     }
@@ -213,9 +206,9 @@ class HvController extends BaseController
      * @Route("/hv/entity/delete/{entity}/{id}", name="hv_entity_delete")
      * @IsGranted("HV_MANAGE", subject="entity")
      */
-    public function entityDelete(HvEntity $entity)
+    public function entityDelete(HvEntity $entity, MessageBusInterface $messageBus)
     {
-        $class_entity = get_class($entity);
+        $childClass = get_class($entity);
         $hv = $entity->getHv();
 
         $em = $this->getDoctrine()->getManager();
@@ -223,9 +216,10 @@ class HvController extends BaseController
         $em->flush();
 
         // si el usuario ya esta registrado
-        /*if($hv->getUsuario()) {
-            $this->scraper->deleteChild($hv, $class_entity);
-        }*/
+        if($hv->getUsuario()) {
+            $messageBus->dispatch(
+                new UploadToNovasoft($hv->getId(), null, $childClass, UploadToNovasoft::CHILD_METHOD_DELETE));
+        }
 
         return $this->json(['ok' => 1]);
     }
