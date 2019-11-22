@@ -14,12 +14,14 @@ use App\Form\FamiliarFormType;
 use App\Form\HvFormType;
 use App\Form\Model\HvDatosBasicosModel;
 use App\Form\ReferenciaFormType;
+use App\Message\UploadToNovasoft;
 use App\Security\LoginFormAuthenticator;
 use App\Service\Hv\HvWizard\HvWizard;
 use Omines\DataTablesBundle\DataTableFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
@@ -123,7 +125,7 @@ class RegistroController extends AbstractController
     /**
      * @Route("/registro/cuenta", name="registro_cuenta")
      */
-    public function cuenta(Request $request, UserPasswordEncoderInterface $passwordEncoder,
+    public function cuenta(Request $request, UserPasswordEncoderInterface $passwordEncoder, MessageBusInterface $messageBus,
                            GuardAuthenticatorHandler $guard, LoginFormAuthenticator $formAuthenticator)
     {
         if($routeInvalid = $this->hvWizard->validatePrevStepsValid()) {
@@ -135,6 +137,7 @@ class RegistroController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
+            $hv = $this->hvWizard->getHv();
             /** @var Usuario $usuario */
             $usuario = $form->getData();
 
@@ -142,13 +145,15 @@ class RegistroController extends AbstractController
             $encodedPassword = $passwordEncoder->encodePassword($usuario, $plainPassword);
             $usuario->setPassword($encodedPassword);
 
-            $this->hvWizard->getHv()->setUsuario($usuario);
+            $hv->setUsuario($usuario);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($usuario);
             $em->flush();
 
             $this->addFlash('success', "Registrado exitosamente!");
+
+            $messageBus->dispatch(new UploadToNovasoft($hv->getId(),UploadToNovasoft::ACTION_INSERT));
 
             $this->hvWizard->clearSession();
             return $guard->authenticateUserAndHandleSuccess($usuario, $request, $formAuthenticator, 'main');

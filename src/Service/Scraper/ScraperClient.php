@@ -35,6 +35,11 @@ class ScraperClient
      */
     private $responseManager;
 
+    /**
+     * @var int|float
+     */
+    private $timeout = 60;
+
     public function __construct(HttpClientInterface $httpClient, Configuracion $configuracion, ResponseManager $responseManager)
     {
 
@@ -86,12 +91,11 @@ class ScraperClient
      * @throws ScraperException
      * @throws ScraperNotFoundException
      */
-    public function post(string $url, $jsonData, $responseClass = ScraperResponse::class)
+    public function post(string $url, $jsonData, $options = [])
     {
-        $response = $this->request('POST', $url, [
-            'json' => $jsonData
-        ]);
-        return $this->responseManager->handleResponse($response, $responseClass);
+        $options = ['json' => $jsonData] + $options;
+        $response = $this->request('POST', $url, $options);
+        return $this->responseManager->handleResponse($response, ScraperResponse::class);
     }
 
     /**

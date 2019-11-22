@@ -50,13 +50,14 @@ class UploadToNovasoftHandler implements MessageHandlerInterface, LoggerAwareInt
             }
             return;
         }
-        if(!$uploadToNovasoft->getChildId() && !$uploadToNovasoft->getChildClass()) {
-            $response = $this->scraper->putHv($hv);
+        if(!$uploadToNovasoft->getChildId() && !$uploadToNovasoft->getAction() !== UploadToNovasoft::ACTION_CHILD_DELETE) {
+            $response = $uploadToNovasoft->getAction() === UploadToNovasoft::ACTION_INSERT ?
+                $this->scraper->postHv($hv) : $this->scraper->putHv($hv);
         } else {
             if($childId = $uploadToNovasoft->getChildId()) {
                 /** @var HvEntity $hvChild */
                 $hvChild = $this->em->getRepository($uploadToNovasoft->getChildClass())->find($childId);
-                if ($uploadToNovasoft->getChildMethod() === UploadToNovasoft::CHILD_METHOD_INSERT) {
+                if ($uploadToNovasoft->getAction() === UploadToNovasoft::ACTION_CHILD_INSERT) {
                     dump("INSERT");
                     $response = $this->scraper->insertChild($hvChild);
                 } else {

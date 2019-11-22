@@ -74,7 +74,10 @@ class HvController extends BaseController
             }
             $em->flush();
 
-            //$messageBus->dispatch(new UploadToNovasoft($hv->getId()));
+            // si el usuario ya esta registrado
+            if($hv->getUsuario()) {
+                $messageBus->dispatch(new UploadToNovasoft($hv->getId()));
+            }
 
             $this->addFlash('success', "Datos guardados exitosamente");
             $this->redirectToRoute('hv_datos_basicos');
@@ -194,8 +197,8 @@ class HvController extends BaseController
 
         // si el usuario ya esta registrado
         if($entity->getHv()->getUsuario()) {
-            $childMethod = $entityId ? UploadToNovasoft::CHILD_METHOD_UPDATE : UploadToNovasoft::CHILD_METHOD_INSERT;
-            $message = new UploadToNovasoft($entity->getHv()->getId(), $entity->getId(), get_class($entity), $childMethod);
+            $action = $entityId ? UploadToNovasoft::ACTION_CHILD_UPDATE : UploadToNovasoft::ACTION_CHILD_INSERT;
+            $message = new UploadToNovasoft($entity->getHv()->getId(), $entity->getId(), get_class($entity), $action);
             $messageBus->dispatch($message);
         }
 
@@ -218,7 +221,7 @@ class HvController extends BaseController
         // si el usuario ya esta registrado
         if($hv->getUsuario()) {
             $messageBus->dispatch(
-                new UploadToNovasoft($hv->getId(), null, $childClass, UploadToNovasoft::CHILD_METHOD_DELETE));
+                new UploadToNovasoft($hv->getId(), null, $childClass, UploadToNovasoft::ACTION_CHILD_DELETE));
         }
 
         return $this->json(['ok' => 1]);

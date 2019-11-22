@@ -8,9 +8,11 @@ use App\Entity\Hv;
 
 class UploadToNovasoft
 {
-    const CHILD_METHOD_INSERT = "INSERT";
-    const CHILD_METHOD_UPDATE = "UPDATE";
-    const CHILD_METHOD_DELETE = "DELETE";
+    const ACTION_UPDATE = "UPDATE";
+    const ACTION_INSERT = "INSERT";
+    const ACTION_CHILD_INSERT = "CHILD_INSERT";
+    const ACTION_CHILD_UPDATE = "CHILD_UPDATE";
+    const ACTION_CHILD_DELETE = "CHILD_DELETE";
 
     /**
      * @var Hv
@@ -18,14 +20,18 @@ class UploadToNovasoft
     private $hvId;
     private $childId;
     private $childClass;
-    private $childMethod;
+    private $action;
 
-    public function __construct(int $hvId, ?int $childId = null, ?string $childClass = null, ?string $childMethod = null)
+    public function __construct(int $hvId, $childId = null, ?string $childClass = null, ?string $action = null)
     {
         $this->hvId = $hvId;
-        $this->childId = $childId;
-        $this->childClass = $childClass;
-        $this->childMethod = $childMethod;
+        if(is_string($childId)) {
+            $this->action = $childId;
+        } else {
+            $this->childId = $childId;
+            $this->childClass = $childClass;
+            $this->action = $action ?? static::ACTION_UPDATE;
+        }
     }
 
     /**
@@ -55,9 +61,9 @@ class UploadToNovasoft
     /**
      * @return string|null
      */
-    public function getChildMethod(): ?string
+    public function getAction(): ?string
     {
-        return $this->childMethod;
+        return $this->action;
     }
 
 }

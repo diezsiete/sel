@@ -16,8 +16,6 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 /**
  * Class HvScrapper
  * @package App\Service\Scraper
- * @method null updateHv(Hv $hv)
- *      @see HvScraper::__updateHv
  */
 class HvScraper
 {
@@ -80,6 +78,18 @@ class HvScraper
             'groups' => ['scraper-hv']
         ]);
         return $this->scraperClient->put('/novasoft/hv/datos-basicos', $data);
+    }
+
+    public function postHv(Hv $hv)
+    {
+        $data = $this->normalizer->normalize($hv, null, [
+            'groups' => ['scraper']
+        ]);
+
+        return $this->scraperClient->post('/novasoft/hv', $data, [
+            'timeout' => 180
+        ]);
+
     }
 
     public function insertChild(HvEntity $hvEntity)
