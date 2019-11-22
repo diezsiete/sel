@@ -7,6 +7,7 @@ namespace App\Service\Scraper;
 use App\Entity\Hv;
 use App\Entity\HvEntity;
 use App\Entity\ScraperProcess;
+use App\Service\Scraper\Exception\ScraperNotFoundException;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Psr\Log\LoggerInterface;
@@ -96,23 +97,29 @@ class HvScraper
     {
         $data = $this->normalizer->normalize($hvEntity->getHv(), null, [
             'groups' => ['scraper-hv-child'], 'scraper-hv-child' => $hvEntity]);
-
-        return $this->scraperClient->post('/novasoft/hv/child', $data);
+        try {
+            return $this->scraperClient->post('/novasoft/hv/child', $data);
+        } catch (ScraperNotFoundException $e) {
+            return $this->postHv($hvEntity->getHv());
+        }
     }
 
     public function updateChild(HvEntity $hvEntity)
     {
         $data = $this->normalizer->normalize($hvEntity->getHv(), null, [
             'groups' => ['scraper-hv-child'], 'scraper-hv-child' => get_class($hvEntity)]);
+        try {
+            return $this->scraperClient->put('/novasoft/hv/child', $data);
+        } catch (ScraperNotFoundException $e) {
+            return $this->postHv($hvEntity->getHv());
+        }
 
-        return $this->scraperClient->put('/novasoft/hv/child', $data);
     }
 
     public function deleteChild(Hv $hv, string $childClass)
     {
         $data = $this->normalizer->normalize($hv, null, [
             'groups' => ['scraper-hv-child'], 'scraper-hv-child' => $childClass]);
-
         return $this->scraperClient->put('/novasoft/hv/child', $data);
     }
     

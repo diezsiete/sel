@@ -60,6 +60,7 @@ class UploadToNovasoftHandler implements MessageHandlerInterface, LoggerAwareInt
                 if ($uploadToNovasoft->getAction() === UploadToNovasoft::ACTION_CHILD_INSERT) {
                     dump("INSERT");
                     $response = $this->scraper->insertChild($hvChild);
+                    dump($response);
                 } else {
                     dump("UPDATE");
                     $this->scraper->updateChild($hvChild);
