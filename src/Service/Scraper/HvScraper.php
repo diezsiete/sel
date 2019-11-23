@@ -10,6 +10,7 @@ use App\Entity\ScraperProcess;
 use App\Service\Scraper\Exception\ScraperNotFoundException;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Exception;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -65,9 +66,9 @@ class HvScraper
                     $this->logger->info($response['message']);
                 }
             } else {
-                throw new \Exception("method '__$name' doesn't exists");
+                throw new Exception("method '__$name' doesn't exists");
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
             // $this->logger->error($e->getMessage());
         }

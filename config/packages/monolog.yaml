@@ -1,10 +1,11 @@
 monolog:
     channels:
-        - 'sel'
-        - 'scraper'
-        - 'ni_empleado'
-        - 'ni_nomina'
-        - 'ni_convenio'
+        - sel
+        - scraper
+        - ni_empleado
+        - ni_nomina
+        - ni_convenio
+        - messenger_audit
     handlers:
         ni_empleado:
             type: stream

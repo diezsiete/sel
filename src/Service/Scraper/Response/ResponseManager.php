@@ -8,6 +8,7 @@ use App\Service\Scraper\Exception\ScraperClientException;
 use App\Service\Scraper\Exception\ScraperConflictException;
 use App\Service\Scraper\Exception\ScraperException;
 use App\Service\Scraper\Exception\ScraperNotFoundException;
+use App\Service\Scraper\Exception\ScraperTimeoutException;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
@@ -55,6 +56,7 @@ class ResponseManager
      * @throws ScraperConflictException
      * @throws ScraperException
      * @throws ScraperNotFoundException
+     * @throws ScraperTimeoutException
      */
     public function handleResponse($response, $responseClass = null)
     {

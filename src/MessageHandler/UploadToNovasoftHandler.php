@@ -6,12 +6,15 @@ namespace App\MessageHandler;
 
 use App\Entity\HvEntity;
 use App\Message\UploadToNovasoft;
+use App\Messenger\Transport\Scraper\ScraperTransport;
 use App\Repository\HvRepository;
 use App\Service\Scraper\HvScraper;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Transport\TransportInterface;
 
 class UploadToNovasoftHandler implements MessageHandlerInterface, LoggerAwareInterface
 {
@@ -29,18 +32,28 @@ class UploadToNovasoftHandler implements MessageHandlerInterface, LoggerAwareInt
      * @var EntityManagerInterface
      */
     private $em;
+    /**
+     * @var ScraperTransport
+     */
+    private $transportScraper;
 
-    public function __construct(HvScraper $scraper, HvRepository $hvRepository, EntityManagerInterface $em)
+    public function __construct(HvScraper $scraper, HvRepository $hvRepository, EntityManagerInterface $em, TransportInterface $transportScraper)
     {
         $this->scraper = $scraper;
         $this->hvRepository = $hvRepository;
         $this->em = $em;
+        $this->transportScraper = $transportScraper;
     }
 
     public function __invoke(UploadToNovasoft $uploadToNovasoft)
     {
         $this->em->clear();
         $hvId = $uploadToNovasoft->getHvId();
+
+        if ($this->transportScraper->hvIdHasFailed($hvId)) {
+            throw new UnrecoverableMessageHandlingException("Hv id '$hvId' tiene un comando fallido en cola");
+        }
+
         $hv = $this->hvRepository->find($hvId);
         if(!$hv) {
             // exception retry
@@ -58,7 +71,7 @@ class UploadToNovasoftHandler implements MessageHandlerInterface, LoggerAwareInt
                 /** @var HvEntity $hvChild */
                 $hvChild = $this->em->getRepository($uploadToNovasoft->getChildClass())->find($childId);
                 if ($uploadToNovasoft->getAction() === UploadToNovasoft::ACTION_CHILD_INSERT) {
-                    dump("INSERT");
+
                     $response = $this->scraper->insertChild($hvChild);
                     dump($response);
                 } else {

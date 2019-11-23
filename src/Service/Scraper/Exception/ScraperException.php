@@ -13,7 +13,7 @@ class ScraperException extends \Exception
     /**
      * @param $message
      * @param $code
-     * @return ScraperConflictException|ScraperException|ScraperNotFoundException
+     * @return ScraperConflictException|ScraperException|ScraperNotFoundException|ScraperTimeoutException
      */
     public static function create($message, $code)
     {
@@ -23,6 +23,9 @@ class ScraperException extends \Exception
                 break;
             case ResponseManager::CONFLICT:
                 $exception = new ScraperConflictException($message);
+                break;
+            case ResponseManager::TIMEOUT:
+                $exception = new ScraperTimeoutException($message);
                 break;
             default:
                 $exception = new ScraperException($message);

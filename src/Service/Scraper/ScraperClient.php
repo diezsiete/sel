@@ -9,6 +9,7 @@ use App\Service\Scraper\Exception\ScraperClientException;
 use App\Service\Scraper\Exception\ScraperException;
 use App\Service\Scraper\Exception\ScraperNotFoundException;
 use App\Service\Scraper\Exception\ScraperConflictException;
+use App\Service\Scraper\Exception\ScraperTimeoutException;
 use App\Service\Scraper\Response\ResponseManager;
 use App\Service\Scraper\Response\ScraperResponse;
 use Exception;
@@ -74,6 +75,7 @@ class ScraperClient
      * @throws ScraperConflictException
      * @throws ScraperException
      * @throws ScraperNotFoundException
+     * @throws ScraperTimeoutException
      */
     public function get(string $url, $responseClass = ScraperResponse::class, array $options = [])
     {
@@ -84,12 +86,12 @@ class ScraperClient
     /**
      * @param string $url
      * @param $jsonData
-     * @param string $responseClass
      * @return mixed
      * @throws ScraperClientException
      * @throws ScraperConflictException
      * @throws ScraperException
      * @throws ScraperNotFoundException
+     * @throws ScraperTimeoutException
      */
     public function post(string $url, $jsonData, $options = [])
     {
@@ -106,6 +108,7 @@ class ScraperClient
      * @throws ScraperConflictException
      * @throws ScraperException
      * @throws ScraperNotFoundException
+     * @throws ScraperTimeoutException
      */
     public function put(string $url, $data)
     {
@@ -118,6 +121,7 @@ class ScraperClient
      * @param array $data
      * @param string $responseClass
      * @return mixed
+     * @throws ScraperTimeoutException
      * @throws ScraperClientException
      * @throws ScraperConflictException
      * @throws ScraperException
