@@ -3,7 +3,6 @@
 
 namespace App\Message;
 
-
 class UploadToNovasoft
 {
     const ACTION_UPDATE = "UPDATE";
@@ -14,8 +13,13 @@ class UploadToNovasoft
 
     /**
      * @var int
+     *
      */
     private $hvId;
+
+    /**
+     * @var null
+     */
     private $childId;
     private $childClass;
     private $action;

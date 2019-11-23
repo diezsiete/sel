@@ -58,10 +58,6 @@ class UploadToNovasoftHandler implements MessageHandlerInterface, LoggerAwareInt
         $this->em->clear();
         $hvId = $uploadToNovasoft->getHvId();
 
-        if ($this->transportScraper->hvIdHasFailed($hvId)) {
-            throw new UnrecoverableMessageHandlingException("Hv id '$hvId' tiene un comando fallido en cola");
-        }
-
         $hv = $this->hvRepository->find($hvId);
         if(!$hv) {
             // exception retry
@@ -71,20 +67,21 @@ class UploadToNovasoftHandler implements MessageHandlerInterface, LoggerAwareInt
             }
             return;
         }
-        if(!$uploadToNovasoft->getChildId() && !$uploadToNovasoft->getAction() !== UploadToNovasoft::ACTION_CHILD_DELETE) {
+        if(!$uploadToNovasoft->getChildId() && $uploadToNovasoft->getAction() !== UploadToNovasoft::ACTION_CHILD_DELETE) {
             $response = $uploadToNovasoft->getAction() === UploadToNovasoft::ACTION_INSERT ?
                 $this->scraper->postHv($hv) : $this->scraper->putHv($hv);
         } else {
             if($childId = $uploadToNovasoft->getChildId()) {
                 /** @var HvEntity $hvChild */
                 $hvChild = $this->em->getRepository($uploadToNovasoft->getChildClass())->find($childId);
-                if ($uploadToNovasoft->getAction() === UploadToNovasoft::ACTION_CHILD_INSERT) {
-
-                    $response = $this->scraper->insertChild($hvChild);
-                    dump($response);
-                } else {
-                    dump("UPDATE");
-                    $this->scraper->updateChild($hvChild);
+                if($hvChild) {
+                    if ($uploadToNovasoft->getAction() === UploadToNovasoft::ACTION_CHILD_INSERT) {
+                        $response = $this->scraper->insertChild($hvChild);
+                        dump($response);
+                    } else {
+                        dump("UPDATE");
+                        $this->scraper->updateChild($hvChild);
+                    }
                 }
             } else {
                 dump("DELETE");
