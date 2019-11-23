@@ -23,6 +23,7 @@ use App\Form\RedSocialFormType;
 use App\Form\ReferenciaFormType;
 use App\Form\ViviendaFormType;
 use App\Message\UploadToNovasoft;
+use App\Message\UploadToNovasoftSuccess;
 use App\Service\Hv\HvResolver;
 use App\Service\Scraper\HvScraper;
 use Omines\DataTablesBundle\DataTableFactory;
@@ -76,7 +77,8 @@ class HvController extends BaseController
 
             // si el usuario ya esta registrado
             if($hv->getUsuario()) {
-                $messageBus->dispatch(new UploadToNovasoft($hv->getId()));
+                //$messageBus->dispatch(new UploadToNovasoft($hv->getId()));
+                $messageBus->dispatch(new UploadToNovasoftSuccess($hv->getId()));
             }
 
             $this->addFlash('success', "Datos guardados exitosamente");

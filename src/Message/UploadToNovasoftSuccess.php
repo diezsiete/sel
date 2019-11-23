@@ -4,14 +4,8 @@
 namespace App\Message;
 
 
-class UploadToNovasoft
+class UploadToNovasoftSuccess
 {
-    const ACTION_UPDATE = "UPDATE";
-    const ACTION_INSERT = "INSERT";
-    const ACTION_CHILD_INSERT = "CHILD_INSERT";
-    const ACTION_CHILD_UPDATE = "CHILD_UPDATE";
-    const ACTION_CHILD_DELETE = "CHILD_DELETE";
-
     /**
      * @var int
      */
@@ -28,22 +22,22 @@ class UploadToNovasoft
         } else {
             $this->childId = $childId;
             $this->childClass = $childClass;
-            $this->action = $action ?? static::ACTION_UPDATE;
+            $this->action = $action ?? UploadToNovasoft::ACTION_UPDATE;
         }
     }
 
     /**
      * @return int
      */
-    public function getHvId(): int
+    public function getHvId()
     {
         return $this->hvId;
     }
 
     /**
-     * @return int|null
+     * @return null
      */
-    public function getChildId(): ?int
+    public function getChildId()
     {
         return $this->childId;
     }

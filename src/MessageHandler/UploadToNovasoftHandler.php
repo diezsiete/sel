@@ -6,6 +6,7 @@ namespace App\MessageHandler;
 
 use App\Entity\HvEntity;
 use App\Message\UploadToNovasoft;
+use App\Message\UploadToNovasoftSuccess;
 use App\Messenger\Transport\Scraper\ScraperTransport;
 use App\Repository\HvRepository;
 use App\Service\Scraper\HvScraper;
@@ -14,6 +15,7 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Transport\TransportInterface;
 
 class UploadToNovasoftHandler implements MessageHandlerInterface, LoggerAwareInterface
@@ -36,13 +38,19 @@ class UploadToNovasoftHandler implements MessageHandlerInterface, LoggerAwareInt
      * @var ScraperTransport
      */
     private $transportScraper;
+    /**
+     * @var MessageBusInterface
+     */
+    private $messageBus;
 
-    public function __construct(HvScraper $scraper, HvRepository $hvRepository, EntityManagerInterface $em, TransportInterface $transportScraper)
+    public function __construct(HvScraper $scraper, HvRepository $hvRepository, EntityManagerInterface $em,
+                                TransportInterface $transportScraper, MessageBusInterface $messageBus)
     {
         $this->scraper = $scraper;
         $this->hvRepository = $hvRepository;
         $this->em = $em;
         $this->transportScraper = $transportScraper;
+        $this->messageBus = $messageBus;
     }
 
     public function __invoke(UploadToNovasoft $uploadToNovasoft)
@@ -83,5 +91,9 @@ class UploadToNovasoftHandler implements MessageHandlerInterface, LoggerAwareInt
                 $this->scraper->deleteChild($hv, $uploadToNovasoft->getChildClass());
             }
         }
+
+        $this->messageBus->dispatch(new UploadToNovasoftSuccess(
+            $hvId, $uploadToNovasoft->getChildId(), $uploadToNovasoft->getChildClass(), $uploadToNovasoft->getAction())
+        );
     }
 }

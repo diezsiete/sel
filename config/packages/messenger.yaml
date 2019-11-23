@@ -24,6 +24,15 @@ framework:
                 retry_strategy:
                     max_retries: 0
                     delay: 2000
+            scraper_success:
+                dsn: 'scraper://default'
+                options:
+                    table_name: scraper_success
+                    auto_setup: false
+                    queue_name: success
+                serializer: 'App\Serializer\ScraperMessageSerializer'
+                retry_strategy:
+                    max_retries: 0
 
             # failed: 'scraper://default?queue_name=failed'
             failed:
@@ -38,3 +47,4 @@ framework:
         routing:
             # Route your messages to the transports
             'App\Message\UploadToNovasoft': scraper
+            'App\Message\UploadToNovasoftSuccess': scraper_success
