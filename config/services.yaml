@@ -23,6 +23,7 @@ services:
             $messengerAuditLogger: '@monolog.logger.messenger_audit'
             $transportFailed : '@messenger.transport.failed'
             $transportScraper : '@messenger.transport.scraper'
+            $migrationHvAdjuntoPath: '%env(MIGRATION_HV_ADJUNTO)%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name

@@ -15,6 +15,9 @@ oneup_flysystem:
         migration_autoliquidacion_adapter:
             local:
                 directory: '%env(empresa:MIGRATION_PATH_AUTOLIQUIDACIONES)%'
+        migration_hv_adjunto_adapter:
+            local:
+                directory: '%env(MIGRATION_HV_ADJUNTO)%'
         migration_evaluacion_template:
             local:
                 directory: '%env(MIGRATION_EVALUACION_TEMPLATES)%'
@@ -36,3 +39,5 @@ oneup_flysystem:
             adapter: migration_evaluacion_template
         migration_evaluacion_template_target:
             adapter: migration_evaluacion_template_target
+        migration_hv_adjunto_filesystem:
+            adapter: migration_hv_adjunto_adapter

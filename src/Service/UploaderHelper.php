@@ -2,9 +2,11 @@
 
 namespace App\Service;
 
+use Exception;
 use Gedmo\Sluggable\Util\Urlizer;
 use League\Flysystem\FileNotFoundException;
 use League\Flysystem\FilesystemInterface;
+use phpDocumentor\Reflection\Types\Self_;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\File\File;
@@ -54,6 +56,15 @@ class UploaderHelper
         return $fileName;
     }
 
+    public function deleteDirHvAdjunto()
+    {
+        if($this->privateFilesystem->deleteDir(self::HV_ADJUNTO)) {
+            $this->privateFilesystem->createDir(self::HV_ADJUNTO);
+        } else {
+            throw new Exception("Error borrando directorio " . self::HV_ADJUNTO);
+        }
+    }
+
     /**
      * @resource
      */
@@ -62,7 +73,7 @@ class UploaderHelper
         $filesystem = $isPublic ? $this->publicFilesystem : $this->privateFilesystem;
         $resource = $filesystem->readStream($path);
         if($resource === false) {
-            throw new \Exception(sprintf("Error abriendo stream para '%s'", $path));
+            throw new Exception(sprintf("Error abriendo stream para '%s'", $path));
         }
         return $resource;
     }

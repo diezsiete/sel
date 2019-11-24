@@ -8,19 +8,16 @@ use App\Repository\HvRepository;
 use App\Service\UploaderHelper;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Exception;
 use League\Flysystem\FilesystemInterface;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\File\File;
 
 class MigrationHvAdjuntoCommand extends MigrationCommand
 {
-    protected static $defaultName = 'migration:hv-adjunto';
+    protected static $defaultName = 'sel:migration:hv-adjunto';
     /**
      * @var HvRepository
      */
@@ -37,15 +34,20 @@ class MigrationHvAdjuntoCommand extends MigrationCommand
      * @var UploaderHelper
      */
     private $uploaderHelper;
+    /**
+     * @var string
+     */
+    private $migrationHvAdjuntoPath;
 
     public function __construct(Reader $annotationReader, EventDispatcherInterface $eventDispatcher,
-                                ManagerRegistry $managerRegistry, FilesystemInterface $privateUploadFilesystem,
-                                UploaderHelper $uploaderHelper, string $kernelProjectDir)
+                                ManagerRegistry $managerRegistry, UploaderHelper $uploaderHelper,
+                                string $kernelProjectDir, FilesystemInterface $migrationHvAdjuntoFilesystem, $migrationHvAdjuntoPath)
     {
         parent::__construct($annotationReader, $eventDispatcher, $managerRegistry);
-        $this->privateFileSystem = $privateUploadFilesystem;
+        $this->privateFileSystem = $migrationHvAdjuntoFilesystem;
         $this->projectDir = $kernelProjectDir;
         $this->uploaderHelper = $uploaderHelper;
+        $this->migrationHvAdjuntoPath = $migrationHvAdjuntoPath;
     }
 
     protected function configure()
@@ -57,14 +59,13 @@ class MigrationHvAdjuntoCommand extends MigrationCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $sql = "SELECT * "
-            . "FROM `hv` hv "
-            . "ORDER BY hv.id DESC ";
+        
+        $sql = "SELECT * FROM hv";
 
         $sql = $this->addLimitToSql($sql);
-        $this->initProgressBar($this->countSql($sql));
+        $this->initProgressBar($this->countSql($sql, self::CONNECTION_SE_ASPIRANTE));
 
-        while ($row = $this->fetch($sql)) {
+        while ($row = $this->fetch($sql, self::CONNECTION_SE_ASPIRANTE)) {
             $hv = $this->getHvByUsuarioIdOld($row['usuario_id']);
             if($hv) {
                 $this->setHvAdjunto($hv, $row['adjunto']);
@@ -72,6 +73,12 @@ class MigrationHvAdjuntoCommand extends MigrationCommand
             }
 
         }
+    }
+
+    protected function down(InputInterface $input, OutputInterface $output)
+    {
+        $this->truncateTable(HvAdjunto::class);
+        $this->uploaderHelper->deleteDirHvAdjunto();
     }
 
     private function getHvByUsuarioIdOld($usuario_id)
@@ -94,18 +101,18 @@ class MigrationHvAdjuntoCommand extends MigrationCommand
     protected function setHvAdjunto(Hv $hv, $oldFileName)
     {
         if($oldFileName) {
-            if ($this->privateFileSystem->has('hv_adjunto_old/' . $oldFileName)) {
+            if ($this->privateFileSystem->has($oldFileName)) {
                 try {
-                    $mimeType = $this->privateFileSystem->getMimetype('hv_adjunto_old/' . $oldFileName);
+                    $mimeType = $this->privateFileSystem->getMimetype($oldFileName);
                     if(!$mimeType) {
                         $mimeType = 'application/octet-stream';
                     }
 
-                    $filePath = $this->projectDir . '/var/uploads/hv_adjunto_old/' . $oldFileName;
+                    $filePath = $this->migrationHvAdjuntoPath . '/' . $oldFileName;
                     $file = new File($filePath);
 
                     $fileName = $this->uploaderHelper->uploadHvAdjunto($file);
-                    $this->privateFileSystem->delete('hv_adjunto_old/' . $oldFileName);
+                    
 
                     $hvAdjunto = (new HvAdjunto())
                         ->setFilename($fileName)
@@ -113,11 +120,13 @@ class MigrationHvAdjuntoCommand extends MigrationCommand
                         ->setMimeType($mimeType);
 
                     $hv->setAdjunto($hvAdjunto);
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     $usuario = $hv->getUsuario()->getNombreCompleto(true) . " [".$hv->getUsuario()->getIdentificacion()."] ";
                     $this->io->error($usuario . get_class($e) . ": " .$e->getMessage());
                 }
             }
         }
     }
+
+    
 }
