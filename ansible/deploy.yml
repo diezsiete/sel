@@ -37,3 +37,5 @@
         file:
             path: "{{ playbook_dir }}/../public/build.tgz"
             state: absent
+      - name: Build dev webpack
+        command: yarn build-assets && encore dev

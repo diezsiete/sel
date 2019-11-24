@@ -5,6 +5,7 @@ namespace App\Command\Helpers;
 
 
 use App\Command\Helpers\TraitableCommand\Annotation\Configure;
+use DateTime;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 
@@ -26,7 +27,7 @@ trait RangoPeriodoOption
 
     /**
      * @param InputInterface $input
-     * @return \DateTime|null
+     * @return DateTime|null
      * @throws \Exception
      */
     protected function getInicio(InputInterface $input, $leftNull = false)
@@ -36,9 +37,9 @@ trait RangoPeriodoOption
         if(!$desde) {
             $desde = $input->getOption('inicio');
             if ($desde) {
-                $desde = \DateTime::createFromFormat('Y-m-d', $desde);
+                $desde = DateTime::createFromFormat('Y-m-d', $desde);
             } else {
-                $desde = $leftNull ? null : new \DateTime();
+                $desde = $leftNull ? null : new DateTime();
             }
         }
         return $desde;
@@ -46,20 +47,21 @@ trait RangoPeriodoOption
 
     /**
      * @param InputInterface $input
-     * @return \DateTime|null
+     * @return DateTime|null
      * @throws \Exception
      */
     protected function getFin(InputInterface $input, $leftNull = false)
     {
         $rangoPeriodo = $this->getRangoFromPeriodo($input, false);
+
         if ($rangoPeriodo) {
             $hasta = $rangoPeriodo->end;
         } else {
             $hasta = $input->getOption('fin');
             if ($hasta) {
-                $hasta = \DateTime::createFromFormat('Y-m-d', $hasta);
+                $hasta = DateTime::createFromFormat('Y-m-d', $hasta);
             } else {
-                $hasta = $leftNull ? null : new \DateTime();
+                $hasta = $leftNull ? null : new DateTime();
             }
         }
         return $hasta;

@@ -64,6 +64,7 @@ class NiEmpleadoCommand extends NiCommand
     {
         $desde = $this->getInicio($input);
         $hasta = $this->getFin($input);
+
         $this->info("---------------------------------------------------------------------------------------");
         if ($this->isSearchConvenio()) {
             foreach ($this->getConvenios() as $convenio) {

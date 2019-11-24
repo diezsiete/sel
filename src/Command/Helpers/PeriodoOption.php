@@ -49,9 +49,10 @@ trait PeriodoOption
     {
         $periodo = $this->getPeriodo($input, $required);
         if(!$periodo) {
-            $periodo = DateTime::createFromFormat('Y-m-d', (new DateTime())->format('Y-m') . '-01');
+            return null;
+            //$periodo = DateTime::createFromFormat('Y-m-d', (new DateTime())->format('Y-m') . '-01');
         }
-        $end = \DateTime::createFromFormat('Y-m-d', $periodo->format('Y-m-t'));
+        $end = DateTime::createFromFormat('Y-m-d', $periodo->format('Y-m-t'));
         return (object)['start' => $periodo, 'end' => $end];
     }
 
