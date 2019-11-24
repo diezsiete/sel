@@ -83,7 +83,8 @@ class Configuracion
         $this->bag = $bag;
         $this->empresa = $bag->get('empresa');
         $this->parameters = $bag->get('empresa.'.$this->empresa.'.config');
-        $this->webDir = $webDir;
+
+        $this->webDir = substr($webDir, -1) === "/" ? substr($webDir, 0, strlen($webDir) - 1) : $webDir;
     }
 
     /**
