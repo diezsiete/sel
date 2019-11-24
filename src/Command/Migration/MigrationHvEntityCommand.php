@@ -147,13 +147,17 @@ class MigrationHvEntityCommand extends MigrationCommand
 
         $codigo = $this->getDefaultManager()->getRepository(EstudioCodigo::class)->find($row['estudio_codigo_id']);
         $instituto = $this->getDefaultManager()->getRepository(EstudioInstituto::class)->find($row['estudio_instituto_id']);
+        $semestresAprobados = $row['semestres_aprobados'];
+        if($semestresAprobados && (int)$semestresAprobados > 100) {
+            $semestresAprobados = null;
+        }
         $estudio
             ->setCodigo($codigo)
             ->setNombre($row['nombre'])
             ->setInstituto($instituto)
             ->setAnoEstudio($row['ano_estudio'])
             ->setHorasEstudio($row['horas_estudio'])
-            ->setSemestresAprobados($row['semestres_aprobados'])
+            ->setSemestresAprobados($semestresAprobados)
             ->setNumeroTarjeta($row['numero_tarjeta'])
             ->setHv($hv);
         if ($row['fin']) {
