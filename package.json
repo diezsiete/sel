@@ -34,8 +34,10 @@
     "scripts": {
         "dev-server": "encore dev-server",
         "dev": "encore dev",
-        "prewatch": "bin/console assets:install --symlink --relative ./assets && bin/console fos:js-routing:dump --target=assets/bundles/fosjsrouting/js/fos_js_routes.json --format=json -p",
+        "build-assets" : "bin/console assets:install --symlink --relative ./assets && bin/console fos:js-routing:dump --target=assets/bundles/fosjsrouting/js/fos_js_routes.json --format=json -p",
+        "prewatch": "yarn build-assets",
         "watch": "encore dev --watch",
+        "prebuild": "yarn build-assets",
         "build": "encore production --progress"
     },
     "dependencies": {

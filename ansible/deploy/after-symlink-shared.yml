@@ -9,8 +9,12 @@
       command: install
       working_dir: "{{ ansistrano_release_path.stdout }}"
 
-- name: Clear the cache
-  command: "{{ release_console_path }} cache:clear"
+- name: Extract Webpack build
+  unarchive:
+    src: "{{ playbook_dir }}/../public/build.tgz"
+    dest: "{{ release_public_path }}"
+    owner: ptaweb
+    group: ptaweb
 
 - name: Change file ownership, group and permissions
   file:
@@ -26,3 +30,6 @@
       state: directory
       mode: 0775
       recurse: true
+
+- name: Clear the cache
+  command: "{{ release_console_path }} cache:clear"
