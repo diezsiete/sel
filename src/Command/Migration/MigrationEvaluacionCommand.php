@@ -141,9 +141,10 @@ class MigrationEvaluacionCommand extends MigrationCommand
 
     private function instanceEvaluacion($data)
     {
+        $slug = $data['llave'] === 'evaluacion-de-induccion' ? 'induccion' : $data['llave'];
         return (new Evaluacion())
             ->setNombre($data['nombre'])
-            ->setSlug($data['llave'])
+            ->setSlug($slug)
             ->setUsuario($this->getSuperAdmin())
             ->setCreatedAt(DateTime::createFromFormat('Y-m-d H:i:s', $data['creacion']))
             ->setMinimoPorcentajeExito($data['minimo_porcentaje_exito'])
