@@ -18,7 +18,7 @@ class EstudioInstituto
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(type="string", length=145)
      * @Groups("main")
      */
     private $nombre;
