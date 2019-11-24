@@ -76,6 +76,7 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/sel/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/change-password$, roles: IS_AUTHENTICATED_FULLY}
         - { path: ^/sel/admin/evaluacion, roles: [ROLE_OPERADOR, ROLE_EVALUACION_ADMIN]}
         - { path: ^/sel/admin, roles: [ROLE_OPERADOR]}

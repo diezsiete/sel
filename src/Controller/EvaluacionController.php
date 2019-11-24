@@ -20,6 +20,14 @@ class EvaluacionController extends BaseController
 {
 
     /**
+     * @Route("/evaluacion/presentar/evaluacion-de-induccion")
+     */
+    public function legacyPresentar()
+    {
+        return $this->redirectToRoute('evaluacion_menu_redirect', ['evaluacionSlug' => 'induccion']);
+    }
+
+    /**
      * @Route("/evaluacion/{evaluacionSlug}/menu-redirect", name="evaluacion_menu_redirect")
      */
     public function menuRedirect(Navegador $navegador)
