@@ -60,10 +60,11 @@ class MigrationHvAdjuntoCommand extends MigrationCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         
-        $sql = "SELECT * FROM hv";
+        $sql = "SELECT * FROM hv WHERE adjunto IS NOT NULL";
 
         $sql = $this->addLimitToSql($sql);
-        $this->initProgressBar($this->countSql($sql, self::CONNECTION_SE_ASPIRANTE));
+        $count = $this->countSql($sql, self::CONNECTION_SE_ASPIRANTE);
+        $this->initProgressBar($count);
 
         while ($row = $this->fetch($sql, self::CONNECTION_SE_ASPIRANTE)) {
             $hv = $this->getHvByUsuarioIdOld($row['usuario_id']);
