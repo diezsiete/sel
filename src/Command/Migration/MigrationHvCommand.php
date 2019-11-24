@@ -9,16 +9,27 @@ use App\Entity\Hv;
 use App\Entity\Pais;
 use App\Entity\Usuario;
 use DateTime;
+use Doctrine\Common\Annotations\Reader;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 
 class MigrationHvCommand extends MigrationCommand
 {
     protected static $defaultName = 'sel:migration:hv';
+    /**
+     * @var string
+     */
+    private $migrationDatabaseSeAspiranteUrl;
+    /**
+     * @var string
+     */
+    private $migrationDatabaseSeUrl;
 
     protected function configure()
     {
@@ -28,11 +39,22 @@ class MigrationHvCommand extends MigrationCommand
                 'Si activado, si el usuario no existe lo importa');
     }
 
+    public function __construct(Reader $annotationReader, EventDispatcherInterface $eventDispatcher,
+                                ManagerRegistry $managerRegistry, $migrationDatabaseSeUrl, $migrationDatabaseSeAspiranteUrl)
+    {
+        parent::__construct($annotationReader, $eventDispatcher, $managerRegistry);
+        $this->migrationDatabaseSeUrl = $migrationDatabaseSeUrl;
+        $this->migrationDatabaseSeAspiranteUrl = $migrationDatabaseSeAspiranteUrl;
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $seDatabase = $this->getDatabaseNameFromUrl($this->migrationDatabaseSeUrl);
+        $aspiranteDatabase = $this->getDatabaseNameFromUrl($this->migrationDatabaseSeAspiranteUrl);
+
         $sql = "SELECT hv.*, u.nacimiento "
-             . "FROM se_pta_aspirante.hv hv "
-             . "JOIN se_pta.usuario u ON hv.usuario_id = u.id ";
+             . "FROM $aspiranteDatabase.hv hv "
+             . "JOIN $seDatabase.usuario u ON hv.usuario_id = u.id ";
 
         $sql = $this->addLimitToSql($sql);
 
@@ -177,5 +199,11 @@ class MigrationHvCommand extends MigrationCommand
             $usuario = parent::getUsuarioByIdOld($idOld);
         }
         return $usuario;
+    }
+
+    private function getDatabaseNameFromUrl($url)
+    {
+        preg_match('/\/(\w+)$/', $url, $matches);
+        return $matches[1];
     }
 }
