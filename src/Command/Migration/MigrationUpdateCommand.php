@@ -25,14 +25,14 @@ class MigrationUpdateCommand extends MigrationCommand
         $info = $input->getOption('info');
 
 
-        $dql = "SELECT u.idOld from " . Usuario::class . " u ORDER BY u.id DESC";
+        $dql = "SELECT u.idOld FROM " . Usuario::class . " u ORDER BY u.id DESC";
         $query = $this->getDefaultManager()->createQuery($dql);
         $query->setMaxResults(1)->setFirstResult(0);
         $lastIdOld = $query->getSingleScalarResult();
 
         $this->io->text("last id old : " . $lastIdOld);
 
-        $sql = "SELECT * from usuario WHERE id > " . $lastIdOld;
+        $sql = "SELECT * FROM usuario WHERE id > " . $lastIdOld;
         $count = $this->countSql($sql);
 
         $this->io->text("total usuarios nuevos: " . $count);
