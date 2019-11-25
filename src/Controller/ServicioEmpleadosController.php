@@ -8,15 +8,13 @@ use App\DataTable\Type\ReporteNominaDataTableType;
 use App\Entity\Autoliquidacion\AutoliquidacionEmpleado;
 use App\Entity\ReporteNomina;
 use App\Repository\ConvenioRepository;
-use App\Repository\ReporteNominaRepository;
 use App\Service\Autoliquidacion\FileManager;
 use App\Service\Configuracion\Configuracion;
-use App\Service\NovasoftSsrs\NovasoftSsrs;
 use App\Service\Pdf\PdfCartaLaboral;
 use App\Service\ReportesServicioEmpleados;
 use App\Service\ServicioEmpleados\Import;
 use App\Service\ServicioEmpleados\Reportes;
-use DateTime;
+use Exception;
 use Omines\DataTablesBundle\DataTableFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,11 +26,15 @@ class ServicioEmpleadosController extends BaseController
      * @var ConvenioRepository
      */
     private $convenioRepository;
+    /**
+     * @var Configuracion
+     */
+    private $configuracion;
 
-    public function __construct(ConvenioRepository $convenioRepository)
+    public function __construct(ConvenioRepository $convenioRepository, Configuracion $configuracion)
     {
-        $this->createNotFoundException();
         $this->convenioRepository = $convenioRepository;
+        $this->configuracion = $configuracion;
     }
 
     /**
@@ -174,10 +176,14 @@ class ServicioEmpleadosController extends BaseController
     }
 
     /**
-     * @return string|null
+     * @return string
+     * @throws Exception
      */
     private function getSsrsDb()
     {
+        if(count($this->configuracion->getSsrsDb()) === 1) {
+            return $this->configuracion->getSsrsDb()[0]->getNombre();
+        }
         $convenio = $this->convenioRepository->findConvenioByIdent($this->getUser()->getIdentificacion());
         if($convenio) {
             return $convenio->getSsrsDb();

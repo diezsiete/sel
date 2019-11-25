@@ -76,10 +76,15 @@ class UsuarioRepository extends ServiceEntityRepository
     /**
      * @return string[]
      */
-    public function findEmpleadosIdents()
+    public function findEmpleadosIdents($exceptIds = [])
     {
         $qb = $this->createQueryBuilder('u');
-        $qb->select('u.identificacion')->andWhere($qb->expr()->like('u.roles', "'%ROLE_EMPLEADO%'"));
+        $qb->select('u.identificacion')->andWhere($qb->expr()->like('u.roles', "'%ROLE_EMPLEADO%'"))->orderBy('u.id', 'ASC');
+
+        if($exceptIds) {
+            $qb->where($qb->expr()->notIn('u.id', $exceptIds));
+        }
+
         return $qb->getQuery()->getResult('FETCH_COLUMN');
     }
 

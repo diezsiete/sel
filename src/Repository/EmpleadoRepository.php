@@ -173,6 +173,15 @@ class EmpleadoRepository extends ServiceEntityRepository
     }
 
 
+    public function getUsuariosIds()
+    {
+        $qb = $this->createQueryBuilder('e');
+        $qb->select('u.id')
+            ->join('e.usuario', 'u');
+        return $qb->getQuery()->getResult('FETCH_COLUMN');
+    }
+
+
     // /**
     //  * @return Empleado[] Returns an array of Empleado objects
     //  */

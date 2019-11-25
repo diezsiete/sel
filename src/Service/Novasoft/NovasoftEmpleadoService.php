@@ -96,11 +96,13 @@ class NovasoftEmpleadoService
      */
     public function findInNovasoft($ident)
     {
-        $ssrsDbs = $this->configuracion->getSsrsDb();
-        foreach ($ssrsDbs as $ssrsDb) {
-            if ($empleadoNovasoft = $this->reportesServicioEmpleados->setSsrsDb($ssrsDb->getNombre())->getEmpleado($ident)) {
-                $this->lastSsrsDb = $ssrsDb->getNombre();
-                return $empleadoNovasoft[0];
+        if(is_numeric($ident)) {
+            $ssrsDbs = $this->configuracion->getSsrsDb();
+            foreach ($ssrsDbs as $ssrsDb) {
+                if ($empleadoNovasoft = $this->reportesServicioEmpleados->setSsrsDb($ssrsDb->getNombre())->getEmpleado($ident)) {
+                    $this->lastSsrsDb = $ssrsDb->getNombre();
+                    return $empleadoNovasoft[0];
+                }
             }
         }
         return false;
