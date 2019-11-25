@@ -35,6 +35,8 @@ class MigrationHvCommand extends MigrationCommand
     {
         parent::configure();
         $this->setDescription('Migracion de hv')
+            ->addOption('uid', null, InputOption::VALUE_OPTIONAL,
+                'Importar solo uno por id de usuario')
             ->addOption('import_usuario', 'i', InputOption::VALUE_NONE,
                 'Si activado, si el usuario no existe lo importa');
     }
@@ -49,12 +51,18 @@ class MigrationHvCommand extends MigrationCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $uid = $input->getOption('uid');
+
         $seDatabase = $this->getDatabaseNameFromUrl($this->migrationDatabaseSeUrl);
         $aspiranteDatabase = $this->getDatabaseNameFromUrl($this->migrationDatabaseSeAspiranteUrl);
 
         $sql = "SELECT hv.*, u.nacimiento "
              . "FROM $aspiranteDatabase.hv hv "
              . "JOIN $seDatabase.usuario u ON hv.usuario_id = u.id ";
+
+        if($uid) {
+            $sql .= "WHERE u.id = " . $uid;
+        }
 
         $sql = $this->addLimitToSql($sql);
 

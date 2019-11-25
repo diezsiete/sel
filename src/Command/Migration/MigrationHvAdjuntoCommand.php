@@ -11,6 +11,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Exception;
 use League\Flysystem\FilesystemInterface;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\File\File;
@@ -53,14 +54,21 @@ class MigrationHvAdjuntoCommand extends MigrationCommand
     protected function configure()
     {
         parent::configure();
-        $this->setDescription('Migracion de archivos adjuntos HV');
+        $this->setDescription('Migracion de archivos adjuntos HV')
+            ->addOption('uid', null, InputOption::VALUE_OPTIONAL,
+                'Importar solo uno por id de usuario');
 
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $uid = $input->getOption('uid');
         
         $sql = "SELECT * FROM hv WHERE adjunto IS NOT NULL";
+
+        if($uid) {
+            $sql .= " AND usuario_id = $uid";
+        }
 
         $sql = $this->addLimitToSql($sql);
         $count = $this->countSql($sql, self::CONNECTION_SE_ASPIRANTE);

@@ -4,6 +4,7 @@
 namespace App\Command\Migration;
 
 
+use App\Command\Helpers\SelCommandTrait;
 use App\Entity\Usuario;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -11,6 +12,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class MigrationUpdateCommand extends MigrationCommand
 {
+    use SelCommandTrait;
+    
     public static $defaultName = "sel:migration:update";
 
     protected function configure()
@@ -41,6 +44,15 @@ class MigrationUpdateCommand extends MigrationCommand
 
         while ($row = $this->fetch($sql)) {
             $this->io->text(sprintf('%10s %20s', $row['ident'], $row['primer_nombre'] . " " . $row['primer_apellido']));
+            
+            if(!$info) {
+                $this->runCommand($output, 'sel:migration:usuario', [], ['id' => $row['id']]);
+                $this->runCommand($output, 'sel:migration:hv', [], ['uid' => $row['id']]);
+                $this->runCommand($output, 'sel:migration:hv-entity', [], ['uid' => $row['id']]);
+                $this->runCommand($output, 'sel:migration:hv-adjunto', [], ['uid' => $row['id']]);
+                $this->runCommand($output, 'sel:migration:evaluacion-resultado', [], ['uid' => $row['id']]);
+                $this->runCommand($output, 'sel:migration:empleado', [], ['uid' => $row['id']]);
+            }
         }
     }
 }

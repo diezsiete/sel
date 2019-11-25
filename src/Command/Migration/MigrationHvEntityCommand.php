@@ -21,6 +21,7 @@ use DateTime;
 use PDO;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class MigrationHvEntityCommand extends MigrationCommand
@@ -44,7 +45,9 @@ class MigrationHvEntityCommand extends MigrationCommand
     protected function configure()
     {
         $this->setDescription('Migrar entidades relacionadas a hv')
-            ->addArgument('entity', InputArgument::OPTIONAL, 'la entidad a importar');
+            ->addArgument('entity', InputArgument::OPTIONAL, 'la entidad a importar')
+            ->addOption('uid', null, InputOption::VALUE_OPTIONAL,
+                'Importar solo uno por id de usuario');
         parent::configure();
     }
 
@@ -54,13 +57,19 @@ class MigrationHvEntityCommand extends MigrationCommand
     {
         $entity = $input->getArgument('entity');
         $entities = $entity ? [$entity] : array_keys($this->entites);
+        $uid = $input->getOption('uid');
 
-        $sql = $this->addLimitToSql("SELECT u.id_old FROM hv join usuario u ON hv.usuario_id = u.id");
+        $sql = "SELECT u.id_old FROM hv join usuario u ON hv.usuario_id = u.id";
+        if($uid) {
+            $sql .= " WHERE u.id_old = $uid";
+        }
+
+        $sql = $this->addLimitToSql($sql);
         $stmt = $this->getConnection(self::CONNECTION_DEFAULT)->query($sql);
         $ids = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
         $sqlLimit = "";
-        if($this->offset !== null || $this->limit !== null) {
+        if($this->offset !== null || $this->limit !== null || $uid) {
             $sqlLimit = " WHERE hv.usuario_id IN (".implode(",", $ids).")";
         }
         $count = 0;

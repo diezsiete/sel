@@ -43,20 +43,27 @@ class MigrationEmpleado extends MigrationCommand
     protected function configure()
     {
         parent::configure();
-        $this->addOption('remain', 'r', InputOption::VALUE_NONE, 'Solo importa aquellos que no tengan empleado creado');
+        $this->addOption('remain', 'r', InputOption::VALUE_NONE, 'Solo importa aquellos que no tengan empleado creado')
+            ->addOption('uid', null, InputOption::VALUE_OPTIONAL,
+                'Importar solo uno por id de usuario');
     }
 
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $remain = $input->getOption('remain');
+        $uid = $input->getOption('uid');
+        if($uid) {
+            $idents = [$this->usuarioRepository->findOneBy(['idOld' => $uid])->getIdentificacion()];
+        } else {
+            $remain = $input->getOption('remain');
 
-        $usuariosIds = [];
-        if($remain) {
-            $usuariosIds = $this->empleadoRepository->getUsuariosIds();
+            $usuariosIds = [];
+            if ($remain) {
+                $usuariosIds = $this->empleadoRepository->getUsuariosIds();
+            }
+
+            $idents = $this->usuarioRepository->findEmpleadosIdents($usuariosIds);
         }
-
-        $idents = $this->usuarioRepository->findEmpleadosIdents($usuariosIds);
 
         $count = count($idents);
 

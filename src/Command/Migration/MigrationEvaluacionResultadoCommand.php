@@ -19,9 +19,10 @@ use App\Entity\Usuario;
 use DateTime;
 use Exception;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class EvaluacionResultadoCommand extends MigrationCommand
+class MigrationEvaluacionResultadoCommand extends MigrationCommand
 {
     use SelCommandTrait;
 
@@ -54,14 +55,26 @@ class EvaluacionResultadoCommand extends MigrationCommand
     protected function configure()
     {
         parent::configure();
-        $this->setDescription("Migrar resultados evaluacion");
+        $this->setDescription("Migrar resultados evaluacion")
+            ->addOption('uid', null, InputOption::VALUE_OPTIONAL,
+                'Importar solo uno por id de usuario');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $sqlResultado = $this->addLimitToSql("SELECT * FROM evaluacion_resultado");
+        $uid = $input->getOption('uid');
+        $sql = "SELECT * FROM evaluacion_resultado";
+        if($uid) {
+            $sql .= " WHERE usuario_id = $uid";
+        }
+        $sqlResultado = $this->addLimitToSql($sql);
+
         $sqlRespuesta = "SELECT * FROM evaluacion_respuesta er
                          JOIN evaluacion_pregunta ep ON ep.id = er.pregunta_id";
+
+        if($uid) {
+            $sqlRespuesta .= " JOIN evaluacion_resultado r ON er.resultado_id = r.id WHERE r.usuario_id = $uid";
+        }
 
         $count = $this->countSql([$sqlResultado, $sqlRespuesta]);
 
