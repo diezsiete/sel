@@ -2,9 +2,12 @@
 
 namespace App\Controller\Admin;
 
+use App\DataTable\Type\Hv\AdminHvDataTableType;
 use App\Entity\Hv;
 use App\Repository\HvRepository;
+use Knp\Bundle\TimeBundle\Twig\Extension\TimeExtension;
 use Knp\Component\Pager\PaginatorInterface;
+use Omines\DataTablesBundle\DataTableFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,11 +28,25 @@ class AdminHvController extends AbstractController
 
         $pagination = $paginator->paginate($qb, $request->get('page', 1), 25);
 
-
         return $this->render('hv_admin/listado.html.twig', [
             'pagination' => $pagination,
             'search' => $search
         ]);
+    }
+
+    /**
+     * @Route("/sel/admin/hv/listado-temp", name="admin_hv_listado_temp")
+     */
+    public function listadoTemp(Request $request, DataTableFactory $dataTableFactory)
+    {
+
+        $table = $dataTableFactory->createFromType(AdminHvDataTableType::class, [], ['searching' => true]);
+        $table->handleRequest($request);
+        if($table->isCallback()) {
+            return $table->getResponse();
+        }
+
+        return $this->render('admin/hv/list.html.twig', ['datatable' => $table]);
     }
 
     /**

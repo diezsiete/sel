@@ -34,56 +34,19 @@ class HvRepository extends ServiceEntityRepository
         return $this->findOneBy(['usuario' => $usuario]);
     }
 
-    public function search($search = null)
-    {
-        $qb = $this->createQueryBuilder('hv')
-            ->orderBy('hv.id', 'DESC')
-            ->addSelect('usuario, resiCiudad, estudio, estudioCodigo, experiencia, experienciaArea, adjunto')
-            ->join('hv.usuario', 'usuario')
-            ->join('hv.resiCiudad', 'resiCiudad')
-            ->join('hv.estudios', 'estudio')
-            ->join('estudio.codigo', 'estudioCodigo')
-            ->join('hv.experiencia', 'experiencia')
-            ->join('experiencia.area', 'experienciaArea')
-            ->leftJoin('hv.adjunto', 'adjunto')
-            ->setFirstResult(0)
-            ->setMaxResults(10);
-
-        $paginator = new Paginator($qb->getQuery(), true);
-        $result = [];
-        foreach ($paginator as $post) {
-            $result[] = $post;
-        }
-        return $result;
-
-    }
-
     public function searchQueryBuilder($search = null)
     {
-        $qb = $this->createQueryBuilder('hv')
-            ->orderBy('hv.id', 'DESC')
-            ->addSelect('usuario, resiCiudad, estudio, estudioCodigo, experiencia, experienciaArea, adjunto')
-            ->join('hv.usuario', 'usuario')
-            ->join('hv.resiCiudad', 'resiCiudad')
-            ->join('hv.estudios', 'estudio')
-            ->join('estudio.codigo', 'estudioCodigo')
-            ->join('hv.experiencia', 'experiencia')
-            ->join('experiencia.area', 'experienciaArea')
-            ->leftJoin('hv.adjunto', 'adjunto');
+        $qb = $this->createQueryBuilder('hv');
+        $this->searchQueryBuilderFields($qb);
 
         if($search) {
-            $qb->andWhere(
-                $qb->expr()->orX(
-                $this->usuarioRepository->userSearchExpression($qb, $search, 'usuario', 'search_usuario'),
-                $this->searchExpression($qb)
-                )
-            )->setParameter('search', '%' . $search . '%');
+            $this->searchExpression($qb, $search);
         }
 
         return $qb;
     }
 
-    public function searchExpression(QueryBuilder $qb)
+    public function searchExpression(QueryBuilder $qb, $search)
     {
         $expr = $qb->expr()->orX(
             $qb->expr()->like('estudio.nombre', ':search'),
@@ -91,7 +54,45 @@ class HvRepository extends ServiceEntityRepository
             $qb->expr()->like('experiencia.cargo', ':search'),
             $qb->expr()->like('experiencia.descripcion', ':search')
         );
-        return $expr;
+
+        $qb->andWhere(
+            $qb->expr()->orX(
+                $this->usuarioRepository->userSearchExpression($qb, $search, 'usuario', 'search_usuario'),
+                $expr
+            )
+        )->setParameter('search', '%' . $search . '%');
+    }
+
+
+    public function searchQueryBuilderFields(QueryBuilder $qb, $alias = 'hv')
+    {
+        $joinsDef = [
+            'usuario' => ['join' => $alias . ".usuario", 'alias' => 'usuario'],
+            'resiCiudad' => ['join' => $alias.".resiCiudad", 'alias' => 'resiCiudad', 'type' => 'left'],
+            'estudio' => ['join' => $alias.".estudios", 'alias' => 'estudio', 'type' => 'left'],
+            //'estudioCodigo' => ['join' => "estudio.codigo", 'alias' => 'estudioCodigo'],
+            'experiencia' => ['join' => $alias.".experiencia", 'alias' => 'experiencia', 'type' => 'left'],
+            //'experienciaArea' => ['join' => 'experiencia.area', 'alias' => 'experienciaArea'],
+            //'adjunto' => ['join' => $alias.".adjunto", 'alias' => 'adjunto', 'type' => 'left']
+        ];
+        $select = implode(', ', array_keys($joinsDef));
+        $qb->addSelect($select);
+        foreach($joinsDef as $join) {
+            $type = isset($join['type']) ? $join['type'] : 'inner';
+            $qb->{$type . 'Join'}($join['join'], $join['alias']);
+        }
+        $qb->orderBy($alias . ".id", 'DESC');
+        $qb->groupBy("$alias.id");
+        /*$qb
+            ->addSelect('usuario, resiCiudad, estudio, estudioCodigo, experiencia, experienciaArea, adjunto')
+            ->join($alias.".usuario", 'usuario')
+            ->join($alias.".resiCiudad", 'resiCiudad')
+            ->join($alias.".estudios", 'estudio')
+            ->join("estudio.codigo", 'estudioCodigo')
+            ->join($alias.".experiencia", 'experiencia')
+            ->join('experiencia.area', 'experienciaArea')
+            ->leftJoin($alias.".adjunto", 'adjunto')
+            ->orderBy($alias.".id", 'DESC');*/
     }
 
 
