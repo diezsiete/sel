@@ -55,17 +55,22 @@ class MigrationEmpleado extends MigrationCommand
         if($remain) {
             $usuariosIds = $this->empleadoRepository->getUsuariosIds();
         }
+
         $idents = $this->usuarioRepository->findEmpleadosIdents($usuariosIds);
 
         $count = count($idents);
+
         $this->initProgressBar($count);
 
         try {
             foreach ($idents as $ident) {
+                $usuario = $this->usuarioRepository->findByIdentificacion($ident);
                 if ($empleado = $this->novasoftEmpleadoService->findInNovasoft($ident)) {
-                    $empleado->setUsuario($this->usuarioRepository->findByIdentificacion($ident));
+                    $empleado->setUsuario($usuario);
                     $this->selPersist($empleado);
                 } else {
+                    $usuario->removeRol("ROLE_EMPLEADO")->addRol("ROLE_HALCON");
+                    $this->flushAndClear();
                     $this->progressBar->advance();
                 }
             }

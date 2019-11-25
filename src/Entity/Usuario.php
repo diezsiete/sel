@@ -210,6 +210,15 @@ class Usuario implements UserInterface
         return $es_rol;
     }
 
+    public function removeRol($rolNombre)
+    {
+        if (($key = array_search($rolNombre, $this->roles)) !== false) {
+            unset($this->roles[$key]);
+            $this->roles = array_values($this->roles);
+        }
+        return $this;
+    }
+
     /**
      * @see UserInterface
      */

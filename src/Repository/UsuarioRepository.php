@@ -82,7 +82,7 @@ class UsuarioRepository extends ServiceEntityRepository
         $qb->select('u.identificacion')->andWhere($qb->expr()->like('u.roles', "'%ROLE_EMPLEADO%'"))->orderBy('u.id', 'ASC');
 
         if($exceptIds) {
-            $qb->where($qb->expr()->notIn('u.id', $exceptIds));
+            $qb->andWhere($qb->expr()->notIn('u.id', $exceptIds));
         }
 
         return $qb->getQuery()->getResult('FETCH_COLUMN');
