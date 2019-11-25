@@ -53,8 +53,10 @@ class NiEmpleadoCommand extends NiCommand
     protected function configure()
     {
         $this->setDescription('Actualizar empleados desde novasoft')
-            ->addOption('start_from', null, InputOption::VALUE_OPTIONAL,
+            ->addOption('start-from', null, InputOption::VALUE_OPTIONAL,
                 'Codigo convenio desde donde se empieza la importacion. Ignora argumento search')
+            ->addOption('dont-create-usuario', null, InputOption::VALUE_NONE,
+                'Si usuario no existe no crea usuario ni empleado')
         ;
         parent::configure();
     }
@@ -64,6 +66,8 @@ class NiEmpleadoCommand extends NiCommand
     {
         $desde = $this->getInicio($input);
         $hasta = $this->getFin($input);
+        $dontCreateUsuario = $input->getOption('dont-create-usuario');
+
 
         $this->info("---------------------------------------------------------------------------------------");
         if ($this->isSearchConvenio()) {
@@ -76,7 +80,7 @@ class NiEmpleadoCommand extends NiCommand
                     if (!$empleado->getConvenio()) {
                         $empleado->setConvenio($convenio);
                     }
-                    $this->importEmpleado($empleado, $ssrsDb);
+                    $this->importEmpleado($empleado, $ssrsDb, $dontCreateUsuario);
                     // movemos flush aca dado que existe el caso que un convenio traiga empleados repetidos (PTASAS0001: 52985971)
                     $this->em->flush();
                 }
@@ -96,25 +100,27 @@ class NiEmpleadoCommand extends NiCommand
         }
     }
 
-    private function importEmpleado(Empleado $empleado, string $ssrsDb)
+    private function importEmpleado(Empleado $empleado, string $ssrsDb, $dontCreateUsuario = false)
     {
         $usuario = $this->updateUsuario($empleado->getUsuario());
         $usuarioMessage = "[usuario update]";
-        if (!$usuario) {
+        if (!$usuario && !$dontCreateUsuario) {
             $usuario = $this->insertUsuario($empleado->getUsuario());
             $usuarioMessage = "[usuario insert]";
         }
-        $empleado->setUsuario($usuario);
-        $empleado->setSsrsDb($ssrsDb);
+        if($usuario) {
+            $empleado->setUsuario($usuario);
+            $empleado->setSsrsDb($ssrsDb);
 
-        $empleadoMessage = "[empleado update]";
-        if (!$this->updateEmpleado($empleado)) {
-            $this->insertEmpleado($empleado);
-            $empleadoMessage = "[empleado insert]";
+            $empleadoMessage = "[empleado update]";
+            if (!$this->updateEmpleado($empleado)) {
+                $this->insertEmpleado($empleado);
+                $empleadoMessage = "[empleado insert]";
+            }
+
+            $this->info(sprintf("%s %s %s %s %s", $empleado->getConvenio()->getCodigo(),
+                $empleado->getUsuario()->getNombreCompleto(), $empleado->getUsuario()->getIdentificacion(), $usuarioMessage, $empleadoMessage));
         }
-
-        $this->info(sprintf("%s %s %s %s %s", $empleado->getConvenio()->getCodigo(),
-            $empleado->getUsuario()->getNombreCompleto(), $empleado->getUsuario()->getIdentificacion(), $usuarioMessage, $empleadoMessage));
     }
 
 
