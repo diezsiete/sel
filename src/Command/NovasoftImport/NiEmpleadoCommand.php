@@ -9,8 +9,6 @@ use App\Entity\Empleado;
 use App\Entity\Usuario;
 use App\Service\ReportesServicioEmpleados;
 use Doctrine\Common\Annotations\Reader;
-use Exception;
-use SSRS\SSRSReportException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;

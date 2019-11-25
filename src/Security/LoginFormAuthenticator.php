@@ -3,7 +3,9 @@
 namespace App\Security;
 
 use App\Entity\Usuario;
+use App\Service\Novasoft\NovasoftEmpleadoService;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -27,14 +29,20 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     protected $urlGenerator;
     private $csrfTokenManager;
     private $passwordEncoder;
+    /**
+     * @var NovasoftEmpleadoService
+     */
+    private $novasoftEmpleadoService;
 
     public function __construct(EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator,
-                                CsrfTokenManagerInterface $csrfTokenManager, UserPasswordEncoderInterface $passwordEncoder)
+                                CsrfTokenManagerInterface $csrfTokenManager, UserPasswordEncoderInterface $passwordEncoder,
+                                NovasoftEmpleadoService $novasoftEmpleadoService)
     {
         $this->entityManager = $entityManager;
         $this->urlGenerator = $urlGenerator;
         $this->csrfTokenManager = $csrfTokenManager;
         $this->passwordEncoder = $passwordEncoder;
+        $this->novasoftEmpleadoService = $novasoftEmpleadoService;
     }
 
     public function supports(Request $request)
@@ -69,8 +77,12 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         $user = $this->entityManager->getRepository(Usuario::class)->findOneBy(['identificacion' => $credentials['identificacion']]);
 
         if (!$user) {
-            // fail authentication with a custom error
-            throw new CustomUserMessageAuthenticationException('Identificacion no encontrada.');
+            if ($empleadoNovasoft = $this->novasoftEmpleadoService->updateEmpleado($credentials['identificacion'])) {
+                $user = $empleadoNovasoft->getUsuario();
+            } else {
+                // fail authentication with a custom error
+                throw new CustomUserMessageAuthenticationException('Identificacion no encontrada.');
+            }
         }
 
         return $user;
@@ -89,8 +101,11 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         }
         $isValid = $this->passwordEncoder->isPasswordValid($user, $password);
 
-        if($isValid && $user->getType() === 1) {
-            $this->updatePasswordToNewHash($user, $credentials['password']);
+        if($isValid) {
+            if($user->getType() === 1) {
+                $this->updatePasswordToNewHash($user, $credentials['password']);
+            }
+            $this->novasoftEmpleadoService->addRoleEmpleadoToUsuario($user);
         }
 
         return $isValid;

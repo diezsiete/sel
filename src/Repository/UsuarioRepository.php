@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Collections\Expr\Comparison;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\QueryBuilder;
+use PDO;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -60,6 +61,26 @@ class UsuarioRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('u');
         $qb->andWhere($qb->expr()->like('u.roles', "'%ROLE_SUPERADMIN%'"));
         return $qb->getQuery()->getOneOrNullResult();
+    }
+
+    /**
+     * @return Usuario[]
+     */
+    public function findEmpleados()
+    {
+        $qb = $this->createQueryBuilder('u');
+        $qb->andWhere($qb->expr()->like('u.roles', "'%ROLE_EMPLEADO%'"));
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @return string[]
+     */
+    public function findEmpleadosIdents()
+    {
+        $qb = $this->createQueryBuilder('u');
+        $qb->select('u.identificacion')->andWhere($qb->expr()->like('u.roles', "'%ROLE_EMPLEADO%'"));
+        return $qb->getQuery()->getResult('FETCH_COLUMN');
     }
 
 
