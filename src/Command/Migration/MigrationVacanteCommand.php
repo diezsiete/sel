@@ -18,7 +18,7 @@ class MigrationVacanteCommand extends MigrationCommand
 {
     use SelCommandTrait;
 
-    protected static $defaultName = 'migration:vacante';
+    protected static $defaultName = 'sel:migration:vacante';
 
     protected function configure()
     {
