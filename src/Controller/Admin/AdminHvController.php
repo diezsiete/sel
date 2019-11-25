@@ -54,7 +54,7 @@ class AdminHvController extends AbstractController
      */
     public function detalle(Hv $hv)
     {
-        return $this->render('hv_admin/detalle/detalle.html.twig', [
+        return $this->render('admin/hv/detalle/detalle.html.twig', [
             'hv' => $hv
         ]);
     }

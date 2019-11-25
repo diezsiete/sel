@@ -77,6 +77,10 @@ body #body.menu-open #menu-button:after {
         transition:all .3s ease-out;
     }
 
+    body #body:not(.menu-open) .pp-header+section.no-content {
+        padding-top: 40px;
+    }
+
     body #body.menu-open .pp-header+#main-alert {
         position: absolute;
         top: 130px;
@@ -91,6 +95,11 @@ body #body.menu-open #menu-button:after {
     body #body.menu-open .pp-header+section, body #body.menu-open .pp-header+section+.container, body #body.menu-open .pp-header+section+.container+footer{
         /*top: 160px;*/
         top: 60px;
+    }
+
+    body #body.menu-open .pp-header+section.no-content, body #body.menu-open .pp-header+section.no-content+.container, body #body.menu-open .pp-header+section.no-content+.container+footer{
+        /*top: 160px;*/
+        top: 0;
     }
 
     body #body.menu-open .pp-header+#main-alert+section, body #body.menu-open .pp-header+#main-alert+section+.container, body #body.menu-open .pp-header+#main-alert+section+.container+footer{

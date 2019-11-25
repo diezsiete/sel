@@ -1,0 +1,105 @@
+<div class="col-md-3">
+<div class="profile thumb-info mb-3">
+    {#                        <img src="{{ asset('img/!logged-user.jpg') }}" class="rounded img-fluid" alt="John Doe">#}
+    <div class="img-wrap rounded img-fluid"></div>
+    <div class="thumb-info-title">
+        <span class="thumb-info-inner">{{ hv.usuario.nombreCompleto }}</span>
+        <span class="thumb-info-type">
+            <span class="identificacion-tipo">{{ constant('App\\Constant\\HvConstant::IDENTIFICACION_TIPO')[hv.identificacionTipo] }}</span>
+            <br>
+            {{ hv.usuario.identificacion }}
+        </span>
+    </div>
+</div>
+</div>
+
+
+<div class="col-md-3">
+<h5 class="mb-2 mt-3">Identificación</h5>
+<p class="text-2">
+    <b>{{ constant('App\\Constant\\HvConstant::IDENTIFICACION_TIPO')[hv.identificacionTipo] }}</b> -
+    {{ hv.usuario.identificacion }}<br>
+    <b>De : </b>
+    {{ hv.identCiudad.nombre }}, {{ hv.identDpto }}, {{ hv.identPais }}
+</p>
+
+</div>
+
+<div class="col-md-3">
+<h5 class="mb-2 mt-3">Nacimiento ( {{  hv.nacimiento|ago }} )</h5>
+<p class="text-2">
+    {{ hv.nacimiento|date('Y-m-d') }}<br>
+    <b>De : </b>
+    {{ hv.identCiudad.nombre }}, {{ hv.identDpto }}, {{ hv.identPais }}
+</p>
+
+</div>
+
+<div class="col-md-3">
+<h5 class="mb-2 mt-3">Contacto</h5>
+<p class="text-2">
+    <b>Email : </b>{{ hv.usuario.email }}<br>
+    {% if hv.emailAlt %}
+        <b>Email Alt : </b> {{ hv.emailAlt }}<br>
+    {% endif %}
+    {% if hv.telefono %}
+        <b>Teléfono : </b> {{ hv.telefono }}<br>
+    {% endif %}
+    {% if hv.celular %}
+        <b>Celular : </b> {{ hv.celular }}
+    {% endif %}
+</p>
+</div>
+
+
+<div class="col-md-3">
+    <h5 class="mb-2 mt-3">Residencia</h5>
+    <p class="text-2">
+        {{ hv.resiCiudad.nombre }}, {{ hv.resiDpto }}, {{ hv.resiPais }}<br>
+        <b>Dirección : </b> {{ hv.direccion }} - {{ hv.barrio }}
+    </p>
+
+</div>
+
+<div class="col-md-3">
+<h5 class="mb-2 mt-3">Información Adicional</h5>
+<p class="text-2">
+    <b>Estado civil:</b> {{ constant('App\\Constant\\HvConstant::ESTADO_CIVIL')[hv.estadoCivil] }}<br>
+    <b>Grupo sanguineo</b> {{ hv.grupoSanguineo ~ " " ~ hv.factorRh }}<br>
+    <b>Nacionalidad</b> {{ constant('App\\Constant\\HvConstant::NACIONALIDAD')[hv.nacionalidad] }}<br>
+</p>
+</div>
+
+<div class="col-md-3">
+    <h5 class="mb-2 mt-3">Redes sociales</h5>
+    <ul class="simple-post-list">
+        {% for redSocial in hv.redesSociales %}
+            <li>
+                <div class="post-image">
+                    <div class="social-icons-list">
+                        <a rel="tooltip" data-placement="bottom" target="_blank" href="#"
+                           data-original-title="{{ constant('App\\Constant\\HvConstant::RED_SOCIAL')[redSocial.tipo] }}">
+                            <i class="{{ redesSocialesIcons[redSocial.tipo] }}"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="post-info">
+                    {{ redSocial.cuenta }}
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+
+<div class="col-md-3">
+    <h5 class="mb-2 mt-3">Hoja de vida</h5>
+    {% if hv.adjunto %}
+    <ul class="simple-card-list mb-3">
+        <li class="primary">
+            <a class="text-light" href="{{ path('hv_adjunto_download', {id: hv.id}) }}" target="_blank">
+                {{ hv.adjunto.originalFilename }}
+            </a>
+        </li>
+    </ul>
+    {% endif %}
+</div>

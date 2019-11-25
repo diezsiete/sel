@@ -9,27 +9,29 @@
 
     {{ include('default/_flash_messages.html.twig') }}
 
-    <section class="page-header page-header-modern page-header-sm">
-        <div class="container">
-            <div class="d-sm-flex">
-                <div class="order-2 order-md-1 align-self-center p-static">
-                    <h1 data-title-border class="text-dark">
-                        {% block body_header_title %}{% endblock %}
-                    </h1>
-                </div>
-                {#<div class="col-md-4 order-1 order-md-2 align-self-center">
-                    <ul class="breadcrumb d-block text-md-right">
-                        <li><a href="#">Home</a></li>
-                        <li class="active">Features</li>
-                    </ul>
-                </div>#}
-                <div class="order-1 order-md-2 align-self-center ml-auto">
-                    {% block body_header_right %}
-                    {% endblock %}
+    {% block body_header %}
+        <section class="page-header page-header-modern page-header-sm {% block body_header_class %}{% endblock %}">
+            <div class="container">
+                <div class="d-sm-flex">
+                    <div class="order-2 order-md-1 align-self-center p-static">
+                        <h1 data-title-border class="text-dark">
+                            {% block body_header_title %}{% endblock %}
+                        </h1>
+                    </div>
+                    {#<div class="col-md-4 order-1 order-md-2 align-self-center">
+                        <ul class="breadcrumb d-block text-md-right">
+                            <li><a href="#">Home</a></li>
+                            <li class="active">Features</li>
+                        </ul>
+                    </div>#}
+                    <div class="order-1 order-md-2 align-self-center ml-auto">
+                        {% block body_header_right %}
+                        {% endblock %}
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    {% endblock %}
 
     <div class="container pb-5">
         {% block body %}

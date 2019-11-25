@@ -3,26 +3,33 @@
 {% block title %}
     Hv - {{ hv.usuario.nombreCompleto(true) }}
 {% endblock %}
-{% block body_header_title %}
-    Hv - {{ hv.usuario.nombreCompleto(true) }}
-{% endblock %}
+{% block body_header_class %}no-content{% endblock %}
 
 {% set redesSocialesIcons = {
     1 : 'fab fa-skype', 2 : 'fab fa-twitter', 3: 'fab fa-facebook-f', 4: 'fab fa-whatsapp', 5: 'fab fa-linkedin-in'
 } %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('admin-hv') }}
+{% endblock %}
+
 {% block body %}
-    <div class="row">
-        <div class="col-lg-4 col-xl-3 mb-4 mb-xl-0">
+    <div class="row" id="hv-detalle">
+        <div id="basicos" class="col-xl-12 mb-4 mb-xl-4">
 
             <section class="card">
                 <div class="card-body">
-                    {{ include('hv_admin/detalle/_basicos.html.twig') }}
+                    <div class="row">
+                        {{ include('admin/hv/detalle/_basicos.html.twig') }}
+                    </div>
                 </div>
             </section>
 
         </div>
-        <div class="col-lg-8 col-xl-6">
+
+
+        <div class="col-xl-12">
 
             <div class="tabs">
                 <ul class="nav nav-tabs tabs-primary">
@@ -51,51 +58,23 @@
                 </ul>
                 <div class="tab-content">
                     <div id="estudios" class="tab-pane active">
-                        {{ include('hv_admin/detalle/_estudios.html.twig') }}
+                        {{ include('admin/hv/detalle/_estudios.html.twig') }}
                     </div>
                     <div id="experiencia" class="tab-pane">
-                        {{ include('hv_admin/detalle/_experiencia.html.twig') }}
+                        {{ include('admin/hv/detalle/_experiencia.html.twig') }}
                     </div>
                     <div id="referencias" class="tab-pane">
-                        {{ include('hv_admin/detalle/_referencias.html.twig') }}
+                        {{ include('admin/hv/detalle/_referencias.html.twig') }}
                     </div>
                     <div id="familiares" class="tab-pane">
-                        {{ include('hv_admin/detalle/_familiares.html.twig') }}
+                        {{ include('admin/hv/detalle/_familiares.html.twig') }}
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-xl-3">
-
-            {% if hv.adjunto %}
-                <h4 class="mb-3 mt-0">Hoja de vida</h4>
-                <ul class="simple-card-list mb-3">
-                    <li class="primary">
-                        <a class="text-light" href="{{ path('hv_adjunto_download', {id: hv.id}) }}" target="_blank">
-                            {{ hv.adjunto.originalFilename }}
-                        </a>
-                    </li>
-                </ul>
-            {% endif %}
-
-            <section class="card">
-                <header class="card-header">
-                    <div class="card-actions">
-                        <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
-                    </div>
-
-                    <h2 class="card-title">Redes sociales</h2>
-                </header>
-                <div class="card-body">
-                    {{ include('hv_admin/detalle/_redes.html.twig') }}
-                </div>
-            </section>
-
         </div>
 
     </div>
 
 {% endblock %}
-
 
 
