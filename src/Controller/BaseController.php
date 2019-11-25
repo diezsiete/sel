@@ -47,12 +47,18 @@ class BaseController extends AbstractController
      */
     protected function getErrorsFromForm(FormInterface $form)
     {
-        $errors = array();
+        $errors = [];
         foreach ($form->all() as $childForm) {
             if ($childForm instanceof FormInterface) {
                 foreach($childForm->getErrors() as $error) {
                     $errors[$childForm->getName()] = $error->getMessage();
                 }
+            }
+        }
+
+        if(!$errors) {
+            foreach($form->getErrors() as $error) {
+                $errors[$form->getName()] = $error->getMessage();
             }
         }
 

@@ -5,9 +5,16 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
+use App\Validator\Hv\HvChild as HvChildConstraint;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ExperienciaRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Hv\ExperienciaRepository")
+ * @HvChildConstraint(
+ *     rules={
+ *         {"uniqueFields": {"mb_strtoupper(empresa)", "area"}, "message"="No puede tener doble experiencia en la misma empresa y area"},
+ *         {"uniqueFields": {"mb_strtoupper(cargo)", "mb_strtoupper(empresa)"}, "message"="No puede tener el mismo cargo en la misma empresa dos veces"}
+ *     }
+ * )
  */
 class Experiencia implements HvEntity
 {

@@ -5,9 +5,14 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
+use App\Validator\Hv\HvChild as HvChildConstraint;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ViviendaRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Hv\ViviendaRepository")
+ * @HvChildConstraint(
+ *     message="No puede tener viviendas con dirección repetida",
+ *     uniqueFields={"strtolower(direccion)"}
+ * )
  */
 class Vivienda implements HvEntity
 {

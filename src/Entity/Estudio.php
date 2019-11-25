@@ -5,9 +5,14 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
+use App\Validator\Hv\HvChild as HvChildConstraint;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\EstudioRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Hv\EstudioRepository")
+ * @HvChildConstraint(
+ *     message="No puede tener dos estudios con la misma area en el mismo instituto",
+ *     uniqueFields={"codigo", "instituto"}
+ * )
  */
 class Estudio implements HvEntity
 {

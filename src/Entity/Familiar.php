@@ -5,9 +5,14 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
+use App\Validator\Hv\HvChild as HvChildConstraint;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\FamiliarRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Hv\FamiliarRepository")
+ * @HvChildConstraint(
+ *     message="No puede tener familiares con mismo nombre",
+ *     uniqueFields={"strtolower(primerApellido)", "strtolower(nombre)"}
+ * )
  */
 class Familiar implements HvEntity
 {

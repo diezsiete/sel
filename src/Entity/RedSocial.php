@@ -5,9 +5,14 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
+use App\Validator\Hv\HvChild as HvChildConstraint;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\RedSocialRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Hv\RedSocialRepository")
+ * @HvChildConstraint(
+ *     message="No puede tener mas de una red social del mismo tipo",
+ *     uniqueFields={"tipo"}
+ * )
  */
 class RedSocial implements HvEntity
 {

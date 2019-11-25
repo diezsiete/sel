@@ -5,9 +5,14 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
+use App\Validator\Hv\HvChild as HvChildConstraint;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\IdiomaRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Hv\IdiomaRepository")
+ * @HvChildConstraint(
+ *     message="No puede tener idiomas repetidos",
+ *     uniqueFields={"idiomaCodigo"}
+ * )
  */
 class Idioma implements HvEntity
 {
