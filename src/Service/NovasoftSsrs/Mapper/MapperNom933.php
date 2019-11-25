@@ -6,6 +6,7 @@ namespace App\Service\NovasoftSsrs\Mapper;
 use App\Entity\Empleado;
 use App\Entity\Usuario;
 use App\Service\NovasoftSsrs\Exception\InvalidMappedObject;
+use DateTime;
 
 class MapperNom933 extends Mapper
 {
@@ -81,6 +82,10 @@ class MapperNom933 extends Mapper
 
     protected function setFechaIngreso($fechaIngreso)
     {
+        // novasoft puede traer empleados con fecha ingreso vacia
+        if(!$fechaIngreso) {
+            throw new InvalidMappedObject("fecha ingreso vacia!!!");
+        }
         $this->targetObject->setFechaIngreso($this->filter->fechaFromNovasoft($fechaIngreso));
     }
 
