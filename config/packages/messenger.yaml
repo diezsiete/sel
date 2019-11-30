@@ -11,28 +11,26 @@ framework:
 
         transports:
             # https://symfony.com/doc/current/messenger.html#transport-configuration
-            async:
-                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
-                retry_strategy:
-                    max_retries: 0
-                    delay: 2000
+            #async:
+            #    dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+            #    retry_strategy:
+            #        max_retries: 0
+            #        delay: 2000
 
-            scraper:
+            scraper_hv:
                 dsn: 'scraper://default'
                 options:
-                    table_name: scraper_message
-                    auto_setup: false
-                serializer: 'App\Serializer\ScraperMessageSerializer'
+                    table_name: scraper_message_hv
+                serializer: 'App\Serializer\Scraper\HvMessageSerializer'
                 retry_strategy:
                     max_retries: 0
                     delay: 2000
-            scraper_success:
+            scraper_hv_success:
                 dsn: 'scraper://default'
                 options:
-                    table_name: scraper_message_success
-                    auto_setup: false
+                    table_name: scraper_message_hv_success
                     queue_name: success
-                serializer: 'App\Serializer\ScraperMessageSerializer'
+                serializer: 'App\Serializer\Scraper\HvMessageSerializer'
                 retry_strategy:
                     max_retries: 0
 
@@ -43,10 +41,10 @@ framework:
                     table_name: scraper_message
                     auto_setup: false
                     queue_name: failed
-                serializer: 'App\Serializer\ScraperMessageSerializer'
+                serializer: 'App\Serializer\Scraper\HvMessageSerializer'
             # sync: 'sync://'
 
         routing:
             # Route your messages to the transports
-            'App\Message\UploadToNovasoft': scraper
-            'App\Message\UploadToNovasoftSuccess': scraper_success
+            'App\Message\UploadToNovasoft': scraper_hv
+            'App\Message\UploadToNovasoftSuccess': scraper_hv_success

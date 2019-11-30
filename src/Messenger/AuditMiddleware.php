@@ -6,19 +6,11 @@ namespace App\Messenger;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Envelope;
-use Symfony\Component\Messenger\Exception\ValidationFailedException;
 use Symfony\Component\Messenger\Middleware\MiddlewareInterface;
 use Symfony\Component\Messenger\Middleware\StackInterface;
-use Symfony\Component\Messenger\Stamp\BusNameStamp;
-use Symfony\Component\Messenger\Stamp\DelayStamp;
 use Symfony\Component\Messenger\Stamp\ReceivedStamp;
-
-use Symfony\Component\Messenger\Stamp\RedeliveryStamp;
 use Symfony\Component\Messenger\Stamp\SentStamp;
-use Symfony\Component\Messenger\Stamp\SentToFailureTransportStamp;
 use Symfony\Component\Messenger\Stamp\TransportMessageIdStamp;
-use Symfony\Component\Messenger\Stamp\ValidationStamp;
-use Symfony\Component\Messenger\Transport\TransportInterface;
 
 class AuditMiddleware implements MiddlewareInterface
 {
@@ -27,15 +19,10 @@ class AuditMiddleware implements MiddlewareInterface
      * @var LoggerInterface
      */
     private $logger;
-    /**
-     * @var TransportInterface
-     */
-    private $transportScraper;
 
-    public function __construct(LoggerInterface $messengerAuditLogger, TransportInterface $transportScraper)
+    public function __construct(LoggerInterface $messengerAuditLogger)
     {
         $this->logger = $messengerAuditLogger;
-        $this->transportScraper = $transportScraper;
     }
 
     public function handle(Envelope $envelope, StackInterface $stack): Envelope

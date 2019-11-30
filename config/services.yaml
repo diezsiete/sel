@@ -22,7 +22,7 @@ services:
             $privateUploadsBaseUrl: '%private_uploads_base_url%'
             $messengerAuditLogger: '@monolog.logger.messenger_audit'
             $transportFailed : '@messenger.transport.failed'
-            $transportScraper : '@messenger.transport.scraper'
+            $transportScraperHv : '@messenger.transport.scraper_hv'
             $appEnv: '%env(APP_ENV)%'
 
             $migrationHvAdjuntoPath: '%env(MIGRATION_HV_ADJUNTO)%'

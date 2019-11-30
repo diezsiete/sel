@@ -57,13 +57,6 @@ class MessageSuperclassBase
     protected $deliveredAt;
 
     /**
-     * @var Hv|null
-     * @ORM\ManyToOne(targetEntity="App\Entity\Hv")
-     * @ORM\JoinColumn()
-     */
-    protected $hv;
-
-    /**
      * @return int
      */
     public function getId(): int
@@ -176,24 +169,6 @@ class MessageSuperclassBase
     public function setDeliveredAt(?DateTimeInterface $deliveredAt)
     {
         $this->deliveredAt = $deliveredAt;
-        return $this;
-    }
-
-    /**
-     * @return Hv|null
-     */
-    public function getHv(): ?Hv
-    {
-        return $this->hv;
-    }
-
-    /**
-     * @param Hv|null $hv
-     * @return $this
-     */
-    public function setHv(?Hv $hv)
-    {
-        $this->hv = $hv;
         return $this;
     }
 }

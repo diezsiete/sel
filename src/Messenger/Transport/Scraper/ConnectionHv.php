@@ -6,10 +6,22 @@ use Doctrine\DBAL\Connection as DBALConnection;
 use Doctrine\DBAL\Schema\Synchronizer\SchemaSynchronizer;
 use Throwable;
 
-class Connection extends \Symfony\Component\Messenger\Transport\Doctrine\Connection
+class ConnectionHv extends \Symfony\Component\Messenger\Transport\Doctrine\Connection
 {
     private $driverConnection;
     private $tableName;
+
+    private const DEFAULT_OPTIONS = [
+        'auto_setup' => false,
+    ];
+
+    public static function buildConfiguration($dsn, array $options = [])
+    {
+        $configuration = $options + self::DEFAULT_OPTIONS;
+        $configuration['auto_setup'] = filter_var($configuration['auto_setup'], FILTER_VALIDATE_BOOLEAN);
+        return parent::buildConfiguration($dsn, $configuration);
+    }
+
 
     public function __construct(array $configuration, DBALConnection $driverConnection, SchemaSynchronizer $schemaSynchronizer = null)
     {

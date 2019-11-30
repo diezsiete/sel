@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace App\Serializer;
+namespace App\Serializer\Scraper;
 
 
 use App\Message\UploadToNovasoft;
@@ -24,7 +24,7 @@ use Symfony\Component\Messenger\Transport\Serialization\PhpSerializer;
  *
  * @experimental in 4.3
  */
-class ScraperMessageSerializer extends PhpSerializer
+class HvMessageSerializer extends PhpSerializer
 {
     public function encode(Envelope $envelope): array
     {

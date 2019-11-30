@@ -7,7 +7,7 @@ namespace App\MessageHandler;
 use App\Entity\HvEntity;
 use App\Message\UploadToNovasoft;
 use App\Message\UploadToNovasoftSuccess;
-use App\Messenger\Transport\Scraper\ScraperTransport;
+use App\Messenger\Transport\Scraper\ScraperHvTransport;
 use App\Repository\HvRepository;
 use App\Service\Scraper\HvScraper;
 use Doctrine\ORM\EntityManagerInterface;
@@ -35,21 +35,16 @@ class UploadToNovasoftHandler implements MessageHandlerInterface, LoggerAwareInt
      */
     private $em;
     /**
-     * @var ScraperTransport
-     */
-    private $transportScraper;
-    /**
      * @var MessageBusInterface
      */
     private $messageBus;
 
     public function __construct(HvScraper $scraper, HvRepository $hvRepository, EntityManagerInterface $em,
-                                TransportInterface $transportScraper, MessageBusInterface $messageBus)
+                                MessageBusInterface $messageBus)
     {
         $this->scraper = $scraper;
         $this->hvRepository = $hvRepository;
         $this->em = $em;
-        $this->transportScraper = $transportScraper;
         $this->messageBus = $messageBus;
     }
 
@@ -77,14 +72,14 @@ class UploadToNovasoftHandler implements MessageHandlerInterface, LoggerAwareInt
                 if($hvChild) {
                     if ($uploadToNovasoft->getAction() === UploadToNovasoft::ACTION_CHILD_INSERT) {
                         $response = $this->scraper->insertChild($hvChild);
-                        dump($response);
+                        //dump($response);
                     } else {
-                        dump("UPDATE");
+                        //dump("UPDATE");
                         $this->scraper->updateChild($hvChild);
                     }
                 }
             } else {
-                dump("DELETE");
+                //dump("DELETE");
                 $this->scraper->deleteChild($hv, $uploadToNovasoft->getChildClass());
             }
         }

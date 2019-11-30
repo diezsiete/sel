@@ -24,7 +24,7 @@ class ScraperTransportFactory implements TransportFactoryInterface
     {
         unset($options['transport_name']);
         $dsn = str_replace('scraper', 'doctrine', $dsn);
-        $configuration = Connection::buildConfiguration($dsn, $options);
+        $configuration = ConnectionHv::buildConfiguration($dsn, $options);
 
         try {
             $driverConnection = $this->registry->getConnection($configuration['connection']);
@@ -32,9 +32,9 @@ class ScraperTransportFactory implements TransportFactoryInterface
             throw new TransportException(sprintf('Could not find Doctrine connection from Messenger DSN "%s".', $dsn), 0, $e);
         }
 
-        $connection = new Connection($configuration, $driverConnection);
+        $connection = new ConnectionHv($configuration, $driverConnection);
 
-        return new ScraperTransport($connection, $serializer);
+        return new ScraperHvTransport($connection, $serializer);
     }
 
     public function supports(string $dsn, array $options): bool

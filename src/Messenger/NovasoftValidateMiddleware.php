@@ -5,7 +5,7 @@ namespace App\Messenger;
 
 
 use App\Message\UploadToNovasoft;
-use App\Messenger\Transport\Scraper\ScraperTransport;
+use App\Messenger\Transport\Scraper\ScraperHvTransport;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Middleware\MiddlewareInterface;
@@ -26,14 +26,14 @@ class NovasoftValidateMiddleware implements MiddlewareInterface
      */
     private $logger;
     /**
-     * @var ScraperTransport
+     * @var ScraperHvTransport
      */
     private $transportScraper;
 
-    public function __construct(LoggerInterface $messengerAuditLogger, TransportInterface $transportScraper)
+    public function __construct(LoggerInterface $messengerAuditLogger, TransportInterface $transportScraperHv)
     {
         $this->logger = $messengerAuditLogger;
-        $this->transportScraper = $transportScraper;
+        $this->transportScraper = $transportScraperHv;
     }
 
     public function handle(Envelope $envelope, StackInterface $stack): Envelope
