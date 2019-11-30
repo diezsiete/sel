@@ -77,8 +77,7 @@ class HvController extends BaseController
 
             // si el usuario ya esta registrado
             if($hv->getUsuario()) {
-                //$messageBus->dispatch(new UploadToNovasoft($hv->getId()));
-                $messageBus->dispatch(new UploadToNovasoftSuccess($hv->getId()));
+                $messageBus->dispatch(new UploadToNovasoft($hv->getId()));
             }
 
             $this->addFlash('success', "Datos guardados exitosamente");

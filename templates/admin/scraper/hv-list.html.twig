@@ -1,0 +1,36 @@
+{% extends 'datatable/base.datatable.html.twig' %}
+
+{% block title %}
+    Messages Hv
+{% endblock %}
+
+{% block body_header_title %}
+    Messages Hv
+{% endblock %}
+
+{% block body_header_right %}
+    <ul class="u-list-inline">
+        <li class="list-inline-item">
+            <div class="btn-group" role="group" aria-label="Basic example">
+                <a class="btn btn-primary{{ queue is same as('error') ? ' active' : '' }}"
+                   href="{{ path('admin_scraper_hv_list') }}">
+                    Error
+                </a>
+                <a class="btn btn-primary{{ queue is same as('success') ? ' active' : '' }}"
+                   href="{{ path('admin_scraper_hv_list', {queue: 'success'}) }}">
+                    Success
+                </a>
+                <a class="btn btn-primary{{ queue is same as('default') ? ' active' : '' }}"
+                   href="{{ path('admin_scraper_hv_list', {queue: 'default'}) }}">
+                    Default
+                </a>
+            </div>
+        </li>
+        <li class="list-inline-item mr-4">
+            {{ parent() }}
+        </li>
+    </ul>
+{% endblock %}
+
+
+

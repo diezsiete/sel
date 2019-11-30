@@ -4,9 +4,10 @@ namespace App\Messenger\Transport\Scraper;
 
 use Doctrine\DBAL\Connection as DBALConnection;
 use Doctrine\DBAL\Schema\Synchronizer\SchemaSynchronizer;
+use Symfony\Component\Messenger\Transport\Doctrine\Connection;
 use Throwable;
 
-class ConnectionHv extends \Symfony\Component\Messenger\Transport\Doctrine\Connection
+class ConnectionHv extends Connection
 {
     private $driverConnection;
     private $tableName;
