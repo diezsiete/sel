@@ -1,6 +1,12 @@
 app:
   scraper:
-    url: http://localhost:8667
+    url: http://localhost:8666
+    novasoft:
+      conexion: '%env(lowercase:EMPRESA)%'
+    ael:
+      user: '%env(empresa:SCRAPER_AEL_USER)%'
+      password: '%env(empresa:SCRAPER_AEL_PASSWORD)%'
+      empleador: '%env(lowercase:EMPRESA)%'
 
   sel_routes:
       ignore: [
@@ -72,12 +78,6 @@ app:
           route: registro_cuenta
           titulo: Cuenta
 
-      scraper:
-        ael:
-          user: '%env(empresa:SCRAPER_AEL_USER)%'
-          password: '%env(empresa:SCRAPER_AEL_PASSWORD)%'
-          empleador: pta
-
     SERVILABOR:
       host: '%env(HOST_SERVILABOR)%'
       razon: SERVILABOR S.A.S
@@ -118,10 +118,3 @@ app:
           tel: 4140077
           web:
           logo_pdf: /img/sel/logo-universal.png
-
-
-      scraper:
-        ael:
-          user: '%env(empresa:SCRAPER_AEL_USER)%'
-          password: '%env(empresa:SCRAPER_AEL_PASSWORD)%'
-          empleador: servilabor

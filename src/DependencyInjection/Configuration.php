@@ -12,7 +12,7 @@ class Configuration implements ConfigurationInterface
     /**
      * Generates the configuration tree builder.
      *
-     * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder The tree builder
+     * @return TreeBuilder The tree builder
      */
     public function getConfigTreeBuilder()
     {
@@ -48,7 +48,6 @@ class Configuration implements ConfigurationInterface
                         ->append($this->addEmailsNode())
                         ->append($this->addOficinasNode())
                         ->append($this->addHvWizardRoutes())
-                        ->append($this->addScraperEmpresaNode())
                         ->append($this->addDocumentosLaborales())
                         ->append($this->addCompaniasNode())
                     ->end()
@@ -143,6 +142,18 @@ class Configuration implements ConfigurationInterface
             $treeBuilder->getRootNode()
                 ->children()
                     ->scalarNode('url')->end()
+                    ->arrayNode('novasoft')
+                        ->children()
+                            ->scalarNode('conexion')->end()
+                        ->end()
+                    ->end()
+                    ->arrayNode('ael')
+                        ->children()
+                            ->scalarNode('user')->end()
+                            ->scalarNode('password')->end()
+                            ->scalarNode('empleador')->end()
+                        ->end()
+                    ->end()
                 ->end();
         return $node;
     }
@@ -162,22 +173,6 @@ class Configuration implements ConfigurationInterface
         return $node;
     }
 
-    protected function addScraperEmpresaNode()
-    {
-        $treeBuilder = new TreeBuilder('scraper');
-        $node =
-            $treeBuilder->getRootNode()
-                ->children()
-                    ->arrayNode('ael')
-                        ->children()
-                            ->scalarNode('user')->end()
-                            ->scalarNode('password')->end()
-                            ->scalarNode('empleador')->end()
-                        ->end()
-                    ->end()
-                ->end();
-        return $node;
-    }
 
     protected function addDocumentosLaborales()
     {

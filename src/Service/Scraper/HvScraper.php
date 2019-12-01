@@ -3,17 +3,13 @@
 
 namespace App\Service\Scraper;
 
-
-use App\Entity\Hv;
-use App\Entity\HvEntity;
-use App\Entity\ScraperProcess;
+use App\Service\Configuracion\Configuracion;
+use App\Service\Scraper\Exception\ScraperClientException;
+use App\Service\Scraper\Exception\ScraperConflictException;
+use App\Service\Scraper\Exception\ScraperException;
 use App\Service\Scraper\Exception\ScraperNotFoundException;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping\ClassMetadataInfo;
-use Exception;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-
+use App\Service\Scraper\Exception\ScraperTimeoutException;
+use App\Service\Scraper\Response\ScraperResponse;
 
 /**
  * Class HvScrapper
@@ -21,107 +17,104 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class HvScraper
 {
-    /**
-     * @var NormalizerInterface
-     */
-    private $normalizer;
 
     /**
      * @var ScraperClient
      */
     private $scraperClient;
+
     /**
-     * @var EntityManagerInterface
+     * @var Configuracion
      */
-    private $em;
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
+    private $configuracion;
 
 
-    public function __construct(NormalizerInterface $normalizer, LoggerInterface $logger,
-                                ScraperClient $scraperClient, EntityManagerInterface $em)
+    public function __construct(Configuracion $configuracion, ScraperClient $scraperClient)
     {
-        $this->normalizer = $normalizer;
         $this->scraperClient = $scraperClient;
-        $this->em = $em;
-        $this->logger = $logger;
+        $this->configuracion = $configuracion;
     }
 
-    public function __call($name, $arguments)
+
+    /**
+     * @param array $data
+     * @return ScraperResponse
+     * @throws ScraperException
+     * @throws ScraperTimeoutException
+     * @throws ScraperClientException
+     * @throws ScraperConflictException
+     * @throws ScraperNotFoundException
+     */
+    public function putHv($data)
     {
-        try {
-            if(method_exists($this, "__$name")) {
-                /** @var HvEntity $hvEntity */
-                $hvEntity = $arguments[0];
-                $response = call_user_func_array([$this, "__$name"], $arguments);
-
-                if (isset($response['id'])) {
-                    $process = new ScraperProcess($response['id'], $response['estado'], $response['porcentaje'], $hvEntity->getHv()->getUsuario());
-                    $this->em->persist($process);
-                    $this->em->flush();
-                    $this->logger->info("process " . $response['id'] . " received and stored");
-                } else {
-                    $this->logger->info($response['message']);
-                }
-            } else {
-                throw new Exception("method '__$name' doesn't exists");
-            }
-        } catch (Exception $e) {
-            throw $e;
-            // $this->logger->error($e->getMessage());
-        }
+        return $this->scraperClient->put($this->getFullUrl('datos-basicos'), $data, ['timeout' => 120]);
     }
 
-    public function putHv(Hv $hv)
+    /**
+     * @param array $data
+     * @return ScraperResponse
+     * @throws ScraperClientException
+     * @throws ScraperConflictException
+     * @throws ScraperException
+     * @throws ScraperNotFoundException
+     * @throws ScraperTimeoutException
+     */
+    public function postHv($data)
     {
-        $data = $this->normalizer->normalize($hv, null, [
-            'groups' => ['scraper-hv']
-        ]);
-        return $this->scraperClient->put('/novasoft/hv/datos-basicos', $data);
+        return $this->scraperClient->post($this->getFullUrl('hv'), $data, ['timeout' => 240]);
     }
 
-    public function postHv(Hv $hv)
+    /**
+     * @param array $data
+     * @return ScraperResponse
+     * @throws ScraperClientException
+     * @throws ScraperConflictException
+     * @throws ScraperException
+     * @throws ScraperNotFoundException
+     * @throws ScraperTimeoutException
+     */
+    public function insertChild($data)
     {
-        $data = $this->normalizer->normalize($hv, null, [
-            'groups' => ['scraper']
-        ]);
-
-        return $this->scraperClient->post('/novasoft/hv', $data, [
-            'timeout' => 180
-        ]);
-
+        return $this->scraperClient->post($this->getFullUrl('child'), $data, ['timeout' => 80]);
     }
 
-    public function insertChild(HvEntity $hvEntity)
+    /**
+     * @param array $data
+     * @return ScraperResponse
+     * @throws ScraperClientException
+     * @throws ScraperConflictException
+     * @throws ScraperException
+     * @throws ScraperNotFoundException
+     * @throws ScraperTimeoutException
+     */
+    public function updateChild($data)
     {
-        $data = $this->normalizer->normalize($hvEntity->getHv(), null, [
-            'groups' => ['scraper-hv-child'], 'scraper-hv-child' => $hvEntity]);
-        try {
-            return $this->scraperClient->post('/novasoft/hv/child', $data);
-        } catch (ScraperNotFoundException $e) {
-            return $this->postHv($hvEntity->getHv());
-        }
+        return $this->scraperClient->put($this->getFullUrl('child'), $data, ['timeout' => 60]);
+
+
     }
 
-    public function updateChild(HvEntity $hvEntity)
+    /**
+     * @param $data
+     * @return ScraperResponse
+     * @throws ScraperClientException
+     * @throws ScraperConflictException
+     * @throws ScraperException
+     * @throws ScraperNotFoundException
+     * @throws ScraperTimeoutException
+     */
+    public function deleteChild($data)
     {
-        $data = $this->normalizer->normalize($hvEntity->getHv(), null, [
-            'groups' => ['scraper-hv-child'], 'scraper-hv-child' => get_class($hvEntity)]);
-        try {
-            return $this->scraperClient->put('/novasoft/hv/child', $data);
-        } catch (ScraperNotFoundException $e) {
-            return $this->postHv($hvEntity->getHv());
-        }
-
+        return $this->scraperClient->put($this->getFullUrl('child'), $data, ['timeout' => 80]);
     }
 
-    public function deleteChild(Hv $hv, string $childClass)
-    {
-        $data = $this->normalizer->normalize($hv, null, [
-            'groups' => ['scraper-hv-child'], 'scraper-hv-child' => $childClass]);
-        return $this->scraperClient->put('/novasoft/hv/child', $data);
+    /**
+     * @param string $url
+     * @param bool $hvPrefix
+     * @return string
+     */
+    private function getFullUrl(string $url, bool $hvPrefix = true) {
+        return '/novasoft/' . $this->configuracion->getScraper()->getNovasoft()->getConexion()
+            . ($hvPrefix ? '/hv' : '') . '/' . $url;
     }
-    
 }

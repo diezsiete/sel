@@ -12,8 +12,8 @@
 namespace App\Serializer\Scraper;
 
 
-use App\Message\UploadToNovasoft;
-use App\Message\UploadToNovasoftSuccess;
+use App\Message\Scraper\UpdateHvInNovasoft;
+use App\Message\Scraper\UpdateHvInNovasoftSuccess;
 use App\Messenger\HvIdStamp;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Stamp\RedeliveryStamp;
@@ -28,9 +28,9 @@ class HvMessageSerializer extends PhpSerializer
 {
     public function encode(Envelope $envelope): array
     {
-        /** @var UploadToNovasoft|UploadToNovasoftSuccess|object $message */
+        /** @var UpdateHvInNovasoft|UpdateHvInNovasoftSuccess|object $message */
         $message = $envelope->getMessage();
-        if(($message instanceof UploadToNovasoft || $message instanceof UploadToNovasoftSuccess)
+        if(($message instanceof UpdateHvInNovasoft || $message instanceof UpdateHvInNovasoftSuccess)
             && (null === $envelope->last(HvIdStamp::class) || $envelope->last(RedeliveryStamp::class))){
             $envelope = $envelope->with(new HvIdStamp($message->getHvId()));
 

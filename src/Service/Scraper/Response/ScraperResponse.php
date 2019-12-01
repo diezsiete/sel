@@ -9,6 +9,7 @@ class ScraperResponse
     private $ok = false;
     private $message = "";
     private $code = 200;
+    private $log = "";
 
     /**
      * ScrapperResponse constructor.
@@ -74,6 +75,22 @@ class ScraperResponse
     public function setCode($code)
     {
         $this->code = $code;
+        return $this;
+    }
+
+
+    public function getLog()
+    {
+        return $this->log;
+    }
+
+    /**
+     * @param $log
+     * @return ScraperResponse
+     */
+    public function setLog($log): ScraperResponse
+    {
+        $this->log = $log;
         return $this;
     }
 }

@@ -93,11 +93,6 @@ services:
     App\Service\Pdf\PdfCartaLaboralServilabor:
         public: true
 
-    App\Service\Scraper\HvScraper:
-        arguments:
-            $logger: '@monolog.logger.scraper'
-
-
 
     Knp\Menu\Twig\MenuExtension:
         alias: knp_menu.twig.extension

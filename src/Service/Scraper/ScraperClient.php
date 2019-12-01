@@ -86,7 +86,8 @@ class ScraperClient
     /**
      * @param string $url
      * @param $jsonData
-     * @return mixed
+     * @param array $options
+     * @return ScraperResponse
      * @throws ScraperClientException
      * @throws ScraperConflictException
      * @throws ScraperException
@@ -95,25 +96,25 @@ class ScraperClient
      */
     public function post(string $url, $jsonData, $options = [])
     {
-        $options = ['json' => $jsonData] + $options;
-        $response = $this->request('POST', $url, $options);
+        $response = $this->request('POST', $url, ['json' => $jsonData] + $options);
         return $this->responseManager->handleResponse($response, ScraperResponse::class);
     }
 
     /**
      * @param string $url
      * @param $data
-     * @return mixed
+     * @param array $options
+     * @return ScraperResponse
      * @throws ScraperClientException
      * @throws ScraperConflictException
      * @throws ScraperException
      * @throws ScraperNotFoundException
      * @throws ScraperTimeoutException
      */
-    public function put(string $url, $data)
+    public function put(string $url, $data, $options = [])
     {
-        $response = $this->request('PUT', $url, ['json' => $data]);
-        return $this->responseManager->handleResponse($response);
+        $response = $this->request('PUT', $url, ['json' => $data] + $options);
+        return $this->responseManager->handleResponse($response, ScraperResponse::class);
     }
 
     /**
@@ -161,6 +162,6 @@ class ScraperClient
 
     private function getFullUrl($url)
     {
-        return $this->configuracion->getScraper()->url . $url;
+        return $this->configuracion->getScraper()->getUrl() . $url;
     }
 }

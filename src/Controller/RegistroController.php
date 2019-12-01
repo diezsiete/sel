@@ -14,14 +14,13 @@ use App\Form\FamiliarFormType;
 use App\Form\HvFormType;
 use App\Form\Model\HvDatosBasicosModel;
 use App\Form\ReferenciaFormType;
-use App\Message\UploadToNovasoft;
 use App\Security\LoginFormAuthenticator;
 use App\Service\Hv\HvWizard\HvWizard;
+use App\Service\Scraper\ScraperMessenger;
 use Omines\DataTablesBundle\DataTableFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
@@ -125,7 +124,7 @@ class RegistroController extends AbstractController
     /**
      * @Route("/registro/cuenta", name="registro_cuenta")
      */
-    public function cuenta(Request $request, UserPasswordEncoderInterface $passwordEncoder, MessageBusInterface $messageBus,
+    public function cuenta(Request $request, UserPasswordEncoderInterface $passwordEncoder, ScraperMessenger $scraperMessenger,
                            GuardAuthenticatorHandler $guard, LoginFormAuthenticator $formAuthenticator)
     {
         if($routeInvalid = $this->hvWizard->validatePrevStepsValid()) {
@@ -153,7 +152,7 @@ class RegistroController extends AbstractController
 
             $this->addFlash('success', "Registrado exitosamente!");
 
-            $messageBus->dispatch(new UploadToNovasoft($hv->getId(),UploadToNovasoft::ACTION_INSERT));
+            $scraperMessenger->insertToNovasoft($hv);
 
             $this->hvWizard->clearSession();
             return $guard->authenticateUserAndHandleSuccess($usuario, $request, $formAuthenticator, 'main');

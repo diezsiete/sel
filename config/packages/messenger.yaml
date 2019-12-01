@@ -3,19 +3,19 @@ framework:
         buses:
             messenger.bus.default:
                 middleware:
-                    - App\Messenger\AuditMiddleware
                     - App\Messenger\NovasoftValidateMiddleware
+                    - App\Messenger\ScraperResponseMiddleware
 
         # Uncomment this (and the failed transport below) to send failed messages to this transport for later handling.
         failure_transport: failed
 
         transports:
             # https://symfony.com/doc/current/messenger.html#transport-configuration
-            #async:
-            #    dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
-            #    retry_strategy:
-            #        max_retries: 0
-            #        delay: 2000
+            async:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                retry_strategy:
+                    max_retries: 0
+                    delay: 2000
 
             scraper_hv:
                 dsn: 'scraper://default'
@@ -38,7 +38,7 @@ framework:
             failed:
                 dsn: 'scraper://default'
                 options:
-                    table_name: scraper_message
+                    table_name: scraper_message_hv
                     auto_setup: false
                     queue_name: failed
                 serializer: 'App\Serializer\Scraper\HvMessageSerializer'
@@ -46,5 +46,6 @@ framework:
 
         routing:
             # Route your messages to the transports
-            'App\Message\UploadToNovasoft': scraper_hv
-            'App\Message\UploadToNovasoftSuccess': scraper_hv_success
+            'App\Message\Scraper\UpdateHvInNovasoft': scraper_hv
+            'App\Message\Scraper\UpdateHvInNovasoftSuccess': scraper_hv_success
+            'App\Message\Scraper\UpdateResponseReceived': async

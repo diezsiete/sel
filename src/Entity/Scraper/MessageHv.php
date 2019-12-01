@@ -24,6 +24,12 @@ class MessageHv extends MessageSuperclassBase
     protected $hv;
 
     /**
+     * @var string
+     * @ORM\Column(type="text", nullable=true)
+     */
+    protected $log;
+
+    /**
      * @return Hv|null
      */
     public function getHv(): ?Hv
@@ -38,6 +44,24 @@ class MessageHv extends MessageSuperclassBase
     public function setHv(?Hv $hv)
     {
         $this->hv = $hv;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLog(): string
+    {
+        return $this->log;
+    }
+
+    /**
+     * @param string $log
+     * @return MessageHv
+     */
+    public function setLog(string $log): MessageHv
+    {
+        $this->log = $log;
         return $this;
     }
 }

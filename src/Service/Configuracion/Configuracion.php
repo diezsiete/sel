@@ -5,6 +5,7 @@
 namespace App\Service\Configuracion;
 
 
+use App\Service\Configuracion\Scraper\ScraperConfiguracion;
 use App\Service\Hv\HvWizard\HvWizardRoute;
 use Exception;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
@@ -208,13 +209,13 @@ class Configuracion
         return $this->hvWizardRoutes;
     }
 
+    /**
+     * @return ScraperConfiguracion
+     */
     public function getScraper()
     {
         if(!$this->scraper) {
-            $this->scraper = new ScraperConfiguracion(
-                $this->bag->get('scraper'),
-                $this->parameters['scraper']
-            );
+            $this->scraper = new ScraperConfiguracion($this->bag->get('scraper'));
         }
         return $this->scraper;
     }

@@ -4,7 +4,7 @@
 namespace App\Messenger;
 
 
-use App\Message\UploadToNovasoft;
+use App\Message\Scraper\UpdateHvInNovasoft;
 use App\Messenger\Transport\Scraper\ScraperHvTransport;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Envelope;
@@ -39,19 +39,17 @@ class NovasoftValidateMiddleware implements MiddlewareInterface
     public function handle(Envelope $envelope, StackInterface $stack): Envelope
     {
         $message = $envelope->getMessage();
-        if($message instanceof UploadToNovasoft) {
+        if($message instanceof UpdateHvInNovasoft) {
             if(null === $envelope->last(SentToFailureTransportStamp::class)) {
-                /** @var UniqueIdStamp $stamp */
-                $stamp = $envelope->last(UniqueIdStamp::class);
                 $hasPreviousFailed = $this->transportScraper->hvIdHasFailed($message->getHvId());
 
-                $context = ['id' => $stamp->getUniqueId(), 'class' => get_class($message), 'hasPreviousFailed' => $hasPreviousFailed];
+                $context = ['class' => get_class($message), 'hasPreviousFailed' => $hasPreviousFailed];
 
                 if($hasPreviousFailed) {
                     $envelope = $this->envelopeToFailureTransport($envelope);
                 }
 
-                $this->logger->info('[{id}] {class} Not failed, hasPreviousFailed: {hasPreviousFailed} ', $context);
+                $this->logger->info('{class} Not failed, hasPreviousFailed: {hasPreviousFailed} ', $context);
             }
         }
 

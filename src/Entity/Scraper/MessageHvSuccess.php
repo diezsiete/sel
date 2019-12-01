@@ -25,6 +25,12 @@ class MessageHvSuccess extends MessageSuperclassBase
     protected $hv;
 
     /**
+     * @var string
+     * @ORM\Column(type="text", nullable=true)
+     */
+    protected $log;
+
+    /**
      * @return Hv|null
      */
     public function getHv(): ?Hv
@@ -41,4 +47,24 @@ class MessageHvSuccess extends MessageSuperclassBase
         $this->hv = $hv;
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function getLog(): string
+    {
+        return $this->log;
+    }
+
+    /**
+     * @param string $log
+     * @return MessageHvSuccess
+     */
+    public function setLog(string $log): MessageHvSuccess
+    {
+        $this->log = $log;
+        return $this;
+    }
+
+
 }
