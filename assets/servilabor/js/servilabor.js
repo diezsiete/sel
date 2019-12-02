@@ -10,8 +10,10 @@ import './theme/hs.core'
 import './theme/components/hs.header'
 import './theme/helpers/hs.hamburgers'
 
-import './theme/plugin/hs-megamenu/src/hs.megamenu.css'
-import './theme/plugin/hs-megamenu/src/hs.megamenu.js'
+import './../vendor/hs-megamenu/src/hs.megamenu.css'
+import './../vendor/hs-megamenu/src/hs.megamenu.js'
+import './../vendor/dzsparallaxer/dzsparallaxer.scss';
+import './../vendor/dzsparallaxer/dzsparallaxer.js';
 
 $(document).on('ready', function () {
     // initialization of carousel

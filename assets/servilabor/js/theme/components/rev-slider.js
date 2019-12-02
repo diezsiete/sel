@@ -1,4 +1,4 @@
-import './../plugin/rs-plugin/css/settings.css'
+import './../../../vendor/rs-plugin/css/settings.css'
 
 import $ from "jquery";
 
