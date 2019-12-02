@@ -43,7 +43,7 @@ module.exports = function(encore) {
         .addEntry('nosotros', './assets/pta/js/nosotros.js')
         .addEntry('blog', './assets/pta/js/blog.js')
         .addEntry('contacto', './assets/pta/js/contacto.js')
-        .addEntry('admin', './assets/pta/js/admin.js')
+        .addEntry('admin-pta', './assets/pta/js/admin.js')
         .addStyleEntry('induccion-pta', './assets/pta/css/evaluacion.scss')
         .enableSassLoader(options => {
             options.functions = {

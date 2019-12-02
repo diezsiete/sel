@@ -2,7 +2,7 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('css/sel/base.css') }}">
+    {{ encore_entry_link_tags('admin') }}
 {% endblock %}
 
 

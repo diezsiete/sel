@@ -1,0 +1,40 @@
+<div class="row">
+    <div class="col d-none d-md-block">
+        <div class="row process process-connecting-line my-1">
+            <div class="connecting-line"></div>
+            {% set routes = hvWizard.routes.routes %}
+            {% set col = 12 % routes|length == 0 ? 12 / routes|length : 2 %}
+            {% set firstInvalid = true %}
+
+            {% for route in routes %}
+                {% set current = loop.index0 == hvWizard.step %}
+                {% if route.valid or firstInvalid %}
+                    {% if not route.valid %}
+                        {% set firstInvalid = false %}
+                    {% endif %}
+                    <a href="{{ path(route.route, route.parameters) }}"
+                       class="process-step col-md-{{ col }} {{ (current ? 'current' : 'valid') ~ ' ' ~ route.key }}">
+                        <div class="process-step-circle">
+                            <strong class="process-step-circle-content">
+                                {{ current or not firstInvalid ? loop.index  : '<i class="fas fa-check"></i>'}}
+                            </strong>
+                        </div>
+                        <div class="process-step-content">
+                            <h4 class="mb-1 text-4 font-weight-bold">{{ route.titulo }}</h4>
+                        </div>
+                    </a>
+                {% else %}
+                    <div class="process-step col-md-{{ col }} {{ current ? 'current' : 'disabled' }} ">
+                        <div class="process-step-circle">
+                            <strong class="process-step-circle-content">{{ loop.index }}</strong>
+                        </div>
+                        <div class="process-step-content">
+                            <h4 class="mb-1 text-4 font-weight-bold">{{ route.titulo }}</h4>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+    </div>
+</div>

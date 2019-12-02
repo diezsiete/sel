@@ -202,7 +202,7 @@ class Configuracion
     {
         if(!$this->hvWizardRoutes) {
             $this->hvWizardRoutes = [];
-            foreach($this->parameters['hv_wizard_routes'] as $key => $routeData) {
+            foreach($this->bag->get('hv_wizard_routes') as $key => $routeData) {
                 $this->hvWizardRoutes[] = new HvWizardRoute($key, $routeData['route'], $routeData['titulo']);
             }
         }

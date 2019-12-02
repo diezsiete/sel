@@ -153,9 +153,7 @@
   -webkit-box-align: start;
   -ms-flex-align: start;
   align-items: flex-start;
-  padding-right: 48px;
   padding-right: 3rem;
-  padding-left: 48px;
   padding-left: 3rem;
 }
 
@@ -168,4 +166,60 @@
   width: 50px;
   height: 50px;
   border: 3px solid #CCC;
+}
+
+
+.process .process-step-circle {
+  border-color: #3f317d;
+}
+
+.process .process-step:hover .process-step-circle {
+  background-color: #3f317d;
+}
+
+.process .process-step:hover .process-step-circle .process-step-circle-content {
+  color: #FFF !important;
+}
+
+.process-connecting-line .connecting-line {
+  background: #3f317d;
+}
+
+
+.process-connecting-line .process-step{
+  align-items: center;
+}
+.process .process-step-circle{
+  border-color: #CCC;
+}
+.process-connecting-line .connecting-line{
+  background: #CCC;
+}
+
+
+.process .process-step.disabled {
+  pointer-events: none;
+}
+
+.process .process-step.current a:hover .process-step-circle-content {
+  text-decoration: none;
+}
+
+.process .process-step.current .process-step-circle {
+  background-color: #3f317d;
+  border-color: #3f317d;
+}
+.process .process-step.current .process-step-circle-content {
+  color: white;
+}
+.process .process-step.valid .process-step-circle {
+  background-color: #2baab1;
+  border-color: #2baab1;
+}
+.process .process-step.valid .process-step-circle-content {
+  color: white;
+}
+
+.process .process-step.disabled {
+  pointer-events: none;
 }

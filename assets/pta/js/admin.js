@@ -1,11 +1,9 @@
-import '../../sel/css/base.scss';
-import '../css/admin.scss';
-import themeVars from './theme-vars';
+// TODO este estilo de maginific popup no se si será necesario
 import '../css/theme/elements/_magnific-popup.scss';
+import '../../sel/js/admin';
+import themeVars from './theme-vars';
 
 import $ from 'jquery';
-import 'magnific-popup';
-import 'magnific-popup/dist/magnific-popup.css';
 
 $(function () {
 

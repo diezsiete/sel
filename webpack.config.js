@@ -1,5 +1,5 @@
-var Encore = require('@symfony/webpack-encore');
-var dotenv = require('dotenv').config({ path: '.env.local' });
+const Encore = require('@symfony/webpack-encore');
+const dotenv = require('dotenv').config({ path: '.env.local' });
 
 // Manually configure the runtime environment if not already configured yet by the "encore" command.
 // It's useful when you use tools that rely on webpack.config.js file.
@@ -36,6 +36,7 @@ Encore
     .addEntry('hv', './assets/sel/js/hv.js')
     .addEntry('hv-entity', './assets/sel/js/hv-entity.js')
     .addEntry('hv-adjunto', './assets/sel/js/hv-adjunto.js')
+    .addEntry('admin', './assets/sel/js/admin.js')
     .addEntry('admin-vacante-form', './assets/sel/js/page/admin/vacante/vacante-form.js')
     .addEntry('admin-hv', './assets/sel/js/page/admin/hv/admin-hv.js')
     //.addEntry('page1', './assets/js/page1.js')

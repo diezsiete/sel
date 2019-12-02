@@ -5,6 +5,8 @@ import 'jquery.maskedinput';
 import Routing from './router';
 import './component/datepicker';
 
+import './../css/registro.scss';
+
 $(function () {
     $(".chosen").chosen();
 
