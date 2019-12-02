@@ -2,8 +2,7 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('css/sel/evaluacion/evaluacion.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/sel/evaluacion/' ~ evaluacion.slug ~ '.css') }}">
+    {{ encore_entry_link_tags(evaluacion.slug) }}
     <style>
         .g-py-10 {
             padding-bottom: 0.71429rem !important;
