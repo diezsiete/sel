@@ -66,12 +66,12 @@ app:
       web: www.servilabor.com.co
       mail: info@servilabor.com.co
       tel: 300 31 13
-      logo: /img/sel/logo-servilabor.png
-      logo_pdf: /img/sel/logo-servilabor-pdf.png
+      logo: /build/images/sel/logo-servilabor.png
+      logo_pdf: /build/images/sel/logo-servilabor-pdf.png
       home_route: servilabor_inicio
 
       certificado_laboral:
-        firma: /img/sel/firma-certificado-laboral-servilabor.png
+        firma: /build/images/sel/firma-certificado-laboral-servilabor.png
         firmante: SERGIO INVERNON RAMOS
         firmante_cargo: Gerente General
         firmante_contacto: PBX 300 31 13
@@ -97,7 +97,7 @@ app:
           dir: CALLE 103 Nº 21-60
           tel: 4140077
           web:
-          logo_pdf: /img/sel/logo-universal.png
+          logo_pdf: /build/images/sel/logo-universal.png
 
   # TODO borar
   hv_wizard_routes:
