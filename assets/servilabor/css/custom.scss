@@ -202,23 +202,40 @@ a.camacoes, a.camacoes:hover {
     padding-top:4px;
     color: #FFF;
 }
-#outsourcing .content-lg, #RPO .content-lg{
-    padding-bottom: 0px;
-    padding-top: 50px;
+#outsourcing {
+    .content-lg {
+        padding-bottom: 0;
+        padding-top: 50px;
+    }
+
+    .content-sm {
+        padding-top: 30px;
+    }
+
+    .content-sm.agregados {
+        padding-bottom: 0;
+    }
+
+    .title-v1 {
+        margin-bottom: 35px;
+    }
 }
 
-#outsourcing .content-sm, #RPO .content-sm{
-    padding-top: 30px;
+#beneficios-externalizacion {
+     background: black;
 }
-#outsourcing .content-sm.agregados{
-    padding-bottom: 0px;
-}
-#outsourcing .title-v1 {
-    margin-bottom: 35px;
-}
+
 
 #RPO .title-v1 {
     margin-bottom: 20px;
+}
+
+#RPO .content-lg {
+    padding-bottom: 0px;
+    padding-top: 50px;
+}
+#RPO .content-sm {
+    padding-top: 30px;
 }
 
 #payroll .content-sm.beneficios .col-md-4{
@@ -238,4 +255,5 @@ a.camacoes, a.camacoes:hover {
 #payroll .content-sm.software{
     padding-top:20px;
 }
+
 

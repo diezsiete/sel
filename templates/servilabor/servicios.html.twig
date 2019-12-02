@@ -1,7 +1,6 @@
 {% extends 'servilabor/base.html.twig' %}
 {% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('vendor/rs-plugin/css/settings.css') }}">
+    {{ encore_entry_link_tags('servilabor-servicios') }}
 {% endblock %}
 
 {% block title %}
@@ -78,11 +77,5 @@
 
 
 {% block javascripts %}
-    {{ parent() }}
-    <script src="{{ asset('vendor/rs-plugin/js/jquery.themepunch.tools.min.js') }}"></script>
-    <script src="{{ asset('vendor/rs-plugin/js/jquery.themepunch.revolution.min.js') }}"></script>
-    <script src="{{ asset('js/servilabor/plugins/revolution-slider.js') }}"></script>
-    <script>
-        RevolutionSlider.initRSfullScreenOffset();
-    </script>
+    {{ encore_entry_script_tags('servilabor-servicios') }}
 {% endblock %}

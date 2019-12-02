@@ -47,8 +47,8 @@ $(window).on('load', function () {
     });
 });
 
-$(window).on('resize', function () {
+/*$(window).on('resize', function () {
     setTimeout(function () {
         $.HSCore.components.HSTabs.init('[role="tablist"]');
     }, 200);
-});
+});*/

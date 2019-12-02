@@ -5,6 +5,10 @@
 {% block body_header %}
 {% endblock %}
 
+{% block stylesheets %}
+    {{ encore_entry_link_tags('servilabor-servicios') }}
+{% endblock %}
+
 {% block body %}
     {{ include('servilabor/servicios/_'~servicio~'.html.twig') }}
 {% endblock %}

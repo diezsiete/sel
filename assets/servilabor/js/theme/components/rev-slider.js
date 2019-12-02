@@ -1,9 +1,9 @@
-import './../../../vendor/rs-plugin/css/settings.css'
+require('./../../../vendor/rs-plugin/css/settings.css');
 
-import $ from "jquery";
+const $  = require("jquery");
 
 // Import green sock
-import {_gsScope} from  'gsap';
+const { _gsScope } = require('gsap');
 
 // Propaginate it to Revolution Slider
 window.punchgs = window.GreenSockGlobals  = _gsScope.GreenSockGlobals;
@@ -12,19 +12,12 @@ window.punchgs = window.GreenSockGlobals  = _gsScope.GreenSockGlobals;
 global.jQuery = $;
 
 // Activate slider on document loaded as usual
-var revapi;
-$(document).ready(function () {
-    revapi = jQuery('#revSlider').show().revolution(
-        {
-            delay:9000,
-            fullScreenAutoWidth:"on",
-            hideThumbs:10,
-            navigationStyle:"preview4",
-            fullWidth:"on",
-            fullScreen:"on",
-            fullScreenOffsetContainer: 0,
+module.exports = options => {
+    let revapi;
+    $(document).ready(function () {
+        revapi = jQuery('#revSlider').show().revolution(options);
+        revapi.on('revolution.slide.onloaded', function () {
+            jQuery('.red-soluciones').closest('.tp-parallax-wrap').addClass('red-soluciones-layer');
         });
-    var api = revapi.on('revolution.slide.onloaded', function() {
-        jQuery('.red-soluciones').closest('.tp-parallax-wrap').addClass('red-soluciones-layer');
-    });
-});
+    })
+};
