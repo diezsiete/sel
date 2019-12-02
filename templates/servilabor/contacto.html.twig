@@ -58,18 +58,13 @@
             </div>
 
             <div class="col-lg-4 g-mb-60">
-                <!-- Google Map -->
-                <div id="GMapCustomized-light" class="js-g-map embed-responsive embed-responsive-21by9 g-height-300"
-                     data-type="custom"
-                     data-lat="4.662908"
-                     data-lng="-74.058368"
-                     data-zoom="16"
+                <div id="googlemaps" class="google-map mb-0 mt-3"
+                     data-latitude="4.662908"
+                     data-longitude="-74.058368"
+                     data-zoom="15"
                      data-title="Servilabor, SAS."
-                     data-styles='[["", "", [{"saturation":-10},{"lightness":1},{"visibility":"simplified"}]], ["", "labels", [{"visibility":"on"}]], ["water", "", [{"color":"#bac6cb"}]] ]'
-                     data-pin="true"
-                     data-pin-icon="{{ asset('build/images/pin-darkblue.png') }}">
-                </div>
-                <!-- End Google Map -->
+                     data-address="Cra 14 # 76-39 Of 102"
+                     data-pin-img="{{ asset('build/images/pin-darkblue.png') }}"></div>
 
                 <hr class="g-my-40">
 
@@ -106,17 +101,7 @@
 {% endblock %}
 
 {% block javascripts %}
-    {{ parent() }}
-    <script src="{{ asset('vendor/gmaps/gmaps.min.js') }}"></script>
-    <script src="{{ asset('js/servilabor/unify/components/gmap/hs.map.js') }}"></script>
-    <script>
-        // initialization of google map
-        function initMap() {
-            $.HSCore.components.HSGMap.init('.js-g-map');
-        }
-    </script>
-
-    <script src="//maps.googleapis.com/maps/api/js?key=AIzaSyCrW-SfykmlYaUIXuywqRHl0LmYNDpso1A&callback=initMap" async defer></script>
+    {{ encore_entry_script_tags('servilabor-contacto') }}
 {% endblock %}
 
 
