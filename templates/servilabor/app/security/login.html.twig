@@ -1,9 +1,13 @@
 {% extends 'servilabor/base.html.twig' %}
 
+{% block stylesheets %}
+    {{ encore_entry_link_tags('servilabor-sel-login') }}
+{% endblock %}
+
 {% block body %}
 <!-- Login -->
 <section class="g-bg-gray-light-v5">
-    <div class="container g-py-100">
+    <div class="container g-pt-20 g-pb-100">
         <div class="row justify-content-center">
             <div class="col-sm-8 col-lg-5">
                 <div class="u-shadow-v21 g-bg-white rounded g-py-40 g-px-30">
