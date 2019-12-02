@@ -11,14 +11,14 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="{{ asset('img/servilabor/favicon.ico') }}">
+    <link rel="shortcut icon" href="{{ asset('/build/images/favicon.ico') }}">
     <!-- Google Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800">
 
     {% block stylesheets %}
-        <!-- CSS Global Compulsory -->
-        <link rel="stylesheet" href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}">
-        <!-- CSS Global Icons -->
+        {# CSS Global Compulsory
+        <link rel="stylesheet" href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}"> -->
+        <!-- CSS Global Icons
         <link rel="stylesheet" href="{{ asset('vendor/font-awesome/css/all.min.css') }}">
         <link rel="stylesheet" href="{{ asset('vendor/simple-line-icons/css/simple-line-icons.min.css') }}">
         <link rel="stylesheet" href="{{ asset('vendor/icon-etlinefont/style.css') }}">
@@ -32,20 +32,22 @@
         <link rel="stylesheet" href="{{ asset('vendor/slick-carousel/slick/slick.css') }}">
         <link rel="stylesheet" href="{{ asset('vendor/typedjs/typed.css') }}">
         <link rel="stylesheet" href="{{ asset('vendor/hs-megamenu/src/hs.megamenu.css') }}">
-        <link rel="stylesheet" href="{{ asset('vendor/hamburgers/hamburgers.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('vendor/hamburgers/hamburgers.min.css') }}"> #}
 
-        <!-- CSS Unify -->
+        {# CSS Unify
         <link rel="stylesheet" href="{{ asset('css/servilabor/unify-core.css') }}">
         <link rel="stylesheet" href="{{ asset('css/servilabor/unify-components.css') }}">
-        <link rel="stylesheet" href="{{ asset('css/servilabor/unify-globals.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/servilabor/unify-globals.css') }}"> #}
 
-        <!-- CSS Customization -->
+        {# CSS Customization -->
         <link rel="stylesheet" href="{{ asset('css/servilabor/theme-colors/servilabor.css') }}">
-        <link rel="stylesheet" href="{{ asset('css/servilabor/custom.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/servilabor/custom.css') }}"> #}
 
-        {% if app.user %}
+        {# if app.user %}
             <link rel="stylesheet" href="{{ asset('css/servilabor/admin.css') }}">
-        {% endif %}
+        {% endif #}
+
+        {{ encore_entry_link_tags('servilabor') }}
 
     {% endblock %}
 </head>
@@ -134,7 +136,7 @@
 <div class="u-outer-spaces-helper"></div>
 
 {% block javascripts %}
-    <!-- JS Global Compulsory -->
+    {#
     <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('vendor/jquery-migrate/jquery-migrate.min.js') }}"></script>
     <script src="{{ asset('vendor/popper/umd/popper.min.js') }}"></script>
@@ -148,9 +150,9 @@
     <script src="{{ asset('vendor/dzsparallaxer/dzsscroller/scroller.js') }}"></script>
     <script src="{{ asset('vendor/dzsparallaxer/advancedscroller/plugin.js') }}"></script>
     <script src="{{ asset('vendor/fancybox/jquery.fancybox.min.js') }}"></script>
-    <script src="{{ asset('vendor/typedjs/typed.min.js') }}"></script>
+    <script src="{{ asset('vendor/typedjs/typed.min.js') }}"></script>#}
 
-    <!-- JS Unify -->
+    {# JS Unify
     <script src="{{ asset('js/servilabor/unify/hs.core.js') }}"></script>
     <script src="{{ asset('js/servilabor/unify/components/hs.carousel.js') }}"></script>
     <script src="{{ asset('js/servilabor/unify/components/hs.header.js') }}"></script>
@@ -159,61 +161,11 @@
     <script src="{{ asset('js/servilabor/unify/components/hs.popup.js') }}"></script>
     <script src="{{ asset('js/servilabor/unify/components/text-animation/hs.text-slideshow.js') }}"></script>
     <script src="{{ asset('js/servilabor/unify/components/hs.go-to.js') }}"></script>
-    <script src="{{ asset('js/servilabor/unify/components/hs.dropdown.js') }}"></script>
+    <script src="{{ asset('js/servilabor/unify/components/hs.dropdown.js') }}"></script> #}
 
-    <!-- JS Customization -->
-    <script src="{{ asset('js/servilabor/custom.js') }}"></script>
+    {{ encore_entry_script_tags('servilabor') }}
 
-    <!-- JS Plugins Init. -->
-    <script>
-        $(document).on('ready', function () {
-            // initialization of carousel
-            $.HSCore.components.HSCarousel.init('.js-carousel');
 
-            // initialization of tabs
-            $.HSCore.components.HSTabs.init('[role="tablist"]');
-
-            // initialization of popups
-            $.HSCore.components.HSPopup.init('.js-fancybox');
-
-            // initialization of go to
-            $.HSCore.components.HSGoTo.init('.js-go-to');
-
-            // initialization of HSDropdown component
-            $.HSCore.components.HSDropdown.init($('[data-dropdown-target]'));
-
-            // initialization of text animation (typing)
-            $(".u-text-animation.u-text-animation--typing").typed({
-                strings: [
-                    "an awesome template",
-                    "perfect template",
-                    "just like a boss"
-                ],
-                typeSpeed: 60,
-                loop: true,
-                backDelay: 1500
-            });
-        });
-
-        $(window).on('load', function () {
-            // initialization of header
-            $.HSCore.components.HSHeader.init($('#js-header'));
-            $.HSCore.helpers.HSHamburgers.init('.hamburger');
-
-            // initialization of HSMegaMenu component
-            $('.js-mega-menu').HSMegaMenu({
-                event: 'hover',
-                pageContainer: $('.container'),
-                breakpoint: 991
-            });
-        });
-
-        $(window).on('resize', function () {
-            setTimeout(function () {
-                $.HSCore.components.HSTabs.init('[role="tablist"]');
-            }, 200);
-        });
-    </script>
 {% endblock %}
 
 

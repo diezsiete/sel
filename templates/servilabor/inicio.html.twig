@@ -1,8 +1,8 @@
 {% extends 'servilabor/base.html.twig' %}
 
 {% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('vendor/rs-plugin/css/settings.css') }}">
+    {{ encore_entry_link_tags('servilabor-inicio') }}
+    {#<link rel="stylesheet" href="{{ asset('vendor/rs-plugin/css/settings.css') }}">#}
 {% endblock %}
 
 {% block body_header %}
@@ -36,7 +36,7 @@
 
             <div class="row justify-content-center g-mb-20">
                 <a href="http://www.camacoes.com.co" target="_blank">
-                    <img class="img-responsive" src="{{ asset('img/servilabor/logo-camacoes2.png') }}"
+                    <img class="img-responsive" src="{{ asset('build/images/logo-camacoes2.png') }}"
                          alt="logo camacoes">
                 </a>
             </div>
@@ -52,7 +52,7 @@
              data-options='{direction: "reverse", settings_mode_oneelement_max_offset: "150"}'>
         <!-- Parallax Image -->
         <div class="divimage dzsparallaxer--target w-100 u-bg-overlay g-bg-img-hero g-bg-white-opacity-0_7--after"
-             style="height: 140%; background-image: url({{ asset('img/servilabor/bg/16.jpg') }});"></div>
+             style="height: 140%; background-image: url({{ asset('build/images/bg/16.jpg') }});"></div>
         <!-- End Parallax Image -->
 
         <div class="container u-bg-overlay__inner g-py-150--md g-py-80">
@@ -183,11 +183,11 @@
 
 
 {% block javascripts %}
-    {{ parent() }}
-    <script src="{{ asset('vendor/rs-plugin/js/jquery.themepunch.tools.min.js') }}"></script>
+    {{ encore_entry_script_tags('servilabor-inicio') }}
+    {#<script src="{{ asset('vendor/rs-plugin/js/jquery.themepunch.tools.min.js') }}"></script>
     <script src="{{ asset('vendor/rs-plugin/js/jquery.themepunch.revolution.min.js') }}"></script>
     <script src="{{ asset('js/servilabor/plugins/revolution-slider.js') }}"></script>
     <script>
         RevolutionSlider.initRSfullWidth();
-    </script>
+    </script>#}
 {% endblock %}
