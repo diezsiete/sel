@@ -3,6 +3,7 @@
 namespace App\DataTable\Type;
 
 use App\DataTable\Column\ActionsColumn\ActionsColumn;
+use App\Entity\Usuario;
 use App\Entity\Vacante;
 use Doctrine\ORM\QueryBuilder;
 use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
@@ -11,6 +12,7 @@ use Omines\DataTablesBundle\Column\TextColumn;
 use Omines\DataTablesBundle\DataTable;
 use Omines\DataTablesBundle\DataTableTypeInterface;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Security;
 
 class VacanteDataTableType implements DataTableTypeInterface
 {
@@ -19,14 +21,22 @@ class VacanteDataTableType implements DataTableTypeInterface
      * @var RouterInterface
      */
     private $router;
+    /**
+     * @var Security
+     */
+    private $security;
 
-    public function __construct(RouterInterface $router)
+    public function __construct(RouterInterface $router, Security $security)
     {
         $this->router = $router;
+        $this->security = $security;
     }
 
     public function configure(DataTable $dataTable, array $options)
     {
+        /** @var Usuario $usuario */
+        $usuario = $options['usuario'];
+
         $dataTable
             ->add('titulo', TextColumn::class, ['label' => 'Título'])
             ->add('nombreCompleto', TextColumn::class, ['label' => 'Usuario'])
@@ -55,10 +65,14 @@ class VacanteDataTableType implements DataTableTypeInterface
             ])
             ->createAdapter(ORMAdapter::class, [
                 'entity' => Vacante::class,
-                'query' => function (QueryBuilder $builder) {
+                'query' => function (QueryBuilder $builder) use($usuario) {
                     $builder
                         ->select('v')
                         ->from(Vacante::class, 'v');
+                    if(!$this->security->isGranted(['ROLE_VACANTES_ADMIN'])) {
+                        $builder->where('v.usuario = :usuario')
+                            ->setParameter('usuario', $usuario);
+                    }
                 }
             ]);
     }

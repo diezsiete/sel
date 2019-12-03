@@ -136,11 +136,12 @@ class VacanteFormType extends AbstractType
                 'label' => 'Vigencia',
                 'help' => 'Duración publicada en la página'
             ])
-            ->add('empresa', ChoiceType::class, [
+            /*->add('empresa', ChoiceType::class, [
                 'label' => 'Empresa (Novasoft)',
                 'choices' => array_flip(VacanteConstant::EMPRESA),
                 'help' => 'A que base de datos de Novasoft se subiran las hojas de vida'
-            ]);
+            ])*/
+        ;
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
             /** @var Vacante $vacante */

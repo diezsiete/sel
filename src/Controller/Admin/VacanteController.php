@@ -22,7 +22,7 @@ class VacanteController extends BaseController
      */
     public function listado(DataTableFactory $dataTableFactory, Request $request)
     {
-        $table = $dataTableFactory->createFromType(VacanteDataTableType::class, [], ['searching' => true])
+        $table = $dataTableFactory->createFromType(VacanteDataTableType::class, ['usuario' => $this->getUser()], ['searching' => true])
             ->handleRequest($request);
 
         if($table->isCallback()) {
