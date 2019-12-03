@@ -21,22 +21,6 @@ class AdminHvController extends AbstractController
     /**
      * @Route("/sel/admin/hv/listado", name="admin_hv_listado")
      */
-    public function listado(HvRepository $hvRepository, PaginatorInterface $paginator, Request $request)
-    {
-        $search = $request->get('search', null);
-        $qb = $hvRepository->searchQueryBuilder($search);
-
-        $pagination = $paginator->paginate($qb, $request->get('page', 1), 25);
-
-        return $this->render('hv_admin/listado.html.twig', [
-            'pagination' => $pagination,
-            'search' => $search
-        ]);
-    }
-
-    /**
-     * @Route("/sel/admin/hv/listado-temp", name="admin_hv_listado_temp")
-     */
     public function listadoTemp(Request $request, DataTableFactory $dataTableFactory)
     {
 
@@ -56,6 +40,23 @@ class AdminHvController extends AbstractController
     {
         return $this->render('admin/hv/detalle/detalle.html.twig', [
             'hv' => $hv
+        ]);
+    }
+
+
+    /**
+     * @Route("/sel/admin/hv/listado-old", name="admin_hv_listado_old")
+     */
+    public function listado(HvRepository $hvRepository, PaginatorInterface $paginator, Request $request)
+    {
+        $search = $request->get('search', null);
+        $qb = $hvRepository->searchQueryBuilder($search);
+
+        $pagination = $paginator->paginate($qb, $request->get('page', 1), 25);
+
+        return $this->render('hv_admin/listado.html.twig', [
+            'pagination' => $pagination,
+            'search' => $search
         ]);
     }
 }

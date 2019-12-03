@@ -35,7 +35,7 @@ class HvVoter extends Voter
         // ... (check conditions and return true to grant permission) ...
         switch ($attribute) {
             case 'HV_MANAGE':
-                if ($this->security->isGranted('ROLE_ADMIN_VACANTE')) {
+                if ($this->security->isGranted(['ROLE_ADMIN_VACANTE' || 'ROLE_CREAR_VACANTE'], $this->security->getUser())) {
                     return true;
                 }
                 //esta editando hv en registro
@@ -48,8 +48,8 @@ class HvVoter extends Voter
                 return false;
             case 'HV_MANAGE_PERSISTED':
                 if($subject->getHv()) {
-                    if ($this->security->isGranted('ROLE_ADMIN_VACANTE') ||
-                        $subject->getHv()->getUsuario() === $user) {
+                    if ($subject->getHv()->getUsuario() === $user
+                        ||$this->security->isGranted(['ROLE_ADMIN_VACANTE' || 'ROLE_CREAR_VACANTE'], $this->security->getUser())) {
                         return true;
                     }
                 }

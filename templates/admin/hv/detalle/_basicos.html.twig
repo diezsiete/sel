@@ -94,12 +94,10 @@
 <div class="col-md-3">
     <h5 class="mb-2 mt-3">Hoja de vida</h5>
     {% if hv.adjunto %}
-    <ul class="simple-card-list mb-3">
-        <li class="primary">
-            <a class="text-light" href="{{ path('hv_adjunto_download', {id: hv.id}) }}" target="_blank">
-                {{ hv.adjunto.originalFilename }}
-            </a>
-        </li>
-    </ul>
+
+        <a href="{{ path('hv_adjunto_download', {id: hv.id}) }}" target="_blank">
+            {{ hv.adjunto.originalFilename }}
+        </a>
+
     {% endif %}
 </div>
