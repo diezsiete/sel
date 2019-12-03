@@ -61,7 +61,7 @@ class HvScraper
      */
     public function postHv($data)
     {
-        return $this->scraperClient->post($this->getFullUrl('hv'), $data, ['timeout' => 240]);
+        return $this->scraperClient->post($this->getFullUrl(), $data, ['timeout' => 240]);
     }
 
     /**
@@ -113,9 +113,9 @@ class HvScraper
      * @param bool $hvPrefix
      * @return string
      */
-    private function getFullUrl(string $url, bool $hvPrefix = true) {
+    private function getFullUrl(string $url = '', bool $hvPrefix = true) {
         return '/' . $this->configuracion->getScraper()->getNovasoft()->getBrowser()
             . '/novasoft/' . $this->configuracion->getScraper()->getNovasoft()->getConexion()
-            . ($hvPrefix ? '/hv' : '') . '/' . $url;
+            . ($hvPrefix ? '/hv' : '') . ( $url ? '/' . $url : '');
     }
 }
