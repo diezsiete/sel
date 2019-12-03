@@ -17,6 +17,6 @@ $(function(){
                 $embed.attr('src', $embed.attr('src')).closest('.row').removeClass('hidden');
             })
         },
-        dictDefaultMessage: "Arrastre aqui archivo para subir"
+        dictDefaultMessage: "Arrastre aqui archivo para subir,  o haga click en el recuadro"
     })
 });
