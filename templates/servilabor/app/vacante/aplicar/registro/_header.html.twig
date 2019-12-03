@@ -1,0 +1,23 @@
+{% set vacante = master_request().attributes.get('vacante') %}
+
+{{ vacante.titulo }}
+
+<br>
+<span class="font-weight-lighter mb-0" style="font-size: .6em">
+    {% if master_request().attributes.get('wizard') is same as('completar') %}
+        <strong>Hoja de vida incompleta.</strong> Complete su hoja de vida para poder aplicar a la vacante.
+    {% else %}
+        <strong>Registrese</strong> para poder aplicar a la vacante.
+
+        {% if master_request().attributes.get('step') is same as('basicos') %}
+            ¿Ya tiente cuenta con nosotros?
+            <strong>
+                <a href="{{ path('vacante_aplicar', {'slug': vacante.slug })  }}">
+                    Inicie sesión!
+                </a>
+            </strong>
+        {% endif %}
+    {% endif %}
+</span>
+
+

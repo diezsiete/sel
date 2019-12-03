@@ -7,6 +7,11 @@
     {{ encore_entry_link_tags('hv') }}
 {% endblock %}
 
+{% block body_header_title %}
+    {{ include('registro/_header.html.twig') }}
+{% endblock %}
+
+
 {% block body %}
     {{ include('registro/_process-line.html.twig') }}
 

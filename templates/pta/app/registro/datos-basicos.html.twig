@@ -9,6 +9,7 @@
 
 
 {% block body %}
+    {{ include('pta/registro/_header.html.twig') }}
     {{ include('pta/registro/_process-line.html.twig') }}
 
     {{ form_start(hvForm, {attr: {novalidate: 'novalidate'}}) }}

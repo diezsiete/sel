@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Iniciar sesión
+{% endblock %}
+
+{% block body_header_title %}
+    {{ vacante.titulo }}
+    <br>
+    <p class="font-weight-normal mb-0" style="font-size: .7em"><strong>Inicie sesión</strong> para poder aplicar a la vacante.
+        ¿No tiente cuenta con nosotros? <strong>
+            <a href="{{ path('vacante_aplicar', {'slug': vacante.slug, 'wizard': 'registro' })  }}">Registrese!</a>
+        </strong>
+    </p>
+{% endblock %}
+
+{% set vacante = master_request().attributes.get('vacante') %}
+{% block body %}
+    
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col">
+
+                <div class="featured-boxes">
+                    <div class="row">
+                        <div class="col-md-6 offset-md-3">
+                            <div class="featured-box featured-box-primary text-left mt-5">
+                                <div class="box-content">
+                                    {{ include('security/_login-form.html.twig') }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}
