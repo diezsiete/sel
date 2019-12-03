@@ -112,10 +112,25 @@
 
         {% if not app.user %}
             <div class="d-inline-block g-hidden-md-down g-pos-rel g-valign-middle g-pl-30 g-pl-0--lg">
-                <a class="btn u-btn-outline-primary g-font-size-13 text-uppercase g-py-10 g-px-15"
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    {% set active = app.request.attributes.get('_route') matches '{^registro_*}' %}
+                    <a class="btn btn-outline-info g-font-size-13 text-uppercase g-py-10 g-px-15 {{ active ? 'active' : '' }}"
+                       href="{{ path('registro_datos_basicos') }}">
+                        Registrarse
+                    </a>
+                    {% set active = app.request.attributes.get('_route') in ['app_login'] %}
+                    <a class="btn btn-outline-primary g-font-size-13 text-uppercase g-py-10 g-px-15 {{ active ? 'active' : '' }}"
+                       href="{{ path('app_login') }}">
+                        Iniciar sesión
+                    </a>
+
+
+                </div>
+
+                {#<a class="btn u-btn-outline-primary g-font-size-13 text-uppercase g-py-10 g-px-15"
                    href="{{ path('app_login') }}">
                     Iniciar sesión
-                </a>
+                </a>#}
             </div>
         {% else %}
             {{ include('servilabor/blocks/header/_nav-user.html.twig') }}

@@ -1943,6 +1943,8 @@ hr {
 
 .navbar > .container {
   position: relative;
+  padding-right: 0;
+  padding-left: 0;
 }
 
 @media all and (min-width: 576px) {

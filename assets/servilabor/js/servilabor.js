@@ -1,10 +1,12 @@
+import $ from 'jquery'
+import 'bootstrap'; // add functions to jQuery
+
 import './../css/servilabor.scss'
 
 //TODO revisar si se necesita en todas las paginas
 import 'animate.css'
 
-import $ from 'jquery'
-import 'bootstrap'; // add functions to jQuery
+
 
 import './theme/hs.core'
 import './theme/components/hs.header'

@@ -169,7 +169,7 @@ class HvFormType extends AbstractType
             ->add('nivelAcademico', ChoiceType::class, [
                 'choices' => array_flip(HvConstant::NIVEL_ACADEMICO)
             ])
-            ->add('estatura', null, [
+            /*->add('estatura', null, [
                 'label' => 'Estatura (Metros)'
             ])
             ->add('peso', null, [
@@ -180,7 +180,7 @@ class HvFormType extends AbstractType
             ])
             ->add('personasCargo', null, [
                 'label' => 'Personas a cargo'
-            ])
+            ])*/
         ;
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($hvdto) {
