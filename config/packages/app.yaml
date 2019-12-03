@@ -58,6 +58,10 @@ app:
           Servicio al cliente:
             - servicioalcliente@pta.com.co
 
+      scraper:
+        novasoft:
+          browser: 'novasoft.cguerrero'
+
     SERVILABOR:
       host: '%env(HOST_SERVILABOR)%'
       razon: SERVILABOR S.A.S
@@ -98,6 +102,10 @@ app:
           tel: 4140077
           web:
           logo_pdf: /build/images/sel/logo-universal.png
+
+      scraper:
+        novasoft:
+          browser: 'novasoft'
 
   # TODO borar
   hv_wizard_routes:

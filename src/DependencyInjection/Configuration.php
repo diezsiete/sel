@@ -50,6 +50,7 @@ class Configuration implements ConfigurationInterface
                         ->append($this->addOficinasNode())
                         ->append($this->addDocumentosLaborales())
                         ->append($this->addCompaniasNode())
+                        ->append($this->addScraperEmpresaNode())
                     ->end()
                 ->end()
             ->end()
@@ -152,6 +153,21 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('user')->end()
                             ->scalarNode('password')->end()
                             ->scalarNode('empleador')->end()
+                        ->end()
+                    ->end()
+                ->end();
+        return $node;
+    }
+
+    protected function addScraperEmpresaNode()
+    {
+        $treeBuilder = new TreeBuilder('scraper');
+        $node =
+            $treeBuilder->getRootNode()
+                ->children()
+                    ->arrayNode('novasoft')
+                        ->children()
+                            ->scalarNode('browser')->end()
                         ->end()
                     ->end()
                 ->end();

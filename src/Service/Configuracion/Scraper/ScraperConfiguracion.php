@@ -20,10 +20,10 @@ class ScraperConfiguracion
      */
     private $ael;
 
-    public function __construct($config)
+    public function __construct($config, $empresaConfig)
     {
         $this->url = $config['url'];
-        $this->novasoft = new Novasoft($config['novasoft']);
+        $this->novasoft = new Novasoft($config['novasoft'], $empresaConfig['novasoft']);
         $this->ael = new Ael($config['ael']);
     }
 

@@ -10,10 +10,12 @@ class Novasoft
      * @var string
      */
     private $conexion;
+    private $browser;
 
-    public function __construct($config)
+    public function __construct($config, $empresaConfig)
     {
         $this->conexion = $config['conexion'];
+        $this->browser = $empresaConfig['browser'];
     }
 
     /**
@@ -23,5 +25,15 @@ class Novasoft
     {
         return $this->conexion;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getBrowser()
+    {
+        return $this->browser;
+    }
+
+    
 
 }

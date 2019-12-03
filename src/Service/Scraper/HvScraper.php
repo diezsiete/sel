@@ -114,7 +114,8 @@ class HvScraper
      * @return string
      */
     private function getFullUrl(string $url, bool $hvPrefix = true) {
-        return '/novasoft/' . $this->configuracion->getScraper()->getNovasoft()->getConexion()
+        return '/' . $this->configuracion->getScraper()->getNovasoft()->getBrowser()
+            . '/novasoft/' . $this->configuracion->getScraper()->getNovasoft()->getConexion()
             . ($hvPrefix ? '/hv' : '') . '/' . $url;
     }
 }

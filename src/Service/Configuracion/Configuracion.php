@@ -215,7 +215,7 @@ class Configuracion
     public function getScraper()
     {
         if(!$this->scraper) {
-            $this->scraper = new ScraperConfiguracion($this->bag->get('scraper'));
+            $this->scraper = new ScraperConfiguracion($this->bag->get('scraper'), $this->parameters['scraper']);
         }
         return $this->scraper;
     }
