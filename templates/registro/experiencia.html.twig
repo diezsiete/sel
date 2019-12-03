@@ -1,15 +1,10 @@
 {% extends 'registro/base-hv-entity.html.twig' %}
 
-{% block card_title %}
-    Experiencia
-{% endblock %}
-
-{% block card_body_text %}
+{% block body_text %}
     <p class="lead">
         Ingrese en el cuadro la experiencia laboral que tenga.
     </p>
 {% endblock %}
-
 
 {% block modal_body %}
     {{ include('hv/hv-entity/_experiencia-form.html.twig') }}

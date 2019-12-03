@@ -1,32 +1,72 @@
-{% extends 'hv/base-hv-entity.html.twig' %}
+{% extends 'base.html.twig' %}
 
-{% block tabs %}
-{% endblock %}
 
-{% block card_title %}
-    Estudios
-{% endblock %}
-{% block card_body %}
-    {% block card_body_text %}
-    {% endblock %}
-    <div class="alerts"></div>
+{% block title %} Registro {% endblock %}
+
+
+{% block stylesheets %}
     {{ parent() }}
-    <a class="crear-entity btn btn-primary pull-right" href="#modalForm">Agregar</a>
+    {{ encore_entry_link_tags('hv-entity') }}
 {% endblock %}
 
-{% block card_footer %}
-    <a class="btn btn-default pull-left anterior" href="{{ path(prevRoute) }}"><i class="fas fa-angle-left"></i> Anterior</a>
-    <a class="btn btn-success pull-right disabled siguiente" href="{{ path(nextRoute) }}">Siguiente <i class="fas fa-angle-right"></i></a>
-{% endblock %}
 
-{% block modal_body %}
-    {{ include('hv/hv-entity/_estudio-form.html.twig') }}
-{% endblock %}
+{% block body %}
 
+    {{ include('registro/_process-line.html.twig') }}
+
+    <div class="container py-2 registro">
+        <div class="row">
+            <div class="col-lg-12 mb-3">
+                {% block body_text %}
+                {% endblock %}
+                <div class="alerts"></div>
+
+                <div id="datatable" data-settings='{{ datatable_settings(datatable) }}'>
+                    Loading...
+                </div>
+
+                <a class="crear-entity btn btn-primary pull-right" href="#modalForm">Agregar</a>
+            </div>
+            <div class="col-lg-12">
+                {% if prevRoute is not null %}
+                    <a class="btn btn-default pull-left anterior" href="{{ path(prevRoute.route, prevRoute.parameters) }}"><i class="fas fa-angle-left"></i> Anterior</a>
+                {% endif %}
+                {% if nextRoute is not null %}
+                    <a class="btn btn-success pull-right disabled siguiente" href="{{ path(nextRoute.route, nextRoute.parameters) }}">Siguiente <i class="fas fa-angle-right"></i></a>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Modal Form -->
+        <div id="modalForm" class="modal-block modal-block-lg modal-block-primary mfp-hide">
+            <section class="card">
+                <header class="card-header">
+                    <h2 class="card-title">
+                        {% block modal_title %}
+                            Agregar
+                        {% endblock %}
+                    </h2>
+                </header>
+                <div class="card-body" data-loading-overlay>
+                    {% block modal_body %}
+                    {% endblock %}
+                </div>
+                <footer class="card-footer">
+                    <div class="row">
+                        <div class="col-md-12 text-right">
+                            <button class="btn btn-primary modal-confirm">Guardar</button>
+                            <button class="btn btn-default modal-dismiss">Cancelar</button>
+                        </div>
+                    </div>
+                </footer>
+            </section>
+        </div>
+
+        {{ include('default/_modal-borrar.html.twig') }}
+
+    </div>
+{% endblock %}
 
 {% block javascripts %}
-    {{ parent() }}
-    <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
-    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
-    <script src="{{ asset('js/sel/registro/registro.js') }}"></script>
+    {{ encore_entry_script_tags('hv-entity') }}
 {% endblock %}

@@ -1,1 +1,68 @@
 @import 'component/process-line';
+.registro .pull-left {
+  float: left !important;
+}
+
+.registro .pull-right {
+  float: right !important;
+}
+
+/** --- Modal --- **/
+.modal-block {
+  background: transparent;
+  padding: 0;
+  text-align: left;
+  max-width: 600px;
+  margin: 40px auto;
+  position: relative;
+}
+
+.modal-block.modal-block-xs {
+  max-width: 200px;
+}
+
+.modal-block.modal-block-sm {
+  max-width: 400px;
+}
+
+.modal-block.modal-block-md {
+  max-width: 600px;
+}
+
+.modal-block.modal-block-lg {
+  max-width: 900px;
+}
+
+.modal-block.modal-block-full {
+  max-width: 98%;
+}
+
+/* Tables - Actions */
+.table .actions,
+.table .actions-hover {
+  vertical-align: middle;
+}
+
+.table .actions a,
+.table .actions-hover a {
+  display: inline-block;
+  margin-right: 5px;
+}
+
+.table .actions a:last-child,
+.table .actions-hover a:last-child {
+  margin-right: 0;
+}
+
+.table .actions-hover a {
+  opacity: 0;
+}
+
+.table tr:hover .actions-hover a {
+  opacity: 1;
+}
+
+.table .actions-fade a {
+  -webkit-transition: all .2s linear;
+  transition: all .2s linear;
+}

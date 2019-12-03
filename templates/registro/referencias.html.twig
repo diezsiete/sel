@@ -1,15 +1,10 @@
 {% extends 'registro/base-hv-entity.html.twig' %}
 
-{% block card_title %}
-    Referencias personales, laborales y familiares
-{% endblock %}
-
-{% block card_body_text %}
+{% block body_text %}
     <p class="lead">
         Ingrese en el cuadro mínimo 3 referencias. Una de tipo personal, otra laboral y otra familiar.
     </p>
 {% endblock %}
-
 
 {% block modal_body %}
     {{ include('hv/hv-entity/_referencia-form.html.twig') }}

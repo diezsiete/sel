@@ -39,9 +39,11 @@ Encore
     .addEntry('hv', './assets/sel/js/hv.js')
     .addEntry('hv-entity', './assets/sel/js/hv-entity.js')
     .addEntry('hv-adjunto', './assets/sel/js/hv-adjunto.js')
+    .addEntry('cuenta', './assets/sel/js/cuenta.js')
     .addEntry('admin', './assets/sel/js/admin.js')
     .addEntry('admin-vacante-form', './assets/sel/js/page/admin/vacante/vacante-form.js')
     .addEntry('admin-hv', './assets/sel/js/page/admin/hv/admin-hv.js')
+
     //.addEntry('page1', './assets/js/page1.js')
     //.addEntry('page2', './assets/js/page2.js')
 

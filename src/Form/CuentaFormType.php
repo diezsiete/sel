@@ -41,7 +41,7 @@ class CuentaFormType extends AbstractType
                 'invalid_message' => 'Las contraseñas deben coincidir',
             ])
             ->add('aceptoTerminosEn', AceptoTerminosEnType::class, [
-                'politica_route' => $this->urlGenerator->generate('pta_politica')
+                'politica_route' => $this->urlGenerator->generate('politica')
             ])
         ;
 

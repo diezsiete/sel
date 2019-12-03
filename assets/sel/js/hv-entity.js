@@ -4,8 +4,11 @@ import 'chosen-js/chosen.css'
 import 'jquery.maskedinput';
 import './component/datepicker';
 
+import './../css/registro.scss';
 import './registro';
 import './datatable';
+
+
 import HvTable from './hv-table';
 
 

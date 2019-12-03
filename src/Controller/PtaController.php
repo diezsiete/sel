@@ -123,7 +123,7 @@ class PtaController extends AbstractController
     }
 
     /**
-     * @Route("/politica-tratamiento-datos-personales", name="pta_politica", host="%empresa.PTA.host%")
+     * @Route("/politica-tratamiento-datos-personales", name="politica", host="%empresa.PTA.host%")
      */
     public function politicaTratamientoDatosPersonales()
     {

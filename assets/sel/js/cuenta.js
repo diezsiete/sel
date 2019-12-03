@@ -1,3 +1,4 @@
+import './../css/registro.scss';
 import 'dropzone/dist/dropzone.css';
 import Dropzone from 'dropzone';
 import $ from 'jquery';
