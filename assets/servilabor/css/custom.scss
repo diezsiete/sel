@@ -267,26 +267,28 @@ a.camacoes, a.camacoes:hover {
 /*----------------------------------------------------------------------------------------------------------------------
                                                        Admin
 ----------------------------------------------------------------------------------------------------------------------*/
-.bg-primary {
-    background-color: #3f317d !important;
-}
-.bg-tertiary {
-    background-color: #2baab1 !important;
-}
+body.admin {
+    .bg-primary {
+        background-color: #3f317d !important;
+    }
+
+    .bg-tertiary {
+        background-color: #2baab1 !important;
+    }
 
 
-/* NAV ---------------------------------------------------------------------------------------------------------------*/
-.u-header__section {
-    padding-bottom: 0 !important;
-}
+    /* NAV ---------------------------------------------------------------------------------------------------------------*/
+    .u-header__section {
+        padding-bottom: 0 !important;
+    }
 
-.navbar.admin {
-    margin-top: 0.71429rem;
-    background: #38414a;
-    z-index: 9;
-}
+    .navbar.admin {
+        margin-top: 0.71429rem;
+        background: #38414a;
+        z-index: 9;
+    }
 
-.navbar.admin .hamburger-inner, .navbar.admin .hamburger-inner:before, .navbar.admin .hamburger-inner:after {
-    background: white;
+    .navbar.admin .hamburger-inner, .navbar.admin .hamburger-inner:before, .navbar.admin .hamburger-inner:after {
+        background: white;
+    }
 }
-

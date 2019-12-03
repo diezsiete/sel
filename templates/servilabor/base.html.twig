@@ -37,7 +37,7 @@
     {% endblock %}
 </head>
 
-<body>
+<body class="{{ app.user ? 'admin' : '' }}">
 <main>
     {% block header %}
         <!-- Header -->
