@@ -14,5 +14,7 @@ module.exports = function(encore) {
         .addEntry('servilabor-servicios', ['./assets/servilabor/js/servicios.js'].concat(rsSources))
         .addEntry('servilabor-contacto', './assets/servilabor/js/contacto.js')
         .addEntry('servilabor-sel-login', './assets/servilabor/js/sel/login.js')
+        .addEntry('servilabor-vacante-listado', './assets/servilabor/js/vacante/listado.js')
+        .addEntry('servilabor-vacante-detalle', './assets/servilabor/js/vacante/detalle.js')
     ;
 };

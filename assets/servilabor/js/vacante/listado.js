@@ -1,0 +1,1 @@
+import '../../../pta/css/blog.scss';

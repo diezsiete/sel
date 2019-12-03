@@ -63,6 +63,7 @@ class VacanteController extends AbstractController
      */
     public function detalle(Vacante $vacante)
     {
+        $this->addFlash("info", "HOASKMLASKJDA SD");
         return $this->render('vacante/detalle.html.twig', [
             'vacante' => $vacante
         ]);
