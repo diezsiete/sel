@@ -13,7 +13,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class HvDeleteOrphanCommand extends Command
 {
-    protected static $defaultName = 'hv:delete-orphan';
+    protected static $defaultName = 'sel:hv:delete-orphan';
     /**
      * @var HvRepository
      */
@@ -52,6 +52,11 @@ class HvDeleteOrphanCommand extends Command
                 $this->em->clear();
             }
 
+        }
+        if($i) {
+            $io->success(sprintf("Borradas %d hojas de vida sin huerfanas", $i));
+        } else {
+            $io->writeln("No se encontraron hojas de vida huerfanas");
         }
         $this->em->flush();
         $this->em->clear();
