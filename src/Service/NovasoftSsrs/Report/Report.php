@@ -147,6 +147,15 @@ abstract class Report
         return $this->reportServer->renderPdf();
     }
 
+    /**
+     * @return ExecutionInfo2
+     */
+    public function getExecutionInfo(): ExecutionInfo2
+    {
+        return $this->reportServer->getSsrsReport()->GetExecutionInfo2();
+    }
+
+
 
     /**
      * @return ExecutionInfo2
@@ -184,4 +193,6 @@ abstract class Report
     {
         return (new $this->mapperClass())->setFilter($this->filter);
     }
+
+
 }

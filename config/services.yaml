@@ -84,11 +84,26 @@ services:
     App\Service\Hv\HvWizard\HvWizard:
         factory: '@App\Service\Hv\HvWizard\HvWizardFactory'
 
+
     App\Service\NovasoftSsrs\ReportServer:
         arguments:
             - '%env(NOVASOFT_SSRS_USERNAME)%'
             - '%env(NOVASOFT_SSRS_PASSWORD)%'
             - '%env(NOVASOFT_SSRS_URL)%'
+
+    SSRS\Common\Credentials:
+        arguments:
+            - '%env(NOVASOFT_SSRS_USERNAME)%'
+            - '%env(NOVASOFT_SSRS_PASSWORD)%'
+
+    SSRS\SSRSReport:
+        arguments:
+            - '@SSRS\Common\Credentials'
+            - '%env(NOVASOFT_SSRS_URL)%'
+
+
+
+
 
     App\Service\Pdf\PdfCartaLaboral:
         public: true

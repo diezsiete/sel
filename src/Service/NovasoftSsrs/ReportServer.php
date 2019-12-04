@@ -92,6 +92,16 @@ class ReportServer
 
     /**
      * @return SSRSReport
+     */
+    public function getSsrsReport(): SSRSReport
+    {
+        return $this->ssrsReport;
+    }
+
+
+
+    /**
+     * @return SSRSReport
      * @throws SSRSReportException
      */
     private function connect()
