@@ -1,6 +1,8 @@
 import $ from "jquery";
 import PNotify from 'pnotify/dist/es/PNotify';
 import 'pnotify/dist/PNotifyBrightTheme.css';
+import 'magnific-popup';
+import 'magnific-popup/dist/magnific-popup.css';
 
 PNotify.defaults.styling = 'bootstrap4';
 

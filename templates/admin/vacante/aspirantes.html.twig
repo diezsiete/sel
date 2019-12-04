@@ -1,0 +1,12 @@
+{% extends 'datatable/base.datatable.html.twig' %}
+
+{% block title %}Vacantes{% endblock %}
+{% block body_header_title %}Aspirantes a vacante <small>{{ vacante.titulo }}</small>{% endblock %}
+
+
+{% block body %}
+    {{ parent() }}
+    {{ include('default/_modal-borrar.html.twig') }}
+{% endblock %}
+
+

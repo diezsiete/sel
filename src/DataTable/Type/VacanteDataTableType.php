@@ -2,6 +2,7 @@
 
 namespace App\DataTable\Type;
 
+use App\DataTable\Adapter\GroupByORMAdapter;
 use App\DataTable\Column\ActionsColumn\ActionsColumn;
 use App\Entity\Usuario;
 use App\Entity\Vacante;
@@ -35,42 +36,61 @@ class VacanteDataTableType implements DataTableTypeInterface
     public function configure(DataTable $dataTable, array $options)
     {
         /** @var Usuario $usuario */
-        $usuario = $options['usuario'];
+        $usuario = $options['usuario'] || $this->security->getUser();
+
 
         $dataTable
-            ->add('titulo', TextColumn::class, ['label' => 'Título'])
-            ->add('nombreCompleto', TextColumn::class, ['label' => 'Usuario'])
-            ->add('createdAt', DateTimeColumn::class, ['label' => 'Publicación', 'format' => 'Y-m-d'])
-            ->setTransformer(function ($row, Vacante $vacante) {
-                $row['nombreCompleto'] = $vacante->getUsuario()->getNombreCompleto(true, true);
-                return $row;
-            })
+            ->add('titulo', TextColumn::class, ['label' => 'Título', 'propertyPath' => '[0].titulo'])
+            ->add('createdAt', DateTimeColumn::class, ['label' => 'Publicación', 'format' => 'Y-m-d',
+                'propertyPath' => '[0].createdAt']);
+
+        if($this->security->isGranted('ROLE_ADMIN_VACANTE', $usuario)) {
+            $dataTable
+                ->add('usuario', TextColumn::class, ['label' => 'Usuario',
+                    'propertyPath' => '[0].usuario.primerNombre',
+                    'render' => function ($val, $data) {
+                        return $data[0]->getUsuario()->getNombrePrimeros();
+                    }
+                ]);
+        }
+        $dataTable
             ->add('id', ActionsColumn::class, [
                 'label' => 'Acciones',
                 'className' => 'actions',
                 'orderable' => false,
+                'propertyPath' => '[0].id',
                 'actions' => [
                     [
-                        'route' => ['admin_vacante_editar', ['vacante' => 'id']],
+                        'route' => ['admin_vacante_editar', ['vacante' => '[0].id']],
                         'icon' => 'fas fa-pencil-alt',
                         'tooltip' => 'Editar'
                     ],
                     [
                         'modal' => '#modalBasic',
-                        'confirm' => ['admin_vacante_borrar', ['vacante' => 'id']],
+                        'confirm' => ['admin_vacante_borrar', ['vacante' => '[0].id']],
                         'icon' => 'far fa-trash-alt',
                         'tooltip' => 'Borrar'
+                    ],
+                    [
+                        'route' => ['admin_vacante_vid_aspirantes', ['vacante' => '[0].id']],
+                        'text' => '[aspirantes]',
+                        'tooltip' => 'Aspirantes'
                     ]
                 ]
             ])
-            ->createAdapter(ORMAdapter::class, [
+            ->createAdapter(GroupByORMAdapter::class, [
                 'entity' => Vacante::class,
-                'query' => function (QueryBuilder $builder) use($usuario) {
+                'query' => function (QueryBuilder $builder) use ($usuario) {
                     $builder
                         ->select('v')
-                        ->from(Vacante::class, 'v');
+                        ->addSelect('COUNT(a) AS aspirantes')
+                        ->from(Vacante::class, 'v')
+                        ->join('v.aplicantes', 'a')
+                        ->groupBy('v.id');
                     if(!$this->security->isGranted(['ROLE_VACANTES_ADMIN'])) {
-                        $builder->where('v.usuario = :usuario')
+                        $builder->addSelect('usuario')
+                            ->join('v.usuario', 'usuario')
+                            ->where('usuario = :usuario')
                             ->setParameter('usuario', $usuario);
                     }
                 }

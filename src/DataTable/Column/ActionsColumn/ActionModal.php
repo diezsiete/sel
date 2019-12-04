@@ -9,16 +9,10 @@ use Symfony\Component\Routing\RouterInterface;
 
 class ActionModal extends Action
 {
-
     /**
      * @var RouterInterface
      */
     private $router;
-
-    /**
-     * @var PropertyAccessorInterface
-     */
-    private $propertyAccessor;
 
     /**
      * @var Route
@@ -30,10 +24,10 @@ class ActionModal extends Action
      */
     private $target;
 
-    public function __construct(RouterInterface $router, PropertyAccessorInterface $propertyAccessor)
+    public function __construct(PropertyAccessorInterface $propertyAccessor, RouterInterface $router)
     {
+        parent::__construct($propertyAccessor);
         $this->router = $router;
-        $this->propertyAccessor = $propertyAccessor;
     }
 
     public function setOptions($options)

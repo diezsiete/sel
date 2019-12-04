@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Controller\BaseController;
+use App\DataTable\Type\Hv\AdminHvDataTableType;
 use App\DataTable\Type\VacanteDataTableType;
 use App\Entity\Vacante;
 use App\Form\VacanteFormType;
@@ -106,5 +107,22 @@ class VacanteController extends BaseController
 
         return $this->render('admin/vacante/_subnivel.html.twig', ['vacanteForm' => $form->createView()]);
 
+    }
+
+    /**
+     * @Route("/sel/admin/vacante/{vacante}/aspirantes", name="admin_vacante_vid_aspirantes")
+     */
+    public function aspirantes(Request $request, DataTableFactory $dataTableFactory, Vacante $vacante)
+    {
+        $table = $dataTableFactory->createFromType(AdminHvDataTableType::class, ['vacante' => $vacante], ['searching' => true]);
+        $table->handleRequest($request);
+        if($table->isCallback()) {
+            return $table->getResponse();
+        }
+
+        return $this->render('admin/vacante/aspirantes.html.twig', [
+            'datatable' => $table,
+            'vacante' => $vacante
+        ]);
     }
 }

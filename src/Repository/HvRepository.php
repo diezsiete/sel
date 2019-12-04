@@ -93,6 +93,8 @@ class HvRepository extends ServiceEntityRepository
             ->join('experiencia.area', 'experienciaArea')
             ->leftJoin($alias.".adjunto", 'adjunto')
             ->orderBy($alias.".id", 'DESC');*/
+
+        return $qb;
     }
 
 

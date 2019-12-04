@@ -8,6 +8,7 @@ use App\Constant\HvConstant;
 use App\DataTable\Adapter\GroupByORMAdapter;
 use App\DataTable\Column\ActionsColumn\ActionsColumn;
 use App\Entity\Hv;
+use App\Entity\Vacante;
 use App\Repository\HvRepository;
 use Doctrine\ORM\QueryBuilder;
 use Knp\Bundle\TimeBundle\Twig\Extension\TimeExtension;
@@ -45,6 +46,7 @@ class AdminHvDataTableType implements DataTableTypeInterface
      */
     public function configure(DataTable $dataTable, array $options)
     {
+        $vacante = $options['vacante'] ?? null;
         $dataTable
             ->add('identificacion', TextColumn::class, ['label' => 'Identificación', 'field' => 'usuario.identificacion'])
             ->add('nombreCompleto', TextColumn::class, ['label' => 'Nombre', 'field' => 'usuario.nombrePrimeros'])
@@ -74,12 +76,21 @@ class AdminHvDataTableType implements DataTableTypeInterface
                 ]
             ])
             ->createAdapter(GroupByORMAdapter::class, [
-                'entity' => Hv::class,
-                'query' => function (QueryBuilder $builder) {
-                    $builder
-                        ->select('hv')
-                        ->from(Hv::class, 'hv');
-                    $this->hvRepository->searchQueryBuilderFields($builder);
+                'entity' => !$vacante ? Hv::class : Vacante::class,
+                'query' => function (QueryBuilder $builder) use ($vacante) {
+                    if(!$vacante) {
+                        $builder
+                            ->select('hv')
+                            ->from(Hv::class, 'hv');
+                    } else {
+                        $builder
+                            ->select('hv')
+                            ->from(Hv::class, 'hv');
+                    }
+                    $this->hvRepository->searchQueryBuilderFields($builder)
+                        ->join(Vacante::class, 'v', 'WITH', 'usuario.id = v.usuario')
+                        ->where('v = :vacante')
+                        ->setParameter('vacante', $vacante);
                 },
                 'criteria' => [
                     function(QueryBuilder $builder, DataTableState $state) {

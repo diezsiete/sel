@@ -63,10 +63,12 @@ services:
     # please note that last definitions always *replace* previous ones
 
 
+    App\DataTable\Column\ActionsColumn\ActionButton:
+        public: true
+        shared: false
     App\DataTable\Column\ActionsColumn\ActionRoute:
         public: true
         shared: false
-
     App\DataTable\Column\ActionsColumn\ActionModal:
         public: true
         shared: false

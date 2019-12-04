@@ -15,20 +15,15 @@ class ActionRoute extends Action
     private $router;
 
     /**
-     * @var PropertyAccessor
-     */
-    private $propertyAccessor;
-
-    /**
      * @var Route
      */
     private $route = null;
 
 
-    public function __construct(RouterInterface $router, PropertyAccessorInterface $propertyAccessor)
+    public function __construct(PropertyAccessorInterface $propertyAccessor, RouterInterface $router)
     {
+        parent::__construct($propertyAccessor);
         $this->router = $router;
-        $this->propertyAccessor = $propertyAccessor;
     }
 
     public function setOptions($options)
@@ -43,7 +38,7 @@ class ActionRoute extends Action
         if($attributes && !isset($attributes['disabled'])) {
             $attributes['href'] = $this->router->generate($this->route->getRoute(), $this->route->getParameters($context, $value));
         }
+        
         return $attributes;
     }
-    
 }

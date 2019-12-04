@@ -52,6 +52,7 @@ class ActionsColumn extends AbstractColumn
     public function transform($value = null, $context = null)
     {
         $data = $this->getData();
+
         if (is_callable($data)) {
             $value = call_user_func($data, $context, $value);
         } elseif (null === $value) {
@@ -76,16 +77,20 @@ class ActionsColumn extends AbstractColumn
     {
         $html = "";
         foreach($actionsAttributes as $actionAttributes) {
-            $tag = "a";
+            $tag = isset($actionAttributes["tag"]) ? $actionAttributes["tag"] : "a";
             $actionAttributes['class'] = (isset($actionAttributes['class']) ? $actionAttributes['class'] . ' ' : '') . "btn btn-outline-primary mr-3";
             if(isset($actionAttributes['disabled'])) {
                 $tag = "span";
                 $actionAttributes['class'] .= ' disabled';
             }
             $buttonText = "undefined";
-            if(isset($actionAttributes['icon'])) {
+            if(isset($actionAttributes['text'])) {
+                $buttonText = $actionAttributes['text'];
+            }
+            else if(isset($actionAttributes['icon'])) {
                 $buttonText = "<i class='{$actionAttributes['icon']}'></i>";
             }
+
             $attributes = $this->parseAttributes($actionAttributes);
             $html .= sprintf('<%s %s>%s</%s>',$tag, $attributes, $buttonText, $tag);
         }
@@ -138,9 +143,10 @@ class ActionsColumn extends AbstractColumn
         else if(isset($actionConfig['modal'])) {
             $actionObject = $this->locator->get(ActionModal::class);
         }
-        if($actionObject) {
-            $actionObject->setOptions($actionConfig);
+        else {
+            $actionObject = $this->locator->get(ActionButton::class);
         }
+        $actionObject->setOptions($actionConfig);
         return $actionObject;
     }
 }

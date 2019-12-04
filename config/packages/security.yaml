@@ -64,7 +64,7 @@ security:
 
         ROLE_ADMIN:
             - ROLE_OPERADOR
-            - ROLE_VACANTES
+            - ROLE_VACANTES_ADMIN
             - ROLE_REPRESENTANTE_SERVICIO
             - ROLE_ALLOWED_TO_SWITCH
             - ROLE_EVALUACION_ADMIN
