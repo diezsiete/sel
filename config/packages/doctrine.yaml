@@ -65,7 +65,7 @@ doctrine:
                         alias: App
                 hydrators:
                     FETCH_COLUMN: App\Hydrators\FetchColumnHydrator
-                    FETCH_KEY_PAIR: App\Hydrators\FechKeyPairHydrator
+                    FETCH_KEY_PAIR: App\Hydrators\FetchKeyPairHydrator
 
                 dql:
                     numeric_functions:

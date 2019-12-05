@@ -3,3 +3,8 @@
 {% block title %}Hojas de vida{% endblock %}
 {% block body_header_title %}Hojas de vida {% endblock %}
 
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('admin-hv-list') }}
+{% endblock %}

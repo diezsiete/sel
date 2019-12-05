@@ -67,12 +67,13 @@ class AdminHvDataTableType implements DataTableTypeInterface
                         'icon' => 'fas fa-eye',
                         'tooltip' => 'Ver',
                         'target' => '_blank'
-                    ]/*,
+                    ],
                     [
-                        'route' => ['admin_autoliquidacion_export', ['id' => 'id', 'type' => '"zip"']],
-                        'icon' => 'far fa-file-archive',
-                        'tooltip' => 'Comprimido Zip'
-                    ],*/
+                        'icon' => 'fas fa-upload',
+                        'tooltip' => 'Cargar a novasoft',
+                        'data-id' => 'hv.id',
+                        'class' => 'scraper'
+                    ],
                 ]
             ])
             ->createAdapter(GroupByORMAdapter::class, [

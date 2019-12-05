@@ -49,6 +49,9 @@ abstract class Action
         if (isset($this->options["tag"])) {
             $attributes["tag"] = $this->options["tag"];
         }
+        if (isset($this->options["class"])) {
+            $attributes["class"] = $this->options["class"];
+        }
 
         $data = $this->options['data'] ?? null;
         if (is_callable($data)) {
@@ -63,6 +66,7 @@ abstract class Action
             $attributes = false;
         }
 
+        $attributes += $this->transformDataOptions($value, $context);
 
         return $attributes;
     }
@@ -74,5 +78,16 @@ abstract class Action
             return $this->propertyAccessor->getValue($context, $this->options[$name]);
         }
         return $this->options[$name];
+    }
+
+    protected function transformDataOptions($value = null, $context = null)
+    {
+        $attributes = [];
+        foreach($this->options as $optionName => $optionValue) {
+            if(preg_match('/^data-.*/', $optionName)) {
+                $attributes[$optionName] = $this->getOption($optionName, $value, $context);
+            }
+        }
+        return $attributes;
     }
 }

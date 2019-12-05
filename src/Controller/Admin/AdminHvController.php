@@ -34,7 +34,7 @@ class AdminHvController extends AbstractController
     }
 
     /**
-     * @Route("/sel/admin/hv/{id}", name="admin_hv_detalle")
+     * @Route("/sel/admin/hv/{id}", name="admin_hv_detalle", requirements={"id"="\d+"})
      */
     public function detalle(Hv $hv)
     {

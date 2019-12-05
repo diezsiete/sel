@@ -74,7 +74,8 @@ class HvController extends BaseController
 
             // si el usuario ya esta registrado
             if($hv->getUsuario()) {
-                $scraperMessenger->updateDatosBasicos($hv);
+                $scraperMessenger->insertToNovasoft($hv);
+                //$scraperMessenger->updateDatosBasicos($hv);
             }
 
             $this->addFlash('success', "Datos guardados exitosamente");
