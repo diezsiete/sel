@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Comprobantes de pago
+{% endblock %}
+
+{% block body_header_title %}
+    Comprobantes de pago
+{% endblock %}
+
+{% block body %}
+    <!-- start: page -->
+    <div class="row">
+        <div class="col">
+            <section class="card">
+                <div class="card-body">
+                    {{ include('servicio_empleados/_comprobantes-temp-table.html.twig') }}
+                </div>
+            </section>
+        </div>
+    </div>
+    <!-- end: page -->
+{% endblock %}
+
+
+

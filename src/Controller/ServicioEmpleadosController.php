@@ -10,10 +10,13 @@ use App\Entity\ReporteNomina;
 use App\Repository\ConvenioRepository;
 use App\Service\Autoliquidacion\FileManager;
 use App\Service\Configuracion\Configuracion;
+use App\Service\Novasoft\Report\ReportFactory;
+use App\Service\Novasoft\Report\ReportPdfHandler;
 use App\Service\Pdf\PdfCartaLaboral;
 use App\Service\ReportesServicioEmpleados;
 use App\Service\ServicioEmpleados\Import;
 use App\Service\ServicioEmpleados\Reportes;
+use DateTime;
 use Exception;
 use Omines\DataTablesBundle\DataTableFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -39,26 +42,21 @@ class ServicioEmpleadosController extends BaseController
 
     /**
      * @Route("/sel/se/comprobantes", name="app_comprobantes", defaults={"header": "Comprobantes de pago"})
-     */
-    public function comprobantes(DataTableFactory $dataTableFactory, Request $request, Import $import)
+
+    public function comprobantes(DataTableFactory $dataTableFactory, Request $request, ReportFactory $reportFactory)
     {
         $id = $this->getUser()->getId();
         $table = $dataTableFactory->createFromType(ReporteNominaDataTableType::class,
             ['id' => $id], ['searching' => false, 'paging' => false])
             ->handleRequest($request);
-
         if($table->isCallback()) {
-            $import->nomina($this->getUser());
             return $table->getResponse();
         }
-
         return $this->render('servicio_empleados/comprobantes.html.twig', ['datatable' => $table]);
     }
-
     /**
      * @Route("/sel/se/comprobante/{comprobante}", name="app_comprobante")
      * @IsGranted("REPORTE_MANAGE", subject="comprobante")
-     */
     public function comprobante(Reportes $reportes, ReporteNomina $comprobante)
     {
         $ssrsDb = $this->getSsrsDb();
@@ -70,7 +68,34 @@ class ServicioEmpleadosController extends BaseController
                 $ssrsDb
             );
         });
+    }*/
 
+    /**
+     * @Route("/sel/se/comprobantes", name="app_comprobantes")
+     */
+    public function comprobantesNomina(ReportFactory $reportFactory)
+    {
+        $nominaReport = $reportFactory->getReporteNomina($this->getUser()->getIdentificacion());
+
+        return $this->render('servicio_empleados/comprobantes-temp.html.twig', [
+            'comprobantes' => $nominaReport->renderMap()
+        ]);
+    }
+
+    /**
+     * @Route("/sel/se/comprobante/{periodo}", name="app_comprobante")
+     */
+    public function comprobanteNomina(ReportFactory $reportFactory, ReportPdfHandler $pdfHandler, $periodo)
+    {
+        return $this->renderStream(function () use ($reportFactory, $pdfHandler, $periodo) {
+            $fecha = DateTime::createFromFormat('Ymd', $periodo);
+            $ident = $this->getUser()->getIdentificacion();
+            // usar write si no se quiere cache
+            $pdfHandler->cache('comprobante', $fecha, $ident, function ($fecha, $ident) use ($reportFactory) {
+                return $reportFactory->getReporteNomina($ident, $fecha, $fecha)->renderPdf();
+            });
+            return $pdfHandler->readStream('comprobante', $fecha, $ident);
+        });
     }
 
     /**

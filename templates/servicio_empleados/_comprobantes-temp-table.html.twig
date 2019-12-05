@@ -1,0 +1,24 @@
+<table class="table table-bordered table-striped mb-0" id="datatable-default">
+    <thead>
+    <tr>
+        <th>Fecha</th>
+        <th>Convenio</th>
+        <th>Identificación</th>
+        <th>PDF</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for periodo, comprobante in comprobantes %}
+        <tr>
+            <td>{{ comprobante.fecha|date('Y-m-d') }}</td>
+            <td>{{ comprobante.convenioCodigoNombre }}</td>
+            <td>{{ comprobante.usuario.identificacion }}</td>
+            <td>
+                <a target="_blank" href="{{ path('app_comprobante', {'periodo' : periodo}) }}">
+                    <i class="fas fa-file-pdf fa-2x"></i>
+                </a>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

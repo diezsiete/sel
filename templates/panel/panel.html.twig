@@ -20,10 +20,13 @@
                         Ultimos comprobantes de pago
                     </header>
                     <div class="card-body">
-                        <div id="comprobantes" class="datatable" data-settings='{{ datatable_settings(datatables.comprobantes) }}'>
+                        {#<div id="comprobantes" class="datatable" data-settings='{{ datatable_settings(datatables.comprobantes) }}'>
                             Loading...
-                        </div>
+                        </div>#}
+
+                        {{ include('servicio_empleados/_comprobantes-temp-table.html.twig') }}
                         <div class="text-right">
+                            <br>
                             <a href="{{ path('app_comprobantes') }}" class="btn btn-primary">Ver todos</a>
                         </div>
                     </div>

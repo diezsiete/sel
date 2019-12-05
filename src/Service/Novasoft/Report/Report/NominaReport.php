@@ -117,4 +117,12 @@ class NominaReport extends Report
         return $this;
     }
 
+
+    public function renderMap()
+    {
+        $map = parent::renderMap();
+        krsort($map);
+        return $map;
+    }
+
 }
