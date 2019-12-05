@@ -24,11 +24,16 @@ class ScraperMessenger
      * @var NormalizerInterface
      */
     private $normalizer;
+    /**
+     * @var string
+     */
+    private $appEnv;
 
-    public function __construct(MessageBusInterface $messageBus, NormalizerInterface $normalizer)
+    public function __construct(MessageBusInterface $messageBus, NormalizerInterface $normalizer, $appEnv)
     {
         $this->messageBus = $messageBus;
         $this->normalizer = $normalizer;
+        $this->appEnv = $appEnv;
     }
 
     public function insertToNovasoft(Hv $hv)
@@ -46,6 +51,7 @@ class ScraperMessenger
     {
         try {
             $data = $this->normalizer->normalize($hv, null, ['groups' => ['scraper-hv']]);
+
             $message = new UpdateHvInNovasoft($hv->getId(), $data, UpdateHvInNovasoft::ACTION_UPDATE);
             $this->messageBus->dispatch($message);
         } catch (Exception $e) {
@@ -100,10 +106,15 @@ class ScraperMessenger
     /**
      * Logear y manejar exepciones excepcionales de serailizacion de datos o de despacho de mensajes
      * @param Exception $e
+     * @throws Exception
      */
     private function handleDispatchException(Exception $e)
     {
-        // TODO
+        if($this->appEnv === 'dev') {
+            throw $e;
+        } else {
+            // TODO
+        }
     }
 
 }

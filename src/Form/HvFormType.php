@@ -257,7 +257,7 @@ class HvFormType extends AbstractType
             ];
         } else {
             $type = ChoiceType::class;
-            $options['disabled'] = true;
+            //$options['disabled'] = true;
             $options['choices'] = [];
         }
         $form->add($locationConfig['name'], $type, $options);

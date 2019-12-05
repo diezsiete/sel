@@ -61,7 +61,6 @@ class HvController extends BaseController
             /** @var HvDatosBasicosModel $hvdto */
             $hvdto = $form->getData();
 
-
             $hv = $hvdto->fillHv($hvResolver->getHv() ?? new Hv());
             $usuario = $hvdto->fillUsuario($hvResolver->getUsuario());
 

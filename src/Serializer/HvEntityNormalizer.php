@@ -15,6 +15,7 @@ use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Exception\LogicException;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
@@ -85,7 +86,10 @@ class HvEntityNormalizer implements NormalizerInterface
             }
         }
 
-        $context[AbstractNormalizer::CALLBACKS] = $callbacks;
+        $context += [
+            AbstractNormalizer::CALLBACKS => $callbacks,
+            AbstractObjectNormalizer::SKIP_NULL_VALUES => true
+        ];
 
         return $this->normalizer->normalize($object, $format, $context);
     }
@@ -114,7 +118,13 @@ class HvEntityNormalizer implements NormalizerInterface
     public function normalizeAssociation($innerObject, $outerObject, string $attributeName, string $format = null, array $context = [])
     {
 
-        $data = $this->normalizer->normalize($innerObject, $format, $context);
+        if(get_class($innerObject) === HvEntityNormalizer::class
+            && (preg_match('/.*Dpto$/', $attributeName) || preg_match('/.*Ciudad$/', $attributeName))) {
+            $data = ['id' => '00'];
+        } else {
+            $data = $this->normalizer->normalize($innerObject, $format, $context);
+        }
+
         if(is_array($data)) {
             if(count($data) === 1) {
                 $data = $data[array_key_first($data)];
