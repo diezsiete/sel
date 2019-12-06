@@ -118,6 +118,7 @@ class HvEntityNormalizer implements NormalizerInterface
     public function normalizeAssociation($innerObject, $outerObject, string $attributeName, string $format = null, array $context = [])
     {
 
+        //si selecciono un pais sin dpto y ciudad o un dpto sin ciudad el valor null se convierte en 00 para novasoft
         if(get_class($innerObject) === HvEntityNormalizer::class
             && (preg_match('/.*Dpto$/', $attributeName) || preg_match('/.*Ciudad$/', $attributeName))) {
             $data = ['id' => '00'];

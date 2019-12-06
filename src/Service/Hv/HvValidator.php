@@ -4,11 +4,9 @@
 namespace App\Service\Hv;
 
 
-use App\Constant\HvConstant;
 use App\Entity\Hv;
 use App\Service\Configuracion\Configuracion;
 use App\Service\Hv\HvWizard\HvWizardRoute;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class HvValidator
@@ -24,14 +22,15 @@ class HvValidator
      */
     private $hvWizardRoutes;
     /**
-     * @var SessionInterface
+     * @var Configuracion
      */
-    private $session;
+    private $configuracion;
 
     public function __construct(ValidatorInterface $validator, Configuracion $configuracion)
     {
         $this->validator = $validator;
         $this->hvWizardRoutes = $configuracion->getHvWizardRoutes();
+        $this->configuracion = $configuracion;
     }
 
     /**
@@ -111,7 +110,7 @@ class HvValidator
 
     public function validateReferencias(?Hv $hv)
     {
-        $referenciasRequired = HvConstant::REFERENCIA_TIPO;
+        $referenciasRequired = $this->configuracion->getHvReferenciaTipo();
         if($hv) {
             foreach ($hv->getReferencias() as $referencia) {
                 unset($referenciasRequired[$referencia->getTipo()]);

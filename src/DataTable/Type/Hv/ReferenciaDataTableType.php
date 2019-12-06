@@ -11,6 +11,7 @@ use App\DataTable\Column\ButtonColumn\ButtonColumn;
 use App\DataTable\Column\ButtonColumn\ButtonTypeModal;
 use App\Entity\Experiencia;
 use App\Entity\Referencia;
+use App\Service\Configuracion\Configuracion;
 use Doctrine\ORM\QueryBuilder;
 use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
 use Omines\DataTablesBundle\Column\TextColumn;
@@ -19,6 +20,16 @@ use Omines\DataTablesBundle\DataTableTypeInterface;
 
 class ReferenciaDataTableType implements DataTableTypeInterface
 {
+
+    /**
+     * @var Configuracion
+     */
+    private $configuracion;
+
+    public function __construct(Configuracion $configuracion)
+    {
+        $this->configuracion = $configuracion;
+    }
 
     /**
      * @param DataTable $dataTable
@@ -30,7 +41,7 @@ class ReferenciaDataTableType implements DataTableTypeInterface
 
         $dataTable
             ->add('tipo', TextColumn::class, ['label' => 'Tipo de referencia', 'render' => function($id) {
-                return HvConstant::REFERENCIA_TIPO[$id];
+                return $this->configuracion->getHvReferenciaTipo(false)[$id];
             }])
             ->add('nombre', TextColumn::class, ['label' => 'Nombre'])
             ->add('ocupacion', TextColumn::class, ['label' => 'Ocupación'])

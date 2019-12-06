@@ -5,6 +5,7 @@
 namespace App\Service\Configuracion;
 
 
+use App\Constant\HvConstant;
 use App\Service\Configuracion\Scraper\ScraperConfiguracion;
 use App\Service\Hv\HvWizard\HvWizardRoute;
 use Exception;
@@ -277,5 +278,18 @@ class Configuracion
             $this->companias[$name] = $compania;
         }
         return $this->companias[$name];
+    }
+
+
+    public function getHvReferenciaTipo($flipped = true)
+    {
+        $tiposReferencia = array_flip(HvConstant::REFERENCIA_TIPO);
+        //fix para servilabor en tipo de referencia que tiene id diferente
+        if($this->getEmpresa(true) === 'servilabor') {
+            $tiposReferencia = array_map(function ($id) {
+                return $id + 6;
+            }, $tiposReferencia);
+        }
+        return $flipped ? $tiposReferencia : array_flip($tiposReferencia);
     }
 }

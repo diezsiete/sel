@@ -27,8 +27,6 @@ function startInterval(hvId) {
     }
 }
 
-
-
 function buttonSetQueueStyle(hvId, $queueName) {
     const $button = $('.scraper[data-id="' + hvId + '"]');
     if($queueName === "success") {
@@ -45,6 +43,7 @@ function buttonSetQueueStyle(hvId, $queueName) {
 function buttonClick($button) {
     if($button.hasClass('btn-outline-danger')) {
         const id = $button.data('id');
+        buttonSetQueueStyle(id, 'default');
         const route = Routing.generate('admin_scraper_retry_failed_message', {'hvId': id});
         $.get( route, response => {
             for(const hvId in response) {

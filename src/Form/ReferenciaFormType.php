@@ -25,19 +25,10 @@ class ReferenciaFormType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $tiposReferencia = HvConstant::REFERENCIA_TIPO;
-        //fix para servilabor en tipo de referencia que tiene id diferente
-        if($this->configuracion->getEmpresa(true) === 'servilabor') {
-            $tiposReferencia = array_map(function ($id) {
-                return $id + 6;
-            }, $tiposReferencia);
-        }
-        $tiposReferencia = array_flip($tiposReferencia);
-
         $builder
             ->add('tipo', ChoiceType::class, [
                 'label' => 'Tipo de referencia',
-                'choices' => $tiposReferencia,
+                'choices' => $this->configuracion->getHvReferenciaTipo(),
                 'placeholder' => 'Seleccione...'
             ])
             ->add('nombre', null, [
