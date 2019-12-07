@@ -44,6 +44,12 @@ class MessageHvDataTableType implements DataTableTypeInterface
                         'data-id' => '.id',
                         'data-queue' => '.queueName'
                     ],
+                    [
+                        'icon' => 'fas fa-upload',
+                        'tooltip' => 'Cargar a novasoft',
+                        'data-id' => 'hv.id',
+                        'class' => 'scraper'
+                    ],
                 ]
             ])
             ->addOrderBy('created_at', DataTable::SORT_DESCENDING)

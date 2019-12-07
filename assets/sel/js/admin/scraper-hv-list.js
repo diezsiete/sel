@@ -1,5 +1,7 @@
 import $ from 'jquery'
 import Routing from './../router';
+import scraperRetryFailedMessage from './../component/scraper-retry-failed-message';
+
 import './../../css/admin/scraper-hv-list.scss'
 
 $(function () {
@@ -14,5 +16,7 @@ $(function () {
             })
 
         });
+
+        scraperRetryFailedMessage.init()
     });
 });
