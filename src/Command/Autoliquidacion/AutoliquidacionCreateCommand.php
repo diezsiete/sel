@@ -64,25 +64,27 @@ class AutoliquidacionCreateCommand extends TraitableCommand
         $this->autoliquidacionEmpleadoRepository = $autoliquidacionEmpleadoRepository;
     }
 
-    protected function configure()
+    /*protected function configure()
     {
         $this->addOption('not_overwrite', null, InputOption::VALUE_NONE,
                 'Si la autoliquidacion ya existe la borra');
         parent::configure();
-    }
+    }*/
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
 
         $rango = $this->getRangoFromPeriodo($input, false);
 
-        $overwrite = !$input->getOption('not_overwrite');
+
 
         if($this->isSearchConvenio()) {
             $conveniosCodigos = $this->getConveniosCodigos();
-            if($overwrite) {
+            /*if($overwrite) {
                 $this->autoliquidacionService->deleteAutoliquidacion($rango->start, $this->searchValue);
-            }
+            }*/
+            $this->autoliquidacionService->deleteAutoliquidacion($rango->start, $this->searchValue);
+
             foreach($conveniosCodigos as $codigo) {
                 $empleados = $this->empleadoRepository->findByRangoPeriodo($rango->start, $rango->end, $codigo);
 

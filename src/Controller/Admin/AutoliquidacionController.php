@@ -1,17 +1,15 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
+use App\Controller\BaseController;
 use App\DataTable\Type\AutoliquidacionDataTableType;
 use App\DataTable\Type\AutoliquidacionEmpleadoDataTableType;
 use App\Entity\Autoliquidacion\Autoliquidacion;
 use App\Entity\Convenio;
 use App\Service\Autoliquidacion\Export;
-use App\Service\Autoliquidacion\FileManager;
 use DateTime;
 use Omines\DataTablesBundle\DataTableFactory;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 

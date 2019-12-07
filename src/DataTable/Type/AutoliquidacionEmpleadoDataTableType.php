@@ -42,6 +42,7 @@ class AutoliquidacionEmpleadoDataTableType implements DataTableTypeInterface
             $dataTable
                 ->add('identificacion', TextColumn::class, ['label' => 'Identificación', 'field' => 'u.identificacion'])
                 ->add('nombreCompleto', TextColumn::class, ['label' => 'Nombres', 'field' => 'u.nombreCompleto', 'orderable' => false])
+                ->add('exito', TextColumn::class, ['label' => 'Exito', 'field' => 'ae.exito', 'orderable' => false])
                 ->addOrderBy('identificacion', DataTable::SORT_DESCENDING);
         }
         if(!$periodo) {
@@ -57,7 +58,10 @@ class AutoliquidacionEmpleadoDataTableType implements DataTableTypeInterface
                     'route' => ['app_certificado_aporte', ['id' => 'id']],
                     'icon' => 'fas fa-file-pdf',
                     'target' => '_blank',
-                    'tooltip' => 'Ver'
+                    'tooltip' => 'Ver',
+                    'data' => function (AutoliquidacionEmpleado $autoliquidacionEmpleado, $id) {
+                        return $autoliquidacionEmpleado->isExito() ? $id : 'disabled';
+                    },
                 ]
             ])
 
@@ -69,8 +73,8 @@ class AutoliquidacionEmpleadoDataTableType implements DataTableTypeInterface
                         ->from(AutoliquidacionEmpleado::class, 'ae')
                         ->join('ae.autoliquidacion', 'a')
                         ->join('ae.empleado', 'e')
-                        ->join('e.usuario', 'u')
-                        ->andWhere('ae.exito = 1');
+                        ->join('e.usuario', 'u');
+                        //->andWhere('ae.exito = 1');
                     if($id){
                         $builder->andWhere('u.id = :id')
                             ->setParameter('id', $id);
