@@ -7,35 +7,6 @@
   float: right !important;
 }
 
-/** --- Modal --- **/
-.modal-block {
-  background: transparent;
-  padding: 0;
-  text-align: left;
-  max-width: 600px;
-  margin: 40px auto;
-  position: relative;
-}
-
-.modal-block.modal-block-xs {
-  max-width: 200px;
-}
-
-.modal-block.modal-block-sm {
-  max-width: 400px;
-}
-
-.modal-block.modal-block-md {
-  max-width: 600px;
-}
-
-.modal-block.modal-block-lg {
-  max-width: 900px;
-}
-
-.modal-block.modal-block-full {
-  max-width: 98%;
-}
 
 /* Tables - Actions */
 .table .actions,

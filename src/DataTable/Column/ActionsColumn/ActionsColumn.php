@@ -4,11 +4,8 @@ namespace App\DataTable\Column\ActionsColumn;
 
 use Omines\DataTablesBundle\Column\AbstractColumn;
 use Omines\DataTablesBundle\DataTable;
-use Omines\DataTablesBundle\DependencyInjection\Instantiator;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Contracts\Service\ServiceSubscriberInterface;
 
 /**
  *
@@ -48,6 +45,8 @@ class ActionsColumn extends AbstractColumn
             }
         }
     }
+
+
 
     public function transform($value = null, $context = null)
     {

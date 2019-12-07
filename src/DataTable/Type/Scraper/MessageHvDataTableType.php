@@ -33,13 +33,17 @@ class MessageHvDataTableType implements DataTableTypeInterface
             ->add('created_at', DateTimeColumn::class, ['label' => 'Created at', 'format' => 'Y-m-d H:i:s', 'field' => 'm.createdAt'])
             ->add('actions', ActionsColumn::class, [
                 'label' => '',
-                'field' => 'm.id',
+                'field' => 'u.identificacion',
                 'orderable' => false,
                 'actions' => [
                     [
-                        'icon' => 'fas fa-file-pdf',
-                        'tooltip' => 'PDF Unificado'
-                    ]
+                        'modal' => '#modalTest',
+                        //'confirm' => ['admin_vacante_borrar', ['vacante' => '[0].id']],
+                        'icon' => 'far fa-envelope',
+                        'tooltip' => 'Message',
+                        'data-id' => '.id',
+                        'data-queue' => '.queueName'
+                    ],
                 ]
             ])
             ->addOrderBy('created_at', DataTable::SORT_DESCENDING)

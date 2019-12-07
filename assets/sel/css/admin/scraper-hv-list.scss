@@ -1,0 +1,39 @@
+.info:not(.first){
+  padding-left: 0;
+}
+
+.info p {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.info p .label-default {
+  background: #edeff3;
+}
+
+.proceso-visor .console-view{
+  border: 1px solid #d2d6de;
+  background: white;
+  padding:2px;
+  font-family: "Consolas", "Bitstream Vera Sans Mono", "Courier New", Courier, monospace;
+  overflow: scroll;
+}
+
+.proceso-visor .console-view.comandoCompleto {
+  font-size: .9em;
+}
+
+.proceso-visor .console-view.salidas {
+  min-height: 100px;
+  max-height: 350px;
+  overflow: scroll;
+}
+
+.proceso-visor .exception-container {
+
+}
+.proceso-visor .console-view.exception {
+  font-size: .9em;
+  background: #d43973;
+  color:white;
+}

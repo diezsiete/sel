@@ -74,8 +74,12 @@ abstract class Action
 
     protected function getOption($name, $value = null, $context = null)
     {
-        if (preg_match('/(\[.*\])|(.*\..*)/', $this->options[$name])) {
+        if (preg_match('/(\[.*\])/', $this->options[$name])) {
             return $this->propertyAccessor->getValue($context, $this->options[$name]);
+        }
+        else if (preg_match('/(.*)\.(.*)/', $this->options[$name], $matches)) {
+            $propertyPath = !$matches[1] ? "$matches[2]" : $this->options[$name];
+            return $this->propertyAccessor->getValue($context, $propertyPath);
         }
         return $this->options[$name];
     }

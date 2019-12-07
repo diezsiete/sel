@@ -8,6 +8,7 @@ PNotify.defaults.styling = 'bootstrap4';
 
 export default function(datatable, options) {
     options = typeof options === 'undefined' ? {} : options;
+
     const tbody = datatable.table().body();
 
     const defaults = {

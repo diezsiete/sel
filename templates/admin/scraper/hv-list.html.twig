@@ -8,6 +8,12 @@
     Messages Hv
 {% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('admin-scraper-hv-list') }}
+{% endblock %}
+
+
 {% block body_header_right %}
     <ul class="u-list-inline">
         <li class="list-inline-item">
@@ -31,6 +37,40 @@
         </li>
     </ul>
 {% endblock %}
+
+
+{% block body %}
+    {{ parent() }}
+    <div id="modalTest" class="modal-block mfp-hide proceso-visor">
+        <section class="card">
+            <header class="card-header">
+                <h2 class="card-title">HOLA</h2>
+            </header>
+            <div class="card-body">
+                <div class="modal-wrapper">
+                    <div class="modal-text">
+                        <div class="col-xs-12">
+                            <p class="salidas console-view"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="card-footer">
+                <div class="row">
+                    <div class="col-md-12 text-right">
+                        <button class="btn btn-default modal-dismiss">Cancelar</button>
+                    </div>
+                </div>
+            </footer>
+        </section>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('admin-scraper-hv-list') }}
+{% endblock %}
+
 
 
 
