@@ -95,4 +95,22 @@ class MapperNom933 extends Mapper
             $this->targetObject->setFechaRetiro($this->filter->fechaFromNovasoft($fechaRetiro));
         }
     }
+
+    protected function setTelefono1($tel1)
+    {
+        if(is_numeric($tel1)) {
+            $this->targetObject->setTelefono1($tel1);
+        } else {
+            $this->targetObject->setTelefono1(null);
+        }
+    }
+
+    protected function setTelefono2($tel2)
+    {
+        if($tel2 && is_numeric($tel2)) {
+            $this->targetObject->setTelefono2($tel2);
+        } else {
+            $this->targetObject->setTelefono2(null);
+        }
+    }
 }

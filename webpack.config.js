@@ -7,7 +7,10 @@ if (!Encore.isRuntimeEnvironmentConfigured()) {
     Encore.configureRuntimeEnvironment(process.env.NODE_ENV || 'dev');
 }
 
-const empresa = dotenv.parsed.EMPRESA.toLowerCase();
+let empresa = dotenv.parsed.EMPRESA.toLowerCase();
+if(process.env.EMPRESA) {
+    empresa = process.env.EMPRESA
+}
 
 const assetDestinationProd = '[name].[hash:8].[ext]';
 const assetDestinationDev = '[name].[ext]';

@@ -1,0 +1,22 @@
+#---
+#- hosts: local
+#  vars:
+#      empresa: servilabor
+#  tasks:
+#      - name: Clear build folder
+#        shell: "rm -rf ../public/build/*"
+#        args:
+#            warn: no
+#
+#      - name: Build webpack
+#        command: "yarn build"
+#        environment:
+#            EMPRESA: "{{ empresa }}"
+#
+#      - name: Archive webpack
+#        archive:
+#            path: "{{ playbook_dir }}/../public/build"
+#            dest: "{{ playbook_dir }}/../public/build.tgz"
+
+
+

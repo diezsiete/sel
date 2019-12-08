@@ -38,6 +38,8 @@ class MigrationEmpleadoConvenio extends MigrationCommand
      */
     private $em;
 
+    private $convenios = [];
+
     public function __construct(Reader $annotationReader, EventDispatcherInterface $eventDispatcher, ManagerRegistry $managerRegistry,
                                 EmpleadoRepository $empleadoRepository, ConvenioRepository $convenioRepository, ConvenioScraper $scraper,
                                 EntityManagerInterface $em)
@@ -60,26 +62,25 @@ class MigrationEmpleadoConvenio extends MigrationCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $test = $input->getOption('test');
-        $empleados = $this->empleadoRepository->findWithoutConvenio();
+        $idents = $this->empleadoRepository->findIdentsWithoutConvenio();
 
-        $this->initProgressBar(count($empleados));
+        $this->initProgressBar(count($idents));
 
-        foreach($empleados as $empleado) {
-            $ident = $empleado->getUsuario()->getIdentificacion();
+        $batchSize = 20;
+        $i = 0;
+        foreach($idents as $ident) {
+
             try {
                 $response = $this->scraper->findConvenioForEmpleado($ident);
                 $convenioCodigo = $response->getMessage();
 
                 if($test) {
                     $this->io->writeln("'$ident' ---> '$convenioCodigo'");
-                    if($output->isVeryVerbose()) {
-                        dump($response);
-                    }
                 }
-                if($convenio = $this->convenioRepository->find($convenioCodigo)) {
+                if($convenio = $this->getConvenio($convenioCodigo)) {
                     if(!$test) {
-                        $empleado->setConvenio($convenio);
-                        $this->em->flush();
+                        $this->empleadoRepository->findByIdentificacion($ident)
+                            ->setConvenio($convenio);
                     }
                 } else {
                     $this->io->warning("for ident '$ident', convenio '$convenioCodigo' not found in database");
@@ -89,7 +90,17 @@ class MigrationEmpleadoConvenio extends MigrationCommand
             } catch (Exception $e) {
                 $this->io->error($e->getMessage());
             }
+            $i++;
+            if (($i % $batchSize) === 0 && !$test) {
+                $this->em->flush();
+                $this->em->clear();
+                $this->convenios = [];
+            }
             $this->progressBar->advance();
+        }
+        if(!$test) {
+            $this->em->flush();
+            $this->em->clear();
         }
     }
 
@@ -97,5 +108,13 @@ class MigrationEmpleadoConvenio extends MigrationCommand
     {
         $query = $this->em->createQuery("UPDATE " . Empleado::class . " e SET e.convenio = NULL");
         $query->getResult();
+    }
+
+    protected function getConvenio($convenioCodigo)
+    {
+        if(!isset($this->convenios[$convenioCodigo])) {
+            $this->convenios[$convenioCodigo] = $this->convenioRepository->find($convenioCodigo);
+        }
+        return $this->convenios[$convenioCodigo];
     }
 }

@@ -82,7 +82,7 @@ class MigrationEmpleado extends MigrationCommand
                 }
             }
         } catch (Exception $e) {
-            dump($e);
+            //dump($e);
             throw $e;
         }
     }

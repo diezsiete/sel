@@ -177,6 +177,20 @@ class EmpleadoRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /**
+     * @return string[]
+     */
+    public function findIdentsWithoutConvenio()
+    {
+        $qb = $this->createQueryBuilder('e');
+        return $qb
+            ->select('u.identificacion')
+            ->join('e.usuario', 'u')
+            ->where($qb->expr()->isNull('e.convenio'))
+            ->getQuery()
+            ->getResult('FETCH_COLUMN');
+    }
+
 
     public function getUsuariosIds()
     {
