@@ -18,7 +18,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class MigrationEmpleado extends MigrationCommand
+class MigrationEmpleadoCommand extends MigrationCommand
 {
     public static $defaultName = "sel:migration:empleado";
     /**
