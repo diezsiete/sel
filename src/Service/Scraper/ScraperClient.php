@@ -68,9 +68,8 @@ class ScraperClient
 
     /**
      * @param string $url
-     * @param string $responseClass
      * @param array $options
-     * @return mixed
+     * @return ScraperResponse
      * @throws ScraperClientException
      * @throws ScraperConflictException
      * @throws ScraperException

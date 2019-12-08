@@ -134,15 +134,7 @@ class EmpleadoRepository extends ServiceEntityRepository
             ));
     }
 
-    public static function convenioCriteria($codigos) {
-        $criteria = Criteria::create();
-        if(is_array($codigos)) {
-            $criteria->andWhere(Criteria::expr()->in('c.codigo', $codigos));
-        } else {
-            $criteria->andWhere(Criteria::expr()->eq('c.codigo', $codigos));
-        }
-        return $criteria;
-    }
+
 
     /**
      * @param $periodoInicio
@@ -172,6 +164,19 @@ class EmpleadoRepository extends ServiceEntityRepository
         return (int) $qb->getQuery()->getSingleResult(AbstractQuery::HYDRATE_SINGLE_SCALAR);
     }
 
+    /**
+     * @return Empleado[]
+     */
+    public function findWithoutConvenio()
+    {
+        $qb = $this->createQueryBuilder('e');
+        return $qb
+            ->join('e.usuario', 'u')
+            ->where($qb->expr()->isNull('e.convenio'))
+            ->getQuery()
+            ->getResult();
+    }
+
 
     public function getUsuariosIds()
     {
@@ -181,33 +186,13 @@ class EmpleadoRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult('FETCH_COLUMN');
     }
 
-
-    // /**
-    //  * @return Empleado[] Returns an array of Empleado objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('e.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+    public static function convenioCriteria($codigos) {
+        $criteria = Criteria::create();
+        if(is_array($codigos)) {
+            $criteria->andWhere(Criteria::expr()->in('c.codigo', $codigos));
+        } else {
+            $criteria->andWhere(Criteria::expr()->eq('c.codigo', $codigos));
+        }
+        return $criteria;
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Empleado
-    {
-        return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }
