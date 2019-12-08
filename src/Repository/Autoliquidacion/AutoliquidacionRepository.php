@@ -45,17 +45,6 @@ class AutoliquidacionRepository extends ServiceEntityRepository
     }
 
 
-    public function getIdentificacionesByPeriodo(DateTimeInterface $periodo, $overwrite = false, $identsFilter = [])
-    {
-        $qb = $this
-            ->createQueryBuilder('a')
-            ->addCriteria(static::periodoCriteria($periodo));
-        if($identsFilter) {
-            $qb->andWhere($qb->expr()->in('u.identificacion', $identsFilter));
-        }
-        return $this->fetchIdentificaciones($qb, $overwrite);
-    }
-
     /**
      * @param string[] $convenio
      * @param DateTimeInterface $periodo
@@ -166,10 +155,10 @@ class AutoliquidacionRepository extends ServiceEntityRepository
     }
 
 
-    public static function periodoCriteria(DateTimeInterface $periodo)
+    public static function periodoCriteria(DateTimeInterface $periodo, $alias = "")
     {
         return Criteria::create()
-            ->andWhere(Criteria::expr()->eq('periodo', $periodo->format('Y-m-d')));
+            ->andWhere(Criteria::expr()->eq(($alias ? "$alias." : "") . 'periodo', $periodo->format('Y-m-d')));
 
     }
 

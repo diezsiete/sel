@@ -10,6 +10,8 @@ use App\Command\Helpers\SearchByConvenioOrEmpleado;
 use App\Command\Helpers\SelCommandTrait;
 use App\Command\Helpers\TraitableCommand\TraitableCommand;
 use App\Entity\Autoliquidacion\Autoliquidacion;
+use App\Entity\Autoliquidacion\AutoliquidacionEmpleado;
+use App\Repository\Autoliquidacion\AutoliquidacionEmpleadoRepository;
 use App\Repository\Autoliquidacion\AutoliquidacionRepository;
 use App\Service\Autoliquidacion\FileManager;
 use DateTimeInterface;
@@ -34,21 +36,27 @@ class AutoliquidacionDeleteCommand extends TraitableCommand
     private $autoliquidacionRepository;
 
     /**
-     * @var Autoliquidacion[]
+     * @var Autoliquidacion|AutoliquidacionEmpleado[]
      */
     private $autoliquidaciones;
     /**
      * @var FileManager
      */
     private $autoliquidacionService;
+    /**
+     * @var AutoliquidacionEmpleadoRepository
+     */
+    private $autoliquidacionEmpleadoRepository;
 
     public function __construct(Reader $reader, EventDispatcherInterface $dispatcher,
                                 AutoliquidacionRepository $autoliquidacionRepository,
+                                AutoliquidacionEmpleadoRepository $autoliquidacionEmpleadoRepository,
                                 FileManager $autoliquidacionService)
     {
         parent::__construct($reader, $dispatcher);
         $this->autoliquidacionRepository = $autoliquidacionRepository;
         $this->autoliquidacionService = $autoliquidacionService;
+        $this->autoliquidacionEmpleadoRepository = $autoliquidacionEmpleadoRepository;
     }
 
 
@@ -57,19 +65,30 @@ class AutoliquidacionDeleteCommand extends TraitableCommand
         $periodo = $this->getPeriodo($input, false);
         $autoliquidaciones = $this->findAutoliquidaciones($periodo);
 
-
-        if($this->isSearchConvenioAll()) {
-            $this->autoliquidacionService->deletePdf($periodo);
+        if($this->isSearchConvenio()) {
+            if($this->isSearchConvenioAll()) {
+                $this->autoliquidacionService->deletePdf($periodo);
+            } else {
+                $identificaciones = [];
+                foreach($autoliquidaciones as $autoliquidacion) {
+                    $identificaciones = array_merge(
+                        $identificaciones,
+                        $this->autoliquidacionRepository->getEmpleadosIdentificaciones($autoliquidacion));
+                }
+                foreach($identificaciones as $ident) {
+                    $this->autoliquidacionService->deletePdf($periodo, $ident);
+                }
+            }
+            foreach($autoliquidaciones as $autoliquidacion) {
+                $this->em->remove($autoliquidacion);
+                $this->progressBarAdvance();
+            }
         } else {
-            $identificaciones = $this->autoliquidacionRepository->getEmpleadosIdentificaciones($autoliquidaciones);
-            // TODO borrar identificaciones sin periodo
-            $this->autoliquidacionService->deletePdf($periodo, $identificaciones);
-        }
-
-        foreach($autoliquidaciones as $autoliquidacion) {
-            $this->em->remove($autoliquidacion);
-
-            $this->progressBarAdvance();
+            foreach($autoliquidaciones as $autoliquidacion) {
+                $this->em->remove($autoliquidacion);
+                //TODO modificar porcentaje ejecucion
+                $this->progressBarAdvance();
+            }
         }
 
         $this->em->flush();
@@ -92,7 +111,7 @@ class AutoliquidacionDeleteCommand extends TraitableCommand
                     $this->autoliquidaciones = $this->autoliquidacionRepository->findByConvenio($this->getConveniosCodigos(), $periodo);
                 }
             } else {
-                $this->autoliquidaciones = $this->autoliquidacionRepository->findByIdentificacion($this->getIdents(), $periodo);
+                $this->autoliquidaciones = $this->autoliquidacionEmpleadoRepository->findByIdentificaciones($periodo, $this->getIdents());
             }
         }
         return $this->autoliquidaciones;

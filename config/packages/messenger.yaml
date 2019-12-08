@@ -42,10 +42,12 @@ framework:
                     auto_setup: false
                     queue_name: failed
                 serializer: 'App\Serializer\Scraper\HvMessageSerializer'
-            # sync: 'sync://'
+            sync: 'sync://'
 
         routing:
             # Route your messages to the transports
             'App\Message\Scraper\UpdateHvInNovasoft': scraper_hv
             'App\Message\Scraper\UpdateHvInNovasoftSuccess': scraper_hv_success
             'App\Message\Scraper\UpdateResponseReceived': async
+            'App\Message\Scraper\GenerateAutoliquidacion': async
+            'App\Message\Scraper\DownloadAutoliquidacion': async

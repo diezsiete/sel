@@ -8,6 +8,7 @@ use App\Entity\Empleado;
 use App\Entity\Representante;
 use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -22,6 +23,18 @@ class AutoliquidacionEmpleadoRepository extends ServiceEntityRepository
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, AutoliquidacionEmpleado::class);
+    }
+
+    public function findByConvenio($convenio, ?DateTimeInterface $periodo = null, $code = false)
+    {
+        $qb = $this->findByConvenioQuery($convenio, $periodo, $code);
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findByIdentificaciones(?DateTimeInterface $periodo = null, $identsFilter = [], $code = false)
+    {
+        $qb = $this->findByIdentificacionesQuery($periodo, $identsFilter, $code);
+        return $qb->getQuery()->getResult();
     }
 
     /**
@@ -107,32 +120,52 @@ class AutoliquidacionEmpleadoRepository extends ServiceEntityRepository
     }
 
 
-    // /**
-    //  * @return AutoliquidacionEmpleado[] Returns an array of AutoliquidacionEmpleado objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    protected function findByConvenioQuery($convenio, ?DateTimeInterface $periodo = null, $code = false)
     {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('a.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $qb = $this->createQueryBuilder('ae')
+            ->join('ae.autoliquidacion', 'a');
+        if(is_array($convenio)) {
+            $qb->andWhere($qb->expr()->in('a.convenio', $convenio));
+        }else{
+            $qb->andWhere($qb->expr()->eq('a.convenio', $convenio));
+        }
+        if($periodo) {
+            $qb->addCriteria(AutoliquidacionRepository::periodoCriteria($periodo, 'a'));
+        }
+        $qb->addCriteria(static::codeCriteria($code));
+        return $qb;
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?AutoliquidacionEmpleado
+    protected function findByIdentificacionesQuery(?DateTimeInterface $periodo = null, $identsFilter = [], $code = false)
     {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $qb = $this
+            ->createQueryBuilder('ae')
+            ->join('ae.autoliquidacion', 'a');
+        if($periodo) {
+            $qb->addCriteria(AutoliquidacionRepository::periodoCriteria($periodo, 'a'));
+        }
+        if($identsFilter) {
+            $qb->join('ae.empleado', 'e')
+                ->join('e.usuario', 'u')
+                ->andWhere($qb->expr()->in('u.identificacion', $identsFilter));
+        }
+        $qb->addCriteria(static::codeCriteria($code));
+        return $qb;
     }
-    */
+
+    public static function codeCriteria($code = false)
+    {
+        $criteria = Criteria::create();
+        if($code === null) {
+            $criteria->andWhere($criteria->expr()->orX(
+                $criteria->expr()->isNull('ae.code'), $criteria->expr()->neq('ae.code', null)));
+        }
+        else if($code !== false) {
+            $expr = preg_match('/^!(.+)/', $code, $matches)
+                ? $criteria->expr()->neq('ae.code', $matches[1])
+                : $criteria->expr()->eq('ae.code', $code);
+            $criteria->andWhere($expr);
+        }
+        return $criteria;
+    }
 }

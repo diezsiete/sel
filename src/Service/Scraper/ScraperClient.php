@@ -77,10 +77,10 @@ class ScraperClient
      * @throws ScraperNotFoundException
      * @throws ScraperTimeoutException
      */
-    public function get(string $url, $responseClass = ScraperResponse::class, array $options = [])
+    public function get(string $url, array $options = [])
     {
         $response = $this->request('GET', $url, $options);
-        return $this->responseManager->handleResponse($response, $responseClass);
+        return $this->responseManager->handleResponse($response, ScraperResponse::class);
     }
 
     /**
@@ -135,10 +135,15 @@ class ScraperClient
         return $this->responseManager->handleResponse($response, $responseClass);
     }
 
+
     /**
      * @param string $url
      * @return bool|resource
      * @throws ScraperClientException
+     * @throws ScraperConflictException
+     * @throws ScraperException
+     * @throws ScraperNotFoundException
+     * @throws ScraperTimeoutException
      */
     public function download(string $url)
     {
@@ -146,7 +151,7 @@ class ScraperClient
         try {
             $response = $this->request('GET', $url, ['buffer' => false]);
             if (200 !== $response->getStatusCode()) {
-                throw new Exception('Download failed. Response code : ' . $response->getStatusCode());
+                throw ScraperException::create('Download failed.', $response->getStatusCode());
             }
             $tmpStream = tmpfile();
             foreach ($this->httpClient->stream($response) as $chunk) {

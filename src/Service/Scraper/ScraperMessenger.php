@@ -4,8 +4,11 @@
 namespace App\Service\Scraper;
 
 
+use App\Entity\Autoliquidacion\AutoliquidacionEmpleado;
 use App\Entity\Hv;
 use App\Entity\HvEntity;
+use App\Message\Scraper\DownloadAutoliquidacion;
+use App\Message\Scraper\GenerateAutoliquidacion;
 use App\Message\Scraper\UpdateHvInNovasoft;
 use App\Message\Scraper\UpdateHvInNovasoftSuccess;
 use App\Messenger\Stamp\ScraperHvSuccessStamp;
@@ -102,6 +105,26 @@ class ScraperMessenger
 
         $this->messageBus->dispatch(new Envelope($message, [new ScraperHvSuccessStamp($log)]));
     }
+
+
+    /**
+     * @param AutoliquidacionEmpleado|int $autoliquidacionEmpleado
+     */
+    public function generateAutoliquidacion($autoliquidacionEmpleado)
+    {
+        $id = is_int($autoliquidacionEmpleado) ? $autoliquidacionEmpleado : $autoliquidacionEmpleado->getId();
+        $this->messageBus->dispatch(new GenerateAutoliquidacion($id));
+    }
+
+    /**
+     * @param AutoliquidacionEmpleado|int $autoliquidacionEmpleado
+     */
+    public function downloadAutoliquidacion($autoliquidacionEmpleado)
+    {
+        $id = is_int($autoliquidacionEmpleado) ? $autoliquidacionEmpleado : $autoliquidacionEmpleado->getId();
+        $this->messageBus->dispatch(new DownloadAutoliquidacion($id));
+    }
+
 
     /**
      * Logear y manejar exepciones excepcionales de serailizacion de datos o de despacho de mensajes

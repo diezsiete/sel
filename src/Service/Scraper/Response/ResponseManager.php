@@ -64,7 +64,7 @@ class ResponseManager
             $responseBody = $response->toArray(false);
             if($response->getStatusCode() !== 200) {
                 $message = $responseBody['message'] ?? "Error " . $response->getStatusCode();
-                throw ScraperException::create($message, $responseBody['code'] ??  static::ERROR, $responseBody['log']);
+                throw ScraperException::create($message, $responseBody['code'] ??  static::ERROR, $responseBody['log'] ?? '');
             }
             if($responseClass) {
                 $responseBody = $this->convertResponseBodyToObject($responseBody, $responseClass);
