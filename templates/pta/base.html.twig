@@ -23,43 +23,7 @@
     {#<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800%7CShadows+Into+Light%7CPlayfair+Display:400" rel="stylesheet" type="text/css">#}
 
     {% block stylesheets %}
-
         {{ encore_entry_link_tags('app') }}
-
-        <!-- Vendor CSS -->
-
-
-        {# <link rel="stylesheet" href="{{ asset('/vendor/animate/animate.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('/vendor/owl.carousel/assets/owl.carousel.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('/vendor/owl.carousel/assets/owl.theme.default.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('/vendor/magnific-popup/magnific-popup.css') }}">
-
-
-        <!-- Theme CSS -->
-        <link rel="stylesheet" href="{{ asset('/css/pta/theme.css') }}">
-        <link rel="stylesheet" href="{{ asset('/css/pta/theme-elements.css') }}">
-
-                {% if app.user %}
-                    {% block admin_extension_stylesheets %}
-                        {{ parent() }}
-                    {% endblock %}
-                {% endif %}
-
-
-        <!-- Current Page CSS -->
-        <link rel="stylesheet" href="{{ asset('/vendor/rs-plugin/css/settings.css') }}">
-        <link rel="stylesheet" href="{{ asset('/vendor/rs-plugin/css/layers.css') }}">
-        <link rel="stylesheet" href="{{ asset('/vendor/rs-plugin/css/navigation.css') }}">
-
-        <!-- Demo CSS -->
-        <!-- Skin CSS -->
-        <link rel="stylesheet" href="{{ asset('/css/pta/skins/skin-corporate-pta.css') }}">
-
-        <!-- Theme Custom CSS -->
-        <link rel="stylesheet" href="{{ asset('/css/pta/custom.css') }}">
-        <link rel="stylesheet" href="{{ asset('/css/pta/menu.css') }}"> #}
-
-
     {% endblock %}
 </head>
 
@@ -189,30 +153,7 @@
 {% block javascripts %}
     {{ encore_entry_script_tags('app') }}
 
-
-    {# <!-- Vendor -->
-    <script src="{{ asset('/vendor/jquery.appear/jquery.appear.min.js') }}"></script>
-    <script src="{{ asset('/vendor/jquery.easing/jquery.easing.min.js') }}"></script>
-    <script src="{{ asset('/vendor/jquery.cookie/jquery.cookie.min.js') }}"></script>
-    <script src="{{ asset('/vendor/common/common.min.js') }}"></script>
-    <script src="{{ asset('/vendor/jquery.validation/jquery.validate.min.js') }}"></script>
-    <script src="{{ asset('/vendor/jquery.easy-pie-chart/jquery.easypiechart.min.js') }}"></script>
-    <script src="{{ asset('/vendor/jquery.gmap/jquery.gmap.min.js') }}"></script>
-    <script src="{{ asset('/vendor/jquery.lazyload/jquery.lazyload.min.js') }}"></script>
-    <script src="{{ asset('/vendor/isotope/jquery.isotope.min.js') }}"></script>
-    <script src="{{ asset('/vendor/owl.carousel/owl.carousel.min.js') }}"></script>
-    <script src="{{ asset('/vendor/magnific-popup/jquery.magnific-popup.min.js') }}"></script>
-    <script src="{{ asset('/vendor/vide/jquery.vide.min.js') }}"></script>
-    <script src="{{ asset('/vendor/vivus/vivus.min.js') }}"></script>
-
-    <!-- Theme Base, Components and Settings -->
-    <script src="{{ asset('/js/pta/theme.js') }}"></script>
-
-
-    <!-- Theme Initialization Files -->
-    <script src="{{ asset('/js/pta/theme.init.js') }}"></script> #}
-
-    <!-- Google Analytics: Change UA-XXXXX-X to be your site's ID. Go to http://www.google.com/analytics/ for more information.
+    <!-- Google Analytics: Change UA-XXXXX-X to be your site's ID. Go to http://www.google.com/analytics/ for more information.  -->
     <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -222,9 +163,8 @@
         ga('create', 'UA-12345678-1', 'auto');
         ga('send', 'pageview');
     </script>
-     -->
-{% endblock %}
 
+{% endblock %}
 
 
 </body>
