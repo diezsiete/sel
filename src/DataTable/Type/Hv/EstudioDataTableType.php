@@ -45,6 +45,7 @@ class EstudioDataTableType implements DataTableTypeInterface
             ->createAdapter(ORMAdapter::class, [
                 'entity' => Estudio::class,
                 'query' => function (QueryBuilder $builder) use ($hv) {
+                    
                     $builder
                         ->select('e')
                         ->from(Estudio::class, 'e')

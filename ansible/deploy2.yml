@@ -69,6 +69,8 @@
 
 
 - hosts: local
+  vars:
+      empresa: servilabor
   tasks:
       - name: Remove archive webpack
         file:
