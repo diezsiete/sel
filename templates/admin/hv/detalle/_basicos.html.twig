@@ -1,3 +1,7 @@
+{% set redesSocialesIcons = {
+    1 : 'fab fa-skype', 2 : 'fab fa-twitter', 3: 'fab fa-facebook-f', 4: 'fab fa-whatsapp', 5: 'fab fa-linkedin-in'
+}%}
+
 <div class="col-md-3">
 <div class="profile thumb-info mb-3">
     {#                        <img src="{{ asset('img/!logged-user.jpg') }}" class="rounded img-fluid" alt="John Doe">#}
@@ -72,23 +76,12 @@
 
 <div class="col-md-3">
     <h5 class="mb-2 mt-3">Redes sociales</h5>
-    <ul class="simple-post-list">
-        {% for redSocial in hv.redesSociales %}
-            <li>
-                <div class="post-image">
-                    <div class="social-icons-list">
-                        <a rel="tooltip" data-placement="bottom" target="_blank" href="#"
-                           data-original-title="{{ constant('App\\Constant\\HvConstant::RED_SOCIAL')[redSocial.tipo] }}">
-                            <i class="{{ redesSocialesIcons[redSocial.tipo] }}"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="post-info">
-                    {{ redSocial.cuenta }}
-                </div>
-            </li>
-        {% endfor %}
-    </ul>
+    {% for redSocial in hv.redesSociales %}
+        <div class="post-info">
+            <i class="{{ redesSocialesIcons[redSocial.tipo] }}"></i>&nbsp;
+            {{ redSocial.cuenta }}
+        </div>
+    {% endfor %}
 </div>
 
 <div class="col-md-3">
