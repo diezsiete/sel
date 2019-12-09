@@ -6,6 +6,7 @@
         "autoprefixer": "^9.7.1",
         "bootstrap": "^4.3.1",
         "bootstrap-datepicker": "^1.9.0",
+        "case-sensitive-paths-webpack-plugin": "^2.2.0",
         "chosen-js": "^1.8.7",
         "core-js": "^3.0.0",
         "datatables.net": "^1.10.20",
