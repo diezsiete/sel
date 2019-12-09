@@ -8,6 +8,7 @@ use App\DataTable\Type\ReporteNominaDataTableType;
 use App\Entity\Autoliquidacion\AutoliquidacionEmpleado;
 use App\Entity\ReporteNomina;
 use App\Repository\ConvenioRepository;
+use App\Repository\EmpleadoRepository;
 use App\Service\Autoliquidacion\FileManager;
 use App\Service\Configuracion\Configuracion;
 use App\Service\Novasoft\Report\ReportFactory;
@@ -26,17 +27,17 @@ use Symfony\Component\Routing\Annotation\Route;
 class ServicioEmpleadosController extends BaseController
 {
     /**
-     * @var ConvenioRepository
+     * @var EmpleadoRepository
      */
-    private $convenioRepository;
+    private $empleadoRepository;
     /**
      * @var Configuracion
      */
     private $configuracion;
 
-    public function __construct(ConvenioRepository $convenioRepository, Configuracion $configuracion)
+    public function __construct(EmpleadoRepository $empleadoRepository, Configuracion $configuracion)
     {
-        $this->convenioRepository = $convenioRepository;
+        $this->empleadoRepository = $empleadoRepository;
         $this->configuracion = $configuracion;
     }
 
@@ -209,11 +210,12 @@ class ServicioEmpleadosController extends BaseController
         if(count($this->configuracion->getSsrsDb()) === 1) {
             return $this->configuracion->getSsrsDb()[0]->getNombre();
         }
-        $convenio = $this->convenioRepository->findConvenioByIdent($this->getUser()->getIdentificacion());
-        if($convenio) {
-            return $convenio->getSsrsDb();
+
+        $empleado = $this->empleadoRepository->findByIdentificacion($this->getUser()->getIdentificacion());
+        if($empleado) {
+            return $empleado->getSsrsDb();
         } else {
-            throw $this->createNotFoundException();
+            return $this->configuracion->getSsrsDb()[0]->getNombre();
         }
     }
 }
