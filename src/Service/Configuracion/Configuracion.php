@@ -9,7 +9,11 @@ use App\Constant\HvConstant;
 use App\Service\Configuracion\Scraper\ScraperConfiguracion;
 use App\Service\Hv\HvWizard\HvWizardRoute;
 use Exception;
+use Symfony\Bridge\Twig\Extension\AssetExtension;
+use Symfony\Component\Asset\Packages;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
+use Symfony\WebpackEncoreBundle\Asset\EntrypointLookupCollectionInterface;
+use Twig\Environment;
 
 class Configuracion
 {
@@ -79,14 +83,26 @@ class Configuracion
      * @var Compania
      */
     private $companiaDefault;
+    /**
+     * @var Packages
+     */
+    private $packages;
+    /**
+     * @var AssetExtension
+     */
+    private $assetExtension;
 
-    public function __construct(ContainerBagInterface $bag, $webDir)
+
+    public function __construct(ContainerBagInterface $bag, $webDir, Packages $packages, Environment $twig)
     {
         $this->bag = $bag;
         $this->empresa = $bag->get('empresa');
         $this->parameters = $bag->get('empresa.'.$this->empresa.'.config');
 
         $this->webDir = substr($webDir, -1) === "/" ? substr($webDir, 0, strlen($webDir) - 1) : $webDir;
+
+        $this->packages = $packages;
+        $this->assetExtension = $twig->getExtension(AssetExtension::class);
     }
 
     /**
@@ -152,12 +168,12 @@ class Configuracion
 
     public function getLogo()
     {
-        return $this->parameters['logo'];
+        return $this->webDir . $this->packages->getUrl($this->parameters['logo']);
     }
 
     public function getLogoPdf()
     {
-        return $this->webDir . $this->parameters['logo_pdf'];
+        return $this->webDir . $this->packages->getUrl($this->parameters['logo_pdf']);
     }
 
     public function homeRoute()
@@ -168,7 +184,13 @@ class Configuracion
     public function certificadoLaboral(): CertificadoLaboral
     {
         if(!$this->certificadoLaboral) {
-            $this->certificadoLaboral = new CertificadoLaboral($this->parameters['certificado_laboral'], $this->webDir);
+            $data = $this->parameters['certificado_laboral'];
+            $this->certificadoLaboral = new CertificadoLaboral(
+                $this->webDir . $this->packages->getUrl($data['firma']),
+                $data['firmante'],
+                $data['firmante_cargo'],
+                $data['firmante_contacto']
+            );
         }
         return $this->certificadoLaboral;
     }
@@ -258,7 +280,7 @@ class Configuracion
         if(!isset($this->companias[$name])) {
             if(isset($this->parameters['companias'][$name])) {
                 $data = array_merge($this->parameters['companias'][$name], [
-                    'logo_pdf' => $this->webDir . $this->parameters['companias'][$name]['logo_pdf']
+                    'logo_pdf' => $this->webDir . $this->packages->getUrl($this->parameters['companias'][$name]['logo_pdf'])
                 ]);
                 $compania = new Compania($data);
             } else {

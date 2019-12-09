@@ -24,12 +24,12 @@ app:
       web: www.pta.com.co
       mail: info@pta.com.co
       tel: (1) 756 98 40
-      logo: /build/pta/images/sel/pta-logo.png
-      logo_pdf: /build/pta/images/sel/pta-logo-pdf.png
+      logo: build/pta/images/sel/pta-logo.png
+      logo_pdf: build/pta/images/sel/pta-logo-pdf.png
       home_route: pta_index
 
       certificado_laboral:
-        firma: /build/pta/images/sel/firma-certificado-laboral.png
+        firma: build/pta/images/sel/firma-certificado-laboral.png
         firmante: FERNANDA SANCHEZ LAGUNA
         firmante_cargo: Directora de Servicio al Cliente
         firmante_contacto: PBX 756 98 40 Ext. 110-106-136
@@ -70,12 +70,12 @@ app:
       web: www.servilabor.com.co
       mail: info@servilabor.com.co
       tel: 300 31 13
-      logo: /build/servilabor/images/sel/logo-servilabor.png
-      logo_pdf: /build/servilabor/images/sel/logo-servilabor-pdf.png
+      logo: build/servilabor/images/sel/logo-servilabor.png
+      logo_pdf: build/servilabor/images/sel/logo-servilabor-pdf.png
       home_route: servilabor_inicio
 
       certificado_laboral:
-        firma: /build/servilabor/images/sel/firma-certificado-laboral-servilabor.png
+        firma: build/servilabor/images/sel/firma-certificado-laboral-servilabor.png
         firmante: SERGIO INVERNON RAMOS
         firmante_cargo: Gerente General
         firmante_contacto: PBX 300 31 13
@@ -101,7 +101,7 @@ app:
           dir: CALLE 103 Nº 21-60
           tel: 4140077
           web:
-          logo_pdf: /build/servilabor/images/sel/logo-universal.png
+          logo_pdf: build/servilabor/images/sel/logo-universal.png
 
       scraper:
         novasoft:

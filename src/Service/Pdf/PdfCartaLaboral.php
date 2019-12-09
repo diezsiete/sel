@@ -107,7 +107,7 @@ class PdfCartaLaboral extends PdfBase
     protected function firma()
     {
         $this->Image(
-            $this->configuracion->certificadoLaboral()->getFirma(true),
+            $this->configuracion->certificadoLaboral()->getFirma(),
             $this->getLMargin() + 3,
             $this->getY(),
             $this->firmaImageWidth
