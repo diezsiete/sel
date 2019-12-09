@@ -72,7 +72,7 @@
   tasks:
       - name: Remove archive webpack
         file:
-            path: "{{ playbook_dir }}/../public/build.tar.gz"
+            path: "{{ playbook_dir }}/../public/build.tgz"
             state: absent
         when: webpack is defined
 

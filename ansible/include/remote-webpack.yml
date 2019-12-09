@@ -1,6 +1,14 @@
 - name: Extract Webpack build
   unarchive:
-    src: "{{ playbook_dir }}/../public/build.tar.gz"
+    src: "{{ playbook_dir }}/../public/build.tgz"
     dest: "{{ release_public_path }}"
     owner: "{{ owner }}"
     group: "{{ group }}"
+
+#- name: Move webpack.tar.gz
+#  command: "mv ~/build.tar.gz {{ release_public_path }}/."
+#
+#- name: Unpack webpack.tar.gz
+#  command: "tar -xzvf {{ release_public_path }}/build.tar.gz"
+#  args:
+#    warn: no

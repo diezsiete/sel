@@ -10,6 +10,16 @@
     EMPRESA: "{{ empresa }}"
 
 - name: Archive webpack
-  shell: "tar -czf ../public/build.tar.gz ../public/build"
-  args:
-    warn: no
+  archive:
+    path: "{{ playbook_dir }}/../public/build"
+    dest: "{{ playbook_dir }}/../public/build.tgz"
+
+#- name: Archive webpack
+#  shell: "tar -czf ../public/build.tar.gz ../public/build"
+#  args:
+#    warn: no
+#
+#- name: Scp webpack
+#  command: "scp ../public/build.tar.gz {{ empresa }}:."
+#  args:
+#    warn: no
