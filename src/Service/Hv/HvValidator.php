@@ -110,7 +110,7 @@ class HvValidator
 
     public function validateReferencias(?Hv $hv)
     {
-        $referenciasRequired = $this->configuracion->getHvReferenciaTipo();
+        $referenciasRequired = $this->configuracion->getHvReferenciaTipo(false);
         if($hv) {
             foreach ($hv->getReferencias() as $referencia) {
                 unset($referenciasRequired[$referencia->getTipo()]);
