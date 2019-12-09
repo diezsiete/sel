@@ -1,0 +1,81 @@
+#---
+#- hosts: local
+#  vars:
+#      empresa: servilabor
+#
+#  vars_files:
+#      - ./vars/deploy_vault_{{ empresa }}.yml
+#      - ./vars/deploy_vars.yml
+#
+#  tasks:
+#      - name: Debug
+#        debug:
+#            msg: Host {{ vault_database_host }} has uuid {{ vault_database_user }}
+#
+#      - name: Test env file
+#        template:
+#          src: "{{ playbook_dir }}/templates/.env.local"
+#          dest: "{{ playbook_dir }}/templates/.env.local.test"
+
+#---
+#- hosts: local
+#  vars:
+#      empresa: servilabor
+#  tasks:
+#      - name: Clear build folder
+#        shell: "rm -rf ../public/build/*"
+#        args:
+#            warn: no
+#
+#      - name: Build webpack
+#        command: "yarn build"
+#        environment:
+#            EMPRESA: "{{ empresa }}"
+#
+#      - name: Archive webpack
+#        shell: "tar -czf ../public/build.tar.gz ../public/build"
+#        args:
+#            warn: no
+
+- hosts: servilaborhg
+  environment:
+      TMPDIR: "/home4/jguerrero/tmp"
+      TMP: "/home4/jguerrero/tmp"
+
+  vars:
+      empresa: servilabor
+      empresa2: pta
+      owner: jguerrero
+      group: jguerrero
+      php_exec: "/opt/php71/bin/php"
+      composer: /opt/cpanel/composer/bin/composer
+      release_console_path: "{{ ansistrano_release_path.stdout }}/bin/console"
+      release_var_path: "{{ ansistrano_release_path.stdout }}/var"
+      release_public_path: "{{ ansistrano_release_path.stdout }}/public"
+
+      ansistrano_deploy_to: "/home4/jguerrero/sel2"
+      ansistrano_deploy_via: git
+      ansistrano_git_repo: git@github.com:diezsiete/sel.git
+      ansistrano_git_branch: master
+      ansistrano_git_identity_key_remote_path: "{{ ansistrano_deploy_to }}/../.ssh/github_rsa"
+
+      ansistrano_after_symlink_shared_tasks_file: "{{ playbook_dir }}/deploy/after-symlink-shared.yml"
+
+  vars_files:
+      - ./vars/deploy_vault_{{ empresa }}.yml
+      - ./vars/deploy_vars.yml
+
+  roles:
+      - ansistrano.deploy
+
+
+- hosts: local
+  tasks:
+      - name: Remove archive webpack
+        file:
+            path: "{{ playbook_dir }}/../public/build.tar.gz"
+            state: absent
+      - name: yarn dev build assets
+        command: yarn build-assets
+      - name: yarn dev build
+        command: yarn encore dev
