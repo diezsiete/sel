@@ -1,0 +1,6 @@
+- name: Extract Webpack build
+  unarchive:
+    src: "{{ playbook_dir }}/../public/build.tar.gz"
+    dest: "{{ release_public_path }}"
+    owner: "{{ owner }}"
+    group: "{{ group }}"

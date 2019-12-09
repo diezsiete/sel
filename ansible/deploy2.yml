@@ -16,26 +16,15 @@
 #        template:
 #          src: "{{ playbook_dir }}/templates/.env.local"
 #          dest: "{{ playbook_dir }}/templates/.env.local.test"
+---
+- hosts: local
+  vars:
+      empresa: servilabor
 
-#---
-#- hosts: local
-#  vars:
-#      empresa: servilabor
-#  tasks:
-#      - name: Clear build folder
-#        shell: "rm -rf ../public/build/*"
-#        args:
-#            warn: no
-#
-#      - name: Build webpack
-#        command: "yarn build"
-#        environment:
-#            EMPRESA: "{{ empresa }}"
-#
-#      - name: Archive webpack
-#        shell: "tar -czf ../public/build.tar.gz ../public/build"
-#        args:
-#            warn: no
+  tasks:
+    - name: Local webpack
+      include: "{{ playbook_dir }}/include/local-webpack.yml"
+      when: webpack is defined
 
 - hosts: servilaborhg
   environment:
@@ -54,12 +43,22 @@
       release_public_path: "{{ ansistrano_release_path.stdout }}/public"
 
       ansistrano_deploy_to: "/home4/jguerrero/sel2"
+
+      ansistrano_shared_paths:
+          - var/log
+          - var/uploads
+
+      ansistrano_keep_releases: 3
+
       ansistrano_deploy_via: git
       ansistrano_git_repo: git@github.com:diezsiete/sel.git
       ansistrano_git_branch: master
-      ansistrano_git_identity_key_remote_path: "{{ ansistrano_deploy_to }}/../.ssh/github_rsa"
+      ansistrano_git_identity_key_path: "{{ playbook_dir }}/id_rsa"
+      #ansistrano_git_identity_key_remote_path: "{{ ansistrano_deploy_to }}/../.ssh/github_rsa"
 
-      ansistrano_after_symlink_shared_tasks_file: "{{ playbook_dir }}/deploy/after-symlink-shared.yml"
+      ansistrano_after_symlink_shared_tasks_file: "{{ playbook_dir }}/deploy/after-symlink-shared2.yml"
+
+
 
   vars_files:
       - ./vars/deploy_vault_{{ empresa }}.yml
@@ -75,7 +74,12 @@
         file:
             path: "{{ playbook_dir }}/../public/build.tar.gz"
             state: absent
+        when: webpack is defined
+
       - name: yarn dev build assets
         command: yarn build-assets
+        when: webpack is defined
+
       - name: yarn dev build
         command: yarn encore dev
+        when: webpack is defined

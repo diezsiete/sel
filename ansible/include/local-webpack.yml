@@ -1,0 +1,15 @@
+---
+- name: Clear build folder
+  shell: "rm -rf ../public/build/*"
+  args:
+    warn: no
+
+- name: Build webpack
+  command: "yarn build"
+  environment:
+    EMPRESA: "{{ empresa }}"
+
+- name: Archive webpack
+  shell: "tar -czf ../public/build.tar.gz ../public/build"
+  args:
+    warn: no
