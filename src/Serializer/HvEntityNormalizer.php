@@ -86,10 +86,8 @@ class HvEntityNormalizer implements NormalizerInterface
             }
         }
 
-        $context += [
-            AbstractNormalizer::CALLBACKS => $callbacks,
-            AbstractObjectNormalizer::SKIP_NULL_VALUES => true
-        ];
+        $context[AbstractNormalizer::CALLBACKS] = $callbacks;
+        $context[AbstractObjectNormalizer::SKIP_NULL_VALUES] = true;
 
         return $this->normalizer->normalize($object, $format, $context);
     }
