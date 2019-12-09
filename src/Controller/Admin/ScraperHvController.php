@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ScraperHvController extends BaseController
 {
     /**
-     * @Route("/sel/admin/scraper/hv/list/{queue}", name="admin_scraper_hv_list", defaults={"queue": "error"})
+     * @Route("/sel/admin/scraper/hv/list/{queue}", name="admin_scraper_hv_list", defaults={"queue": "failed"})
      */
     public function hvList(DataTableFactory $dataTableFactory, Request $request, $queue)
     {

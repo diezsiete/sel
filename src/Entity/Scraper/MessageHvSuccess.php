@@ -49,18 +49,18 @@ class MessageHvSuccess extends MessageSuperclassBase
     }
 
     /**
-     * @return string
+     * @return null|string
      */
-    public function getLog(): string
+    public function getLog(): ?string
     {
         return $this->log;
     }
 
     /**
-     * @param string $log
+     * @param string|null $log
      * @return MessageHvSuccess
      */
-    public function setLog(string $log): MessageHvSuccess
+    public function setLog(?string $log): MessageHvSuccess
     {
         $this->log = $log;
         return $this;

@@ -18,9 +18,9 @@
     <ul class="u-list-inline">
         <li class="list-inline-item">
             <div class="btn-group" role="group" aria-label="Basic example">
-                <a class="btn btn-primary{{ queue is same as('error') ? ' active' : '' }}"
+                <a class="btn btn-primary{{ queue is same as('failed') ? ' active' : '' }}"
                    href="{{ path('admin_scraper_hv_list') }}">
-                    Error
+                    Failed
                 </a>
                 <a class="btn btn-primary{{ queue is same as('success') ? ' active' : '' }}"
                    href="{{ path('admin_scraper_hv_list', {queue: 'success'}) }}">

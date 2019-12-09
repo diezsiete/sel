@@ -24,7 +24,7 @@ class MessageHvDataTableType implements DataTableTypeInterface
     public function configure(DataTable $dataTable, array $options)
     {
 
-        $queueName = isset($options['queue']) ? $options['queue'] : 'error';
+        $queueName = isset($options['queue']) ? $options['queue'] : 'failed';
         $entity = $queueName === 'success' ? MessageHvSuccess::class : MessageHv::class;
 
         $dataTable
