@@ -16,7 +16,11 @@ export default {
             $item.click(ev => this._buttonClick($(ev.currentTarget)))
         });
 
-        this._messageQueueState(ids);
+        this._messageQueueState(ids, (hvId, queueName) => {
+            if(queueName === 'default') {
+                this._startInterval(hvId)
+            }
+        });
     },
 
 
