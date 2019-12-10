@@ -92,8 +92,13 @@ class Configuracion
      */
     private $assetExtension;
 
+    /**
+     * @var string
+     */
+    private $kernelProjectDir;
 
-    public function __construct(ContainerBagInterface $bag, $webDir, Packages $packages, Environment $twig)
+
+    public function __construct(ContainerBagInterface $bag, $webDir, Packages $packages, Environment $twig, $kernelProjectDir)
     {
         $this->bag = $bag;
         $this->empresa = $bag->get('empresa');
@@ -103,6 +108,7 @@ class Configuracion
 
         $this->packages = $packages;
         $this->assetExtension = $twig->getExtension(AssetExtension::class);
+        $this->kernelProjectDir = $kernelProjectDir;
     }
 
     /**
@@ -181,6 +187,11 @@ class Configuracion
         return $this->parameters['home_route'];
     }
 
+    public function phpExec()
+    {
+        return $this->parameters['php_exec'];
+    }
+
     public function certificadoLaboral(): CertificadoLaboral
     {
         if(!$this->certificadoLaboral) {
@@ -238,7 +249,7 @@ class Configuracion
     public function getScraper()
     {
         if(!$this->scraper) {
-            $this->scraper = new ScraperConfiguracion($this->bag->get('scraper'), $this->parameters['scraper']);
+            $this->scraper = new ScraperConfiguracion($this, $this->kernelProjectDir, $this->bag->get('scraper'), $this->parameters['scraper']);
         }
         return $this->scraper;
     }

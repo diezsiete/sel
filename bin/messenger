@@ -1,10 +1,14 @@
-#!/usr/bin/env {{ php_exec }}
+#!/usr/bin/env php
 <?php
 
 use App\Kernel;
+use App\Service\Exec;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Debug\Debug;
+use Symfony\Component\Messenger\Event\WorkerStoppedEvent;
 
 if (false === in_array(\PHP_SAPI, ['cli', 'phpdbg', 'embed'], true)) {
     echo 'Warning: The console should be invoked via the CLI version of PHP, not the '.\PHP_SAPI.' SAPI'.\PHP_EOL;
@@ -38,5 +42,17 @@ if ($_SERVER['APP_DEBUG']) {
 }
 
 $kernel = new Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
+$kernel->boot();
+$dispatcher = $kernel->getContainer()->get('event_dispatcher');
+
 $application = new Application($kernel);
+
+$dispatcher->addListener(WorkerStoppedEvent::class, function ($event) use ($application) {
+    $command = $application->find('sel:scraper:renew-auto-consume');
+    $arguments = ['command' => 'sel:scraper:renew-auto-consume'];
+    $greetInput = new ArrayInput($arguments);
+    $command->run($greetInput, new NullOutput());
+});
+
+
 $application->run($input);

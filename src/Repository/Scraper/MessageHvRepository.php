@@ -43,6 +43,16 @@ class MessageHvRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function queueHasMessages($queueName = "default")
+    {
+        return intval($this->createQueryBuilder('m')
+            ->select('count(m)')
+            ->where("m.queueName = '$queueName'")
+            ->getQuery()
+            ->getSingleScalarResult());
+
+    }
+
     protected function findInQueue($hvId, $queueName)
     {
         $entityName = $queueName === "success" ? MessageHvSuccess::class : $this->_entityName;
@@ -57,6 +67,7 @@ class MessageHvRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult("FETCH_KEY_PAIR");
     }
+
 
 
 }

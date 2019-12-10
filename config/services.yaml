@@ -78,6 +78,9 @@ services:
     App\Service\Autoliquidacion\ExportZip:
         public: true
 
+    App\Service\Exec:
+        public: true
+
     App\Service\Evaluacion\Mensaje:
         autowire: false
 

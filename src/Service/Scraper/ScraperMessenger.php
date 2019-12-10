@@ -12,6 +12,8 @@ use App\Message\Scraper\GenerateAutoliquidacion;
 use App\Message\Scraper\UpdateHvInNovasoft;
 use App\Message\Scraper\UpdateHvInNovasoftSuccess;
 use App\Messenger\Stamp\ScraperHvSuccessStamp;
+use App\Service\Configuracion\Configuracion;
+use App\Service\Exec;
 use Exception;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -31,17 +33,29 @@ class ScraperMessenger
      * @var string
      */
     private $appEnv;
+    /**
+     * @var Configuracion
+     */
+    private $configuracion;
+    /**
+     * @var Exec
+     */
+    private $exec;
 
-    public function __construct(MessageBusInterface $messageBus, NormalizerInterface $normalizer, $appEnv)
+    public function __construct(MessageBusInterface $messageBus, NormalizerInterface $normalizer, $appEnv,
+                                Configuracion $configuracion, Exec $exec)
     {
         $this->messageBus = $messageBus;
         $this->normalizer = $normalizer;
         $this->appEnv = $appEnv;
+        $this->configuracion = $configuracion;
+        $this->exec = $exec;
     }
 
     public function insertToNovasoft(Hv $hv)
     {
         try {
+            $this->autoConsume();
             $data = $this->normalizer->normalize($hv, null, ['groups' => ['scraper']]);
             $message = new UpdateHvInNovasoft($hv->getId(), $data, UpdateHvInNovasoft::ACTION_INSERT);
             $this->messageBus->dispatch($message);
@@ -53,8 +67,8 @@ class ScraperMessenger
     public function updateDatosBasicos(Hv $hv)
     {
         try {
+            $this->autoConsume();
             $data = $this->normalizer->normalize($hv, null, ['groups' => ['scraper-hv']]);
-
             $message = new UpdateHvInNovasoft($hv->getId(), $data, UpdateHvInNovasoft::ACTION_UPDATE);
             $this->messageBus->dispatch($message);
         } catch (Exception $e) {
@@ -65,6 +79,7 @@ class ScraperMessenger
     public function insertChild(HvEntity $hvEntity)
     {
         try {
+            $this->autoConsume();
             $data = $this->normalizer->normalize($hvEntity->getHv(), null, [
                 'groups' => ['scraper-hv-child'], 'scraper-hv-child' => $hvEntity]);
             $message = new UpdateHvInNovasoft($hvEntity->getHv()->getId(), $data, UpdateHvInNovasoft::ACTION_CHILD_INSERT);
@@ -77,6 +92,7 @@ class ScraperMessenger
     public function updateChild(HvEntity $hvEntity)
     {
         try {
+            $this->autoConsume();
             $data = $this->normalizer->normalize($hvEntity->getHv(), null, [
                 'groups' => ['scraper-hv-child'], 'scraper-hv-child' => get_class($hvEntity)]);
             $message = new UpdateHvInNovasoft($hvEntity->getHv()->getId(), $data, UpdateHvInNovasoft::ACTION_CHILD_UPDATE);
@@ -89,6 +105,7 @@ class ScraperMessenger
     public function deleteChild(Hv $hv, string $childClass)
     {
         try {
+            $this->autoConsume();
             $data = $this->normalizer->normalize($hv, null, [
                 'groups' => ['scraper-hv-child'], 'scraper-hv-child' => $childClass]);
             $message = new UpdateHvInNovasoft($hv->getId(), $data, UpdateHvInNovasoft::ACTION_CHILD_DELETE);
@@ -123,6 +140,14 @@ class ScraperMessenger
     {
         $id = is_int($autoliquidacionEmpleado) ? $autoliquidacionEmpleado : $autoliquidacionEmpleado->getId();
         $this->messageBus->dispatch(new DownloadAutoliquidacion($id));
+    }
+
+    private function autoConsume()
+    {
+        if($this->configuracion->getScraper()->isAutoConsume() && !$this->exec->uniqueExists('messenger')) {
+            $command = $this->configuracion->getScraper()->getConsumeCommand();
+            $this->exec->asyncUnique($command, 'messenger');
+        }
     }
 
 

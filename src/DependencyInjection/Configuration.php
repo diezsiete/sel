@@ -37,6 +37,7 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('logo')->end()
                         ->scalarNode('logo_pdf')->end()
                         ->scalarNode('home_route')->end()
+                        ->scalarNode('php_exec')->defaultValue('php')->end()
                         ->arrayNode('certificado_laboral')
                             ->children()
                                 ->scalarNode('firma')->end()
@@ -165,6 +166,7 @@ class Configuration implements ConfigurationInterface
         $node =
             $treeBuilder->getRootNode()
                 ->children()
+                    ->booleanNode('auto_consume')->defaultFalse()->end()
                     ->arrayNode('novasoft')
                         ->children()
                             ->scalarNode('browser')->end()
