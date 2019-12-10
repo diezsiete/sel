@@ -94,7 +94,6 @@ class VacanteController extends AbstractController
             $this->aplicarPrependOverwriteTemplates($bag);
             // registro o completar
             if($wizard) {
-                dump($wizard);
                 // al registrarse que redireccione de nuevo a esta pagina
                 $this->saveTargetPath($session, 'main', $this->generateUrl('vacante_aplicar', ['slug' => $vacante->getSlug()]));
                 return $this->forward(RegistroController::class . '::' . $step);
