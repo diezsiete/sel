@@ -15,10 +15,7 @@ class HvWizardRoutesAplicar extends HvWizardRoutes
     private $route;
 
     private $lastRouteIsAplicar = false;
-    /**
-     * @var string
-     */
-    private $wizard;
+
 
     public function __construct(Configuracion $configuracion, $route, $slug, $wizard = 'registro')
     {
@@ -81,4 +78,6 @@ class HvWizardRoutesAplicar extends HvWizardRoutes
         }
         return $routes;
     }
+
+
 }

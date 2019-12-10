@@ -82,7 +82,9 @@ class VacanteController extends AbstractController
             $routeInvalida = $hvWizard->getValidator()->getRoutesInvalidas(true);
             if($routeInvalida && $routeInvalida->key !== HvWizardRoutesAplicar::ROUTE_APLICAR_KEY) {
                 $puedeAplicar = false;
-                if(!$wizard) {
+                // usuario registrado sin hv completo datos basicos, ahora tiene hv, wizard ya no es registro si no completar
+                $changeWizard = isset($routeInvalida->parameters['wizard']) && $routeInvalida->parameters['wizard'] !== $wizard;
+                if(!$wizard || $changeWizard) {
                     return $this->redirectToRoute($routeInvalida->route, $routeInvalida->parameters);
                 }
             }
@@ -92,6 +94,7 @@ class VacanteController extends AbstractController
             $this->aplicarPrependOverwriteTemplates($bag);
             // registro o completar
             if($wizard) {
+                dump($wizard);
                 // al registrarse que redireccione de nuevo a esta pagina
                 $this->saveTargetPath($session, 'main', $this->generateUrl('vacante_aplicar', ['slug' => $vacante->getSlug()]));
                 return $this->forward(RegistroController::class . '::' . $step);

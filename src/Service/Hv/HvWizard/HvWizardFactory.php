@@ -21,7 +21,6 @@ class HvWizardFactory
             if($hvResolver->getUsuario() || $requestStack->getMasterRequest()->attributes->get('_route_params')['wizard']) {
                 $hv = $hvResolver->getHv();
                 $wizard = $hv && $hv->getUsuario() && $hv->getUsuario()->getId() ? 'completar' : 'registro';
-
                 $vacante = $requestStack->getMasterRequest()->attributes->get('vacante');
                 $routesWizard = new HvWizardRoutesAplicar($configuracion, 'vacante_aplicar', $vacante->getSlug(), $wizard);
 

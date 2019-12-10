@@ -17,6 +17,11 @@ class HvWizardRoutes
      */
     protected $configuracion;
 
+    /**
+     * @var string
+     */
+    protected $wizard = 'registro';
+
     public function __construct(Configuracion $configuracion)
     {
         $this->configuracion = $configuracion;
@@ -59,5 +64,13 @@ class HvWizardRoutes
     protected function initRoutes()
     {
         $this->routes = $this->configuracion->getHvWizardRoutes();
+    }
+
+    /**
+     * @return string
+     */
+    public function getWizard(): string
+    {
+        return $this->wizard;
     }
 }

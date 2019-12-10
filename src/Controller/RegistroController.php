@@ -54,6 +54,11 @@ class RegistroController extends AbstractController
             $hv = $hvdto->fillHv($this->hvWizard->getHv());
             $usuario = $hvdto->fillUsuario($this->hvWizard->getUsuario());
 
+            //si es aplicar vacante y usuario no tiene hv, asignamos usuario a hv
+            if($usuario->getId()) {
+                $hv->setUsuario($usuario);
+            }
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($hv);
             $em->flush();

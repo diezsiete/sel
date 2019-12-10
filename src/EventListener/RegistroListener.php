@@ -51,7 +51,7 @@ class RegistroListener
         } else {
             if(!$this->kernel->isDebug()) {
                 // TODO no se exactamente para que es esto pero borra la session en medio del registro
-                //$this->session->remove(HvWizard::NAMESPACE);
+                $this->session->remove(HvWizard::NAMESPACE);
             }
         }
     }
