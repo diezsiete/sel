@@ -7,7 +7,7 @@ namespace App\Command\Migration;
 use App\Entity\Empleado;
 use App\Repository\ConvenioRepository;
 use App\Repository\EmpleadoRepository;
-use App\Service\Scraper\ConvenioScraper;
+use App\Service\Scraper\NovasoftDataScraper;
 use App\Service\Scraper\Exception\ScraperNotFoundException;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -26,7 +26,7 @@ class MigrationEmpleadoConvenioCommand extends MigrationCommand
      */
     private $empleadoRepository;
     /**
-     * @var ConvenioScraper
+     * @var NovasoftDataScraper
      */
     private $scraper;
     /**
@@ -41,7 +41,7 @@ class MigrationEmpleadoConvenioCommand extends MigrationCommand
     private $convenios = [];
 
     public function __construct(Reader $annotationReader, EventDispatcherInterface $eventDispatcher, ManagerRegistry $managerRegistry,
-                                EmpleadoRepository $empleadoRepository, ConvenioRepository $convenioRepository, ConvenioScraper $scraper,
+                                EmpleadoRepository $empleadoRepository, ConvenioRepository $convenioRepository, NovasoftDataScraper $scraper,
                                 EntityManagerInterface $em)
     {
         parent::__construct($annotationReader, $eventDispatcher, $managerRegistry);
