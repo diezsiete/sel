@@ -83,9 +83,9 @@ class VacanteDataTableType implements DataTableTypeInterface
                 'query' => function (QueryBuilder $builder) use ($usuario) {
                     $builder
                         ->select('v')
-                        ->addSelect('COUNT(a) AS aspirantes')
+                        ->addSelect('COUNT(hvs) AS aspirantes')
                         ->from(Vacante::class, 'v')
-                        ->join('v.aplicantes', 'a')
+                        ->leftJoin('v.hvs', 'hvs')
                         ->groupBy('v.id');
                     if(!$this->security->isGranted(['ROLE_VACANTES_ADMIN'])) {
                         $builder->addSelect('usuario')

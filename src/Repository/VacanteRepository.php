@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Entity\Usuario;
+use App\Entity\Hv;
 use App\Entity\Vacante;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
@@ -71,41 +71,12 @@ class VacanteRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public static function aplicanteCriteria(Usuario $usuario): Criteria
+    public static function hvCriteria(Hv $hv): Criteria
     {
         $criteria = Criteria::create()
             ->andWhere(Criteria::expr()->andX(
-                Criteria::expr()->eq('id', $usuario->getId())
+                Criteria::expr()->eq('id', $hv->getId())
             ));
         return $criteria;
     }
-
-    // /**
-    //  * @return Vacante[] Returns an array of Vacante objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('v')
-            ->andWhere('v.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('v.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Vacante
-    {
-        return $this->createQueryBuilder('v')
-            ->andWhere('v.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

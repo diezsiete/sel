@@ -77,7 +77,7 @@ class AdminHvDataTableType implements DataTableTypeInterface
                 ]
             ])
             ->createAdapter(GroupByORMAdapter::class, [
-                'entity' => !$vacante ? Hv::class : Vacante::class,
+                'entity' => Hv::class,
                 'query' => function (QueryBuilder $builder) use ($vacante) {
                     $builder
                         ->select('hv')
@@ -87,10 +87,12 @@ class AdminHvDataTableType implements DataTableTypeInterface
                     $this->hvRepository->searchQueryBuilderFields($builder);
 
                     if($vacante) {
-                        $builder->join(Vacante::class, 'v', 'WITH', 'usuario.id = v.usuario')
+                        $builder->join('hv.vacantes', 'v')
                             ->where('v = :vacante')
                             ->setParameter('vacante', $vacante);
                     }
+
+                    return $builder;
                 },
                 'criteria' => [
                     function(QueryBuilder $builder, DataTableState $state) {

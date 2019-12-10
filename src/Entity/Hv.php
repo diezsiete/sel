@@ -269,6 +269,12 @@ class Hv implements HvEntity
      */
     private $scraper = false;
 
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Vacante", mappedBy="hvs")
+     */
+    private $vacantes;
+
     public function __construct()
     {
         $this->estudios = new ArrayCollection();
@@ -278,6 +284,7 @@ class Hv implements HvEntity
         $this->redesSociales = new ArrayCollection();
         $this->referencias = new ArrayCollection();
         $this->viviendas = new ArrayCollection();
+        $this->vacantes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -948,6 +955,34 @@ class Hv implements HvEntity
     public function setScraper(bool $scraper): self
     {
         $this->scraper = $scraper;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Vacante[]
+     */
+    public function getVacantes(): Collection
+    {
+        return $this->vacantes;
+    }
+
+    public function addVacante(Vacante $vacante): self
+    {
+        if (!$this->vacantes->contains($vacante)) {
+            $this->vacantes[] = $vacante;
+            $vacante->addHv($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVacante(Vacante $vacante): self
+    {
+        if ($this->vacantes->contains($vacante)) {
+            $this->vacantes->removeElement($vacante);
+            $vacante->removeHv($this);
+        }
 
         return $this;
     }

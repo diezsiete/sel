@@ -107,12 +107,13 @@ class VacanteController extends AbstractController
         } else {
             // borramos mensaje de registro exitoso
             $this->container->get('session')->getFlashBag()->clear();
+            $hv = $hvWizard->getHv();
             $hvWizard->clearSession();
 
-            if($vacante->getAplicante($usuario)) {
+            if($vacante->getHv($hv)) {
                 $this->addFlash('warning', 'No se puede aplicar a la misma vacante dos veces!');
             } else {
-                $vacante->addAplicante($usuario);
+                $vacante->addHv($hv);
                 $em->flush();
                 $this->addFlash('info', "Aplicación a vacante exitosa");
             }

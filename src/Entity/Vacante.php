@@ -166,9 +166,9 @@ class Vacante
     private $redesSociales;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Usuario", inversedBy="vacantes")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Hv", inversedBy="vacantes")
      */
-    private $aplicantes;
+    private $hvs;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Ciudad")
@@ -213,7 +213,7 @@ class Vacante
         $this->licenciaConduccion = new ArrayCollection();
         $this->profesion = new ArrayCollection();
         $this->redesSociales = new ArrayCollection();
-        $this->aplicantes = new ArrayCollection();
+        $this->hvs = new ArrayCollection();
         $this->area = new ArrayCollection();
         $this->ciudad = new ArrayCollection();
     }
@@ -601,32 +601,32 @@ class Vacante
     /**
      * @return Collection|Usuario[]
      */
-    public function getAplicantes(): Collection
+    public function getHvs(): Collection
     {
-        return $this->aplicantes;
+        return $this->hvs;
     }
 
 
-    public function getAplicante(Usuario $aplicante): ?Usuario
+    public function getHv(Hv $hv): ?Hv
     {
-        $criteria = VacanteRepository::aplicanteCriteria($aplicante);
-        $usuario = $this->aplicantes->matching($criteria)->first();
-        return $usuario ? $usuario : null;
+        $criteria = VacanteRepository::hvCriteria($hv);
+        $hv = $this->hvs->matching($criteria)->first();
+        return $hv ? $hv : null;
     }
 
-    public function addAplicante(Usuario $aplicante): self
+    public function addHv(Hv $hv): self
     {
-        if (!$this->aplicantes->contains($aplicante)) {
-            $this->aplicantes[] = $aplicante;
+        if (!$this->hvs->contains($hv)) {
+            $this->hvs[] = $hv;
         }
 
         return $this;
     }
 
-    public function removeAplicante(Usuario $aplicante): self
+    public function removeHv(Hv $hv): self
     {
-        if ($this->aplicantes->contains($aplicante)) {
-            $this->aplicantes->removeElement($aplicante);
+        if ($this->hvs->contains($hv)) {
+            $this->hvs->removeElement($hv);
         }
 
         return $this;
