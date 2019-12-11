@@ -5,3 +5,11 @@
 - name: Remote webpack
   include: "{{ playbook_dir }}/include/remote-webpack.yml"
   when: webpack is defined
+
+- name: Extract images
+  unarchive:
+    src: "{{ playbook_dir }}/../public/img.tgz"
+    dest: "{{ release_public_path }}"
+    owner: ptaweb
+    group: ptaweb
+  when: empresa == "pta"

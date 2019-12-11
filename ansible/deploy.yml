@@ -8,6 +8,11 @@
         include: "{{ playbook_dir }}/include/local-webpack.yml"
         when: webpack is defined
 
+      - name: Archive blog images
+        archive:
+          path: "{{ playbook_dir }}/../public/img"
+          dest: "{{ playbook_dir }}/../public/img.tgz"
+
 - hosts: ptagd
 
   vars:
@@ -46,6 +51,11 @@
             path: "{{ playbook_dir }}/../public/build.tgz"
             state: absent
         when: webpack is defined
+
+      - name: Remove archive images
+        file:
+            path: "{{ playbook_dir }}/../public/img.tgz"
+            state: absent
 
       - name: yarn dev build assets
         command: yarn build-assets

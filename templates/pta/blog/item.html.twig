@@ -1,7 +1,13 @@
 {% extends 'pta/base.html.twig' %}
+
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('css/pta/theme-blog.css') }}">
+    {{ encore_entry_link_tags('blog') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('blog') }}
 {% endblock %}
 
 {% block body %}
@@ -16,7 +22,7 @@
 
                     {% if showImage %}
                         <div class="post-image ml-0">
-                            <img src="{{ asset('img/pta/blog/' ~ post.img ~ '.jpg') }}" class="img-fluid img-thumbnail img-thumbnail-no-borders rounded-0" alt="" />
+                            <img src="{{ asset('build/pta/images/blog/' ~ post.img ~ '.jpg') }}" class="img-fluid img-thumbnail img-thumbnail-no-borders rounded-0" alt="" />
                         </div>
                     {% endif %}
 
