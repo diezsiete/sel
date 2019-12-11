@@ -143,7 +143,7 @@ class MenuBuilder
             }
             if($this->security->isGranted([$roles['ROLE_VER_AUTOLIQUIDACIONES']], $user)) {
                 $menu
-                    ->addChild('Autoliquidaciones', ['route' => 'admin_autoliquidaciones'])
+                    ->addChild('Autoliquidaciones', ['route' => 'admin_autoliquidacion_list'])
                     ->setExtra('icon', 'fas fa-clock');
             }
 

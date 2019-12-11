@@ -6,6 +6,7 @@ namespace App\DataTable\Type;
 
 use App\DataTable\Adapter\GroupByORMAdapter;
 use App\DataTable\Column\ActionsColumn\ActionsColumn;
+use App\DataTable\Column\CheckboxColumn;
 use App\Entity\Convenio;
 use App\Entity\Representante;
 use Doctrine\ORM\QueryBuilder;
@@ -93,5 +94,9 @@ class ConvenioDataTableType implements DataTableTypeInterface
             ])
             ->addOrderBy('codigo', DataTable::SORT_ASCENDING)
         ;
+
+        if(isset($options['form'])) {
+            $dataTable->add('checkbox', CheckboxColumn::class, ['label'=> '', 'propertyPath' => '[0].codigo']);
+        }
     }
 }

@@ -1,0 +1,27 @@
+{% set base_template = datatable is not null ? "datatable/base.datatable.html.twig" : "base.html.twig" %}
+
+{% extends base_template %}
+
+
+{% block body_header_title %}
+    Generar nuevo proceso de descargue de autoliquidaciones
+{% endblock %}
+
+{% block body_header_right %}
+    <a href="{{ path('admin_autoliquidacion_list') }}" class="btn btn-secondary">
+        Cancelar
+    </a>
+{% endblock %}
+
+{% block body %}
+
+    {{ form_start(formGenerar, {attr: {novalidate: 'novalidate'}}) }}
+        <div class="form-row">
+            {{ form_row(formGenerar.periodo, {container_attr: {class: 'col-md-9'}}) }}
+            {{ form_row(formGenerar.submit, {container_attr: {class: 'col-md-3'}}) }}
+        </div>
+    {{ form_end(formGenerar) }}
+
+    {{ parent() }}
+{% endblock %}
+

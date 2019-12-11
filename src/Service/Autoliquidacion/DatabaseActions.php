@@ -105,4 +105,31 @@ class DatabaseActions
         $autoliquidacion->removeEmpleado($autoliquidacionEmpleado);
         $autoliquidacion->calcularPorcentajeEjecucion();
     }
+
+    /**
+     * Retorna rango de periodos para el select de generar autoliquidacion
+     * @param integer $mesesAtras
+     * @return array [
+     *  'Y-m-d' => 'Y-m'
+     * ]
+     */
+    public function getPeriodos($mesesAtras = 12)
+    {
+        $time = explode('-', date("Y-n", strtotime("-$mesesAtras months", strtotime(date("Y-m-d")))));
+        $ano = $time[0];
+        $mes_start = $time[1];
+
+        $ano_hoy = date('Y');
+        $mes_hoy = date('n');
+        $periodos = [];
+        for ($i = $ano; $i <= $ano_hoy; $i++) {
+            $mes_limit = $i == $ano_hoy ? $mes_hoy : 12;
+            for ($j = $mes_start; $j <= $mes_limit; $j++) {
+                $periodo = $i . "-" . ($j < 10 ? '0' : '') . $j;
+                $periodos[$periodo] = $periodo . "-01";
+            }
+            $mes_start = 1;
+        }
+        return array_reverse($periodos);
+    }
 }
