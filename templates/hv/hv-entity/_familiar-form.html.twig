@@ -16,7 +16,21 @@
 </div>
 
 <div class="form-row">
-    {{ form_row(form.nacimiento, {container_attr: {class: 'col-md-6'}}) }}
+    {% set nacimientoOptions = {
+        format: "yyyy-mm-dd",
+        language: "es",
+        startDate: "1920-01-01"
+    } %}
+    {{ form_row(form.nacimiento, {
+        attr: {
+            'data-plugin-datepicker': '',
+            'data-plugin-options': nacimientoOptions|json_encode|raw,
+            'data-plugin-masked-input': '',
+            'data-input-mask': "9999-99-99",
+            'placeholder': "____-__-__"
+        },
+        container_attr: {class: 'col-md-6'}
+    }) }}
     {{ form_row(form.parentesco, {container_attr: {class: 'col-md-6'}}) }}
 </div>
 

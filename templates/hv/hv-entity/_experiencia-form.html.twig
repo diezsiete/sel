@@ -29,8 +29,33 @@
 
 <div class="form-row">
     {{ form_row(form.salarioBasico, {container_attr: {class: 'col-md-4'}}) }}
-    {{ form_row(form.fechaIngreso, {container_attr: {class: 'col-md-4'}}) }}
-    {{ form_row(form.fechaRetiro, {container_attr: {class: 'col-md-4'}}) }}
+
+    {% set fechaOptions = {
+        format: "yyyy-mm-dd",
+        language: "es",
+        startDate: "1950-01-01"
+    } %}
+
+    {{ form_row(form.fechaIngreso, {
+        attr: {
+            'data-plugin-datepicker': '',
+            'data-plugin-options': fechaOptions|json_encode|raw,
+            'data-plugin-masked-input': '',
+            'data-input-mask': "9999-99-99",
+            'placeholder': "____-__-__"
+        },
+        container_attr: {class: 'col-md-4'}
+    }) }}
+    {{ form_row(form.fechaRetiro, {
+        attr: {
+            'data-plugin-datepicker': '',
+            'data-plugin-options': fechaOptions|json_encode|raw,
+            'data-plugin-masked-input': '',
+            'data-input-mask': "9999-99-99",
+            'placeholder': "____-__-__"
+        },
+        container_attr: {class: 'col-md-4'}
+    }) }}
 </div>
 
 

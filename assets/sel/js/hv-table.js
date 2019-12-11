@@ -113,6 +113,10 @@ $.extend(HvTable.prototype, {
                     $input.val(data[fieldName].id);
                 } else {
                     $input.val(data[fieldName]);
+                    //datos fechas asumimos usan plugin bootstrap-datepicker, asignamos fecha al widget
+                    if(typeof data[fieldName] === 'string' && data[fieldName].match(/\d+-\d+-\d/)) {
+                        $input.bootstrapDP('update', data[fieldName])
+                    }
                 }
             }
         });

@@ -18,7 +18,21 @@
 {{ form_row(form.institutoNombreAlt) }}
 
 <div class="form-row">
-    {{ form_row(form.fin, {container_attr: {class: 'col-md-6'}}) }}
+    {% set finOptions = {
+        format: "yyyy-mm-dd",
+        language: "es",
+        startDate: "1950-01-01"
+    } %}
+    {{ form_row(form.fin, {
+        attr: {
+            'data-plugin-datepicker': '',
+            'data-plugin-options': finOptions|json_encode|raw,
+            'data-plugin-masked-input': '',
+            'data-input-mask': "9999-99-99",
+            'placeholder': "____-__-__"
+        },
+        container_attr: {class: 'col-md-6'}
+    }) }}
     {{ form_row(form.graduado, {container_attr: {class: 'col-md-3'}}) }}
     {{ form_row(form.cancelo, {container_attr: {class: 'col-md-3'}}) }}
 </div>

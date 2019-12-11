@@ -2,15 +2,16 @@ import $ from 'jquery';
 import 'chosen-js';
 import 'chosen-js/chosen.css'
 import 'jquery.maskedinput';
-import Routing from './router';
+//import Routing from './router';
 import './component/datepicker';
+import './component/chosen-pais-dpto-ciudad'
 
 import './../css/registro.scss';
 
 $(function () {
     $(".chosen").chosen();
 
-    $(".pais").change(function () {
+    /*$(".pais").change(function () {
 
         const $pais = $(this);
         const $paisId = $pais.attr('id');
@@ -48,7 +49,7 @@ $(function () {
                 }
             });
         }
-    });
+    });*/
 
     $('[data-plugin-datepicker]').each(function () {
         var $this = $(this),
@@ -63,7 +64,7 @@ $(function () {
 });
 
 
-function cleanChosen($select) {
+/*function cleanChosen($select) {
     $select.html("<option>Seleccione...</option>");
     $select.attr("disabled", true);
     $select.trigger("chosen:updated");
@@ -77,4 +78,4 @@ function updateChosen($select, entities) {
         $select.removeAttr('disabled');
         $select.trigger("chosen:updated");
     }
-}
+}*/

@@ -10,9 +10,18 @@
     {{ form_row(form.estrato, {container_attr: {class: 'col-md-4'}}) }}
 </div>
 <div class="form-row">
-    {{ form_row(form.pais, {container_attr: {class: 'col-md-4'}}) }}
-    {{ form_row(form.dpto, {container_attr: {class: 'col-md-4'}}) }}
-    {{ form_row(form.ciudad, {container_attr: {class: 'col-md-4'}}) }}
+    {{ form_row(form.pais, {
+        attr: {class: 'chosen pais'},
+        container_attr: {class: 'col-md-4'}
+    }) }}
+    {{ form_row(form.dpto, {
+        attr: {class: 'chosen dpto'},
+        container_attr: {class: 'col-md-4'}
+    }) }}
+    {{ form_row(form.ciudad, {
+        attr: {class: 'chosen'},
+        container_attr: {class: 'col-md-4'}
+    }) }}
 </div>
 <div class="form-row">
     {{ form_row(form.tipoVivienda, {container_attr: {class: 'col-md-6'}}) }}

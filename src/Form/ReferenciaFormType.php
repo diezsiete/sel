@@ -49,7 +49,7 @@ class ReferenciaFormType extends AbstractType
             ->add('direccion', null, [
                 'label' => 'Dirección',
             ])
-            ->add('entidad')
+            //->add('entidad')
         ;
     }
 
