@@ -42,16 +42,20 @@ class RegistroListener
 
     public function onKernelRequest(RequestEvent $event)
     {
-        $currentRoute = $event->getRequest()->attributes->get('_route');
-        if(preg_match('/registro_/', $currentRoute)) {
-            if($this->isUserLogged() && !$event->getRequest()->isXmlHttpRequest()) {
-                $response = new RedirectResponse($this->router->generate('hv_datos_basicos'));
-                $event->setResponse($response);
-            }
-        } else {
-            if(!$this->kernel->isDebug()) {
-                // TODO no se exactamente para que es esto pero borra la session en medio del registro
-                $this->session->remove(HvWizard::NAMESPACE);
+        $request = $event->getRequest();
+        $currentRoute = $request->attributes->get('_route');
+
+        if(!$event->getRequest()->isXmlHttpRequest()) {
+            if ($this->isUserLogged()) {
+                if ($currentRoute && preg_match('/registro_/', $currentRoute)) {
+                    $response = new RedirectResponse($this->router->generate('hv_datos_basicos'));
+                    $event->setResponse($response);
+                }
+            } else {
+                // sub request de controller fragment renderizado en template ignoramos (!$currentRoute)
+                if ($currentRoute && !preg_match('/registro_/', $currentRoute) && $currentRoute !== 'vacante_aplicar') {
+                    $this->session->remove(HvWizard::NAMESPACE);
+                }
             }
         }
     }
