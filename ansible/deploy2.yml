@@ -1,21 +1,3 @@
-#---
-#- hosts: local
-#  vars:
-#      empresa: servilabor
-#
-#  vars_files:
-#      - ./vars/deploy_vault_{{ empresa }}.yml
-#      - ./vars/deploy_vars.yml
-#
-#  tasks:
-#      - name: Debug
-#        debug:
-#            msg: Host {{ vault_database_host }} has uuid {{ vault_database_user }}
-#
-#      - name: Test env file
-#        template:
-#          src: "{{ playbook_dir }}/templates/.env.local"
-#          dest: "{{ playbook_dir }}/templates/.env.local.test"
 ---
 - hosts: local
   vars:
@@ -81,7 +63,11 @@
       - name: yarn dev build assets
         command: yarn build-assets
         when: webpack is defined
+        environment:
+            EMPRESA: "{{ empresa }}"
 
       - name: yarn dev build
         command: yarn encore dev
         when: webpack is defined
+        environment:
+            EMPRESA: "{{ empresa }}"
