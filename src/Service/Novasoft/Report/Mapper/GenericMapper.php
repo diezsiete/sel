@@ -1,0 +1,26 @@
+<?php
+
+
+namespace App\Service\Novasoft\Report\Mapper;
+
+
+class GenericMapper extends Mapper
+{
+
+    protected function instanceTargetObject()
+    {
+        //return new GenericEntity();
+    }
+
+    protected function defineMap(): array
+    {
+        return [];
+    }
+
+    public function __set($name, $value)
+    {
+        $set_method = "set_$name";
+        $this->targetObject->$set_method($value);
+    }
+
+}

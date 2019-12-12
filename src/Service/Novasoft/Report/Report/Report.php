@@ -5,8 +5,10 @@ namespace App\Service\Novasoft\Report\Report;
 
 
 use App\Service\Configuracion\Configuracion;
+use App\Service\Novasoft\Report\Mapper\GenericMapper;
 use App\Service\Novasoft\Report\Mapper\Mapper;
 use App\Service\Novasoft\Report\ReportFormatter;
+use App\Service\Utils;
 use SSRS\RenderType\RenderAsCSV;
 use SSRS\RenderType\RenderAsPDF;
 use SSRS\SSRSReport;
@@ -41,6 +43,11 @@ abstract class Report
     protected $db;
 
     /**
+     * @var Utils
+     */
+    protected $utils;
+
+    /**
      * @var ReportParameterCollection
      */
     protected $reportParameters = null;
@@ -55,12 +62,13 @@ abstract class Report
 
     protected $renderStreamIds;
 
-    public function __construct(SSRSReport $SSRSReport, ReportFormatter $reportFormatter, Configuracion $configuracion, Mapper $mapper)
+    public function __construct(SSRSReport $SSRSReport, ReportFormatter $reportFormatter, Configuracion $configuracion, Utils $utils, Mapper $mapper)
     {
         $this->SSRSReport = $SSRSReport;
         $this->reportFormatter = $reportFormatter;
         $this->mapper = $mapper;
         $this->db = $configuracion->getSsrsDb()[0]->getNombre();
+        $this->utils = $utils;
     }
 
 
@@ -169,10 +177,12 @@ abstract class Report
         $parameters = [];
         foreach($vars as $var_name => $var_value) {
             if(preg_match('/(^parameter_)(.+)/', $var_name, $matches)) {
-                //$parameters[$matches[2]] = $var_value;
+                $normalizeMethod = 'normalizeParameter_' . $matches[2];
+                $value = method_exists($this,$normalizeMethod) ? $this->$normalizeMethod() : $var_value;
+
                 $parameterValue = new ParameterValue();
                 $parameterValue->Name = $matches[2];
-                $parameterValue->Value = $var_value;
+                $parameterValue->Value = $value;
                 $parameters[] = $parameterValue;
             }
         }

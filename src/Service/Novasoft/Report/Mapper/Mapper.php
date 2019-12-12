@@ -36,7 +36,7 @@ abstract class Mapper
         if(isset($this->map[$name])) {
             $set_method = "set" . ucfirst($this->map[$name]);
             if(method_exists($this, $set_method)) {
-                $this->$set_method($value);
+                $this->$set_method($value, $name);
             } else {
                 $this->targetObject->$set_method($value);
             }
@@ -47,5 +47,13 @@ abstract class Mapper
     {
         $objects[] = $this->targetObject;
         $this->targetObject = $this->instanceTargetObject();
+    }
+
+    /**
+     * @return array
+     */
+    public function getMap()
+    {
+        return $this->map;
     }
 }

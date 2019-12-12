@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\Autoliquidacion\Autoliquidacion;
+use App\Entity\Novasoft\Report\TrabajadorActivo;
 use App\Repository\EmpleadoRepository;
 use App\Repository\RepresentanteRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -58,12 +59,18 @@ class Convenio implements \JsonSerializable
 
     private $representantesByType = [];
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Novasoft\Report\TrabajadorActivo", mappedBy="convenio", orphanRemoval=true)
+     */
+    private $trabajadoresActivos;
+
 
     public function __construct()
     {
         $this->empleados = new ArrayCollection();
         $this->autoliquidaciones = new ArrayCollection();
         $this->representantes = new ArrayCollection();
+        $this->trabajadoresActivos = new ArrayCollection();
     }
 
 
@@ -267,5 +274,36 @@ class Convenio implements \JsonSerializable
             "codigoCliente" => $this->codigoCliente,
             "direccion" => $this->direccion
         ];
+    }
+
+    /**
+     * @return Collection|TrabajadorActivo[]
+     */
+    public function getTrabajadoresActivos(): Collection
+    {
+        return $this->trabajadoresActivos;
+    }
+
+    public function addTrabajadoresActivo(TrabajadorActivo $trabajadoresActivo): self
+    {
+        if (!$this->trabajadoresActivos->contains($trabajadoresActivo)) {
+            $this->trabajadoresActivos[] = $trabajadoresActivo;
+            $trabajadoresActivo->setConvenio($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTrabajadoresActivo(TrabajadorActivo $trabajadoresActivo): self
+    {
+        if ($this->trabajadoresActivos->contains($trabajadoresActivo)) {
+            $this->trabajadoresActivos->removeElement($trabajadoresActivo);
+            // set the owning side to null (unless already changed)
+            if ($trabajadoresActivo->getConvenio() === $this) {
+                $trabajadoresActivo->setConvenio(null);
+            }
+        }
+
+        return $this;
     }
 }

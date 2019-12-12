@@ -134,8 +134,10 @@ class ReportFormatter
         $objects    = [];
         for($i = 0; $i < $rowsCount; $i++) {
             try {
-                foreach ($csvArray[$i] as $attribute => $value) {
-                    $mapper->$attribute = trim($value);
+                foreach($mapper->getMap() as $csvAttribute => $entityAttribute) {
+                    if(isset($csvArray[$i][$csvAttribute])) {
+                        $mapper->$csvAttribute = trim($csvArray[$i][$csvAttribute]);
+                    }
                 }
                 $mapper->addMappedObject($objects);
             } catch (InvalidMappedObject $e) {
