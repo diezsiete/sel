@@ -96,7 +96,7 @@ class ConvenioDataTableType implements DataTableTypeInterface
         ;
 
         if(isset($options['form'])) {
-            $dataTable->add('checkbox', CheckboxColumn::class, ['label'=> '', 'propertyPath' => '[0].codigo']);
+            $dataTable->add('datatable', CheckboxColumn::class, ['label'=> '', 'propertyPath' => '[0].codigo']);
         }
     }
 }

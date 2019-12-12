@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Controller\BaseController;
+use App\DataTable\SelDataTableFactory;
 use App\DataTable\Type\AutoliquidacionDataTableType;
 use App\DataTable\Type\AutoliquidacionEmpleadoDataTableType;
 use App\DataTable\Type\ConvenioDataTableType;
@@ -36,7 +37,7 @@ class AutoliquidacionController extends BaseController
     /**
      * @Route("/sel/admin/autoliquidacion/generar/{periodo}", name="admin_autoliquidacion_generar", defaults={"periodo"=""})
      */
-    public function generar(DatabaseActions $databaseActions, Request $request, $periodo, DataTableFactory $dataTableFactory)
+    public function generar(DatabaseActions $databaseActions, Request $request, $periodo, SelDataTableFactory $dataTableFactory)
     {
         $formBuilder = $this->createFormBuilder();
         $form = $formBuilder
@@ -65,6 +66,9 @@ class AutoliquidacionController extends BaseController
         if ($form->isSubmitted() && $form->isValid()) {
             if(!$periodo) {
                 return $this->redirectToRoute('admin_autoliquidacion_generar', ['periodo' => $form['periodo']->getData()]);
+            } else {
+                $x = $form['datatable']->getData();
+                dump($x);
             }
         }
 

@@ -2,6 +2,8 @@
 
 namespace App\DataTable\Adapter;
 
+use App\DataTable\Column\CheckboxColumn;
+use App\DataTable\SelDataTableState;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Omines\DataTablesBundle\Adapter\AdapterQuery;
@@ -35,17 +37,19 @@ class GroupByORMAdapter extends ORMAdapter
         $builder = $query->get('qb');
         $state = $query->getState();
 
-        // Apply definitive view state for current 'page' of the table
-        foreach ($state->getOrderBy() as list($column, $direction)) {
-            /** @var AbstractColumn $column */
-            if ($column->isOrderable()) {
-                $builder->addOrderBy($column->getOrderField(), $direction);
+        if(!($state instanceof SelDataTableState) || !$state->isFormPreSubmit()) {
+            // Apply definitive view state for current 'page' of the table
+            foreach ($state->getOrderBy() as list($column, $direction)) {
+                /** @var AbstractColumn $column */
+                if ($column->isOrderable()) {
+                    $builder->addOrderBy($column->getOrderField(), $direction);
+                }
             }
-        }
-        if ($state->getLength() > 0) {
-            $builder
-                ->setFirstResult($state->getStart())
-                ->setMaxResults($state->getLength());
+            if ($state->getLength() > 0) {
+                $builder
+                    ->setFirstResult($state->getStart())
+                    ->setMaxResults($state->getLength());
+            }
         }
 
         /**
@@ -56,6 +60,23 @@ class GroupByORMAdapter extends ORMAdapter
              * Return everything instead of first element
              */
             yield $result;
+        }
+    }
+
+    protected function getPropertyMap(AdapterQuery $query): array
+    {
+        $state = $query->getState();
+        if(!($state instanceof SelDataTableState) || !$state->isFormPreSubmit()) {
+            return parent::getPropertyMap($query);
+        } else {
+            $propertyMap = [];
+            foreach ($query->getState()->getDataTable()->getColumns() as $column) {
+                if($column instanceof CheckboxColumn) {
+                    $column->isFormPreSubmit(true);
+                    $propertyMap[] = [$column, $column->getPropertyPath() ?? (empty($column->getField()) ? null : $this->mapPropertyPath($query, $column))];
+                }
+            }
+            return $propertyMap;
         }
     }
 }
