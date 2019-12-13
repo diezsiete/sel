@@ -41,7 +41,7 @@ class AutoliquidacionRepository extends ServiceEntityRepository
             $qb->andWhere($qb->expr()->in('a', $autoliquidacion));
         }
 
-        return $this->fetchIdentificaciones($qb);
+        return $this->fetchIdentificaciones($qb, true);
     }
 
 
