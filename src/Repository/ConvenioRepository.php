@@ -144,4 +144,15 @@ class ConvenioRepository extends ServiceEntityRepository
             return null;
         }
     }
+
+    /**
+     * @return Convenio[]
+     */
+    public function findConveniosWithRepresentante()
+    {
+        return $this->createQueryBuilder('c')
+            ->join('c.representantes', 'r')
+            ->getQuery()
+            ->getResult();
+    }
 }
