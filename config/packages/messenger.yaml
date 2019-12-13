@@ -16,6 +16,11 @@ framework:
                 retry_strategy:
                     max_retries: 0
                     delay: 2000
+            async2:
+                dsn: 'doctrine://default?queue_name=download'
+                retry_strategy:
+                    max_retries: 0
+                    delay: 2000
 
             scraper_hv:
                 dsn: 'scraper://default'
@@ -50,4 +55,4 @@ framework:
             'App\Message\Scraper\UpdateHvInNovasoftSuccess': scraper_hv_success
             'App\Message\Scraper\UpdateResponseReceived': async
             'App\Message\Scraper\GenerateAutoliquidacion': async
-            'App\Message\Scraper\DownloadAutoliquidacion': async
+            'App\Message\Scraper\DownloadAutoliquidacion': async2

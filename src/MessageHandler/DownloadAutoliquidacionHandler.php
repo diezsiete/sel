@@ -7,6 +7,7 @@ namespace App\MessageHandler;
 use App\Message\Scraper\DownloadAutoliquidacion;
 use App\Message\Scraper\GenerateAutoliquidacion;
 use App\Repository\Autoliquidacion\AutoliquidacionEmpleadoRepository;
+use App\Repository\Autoliquidacion\AutoliquidacionProgresoRepository;
 use App\Service\Autoliquidacion\FileManager;
 use App\Service\Scraper\AutoliquidacionScraper;
 use App\Service\Scraper\Exception\ScraperException;
@@ -32,41 +33,58 @@ class DownloadAutoliquidacionHandler implements MessageHandlerInterface
      * @var FileManager
      */
     private $autoliquidacionService;
+    /**
+     * @var AutoliquidacionProgresoRepository
+     */
+    private $autoliquidacionProgresoRepository;
 
     public function __construct(AutoliquidacionScraper $scraper,
                                 AutoliquidacionEmpleadoRepository $autoliquidacionEmpleadoRepo,
+                                AutoliquidacionProgresoRepository $autoliquidacionProgresoRepository,
                                 EntityManagerInterface $em, FileManager $autoliquidacionService)
     {
         $this->scraper = $scraper;
         $this->autoliquidacionEmpleadoRepo = $autoliquidacionEmpleadoRepo;
         $this->em = $em;
         $this->autoliquidacionService = $autoliquidacionService;
+        $this->autoliquidacionProgresoRepository = $autoliquidacionProgresoRepository;
     }
 
     public function __invoke(DownloadAutoliquidacion $downloadAutoliquidacion)
     {
-        $autoliquidacion = $this->autoliquidacionEmpleadoRepo->find($downloadAutoliquidacion->getAutoliquidacionEmpleadoId());
-        $ident = $autoliquidacion->getUsuario()->getIdentificacion();
-        $periodo = $autoliquidacion->getAutoliquidacion()->getPeriodo();
+        $autoliquidacionEmpleado = $this->autoliquidacionEmpleadoRepo->find($downloadAutoliquidacion->getAutoliquidacionEmpleadoId());
+        $autoliquidacion = $autoliquidacionEmpleado->getAutoliquidacion();
+        $autoliquidacionProgreso = $this->autoliquidacionProgresoRepository->find($downloadAutoliquidacion->getAutoliquidacionProgresoId());
+
+        $ident = $autoliquidacionEmpleado->getUsuario()->getIdentificacion();
+        $periodo = $autoliquidacionEmpleado->getAutoliquidacion()->getPeriodo();
 
         try {
             $resource = $this->scraper->downloadPdf($ident, $periodo);
             if($resource) {
                 $this->autoliquidacionService->uploadPdfResource($periodo, $ident, $resource);
-                $autoliquidacion
+                $autoliquidacionEmpleado
                     ->setExito(true)
-                    ->setSalida($autoliquidacion->getSalida() . ". \nArchivo descargdo exitosamente");
+                    ->setSalida($autoliquidacionEmpleado->getSalida() . ". \nArchivo descargdo exitosamente");
+
+                $autoliquidacion->calcularPorcentajeEjecucion();
+                $autoliquidacionProgreso->addCount()->calcPorcentaje();
             } else {
                 throw new Exception("resource is false");
             }
         }
         catch (Exception $exception) {
-            $autoliquidacion->setExito(false)
+            $autoliquidacionEmpleado->setExito(false)
                 ->setCode($exception->getCode())
-                ->setSalida($autoliquidacion->getSalida() . ". \nError descarga archivo");
+                ->setSalida($autoliquidacionEmpleado->getSalida() . ". \nError descarga archivo");
+
+            $autoliquidacion->calcularPorcentajeEjecucion();
+            $autoliquidacionProgreso->addCount()->calcPorcentaje();
         }
+
         $this->em->flush();
-        if($autoliquidacion->isExito()) {
+
+        if($autoliquidacionEmpleado->isExito()) {
             $this->scraper->deletePdf($ident, $periodo);
         }
     }

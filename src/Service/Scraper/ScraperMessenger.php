@@ -5,6 +5,7 @@ namespace App\Service\Scraper;
 
 
 use App\Entity\Autoliquidacion\AutoliquidacionEmpleado;
+use App\Entity\Autoliquidacion\AutoliquidacionProgreso;
 use App\Entity\Hv;
 use App\Entity\HvEntity;
 use App\Message\Scraper\DownloadAutoliquidacion;
@@ -126,20 +127,24 @@ class ScraperMessenger
 
     /**
      * @param AutoliquidacionEmpleado|int $autoliquidacionEmpleado
+     * @param AutoliquidacionProgreso|int $autoliquidacionProgreso
      */
-    public function generateAutoliquidacion($autoliquidacionEmpleado)
+    public function generateAutoliquidacion($autoliquidacionEmpleado, $autoliquidacionProgreso)
     {
         $id = is_int($autoliquidacionEmpleado) ? $autoliquidacionEmpleado : $autoliquidacionEmpleado->getId();
-        $this->messageBus->dispatch(new GenerateAutoliquidacion($id));
+        $progresoId = is_int($autoliquidacionProgreso) ? $autoliquidacionProgreso : $autoliquidacionProgreso->getId();
+        $this->messageBus->dispatch(new GenerateAutoliquidacion($id, $progresoId));
     }
 
     /**
      * @param AutoliquidacionEmpleado|int $autoliquidacionEmpleado
+     * @param AutoliquidacionProgreso|int $autoliquidacionProgreso
      */
-    public function downloadAutoliquidacion($autoliquidacionEmpleado)
+    public function downloadAutoliquidacion($autoliquidacionEmpleado, $autoliquidacionProgreso)
     {
         $id = is_int($autoliquidacionEmpleado) ? $autoliquidacionEmpleado : $autoliquidacionEmpleado->getId();
-        $this->messageBus->dispatch(new DownloadAutoliquidacion($id));
+        $progresoId = is_int($autoliquidacionProgreso) ? $autoliquidacionProgreso : $autoliquidacionProgreso->getId();
+        $this->messageBus->dispatch(new DownloadAutoliquidacion($id, $progresoId));
     }
 
     private function autoConsume()

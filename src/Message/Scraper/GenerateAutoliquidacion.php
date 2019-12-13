@@ -12,11 +12,16 @@ class GenerateAutoliquidacion
      * @var int
      */
     private $page;
+    /**
+     * @var int
+     */
+    private $progresoId;
 
-    public function __construct(int $autoliquidacionEmpleadoId, int $page = 1)
+    public function __construct(int $autoliquidacionEmpleadoId, int $progresoId, int $page = 1)
     {
         $this->autoliquidacionEmpleadoId = $autoliquidacionEmpleadoId;
         $this->page = $page;
+        $this->progresoId = $progresoId;
     }
 
     /**
@@ -25,6 +30,14 @@ class GenerateAutoliquidacion
     public function getAutoliquidacionEmpleadoId(): int
     {
         return $this->autoliquidacionEmpleadoId;
+    }
+
+    /**
+     * @return int
+     */
+    public function getProgresoId(): int
+    {
+        return $this->progresoId;
     }
 
     /**

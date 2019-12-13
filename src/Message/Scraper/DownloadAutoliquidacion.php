@@ -10,10 +10,15 @@ class DownloadAutoliquidacion
      * @var int
      */
     private $autoliquidacionEmpleadoId;
+    /**
+     * @var int
+     */
+    private $autoliquidacionProgresoId;
 
-    public function __construct(int $autoliquidacionEmpleadoId)
+    public function __construct(int $autoliquidacionEmpleadoId, int $autoliquidacionProgresoId)
     {
         $this->autoliquidacionEmpleadoId = $autoliquidacionEmpleadoId;
+        $this->autoliquidacionProgresoId = $autoliquidacionProgresoId;
     }
 
     /**
@@ -23,4 +28,14 @@ class DownloadAutoliquidacion
     {
         return $this->autoliquidacionEmpleadoId;
     }
+
+    /**
+     * @return int
+     */
+    public function getAutoliquidacionProgresoId(): int
+    {
+        return $this->autoliquidacionProgresoId;
+    }
+
+    
 }

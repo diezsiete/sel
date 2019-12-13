@@ -24,12 +24,22 @@ class AutoliquidacionProgreso
     /**
      * @ORM\Column(type="integer")
      */
-    private $porcentaje;
+    private $porcentaje = 0;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $lastMessage;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $count = 0;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $total = 0;
 
     public function getId(): ?int
     {
@@ -41,12 +51,14 @@ class AutoliquidacionProgreso
         return $this->porcentaje;
     }
 
-    public function setPorcentaje(int $porcentaje): self
+    public function calcPorcentaje()
     {
-        $this->porcentaje = $porcentaje;
-
+        $porcentaje = $this->total ? $this->count * 100 / $this->total : 0;
+        $porcentaje = floor($porcentaje);
+        $this->porcentaje = intval($porcentaje);
         return $this;
     }
+
 
     public function getLastMessage(): ?string
     {
@@ -59,4 +71,36 @@ class AutoliquidacionProgreso
 
         return $this;
     }
+
+    public function getCount(): ?int
+    {
+        return $this->count;
+    }
+
+    public function setCount(int $count): self
+    {
+        $this->count = $count;
+
+        return $this;
+    }
+
+    public function addCount()
+    {
+        $this->count = $this->count + 1;
+        return $this;
+    }
+
+    public function getTotal(): ?int
+    {
+        return $this->total;
+    }
+
+    public function setTotal(int $total): self
+    {
+        $this->total = $total;
+
+        return $this;
+    }
+
+
 }
