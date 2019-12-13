@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\Autoliquidacion\Autoliquidacion;
+use App\Entity\Novasoft\Report\LiquidacionNomina\LiquidacionNomina;
 use App\Entity\Novasoft\Report\TrabajadorActivo;
 use App\Repository\EmpleadoRepository;
 use App\Repository\RepresentanteRepository;
@@ -64,6 +65,11 @@ class Convenio implements \JsonSerializable
      */
     private $trabajadoresActivos;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Novasoft\Report\LiquidacionNomina\LiquidacionNomina", mappedBy="convenio", orphanRemoval=true)
+     */
+    private $liquidacionesNominas;
+
 
     public function __construct()
     {
@@ -71,6 +77,7 @@ class Convenio implements \JsonSerializable
         $this->autoliquidaciones = new ArrayCollection();
         $this->representantes = new ArrayCollection();
         $this->trabajadoresActivos = new ArrayCollection();
+        $this->liquidacionesNominas = new ArrayCollection();
     }
 
 
@@ -301,6 +308,37 @@ class Convenio implements \JsonSerializable
             // set the owning side to null (unless already changed)
             if ($trabajadoresActivo->getConvenio() === $this) {
                 $trabajadoresActivo->setConvenio(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|LiquidacionNomina[]
+     */
+    public function getLiquidacionesNominas(): Collection
+    {
+        return $this->liquidacionesNominas;
+    }
+
+    public function addLiquidacionesNomina(LiquidacionNomina $liquidacionesNomina): self
+    {
+        if (!$this->liquidacionesNominas->contains($liquidacionesNomina)) {
+            $this->liquidacionesNominas[] = $liquidacionesNomina;
+            $liquidacionesNomina->setConvenio($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLiquidacionesNomina(LiquidacionNomina $liquidacionesNomina): self
+    {
+        if ($this->liquidacionesNominas->contains($liquidacionesNomina)) {
+            $this->liquidacionesNominas->removeElement($liquidacionesNomina);
+            // set the owning side to null (unless already changed)
+            if ($liquidacionesNomina->getConvenio() === $this) {
+                $liquidacionesNomina->setConvenio(null);
             }
         }
 

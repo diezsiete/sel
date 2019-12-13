@@ -34,11 +34,13 @@ abstract class Mapper
     public function __set($name, $value)
     {
         if(isset($this->map[$name])) {
-            $set_method = "set" . ucfirst($this->map[$name]);
+            $entityAttribute = is_array($this->map[$name]) ? $name : $this->map[$name];
+
+            $set_method = "set" . ucfirst($entityAttribute);
             if(method_exists($this, $set_method)) {
                 $this->$set_method($value, $name);
             } else {
-                $this->targetObject->$set_method($value);
+                $this->getTargetObject()->$set_method($value);
             }
         }
     }
@@ -55,5 +57,10 @@ abstract class Mapper
     public function getMap()
     {
         return $this->map;
+    }
+
+    public function getTargetObject()
+    {
+        return $this->targetObject;
     }
 }

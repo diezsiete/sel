@@ -71,11 +71,12 @@ class DataFilter
     {
         $format = preg_match('/\d:\d/', $fecha) ? 'd/m/Y H:i:s' : 'd/m/Y';
         $fecha = DateTime::createFromFormat($format, $fecha);
-        return $fecha ?? null;
+        return $fecha ? $fecha : null;
     }
 
-    public function valorMoneda(string $value): int
+    public function int(string $value): int
     {
+        $value = preg_replace('/(\d+),\d+/', '$1', $value);
         $value = str_replace(['.', ','], '', $value);
         return (int)$value;
     }

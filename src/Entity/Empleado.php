@@ -3,7 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\Autoliquidacion\AutoliquidacionEmpleado;
-use App\Repository\Autoliquidacion\AutoliquidacionEmpleadoRepository;
+use App\Entity\Novasoft\Report\LiquidacionNomina\LiquidacionNomina;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -103,9 +103,15 @@ class Empleado
      */
     private $representante;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Novasoft\Report\LiquidacionNomina\LiquidacionNomina", mappedBy="empleado", orphanRemoval=true)
+     */
+    private $liquidacionesNomina;
+
     public function __construct()
     {
         $this->autoliquidaciones = new ArrayCollection();
+        $this->liquidacionesNomina = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -320,6 +326,37 @@ class Empleado
     public function setRepresentante(?Representante $representante): self
     {
         $this->representante = $representante;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|LiquidacionNomina[]
+     */
+    public function getLiquidacionesNomina(): Collection
+    {
+        return $this->liquidacionesNomina;
+    }
+
+    public function addLiquidacionesNomina(LiquidacionNomina $liquidacionesNomina): self
+    {
+        if (!$this->liquidacionesNomina->contains($liquidacionesNomina)) {
+            $this->liquidacionesNomina[] = $liquidacionesNomina;
+            $liquidacionesNomina->setEmpleado($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLiquidacionesNomina(LiquidacionNomina $liquidacionesNomina): self
+    {
+        if ($this->liquidacionesNomina->contains($liquidacionesNomina)) {
+            $this->liquidacionesNomina->removeElement($liquidacionesNomina);
+            // set the owning side to null (unless already changed)
+            if ($liquidacionesNomina->getEmpleado() === $this) {
+                $liquidacionesNomina->setEmpleado(null);
+            }
+        }
 
         return $this;
     }

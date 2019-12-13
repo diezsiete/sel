@@ -7,7 +7,7 @@ namespace App\Service\Novasoft\Report\Report;
 use App\Entity\Convenio;
 use App\Entity\Novasoft\Report\TrabajadorActivo;
 use App\Service\Configuracion\Configuracion;
-use App\Service\Novasoft\Report\Mapper\MapperTrabajadoresActivos;
+use App\Service\Novasoft\Report\Mapper\TrabajadoresActivosMapper;
 use App\Service\Novasoft\Report\ReportFormatter;
 use App\Service\Utils;
 use DateTimeInterface;
@@ -67,7 +67,7 @@ class TrabajadoresActivosReport extends Report
 
 
     public function __construct(SSRSReport $SSRSReport, ReportFormatter $reportFormatter, Configuracion $configuracion,
-                                Utils $utils, MapperTrabajadoresActivos $mapper)
+                                Utils $utils, TrabajadoresActivosMapper $mapper)
     {
         parent::__construct($SSRSReport, $reportFormatter, $configuracion, $utils, $mapper);
     }

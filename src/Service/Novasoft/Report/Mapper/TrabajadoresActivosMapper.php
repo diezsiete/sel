@@ -13,7 +13,7 @@ use App\Repository\ConvenioRepository;
 use App\Repository\EmpleadoRepository;
 use App\Repository\Novasoft\Report\CentroCostoRepository;
 
-class MapperTrabajadoresActivos extends Mapper
+class TrabajadoresActivosMapper extends Mapper
 {
     /**
      * @var TrabajadorActivo
@@ -166,7 +166,7 @@ class MapperTrabajadoresActivos extends Mapper
 
     public function setSalario($value)
     {
-        $ingresoBasico = $this->filter->valorMoneda($value);
+        $ingresoBasico = $this->filter->int($value);
         $this->targetObject->setIngresoBasico($ingresoBasico);
     }
 

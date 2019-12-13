@@ -9,19 +9,33 @@
 namespace App\Service\Novasoft\Report;
 
 use App\Service\Novasoft\Report\Exception\InvalidMappedObject;
+use App\Service\Novasoft\Report\Mapper\LiquidacionNomina\ConvenioMapper;
+use App\Service\Novasoft\Report\Mapper\LiquidacionNomina\EmpleadoMapper;
+use App\Service\Novasoft\Report\Mapper\LiquidacionNomina\RenglonMapper;
+use App\Service\Novasoft\Report\Mapper\LiquidacionNomina\ResumenMapper;
+use App\Service\Novasoft\Report\Mapper\LiquidacionNomina\ResumenRenglonMapper;
+use App\Service\Novasoft\Report\Mapper\LiquidacionNomina\ResumenTotalMapper;
+use App\Service\Novasoft\Report\Mapper\LiquidacionNomina\TotalMapper;
 use App\Service\Utils;
 use App\Service\Novasoft\Report\Mapper\Mapper;
+use Psr\Container\ContainerInterface;
+use Symfony\Contracts\Service\ServiceSubscriberInterface;
 
-class ReportFormatter
+class ReportFormatter implements ServiceSubscriberInterface
 {
     /**
      * @var Utils
      */
     private $utils;
+    /**
+     * @var ContainerInterface
+     */
+    private $container;
 
-    public function __construct(Utils $utils)
+    public function __construct(Utils $utils, ContainerInterface $container)
     {
         $this->utils = $utils;
+        $this->container = $container;
     }
 
     /**
@@ -117,7 +131,7 @@ class ReportFormatter
      * @param Mapper $mapper
      * @return mixed array of objects of type the Mapper $targetObject
      */
-    public function mapCsv($csvData, Mapper $mapper)
+    public function mapCsv($csvData, Mapper $mapper, $single = false)
     {
         if(is_array($csvData)) {
             //$csvData puede venir como una array sencilla
@@ -135,15 +149,25 @@ class ReportFormatter
         for($i = 0; $i < $rowsCount; $i++) {
             try {
                 foreach($mapper->getMap() as $csvAttribute => $entityAttribute) {
-                    if(isset($csvArray[$i][$csvAttribute])) {
-                        $mapper->$csvAttribute = trim($csvArray[$i][$csvAttribute]);
+                    if(is_array($entityAttribute)) {
+                        $innerMapperClass = array_key_first($entityAttribute);
+                        $innerMapperColsFilter = $entityAttribute[$innerMapperClass];
+                        $innerMapperCsvData = array_intersect_key($csvArray[$i], array_flip($innerMapperColsFilter));
+
+                        $mapper->$csvAttribute = $this->mapCsv($innerMapperCsvData, $this->container->get($innerMapperClass), true);
+                    }
+
+                    else {
+                        if (isset($csvArray[$i][$csvAttribute])) {
+                            $mapper->$csvAttribute = trim($csvArray[$i][$csvAttribute]);
+                        }
                     }
                 }
                 $mapper->addMappedObject($objects);
             } catch (InvalidMappedObject $e) {
             }
         }
-        return $objects;
+        return $single && count($objects) === 1 ? $objects[0] : $objects;
     }
 
 
@@ -171,5 +195,19 @@ class ReportFormatter
         }
 
         return $cols;
+    }
+
+
+    public static function getSubscribedServices()
+    {
+        return [
+            ConvenioMapper::class,
+            EmpleadoMapper::class,
+            RenglonMapper::class,
+            TotalMapper::class,
+            ResumenMapper::class,
+            ResumenRenglonMapper::class,
+            ResumenTotalMapper::class
+        ];
     }
 }
