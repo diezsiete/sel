@@ -21,7 +21,7 @@ class LiquidacionNominaResumen
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Convenio")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, referencedColumnName="codigo")
      */
     private $convenio;
 

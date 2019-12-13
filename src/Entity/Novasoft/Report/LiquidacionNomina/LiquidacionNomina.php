@@ -22,7 +22,7 @@ class LiquidacionNomina
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Convenio", inversedBy="liquidacionesNominas")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, referencedColumnName="codigo")
      */
     private $convenio;
 

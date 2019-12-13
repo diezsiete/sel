@@ -21,7 +21,7 @@ class TrabajadorActivo
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Convenio", inversedBy="trabajadoresActivos")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, referencedColumnName="codigo")
      */
     private $convenio;
 
@@ -78,6 +78,7 @@ class TrabajadorActivo
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Novasoft\Report\CentroCosto", inversedBy="trabajadoresActivos")
+     * @ORM\JoinColumn(referencedColumnName="codigo")
      */
     private $centroCosto;
 
