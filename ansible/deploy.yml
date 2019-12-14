@@ -27,6 +27,13 @@
       release_public_path: "{{ ansistrano_release_path.stdout }}/public"
 
       ansistrano_deploy_to: "/home/ptaweb/sel2"
+
+      ansistrano_shared_paths:
+          - var/log
+          - var/uploads
+
+      ansistrano_keep_releases: 3
+
       ansistrano_deploy_via: git
       ansistrano_git_repo: git@github.com:diezsiete/sel.git
       ansistrano_git_branch: master
