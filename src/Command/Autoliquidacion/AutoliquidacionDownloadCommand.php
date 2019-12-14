@@ -48,12 +48,6 @@ class AutoliquidacionDownloadCommand extends TraitableCommand
 
     private $autoliquidacionesEmpleado = null;
 
-
-    protected function progressBarCount(InputInterface $input, OutputInterface $output): ?int
-    {
-        return count($this->getAutoliquidacionesEmpleado($this->getPeriodo($input), $input->getOption('overwrite')));
-    }
-
     public function __construct(Reader $annotationReader, EventDispatcherInterface $eventDispatcher,
                                 AutoliquidacionProgresoRepository $autoliquidacionProgresoRepository,
                                 AutoliquidacionScraper $scraper, ScraperMessenger $scraperMessenger)
@@ -72,11 +66,16 @@ class AutoliquidacionDownloadCommand extends TraitableCommand
             Si especifica codigo sobrescribe las que tengan ese codigo (ej: -o\!200)', false);
     }
 
+    protected function progressBarCount(InputInterface $input, OutputInterface $output): ?int
+    {
+        return count($this->getAutoliquidacionesEmpleado($this->getPeriodo($input), $input->getOption('overwrite')));
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $periodo = $this->getPeriodo($input);
         $autoliquidaciones = $this->getAutoliquidacionesEmpleado($periodo, $input->getOption('overwrite'));
-        
+
         if($autoliquidaciones) {
 
             $autoliquidacionProgreso = (new AutoliquidacionProgreso())->setTotal(count($autoliquidaciones));
@@ -127,7 +126,8 @@ class AutoliquidacionDownloadCommand extends TraitableCommand
 
             if ($this->isSearchConvenio() && $this->searchValue) {
                 $autoliquidaciones = $autliquidacionRepo->findByConvenio($this->searchValue, $periodo, $overwrite);
-            } else {
+            }
+            else {
                 $idents = $this->isSearchConvenio() ? [] : $this->getIdents();
                 $autoliquidaciones = $autliquidacionRepo->findByIdentificaciones($periodo, $idents, $overwrite);
             }

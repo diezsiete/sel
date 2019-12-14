@@ -155,4 +155,28 @@ class ConvenioRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * @return string
+     */
+    public function findCodigosWithRepresentante()
+    {
+        return $this->createQueryBuilder('c')
+            ->select('c.codigo')
+            ->join('c.representantes', 'r')
+            ->groupBy('c')
+            ->getQuery()
+            ->getResult('FETCH_COLUMN');
+    }
+
+    public function findCodigosWithEncargado()
+    {
+        return $this->createQueryBuilder('c')
+            ->select('c.codigo')
+            ->join('c.representantes', 'r')
+            ->andWhere('r.encargado = true')
+            ->groupBy('c')
+            ->getQuery()
+            ->getResult('FETCH_COLUMN');
+    }
 }

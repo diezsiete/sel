@@ -157,8 +157,7 @@ class AutoliquidacionEmpleadoRepository extends ServiceEntityRepository
     {
         $criteria = Criteria::create();
         if($code === null) {
-            $criteria->andWhere($criteria->expr()->orX(
-                $criteria->expr()->isNull('ae.code'), $criteria->expr()->neq('ae.code', null)));
+            $criteria->andWhere($criteria->expr()->orX($criteria->expr()->isNull('ae.code')));
         }
         else if($code !== false) {
             $expr = preg_match('/^!(.+)/', $code, $matches)

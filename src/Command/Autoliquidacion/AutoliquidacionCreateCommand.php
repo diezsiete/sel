@@ -28,9 +28,12 @@ class AutoliquidacionCreateCommand extends TraitableCommand
 {
     use Loggable,
         PeriodoOption,
-        SearchByConvenioOrEmpleado,
         ConsoleProgressBar,
         SelCommandTrait;
+
+    use SearchByConvenioOrEmpleado {
+        getConveniosCodigos as getConvenioCodigosTrait;
+    }
 
 
     protected static $defaultName = 'sel:autoliquidacion:create';
@@ -64,18 +67,18 @@ class AutoliquidacionCreateCommand extends TraitableCommand
         $this->autoliquidacionEmpleadoRepository = $autoliquidacionEmpleadoRepository;
     }
 
-    /*protected function configure()
+    protected function configure()
     {
-        $this->addOption('not_overwrite', null, InputOption::VALUE_NONE,
-                'Si la autoliquidacion ya existe la borra');
+        //$this->addOption('not_overwrite', null, InputOption::VALUE_NONE, 'Si la autoliquidacion ya existe la borra');
+        $this->addOption('representante', 'r', InputOption::VALUE_NONE,
+            'Si no se filtra por convenio, este selecciona unicamente los convenio con representantes (enviar email)');
         parent::configure();
-    }*/
+    }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
 
         $rango = $this->getRangoFromPeriodo($input, false);
-
 
 
         if($this->isSearchConvenio()) {
@@ -168,5 +171,14 @@ class AutoliquidacionCreateCommand extends TraitableCommand
         return $this->empleadoRepository->countByRango($rango->start, $rango->end, $this->searchValue);
     }
 
+
+    protected function getConveniosCodigos()
+    {
+        if($this->input->getOption('representante')) {
+            return $this->convenioRepository->findCodigosWithRepresentante();
+        } else {
+            return $this->getConvenioCodigosTrait();
+        }
+    }
 
 }

@@ -155,6 +155,14 @@ class AutoliquidacionRepository extends ServiceEntityRepository
     }
 
 
+    public function findWithEncargado(?DateTimeInterface $periodo = null)
+    {
+        $qb = $this->findWithEncargadoQuery($periodo);
+        $qb->select('c.codigo');
+        return $qb->getQuery()->getResult('FETCH_COLUMN');
+    }
+
+
     public static function periodoCriteria(DateTimeInterface $periodo, $alias = "")
     {
         return Criteria::create()
@@ -184,5 +192,18 @@ class AutoliquidacionRepository extends ServiceEntityRepository
         }
 
         return $qb->getQuery()->getResult('FETCH_COLUMN');
+    }
+
+    protected function findWithEncargadoQuery(?DateTimeInterface $periodo = null)
+    {
+        $qb = $this->createQueryBuilder('a');
+        $qb->join('a.convenio', 'c')
+            ->join('c.representantes', 'r')
+            ->andWhere($qb->expr()->eq('r.encargado', $qb->expr()->literal(true)))
+            ->groupBy('a');
+        if($periodo) {
+            $qb->addCriteria(static::periodoCriteria($periodo, 'a'));
+        }
+        return $qb;
     }
 }
