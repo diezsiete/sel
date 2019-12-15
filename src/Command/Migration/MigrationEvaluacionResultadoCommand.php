@@ -84,7 +84,7 @@ class MigrationEvaluacionResultadoCommand extends MigrationCommand
             if($usuario = $this->getUsuario($row['usuario_id'])) {
                 if($progresoObject = $this->instanceProgreso($usuario, $row)) {
                     $this->selPersist($progresoObject);
-                    $sqlRespuestaFiltered = $sqlRespuesta . " WHERE er.resultado_id = " . $row['id'];
+                    $sqlRespuestaFiltered = $sqlRespuesta . ($uid ? " AND" : " WHERE") . " er.resultado_id = " . $row['id'];
                     while ($rowRespuesta = $this->fetch($sqlRespuestaFiltered)) {
                         $pregunta = $this->findPregunta($rowRespuesta);
                         $progreso = $this->findProgreso($progresoObject->getId());

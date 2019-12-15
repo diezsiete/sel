@@ -132,8 +132,8 @@ abstract class MigrationCommand extends TraitableCommand
     {
         parent::configure();
         $this
-            ->addOption('offset', 'o',InputOption::VALUE_OPTIONAL, 'offset')
-            ->addOption('limit','l', InputOption::VALUE_OPTIONAL, 'limit')
+            ->addOption('offset', 'o',InputOption::VALUE_REQUIRED, 'offset')
+            ->addOption('limit','l', InputOption::VALUE_REQUIRED, 'limit')
             ->addOption('down', 'd', InputOption::VALUE_NONE,
                 'Truncates all tables targets');
         ;

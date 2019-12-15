@@ -133,7 +133,11 @@ class MigrationHvAdjuntoCommand extends MigrationCommand
                     $usuario = $hv->getUsuario()->getNombreCompleto(true) . " [".$hv->getUsuario()->getIdentificacion()."] ";
                     $this->io->error($usuario . get_class($e) . ": " .$e->getMessage());
                 }
+            } else {
+                $this->io->warning("el archivo '$oldFileName' no se ha encontrado");
             }
+        } else {
+            $this->io->writeln("setHvAdjunto oldFileName not passed");
         }
     }
 

@@ -3,6 +3,7 @@
 namespace App\Command\Migration;
 
 use App\Entity\Usuario;
+use DateTime;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\DBAL\Connection;
@@ -42,11 +43,14 @@ class MigrationUsuarioCommand extends MigrationCommand
             'Importar usuarios solo de un rol especifico')
             ->addOption('id', null, InputOption::VALUE_OPTIONAL,
                 'Importar solo un id')
-            ->addOption('from', null, InputOption::VALUE_REQUIRED, 'Importar desde el id en adelante');
+            ->addOption('from', null, InputOption::VALUE_REQUIRED, 'Importar desde el id en adelante')
+            ->addOption('info', 'i', InputOption::VALUE_NONE, 'Muestra info, no hace nada');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $info = $input->getOption('info');
+
         $sql = "SELECT * FROM `usuario` "
              . "WHERE (ultimo_login IS NOT NULL OR DATE_FORMAT(creacion, \"%Y\") >= 2018) ";
 
@@ -65,9 +69,21 @@ class MigrationUsuarioCommand extends MigrationCommand
 
         $persisted = 0;
         while ($row = $this->fetch($sql)) {
+            if($id) {
+                $identificacion = $row['ident'];
+                $usuario = $this->getDefaultManager()->getRepository(Usuario::class)->findByIdentificacion($identificacion);
+                if($usuario) {
+                    $this->io->warning("usuario con identificacion '$identificacion' ya existe, modificando idOld unicamente");
+                    $usuario->setIdOld($row['id']);
+                    $this->flushAndClear();
+                    continue;
+                }
+            }
+
+
             $roles = $this->migrateRoles($row['roles']);
 
-            $creacion = \DateTime::createFromFormat('Y-m-d H:i:s', $row['creacion']);
+            $creacion = DateTime::createFromFormat('Y-m-d H:i:s', $row['creacion']);
             $pss = $row['pss'];
 
             $usuario = new Usuario();
@@ -102,11 +118,13 @@ class MigrationUsuarioCommand extends MigrationCommand
             if($type === 1) {
                 $pss = hash('sha256', $pss);
             }
-            $usuario
-                ->setPassword($this->passwordEncoder->encodePassword($usuario, $pss))
-                ->setType($type);
+            if(!$info) {
+                $usuario
+                    ->setPassword($this->passwordEncoder->encodePassword($usuario, $pss))
+                    ->setType($type);
 
-            $this->selPersist($usuario);
+                $this->selPersist($usuario);
+            }
             $persisted = 1;
         }
         return $persisted;

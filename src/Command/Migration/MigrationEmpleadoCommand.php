@@ -53,7 +53,13 @@ class MigrationEmpleadoCommand extends MigrationCommand
     {
         $uid = $input->getOption('uid');
         if($uid) {
-            $idents = [$this->usuarioRepository->findOneBy(['idOld' => $uid])->getIdentificacion()];
+            $ident = $this->usuarioRepository->findOneBy(['idOld' => $uid])->getIdentificacion();
+            if($empleado = $this->empleadoRepository->findByIdentificacion($ident)) {
+                $this->io->warning("Empleado ya importado. Haciendo nada");
+                $idents = [];
+            } else {
+                $idents = [$ident];
+            }
         } else {
             $remain = $input->getOption('remain');
 
@@ -76,8 +82,10 @@ class MigrationEmpleadoCommand extends MigrationCommand
                     $empleado->setUsuario($usuario);
                     $this->selPersist($empleado);
                 } else {
-                    $usuario->removeRol("ROLE_EMPLEADO")->addRol("ROLE_HALCON");
-                    $this->flushAndClear();
+                    if($usuario->esRol("ROLE_EMPLEADO")) {
+                        $usuario->removeRol("ROLE_EMPLEADO")->addRol("ROLE_HALCON");
+                        $this->flushAndClear();
+                    }
                     $this->progressBar->advance();
                 }
             }

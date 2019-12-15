@@ -69,13 +69,15 @@ class MigrationHvEntityCommand extends MigrationCommand
         $ids = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
         $sqlLimit = "";
-        if($this->offset !== null || $this->limit !== null || $uid) {
+        if($ids && ($this->offset !== null || $this->limit !== null || $uid)) {
             $sqlLimit = " WHERE hv.usuario_id IN (".implode(",", $ids).")";
         }
         $count = 0;
-        foreach($entities as $entity) {
-            $sql = "SELECT * FROM hv JOIN $entity ON $entity.usuario_id = hv.usuario_id " . $sqlLimit;
-            $count += $this->countSql($sql, self::CONNECTION_SE_ASPIRANTE);
+        if($ids) {
+            foreach ($entities as $entity) {
+                $sql = "SELECT * FROM hv JOIN $entity ON $entity.usuario_id = hv.usuario_id " . $sqlLimit;
+                $count += $this->countSql($sql, self::CONNECTION_SE_ASPIRANTE);
+            }
         }
 
         $this->initProgressBar($count);
