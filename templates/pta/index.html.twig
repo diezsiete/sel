@@ -94,12 +94,15 @@
                                     <p>Convenios especiales y beneficios para nuestros trabajadores.</p>
                                 </div>
                             </div>
-                            {% if is_granted('ASPIRANTES_MODULE') %}
+                            {# if is_granted('ASPIRANTES_MODULE') %}
                                 <a class="btn btn-white btn-twin-hero"
                                    href="{{ path('vacante_listado') }}"
                                    data-ga-twin-label="| Personal CTA" data-pa-click="hero|Personal CTA">
                                     Buscar trabajo</a>
-                            {% endif %}
+                            {% endif #}
+                            <a class="btn btn-white btn-twin-hero" href="https://pta.t3rs.co"
+                               data-ga-twin-label="| Personal CTA" data-pa-click="hero|Personal CTA">
+                                Buscar trabajo</a>
                             <div class="legal-container">
                                 <p class="legal-notes">¿Ya es empleado?.<br>
                                 <a href="{{ path('app_login') }}">

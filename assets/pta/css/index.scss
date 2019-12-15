@@ -1,23 +1,6 @@
 @import '~simple-line-icons/scss/simple-line-icons.scss';
 @import 'component/index-hero';
-
-.slider-container {
-  background: #171717;
-  height: 500px;
-  overflow: hidden;
-  width: 100%;
-  direction: ltr;
-}
-.slider-container .main-label{
-  font-size: 40px;
-  line-height: 45px;
-}
-.slider-container .tp-caption.top-label, .slider-container .tp-caption.bottom-label{
-  font-weight: bold;
-}
-.slider-container .btn-main-servicios, .slider-container .btn-main-empleados{
-  cursor:pointer;
-}
+@import 'helper/variables';
 
 .btn-empr-bg{
   background: rgba(255, 255, 255, 0.72);
@@ -25,11 +8,9 @@
 .btn-empl-bg{
   background: rgba(255, 255, 255, 0.72);
 }
-.slider-container .main-label{
-  color: #333;
-}
-.slider-container .tp-caption.top-label, .slider-container .tp-caption.bottom-label{
-  color: #333;
+
+.side-container a:hover {
+  color: $tertiary
 }
 
 /** --- cualidades --- **/

@@ -1,3 +1,5 @@
+@import "../helper/_variables";
+
 .containerCentered {
     margin-right: auto;
     margin-left: auto;
@@ -294,8 +296,8 @@ body #body.menu-close .pp-header.table-row>div {
 }
 
 .pp-header.table-row .main-menu {
-    background-color: #009cde;
-    background-image: radial-gradient(circle farthest-side at center bottom, #009cde, #003087 125%);
+    background-color: $primary;
+    background-image: radial-gradient(circle farthest-side at center bottom, $primary, #2d2359 125%);
     border-right: 1px solid rgba(255,255,255,0.3);
     box-sizing: border-box;
     height: 100%;
@@ -486,8 +488,8 @@ body #body.menu-close .pp-header.table-row>div {
 }
 
 .pp-header.table-row .main-menu .menu-wrapper {
-    background-color: #009cde;
-    background-image: radial-gradient(circle farthest-side at center bottom, #009cde, #003087 125%);
+    background-color: $primary;
+    background-image: radial-gradient(circle farthest-side at center bottom, $primary, #2d2359 125%);
     border-right: 1px solid rgba(255,255,255,0.3);
     box-sizing: border-box;
     height: 100%;
@@ -755,13 +757,12 @@ body #body.menu-close .pp-header.table-row>div {
 
 .pp-header.table-row .pta-img-logo {
     display: block;
-    background: transparent url(https://www.paypalobjects.com/digitalassets/c/website/logo/monogram/pp_rv_mg.svg) center center no-repeat;
+    background: transparent url(../../img/logo-blanco.png) center center no-repeat;
     background-size: contain;
     text-indent: -999em;
-    margin: 20px auto auto;
+    margin: 15px auto auto;
     overflow: hidden;
-    width: 26px;
-    height: 30px;
+    height: 40px;
     z-index: 1
 }
 
