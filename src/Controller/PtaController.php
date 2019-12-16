@@ -121,20 +121,4 @@ class PtaController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-
-    /**
-     * @Route("/politica-tratamiento-datos-personales", name="politica", host="%empresa.PTA.host%")
-     */
-    public function politicaTratamientoDatosPersonales()
-    {
-        return $this->render('pta/politica-tratamiento-datos-personales.html.twig');
-    }
-
-    /**
-     * @Route("/aviso-privacidad", name="pta_aviso_privacidad", host="%empresa.PTA.host%")
-     */
-    public function avisoPrivacidad()
-    {
-        return $this->render('pta/aviso-privacidad.html.twig');
-    }
 }

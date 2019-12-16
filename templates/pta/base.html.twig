@@ -9,8 +9,8 @@
 
     <title>{% block title %}PTA - Personal Temporal y Asesorías{% endblock %}</title>
 
-    <meta name="keywords" content="PTA trabajo temporal " />
-    <meta name="description" content="Pagina web pta">
+    <meta name="keywords" content="PTA trabajo temporal" />
+    <meta name="description" content="PTA SAS líderes en servicios de suministro, selección, evaluación y administración de personal temporal en Colombia">
     <meta name="author" content="PTA SAS">
 
     <!-- Favicon -->
@@ -42,7 +42,7 @@
 
                 <div class="containerCentered ">
 
-                    <a href="#Menu" id="menu-button" role="button">Menu</a>
+                    <button id="menu-button" role="button">Menu</button>
 
 
                     <a href="{{ path('pta_index') }}" class="{% block header_logo_class %}pta-img-logo{% endblock %}">PTA</a>
@@ -133,7 +133,7 @@
                             <div class="col-lg-6 d-flex align-items-center justify-content-center justify-content-lg-end">
                                 <nav id="sub-menu">
                                     <ul>
-                                        <li><i class="fas fa-angle-right"></i><a href="{{ path('pta_aviso_privacidad') }}" class="ml-1 text-decoration-none">
+                                        <li><i class="fas fa-angle-right"></i><a href="{{ path('aviso_privacidad') }}" class="ml-1 text-decoration-none">
                                                 Aviso de privacidad
                                             </a></li>
                                         <li><i class="fas fa-angle-right"></i><a href="{{ path('politica') }}" class="ml-1 text-decoration-none">

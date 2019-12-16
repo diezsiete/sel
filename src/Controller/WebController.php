@@ -3,14 +3,16 @@
 
 namespace App\Controller;
 
+
 use App\Service\Configuracion\Configuracion;
 use App\Service\UploaderHelper;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-class DocumentoLaboralController extends AbstractController
+class WebController extends AbstractController
 {
+
     /**
      * @Route("/documento-laboral/{key}", name="documento_laboral")
      */
@@ -32,4 +34,21 @@ class DocumentoLaboralController extends AbstractController
             return $this->createNotFoundException();
         }
     }
+
+    /**
+     * @Route("/politica-tratamiento-datos-personales", name="politica")
+     */
+    public function politicaTratamientoDatosPersonales()
+    {
+        return $this->render('web/politica-tratamiento-datos-personales.html.twig');
+    }
+
+    /**
+     * @Route("/aviso-privacidad", name="aviso_privacidad")
+     */
+    public function avisoPrivacidad()
+    {
+        return $this->render('web/aviso-privacidad.html.twig');
+    }
+
 }
