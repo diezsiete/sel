@@ -2,9 +2,6 @@ app:
     scraper:
         url: http://34.201.35.157:80
     empresas:
-        PTA:
-            scraper:
-                auto_consume: true
         SERVILABOR:
             scraper:
                 auto_consume: true
