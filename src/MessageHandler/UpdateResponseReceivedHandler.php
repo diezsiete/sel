@@ -32,7 +32,8 @@ class UpdateResponseReceivedHandler implements MessageHandlerInterface
             $message->setLog($updateResponseReceived->getLog());
             $this->em->flush();
         } else {
-            dump("ERROR MESSAGE CON ID '$messageId' not found");
+            // TODO log this
+            //dump("ERROR MESSAGE CON ID '$messageId' not found");
         }
     }
 }
