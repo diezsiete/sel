@@ -76,6 +76,6 @@ class MapperNom701 extends Mapper
                 $liquidacion->setBaseVacaciones($mappedObject->getBaseVacaciones());
             }
         }
-        $this->targetObject = new $this->targetClass();
+        $this->targetObject = new $this->targetObject();
     }
 }
