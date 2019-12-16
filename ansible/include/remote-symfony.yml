@@ -15,7 +15,7 @@
       dest: "{{ release_public_path }}/robots.txt"
   when: empresa == "pta"
 
-- name: Set up robots.txt
+- name: Set up sitemap
   template:
       src: "{{ playbook_dir }}/templates/sitemap.xml"
       dest: "{{ release_public_path }}/sitemap.xml"
