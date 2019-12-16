@@ -73,6 +73,10 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
+        ],
+        "deploy":  [
+            "Composer\\Config::disableProcessTimeout",
+            "ansible-playbook -i ansible/hosts.ini ansible/deploy.yml --ask-vault-pass -e webpack=1"
         ]
     },
     "conflict": {

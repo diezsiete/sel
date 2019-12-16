@@ -39,7 +39,7 @@
       ansistrano_git_branch: master
       ansistrano_git_identity_key_path: "{{ playbook_dir }}/id_rsa"
 
-      ansistrano_after_symlink_shared_tasks_file: "{{ playbook_dir }}/deploy/after-symlink-shared2.yml"
+      ansistrano_after_symlink_shared_tasks_file: "{{ playbook_dir }}/deploy/after-symlink-shared.yml"
 
   vars_files:
       - ./vars/deploy_vault_{{ empresa }}.yml

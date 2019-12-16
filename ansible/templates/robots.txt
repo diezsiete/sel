@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /sel/admin
+Disallow: /*.js$
+Disallow: /*.css$
+Sitemap: https://www.{{ empresa }}.com.co/sitemap.xml

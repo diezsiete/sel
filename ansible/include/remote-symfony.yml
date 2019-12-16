@@ -9,6 +9,18 @@
       src: "{{ playbook_dir }}/templates/.htaccess"
       dest: "{{ release_public_path }}/.htaccess"
 
+- name: Set up robots.txt
+  template:
+      src: "{{ playbook_dir }}/templates/robots.txt"
+      dest: "{{ release_public_path }}/robots.txt"
+  when: empresa == "pta"
+
+- name: Set up robots.txt
+  template:
+      src: "{{ playbook_dir }}/templates/sitemap.xml"
+      dest: "{{ release_public_path }}/sitemap.xml"
+  when: empresa == "pta"
+
 - name: Modify console
   replace:
       path: "{{ ansistrano_release_path.stdout }}/bin/console"
