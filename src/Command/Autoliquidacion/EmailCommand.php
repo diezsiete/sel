@@ -73,8 +73,12 @@ class EmailCommand extends TraitableCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $recipient = $input->getOption('recipient');
-        $bcc = $input->getOption('bcc');
+        $testRecipient = $input->getOption('recipient') ? [$input->getOption('recipient')] : [];
+        $testBcc = $input->getOption('bcc');
+        $testBcc = !$testBcc ? null : array_filter($testBcc, function($value) {
+            return !!$value;
+        });
+
         $bccMerge = $input->getOption('bcc-merge');
         $force = $input->getOption('force');
         $sendedNot = $input->getOption('sended-not');
@@ -91,29 +95,32 @@ class EmailCommand extends TraitableCommand
 
 
             $send = ($force || !$force && $porcentajeEjecucion === 100) && (!$sendedNot || !$autoliq->isEmailSended());
-
             if($send) {
-                foreach($this->email->getRecipients($autoliq->getConvenio(), $recipient) as $recipient) {
-                    $bccs = $this->email->getBccsEmails($autoliq->getConvenio(), $bcc, $bccMerge);
+                $recipients = $this->email->getRecipients($autoliq->getConvenio(), $testRecipient);
+
+                foreach($recipients as $recipient) {
+
+                    $bccs = $this->email->getBccsEmails($autoliq->getConvenio(), $testBcc, $bccMerge);
+
                     $this->logRecipients($recipient, $bccs);
+
                     try {
                         $zipPath = $this->export->generate($autoliq, is_object($recipient) ? $recipient : null);
+
                         $archiveSize = $this->export->getSize($autoliq);
+
                         $this->logFile($zipPath, $archiveSize);
 
                         if($archiveSize < $cuotaAdjunto) {
                             if (!$input->getOption('dont-send')) {
+
                                 $recipientEmail = is_object($recipient) ? $recipient->getUsuario()->getEmail() : $recipient;
-                                $failed = $this->email->send($autoliq, $zipPath, $recipientEmail, $bccs);
-                                if (!$failed) {
-                                    $this->info(4, "Exito envio de email");
+                                $this->email->send($autoliq, $zipPath, $recipientEmail, $bccs);
+                                $this->info("Exito envio de email");
+                                if(!$testRecipient) {
                                     $autoliq->setEmailSended(1);
-                                } else {
-                                    $this->error("Fallo envio de email");
-                                    $autoliq->setEmailSended(0)
-                                        ->setEmailFailMessage("Fallo envio de email");
+                                    $this->em->flush();
                                 }
-                                $this->em->flush();
                             }
                         } else {
                             $this->error("Error, archivo supera la cuota de adjunto [$cuotaAdjunto]");
@@ -153,19 +160,19 @@ class EmailCommand extends TraitableCommand
      */
     private function logRecipients($recipient, $bccs = [])
     {
-        $this->info(4, "Encargado : " . (is_object($recipient)
+        $this->info(sprintf('    %s', "Encargado : " . (is_object($recipient)
             ? "{$recipient->getUsuario()->getNombreCompleto()} [{$recipient->getUsuario()->getEmail()}]"
             : "{$recipient}"
-        ));
-        $this->info(4, "bcss: " . !$bccs ? "no" : "");
+        )));
+        $this->info("    bcss: " . (!$bccs ? "no" : ""));
         foreach($bccs as $bcc){
-            $this->info(6, $bcc);
+            $this->info("      " . $bcc);
         }
     }
 
     private function logFile($path, $size)
     {
-        $this->info(8, "Archivo [exito] : " . $path);
-        $this->info(8, "Archivo [size MB] : "  . $size);
+        $this->info("    Archivo [exito] : " . $path);
+        $this->info("    Archivo [size MB] : "  . $size);
     }
 }

@@ -86,7 +86,9 @@ class AutoliquidacionRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('a');
         if(is_array($convenio)) {
-            $qb->andWhere($qb->expr()->in('a.convenio', $convenio));
+            if($convenio) {
+                $qb->andWhere($qb->expr()->in('a.convenio', $convenio));
+            }
         }else{
             $qb->andWhere($qb->expr()->eq('a.convenio', $convenio));
         }
