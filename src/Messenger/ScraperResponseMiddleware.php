@@ -78,14 +78,4 @@ class ScraperResponseMiddleware implements MiddlewareInterface
             }
         }
     }
-
-    private function dumpAllStamps(Envelope $envelope, $title = "BEFORE----------")
-    {
-        dump($title);
-        foreach($envelope->all() as $stamp) {
-            foreach($stamp as $e) {
-                dump(get_class($e));
-            }
-        }
-    }
 }

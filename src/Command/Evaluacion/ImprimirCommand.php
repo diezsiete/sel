@@ -12,13 +12,10 @@ use App\Repository\Evaluacion\EvaluacionRepository;
 use App\Repository\Evaluacion\ProgresoRepository;
 use App\Service\Evaluacion\Navegador;
 use Doctrine\ORM\EntityManagerInterface;
-use Dompdf\Dompdf;
-use Dompdf\Options;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Twig\Environment;
 
 class ImprimirCommand extends Command
@@ -77,9 +74,7 @@ class ImprimirCommand extends Command
             $currentRoute = $this->navegador->getCurrentRoute();
             $html = $this->getHtml();
             $html = str_replace('href="/', 'href="https://www.servilabor.com.co/', $html);
-            // dump($html);
             $this->generatePdf($html);
-            dump($currentRoute);
             $i++;
         } while ($this->advance() && $i < 10);
 

@@ -87,11 +87,6 @@ class Exec
         return $pid ? (int)$pid : null;
     }
 
-    public function test()
-    {
-        dump("OKIS");
-    }
-
     private function getFile($fileKind, $uniqueName = "", $full = true)
     {
         $path = "/exec/$fileKind.txt";

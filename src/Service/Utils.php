@@ -218,7 +218,6 @@ class Utils
     {
         $strlen = mb_strlen($string, $encoding);
         $firstChar = mb_substr($string, 0, 1, $encoding);
-        dump(mb_detect_encoding($string));
         $then = mb_substr($string, 1, $strlen - 1, $encoding);
         $x = mb_strtoupper($firstChar, $encoding) . $then;
         return $x;

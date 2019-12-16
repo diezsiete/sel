@@ -68,7 +68,7 @@ class AutoliquidacionController extends BaseController
                 return $this->redirectToRoute('admin_autoliquidacion_generar', ['periodo' => $form['periodo']->getData()]);
             } else {
                 $x = $form['datatable']->getData();
-                dump($x);
+                //dump($x);
             }
         }
 
