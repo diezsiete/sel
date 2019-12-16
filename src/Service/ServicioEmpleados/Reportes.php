@@ -6,8 +6,11 @@ namespace App\Service\ServicioEmpleados;
 
 use App\Entity\ReporteNomina;
 use App\Service\NovasoftSsrs\NovasoftSsrs;
+use DateInterval;
 use DateTime;
 use DateTimeInterface;
+use League\Flysystem\FileExistsException;
+use League\Flysystem\FileNotFoundException;
 use League\Flysystem\FilesystemInterface;
 use SSRS\SSRSReportException;
 
@@ -93,9 +96,43 @@ class Reportes
         });
     }
 
-    private function cacheFileStream(string $reporteNombre, DateTimeInterface $fecha, $empleadoIdent, $callbackSource)
+    /**
+     * @param string $identificacion
+     * @param DateTime $fechaIngreso
+     * @param DateTime $fechaRetiro
+     * @return false|resource
+     * @throws FileExistsException
+     * @throws FileNotFoundException
+     */
+    public function getLiquidacionStream($identificacion, $fechaIngreso, $fechaRetiro, $ssrsDb)
     {
-        $path = "/$reporteNombre/" . $empleadoIdent . $fecha->format('Ymd') . '.pdf';
+        //
+        $fechaRetiro = DateTime::createFromFormat('Y-m-d', $fechaRetiro->format('Y-m-t'));
+        $fecha = $fechaIngreso->format('Ymd') . '-' . $fechaRetiro->format('Ymd');
+        return $this->cacheFileStream('liquidacion', $fecha, $identificacion, function() use($identificacion, $fechaIngreso, $fechaRetiro, $ssrsDb){
+            return $this->novasoftSsrs
+                ->setSsrsDb($ssrsDb)
+                ->getReportNom701()
+                ->setParameterCodigoEmpleado($identificacion)
+                //->setParameterFechaInicio($fechaIngreso)
+                //->setParameterFechaFin($fechaRetiro->add(new DateInterval('P2M')))
+                ->renderPdf();
+        });
+    }
+
+    /**
+     * @param string $reporteNombre
+     * @param DateTimeInterface|string $fecha
+     * @param $empleadoIdent
+     * @param $callbackSource
+     * @return false|resource
+     * @throws FileExistsException
+     * @throws FileNotFoundException
+     */
+    private function cacheFileStream(string $reporteNombre, $fecha, $empleadoIdent, $callbackSource)
+    {
+        $fechaName = is_object($fecha) ? $fecha->format('Ymd') : $fecha;
+        $path = "/$reporteNombre/" . $empleadoIdent . $fechaName . '.pdf';
         if (!$this->filesystem->has($path)) {
 
             $this->filesystem->write($path, $callbackSource($fecha, $empleadoIdent));

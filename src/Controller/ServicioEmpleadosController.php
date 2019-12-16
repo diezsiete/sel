@@ -17,6 +17,7 @@ use App\Service\Pdf\PdfCartaLaboral;
 use App\Service\ReportesServicioEmpleados;
 use App\Service\ServicioEmpleados\Import;
 use App\Service\ServicioEmpleados\Reportes;
+use DateInterval;
 use DateTime;
 use Exception;
 use Omines\DataTablesBundle\DataTableFactory;
@@ -143,7 +144,7 @@ class ServicioEmpleadosController extends BaseController
     {
         return $this->renderStream(function () use ($reportes, $periodo) {
             $identificacion = $this->getUser()->getIdentificacion();
-            $periodo = \DateTime::createFromFormat('Y-m-d', $periodo . "-01-01");
+            $periodo = DateTime::createFromFormat('Y-m-d', $periodo . "-01-01");
             return $reportes->certificadoIngresosStream($periodo, $identificacion, $this->getSsrsDb());
         });
     }
@@ -194,11 +195,14 @@ class ServicioEmpleadosController extends BaseController
     /**
      * @Route("/sel/se/liquidacion-de-contrato/{fechaIngreso}/{fechaRetiro}", name="app_liquidacion_de_contrato_pdf")
      */
-    public function liquidacionDeContratoPdf(ReportesServicioEmpleados $reportes, $fechaIngreso, $fechaRetiro)
+    public function liquidacionDeContratoPdf(Reportes $reportes, $fechaIngreso, $fechaRetiro)
     {
-        $identificacion = $this->getUser()->getIdentificacion();
-        $reportePdf = $reportes->getLiquidacionDeContratoPdf($identificacion, $fechaIngreso, $fechaRetiro);
-        return $this->renderPdf($reportePdf);
+        return $this->renderStream(function () use ($reportes, $fechaIngreso, $fechaRetiro) {
+            $identificacion = $this->getUser()->getIdentificacion();
+            $fechaIngreso = DateTime::createFromFormat('Y-m-d', $fechaIngreso);
+            $fechaRetiro = DateTime::createFromFormat('Y-m-d', $fechaRetiro);
+            return $reportes->getLiquidacionStream($identificacion, $fechaIngreso, $fechaRetiro, $this->getSsrsDb());
+        });
     }
 
     /**
