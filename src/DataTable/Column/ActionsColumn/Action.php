@@ -65,8 +65,9 @@ abstract class Action
         } elseif (null === $value) {
             $attributes = false;
         }
-
-        $attributes += $this->transformDataOptions($value, $context);
+        if($attributes) {
+            $attributes += $this->transformDataOptions($value, $context);
+        }
 
         return $attributes;
     }
