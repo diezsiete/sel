@@ -70,6 +70,11 @@ class Convenio implements \JsonSerializable
      */
     private $liquidacionesNominas;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $activo = true;
+
 
     public function __construct()
     {
@@ -341,6 +346,18 @@ class Convenio implements \JsonSerializable
                 $liquidacionesNomina->setConvenio(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getActivo(): ?bool
+    {
+        return $this->activo;
+    }
+
+    public function setActivo(bool $activo): self
+    {
+        $this->activo = $activo;
 
         return $this;
     }

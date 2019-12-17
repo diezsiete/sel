@@ -26,7 +26,7 @@ class TrabajadorActivo
     private $convenio;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Empleado", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="App\Entity\Empleado")
      * @ORM\JoinColumn(nullable=false)
      */
     private $empleado;

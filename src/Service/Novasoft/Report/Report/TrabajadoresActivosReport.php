@@ -81,16 +81,25 @@ class TrabajadoresActivosReport extends Report
         }
     }
 
-    public function setFecha(DateTimeInterface $fecha)
+    /**
+     * @param DateTimeInterface|null $fecha
+     * @return $this
+     */
+    public function setFecha(?DateTimeInterface $fecha = null)
     {
-        $this->parameter_Fecha = $fecha;
+        if($fecha) {
+            $this->parameter_Fecha = $fecha;
+        }
+        return $this;
     }
 
     /**
      * @param Convenio|string $convenio
+     * @return TrabajadoresActivosReport
      */
     public function setConvenio($convenio)
     {
         $this->parameter_Cod_Conv = is_object($convenio) ? $convenio->getCodigo() : $convenio;
+        return $this;
     }
 }

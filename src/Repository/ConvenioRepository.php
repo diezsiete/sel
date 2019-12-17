@@ -179,4 +179,15 @@ class ConvenioRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult('FETCH_COLUMN');
     }
+
+    /**
+     * @return Convenio[]
+     */
+    public function findAllActivos()
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.activo = true')
+            ->getQuery()
+            ->getResult();
+    }
 }
