@@ -12,6 +12,7 @@ use App\Entity\Convenio;
 use App\Repository\RepresentanteRepository;
 use App\Service\Autoliquidacion\DatabaseActions;
 use App\Service\Autoliquidacion\Export;
+use App\Service\PortalClientes\PortalClientesService;
 use DateTime;
 use Exception;
 use Omines\DataTablesBundle\DataTableFactory;
@@ -26,15 +27,11 @@ class AutoliquidacionController extends BaseController
     /**
      * @Route("/sel/admin/autoliquidacion", name="admin_autoliquidacion_list")
      */
-    public function list(DataTableFactory $dataTableFactory, Request $request, RepresentanteRepository $representanteRepository)
+    public function list(DataTableFactory $dataTableFactory, Request $request, PortalClientesService $portalClientesService)
     {
         $datableOptions = [];
-        if(!$this->isGranted('ROLE_ADMIN_AUTOLIQUIDACIONES')) {
-            if($representante = $representanteRepository->findByUsuario($this->getUser())) {
-                $datableOptions['convenio'] = $representante->getConvenio();
-            } else {
-                throw new Exception("Usuario {$this->getUser()->getId()} acceso a admin autoliquidacion, no es admin y no es representante");
-            }
+        if($convenio = $portalClientesService->getRepresentanteConvenio()) {
+            $datableOptions['convenio'] = $datableOptions;
         }
 
         $table = $dataTableFactory

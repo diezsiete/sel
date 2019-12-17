@@ -112,7 +112,7 @@ class TrabajadorActivo
         return $this;
     }
 
-    public function getFechaInicio(): ?DateTimeInterface
+    public function getFechaIngreso(): ?DateTimeInterface
     {
         return $this->fechaIngreso;
     }
