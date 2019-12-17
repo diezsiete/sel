@@ -4,15 +4,17 @@
 {% block body_header_title %}Autoliquidaciones {% endblock %}
 
 {% block body_header_right %}
-    <ul class="u-list-inline">
-        <li class="list-inline-item mr-4">
-            {{ parent() }}
-        </li>
-        <li class="list-inline-item">
-            <a href="{{ path('admin_autoliquidacion_generar') }}"
-               class="btn btn-md btn-primary rounded-0 form-control form-control-lg">
-                Generar
-            </a>
-        </li>
-    </ul>
+    {% if is_granted('ROLE_ADMIN_AUTOLIQUIDACIONES') %}
+        <ul class="u-list-inline">
+            <li class="list-inline-item mr-4">
+                {{ parent() }}
+            </li>
+            <li class="list-inline-item">
+                <a href="{{ path('admin_autoliquidacion_generar') }}"
+                   class="btn btn-md btn-primary rounded-0 form-control form-control-lg">
+                    Generar
+                </a>
+            </li>
+        </ul>
+    {% endif %}
 {% endblock %}

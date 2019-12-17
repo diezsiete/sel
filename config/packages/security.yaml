@@ -80,6 +80,7 @@ security:
         - { path: ^/sel/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/change-password$, roles: IS_AUTHENTICATED_FULLY}
         - { path: ^/sel/admin/evaluacion, roles: [ROLE_OPERADOR, ROLE_EVALUACION_ADMIN]}
+        - { path: ^/sel/admin/autoliquidacion, roles: [ROLE_VER_AUTOLIQUIDACIONES]}
         - { path: ^/sel/admin, roles: [ROLE_OPERADOR, ROLE_VACANTES, ROLE_VACANTES_ADMIN]}
         - { path: ^/evaluacion, roles: IS_AUTHENTICATED_REMEMBERED }
         # las demas paginas serán restringidas

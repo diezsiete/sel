@@ -38,10 +38,12 @@
             </a>
         </li>
         {% if app.user %}
-            <li><a href="{{ path('sel_panel') }}" id="header-personal" rel="menuitem"
+            <li>
+                {% set admin_menu_name = app.user.esRol('ROLE_REPRESENTANTE_CLIENTE') ? 'Portal clientes' : 'Servicio empleados' %}
+                <a href="{{ path('sel_panel') }}" id="header-personal" rel="menuitem"
                    aria-controls="submenu-personal" data-pa-click="header|personal"
                    aria-expanded="{{ is_sel() ? "true" : "false" }}" class="{{ is_sel() ? "is-open" : "" }}">
-                    Servicio empleados
+                    {{ admin_menu_name }}
                 </a>
                 <div class="menu-wrapper {{ is_sel() ? "open" : "" }} not-close" id="submenu-personal" aria-labelledby="header-personal"
                      role="region">

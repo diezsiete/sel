@@ -3,8 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\Representante;
+use App\Entity\Usuario;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -30,32 +32,20 @@ class RepresentanteRepository extends ServiceEntityRepository
         return Criteria::create()->where(Criteria::expr()->eq('bcc', true));
     }
 
-    // /**
-    //  * @return Representante[] Returns an array of Representante objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @param Usuario $usuario
+     * @return Representante|null
+     * @throws NonUniqueResultException
+     */
+    public function findByUsuario(Usuario $usuario)
     {
         return $this->createQueryBuilder('r')
-            ->andWhere('r.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('r.id', 'ASC')
-            ->setMaxResults(10)
+            ->andWhere('r.usuario = :usuario')
+            ->setParameter('usuario', $usuario)
+            ->setMaxResults(1)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getOneOrNullResult();
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Representante
-    {
-        return $this->createQueryBuilder('r')
-            ->andWhere('r.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
+
 }

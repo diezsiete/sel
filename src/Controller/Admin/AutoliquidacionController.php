@@ -9,10 +9,13 @@ use App\DataTable\Type\AutoliquidacionEmpleadoDataTableType;
 use App\DataTable\Type\ConvenioDataTableType;
 use App\Entity\Autoliquidacion\Autoliquidacion;
 use App\Entity\Convenio;
+use App\Repository\RepresentanteRepository;
 use App\Service\Autoliquidacion\DatabaseActions;
 use App\Service\Autoliquidacion\Export;
 use DateTime;
+use Exception;
 use Omines\DataTablesBundle\DataTableFactory;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,10 +26,19 @@ class AutoliquidacionController extends BaseController
     /**
      * @Route("/sel/admin/autoliquidacion", name="admin_autoliquidacion_list")
      */
-    public function list(DataTableFactory $dataTableFactory, Request $request)
+    public function list(DataTableFactory $dataTableFactory, Request $request, RepresentanteRepository $representanteRepository)
     {
+        $datableOptions = [];
+        if(!$this->isGranted('ROLE_ADMIN_AUTOLIQUIDACIONES')) {
+            if($representante = $representanteRepository->findByUsuario($this->getUser())) {
+                $datableOptions['convenio'] = $representante->getConvenio();
+            } else {
+                throw new Exception("Usuario {$this->getUser()->getId()} acceso a admin autoliquidacion, no es admin y no es representante");
+            }
+        }
+
         $table = $dataTableFactory
-            ->createFromType(AutoliquidacionDataTableType::class, [], ['searching' => true])
+            ->createFromType(AutoliquidacionDataTableType::class, $datableOptions, ['searching' => true])
             ->handleRequest($request);
         if($table->isCallback()) {
             return $table->getResponse();
@@ -36,6 +48,7 @@ class AutoliquidacionController extends BaseController
 
     /**
      * @Route("/sel/admin/autoliquidacion/generar/{periodo}", name="admin_autoliquidacion_generar", defaults={"periodo"=""})
+     * @IsGranted("ROLE_ADMIN_AUTOLIQUIDACIONES", statusCode=404, message="Resource not found")
      */
     public function generar(DatabaseActions $databaseActions, Request $request, $periodo, SelDataTableFactory $dataTableFactory)
     {

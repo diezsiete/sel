@@ -84,7 +84,7 @@ class MenuBuilder
     protected function createAspirantesMenu(ItemInterface $menu, UserInterface $user)
     {
         if($this->security->isGranted(['ASPIRANTES_MODULE'])) {
-            if(!$this->security->isGranted(['ROLE_CREAR_VACANTE', 'ROLE_ADMIN_USUARIOS'], $user)) {
+            if(!$this->security->isGranted(['ROLE_CREAR_VACANTE', 'ROLE_ADMIN_USUARIOS', 'ROLE_REPRESENTANTE_CLIENTE'], $user)) {
                 $menu->addChild('Mi hoja de vida', ['route' => 'hv_datos_basicos'])
                     ->setExtra('icon', 'far fa-address-card');
             }
@@ -105,7 +105,7 @@ class MenuBuilder
 
     protected function createEvaluacionMenu(ItemInterface $menu, $user)
     {
-        if(!$this->security->isGranted(['ROLE_ADMIN_EVALUACIONES', 'ROLE_OPERADOR'], $user)) {
+        if(!$this->security->isGranted(['ROLE_ADMIN_EVALUACIONES', 'ROLE_OPERADOR', 'ROLE_REPRESENTANTE_CLIENTE'], $user)) {
             /*$menu->addChild('Evaluacion')
                 ->setUri('#')
                 ->setExtra('icon', 'fas fa-clipboard-list');

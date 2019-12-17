@@ -41,6 +41,8 @@ class AutoliquidacionDataTableType implements DataTableTypeInterface
      */
     public function configure(DataTable $dataTable, array $options)
     {
+        $convenioFilter = $options['convenio'] ?? null;
+
         $dataTable
             ->add('id', TextColumn::class, ['label' => 'id'])
             ->add('periodo', DateTimeColumn::class,
@@ -76,11 +78,16 @@ class AutoliquidacionDataTableType implements DataTableTypeInterface
             ->addOrderBy('id', DataTable::SORT_DESCENDING)
             ->createAdapter(ORMAdapter::class, [
                 'entity' => Autoliquidacion::class,
-                'query' => function (QueryBuilder $builder){
+                'query' => function (QueryBuilder $builder) use ($convenioFilter){
                     $builder
                         ->select('a, convenio')
                         ->from(Autoliquidacion::class, 'a')
                         ->join('a.convenio', 'convenio');
+
+                    if($convenioFilter) {
+                        $builder->andWhere('convenio = :convenio')
+                            ->setParameter('convenio', $convenioFilter);
+                    }
                 },
             ])
         ;
