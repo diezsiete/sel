@@ -22,8 +22,6 @@ class SecurityController extends BaseController
 {
     /**
      * @Route("/login", name="app_login")
-     * @Route("/sel/login")
-     * @Route("/se/login")
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
@@ -36,6 +34,17 @@ class SecurityController extends BaseController
         $lastUsername = $authenticationUtils->getLastUsername();
 
         return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+    }
+
+    /**
+     * @Route("/sel/login")
+     * @Route("/se/iniciar-sesion")
+     * @Route("/sel/iniciar-sesion")
+     * @Route("/iniciar-sesion")
+     */
+    public function loginLegacy()
+    {
+        return $this->redirectToRoute('app_login');
     }
 
     /**
