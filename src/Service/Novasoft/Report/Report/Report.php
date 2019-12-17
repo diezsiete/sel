@@ -5,7 +5,7 @@ namespace App\Service\Novasoft\Report\Report;
 
 
 use App\Service\Configuracion\Configuracion;
-use App\Service\Novasoft\Report\Mapper\GenericMapper;
+use App\Service\Novasoft\Report\Importer\Importer;
 use App\Service\Novasoft\Report\Mapper\Mapper;
 use App\Service\Novasoft\Report\ReportFormatter;
 use App\Service\Utils;
@@ -62,13 +62,20 @@ abstract class Report
 
     protected $renderStreamIds;
 
-    public function __construct(SSRSReport $SSRSReport, ReportFormatter $reportFormatter, Configuracion $configuracion, Utils $utils, Mapper $mapper)
+    /**
+     * @var Importer
+     */
+    private $importer;
+
+    public function __construct(SSRSReport $SSRSReport, ReportFormatter $reportFormatter, Configuracion $configuracion,
+                                Utils $utils, Mapper $mapper, Importer $importer)
     {
         $this->SSRSReport = $SSRSReport;
         $this->reportFormatter = $reportFormatter;
         $this->mapper = $mapper;
         $this->db = $configuracion->getSsrsDb()[0]->getNombre();
         $this->utils = $utils;
+        $this->importer = $importer;
     }
 
 
@@ -128,6 +135,11 @@ abstract class Report
     public function renderMap()
     {
         return $this->reportFormatter->mapCsv($this->renderCSV(), $this->mapper);
+    }
+
+    public function importMap()
+    {
+        $this->importer->import($this->renderMap());
     }
 
     /**

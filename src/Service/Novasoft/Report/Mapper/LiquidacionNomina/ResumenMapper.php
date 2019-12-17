@@ -28,6 +28,14 @@ class ResumenMapper extends Mapper
     protected function defineMap(): array
     {
         return [
+            'convenio' => [
+                ConvenioMapper::class => [
+                    'textbox4',
+                    'textbox5'
+                ]
+            ],
+            'ffecini' => 'fechaInicial',
+            'ffecfin' => 'fechaFinal',
             'renglon' => [
                 ResumenRenglonMapper::class => [
                     'cod_con2',
@@ -46,6 +54,19 @@ class ResumenMapper extends Mapper
                 ]
             ]
         ];
+    }
+
+    public function setFechaInicial($value)
+    {
+        $fecha = $this->filter->fechaFromNovasoft($value);
+        $this->targetObject->setFechaInicial($fecha);
+    }
+
+
+    public function setFechaFinal($value)
+    {
+        $fecha = $this->filter->fechaFromNovasoft($value);
+        $this->targetObject->setFechaFinal($fecha);
     }
 
     public function setRenglon($value)

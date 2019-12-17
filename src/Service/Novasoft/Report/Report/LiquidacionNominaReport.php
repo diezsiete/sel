@@ -1,11 +1,10 @@
 <?php
 
-
 namespace App\Service\Novasoft\Report\Report;
-
 
 use App\Entity\Convenio;
 use App\Service\Configuracion\Configuracion;
+use App\Service\Novasoft\Report\Importer\LiquidacionNominaImporter;
 use App\Service\Novasoft\Report\Mapper\LiquidacionNomina\LiquidacionNominaMapper;
 use App\Service\Novasoft\Report\ReportFormatter;
 use App\Service\Utils;
@@ -110,9 +109,9 @@ class LiquidacionNominaReport extends Report
     protected $parameter_Origen = 'H';
 
     public function __construct(SSRSReport $SSRSReport, ReportFormatter $reportFormatter, Configuracion $configuracion,
-                                Utils $utils, LiquidacionNominaMapper $mapper)
+                                Utils $utils, LiquidacionNominaMapper $mapper, LiquidacionNominaImporter $importer)
     {
-        parent::__construct($SSRSReport, $reportFormatter, $configuracion, $utils, $mapper);
+        parent::__construct($SSRSReport, $reportFormatter, $configuracion, $utils, $mapper, $importer);
     }
 
     protected function normalizeParameter_fFecIni()
@@ -161,5 +160,18 @@ class LiquidacionNominaReport extends Report
     }
 
 
-    
+    public function setTipoLiquidacionNomina()
+    {
+        $this->parameter_TipLiq = '01';
+    }
+
+    public function setTipoLiquidacionPrima()
+    {
+        $this->parameter_TipLiq = '02';
+    }
+
+    public function setTipoLiquidacionContrato()
+    {
+        $this->parameter_TipLiq = '04';
+    }
 }

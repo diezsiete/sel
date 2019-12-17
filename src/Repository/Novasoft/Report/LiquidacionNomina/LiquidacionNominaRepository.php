@@ -4,6 +4,7 @@ namespace App\Repository\Novasoft\Report\LiquidacionNomina;
 
 use App\Entity\Novasoft\Report\LiquidacionNomina\LiquidacionNomina;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -19,32 +20,25 @@ class LiquidacionNominaRepository extends ServiceEntityRepository
         parent::__construct($registry, LiquidacionNomina::class);
     }
 
-    // /**
-    //  * @return LiquidacionNomina[] Returns an array of LiquidacionNomina objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @param LiquidacionNomina $equal
+     * @return LiquidacionNomina[] Returns an array of LiquidacionNominaResumen objects
+     * @throws NonUniqueResultException
+     */
+    public function findEqual(LiquidacionNomina $equal)
     {
         return $this->createQueryBuilder('l')
-            ->andWhere('l.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('l.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?LiquidacionNomina
-    {
-        return $this->createQueryBuilder('l')
-            ->andWhere('l.exampleField = :val')
-            ->setParameter('val', $value)
+            ->andWhere('l.convenio = :convenio')
+            ->andWhere('l.empleado = :empleado')
+            ->andWhere('l.fechaInicial = :fechaInicial')
+            ->andWhere('l.fechaFinal = :fechaFinal')
+            ->setParameter('convenio', $equal->getConvenio())
+            ->setParameter('empleado', $equal->getEmpleado())
+            ->setParameter('fechaInicial', $equal->getFechaInicial()->format('Y-m-d'))
+            ->setParameter('fechaFinal', $equal->getFechaFinal()->format('Y-m-d'))
+            ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult()
-        ;
+            ;
     }
-    */
 }

@@ -21,6 +21,8 @@ trait SearchByConvenioOrEmpleado
     protected $searchName = 'search';
     protected $searchValue = [];
 
+    protected $disableSearchEmpleado = false;
+
     /**
      * @var ConvenioRepository
      */
@@ -53,8 +55,10 @@ trait SearchByConvenioOrEmpleado
      */
     public function addSearchByConvenioOrIdent()
     {
+        $description = 'codigos convenios' . ($this->disableSearchEmpleado ? '' : ' o identificaciones')
+            . '. Omita y se toman todos los convenios';
         $this->addArgument($this->searchName, InputArgument::IS_ARRAY | InputArgument::OPTIONAL,
-            'codigos convenios o identificaciones. Omita y se toman todos los convenios');
+            $description);
         return $this;
     }
 
@@ -71,6 +75,9 @@ trait SearchByConvenioOrEmpleado
 
     protected function isSearchConvenio(): bool
     {
+        if($this->disableSearchEmpleado) {
+            return true;
+        }
         return $this->searchValue ? !is_numeric($this->searchValue[0]) : true;
     }
 

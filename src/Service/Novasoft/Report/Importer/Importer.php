@@ -1,25 +1,24 @@
 <?php
 
 
-namespace App\Service\Novasoft\Report\Import;
+namespace App\Service\Novasoft\Report\Importer;
 
-
-use App\Entity\Convenio;
+use App\Entity\Empleado;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Exception;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
-class ImportReportHelper
+abstract class Importer
 {
     /**
      * @var EntityManagerInterface
      */
-    private $em;
+    protected $em;
     /**
      * @var PropertyAccessorInterface
      */
-    private $propertyAccessor;
+    protected $propertyAccessor;
 
     public function __construct(EntityManagerInterface $em, PropertyAccessorInterface $propertyAccessor)
     {
@@ -35,7 +34,7 @@ class ImportReportHelper
         }
     }
 
-    private function importEntity($entity)
+    protected function importEntity($entity)
     {
         /** @var ClassMetadataInfo $targetMetadata */
         $targetMetadata = $this->em->getMetadataFactory()->getMetadataFor(get_class($entity));
@@ -47,45 +46,53 @@ class ImportReportHelper
                 $entity->setConvenio($this->findConvenio($entity->getConvenio()));
             }*/
 
-            // si hay relacion uno a uno, significa que es unica por lo que eliminamos el anterior registro
             if($mapping['type'] === ClassMetadataInfo::ONE_TO_ONE) {
-                $entityDb = $this->em->getRepository(get_class($entity))->findOneBy([
-                    $mapping['fieldName'] => $this->getIdentifier($this->propertyAccessor->getValue($entity, $mapping['fieldName']))
-                ]);
-                if($entityDb) {
-                    $this->em->remove($entityDb);
-                    $this->em->flush();
-                }
+                $this->handleOneToOne($entity, $mapping);
             }
+
             // trabajadoresActivos->centroCosto
             if($mapping['type'] === ClassMetadataInfo::MANY_TO_ONE) {
-                $parent = $this->findInDatabase($this->propertyAccessor->getValue($entity, $mapping['fieldName']));
-                $this->propertyAccessor->setValue($entity, $mapping['fieldName'], $parent);
+                $this->handleManyToOne($entity, $this->getParent($entity, $mapping), $mapping);
             }
         }
+      
         $this->em->persist($entity);
         $this->em->flush();
     }
 
-    private function findInDatabase($entity)
+    protected function handleManyToOne($entity, $parent, $mapping)
     {
-        $entityDb = $this->em->getRepository(get_class($entity))->find($this->getIdentifier($entity));
-        if(!$entityDb) {
-            $this->em->persist($entity);
-            $this->em->flush();
-            $entityDb = $entity;
+        $parentIdentifier = $this->getIdentifier($parent);
+        $parentDb = $parentIdentifier ? $this->em->getRepository(get_class($parent))->find($parentIdentifier) : null;
+        if (!$parentDb) {
+            $this->importEntity($parent);
+            $parentDb = $parent;
+        }
+        $this->propertyAccessor->setValue($entity, $mapping['fieldName'], $parentDb);
+    }
+
+    protected function handleOneToOne($entity, $mapping)
+    {
+        // si es owning side (ej. trabajador activo -> empleado) significa que es unica por lo que eliminamos el anterior registro
+        if($mapping['isOwningSide']) {
+            $entityDb = $this->em->getRepository(get_class($entity))->findOneBy([
+                $mapping['fieldName'] => $this->getIdentifier($this->propertyAccessor->getValue($entity, $mapping['fieldName']))
+            ]);
+            if ($entityDb) {
+                $this->em->remove($entityDb);
+                $this->em->flush();
+            }
+        }
+        //no es owning side (ej. liquidacionNomina -> total) no hay que eliminarla
+        else if(!$mapping['cascade']) {
+            throw new Exception("La asociacion oneToOne {$mapping['targetEntity']} no es manejada");
         }
 
-        return $entityDb;
     }
 
-    private function findConvenio(Convenio $convenio)
+    protected function getIdentifier($entity)
     {
-
-    }
-
-    private function getIdentifier($entity)
-    {
+        /** @var ClassMetadataInfo $targetMetadata */
         $targetMetadata = $this->em->getMetadataFactory()->getMetadataFor(get_class($entity));
         $identifierMetadata = $targetMetadata->getIdentifier();
         if(count($identifierMetadata) > 1) {
@@ -93,5 +100,15 @@ class ImportReportHelper
         }
 
         return $this->propertyAccessor->getValue($entity, $identifierMetadata[0]);
+    }
+
+
+    protected function getParent($entity, $mapping)
+    {
+        $parent = $this->propertyAccessor->getValue($entity, $mapping['fieldName']);
+        if(!$parent) {
+            throw new Exception("relacion many to one parent is null");
+        }
+        return $parent;
     }
 }

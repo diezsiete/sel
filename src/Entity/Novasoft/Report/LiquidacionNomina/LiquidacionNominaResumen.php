@@ -36,17 +36,30 @@ class LiquidacionNominaResumen
     private $fechaFinal;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Novasoft\Report\LiquidacionNomina\LiquidacionNominaResumenRenglon", mappedBy="liquidacionNominaResumen", orphanRemoval=true)
+     * @ORM\OneToMany(
+     *     targetEntity="App\Entity\Novasoft\Report\LiquidacionNomina\LiquidacionNominaResumenRenglon",
+     *     mappedBy="liquidacionNominaResumen",
+     *     orphanRemoval=true,
+     *     cascade={"persist", "remove"}
+     * )
      */
     private $renglones;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Novasoft\Report\LiquidacionNomina\LiquidacionNominaResumenTotal", mappedBy="liquidacionNominaResumen", cascade={"persist", "remove"})
+     * @ORM\OneToOne(
+     *     targetEntity="App\Entity\Novasoft\Report\LiquidacionNomina\LiquidacionNominaResumenTotal",
+     *     mappedBy="liquidacionNominaResumen",
+     *     cascade={"persist", "remove"}
+     * )
      */
     private $total;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Novasoft\Report\LiquidacionNomina\LiquidacionNomina", mappedBy="resumen")
+     * @ORM\OneToMany(
+     *     targetEntity="App\Entity\Novasoft\Report\LiquidacionNomina\LiquidacionNomina",
+     *     mappedBy="resumen",
+     *     cascade={"remove"}
+     * )
      */
     private $liquidacionesNomina;
 

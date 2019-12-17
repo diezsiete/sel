@@ -5,6 +5,7 @@ namespace App\Service\Novasoft\Report\Report;
 
 
 use App\Service\Configuracion\Configuracion;
+use App\Service\Novasoft\Report\Importer\GenericImporter;
 use App\Service\Novasoft\Report\Mapper\MapperNom204;
 use App\Service\Novasoft\Report\ReportFormatter;
 use App\Service\Utils;
@@ -78,9 +79,9 @@ class NominaReport extends Report
 
 
     public function __construct(SSRSReport $SSRSReport, ReportFormatter $reportFormatter, Configuracion $configuracion,
-                                Utils $utils, MapperNom204 $mapper)
+                                Utils $utils, MapperNom204 $mapper, GenericImporter $importer)
     {
-        parent::__construct($SSRSReport, $reportFormatter, $configuracion, $utils, $mapper);
+        parent::__construct($SSRSReport, $reportFormatter, $configuracion, $utils, $mapper, $importer);
 
         $this->parameter_FecIni = '2/1/2017';
         $this->parameter_FecFin = $utils->dateFormatToday('m/d/Y');

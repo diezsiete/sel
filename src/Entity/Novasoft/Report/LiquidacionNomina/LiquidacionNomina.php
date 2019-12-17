@@ -9,7 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\Novasoft\Report\LiquidacionNomina")
+ * @ORM\Entity(repositoryClass="App\Repository\Novasoft\Report\LiquidacionNomina\LiquidacionNominaRepository")
  */
 class LiquidacionNomina
 {
@@ -68,17 +68,29 @@ class LiquidacionNomina
     private $cuenta;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Novasoft\Report\LiquidacionNomina\LiquidacionNominaTotal", mappedBy="liquidacionNomina", cascade={"persist", "remove"})
+     * @ORM\OneToOne(
+     *     targetEntity="App\Entity\Novasoft\Report\LiquidacionNomina\LiquidacionNominaTotal",
+     *     mappedBy="liquidacionNomina",
+     *     cascade={"persist", "remove"}
+     * )
      */
     private $total;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Novasoft\Report\LiquidacionNomina\LiquidacionNominaRenglon", mappedBy="liquidacionNomina", orphanRemoval=true)
+     * @ORM\OneToMany(
+     *     targetEntity="App\Entity\Novasoft\Report\LiquidacionNomina\LiquidacionNominaRenglon",
+     *     mappedBy="liquidacionNomina",
+     *     orphanRemoval=true,
+     *     cascade={"persist", "remove"}
+     * )
      */
     private $renglones;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Novasoft\Report\LiquidacionNomina\LiquidacionNominaResumen", inversedBy="liquidacionesNomina")
+     * @ORM\ManyToOne(
+     *     targetEntity="App\Entity\Novasoft\Report\LiquidacionNomina\LiquidacionNominaResumen",
+     *     inversedBy="liquidacionesNomina"
+     * )
      */
     private $resumen;
 

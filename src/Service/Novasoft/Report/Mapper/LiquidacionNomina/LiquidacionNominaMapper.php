@@ -70,6 +70,10 @@ class LiquidacionNominaMapper extends Mapper
             ],
             'resumen' => [
                 ResumenMapper::class => [
+                    'textbox4',
+                    'textbox5',
+                    'ffecini',
+                    'ffecfin',
                     'cod_con2',
                     'can_liq2',
                     'textbox17',
