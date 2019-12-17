@@ -27,6 +27,22 @@
     {% block stylesheets %}
         {{ encore_entry_link_tags('app') }}
     {% endblock %}
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-88341755-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-88341755-1');
+    </script>
+
+    <meta property="og:title" content="PTA - Personal temporal y asesorias" />
+    <meta property="og:description" content="Pagina web PTA SAS líderes en servicios de suministro, selección, evaluación y administración de personal temporal en Colombia" />
+    <meta property="og:url" content="{{ url(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}" />
+    <meta name="twitter:site" content="@pta_sas"/>
+    <meta property="article:publisher" content="https://www.facebook.com/pta.com.co"/>
 </head>
 
 
@@ -158,18 +174,6 @@
 
 {% block javascripts %}
     {{ encore_entry_script_tags('app') }}
-
-    <!-- Google Analytics: Change UA-XXXXX-X to be your site's ID. Go to http://www.google.com/analytics/ for more information.  -->
-    <script>
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-        ga('create', 'UA-12345678-1', 'auto');
-        ga('send', 'pageview');
-    </script>
-
 {% endblock %}
 
 
