@@ -1,0 +1,33 @@
+{% extends 'pta/base.html.twig' %}
+
+{% block body %}
+    <!-- Login -->
+    <section class="g-bg-gray-light-v5 pb-5">
+        <div class="container py-100">
+            <div class="row justify-content-center">
+                <div class="col-sm-8 col-lg-5">
+                    <div class="u-shadow-v21 g-bg-white rounded g-py-40 g-px-30">
+                        <header class="text-center mb-4">
+                            <h2 class="h2 g-color-black g-font-weight-600">Restaurar contraseña</h2>
+                        </header>
+                        {{ form_start(form, {attr: {
+                            class:"g-py-15",
+                            novalidate: 'novalidate'
+                        }}) }}
+
+                        {{ form_row(form.password) }}
+
+                        <div class="mb-4">
+                            <button class="btn btn-md btn-block btn-primary rounded g-py-13" type="submit">
+                                Restaurar
+                            </button>
+                        </div>
+
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Login -->
+{% endblock %}
