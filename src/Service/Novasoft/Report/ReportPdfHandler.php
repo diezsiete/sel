@@ -14,9 +14,9 @@ class ReportPdfHandler
      */
     private $filesystem;
 
-    public function __construct(FilesystemInterface $seReportesFilesystem)
+    public function __construct(FilesystemInterface $novasoftReportFilesystem)
     {
-        $this->filesystem = $seReportesFilesystem;
+        $this->filesystem = $novasoftReportFilesystem;
     }
 
     public function cache(string $reporteNombre, DateTimeInterface $fecha, $empleadoIdent, $callbackSource)
