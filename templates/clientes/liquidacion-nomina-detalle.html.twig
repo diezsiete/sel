@@ -18,6 +18,17 @@
     </small>
 {% endblock %}
 
+{% block body_header_right %}
+    <ul class="u-list-inline">
+        <li class="list-inline-item g-color-primary">
+            <a href="{{ path('clientes_liquidacion_nomina_detalle_pdf', { id: liquidacionNominaResumen.id }) }}"
+               class="btn btn-md btn-primary u-btn-outline-primary rounded-0 form-control form-control-lg">
+                <i class="fas fa-file-pdf"></i> Exportar PDF
+            </a>
+        </li>
+    </ul>
+{% endblock %}
+
 {% block body %}
 <table class="table liquidacion-nomina">
     {% for liquidacionNomina in liquidacionNominaResumen.liquidacionesNomina %}

@@ -8,7 +8,9 @@ use App\DataTable\Type\PortalClientes\LiquidacionNominaResumenDataTableType;
 use App\DataTable\Type\PortalClientes\TrabajadoresActivosDataTableType;
 use App\Entity\Empleado;
 use App\Entity\Novasoft\Report\LiquidacionNomina\LiquidacionNominaResumen;
+use App\Service\Novasoft\Report\ReportFactory;
 use App\Service\PortalClientes\PortalClientesService;
+use League\Flysystem\FilesystemInterface;
 use Omines\DataTablesBundle\DataTableFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -22,7 +24,6 @@ class PortalClientesController extends BaseController
 
     public function __construct(PortalClientesService $portalClientesService)
     {
-
         $this->portalClientesService = $portalClientesService;
     }
 
@@ -87,5 +88,19 @@ class PortalClientesController extends BaseController
         return $this->render('/clientes/liquidacion-nomina-detalle.html.twig', [
             'liquidacionNominaResumen' => $liquidacionNominaResumen
         ]);
+    }
+
+    /**
+     * @Route("/sel/clientes/liquidacion-nomina/{id}/pdf", name="clientes_liquidacion_nomina_detalle_pdf")
+     */
+    public function liquidacionNominaDetallePdf(LiquidacionNominaResumen $liqNominaResumen,
+                                                ReportFactory $reportFactory, FilesystemInterface $novasoftReportFilesystem)
+    {
+        return $this->renderStream(function () use ($liqNominaResumen, $reportFactory, $novasoftReportFilesystem) {
+            $report = $reportFactory->liquidacionNomina(
+                $liqNominaResumen->getConvenio(), $liqNominaResumen->getFechaInicial(), $liqNominaResumen->getFechaFinal()
+            );
+            return $novasoftReportFilesystem->readStream($report->getFileNamePdf());
+        });
     }
 }

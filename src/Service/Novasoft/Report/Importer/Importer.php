@@ -39,8 +39,19 @@ abstract class Importer
         }
     }
 
-    public function importFile(string $reporteNombre, string $identifier, string $fecha, string $ext, $result)
+    /**
+     * @param string|array $reporteNombre
+     * @param mixed $identifier
+     * @param null|string $fecha
+     * @param null|string $ext
+     * @param null|mixed $result
+     */
+    public function importFile($reporteNombre, $identifier, $fecha = null, $ext = null, $result = null)
     {
+        if(is_array($reporteNombre)) {
+            $result = $identifier;
+            list($reporteNombre, $identifier, $fecha, $ext) = $reporteNombre;
+        }
         $this->fileImporter->write($reporteNombre, $identifier, $fecha, $ext, $result);
     }
 

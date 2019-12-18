@@ -104,8 +104,8 @@ class TrabajadoresActivosReport extends Report
         return $this;
     }
 
-    public function importPdf()
+    public function getFileNamePdf($asArray = false)
     {
-        // TODO: Implement importPdf() method.
+        // TODO: Implement getFileNamePdf() method.
     }
 }

@@ -128,7 +128,10 @@ abstract class Report
         return $this->render(new RenderAsPDF(), PageCountModeEnum::$Actual);
     }
 
-    public abstract function importPdf();
+    public function importPdf()
+    {
+        $this->importer->importFile($this->getFileNamePdf(true), $this->renderPdf());
+    }
 
 
     /**
@@ -215,4 +218,6 @@ abstract class Report
             $this->renderMimeType, $this->renderEncoding,$this->renderWarnings,
             $this->renderStreamIds);
     }
+
+    public abstract function getFileNamePdf($asArray = false);
 }
