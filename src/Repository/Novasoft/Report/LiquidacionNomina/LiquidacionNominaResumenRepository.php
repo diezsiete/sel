@@ -39,4 +39,15 @@ class LiquidacionNominaResumenRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
+
+    public function findFullById($id)
+    {
+        $qb = $this->createQueryBuilder('lnr');
+        return $qb->addSelect('ln, lnrs')
+            ->join('lnr.liquidacionesNomina', 'ln')
+            ->join('ln.renglones', 'lnrs')
+            ->andWhere($qb->expr()->eq('lnr.id', $qb->expr()->literal($id)))
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

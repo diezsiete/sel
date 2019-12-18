@@ -14,6 +14,7 @@ class LiquidacionNominaImporter extends Importer
 
     protected function importEntity($entity)
     {
+        // si existe una liquidacion nomina con mismos valores borramos para sobreescribir
         /** @var LiquidacionNomina $equal */
         $equal = $this->em->getRepository(get_class($entity))->findEqual($entity);
         if($equal) {
@@ -26,8 +27,7 @@ class LiquidacionNominaImporter extends Importer
     protected function handleManyToOne($entity, $parent, $mapping)
     {
         if($mapping['targetEntity'] === LiquidacionNominaResumen::class) {
-            //TODO por ahora buscamos manualmente
-            //seria ideal que la primaria fuera convenio, fechaInicial y fechaFinal e Importer manejara automaticamente
+            //liquidacion nomina resumen se comparte entre multiples liquidaciones nomina. Aseguramos que no se creen duplicados
             /** @var LiquidacionNominaResumen $parent */
             $parentDb = $this->em->getRepository(get_class($parent))->findEqual($parent);
             if (!$parentDb) {

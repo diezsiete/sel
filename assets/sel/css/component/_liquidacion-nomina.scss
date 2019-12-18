@@ -1,0 +1,38 @@
+.liquidacion-nomina {
+  color: #777;
+  tr.empleado-nombre td, tr.empleado-nombre th {
+    color: #212529;
+  }
+
+  tr:not(.empleado-nombre) td, tr:not(.empleado-nombre) th {
+    padding: 0 0.75rem;
+  }
+  tr.empleado-info td, tr.empleado-info th {
+    border: transparent;
+  }
+  tr.empleado-info.bottom td, tr.empleado-info.bottom th {
+    padding: 0 0.75rem 0.75rem;
+  }
+
+  .empleado-info, tbody tr:nth-of-type(odd).empleado-info {
+    background: white;
+  }
+
+  tr.renglones-header, tr.renglones-footer{
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+
+  tr.renglones-titulo th {
+    border: none;
+  }
+
+  tr.renglones-footer th, tr.renglones-footer td {
+    border-bottom: 1px solid #dee2e6;
+    border-color: rgba(0, 0, 0, 0.06);
+  }
+
+  /*.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 0, 0, 0.05);
+  }*/
+
+}

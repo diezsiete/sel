@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+{% from 'clientes/_liquidacion-nomina.html.twig' import liquidacion_nomina, liquidacion_nomina_resumen %}
+
+{% block title %}
+    Liquidacion nomina
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('portal-clientes') }}
+{% endblock %}
+
+
+{% block body_header_title %}
+    Liquidacion nomina
+    <small>
+        {{ liquidacionNominaResumen.fechaInicial|date('Y-m-d') ~ ' a ' ~ liquidacionNominaResumen.fechaFinal|date('Y-m-d') }}
+    </small>
+{% endblock %}
+
+{% block body %}
+<table class="table liquidacion-nomina">
+    {% for liquidacionNomina in liquidacionNominaResumen.liquidacionesNomina %}
+        {{ liquidacion_nomina(liquidacionNomina) }}
+    {% endfor %}
+</table>
+{{ liquidacion_nomina_resumen(liquidacionNominaResumen) }}
+{% endblock %}

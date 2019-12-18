@@ -1,0 +1,82 @@
+{% macro liquidacion_nomina(liquidacionNomina, is_table_body = true) %}
+
+    {% if not is_table_body %}
+        <table class="table liquidacion-nomina">
+    {% endif %}
+        <tr class="empleado-info empleado-nombre">
+            <td colspan="8">
+                <strong>{{ liquidacionNomina.empleado.usuario.nombreCompleto }}</strong>
+            </td>
+        </tr>
+        <tr class="empleado-info">
+            <td><strong>Cédula</strong></td>
+            <td>{{ liquidacionNomina.empleado.usuario.identificacion }}</td>
+            <td><strong>Cargo</strong></td>
+            <td colspan="2">{{ liquidacionNomina.cargo }}</td>
+            <td><strong>Básico</strong></td>
+            <td colspan="2">{{ liquidacionNomina.ingresoBasico|number_format(0, '.', ',') }}</td>
+        </tr>
+        <tr class="empleado-info bottom">
+            <td><strong>F.Inicio</strong></td>
+            <td colspan="7">
+                {{ liquidacionNomina.fechaIngreso|date('Y-m-d') }}
+            </td>
+        </tr>
+        <tr class="renglones-header">
+            <th colspan="2">Concepto</th>
+            <th>Unidades</th>
+            <th>Base</th>
+            <th>Devengos</th>
+            <th>Deducciones</th>
+            <th colspan="2">Cen. Costo</th>
+        </tr>
+        {% for renglon in liquidacionNomina.renglones %}
+            <tr>
+                <td colspan="2">{{ renglon.conceptoCodigo ~ " " ~ renglon.concepto}}</td>
+                <td>{{ renglon.unidades|number_format(2) }}</td>
+                <td>{{ renglon.base|number_format(2) }}</td>
+                <td>{{ renglon.devengos|number_format(2) }}</td>
+                <td>{{ renglon.deducciones|number_format(2) }}</td>
+                <td colspan="2">{{ renglon.centroCosto }}</td>
+            </tr>
+        {% endfor %}
+        <tr class="renglones-footer">
+            <td colspan="2"></td>
+            <td> {{ liquidacionNomina.total.unidades|number_format(2) }}</td>
+            <td></td>
+            <td> {{ liquidacionNomina.total.devengos|number_format(2) }}</td>
+            <td> {{ liquidacionNomina.total.deducciones|number_format(2) }}</td>
+            <th>Neto:</th>
+            <td> {{ liquidacionNomina.total.neto|number_format(0) }}</td>
+        </tr>
+    {% if not is_table_body %}
+        </table>
+    {% endif %}
+{% endmacro liquidacion_nomina %}
+
+{% macro liquidacion_nomina_resumen(liquidacionNominaResumen) %}
+    <table class="table table-striped">
+        <tr>
+            <th colspan="7">Resumen</th>
+        </tr>
+        {% for renglon in liquidacionNominaResumen.renglones %}
+            <tr>
+                <td>{{ renglon.concepto }}</td>
+                <td>{{ renglon.unidades|number_format(2) }}</td>
+                <td>{{ renglon.base }}</td>
+                <td>{{ renglon.devengos|number_format(0) }}</td>
+                <td>{{ renglon.deducciones|number_format(0) }}</td>
+                <td colspan="2"></td>
+            </tr>
+        {% endfor %}
+        <tr>
+            <td></td>
+            <td>{{ liquidacionNominaResumen.total.unidades|number_format(2) }}</td>
+            <td></td>
+            <td>{{ liquidacionNominaResumen.total.devengos|number_format(0) }}</td>
+            <td>{{ liquidacionNominaResumen.total.deducciones|number_format(0) }}</td>
+            <th>Neto:</th>
+            <td>{{ liquidacionNominaResumen.total.neto|number_format(0) }}</td>
+        </tr>
+    </table>
+{% endmacro liquidacion_nomina_resumen %}

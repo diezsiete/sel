@@ -37,7 +37,7 @@ class LiquidacionNomina
     private $fechaFinal;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Empleado", inversedBy="liquidacionesNomina")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Empleado", inversedBy="liquidacionesNomina", fetch="EAGER")
      * @ORM\JoinColumn(nullable=false)
      */
     private $empleado;
@@ -81,7 +81,8 @@ class LiquidacionNomina
      *     targetEntity="App\Entity\Novasoft\Report\LiquidacionNomina\LiquidacionNominaRenglon",
      *     mappedBy="liquidacionNomina",
      *     orphanRemoval=true,
-     *     cascade={"persist", "remove"}
+     *     cascade={"persist", "remove"},
+     *     fetch="EAGER"
      * )
      */
     private $renglones;

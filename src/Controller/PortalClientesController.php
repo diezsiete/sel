@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\DataTable\Type\PortalClientes\LiquidacionNominaResumenDataTableType;
 use App\DataTable\Type\PortalClientes\TrabajadoresActivosDataTableType;
 use App\Entity\Empleado;
+use App\Entity\Novasoft\Report\LiquidacionNomina\LiquidacionNominaResumen;
 use App\Service\PortalClientes\PortalClientesService;
 use Omines\DataTablesBundle\DataTableFactory;
 use Symfony\Component\HttpFoundation\Request;
@@ -81,8 +82,10 @@ class PortalClientesController extends BaseController
     /**
      * @Route("/sel/clientes/liquidacion-nomina/{id}", name="clientes_liquidacion_nomina_detalle")
      */
-    public function liquidacionNominaDetalle()
+    public function liquidacionNominaDetalle(LiquidacionNominaResumen $liquidacionNominaResumen)
     {
-
+        return $this->render('/clientes/liquidacion-nomina-detalle.html.twig', [
+            'liquidacionNominaResumen' => $liquidacionNominaResumen
+        ]);
     }
 }

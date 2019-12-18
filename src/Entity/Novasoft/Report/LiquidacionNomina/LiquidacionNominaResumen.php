@@ -40,7 +40,8 @@ class LiquidacionNominaResumen
      *     targetEntity="App\Entity\Novasoft\Report\LiquidacionNomina\LiquidacionNominaResumenRenglon",
      *     mappedBy="liquidacionNominaResumen",
      *     orphanRemoval=true,
-     *     cascade={"persist", "remove"}
+     *     cascade={"persist", "remove"},
+     *     fetch="EAGER"
      * )
      */
     private $renglones;
