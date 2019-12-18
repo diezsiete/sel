@@ -4,10 +4,13 @@
 namespace App\Service\PortalClientes;
 
 
+use App\Entity\Convenio;
 use App\Entity\Usuario;
 use App\Repository\RepresentanteRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Exception;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class PortalClientesService
 {
@@ -26,7 +29,12 @@ class PortalClientesService
         $this->representanteRepository = $representanteRepository;
     }
 
-    public function getRepresentanteConvenio(?Usuario $usuario = null)
+    /**
+     * @param Usuario|UserInterface $usuario
+     * @return Convenio|null
+     * @throws NonUniqueResultException
+     */
+    public function getRepresentanteConvenio($usuario = null)
     {
         $convenio = null;
         $usuario = $usuario ? $usuario : $this->security->getUser();

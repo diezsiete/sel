@@ -168,7 +168,7 @@ class ServicioEmpleadosController extends BaseController
 
     /**
      * @Route("/sel/se/certificado-aporte/{id}", name="app_certificado_aporte")
-     * @IsGranted("REPORTE_MANAGE", subject="autoliquidacionEmpleado")
+     * @IsGranted("AUTOLIQUIDACION_MANAGE", subject="autoliquidacionEmpleado")
      */
     public function certificadoAporte(AutoliquidacionEmpleado $autoliquidacionEmpleado, FileManager $autoliquidacionService)
     {
