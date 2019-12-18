@@ -12,12 +12,12 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class NiTrabajadoresActivosCommand extends NiCommand
+class NiTrabajadorActivoCommand extends NiCommand
 {
     use PeriodoOption,
         SearchByConvenioOrEmpleado;
 
-    protected static $defaultName = "sel:ni:trabajadores-activos";
+    protected static $defaultName = "sel:ni:trabajador-activo";
 
     /**
      * @var ReportFactory

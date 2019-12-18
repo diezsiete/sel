@@ -53,6 +53,8 @@ class MenuBuilder
                 ->setExtra('icon', 'fas fa-microchip');
         }
 
+        $this->createPortalClientesMenu($menu, $user);
+
 
         return $menu;
     }
@@ -156,6 +158,17 @@ class MenuBuilder
 
     }
 
+    protected function createPortalClientesMenu(ItemInterface $menu, $user)
+    {
+        if($this->security->isGranted(['ROLE_VER_AUTOLIQUIDACIONES'], $user)) {
+            $menu
+                ->addChild('Trabajadores activos', ['route' => 'clientes_trabajadores_activos'])
+                ->setExtra('icon', 'fas fa-users');
+            $menu
+                ->addChild('Liquidación nomina', ['route' => 'clientes_liquidaciones_nomina'])
+                ->setExtra('icon', 'fas fa-clipboard-list');
+        }
+    }
 
 
     public function createHvMenu(array $options)
