@@ -40,18 +40,22 @@ class AutoliquidacionEmpleadoRepository extends ServiceEntityRepository
     /**
      * @param Empleado $empleado
      * @param DateTimeInterface $periodo
-     * @return AutoliquidacionEmpleado
+     * @return null|AutoliquidacionEmpleado|AutoliquidacionEmpleado[]
      */
-    public function findByEmpleadoPeriodo(Empleado $empleado, DateTimeInterface $periodo)
+    public function findByEmpleadoPeriodo(Empleado $empleado, ?DateTimeInterface $periodo = null)
     {
         $qb = $this->createQueryBuilder('ae')
             ->join('ae.autoliquidacion', 'a')
             ->andWhere('ae.empleado = :empleado')
-            ->andWhere('a.periodo = :periodo')
-            ->setParameter('empleado', $empleado)
-            ->setParameter('periodo', $periodo);
+            ->setParameter('empleado', $empleado);
+        if($periodo) {
+           $qb->andWhere('a.periodo = :periodo')
+               ->setParameter('periodo', $periodo);
+        }
         try {
-            return $qb->getQuery()->getOneOrNullResult();
+            return $periodo
+                ? $qb->getQuery()->getOneOrNullResult()
+                : $qb->getQuery()->getResult();
         } catch (NonUniqueResultException $e) {
             return null;
         }

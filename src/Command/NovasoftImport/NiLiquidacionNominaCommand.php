@@ -8,14 +8,13 @@ use App\Command\Helpers\NovasoftImport\FormatOption;
 use App\Command\Helpers\PeriodoOption;
 use App\Command\Helpers\RangoPeriodoOption;
 use App\Command\Helpers\SearchByConvenioOrEmpleado;
-use App\Command\Helpers\TraitableCommand\TraitableCommand;
 use App\Service\Novasoft\Report\ReportFactory;
 use Doctrine\Common\Annotations\Reader;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class NiLiquidacionNominaCommand extends TraitableCommand
+class NiLiquidacionNominaCommand extends NiCommand
 {
     use PeriodoOption,
         RangoPeriodoOption,
@@ -42,6 +41,7 @@ class NiLiquidacionNominaCommand extends TraitableCommand
     {
         $inicio = $this->getInicio($input);
         $fin = $this->getFin($input);
+
         $convenios = $this->getConvenios();
 
         foreach($convenios as $convenio) {

@@ -37,6 +37,7 @@ class AutoliquidacionEmpleadoDataTableType implements DataTableTypeInterface
         $id = $options['id'] ?? null;
         $convenio = $options['convenio'] ?? null;
         $periodo = $options['periodo'] ?? null;
+        $empleado = $options['empleado'] ?? null;
 
         if($convenio) {
             $dataTable
@@ -67,7 +68,7 @@ class AutoliquidacionEmpleadoDataTableType implements DataTableTypeInterface
 
             ->createAdapter(ORMAdapter::class, [
                 'entity' => AutoliquidacionEmpleado::class,
-                'query' => function (QueryBuilder $builder) use ($id, $convenio, $periodo) {
+                'query' => function (QueryBuilder $builder) use ($id, $convenio, $periodo, $empleado) {
                     $builder
                         ->select('ae, a')
                         ->from(AutoliquidacionEmpleado::class, 'ae')
@@ -86,6 +87,10 @@ class AutoliquidacionEmpleadoDataTableType implements DataTableTypeInterface
                         ))
                             ->setParameter('convenio', $convenio)
                             ->setParameter('periodo', $periodo->format('Y-m-d'));
+                    }
+                    else if($empleado) {
+                        $builder->andWhere('ae.empleado = :empleado')
+                            ->setParameter('empleado', $empleado);
                     }
                 },
                 'criteria' => [

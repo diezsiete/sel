@@ -4,12 +4,17 @@
 namespace App\Controller;
 
 
+use App\DataTable\Type\AutoliquidacionEmpleadoDataTableType;
 use App\DataTable\Type\PortalClientes\LiquidacionNominaResumenDataTableType;
 use App\DataTable\Type\PortalClientes\TrabajadoresActivosDataTableType;
 use App\Entity\Empleado;
 use App\Entity\Novasoft\Report\LiquidacionNomina\LiquidacionNominaResumen;
+use App\Entity\Novasoft\Report\TrabajadorActivo;
+use App\Repository\Autoliquidacion\AutoliquidacionEmpleadoRepository;
+use App\Repository\Novasoft\Report\LiquidacionNomina\LiquidacionNominaRepository;
 use App\Service\Novasoft\Report\ReportFactory;
 use App\Service\PortalClientes\PortalClientesService;
+use DateTime;
 use League\Flysystem\FilesystemInterface;
 use Omines\DataTablesBundle\DataTableFactory;
 use Symfony\Component\HttpFoundation\Request;
@@ -50,11 +55,27 @@ class PortalClientesController extends BaseController
     }
 
     /**
-     * @Route("/sel/clientes/empleado/{eid}", name="clientes_empleado")
+     * @Route("/sel/clientes/empleado/{id}", name="clientes_trabajador_activo_detalle")
      */
-    public function empleado(Empleado $empleado)
+    public function trabajadorActivo(TrabajadorActivo $trabajadorActivo, LiquidacionNominaRepository $repository,
+                                     DataTableFactory $dataTableFactory, Request $request)
     {
+        $liquidacionesNomina = $repository->findBy(['empleado' => $trabajadorActivo->getEmpleado()]);
 
+        $table = $dataTableFactory
+            ->createFromType(AutoliquidacionEmpleadoDataTableType::class, [
+                'empleado' => $trabajadorActivo->getEmpleado()
+            ], ['searching' => true])
+            ->handleRequest($request);
+        if($table->isCallback()) {
+            return $table->getResponse();
+        }
+
+        return $this->render('/clientes/trabajador-activo-detalle.html.twig', [
+            'trabajadorActivo' => $trabajadorActivo,
+            'liquidacionesNomina' => $liquidacionesNomina,
+            'datatable' => $table
+        ]);
     }
 
     /**

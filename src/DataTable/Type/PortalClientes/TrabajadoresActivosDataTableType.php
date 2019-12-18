@@ -5,6 +5,7 @@ namespace App\DataTable\Type\PortalClientes;
 
 
 use App\DataTable\Column\ActionsColumn\ActionsColumn;
+use App\DataTable\Column\NumberFormatColumn;
 use App\Entity\Novasoft\Report\TrabajadorActivo;
 use Doctrine\ORM\QueryBuilder;
 use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
@@ -48,7 +49,7 @@ class TrabajadoresActivosDataTableType implements DataTableTypeInterface
                 'format' => 'Y-m-d',
                 'field' => 'ta.fechaRetiro'
             ])
-            ->add('ingresoBasico', TextColumn::class, [
+            ->add('ingresoBasico', NumberFormatColumn::class, [
                 'label' => 'Ingreso basico',
                 'field' => 'ta.ingresoBasico'
             ])
@@ -56,24 +57,12 @@ class TrabajadoresActivosDataTableType implements DataTableTypeInterface
                 'label' => 'Labor',
                 'field' => 'ta.labor'
             ])
-            ->add('caja', TextColumn::class, [
-                'label' => 'Caja',
-                'field' => 'ta.caja'
-            ])
-            ->add('promotoraSalud', TextColumn::class, [
-                'label' => 'Promotora salud',
-                'field' => 'ta.promotoraSalud'
-            ])
-            ->add('adminPension', TextColumn::class, [
-                'label' => 'Admin pension',
-                'field' => 'ta.adminPension'
-            ])
             ->add('actions', ActionsColumn::class, [
                 'label' => '',
                 'field' => 'e.id',
                 'orderable' => false,
                 'actions' => [
-                    'route' => ['clientes_empleado', ['eid' => 'empleado.id']],
+                    'route' => ['clientes_trabajador_activo_detalle', ['id' => 'id']],
                     'icon' => 'fas fa-eye',
                     'tooltip' => 'Ver empleado'
                 ]

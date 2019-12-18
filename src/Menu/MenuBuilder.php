@@ -46,6 +46,9 @@ class MenuBuilder
         $this->createSelMenu($menu, $user);
         $this->createAspirantesMenu($menu, $user);
         $this->createEvaluacionMenu($menu, $user);
+
+        $this->createPortalClientesMenu($menu, $user);
+
         $this->createAdminMenu($menu, $user);
         
         if($this->security->isGranted('ROLE_SUPERADMIN', $this->security->getUser())) {
@@ -53,7 +56,7 @@ class MenuBuilder
                 ->setExtra('icon', 'fas fa-microchip');
         }
 
-        $this->createPortalClientesMenu($menu, $user);
+
 
 
         return $menu;
@@ -145,7 +148,7 @@ class MenuBuilder
             }
             if($this->security->isGranted([$roles['ROLE_VER_AUTOLIQUIDACIONES']], $user)) {
                 $menu
-                    ->addChild('Autoliquidaciones', ['route' => 'admin_autoliquidacion_list'])
+                    ->addChild('Pagos Seg. Social', ['route' => 'admin_autoliquidacion_list'])
                     ->setExtra('icon', 'fas fa-clock');
             }
 
