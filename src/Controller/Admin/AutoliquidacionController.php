@@ -31,7 +31,7 @@ class AutoliquidacionController extends BaseController
     {
         $datableOptions = [];
         if($convenio = $portalClientesService->getRepresentanteConvenio()) {
-            $datableOptions['convenio'] = $datableOptions;
+            $datableOptions['convenio'] = $convenio;
         }
 
         $table = $dataTableFactory
