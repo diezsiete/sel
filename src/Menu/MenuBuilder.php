@@ -164,12 +164,32 @@ class MenuBuilder
     protected function createPortalClientesMenu(ItemInterface $menu, $user)
     {
         if($this->security->isGranted(['ROLE_VER_AUTOLIQUIDACIONES'], $user)) {
-            $menu
-                ->addChild('Trabajadores activos', ['route' => 'clientes_trabajadores_activos'])
-                ->setExtra('icon', 'fas fa-users');
-            $menu
-                ->addChild('Liquidación nomina', ['route' => 'clientes_liquidaciones_nomina'])
-                ->setExtra('icon', 'fas fa-clipboard-list');
+            $childs = [
+                'Trabajadores activos' => [
+                    'options' => ['route' => 'clientes_trabajadores_activos'],
+                    'extra' => ['name' => 'icon', 'value' => 'fas fa-users']
+                ],
+                'Liquidación nomina' => [
+                    'options' => ['route' => 'clientes_liquidaciones_nomina'],
+                    'extra' => ['name' => 'icon', 'value' => 'fas fa-clipboard-list']
+                ]
+            ];
+            if(!$this->security->isGranted('ROLE_ADMIN', $user)){
+                foreach ($childs as $childName => $childData) {
+                    $menu
+                        ->addChild($childName, $childData['options'])
+                        ->setExtra($childData['extra']['name'], $childData['extra']['value']);
+                }
+            } else {
+                $menu->addChild('Portal clientes')
+                    ->setUri('#')
+                    ->setExtra('icon', 'fas fa-cog');
+                foreach ($childs as $childName => $childData) {
+                    $menu['Portal clientes']
+                        ->addChild($childName, $childData['options'])
+                        ->setExtra($childData['extra']['name'], $childData['extra']['value']);
+                }
+            }
         }
     }
 
