@@ -4,6 +4,7 @@
 namespace App\Command\NovasoftImport;
 
 
+use App\Command\Helpers\NovasoftImport\FormatOption;
 use App\Command\Helpers\PeriodoOption;
 use App\Command\Helpers\RangoPeriodoOption;
 use App\Command\Helpers\SearchByConvenioOrEmpleado;
@@ -18,7 +19,8 @@ class NiLiquidacionNominaCommand extends TraitableCommand
 {
     use PeriodoOption,
         RangoPeriodoOption,
-        SearchByConvenioOrEmpleado;
+        SearchByConvenioOrEmpleado,
+        FormatOption;
 
     protected static $defaultName = "sel:ni:liquidacion-nomina";
     /**
@@ -38,18 +40,12 @@ class NiLiquidacionNominaCommand extends TraitableCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-
-
-
-
         $inicio = $this->getInicio($input);
         $fin = $this->getFin($input);
         $convenios = $this->getConvenios();
 
         foreach($convenios as $convenio) {
-            $this->reportFactory
-                ->liquidacionNomina($convenio, $inicio, $fin)
-                ->importMap();
+            $this->import($this->reportFactory->liquidacionNomina($convenio, $inicio, $fin));
         }
     }
 }

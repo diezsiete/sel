@@ -126,4 +126,8 @@ class NominaReport extends Report
         return $map;
     }
 
+    public function importPdf()
+    {
+        // TODO: Implement importPdf() method.
+    }
 }

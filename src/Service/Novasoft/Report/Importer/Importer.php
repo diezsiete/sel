@@ -19,11 +19,16 @@ abstract class Importer
      * @var PropertyAccessorInterface
      */
     protected $propertyAccessor;
+    /**
+     * @var FileImporter
+     */
+    private $fileImporter;
 
-    public function __construct(EntityManagerInterface $em, PropertyAccessorInterface $propertyAccessor)
+    public function __construct(EntityManagerInterface $em, PropertyAccessorInterface $propertyAccessor, FileImporter $fileImporter)
     {
         $this->em = $em;
         $this->propertyAccessor = $propertyAccessor;
+        $this->fileImporter = $fileImporter;
     }
 
     public function import($result)
@@ -32,6 +37,11 @@ abstract class Importer
         foreach($result as $entity) {
             $this->importEntity($entity);
         }
+    }
+
+    public function importFile(string $reporteNombre, string $identifier, string $fecha, string $ext, $result)
+    {
+        $this->fileImporter->write($reporteNombre, $identifier, $fecha, $ext, $result);
     }
 
     protected function importEntity($entity)
@@ -55,7 +65,7 @@ abstract class Importer
                 $this->handleManyToOne($entity, $this->getParent($entity, $mapping), $mapping);
             }
         }
-      
+
         $this->em->persist($entity);
         $this->em->flush();
     }

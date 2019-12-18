@@ -65,7 +65,7 @@ abstract class Report
     /**
      * @var Importer
      */
-    private $importer;
+    protected $importer;
 
     public function __construct(SSRSReport $SSRSReport, ReportFormatter $reportFormatter, Configuracion $configuracion,
                                 Utils $utils, Mapper $mapper, Importer $importer)
@@ -127,6 +127,9 @@ abstract class Report
         $this->SSRSReport->setExecutionParameters2($this->getExecutionParameters());
         return $this->render(new RenderAsPDF(), PageCountModeEnum::$Actual);
     }
+
+    public abstract function importPdf();
+
 
     /**
      * @return mixed

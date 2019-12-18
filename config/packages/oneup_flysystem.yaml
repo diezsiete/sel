@@ -8,9 +8,9 @@ oneup_flysystem:
             local:
                 directory: '%kernel.project_dir%/%private_uploads_dir_name%'
 
-        se_reportes:
+        novasoft_report:
             local:
-                directory: '%kernel.cache_dir%/se/reportes/'
+                directory: '%kernel.project_dir%/%private_uploads_dir_name%/novasoft/report'
 
         migration_autoliquidacion_adapter:
             local:
@@ -30,8 +30,8 @@ oneup_flysystem:
         private_uploads_filesystem:
             adapter: private_uploads_adapter
 
-        se_reportes:
-            adapter: se_reportes
+        novasoft_report:
+            adapter: novasoft_report
 
         migration_autoliquidacion_adapter:
             adapter: migration_autoliquidacion_adapter

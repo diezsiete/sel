@@ -103,4 +103,9 @@ class TrabajadoresActivosReport extends Report
         $this->parameter_Cod_Conv = is_object($convenio) ? $convenio->getCodigo() : $convenio;
         return $this;
     }
+
+    public function importPdf()
+    {
+        // TODO: Implement importPdf() method.
+    }
 }
