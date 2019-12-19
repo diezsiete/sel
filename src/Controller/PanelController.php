@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\Novasoft\NovasoftEmpleadoService;
 use App\Service\Novasoft\Report\ReportFactory;
 use App\Service\ServicioEmpleados\DataTable;
 use App\Service\ServicioEmpleados\Import;
@@ -10,12 +11,12 @@ use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-class PanelController extends AbstractController
+class PanelController extends BaseController
 {
     /**
      * @Route("/sel", name="sel_panel")
      */
-    public function panel(DataTable $dataTable, ReportFactory $reportFactory)
+    public function panel(DataTable $dataTable, ReportFactory $reportFactory, NovasoftEmpleadoService $novasoftEmpleadoService)
     {
         $datatables = [];
         $comprobantes = [];
@@ -28,7 +29,10 @@ class PanelController extends AbstractController
             $fecha = new DateTime();
 
             $comprobantes = $reportFactory->getReporteNomina(
-                $this->getUser()->getIdentificacion(), (new DateTime())->sub(new DateInterval('P2M'))
+                $this->getUser()->getIdentificacion(),
+                (new DateTime())->sub(new DateInterval('P2M')),
+                null,
+                $novasoftEmpleadoService->getSsrsDb($this->getUser()->getIdentificacion())
             )->renderMap();
 
             $tableAportes = $dataTable->certificadosAportes(['dom' => 'l', 'pageLength' => 3]);

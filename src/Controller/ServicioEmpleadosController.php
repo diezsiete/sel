@@ -4,20 +4,15 @@ namespace App\Controller;
 
 
 use App\DataTable\Type\AutoliquidacionEmpleadoDataTableType;
-use App\DataTable\Type\ReporteNominaDataTableType;
 use App\Entity\Autoliquidacion\AutoliquidacionEmpleado;
-use App\Entity\ReporteNomina;
-use App\Repository\ConvenioRepository;
 use App\Repository\EmpleadoRepository;
 use App\Service\Autoliquidacion\FileManager;
-use App\Service\Configuracion\Configuracion;
+use App\Service\Novasoft\NovasoftEmpleadoService;
 use App\Service\Novasoft\Report\ReportFactory;
 use App\Service\Novasoft\Report\ReportPdfHandler;
 use App\Service\Pdf\PdfCartaLaboral;
 use App\Service\ReportesServicioEmpleados;
-use App\Service\ServicioEmpleados\Import;
 use App\Service\ServicioEmpleados\Reportes;
-use DateInterval;
 use DateTime;
 use Exception;
 use Omines\DataTablesBundle\DataTableFactory;
@@ -31,15 +26,17 @@ class ServicioEmpleadosController extends BaseController
      * @var EmpleadoRepository
      */
     private $empleadoRepository;
-    /**
-     * @var Configuracion
-     */
-    private $configuracion;
 
-    public function __construct(EmpleadoRepository $empleadoRepository, Configuracion $configuracion)
+    /**
+     * @var NovasoftEmpleadoService
+     */
+    private $novasoftEmpleadoService;
+
+    public function __construct(EmpleadoRepository $empleadoRepository, NovasoftEmpleadoService $novasoftEmpleadoService)
     {
         $this->empleadoRepository = $empleadoRepository;
-        $this->configuracion = $configuracion;
+
+        $this->novasoftEmpleadoService = $novasoftEmpleadoService;
     }
 
     /**
@@ -77,7 +74,7 @@ class ServicioEmpleadosController extends BaseController
      */
     public function comprobantesNomina(ReportFactory $reportFactory)
     {
-        $nominaReport = $reportFactory->getReporteNomina($this->getUser()->getIdentificacion());
+        $nominaReport = $reportFactory->getReporteNomina($this->getUser()->getIdentificacion(), null, null, $this->getSsrsDb());
 
         return $this->render('servicio_empleados/comprobantes-temp.html.twig', [
             'comprobantes' => $nominaReport->renderMap()
@@ -94,7 +91,7 @@ class ServicioEmpleadosController extends BaseController
             $ident = $this->getUser()->getIdentificacion();
             // usar write si no se quiere cache
             $pdfHandler->cache('comprobante', $fecha, $ident, function ($fecha, $ident) use ($reportFactory) {
-                return $reportFactory->getReporteNomina($ident, $fecha, $fecha)->renderPdf();
+                return $reportFactory->getReporteNomina($ident, $fecha, $fecha, $this->getSsrsDb())->renderPdf();
             });
             return $pdfHandler->readStream('comprobante', $fecha, $ident);
         });
@@ -103,7 +100,7 @@ class ServicioEmpleadosController extends BaseController
     /**
      * @Route("/sel/se/certificado-laboral", name="app_certificado_laboral", defaults={ "header" :"Certificado Laboral"})
      */
-    public function certificadoLaboral(ReportesServicioEmpleados $reportes, Configuracion $configuracion)
+    public function certificadoLaboral(ReportesServicioEmpleados $reportes)
     {
         $identificacion = $this->getUser()->getIdentificacion();
         $certificados = $reportes->getCertificadosLaborales($identificacion, $this->getSsrsDb());
@@ -211,15 +208,6 @@ class ServicioEmpleadosController extends BaseController
      */
     private function getSsrsDb()
     {
-        if(count($this->configuracion->getSsrsDb()) === 1) {
-            return $this->configuracion->getSsrsDb()[0]->getNombre();
-        }
-
-        $empleado = $this->empleadoRepository->findByIdentificacion($this->getUser()->getIdentificacion());
-        if($empleado) {
-            return $empleado->getSsrsDb();
-        } else {
-            return $this->configuracion->getSsrsDb()[0]->getNombre();
-        }
+        return $this->novasoftEmpleadoService->getSsrsDb($this->getUser()->getIdentificacion());
     }
 }

@@ -30,7 +30,7 @@ class ReportFactory implements ServiceSubscriberInterface
      * @param null $fechaFin
      * @return NominaReport
      */
-    public function getReporteNomina($identificacion = null, $fechaInicio = null, $fechaFin = null)
+    public function getReporteNomina($identificacion = null, $fechaInicio = null, $fechaFin = null, $ssrsdb = null)
     {
         $reporteNomina = $this->container->get(NominaReport::class);
         if($identificacion) {
@@ -42,6 +42,11 @@ class ReportFactory implements ServiceSubscriberInterface
         if($fechaFin) {
             $reporteNomina->setParameterFechaFin($fechaFin);
         }
+
+        if($ssrsdb) {
+            $reporteNomina->setDb($ssrsdb);
+        }
+
         return $reporteNomina;
     }
 

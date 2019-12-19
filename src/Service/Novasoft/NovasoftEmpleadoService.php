@@ -108,6 +108,25 @@ class NovasoftEmpleadoService
         return false;
     }
 
+    /**
+     * @param string $identificacion
+     * @return string|null
+     * @throws Exception
+     */
+    public function getSsrsDb($identificacion)
+    {
+        if(count($this->configuracion->getSsrsDb()) === 1) {
+            return $this->configuracion->getSsrsDb()[0]->getNombre();
+        }
+
+        $empleado = $this->empleadoRepository->findByIdentificacion($identificacion);
+        if($empleado) {
+            return $empleado->getSsrsDb();
+        } else {
+            return $this->configuracion->getSsrsDb()[0]->getNombre();
+        }
+    }
+
     private function importEmpleado(Empleado $empleado, string $ssrsDb)
     {
         $usuario = $this->updateUsuario($empleado->getUsuario());
