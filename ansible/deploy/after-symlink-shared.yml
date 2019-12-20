@@ -13,11 +13,3 @@
     owner: ptaweb
     group: ptaweb
   when: empresa == "pta"
-
-- name: Extract evaluacion induccion
-  unarchive:
-    src: "{{ playbook_dir }}/../var/uploads/evaluacion/induccion.tgz"
-    dest: "{{ release_var_path }}/uploads/evaluacion/induccion"
-    owner: "{{ owner }}"
-    group: "{{ group }}"
-  when: empresa == "servilabor"

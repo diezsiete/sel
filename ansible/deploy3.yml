@@ -14,12 +14,6 @@
           dest: "{{ playbook_dir }}/../public/img.tgz"
         when: empresa == "pta"
 
-      - name: Archive evaluacion inducion
-        archive:
-          path: "{{ playbook_dir }}/../var/uploads/evaluacion/induccion"
-          dest: "{{ playbook_dir }}/../var/uploads/evaluacion/induccion.tgz"
-        when: empresa == "servilabor"
-
 - hosts: ptagd
 
   vars:
@@ -70,13 +64,6 @@
         file:
             path: "{{ playbook_dir }}/../public/img.tgz"
             state: absent
-
-      - name: Remove archive evaluacion induccion
-        file:
-          path: "{{ playbook_dir }}/../var/uploads/evaluacion/induccion.tgz"
-          state: absent
-        when: empresa == "servilabor"
-
 
       - name: yarn dev build assets
         command: yarn build-assets
