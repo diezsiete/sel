@@ -31,12 +31,12 @@ class EvaluacionController extends BaseController
     }
 
     /**
-     * @Route("/sel/admin/evaluacion/{slug}/pdf", name="admin_evaluacion_pdf")
+     * @Route("/sel/admin/evaluacion/{slug}/pdf/{type}", name="admin_evaluacion_pdf", defaults={"type"="completa"})
      */
-    public function pdf(UploaderHelper $uploaderHelper, string $slug, Configuracion $configuracion)
+    public function pdf(UploaderHelper $uploaderHelper, Configuracion $configuracion, string $slug, string $type)
     {
-        return $this->renderStream(function () use ($uploaderHelper, $slug, $configuracion) {
-            $path = "/evaluacion/$slug/" . $configuracion->getEmpresa(true) . ".pdf";
+        return $this->renderStream(function () use ($uploaderHelper, $configuracion, $slug, $type) {
+            $path = "/evaluacion/$slug/" . $configuracion->getEmpresa(true) . "-$type.pdf";
             return $uploaderHelper->readStream($path, false);
         }, 'application/pdf', $slug . ".pdf");
     }

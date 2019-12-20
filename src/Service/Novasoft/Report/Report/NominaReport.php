@@ -84,7 +84,7 @@ class NominaReport extends Report
         parent::__construct($SSRSReport, $reportFormatter, $configuracion, $utils, $mapper, $importer);
 
         $this->parameter_FecIni = '2/1/2017';
-        $this->parameter_FecFin = $utils->dateFormatToday('m/d/Y');
+        $this->parameter_FecFin = $utils->dateFormatToday('m/t/Y');
     }
 
 
