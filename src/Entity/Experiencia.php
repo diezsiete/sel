@@ -49,7 +49,7 @@ class Experiencia implements HvEntity
     private $area;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      * @Assert\NotNull(message="Ingrese descripcion")
      * @Groups({"main", "scraper", "scraper-hv-child"})
      */
