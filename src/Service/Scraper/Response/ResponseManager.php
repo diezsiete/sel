@@ -9,12 +9,15 @@ use App\Service\Scraper\Exception\ScraperConflictException;
 use App\Service\Scraper\Exception\ScraperException;
 use App\Service\Scraper\Exception\ScraperNotFoundException;
 use App\Service\Scraper\Exception\ScraperTimeoutException;
+use Exception;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class ResponseManager
@@ -28,11 +31,16 @@ class ResponseManager
      * @var PropertyAccessorInterface
      */
     private $propertyAccessor;
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
 
 
-    public function __construct(PropertyAccessorInterface $propertyAccessor)
+    public function __construct(PropertyAccessorInterface $propertyAccessor, EventDispatcherInterface $eventDispatcher)
     {
         $this->propertyAccessor = $propertyAccessor;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -72,6 +80,35 @@ class ResponseManager
             return $responseBody;
         } catch (DecodingExceptionInterface | TransportExceptionInterface | RedirectionExceptionInterface |
                  ClientExceptionInterface | ServerExceptionInterface $e) {
+            throw ScraperClientException::instance($e);
+        }
+    }
+
+    public function handleStreamResponse(ResponseInterface $response, HttpClientInterface $httpClient, string $responseClass = null)
+    {
+        try {
+            if (200 !== $response->getStatusCode()) {
+                $message = $responseBody['message'] ?? "Error " . $response->getStatusCode();
+                throw ScraperException::create($message, $responseBody['code'] ??  static::ERROR, $responseBody['log'] ?? '');
+            }
+
+            $responses = [];
+            $count = 0;
+            foreach ($httpClient->stream($response) as $chunk) {
+                $responses[$count] = $chunk->getContent();
+                $this->eventDispatcher->dispatch(new ScraperStreamResponseEvent($responses[$count]));
+                $count = $count === 0 ? 1 : 0;
+            }
+            $responseBody = isset($responses[0]) ? trim($responses[0]) : "";
+            if(isset($responses[1]) && trim($responses[1])) {
+                $responseBody = trim($responses[1]);
+            }
+            if($responseClass && $responseBody) {
+                $responseBody = $this->convertResponseBodyToObject(json_decode($responseBody, true), $responseClass);
+            }
+            return $responseBody;
+
+        } catch (TransportExceptionInterface  $e) {
             throw ScraperClientException::instance($e);
         }
     }

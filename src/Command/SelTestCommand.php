@@ -4,54 +4,65 @@ namespace App\Command;
 
 use App\Service\Novasoft\Report\Report\LiquidacionNominaReport;
 use App\Service\Novasoft\Report\Report\TrabajadoresActivosReport;
+use App\Service\Scraper\HvScraper;
+use App\Service\Scraper\NovasoftScraper;
+use App\Service\Scraper\Response\ScraperStreamResponseEvent;
+use App\Service\Scraper\ScraperClient;
 use DateTime;
 use Exception;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 
 class SelTestCommand extends Command
 {
     protected static $defaultName = 'sel:test';
     /**
-     * @var LiquidacionNominaReport
+     * @var ScraperClient
      */
-    private $report;
+    private $scraperClient;
     /**
-     * @var TrabajadoresActivosReport
+     * @var NovasoftScraper
      */
-    private $trabajadoresActivosReport;
+    private $novasoftScraper;
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
 
-    public function __construct(LiquidacionNominaReport $report, TrabajadoresActivosReport $trabajadoresActivosReport)
+    public function __construct(ScraperClient $scraperClient, NovasoftScraper $novasoftScraper, EventDispatcherInterface $eventDispatcher)
     {
         parent::__construct();
-        $this->report = $report;
-        $this->trabajadoresActivosReport = $trabajadoresActivosReport;
-    }
 
-    protected function configure()
-    {
-        $this->addArgument('index', InputArgument::OPTIONAL);
+        $this->scraperClient = $scraperClient;
+        $this->novasoftScraper = $novasoftScraper;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        /*$response = $this->scraperClient->get('/test/stream', [], null);
 
-//        $index = $input->getArgument('index');
-//        dump($this->report->getParameters()[$index]);
-        $this->report
-            ->setFechaInicial(DateTime::createFromFormat('Y-m-d', '2019-11-01'))
-            ->setFechaFinal(DateTime::createFromFormat('Y-m-d', '2019-11-30'))
-            ->setConvenio('ALD-SA')
-            ->setIdentificacion(1095942504);
-        try {
-            $return = $this->report->renderMap();
-            dump($return);
-        }catch(Exception $e) {
-            dump($e);
+        if (200 !== $response->getStatusCode()) {
+            throw new Exception("response status code : {$response->getStatusCode()}");
         }
+
+        $responses = [];
+        foreach ($this->scraperClient->getHttpClient()->stream($response) as $chunk) {
+            $responses[] = $chunk->getContent();
+            $output->writeln($responses[count($responses) - 1]);
+        }
+        dump($responses);*/
+
+        $this->eventDispatcher->addListener(ScraperStreamResponseEvent::class, function (ScraperStreamResponseEvent $event) use ($output, &$count) {
+            $output->writeln($event->getContent());
+        });
+
+        $response = $this->novasoftScraper->home();
+        dump($response);
     }
 }

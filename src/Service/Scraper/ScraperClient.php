@@ -82,6 +82,12 @@ class ScraperClient
         return $this->responseManager->handleResponse($response, ScraperResponse::class);
     }
 
+    public function getStream(string $url, array $options = [])
+    {
+        $response = $this->request('GET', $url, $options);
+        return $this->responseManager->handleStreamResponse($response, $this->httpClient, ScraperResponse::class);
+    }
+
     /**
      * @param string $url
      * @param $jsonData
