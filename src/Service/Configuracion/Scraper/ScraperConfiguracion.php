@@ -15,11 +15,6 @@ class ScraperConfiguracion
     /**
      * @var string
      */
-    private $kernelProjectDir;
-
-    /**
-     * @var string
-     */
     private $url;
 
     /**
@@ -32,18 +27,11 @@ class ScraperConfiguracion
      */
     private $ael;
 
-    /**
-     * @var bool
-     */
-    private $autoConsume;
 
-
-    public function __construct(Configuracion $configuracion, $kernelProjectDir, $config, $empresaConfig)
+    public function __construct(Configuracion $configuracion, $config, $empresaConfig)
     {
         $this->configuracion = $configuracion;
-        $this->kernelProjectDir = $kernelProjectDir;
         $this->url = $config['url'];
-        $this->autoConsume = $empresaConfig['auto_consume'];
         $this->novasoft = new Novasoft($config['novasoft'], $empresaConfig['novasoft']);
         $this->ael = new Ael($config['ael']);
     }
@@ -56,19 +44,6 @@ class ScraperConfiguracion
         return $this->url;
     }
 
-    /**
-     * @return bool
-     */
-    public function isAutoConsume(): bool
-    {
-        return $this->autoConsume;
-    }
-
-    public function getConsumeCommand()
-    {
-        $phpExec = $this->configuracion->phpExec();
-        return $phpExec . " " . $this->kernelProjectDir . "/bin/messenger messenger:consume scraper_hv async --limit=1";
-    }
 
     /**
      * @return Novasoft
@@ -85,7 +60,4 @@ class ScraperConfiguracion
     {
         return $this->ael;
     }
-
-
-
 }

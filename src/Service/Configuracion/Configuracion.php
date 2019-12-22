@@ -12,7 +12,6 @@ use Exception;
 use Symfony\Bridge\Twig\Extension\AssetExtension;
 use Symfony\Component\Asset\Packages;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
-use Symfony\WebpackEncoreBundle\Asset\EntrypointLookupCollectionInterface;
 use Twig\Environment;
 
 class Configuracion
@@ -249,7 +248,7 @@ class Configuracion
     public function getScraper()
     {
         if(!$this->scraper) {
-            $this->scraper = new ScraperConfiguracion($this, $this->kernelProjectDir, $this->bag->get('scraper'), $this->parameters['scraper']);
+            $this->scraper = new ScraperConfiguracion($this, $this->bag->get('scraper'), $this->parameters['scraper']);
         }
         return $this->scraper;
     }

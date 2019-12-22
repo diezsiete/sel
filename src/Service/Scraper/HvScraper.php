@@ -90,8 +90,6 @@ class HvScraper
     public function updateChild($data)
     {
         return $this->scraperClient->put($this->getFullUrl('child'), $data, ['timeout' => 60]);
-
-
     }
 
     /**

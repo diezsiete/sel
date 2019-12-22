@@ -23,3 +23,9 @@ monolog:
             level: debug
             channels: ni_convenio
 
+        messenger:
+            type: stream
+            path: "%kernel.logs_dir%/messenger.log"
+            level: debug
+            channels: ["messenger_audit"]
+

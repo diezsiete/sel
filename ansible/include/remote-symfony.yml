@@ -27,12 +27,6 @@
       regexp: '^(#!/usr/bin/env) php'
       replace: '\1 {{ php_exec }}'
 
-- name: Modify messenger console
-  replace:
-      path: "{{ ansistrano_release_path.stdout }}/bin/messenger"
-      regexp: '^(#!/usr/bin/env) php'
-      replace: '\1 {{ php_exec }}'
-
 - name: Install composer deps
   command: "{{ php_exec }} {{ composer }} install --no-dev"
   args:

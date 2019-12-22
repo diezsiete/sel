@@ -166,7 +166,6 @@ class Configuration implements ConfigurationInterface
         $node =
             $treeBuilder->getRootNode()
                 ->children()
-                    ->booleanNode('auto_consume')->defaultFalse()->end()
                     ->arrayNode('novasoft')
                         ->children()
                             ->scalarNode('browser')->end()

@@ -8,13 +8,17 @@ use App\Entity\Autoliquidacion\AutoliquidacionEmpleado;
 use App\Entity\Autoliquidacion\AutoliquidacionProgreso;
 use App\Entity\Hv;
 use App\Entity\HvEntity;
+use App\Entity\Scraper\Solicitud;
 use App\Message\Scraper\DownloadAutoliquidacion;
 use App\Message\Scraper\GenerateAutoliquidacion;
-use App\Message\Scraper\UpdateHvInNovasoft;
-use App\Message\Scraper\UpdateHvInNovasoftSuccess;
-use App\Messenger\Stamp\ScraperHvSuccessStamp;
+use App\Message\Scraper\InsertHvChildInNovasoft;
+use App\Message\Scraper\InsertHvInNovasoft;
+use App\Message\Scraper\UpdateHvChildsInNovasoft;
+use App\Message\Scraper\UpdateHvDatosBasicosInNovasoft;
+use App\Messenger\Stamp\ScraperSolcitudStamp;
 use App\Service\Configuracion\Configuracion;
-use App\Service\Exec;
+use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -22,6 +26,9 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ScraperMessenger
 {
+
+    use HvNovasoftHandler;
+
     /**
      * @var MessageBusInterface
      */
@@ -38,90 +45,63 @@ class ScraperMessenger
      * @var Configuracion
      */
     private $configuracion;
+
     /**
-     * @var Exec
+     * @var EntityManagerInterface
      */
-    private $exec;
+    private $em;
 
     public function __construct(MessageBusInterface $messageBus, NormalizerInterface $normalizer, $appEnv,
-                                Configuracion $configuracion, Exec $exec)
+                                Configuracion $configuracion, EntityManagerInterface $em)
     {
         $this->messageBus = $messageBus;
         $this->normalizer = $normalizer;
         $this->appEnv = $appEnv;
         $this->configuracion = $configuracion;
-        $this->exec = $exec;
-    }
-
-    public function insertToNovasoft(Hv $hv)
-    {
-        try {
-            $this->autoConsume();
-            $data = $this->normalizer->normalize($hv, null, ['groups' => ['scraper']]);
-            $message = new UpdateHvInNovasoft($hv->getId(), $data, UpdateHvInNovasoft::ACTION_INSERT);
-            $this->messageBus->dispatch($message);
-        } catch (Exception $e) {
-            $this->handleDispatchException($e);
-        }
+        $this->em = $em;
     }
 
     public function updateDatosBasicos(Hv $hv)
     {
         try {
-            $this->autoConsume();
-            $data = $this->normalizer->normalize($hv, null, ['groups' => ['scraper-hv']]);
-            $message = new UpdateHvInNovasoft($hv->getId(), $data, UpdateHvInNovasoft::ACTION_UPDATE);
-            $this->messageBus->dispatch($message);
+            $data = $this->normalizeDatosBasicos($hv, $this->normalizer);
+            $this->dispatchScraperSolicitud($hv, $data, UpdateHvDatosBasicosInNovasoft::class);
         } catch (Exception $e) {
             $this->handleDispatchException($e);
         }
     }
+
+
+    public function insertToNovasoft(Hv $hv)
+    {
+        try {
+            $data = $this->normailizeFullHv($hv, $this->normalizer);
+            $this->dispatchScraperSolicitud($hv, $data, InsertHvInNovasoft::class);
+        } catch (Exception $e) {
+            $this->handleDispatchException($e);
+        }
+    }
+
 
     public function insertChild(HvEntity $hvEntity)
     {
         try {
-            $this->autoConsume();
-            $data = $this->normalizer->normalize($hvEntity->getHv(), null, [
-                'groups' => ['scraper-hv-child'], 'scraper-hv-child' => $hvEntity]);
-            $message = new UpdateHvInNovasoft($hvEntity->getHv()->getId(), $data, UpdateHvInNovasoft::ACTION_CHILD_INSERT);
-            $this->messageBus->dispatch($message);
+            $data = $this->normalizeOneHvChild($hvEntity, $this->normalizer);
+            $message = new InsertHvChildInNovasoft($hvEntity->getId(), get_class($hvEntity));
+            $this->dispatchScraperSolicitud($hvEntity->getHv(), $data, $message);
         } catch (Exception $e) {
             $this->handleDispatchException($e);
         }
     }
 
-    public function updateChild(HvEntity $hvEntity)
+    public function updateChild(Hv $hv, $childClass)
     {
         try {
-            $this->autoConsume();
-            $data = $this->normalizer->normalize($hvEntity->getHv(), null, [
-                'groups' => ['scraper-hv-child'], 'scraper-hv-child' => get_class($hvEntity)]);
-            $message = new UpdateHvInNovasoft($hvEntity->getHv()->getId(), $data, UpdateHvInNovasoft::ACTION_CHILD_UPDATE);
-            $this->messageBus->dispatch($message);
+            $data = $this->normalizeHvChilds($hv, $childClass, $this->normalizer);
+            $this->dispatchScraperSolicitud($hv, $data, new UpdateHvChildsInNovasoft($childClass));
         } catch (Exception $e) {
             $this->handleDispatchException($e);
         }
-    }
-
-    public function deleteChild(Hv $hv, string $childClass)
-    {
-        try {
-            $this->autoConsume();
-            $data = $this->normalizer->normalize($hv, null, [
-                'groups' => ['scraper-hv-child'], 'scraper-hv-child' => $childClass]);
-            $message = new UpdateHvInNovasoft($hv->getId(), $data, UpdateHvInNovasoft::ACTION_CHILD_DELETE);
-            $this->messageBus->dispatch($message);
-        } catch (Exception $e) {
-            $this->handleDispatchException($e);
-        }
-    }
-
-
-    public function saveUpdateHvSuccess($hvId, $data, $action, $log)
-    {
-        $message = new UpdateHvInNovasoftSuccess($hvId, $data, $action);
-
-        $this->messageBus->dispatch(new Envelope($message, [new ScraperHvSuccessStamp($log)]));
     }
 
 
@@ -147,12 +127,24 @@ class ScraperMessenger
         $this->messageBus->dispatch(new DownloadAutoliquidacion($id, $progresoId));
     }
 
-    private function autoConsume()
+
+    private function dispatchScraperSolicitud(Hv $hv, $data, $messageClass)
     {
-        if($this->configuracion->getScraper()->isAutoConsume() && !$this->exec->uniqueExists('messenger')) {
-            $command = $this->configuracion->getScraper()->getConsumeCommand();
-            $this->exec->asyncUnique($command, 'messenger');
-        }
+        $solicitud = (new Solicitud())
+            ->setHv($hv)
+            ->setData(json_encode($data))
+            ->setCreatedAt(new DateTime())
+            ->setMessageClass(is_string($messageClass) ? $messageClass : get_class($messageClass));
+
+        $this->em->persist($solicitud);
+        $this->em->flush();
+
+        $message = is_string($messageClass) ? new $messageClass($solicitud->getId()) : $messageClass->setSolicitudId($solicitud->getId());
+        $envelope = new Envelope($message, [
+            new ScraperSolcitudStamp($solicitud->getId())
+        ]);
+
+        $this->messageBus->dispatch($envelope);
     }
 
 

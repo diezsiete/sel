@@ -3,8 +3,7 @@ framework:
         buses:
             messenger.bus.default:
                 middleware:
-                    - App\Messenger\NovasoftValidateMiddleware
-                    - App\Messenger\ScraperResponseMiddleware
+                    - App\Messenger\ScraperSolicitudMiddleware
 
         # Uncomment this (and the failed transport below) to send failed messages to this transport for later handling.
         failure_transport: failed
@@ -22,37 +21,15 @@ framework:
                     max_retries: 0
                     delay: 2000
 
-            scraper_hv:
-                dsn: 'scraper://default'
-                options:
-                    table_name: scraper_message_hv
-                serializer: 'App\Serializer\Scraper\HvMessageSerializer'
-                retry_strategy:
-                    max_retries: 0
-                    delay: 2000
-            scraper_hv_success:
-                dsn: 'scraper://default'
-                options:
-                    table_name: scraper_message_hv_success
-                    queue_name: success
-                serializer: 'App\Serializer\Scraper\HvMessageSerializer'
-                retry_strategy:
-                    max_retries: 0
+            failed: 'doctrine://default?queue_name=failed'
 
-            # failed: 'scraper://default?queue_name=failed'
-            failed:
-                dsn: 'scraper://default'
-                options:
-                    table_name: scraper_message_hv
-                    auto_setup: false
-                    queue_name: failed
-                serializer: 'App\Serializer\Scraper\HvMessageSerializer'
             sync: 'sync://'
 
         routing:
             # Route your messages to the transports
-            'App\Message\Scraper\UpdateHvInNovasoft': scraper_hv
-            'App\Message\Scraper\UpdateHvInNovasoftSuccess': scraper_hv_success
-            'App\Message\Scraper\UpdateResponseReceived': async
+            'App\Message\Scraper\UpdateHvDatosBasicosInNovasoft': async
+            'App\Message\Scraper\InsertHvInNovasoft': async
+            'App\Message\Scraper\InsertHvChildInNovasoft': async
+            'App\Message\Scraper\UpdateHvChildsInNovasoft': async
             'App\Message\Scraper\GenerateAutoliquidacion': async
             'App\Message\Scraper\DownloadAutoliquidacion': async2

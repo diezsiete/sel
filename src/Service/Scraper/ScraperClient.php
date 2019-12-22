@@ -36,10 +36,6 @@ class ScraperClient
      */
     private $responseManager;
 
-    /**
-     * @var int|float
-     */
-    private $timeout = 60;
 
     public function __construct(HttpClientInterface $httpClient, Configuracion $configuracion, ResponseManager $responseManager)
     {
@@ -65,6 +61,7 @@ class ScraperClient
         }
         return $response;
     }
+
 
     /**
      * @param string $url
@@ -107,6 +104,24 @@ class ScraperClient
 
     /**
      * @param string $url
+     * @param $jsonData
+     * @param array $options
+     * @return ScraperResponse|mixed
+     * @throws ScraperClientException
+     * @throws ScraperConflictException
+     * @throws ScraperException
+     * @throws ScraperNotFoundException
+     * @throws ScraperTimeoutException
+     */
+    public function postStream(string $url, $jsonData, $options = [])
+    {
+        $streamTimeout = $this->getStreamTimeout($options);
+        $response = $this->request('POST', $url, ['json' => $jsonData] + $options);
+        return $this->responseManager->handleStreamResponse($response, $this->httpClient, $streamTimeout, ScraperResponse::class);
+    }
+
+    /**
+     * @param string $url
      * @param $data
      * @param array $options
      * @return ScraperResponse
@@ -120,6 +135,24 @@ class ScraperClient
     {
         $response = $this->request('PUT', $url, ['json' => $data] + $options);
         return $this->responseManager->handleResponse($response, ScraperResponse::class);
+    }
+
+    /**
+     * @param string $url
+     * @param $data
+     * @param array $options
+     * @return ScraperResponse|mixed
+     * @throws ScraperClientException
+     * @throws ScraperConflictException
+     * @throws ScraperException
+     * @throws ScraperNotFoundException
+     * @throws ScraperTimeoutException
+     */
+    public function putStream(string $url, $data, $options = [])
+    {
+        $streamTimeout = $this->getStreamTimeout($options);
+        $response = $this->request('PUT', $url, ['json' => $data] + $options);
+        return $this->responseManager->handleStreamResponse($response, $this->httpClient, $streamTimeout, ScraperResponse::class);
     }
 
     /**
@@ -173,5 +206,14 @@ class ScraperClient
     private function getFullUrl($url)
     {
         return $this->configuracion->getScraper()->getUrl() . $url;
+    }
+
+    private function getStreamTimeout(&$options, $defaultTimeout = 2)
+    {
+        if(isset($options['timeout'])) {
+            $defaultTimeout = $options['timeout'];
+            unset($options['timeout']);
+        }
+        return $defaultTimeout;
     }
 }

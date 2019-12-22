@@ -264,11 +264,6 @@ class Hv implements HvEntity
      */
     private $adjunto;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $scraper = false;
-
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Vacante", mappedBy="hvs")
@@ -947,17 +942,6 @@ class Hv implements HvEntity
         return $this;
     }
 
-    public function getScraper(): ?bool
-    {
-        return $this->scraper;
-    }
-
-    public function setScraper(bool $scraper): self
-    {
-        $this->scraper = $scraper;
-
-        return $this;
-    }
 
     /**
      * @return Collection|Vacante[]

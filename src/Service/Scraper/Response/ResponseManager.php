@@ -10,6 +10,7 @@ use App\Service\Scraper\Exception\ScraperException;
 use App\Service\Scraper\Exception\ScraperNotFoundException;
 use App\Service\Scraper\Exception\ScraperTimeoutException;
 use Exception;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
@@ -35,12 +36,17 @@ class ResponseManager
      * @var EventDispatcherInterface
      */
     private $eventDispatcher;
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
 
-    public function __construct(PropertyAccessorInterface $propertyAccessor, EventDispatcherInterface $eventDispatcher)
+    public function __construct(PropertyAccessorInterface $propertyAccessor, EventDispatcherInterface $eventDispatcher, LoggerInterface $messengerAuditLogger)
     {
         $this->propertyAccessor = $propertyAccessor;
         $this->eventDispatcher = $eventDispatcher;
+        $this->logger = $messengerAuditLogger;
     }
 
     /**
@@ -84,7 +90,19 @@ class ResponseManager
         }
     }
 
-    public function handleStreamResponse(ResponseInterface $response, HttpClientInterface $httpClient, string $responseClass = null)
+    /**
+     * @param ResponseInterface $response
+     * @param HttpClientInterface $httpClient
+     * @param float $timeout
+     * @param string|null $responseClass
+     * @return mixed|ScraperResponse
+     * @throws ScraperClientException
+     * @throws ScraperConflictException
+     * @throws ScraperException
+     * @throws ScraperNotFoundException
+     * @throws ScraperTimeoutException
+     */
+    public function handleStreamResponse(ResponseInterface $response, HttpClientInterface $httpClient, float $timeout = 2, string $responseClass = null)
     {
         try {
             if (200 !== $response->getStatusCode()) {
@@ -92,17 +110,20 @@ class ResponseManager
                 throw ScraperException::create($message, $responseBody['code'] ??  static::ERROR, $responseBody['log'] ?? '');
             }
 
-            $responses = [];
-            $count = 0;
-            foreach ($httpClient->stream($response) as $chunk) {
-                $responses[$count] = $chunk->getContent();
-                $this->eventDispatcher->dispatch(new ScraperStreamResponseEvent($responses[$count]));
-                $count = $count === 0 ? 1 : 0;
+            $responseBody = "";
+            foreach ($httpClient->stream($response, $timeout) as $chunk) {
+                if($chunk->isTimeout()) {
+                    $this->logger->warning("stream timeout for '$timeout' seconds");
+                    throw new ScraperTimeoutException("stream timeout for '$timeout' seconds");
+                }
+
+                if(!$chunk->isLast()) {
+                    $responseBody = $chunk->getContent();
+                    $this->logger->debug($responseBody);
+                    $this->eventDispatcher->dispatch(new ScraperStreamResponseEvent($responseBody));
+                }
             }
-            $responseBody = isset($responses[0]) ? trim($responses[0]) : "";
-            if(isset($responses[1]) && trim($responses[1])) {
-                $responseBody = trim($responses[1]);
-            }
+
             if($responseClass && $responseBody) {
                 $responseBody = $this->convertResponseBodyToObject(json_decode($responseBody, true), $responseClass);
             }
@@ -115,6 +136,10 @@ class ResponseManager
 
     private function convertResponseBodyToObject($responseBody, $responseClass)
     {
+        if(isset($responseBody['code']) && $responseBody['code'] !== 200) {
+            $message = $responseBody['message'] ?? "Error " . $responseBody['code'];
+            throw ScraperException::create($message, $responseBody['code'], $responseBody['log'] ?? '');
+        }
         $response = !is_object($responseClass) ? new $responseClass() : $responseClass;
         foreach($responseBody as $key => $value) {
             if($this->propertyAccessor->isWritable($response, $key)) {

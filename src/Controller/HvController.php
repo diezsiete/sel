@@ -73,7 +73,7 @@ class HvController extends BaseController
 
             // si el usuario ya esta registrado
             if($hv->getUsuario()) {
-                //$scraperMessenger->insertToNovasoft($hv);
+                // $scraperMessenger->insertToNovasoft($hv);
                 $scraperMessenger->updateDatosBasicos($hv);
             }
 
@@ -195,7 +195,9 @@ class HvController extends BaseController
 
         // si el usuario ya esta registrado
         if($entity->getHv()->getUsuario()) {
-            $entityId ? $scraperMessenger->updateChild($entity) : $scraperMessenger->insertChild($entity);
+            $entityId
+                ? $scraperMessenger->updateChild($entity->getHv(), get_class($entity))
+                : $scraperMessenger->insertChild($entity);
         }
 
         return $this->json(['ok' => 1]);
@@ -216,7 +218,8 @@ class HvController extends BaseController
 
         // si el usuario ya esta registrado
         if($hv->getUsuario()) {
-            $scraperMessenger->deleteChild($hv, $childClass);
+            $scraperMessenger->updateChild($hv, $childClass);
+            // $scraperMessenger->deleteChild($hv, $childClass);
         }
 
         return $this->json(['ok' => 1]);
