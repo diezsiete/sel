@@ -114,7 +114,7 @@ class EmailCommand extends TraitableCommand
                         if($archiveSize < $cuotaAdjunto) {
                             if (!$input->getOption('dont-send')) {
 
-                                $recipientEmail = is_object($recipient) ? $recipient->getUsuario()->getEmail() : $recipient;
+                                $recipientEmail = is_object($recipient) ? $recipient->getEmail() : $recipient;
                                 $this->email->send($autoliq, $zipPath, $recipientEmail, $bccs);
                                 $this->info("Exito envio de email");
                                 if(!$testRecipient) {
@@ -161,7 +161,7 @@ class EmailCommand extends TraitableCommand
     private function logRecipients($recipient, $bccs = [])
     {
         $this->info(sprintf('    %s', "Encargado : " . (is_object($recipient)
-            ? "{$recipient->getUsuario()->getNombreCompleto()} [{$recipient->getUsuario()->getEmail()}]"
+            ? "{$recipient->getUsuario()->getNombreCompleto()} [{$recipient->getEmail()}]"
             : "{$recipient}"
         )));
         $this->info("    bcss: " . (!$bccs ? "no" : ""));
