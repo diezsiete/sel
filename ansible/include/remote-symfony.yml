@@ -1,23 +1,28 @@
 ---
 - name: Set up infrastructure related params
   template:
-      src: "{{ playbook_dir }}/templates/.env.local2"
+      src: "{{ playbook_dir }}/templates/.env.tpl.local"
       dest: "{{ ansistrano_release_path.stdout }}/.env.local"
 
 - name: Set up htaccess
   template:
-      src: "{{ playbook_dir }}/templates/.htaccess"
+      src: "{{ playbook_dir }}/templates/.tpl.htaccess"
       dest: "{{ release_public_path }}/.htaccess"
+
+- name: Set up messenger-worker
+  template:
+      src: "{{ playbook_dir }}/templates/messenger-worker.tpl.ini"
+      dest: "{{ release_public_path }}/src/config/messenger-worker.ini"
 
 - name: Set up robots.txt
   template:
-      src: "{{ playbook_dir }}/templates/robots.txt"
+      src: "{{ playbook_dir }}/templates/robots.tpl.txt"
       dest: "{{ release_public_path }}/robots.txt"
   when: empresa == "pta"
 
 - name: Set up sitemap
   template:
-      src: "{{ playbook_dir }}/templates/sitemap.xml"
+      src: "{{ playbook_dir }}/templates/sitemap.tpl.xml"
       dest: "{{ release_public_path }}/sitemap.xml"
   when: empresa == "pta"
 
