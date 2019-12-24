@@ -26,7 +26,7 @@ export default {
 
 
     _buttonClick($button) {
-        if($button.hasClass('btn-outline-danger')) {
+        if($button.hasClass('btn-outline-danger') || ($button.hasClass('btn-outline-primary') && !$button.hasClass('spin'))) {
             const id = $button.data('id');
             this._buttonSetEstadoStyle(id, 1);
             const route = Routing.generate('admin_scraper_retry_failed_message', {'hvId': id});
@@ -59,7 +59,7 @@ export default {
             $button.attr('class', "scraper btn btn-outline-danger mr-3").find('i').attr('class', 'fas fa-upload')
         }
         else if(estado === 4 || estado === 1) {
-            $button.attr('class', "scraper btn btn-outline-primary mr-3").find('i').attr('class', 'fas fa-spinner fa-spin')
+            $button.attr('class', "scraper btn btn-outline-primary mr-3 spin").find('i').attr('class', 'fas fa-spinner fa-spin')
         }
     },
 
