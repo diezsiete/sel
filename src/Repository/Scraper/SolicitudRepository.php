@@ -4,6 +4,8 @@ namespace App\Repository\Scraper;
 
 use App\Entity\Scraper\Solicitud;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use ReflectionClass;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -19,7 +21,6 @@ class SolicitudRepository extends ServiceEntityRepository
     const EJECUTADO_EXITO = 2;
     const EJECUTADO_ERROR = 3;
     const ESPERANDO_EN_COLA = 4;
-    const TERMINADO_ABRUPTO = 5;
 
     public function getEstadoString($estado) {
         switch($estado) {
@@ -31,11 +32,14 @@ class SolicitudRepository extends ServiceEntityRepository
                 return 'EJECUTADO EXITO';
             case static::ESPERANDO_EN_COLA:
                 return 'ESPERANDO EN COLA';
-            case static::TERMINADO_ABRUPTO:
-                return 'TERMINADO ABRUPTO';
             default:
                 return 'EJECUTADO ERROR';
         }
+    }
+
+    public function getEstadoArray()
+    {
+        return array_flip((new ReflectionClass($this))->getConstants());
     }
 
     public function __construct(RegistryInterface $registry)
@@ -43,34 +47,42 @@ class SolicitudRepository extends ServiceEntityRepository
         parent::__construct($registry, Solicitud::class);
     }
 
-
-
-    // /**
-    //  * @return Solicitud[] Returns an array of Solicitud objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @param int|array $hvId
+     * @return Solicitud[]
+     * @throws NonUniqueResultException
+     */
+    public function findLastSolicitud($hvId)
     {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('s.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $qb = $this->createQueryBuilder('s')
+            ->addSelect('hv')
+            ->join('s.hv', 'hv');
+        if(is_array($hvId)) {
+            $qb->andWhere($qb->expr()->in('hv.id', $hvId));
+        } else {
+            $qb->andWhere($qb->expr()->eq('hv.id', $hvId));
+        }
+        $qb->orderBy('s.createdAt', 'DESC')
+            ->groupBy('s.hv');
 
-    /*
-    public function findOneBySomeField($value): ?Solicitud
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        if(is_array($hvId)) {
+            return $qb->getQuery()->getResult();
+        } else {
+            return $qb->setMaxResults(1)->getQuery()->getOneOrNullResult();
+        }
     }
-    */
+
+    /**
+     * @param int $hvId
+     * @return Solicitud[]
+     */
+    public function findFailedByHvId(int $hvId)
+    {
+        $qb = $this->createQueryBuilder('s');
+        $qb->join('s.hv', 'hv')
+            ->andWhere($qb->expr()->eq('hv.id', $hvId));
+        return $qb->getQuery()->getResult();
+    }
+
+
 }

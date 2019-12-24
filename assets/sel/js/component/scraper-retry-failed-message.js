@@ -28,11 +28,11 @@ export default {
     _buttonClick($button) {
         if($button.hasClass('btn-outline-danger')) {
             const id = $button.data('id');
-            this._buttonSetQueueStyle(id, 'default');
+            this._buttonSetEstadoStyle(id, 1);
             const route = Routing.generate('admin_scraper_retry_failed_message', {'hvId': id});
             $.get( route, response => {
                 for(const hvId in response) {
-                    this._buttonSetQueueStyle(hvId, response[hvId]);
+                    this._buttonSetEstadoStyle(hvId, response[hvId]);
                     this._startInterval(hvId);
                 }
             });
@@ -42,7 +42,7 @@ export default {
     _messageQueueState(hvIds, callback) {
         $.post(this._routeMessageQueue, {ids: hvIds}, response => {
             for(const hvId in response) {
-                this._buttonSetQueueStyle(hvId, response[hvId]);
+                this._buttonSetEstadoStyle(hvId, response[hvId]);
                 if(callback) {
                     callback(hvId, response[hvId])
                 }
@@ -50,15 +50,15 @@ export default {
         })
     },
 
-    _buttonSetQueueStyle(hvId, $queueName) {
+    _buttonSetEstadoStyle(hvId, estado) {
         const $button = $('.scraper[data-id="' + hvId + '"]');
-        if($queueName === "success") {
+        if(estado === 2) {
             $button.attr('class', "scraper btn btn-outline-success mr-3").find('i').attr('class', 'fas fa-upload')
         }
-        else if($queueName === "failed") {
+        else if(estado === 3) {
             $button.attr('class', "scraper btn btn-outline-danger mr-3").find('i').attr('class', 'fas fa-upload')
         }
-        else if($queueName === "default") {
+        else if(estado === 4 || estado === 1) {
             $button.attr('class', "scraper btn btn-outline-primary mr-3").find('i').attr('class', 'fas fa-spinner fa-spin')
         }
     },
@@ -69,14 +69,14 @@ export default {
             if(!this._interval) {
                 this._interval = setInterval(() => {
                     if(this._queue.length > 0) {
-                        this._messageQueueState(this._queue, (hvId, queueName) => {
-                            if (queueName !== 'default') {
+                        this._messageQueueState(this._queue, (hvId, estado) => {
+                            if (estado !== 1 && estado !== 4) {
                                 const index = this._queue.indexOf(hvId);
                                 if (index !== -1) this._queue.splice(index, 1);
                             }
                         })
                     } else {
-                        clearInterval(interval);
+                        clearInterval(this._interval);
                         this._interval = null
                     }
                 }, 2000)
