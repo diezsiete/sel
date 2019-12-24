@@ -11,8 +11,10 @@ use App\Entity\Convenio;
 use App\Entity\Empleado;
 use App\Repository\ConvenioRepository;
 use App\Repository\EmpleadoRepository;
+use Doctrine\ORM\Query\QueryException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 trait SearchByConvenioOrEmpleado
@@ -20,6 +22,7 @@ trait SearchByConvenioOrEmpleado
 
     protected $searchName = 'search';
     protected $searchValue = [];
+    protected $activo = null;
 
     protected $disableSearchEmpleado = false;
 
@@ -57,8 +60,9 @@ trait SearchByConvenioOrEmpleado
     {
         $description = 'codigos convenios' . ($this->disableSearchEmpleado ? '' : ' o identificaciones')
             . '. Omita y se toman todos los convenios';
-        $this->addArgument($this->searchName, InputArgument::IS_ARRAY | InputArgument::OPTIONAL,
-            $description);
+        $this->addArgument($this->searchName, InputArgument::IS_ARRAY | InputArgument::OPTIONAL, $description);
+        $this->addOption('activo', null, InputOption::VALUE_NONE,
+                'Selecciona empleados activos. Cuya fecha de retiro sea null o mayor a la actual');
         return $this;
     }
 
@@ -70,6 +74,7 @@ trait SearchByConvenioOrEmpleado
         if($this->searchName) {
             $this->searchValue = $event->getInput()->getArgument($this->searchName);
         }
+        $this->activo = $event->getInput()->getOption('activo');
     }
 
 
@@ -120,13 +125,14 @@ trait SearchByConvenioOrEmpleado
 
     /**
      * @return Empleado|Empleado[]|null
+     * @throws QueryException
      */
-    protected function getEmpleados()
+    protected function getEmpleados($field = null)
     {
         if (!$this->isSearchConvenio()) {
             return $this->empleadoRepository->findByIdentificacion($this->searchValue);
         } else {
-            return $this->empleadoRepository->findByConvenio($this->searchValue);
+            return $this->empleadoRepository->findByConvenio($this->searchValue, $this->activo, $field);
         }
     }
 

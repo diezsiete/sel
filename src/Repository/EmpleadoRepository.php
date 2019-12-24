@@ -4,11 +4,15 @@ namespace App\Repository;
 
 use App\Entity\Empleado;
 use App\Entity\Usuario;
+use DateTime;
+use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Query\QueryException;
+use Doctrine\ORM\QueryBuilder;
+use Exception;
 use phpDocumentor\Reflection\Types\Static_;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -78,23 +82,27 @@ class EmpleadoRepository extends ServiceEntityRepository
 
     /**
      * @param string|string[]|null $codigoConvenio
+     * @param bool|DateTimeInterface|null $activo
      * @return Empleado[]
+     * @throws QueryException
      */
-    public function findByConvenio($codigoConvenio = null)
+    public function findByConvenio($codigoConvenio = null, $activo = false, $field = "")
     {
-        $qb = $this->createQueryBuilder('e');
-
-        if($codigoConvenio) {
-            $qb->join('e.convenio', 'c');
-            if (is_array($codigoConvenio)) {
-                $qb->andWhere($qb->expr()->in('c.codigo', ':codigoConvenio'));
-            } else {
-                $qb->andWhere('c.codigo = :codigoConvenio');
+        $qb = $this->findByConvenioBuilder($codigoConvenio, $activo);
+        if($field) {
+            if(in_array($field, ["email", "identificacion"])) {
+                $field = "u.$field";
+                $qb->join('e.usuario', 'u');
             }
-            $qb->setParameter('codigoConvenio', $codigoConvenio);
+            return $qb
+                ->select($field)
+                ->getQuery()
+                ->getResult('FETCH_COLUMN');
         }
         return $qb->getQuery()->getResult();
     }
+
+
 
     public function findBySsrsDb($ssrsDb)
     {
@@ -120,18 +128,6 @@ class EmpleadoRepository extends ServiceEntityRepository
                 ->addCriteria(static::convenioCriteria($codigoConvenio));
         }
         return $qb->getQuery()->getResult();
-    }
-
-    public static function rangoPeriodoCriteria($periodoInicio, $periodoFin)
-    {
-        return Criteria::create()
-            ->andWhere(Criteria::expr()->andX(
-                Criteria::expr()->lt('fechaIngreso', $periodoFin),
-                Criteria::expr()->orX(
-                    Criteria::expr()->isNull('fechaRetiro'),
-                    Criteria::expr()->gt('fechaRetiro', $periodoInicio)
-                )
-            ));
     }
 
 
@@ -200,6 +196,43 @@ class EmpleadoRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult('FETCH_COLUMN');
     }
 
+    /**
+     * TODO agregar types a los argumentos
+     * @param $periodoInicio
+     * @param $periodoFin
+     * @return Criteria
+     */
+    public static function rangoPeriodoCriteria($periodoInicio, $periodoFin)
+    {
+        return Criteria::create()
+            ->andWhere(Criteria::expr()->andX(
+                Criteria::expr()->lt('fechaIngreso', $periodoFin),
+                // TODO usar static::fechaRetiroCriteria($periodoInicio)
+                Criteria::expr()->orX(
+                    Criteria::expr()->isNull('fechaRetiro'),
+                    Criteria::expr()->gt('fechaRetiro', $periodoInicio)
+                )
+            ));
+    }
+
+    /**
+     * @param DateTimeInterface|null $fechaRetiro
+     * @return Criteria
+     * @throws Exception
+     */
+    public static function fechaRetiroCriteria(?DateTimeInterface $fechaRetiro = null)
+    {
+        if(!$fechaRetiro) {
+            $fechaRetiro = new DateTime();
+        }
+
+        return Criteria::create()
+            ->andWhere(Criteria::expr()->orX(
+                Criteria::expr()->isNull('fechaRetiro'),
+                Criteria::expr()->gt('fechaRetiro', $fechaRetiro)
+            ));
+    }
+
     public static function convenioCriteria($codigos) {
         $criteria = Criteria::create();
         if(is_array($codigos)) {
@@ -208,5 +241,32 @@ class EmpleadoRepository extends ServiceEntityRepository
             $criteria->andWhere(Criteria::expr()->eq('c.codigo', $codigos));
         }
         return $criteria;
+    }
+
+
+    /**
+     * @param string|string[]|null $codigoConvenio
+     * @param bool|DateTimeInterface $activo
+     * @return QueryBuilder
+     * @throws QueryException
+     */
+    protected function findByConvenioBuilder($codigoConvenio, $activo = false)
+    {
+        $qb = $this->createQueryBuilder('e');
+
+        if($codigoConvenio) {
+            $qb->join('e.convenio', 'c');
+            if (is_array($codigoConvenio)) {
+                $qb->andWhere($qb->expr()->in('c.codigo', ':codigoConvenio'));
+            } else {
+                $qb->andWhere('c.codigo = :codigoConvenio');
+            }
+            $qb->setParameter('codigoConvenio', $codigoConvenio);
+        }
+        if($activo) {
+            $qb->addCriteria(static::fechaRetiroCriteria(is_object($activo) ? $activo : null));
+        }
+
+        return $qb;
     }
 }
