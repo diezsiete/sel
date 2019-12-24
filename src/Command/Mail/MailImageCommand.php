@@ -24,7 +24,9 @@ class MailerImageCommand extends TraitableCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $from = 'direccion.comercial@servilabor.com.co';
-        $emails = $this->getEmpleadosEmails();
+
+        $emails = $this->getEmpleadosEmails($input);
+
         foreach($emails as $email) {
             if($this->emailIsValid($email)) {
                 $this->mailer->send($this->buildEmail($from, $email));
@@ -35,13 +37,17 @@ class MailerImageCommand extends TraitableCommand
 
     protected function progressBarCount(InputInterface $input, OutputInterface $output): ?int
     {
-        return count($this->getEmpleadosEmails());
+        return count($this->getEmpleadosEmails($input));
     }
 
-    private function getEmpleadosEmails()
+    private function getEmpleadosEmails(InputInterface $input)
     {
         if($this->empleadosEmails === null) {
-            $this->empleadosEmails = $this->getEmpleados('email');
+            if($to = $input->getOption('to')) {
+                $this->empleadosEmails  = $to;
+            } else {
+                $this->empleadosEmails  = $this->getEmpleados('email');
+            }
         }
         return $this->empleadosEmails;
     }
