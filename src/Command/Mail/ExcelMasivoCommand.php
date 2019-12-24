@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Command\Mailer;
+namespace App\Command\Mail;
 
 
 use App\Command\Helpers\TraitableCommand\TraitableCommand;
