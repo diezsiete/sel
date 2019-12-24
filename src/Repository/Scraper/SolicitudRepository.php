@@ -54,21 +54,35 @@ class SolicitudRepository extends ServiceEntityRepository
      */
     public function findLastSolicitud($hvId)
     {
-        $qb = $this->createQueryBuilder('s')
-            ->addSelect('hv')
-            ->join('s.hv', 'hv');
         if(is_array($hvId)) {
-            $qb->andWhere($qb->expr()->in('hv.id', $hvId));
-        } else {
-            $qb->andWhere($qb->expr()->eq('hv.id', $hvId));
-        }
-        $qb->orderBy('s.createdAt', 'DESC')
-            ->groupBy('s.hv');
+            $qb = $this->createQueryBuilder('s')
+                ->addSelect('hv')
+                ->join('s.hv', 'hv');
 
-        if(is_array($hvId)) {
+            $qb->where(
+                $qb->expr()->in('s.id',
+                    $this
+                        ->createQueryBuilder('s2')
+                        ->select('MAX(s2.id)')
+                        ->join('s2.hv', 'hv2')
+                        ->andWhere($qb->expr()->in('hv2.id', $hvId))
+                        ->groupBy('hv2.id')
+                        ->getDQL()
+                )
+            );
+
             return $qb->getQuery()->getResult();
         } else {
-            return $qb->setMaxResults(1)->getQuery()->getOneOrNullResult();
+            // TODO probar que funciona
+            $qb = $this->createQueryBuilder('s')
+                ->addSelect('hv')
+                ->join('s.hv', 'hv');
+            return $qb
+                ->where($qb->expr()->eq('hv.id', $hvId))
+                ->orderBy('s.id', 'DESC')
+                ->setMaxResults(1)
+                ->getQuery()
+                ->getOneOrNullResult();
         }
     }
 
@@ -80,7 +94,8 @@ class SolicitudRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('s');
         $qb->join('s.hv', 'hv')
-            ->andWhere($qb->expr()->eq('hv.id', $hvId));
+            ->andWhere($qb->expr()->eq('hv.id', $hvId))
+            ->andWhere($qb->expr()->neq('s.estado', static::EJECUTADO_EXITO));
         return $qb->getQuery()->getResult();
     }
 

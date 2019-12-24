@@ -12,7 +12,7 @@
 - name: Set up messenger-worker
   template:
       src: "{{ playbook_dir }}/templates/messenger-worker.tpl.ini"
-      dest: "{{ release_public_path }}/src/config/messenger-worker.ini"
+      dest: "{{ ansistrano_release_path.stdout }}/config/messenger-worker.ini"
 
 - name: Set up robots.txt
   template:
