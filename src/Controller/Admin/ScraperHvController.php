@@ -6,6 +6,7 @@ namespace App\Controller\Admin;
 
 use App\Controller\BaseController;
 use App\DataTable\Type\Scraper\MessageHvDataTableType;
+use App\DataTable\Type\Scraper\SolicitudHvDataTableType;
 use App\Entity\Convenio;
 use App\Entity\Hv;
 use App\Entity\Scraper\MessageHv;
@@ -21,11 +22,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class ScraperHvController extends BaseController
 {
     /**
-     * @Route("/sel/admin/scraper/hv/list/{queue}", name="admin_scraper_hv_list", defaults={"queue": "failed"})
+     * @Route("/sel/admin/scraper/solicitud/list", name="admin_scraper_solicitud_list")
      */
-    public function hvList(DataTableFactory $dataTableFactory, Request $request, $queue)
+    public function solicitudList(DataTableFactory $dataTableFactory, Request $request)
     {
-        $table = $dataTableFactory->createFromType(MessageHvDataTableType::class, ['queue' => $queue], ['searching' => true]);
+        $table = $dataTableFactory->createFromType(SolicitudHvDataTableType::class, ['searching' => true]);
 
         $table->handleRequest($request);
 
@@ -33,9 +34,8 @@ class ScraperHvController extends BaseController
             return $table->getResponse();
         }
 
-        return $this->render('admin/scraper/hv-list.html.twig', [
-            'datatable' => $table,
-            'queue' => $queue
+        return $this->render('admin/scraper/solicitud-list.html.twig', [
+            'datatable' => $table
         ]);
     }
 

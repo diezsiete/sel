@@ -36,11 +36,9 @@ class SolicitudHvDataTableType implements DataTableTypeInterface
      */
     public function configure(DataTable $dataTable, array $options)
     {
-
-        //$queueName = isset($options['queue']) ? $options['queue'] : 'failed';
-
         $dataTable
             ->add('identificacion', TextColumn::class, ['label' => 'id', 'field' => 'u.identificacion'])
+            ->add('nombres', TextColumn::class, ['label' => 'Nombres', 'field' => 'u.nombrePrimeros'])
             ->add('estado', MapColumn::class, [
                 'label' => 'Estado',
                 'field' => 's.estado',
@@ -49,26 +47,46 @@ class SolicitudHvDataTableType implements DataTableTypeInterface
             ->add('createdAt', DateTimeColumn::class, ['label' => 'Created at', 'format' => 'Y-m-d H:i:s'])
             ->add('actions', ActionsColumn::class, [
                 'label' => '',
-                'field' => 'u.identificacion',
+                'field' => 's.estado',
                 'orderable' => false,
                 'actions' => [
                     [
                         'modal' => '#modalTest',
-                        //'confirm' => ['admin_vacante_borrar', ['vacante' => '[0].id']],
                         'icon' => 'far fa-envelope',
                         'tooltip' => 'Message',
                         'data-id' => '.id',
-                        'data-queue' => '.queueName'
+                        'data-estado' => '.estado'
                     ],
                     [
-                        'icon' => 'fas fa-upload',
                         'tooltip' => 'Cargar a novasoft',
-                        'data-id' => 'hv.id',
-                        'class' => 'scraper'
+                        'data-id' => '.id',
+                        'class' => function($value) {
+                            $class = 'btn btn-outline-primary';
+                            switch ($value) {
+                                case SolicitudRepository::EJECUTADO_EXITO:
+                                    $class = 'btn btn-outline-success';
+                                    break;
+                                case SolicitudRepository::EJECUTADO_ERROR:
+                                    $class = 'btn btn-outline-danger';
+                                    break;
+                                case SolicitudRepository::EJECUTANDO:
+                                case SolicitudRepository::ESPERANDO_EN_COLA:
+                                    $class .= ' spin';
+                                    break;
+                            }
+                            return 'scraper ' . $class;
+                        },
+                        'icon' => function($value) {
+                            $icon = 'fas fa-upload';
+                            if($value === SolicitudRepository::EJECUTANDO || $value === SolicitudRepository::ESPERANDO_EN_COLA) {
+                                $icon = 'fas fa-spinner fa-spin';
+                            }
+                            return $icon;
+                        }
                     ],
                 ]
             ])
-            ->addOrderBy('created_at', DataTable::SORT_DESCENDING)
+            ->addOrderBy('createdAt', DataTable::SORT_DESCENDING)
             ->createAdapter(ORMAdapter::class, [
                 'entity' => Solicitud::class,
                 'query' => function (QueryBuilder $builder) {

@@ -30,10 +30,8 @@ abstract class Action
     public function transform($value = null, $context = null)
     {
         $attributes = [];
-        if (isset($this->options['text'])) {
-            $attributes['text'] = $this->getOption('text', $value, $context);
-        } else if (isset($this->options['icon'])) {
-            $attributes['icon'] = $this->options['icon'];
+        if (!$this->addAttribute('text', $attributes, $value, $context)) {
+            $this->addAttribute('icon', $attributes, $value, $context);
         }
 
         if (!isset($attributes['disabled']) && isset($this->options['target'])) {
@@ -49,9 +47,9 @@ abstract class Action
         if (isset($this->options["tag"])) {
             $attributes["tag"] = $this->options["tag"];
         }
-        if (isset($this->options["class"])) {
-            $attributes["class"] = $this->options["class"];
-        }
+
+        $this->addAttribute('class', $attributes, $value, $context);
+
 
         $data = $this->options['data'] ?? null;
         if (is_callable($data)) {
@@ -72,6 +70,21 @@ abstract class Action
         return $attributes;
     }
 
+
+
+    protected function addAttribute($name, &$attributes, $value = null, $context = null)
+    {
+        if(isset($this->options[$name])) {
+            if(is_callable($this->options[$name])) {
+                $value = call_user_func($this->options[$name], $value, $context);
+            } else {
+                $value = $this->getOption($name, $value, $context);
+            }
+            $attributes[$name] = $value;
+            return true;
+        }
+        return false;
+    }
 
     protected function getOption($name, $value = null, $context = null)
     {
@@ -95,4 +108,6 @@ abstract class Action
         }
         return $attributes;
     }
+
+
 }

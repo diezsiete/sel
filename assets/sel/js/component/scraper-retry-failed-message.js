@@ -16,8 +16,8 @@ export default {
             $item.click(ev => this._buttonClick($(ev.currentTarget)))
         });
 
-        this._messageQueueState(ids, (hvId, queueName) => {
-            if(queueName === 'default') {
+        this._messageQueueState(ids, (hvId, estado) => {
+            if(this._isEstadoWaiting(estado)) {
                 this._startInterval(hvId)
             }
         });
@@ -58,7 +58,7 @@ export default {
         else if(estado === 3) {
             $button.attr('class', "scraper btn btn-outline-danger mr-3").find('i').attr('class', 'fas fa-upload')
         }
-        else if(estado === 4 || estado === 1) {
+        else if(this._isEstadoWaiting(estado)) {
             $button.attr('class', "scraper btn btn-outline-primary mr-3 spin").find('i').attr('class', 'fas fa-spinner fa-spin')
         }
     },
@@ -82,5 +82,9 @@ export default {
                 }, 2000)
             }
         }
+    },
+
+    _isEstadoWaiting(estado) {
+        return estado === 4 || estado === 1;
     }
 };

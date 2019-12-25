@@ -52,7 +52,7 @@ class MenuBuilder
         $this->createAdminMenu($menu, $user);
         
         if($this->security->isGranted('ROLE_SUPERADMIN', $this->security->getUser())) {
-            $menu->addChild('Messenger hv', ['route' => 'admin_scraper_hv_list'])
+            $menu->addChild('Solicitudes', ['route' => 'admin_scraper_solicitud_list'])
                 ->setExtra('icon', 'fas fa-microchip');
         }
 
