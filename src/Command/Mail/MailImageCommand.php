@@ -34,6 +34,7 @@ class MailImageCommand extends TraitableCommand
         $from = 'direccion.comercial@servilabor.com.co';
 
         $emails = $this->getEmpleadosEmails($input);
+
         $startFrom = $input->getOption('start-from');
         $i = 0;
         foreach($emails as $email) {
@@ -45,6 +46,7 @@ class MailImageCommand extends TraitableCommand
             $this->progressBarAdvance();
             $i++;
         }
+
     }
 
     protected function progressBarCount(InputInterface $input, OutputInterface $output): ?int
