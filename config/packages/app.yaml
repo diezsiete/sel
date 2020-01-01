@@ -39,6 +39,9 @@ app:
 
       emails:
         contacto:
+          Solicitud servicios:
+            - fernanda.sanchez@pta.com.co
+            - angela.pineda@pta.com.co
           Dudas, comentarios:
             - servicioalcliente@pta.com.co
           Aportes seguridad social:
@@ -47,7 +50,7 @@ app:
             - nomina@pta.com.co
             - analista.seguridad@pta.com.co
           Pagaduría:
-            - martha.duarte@pta.com.co
+            - analista.contable@pta.com.co
           Quejas y reclamos:
             - servicioalcliente@pta.com.co
             - bienestar@pta.com.co

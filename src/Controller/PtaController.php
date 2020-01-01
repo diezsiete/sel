@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Post;
+use App\Entity\SolicitudServicio;
 use App\Entity\Tag;
 use App\Form\ContactoFormType;
+use App\Form\SolicitudServicioType;
 use App\Repository\PostRepository;
 use App\Repository\TagRepository;
 use App\Service\Configuracion\Configuracion;
@@ -14,9 +16,10 @@ use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
-class PtaController extends AbstractController
+class PtaController extends BaseController
 {
     /**
      * @Route("/", name="pta_index", host="%empresa.PTA.host%")
@@ -37,13 +40,43 @@ class PtaController extends AbstractController
         return $this->render('pta/nosotros.html.twig');
     }
 
+
     /**
-     * @Route("/servicios", name="pta_servicios", host="%empresa.PTA.host%")
+     * @Route("/servicios", name="pta_servicios", host="%empresa.PTA.host%", methods={"GET"})
      */
-    public function servicios()
+    public function servicios(Request $request)
     {
-        return $this->render('pta/servicios.html.twig');
+        $form = $this->createForm(SolicitudServicioType::class, new SolicitudServicio());
+
+        return $this->render('pta/servicios.html.twig', [
+            'solicitudServicioForm' => $form->createView()
+        ]);
     }
+
+    /**
+     * @Route("/servicios", name="pta_servicios_post", methods={"POST"})
+     */
+    public function solicitudServicioSubmit(Request $request)
+    {
+        $data = json_decode($request->getContent(), true);
+        if ($data === null) {
+            throw new BadRequestHttpException('Invalid JSON');
+        }
+
+        $form = $this->createForm(SolicitudServicioType::class);
+        $form->submit($data);
+        if (!$form->isValid()) {
+            return $this->json(['errors' => $this->getErrorsFromForm($form)], 400);
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($form->getData());
+        $em->flush();
+
+        return $this->json(['ok' => 1]);
+    }
+
+
 
     /**
      * @Route("/noticias", name="pta_noticias", host="%empresa.PTA.host%")
@@ -109,12 +142,12 @@ class PtaController extends AbstractController
         $form = $this->createForm(ContactoFormType::class, null, [
             'to' => $to,
         ]);
-        $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()) {
-            $mailer->sendContacto($form->getData());
-            $this->addFlash('success', 'El mensaje se ha enviado exitosamente');
-            return $this->redirectToRoute('pta_contacto', ['oficina' => $oficina->getNombre()]);
-        }
+            $form->handleRequest($request);
+            if($form->isSubmitted() && $form->isValid()) {
+                $mailer->sendContacto($form->getData());
+                $this->addFlash('success', 'El mensaje se ha enviado exitosamente');
+                return $this->redirectToRoute('pta_contacto', ['oficina' => $oficina->getNombre()]);
+            }
 
         return $this->render('pta/contacto.html.twig', [
             'currentOficina' => $oficina,

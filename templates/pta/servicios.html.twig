@@ -17,6 +17,7 @@
 
 
 {% block main %}
+
     <section data-building-block="organism" class="product-hero-organism">
         <div class="product-hero theme-background-image-dark">
             <div class="background-image"></div>
@@ -31,7 +32,10 @@
                                 Somos una empresa de trabajos temporales con trayectoria y <br> experiencia de mas de 35 años.
                             </p>
                             <div class="col-lg-2 appear-animation mt-3 pl-0 mb-1" data-appear-animation="fadeIn" data-appear-animation-delay="500">
-                                <a href="{{ path('pta_contacto') }}" class="btn btn-modern btn-primary mt-1">Contactenos</a>
+{#                                <a href="{{ path('pta_contacto') }}" class="btn btn-modern btn-primary mt-1">Contactenos</a>#}
+                                <a class="btn btn-modern btn-primary mt-1" href="#modalContactenos" id="contactenos-btn">
+                                    Contactenos
+                                </a>
                             </div>
                             <p data-reactid="101">
                                 ó Llamenos para empezar:
@@ -327,6 +331,37 @@
                 </div>
             </div>
         </div>
+    </div>
+
+
+    <div id="modalContactenos" class="modal-block mfp-hide">
+        <section class="card">
+            <header class="card-header">
+                <h2 class="card-title">Contactenos</h2>
+                <small>Ingrese la siguiente información para conocer sus necesidades y poderle brindar la mejor atención</small>
+            </header>
+            <div class="card-body">
+                <div class="modal-wrapper">
+                    <div class="modal-text">
+                        {{ form_start(solicitudServicioForm, { attr: {
+                            class: 'form-popup',
+                            novalidate:'novalidate',
+                            'data-url': path('pta_servicios_post')
+                        }}) }}
+                        {{ form_row(solicitudServicioForm.nombreEmpresa) }}
+                        {{ form_end(solicitudServicioForm) }}
+                    </div>
+                </div>
+            </div>
+            <footer class="card-footer">
+                <div class="row">
+                    <div class="col-md-12 text-right">
+                        <button class="btn btn-primary modal-confirm">Enviar</button>
+                        <button class="btn btn-default modal-dismiss">Cancelar</button>
+                    </div>
+                </div>
+            </footer>
+        </section>
     </div>
 
     {% block footer %}
