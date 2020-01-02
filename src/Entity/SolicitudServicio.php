@@ -107,7 +107,7 @@ class SolicitudServicio
         return $this->servicio;
     }
 
-    public function setServicio(string $servicio): self
+    public function setServicio($servicio): self
     {
         $this->servicio = $servicio;
 

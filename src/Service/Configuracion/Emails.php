@@ -31,4 +31,12 @@ class Emails
     {
         return is_array($this->contacto) ? array_keys($this->contacto) : [];
     }
+
+    /**
+     * @return string|null
+     */
+    public function getFirstContactoAsunto()
+    {
+        return is_array($this->contacto) ? array_key_first($this->contacto) : null;
+    }
 }

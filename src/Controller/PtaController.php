@@ -6,6 +6,7 @@ use App\Entity\Post;
 use App\Entity\SolicitudServicio;
 use App\Entity\Tag;
 use App\Form\ContactoFormType;
+use App\Form\Model\ContactoModel;
 use App\Form\SolicitudServicioType;
 use App\Repository\PostRepository;
 use App\Repository\TagRepository;
@@ -130,6 +131,27 @@ class PtaController extends BaseController
         ]);
     }
 
+
+    /**
+     * @Route("/contacto/inner-form/{form_name}", name="pta_contacto_inner_form", defaults={"form_name"="contacto"}, options={"expose"=true})
+     */
+    public function contactoInnerForm($form_name)
+    {
+        $type = ContactoFormType::class;
+        $model = ContactoModel::class;
+        if($form_name === 'solicitud-servicio') {
+            $type = SolicitudServicioType::class;
+            $model = SolicitudServicio::class;
+        }
+        $form = $this->createForm($type, new $model());
+
+        /** @noinspection PhpTemplateMissingInspection */
+        return $this->render("form/_$form_name.html.twig", [
+            'form' => $form->createView()
+        ]);
+    }
+
+
     /**
      * @Route("/contacto/{oficina}", name="pta_contacto", host="%empresa.PTA.host%", defaults={"oficina": "bogota"})
      */
@@ -139,19 +161,29 @@ class PtaController extends BaseController
         if(!$oficina->isPrincipal()) {
             $to = ['Mensaje a agencia ' . $oficina->getCiudad() => $oficina->getEmail()] + $to;
         }
-        $form = $this->createForm(ContactoFormType::class, null, [
+        $form = $this->createForm(ContactoFormType::class, (new ContactoModel())->setAsunto($configuracion->getEmails()->getFirstContactoAsunto()), [
             'to' => $to,
         ]);
-            $form->handleRequest($request);
-            if($form->isSubmitted() && $form->isValid()) {
-                $mailer->sendContacto($form->getData());
-                $this->addFlash('success', 'El mensaje se ha enviado exitosamente');
-                return $this->redirectToRoute('pta_contacto', ['oficina' => $oficina->getNombre()]);
-            }
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+            dump($form->getData());
+            //$mailer->sendContacto($form->getData());
+            //$this->addFlash('success', 'El mensaje se ha enviado exitosamente');
+            //return $this->redirectToRoute('pta_contacto', ['oficina' => $oficina->getNombre()]);
+        }
 
         return $this->render('pta/contacto.html.twig', [
             'currentOficina' => $oficina,
             'form' => $form->createView(),
         ]);
     }
+
+
+
+
+
+
+
 }

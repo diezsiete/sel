@@ -48,32 +48,29 @@
                     {{ include('default/_flash_messages.html.twig') }}
 
                     <div class="form-row">
-                        {{ form_row(form.nombre, {
-                            container_attr: {class: 'col-lg-6'},
-                            label_attr: {class: 'font-weight-bold text-dark text-2'}
-                        }) }}
-                        {{ form_row(form.from, {
-                            container_attr: {class: 'col-lg-6'},
-                            label_attr: {class: 'font-weight-bold text-dark text-2'}
-                        }) }}
-                    </div>
-                    <div class="form-row">
                         {{ form_row(form.asunto, {
                             container_attr: {class: 'col'},
+                            attr: {
+                                "class": "asunto"
+                            },
                             label_attr: {class: 'font-weight-bold text-dark text-2'}
                         }) }}
                     </div>
-                    <div class="form-row">
-                        {{ form_row(form.mensaje, {
-                            container_attr: {class: 'col'},
-                            label_attr: {class: 'font-weight-bold text-dark text-2'}
-                        }) }}
+
+                    <div id="contacto-inner-form">
+                        {% if form.vars.contacto %}
+                            {% include 'form/_contacto.html.twig' %}
+                        {% else %}
+                            {% include 'form/_solicitud-servicio.html.twig' with {form: form.solicitudServicio} %}
+                        {% endif %}
                     </div>
-                    <div class="form-row">
-                        <div class="form-group col">
-                            <input type="submit" value="Enviar mensaje" class="btn btn-primary btn-modern">
-                        </div>
+
+                <div class="form-row">
+                    <div class="form-group col">
+                        <input type="submit" value="Enviar mensaje" class="btn btn-primary btn-modern">
                     </div>
+                </div>
+
                 {{form_end(form)}}
 
             </div>
