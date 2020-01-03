@@ -5,6 +5,7 @@ namespace App\Service\NovasoftSsrs\Mapper;
 
 
 use App\Service\NovasoftSsrs\Entity\ReporteCertificadoLaboral;
+use DateTime;
 
 class MapperNom932 extends Mapper
 {
@@ -58,14 +59,14 @@ class MapperNom932 extends Mapper
     public function setFechaIngreso($fechaIngreso)
     {
         $fechaIngreso = trim(str_replace('0:00:00', '', trim($fechaIngreso)));
-        $this->targetObject->setFechaIngreso(\DateTime::createFromFormat('m/d/Y', $fechaIngreso));
+        $this->targetObject->setFechaIngreso(DateTime::createFromFormat('d/m/Y', $fechaIngreso));
     }
 
     public function setFechaEgreso($fechaEgreso)
     {
         $fechaEgreso = trim(str_replace('0:00:00', '', trim($fechaEgreso)));
         if($fechaEgreso) {
-            $fechaEgreso = \DateTime::createFromFormat('m/d/Y', $fechaEgreso);
+            $fechaEgreso = DateTime::createFromFormat('d/m/Y', $fechaEgreso);
         } else {
             $fechaEgreso = null;
         }
