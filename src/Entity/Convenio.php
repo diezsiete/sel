@@ -350,7 +350,7 @@ class Convenio implements \JsonSerializable
         return $this;
     }
 
-    public function getActivo(): ?bool
+    public function isActivo(): ?bool
     {
         return $this->activo;
     }

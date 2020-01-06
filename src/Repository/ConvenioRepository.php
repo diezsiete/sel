@@ -190,4 +190,20 @@ class ConvenioRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+
+    /**
+     * @param string $search
+     * @return Convenio[]
+     */
+    public function findByCodigoOrNombre($search)
+    {
+        $qb = $this->createQueryBuilder('c');
+        $qb->andWhere($qb->expr()->orX(
+            $qb->expr()->like('c.codigo', ':search'),
+            $qb->expr()->like('c.nombre', ':search'))
+        )->setParameter('search', "%$search%");
+
+        return $qb->getQuery()->getResult();
+    }
 }
