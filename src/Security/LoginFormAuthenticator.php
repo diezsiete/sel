@@ -2,10 +2,9 @@
 
 namespace App\Security;
 
-use App\Entity\Usuario;
+use App\Entity\Main\Usuario;
 use App\Service\Novasoft\NovasoftEmpleadoService;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;

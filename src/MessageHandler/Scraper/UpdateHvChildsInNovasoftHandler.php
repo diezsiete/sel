@@ -3,7 +3,7 @@
 
 namespace App\MessageHandler\Scraper;
 
-use App\Entity\HvEntity;
+use App\Entity\Hv\HvEntity;
 use App\Message\Scraper\InsertHvChildInNovasoft;
 use App\Message\Scraper\InsertHvInNovasoft;
 use App\Message\Scraper\UpdateHvChildsInNovasoft;

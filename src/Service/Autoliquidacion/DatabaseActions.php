@@ -6,12 +6,12 @@ namespace App\Service\Autoliquidacion;
 
 use App\Entity\Autoliquidacion\Autoliquidacion;
 use App\Entity\Autoliquidacion\AutoliquidacionEmpleado;
-use App\Entity\Convenio;
-use App\Entity\Empleado;
-use App\Entity\Usuario;
+use App\Entity\Main\Convenio;
+use App\Entity\Main\Empleado;
+use App\Entity\Main\Usuario;
 use App\Repository\Autoliquidacion\AutoliquidacionEmpleadoRepository;
 use App\Repository\Autoliquidacion\AutoliquidacionRepository;
-use App\Repository\UsuarioRepository;
+use App\Repository\Main\UsuarioRepository;
 use DateTimeInterface;
 use Doctrine\ORM\EntityManagerInterface;
 

@@ -9,8 +9,8 @@ use App\Command\Helpers\PeriodoOption;
 use App\Command\Helpers\SelCommandTrait;
 use App\Command\Helpers\TraitableCommand\TraitableCommand;
 use App\Entity\Autoliquidacion\Autoliquidacion;
-use App\Entity\Convenio;
-use App\Entity\Representante;
+use App\Entity\Main\Convenio;
+use App\Entity\Main\Representante;
 use App\Service\Autoliquidacion\Email;
 use App\Service\Autoliquidacion\Export;
 use App\Service\Autoliquidacion\ExportZip;
@@ -156,7 +156,7 @@ class AutoliquidacionEmailCommand extends TraitableCommand
     }
 
     /**
-     * @param string|Representante $recipient
+     * @param string|\App\Entity\Main\Representante $recipient
      */
     private function logRecipients($recipient, $bccs = [])
     {

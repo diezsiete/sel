@@ -3,7 +3,7 @@
 namespace App\Form;
 
 
-use App\Entity\Usuario;
+use App\Entity\Main\Usuario;
 use DateTime;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;

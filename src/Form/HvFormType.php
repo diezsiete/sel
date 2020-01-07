@@ -3,12 +3,12 @@
 namespace App\Form;
 
 use App\Constant\HvConstant;
-use App\Entity\Ciudad;
-use App\Entity\Dpto;
-use App\Entity\Hv;
-use App\Entity\Pais;
+use App\Entity\Main\Ciudad;
+use App\Entity\Main\Dpto;
+use App\Entity\Hv\Hv;
+use App\Entity\Main\Pais;
 use App\Form\Model\HvDatosBasicosModel;
-use App\Repository\UsuarioRepository;
+use App\Repository\Main\UsuarioRepository;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -60,7 +60,7 @@ class HvFormType extends AbstractType
         ]
     ];
     /**
-     * @var UsuarioRepository
+     * @var \App\Repository\Main\UsuarioRepository
      */
     private $usuarioRepository;
 

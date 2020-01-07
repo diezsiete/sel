@@ -2,8 +2,8 @@
 
 namespace App\Entity\Novasoft\Report\LiquidacionNomina;
 
-use App\Entity\Convenio;
-use App\Entity\Empleado;
+use App\Entity\Main\Convenio;
+use App\Entity\Main\Empleado;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -21,7 +21,7 @@ class LiquidacionNomina
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Convenio", inversedBy="liquidacionesNominas")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Main\Convenio", inversedBy="liquidacionesNominas")
      * @ORM\JoinColumn(nullable=false, referencedColumnName="codigo")
      */
     private $convenio;
@@ -37,7 +37,7 @@ class LiquidacionNomina
     private $fechaFinal;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Empleado", inversedBy="liquidacionesNomina", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Main\Empleado", inversedBy="liquidacionesNomina", fetch="EAGER")
      * @ORM\JoinColumn(nullable=false)
      */
     private $empleado;

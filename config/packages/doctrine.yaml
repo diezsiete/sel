@@ -67,15 +67,51 @@ doctrine:
                 auto_mapping: true
                 connection: default
                 mappings:
-                    App:
+                    Autoliquidacion:
                         is_bundle: false
                         type: annotation
-                        dir: '%kernel.project_dir%/src/Entity'
-                        prefix: 'App\Entity'
-                        alias: App
+                        dir: '%kernel.project_dir%/src/Entity/Autoliquidacion'
+                        prefix: 'App\Entity\Autoliquidacion'
+                        alias: Autoliquidacion
+                    Evaluacion:
+                        is_bundle: false
+                        type: annotation
+                        dir: '%kernel.project_dir%/src/Entity/Evaluacion'
+                        prefix: 'App\Entity\Evaluacion'
+                        alias: Evaluacion
+                    Hv:
+                        is_bundle: false
+                        type: annotation
+                        dir: '%kernel.project_dir%/src/Entity/Hv'
+                        prefix: 'App\Entity\Hv'
+                        alias: Hv
+                    AppBundle:
+                        is_bundle: false
+                        type: annotation
+                        dir: '%kernel.project_dir%/src/Entity/Main'
+                        prefix: 'App\Entity\Main'
+                        alias: Main
+                    Novasoft:
+                        is_bundle: false
+                        type: annotation
+                        dir: '%kernel.project_dir%/src/Entity/Novasoft'
+                        prefix: 'App\Entity\Novasoft'
+                        alias: Novasoft
+                    Scraper:
+                        is_bundle: false
+                        type: annotation
+                        dir: '%kernel.project_dir%/src/Entity/Scraper'
+                        prefix: 'App\Entity\Scraper'
+                        alias: Scraper
+                    Vacante:
+                        is_bundle: false
+                        type: annotation
+                        dir: '%kernel.project_dir%/src/Entity/Vacante'
+                        prefix: 'App\Entity\Vacante'
+                        alias: Vacante
                 hydrators:
-                    FETCH_COLUMN: App\Hydrators\FetchColumnHydrator
-                    FETCH_KEY_PAIR: App\Hydrators\FetchKeyPairHydrator
+                    FETCH_COLUMN: App\Service\Doctrine\Hydrators\FetchColumnHydrator
+                    FETCH_KEY_PAIR: App\Service\Doctrine\Hydrators\FetchKeyPairHydrator
 
                 dql:
                     numeric_functions:
@@ -83,6 +119,7 @@ doctrine:
 
             halcon:
                 connection: halcon
+                naming_strategy: doctrine.orm.naming_strategy.underscore
                 mappings:
                     Halcon:
                         is_bundle: false
@@ -90,3 +127,5 @@ doctrine:
                         dir: '%kernel.project_dir%/src/Entity/Halcon'
                         prefix: 'App\Entity\Halcon'
                         alias: Halcon
+
+

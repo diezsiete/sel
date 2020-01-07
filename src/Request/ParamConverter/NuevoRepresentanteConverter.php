@@ -4,8 +4,8 @@
 namespace App\Request\ParamConverter;
 
 
-use App\Entity\Representante;
-use App\Entity\Usuario;
+use App\Entity\Main\Representante;
+use App\Entity\Main\Usuario;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;

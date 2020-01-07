@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\Hv;
-use App\Entity\HvAdjunto;
+use App\Entity\Hv\Hv;
+use App\Entity\Hv\Adjunto;
 use App\Service\UploaderHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -53,7 +53,7 @@ class HvAdjuntoController extends BaseController
             return $this->json($violations, 400);
         }
 
-        $adjunto = $hv->getAdjunto() ?? new HvAdjunto();
+        $adjunto = $hv->getAdjunto() ?? new Adjunto();
 
         $filename = $uploaderHelper->uploadHvAdjunto($uploadedFile, $adjunto->getFilename());
 

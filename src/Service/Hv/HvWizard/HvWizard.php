@@ -3,8 +3,8 @@
 
 namespace App\Service\Hv\HvWizard;
 
-use App\Entity\Hv;
-use App\Entity\Usuario;
+use App\Entity\Hv\Hv;
+use App\Entity\Main\Usuario;
 use App\Service\Hv\HvResolver;
 use App\Service\Hv\HvValidator;
 use Symfony\Component\HttpFoundation\RequestStack;

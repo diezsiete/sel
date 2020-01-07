@@ -5,7 +5,7 @@ namespace App\Service\Autoliquidacion;
 
 
 use App\Entity\Autoliquidacion\Autoliquidacion;
-use App\Entity\Usuario;
+use App\Entity\Main\Usuario;
 use Exception;
 use ZipArchive;
 

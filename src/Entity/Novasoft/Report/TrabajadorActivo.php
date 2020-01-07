@@ -2,8 +2,8 @@
 
 namespace App\Entity\Novasoft\Report;
 
-use App\Entity\Convenio;
-use App\Entity\Empleado;
+use App\Entity\Main\Convenio;
+use App\Entity\Main\Empleado;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -20,13 +20,13 @@ class TrabajadorActivo
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Convenio", inversedBy="trabajadoresActivos")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Main\Convenio", inversedBy="trabajadoresActivos")
      * @ORM\JoinColumn(nullable=false, referencedColumnName="codigo")
      */
     private $convenio;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Empleado")
+     * @ORM\OneToOne(targetEntity="App\Entity\Main\Empleado")
      * @ORM\JoinColumn(nullable=false)
      */
     private $empleado;

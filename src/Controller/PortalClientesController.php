@@ -7,7 +7,7 @@ namespace App\Controller;
 use App\DataTable\Type\AutoliquidacionEmpleadoDataTableType;
 use App\DataTable\Type\PortalClientes\LiquidacionNominaResumenDataTableType;
 use App\DataTable\Type\PortalClientes\TrabajadoresActivosDataTableType;
-use App\Entity\Empleado;
+use App\Entity\Main\Empleado;
 use App\Entity\Novasoft\Report\LiquidacionNomina\LiquidacionNominaResumen;
 use App\Entity\Novasoft\Report\TrabajadorActivo;
 use App\Repository\Autoliquidacion\AutoliquidacionEmpleadoRepository;

@@ -5,7 +5,7 @@ namespace App\Command\Migration;
 
 
 use App\Command\Helpers\SelCommandTrait;
-use App\Entity\Usuario;
+use App\Entity\Main\Usuario;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;

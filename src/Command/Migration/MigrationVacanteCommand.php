@@ -3,13 +3,13 @@
 namespace App\Command\Migration;
 
 use App\Command\Helpers\SelCommandTrait;
-use App\Entity\Cargo;
-use App\Entity\Ciudad;
-use App\Entity\LicenciaConduccion;
-use App\Entity\Profesion;
-use App\Entity\Vacante;
-use App\Entity\VacanteArea;
-use App\Entity\VacanteRedSocial;
+use App\Entity\Hv\Cargo;
+use App\Entity\Main\Ciudad;
+use App\Entity\Hv\LicenciaConduccion;
+use App\Entity\Hv\Profesion;
+use App\Entity\Vacante\Vacante;
+use App\Entity\Vacante\VacanteArea;
+use App\Entity\Vacante\VacanteRedSocial;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 

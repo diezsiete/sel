@@ -4,9 +4,9 @@
 namespace App\Service\Novasoft\Report\Mapper\LiquidacionNomina;
 
 
-use App\Entity\Empleado;
-use App\Entity\Usuario;
-use App\Repository\EmpleadoRepository;
+use App\Entity\Main\Empleado;
+use App\Entity\Main\Usuario;
+use App\Repository\Main\EmpleadoRepository;
 use App\Service\Novasoft\Report\Mapper\DataFilter;
 use App\Service\Novasoft\Report\Mapper\Mapper;
 
@@ -17,7 +17,7 @@ class EmpleadoMapper extends Mapper
      */
     protected $targetObject;
     /**
-     * @var EmpleadoRepository
+     * @var \App\Repository\Main\EmpleadoRepository
      */
     private $empleadoRepository;
 

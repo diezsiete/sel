@@ -4,7 +4,7 @@
 namespace App\Service;
 
 
-use App\Entity\RestaurarClave;
+use App\Entity\Main\RestaurarClave;
 use App\Form\Model\ContactoModel;
 use App\Service\Configuracion\Configuracion;
 use Psr\Container\ContainerInterface;

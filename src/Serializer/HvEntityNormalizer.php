@@ -4,8 +4,8 @@
 namespace App\Serializer;
 
 
-use App\Entity\Hv;
-use App\Entity\HvEntity;
+use App\Entity\Hv\Hv;
+use App\Entity\Hv\HvEntity;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;

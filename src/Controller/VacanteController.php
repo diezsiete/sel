@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\Vacante;
-use App\Repository\VacanteRepository;
+use App\Entity\Vacante\Vacante;
+use App\Repository\Vacante\VacanteRepository;
 use App\Service\Hv\HvWizard\HvWizard;
 use App\Service\Hv\HvWizard\HvWizardRoutesAplicar;
 use Doctrine\ORM\EntityManagerInterface;

@@ -5,7 +5,7 @@ namespace App\Request\ParamConverter;
 
 
 use App\Constant\HvConstant;
-use App\Entity\HvEntity;
+use App\Entity\Hv\HvEntity;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;

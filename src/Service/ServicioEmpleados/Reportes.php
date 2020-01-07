@@ -4,7 +4,7 @@
 namespace App\Service\ServicioEmpleados;
 
 
-use App\Entity\ReporteNomina;
+use App\Entity\Main\ReporteNomina;
 use App\Service\NovasoftSsrs\NovasoftSsrs;
 use DateInterval;
 use DateTime;
@@ -14,6 +14,11 @@ use League\Flysystem\FileNotFoundException;
 use League\Flysystem\FilesystemInterface;
 use SSRS\SSRSReportException;
 
+/**
+ * Class Reportes
+ * @package App\Service\ServicioEmpleados
+ * @deprecated
+ */
 class Reportes
 {
     /**
@@ -25,10 +30,10 @@ class Reportes
      */
     private $filesystem;
 
-    public function __construct(NovasoftSsrs $novasoftSsrs, FilesystemInterface $seReportesFilesystem)
+    public function __construct(NovasoftSsrs $novasoftSsrs, FilesystemInterface $novasoftReportFilesystem)
     {
         $this->novasoftSsrs = $novasoftSsrs;
-        $this->filesystem = $seReportesFilesystem;
+        $this->filesystem = $novasoftReportFilesystem;
     }
 
     /**

@@ -6,7 +6,7 @@ use App\Entity\Evaluacion\Evaluacion;
 use App\Entity\Evaluacion\Modulo;
 use App\Entity\Evaluacion\Pregunta\Pregunta;
 use App\Entity\Evaluacion\Progreso;
-use App\Entity\Usuario;
+use App\Entity\Main\Usuario;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\NonUniqueResultException;

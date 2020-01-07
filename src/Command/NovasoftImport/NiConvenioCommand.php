@@ -2,7 +2,7 @@
 
 namespace App\Command\NovasoftImport;
 
-use App\Entity\Convenio;
+use App\Entity\Main\Convenio;
 use App\Service\Configuracion\SsrsDb;
 use App\Service\ReportesServicioEmpleados;
 use Symfony\Component\Console\Input\InputInterface;
@@ -76,7 +76,7 @@ class NiConvenioCommand extends NiCommand
     }
 
     /**
-     * @param Convenio $convenio
+     * @param \App\Entity\Main\Convenio $convenio
      * @return bool
      */
     private function persistConvenio(Convenio $convenio)

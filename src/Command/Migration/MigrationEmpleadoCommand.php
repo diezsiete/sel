@@ -4,9 +4,9 @@
 namespace App\Command\Migration;
 
 
-use App\Entity\Empleado;
-use App\Repository\EmpleadoRepository;
-use App\Repository\UsuarioRepository;
+use App\Entity\Main\Empleado;
+use App\Repository\Main\EmpleadoRepository;
+use App\Repository\Main\UsuarioRepository;
 use App\Service\Novasoft\NovasoftEmpleadoService;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\Persistence\ManagerRegistry;

@@ -5,8 +5,8 @@ namespace App\Service\Autoliquidacion;
 
 
 use App\Entity\Autoliquidacion\Autoliquidacion;
-use App\Entity\Convenio;
-use App\Entity\Representante;
+use App\Entity\Main\Convenio;
+use App\Entity\Main\Representante;
 use App\Service\Configuracion\Configuracion;
 use Swift_Attachment;
 use Swift_Mailer;
@@ -39,7 +39,7 @@ class Email
     /**
      * @param Convenio $convenio
      * @param array $overwrite
-     * @return Representante[]|string[]
+     * @return \App\Entity\Main\Representante[]|string[]
      */
     public function getRecipients(Convenio $convenio, $overwrite = [])
     {

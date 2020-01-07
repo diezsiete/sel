@@ -2,13 +2,13 @@
 
 namespace App\Command\Migration;
 
-use App\Entity\Area;
-use App\Entity\Cargo;
-use App\Entity\EstudioCodigo;
-use App\Entity\EstudioInstituto;
-use App\Entity\LicenciaConduccion;
-use App\Entity\Profesion;
-use App\Entity\VacanteArea;
+use App\Entity\Hv\Area;
+use App\Entity\Hv\Cargo;
+use App\Entity\Hv\EstudioCodigo;
+use App\Entity\Hv\EstudioInstituto;
+use App\Entity\Hv\LicenciaConduccion;
+use App\Entity\Hv\Profesion;
+use App\Entity\Vacante\VacanteArea;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;

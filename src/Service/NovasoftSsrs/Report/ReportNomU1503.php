@@ -8,8 +8,8 @@
 
 namespace App\Service\NovasoftSsrs\Report;
 
-use App\Entity\Empleado;
-use App\Repository\ConvenioRepository;
+use App\Entity\Main\Empleado;
+use App\Repository\Main\ConvenioRepository;
 use App\Service\NovasoftSsrs\Mapper\MapperNomU1503;
 use App\Service\NovasoftSsrs\ReportFormatter;
 use App\Service\NovasoftSsrs\ReportServer;
@@ -18,7 +18,7 @@ use App\Service\Utils;
 class ReportNomU1503 extends Report
 {
     /**
-     * @var ConvenioRepository
+     * @var \App\Repository\Main\ConvenioRepository
      */
     private $convenioRepository;
 

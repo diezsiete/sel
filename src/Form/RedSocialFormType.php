@@ -3,7 +3,7 @@
 namespace App\Form;
 
 use App\Constant\HvConstant;
-use App\Entity\RedSocial;
+use App\Entity\Hv\RedSocial;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;

@@ -3,8 +3,8 @@
 namespace App\Security\Voter;
 
 use App\Entity\Autoliquidacion\AutoliquidacionEmpleado;
-use App\Entity\HvEntity;
-use App\Entity\ReporteNomina;
+use App\Entity\Hv\HvEntity;
+use App\Entity\Main\ReporteNomina;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Security;
@@ -27,7 +27,7 @@ class ReporteVoter extends Voter
 
     /**
      * @param string $attribute
-     * @param ReporteNomina $subject
+     * @param \App\Entity\Main\ReporteNomina $subject
      * @param TokenInterface $token
      * @return bool
      */

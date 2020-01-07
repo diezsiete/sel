@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\SolicitudServicio;
+use App\Entity\Main\SolicitudServicio;
 use App\Form\Model\ContactoModel;
 use App\Service\Configuracion\Configuracion;
 use Symfony\Component\Form\AbstractType;

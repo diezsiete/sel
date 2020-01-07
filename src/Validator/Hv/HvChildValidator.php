@@ -27,7 +27,7 @@ class HvChildValidator extends ConstraintValidator
     }
 
     /**
-     * @param \App\Entity\Estudio $value
+     * @param \App\Entity\Hv\Estudio $value
      * @param Constraint|HvChild $constraint
      */
     public function validate($value, Constraint $constraint)

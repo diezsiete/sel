@@ -2,7 +2,7 @@
 
 namespace App\Service\Novasoft\Report\Report;
 
-use App\Entity\Convenio;
+use App\Entity\Main\Convenio;
 use App\Service\Configuracion\Configuracion;
 use App\Service\Novasoft\Report\Importer\LiquidacionNominaImporter;
 use App\Service\Novasoft\Report\Mapper\LiquidacionNomina\LiquidacionNominaMapper;

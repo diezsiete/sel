@@ -2,9 +2,9 @@
 
 namespace App\Command\Migration;
 
-use App\Entity\Hv;
-use App\Entity\HvAdjunto;
-use App\Repository\HvRepository;
+use App\Entity\Hv\Hv;
+use App\Entity\Hv\Adjunto;
+use App\Repository\Hv\HvRepository;
 use App\Service\UploaderHelper;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -86,7 +86,7 @@ class MigrationHvAdjuntoCommand extends MigrationCommand
 
     protected function down(InputInterface $input, OutputInterface $output)
     {
-        $this->truncateTable(HvAdjunto::class);
+        $this->truncateTable(Adjunto::class);
         $this->uploaderHelper->deleteDirHvAdjunto();
     }
 
@@ -123,7 +123,7 @@ class MigrationHvAdjuntoCommand extends MigrationCommand
                     $fileName = $this->uploaderHelper->uploadHvAdjunto($file);
                     
 
-                    $hvAdjunto = (new HvAdjunto())
+                    $hvAdjunto = (new Adjunto())
                         ->setFilename($fileName)
                         ->setOriginalFilename($oldFileName)
                         ->setMimeType($mimeType);

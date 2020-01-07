@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\Usuario;
+use App\Entity\Main\Usuario;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -141,7 +141,7 @@ class ProfileFormType extends AbstractType
     }
 
     /**
-     * @return Usuario|UserInterface
+     * @return \App\Entity\Main\Usuario|UserInterface
      */
     private function getUser()
     {

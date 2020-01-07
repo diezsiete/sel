@@ -2,7 +2,7 @@
 
 namespace App\Repository\Hv;
 
-use App\Entity\RedSocial;
+use App\Entity\Hv\RedSocial;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 

@@ -2,12 +2,12 @@
 
 namespace App\Controller;
 
-use App\Entity\RestaurarClave;
-use App\Entity\Usuario;
+use App\Entity\Main\RestaurarClave;
+use App\Entity\Main\Usuario;
 use App\Form\ProfileFormType;
 use App\Form\OlvidoFormType;
 use App\Form\RestaurarFormType;
-use App\Repository\RestaurarClaveRepository;
+use App\Repository\Main\RestaurarClaveRepository;
 use App\Security\LoginFormAuthenticator;
 use App\Service\Mailer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
@@ -93,7 +93,7 @@ class SecurityController extends BaseController
         $form = $this->createForm(RestaurarFormType::class, $restaurarClave->getUsuario());
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
-            /** @var Usuario $usuario */
+            /** @var \App\Entity\Main\Usuario $usuario */
             $usuario = $form->getData();
 
             $restaurarClave->setRestaurada(true);
@@ -116,7 +116,7 @@ class SecurityController extends BaseController
         $form = $this->createForm(ProfileFormType::class, $this->getUser());
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
-            /** @var Usuario $usuario */
+            /** @var \App\Entity\Main\Usuario $usuario */
             $usuario = $form->getData();
 
             if($plainPassword = $form['plainPassword']->getData()) {

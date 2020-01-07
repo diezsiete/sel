@@ -3,11 +3,11 @@
 
 namespace App\Form\Model;
 
-use App\Entity\Ciudad;
-use App\Entity\Dpto;
-use App\Entity\Hv;
-use App\Entity\Pais;
-use App\Entity\Usuario;
+use App\Entity\Main\Ciudad;
+use App\Entity\Main\Dpto;
+use App\Entity\Hv\Hv;
+use App\Entity\Main\Pais;
+use App\Entity\Main\Usuario;
 use App\Validator\IdentificacionUnica;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -59,7 +59,7 @@ class HvDatosBasicosModel
     public $nacPais;
 
     /**
-     * @var Dpto
+     * @var \App\Entity\Main\Dpto
      */
     public $nacDpto;
 
@@ -75,12 +75,12 @@ class HvDatosBasicosModel
     public $identPais;
 
     /**
-     * @var Dpto
+     * @var \App\Entity\Main\Dpto
      */
     public $identDpto;
 
     /**
-     * @var Ciudad
+     * @var \App\Entity\Main\Ciudad
      */
     public $identCiudad;
 
@@ -89,7 +89,7 @@ class HvDatosBasicosModel
     public $estadoCivil;
 
     /**
-     * @var Pais
+     * @var \App\Entity\Main\Pais
      * @Assert\NotNull(message="Ingrese pais de residencia")
      */
     public $resiPais;
@@ -100,7 +100,7 @@ class HvDatosBasicosModel
     public $resiDpto;
 
     /**
-     * @var Ciudad
+     * @var \App\Entity\Main\Ciudad
      */
     public $resiCiudad;
 
@@ -207,8 +207,8 @@ class HvDatosBasicosModel
     }
 
     /**
-     * @param Hv $hv
-     * @return Hv
+     * @param \App\Entity\Hv\Hv $hv
+     * @return \App\Entity\Hv\Hv
      */
     public function fillHv(Hv $hv)
     {

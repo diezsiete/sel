@@ -3,7 +3,7 @@
 
 namespace App\Form\Model;
 
-use App\Entity\Usuario;
+use App\Entity\Main\Usuario;
 use App\Validator\IdentificacionUnica;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Validator\Constraints as Assert;

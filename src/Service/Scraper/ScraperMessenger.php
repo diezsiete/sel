@@ -6,8 +6,8 @@ namespace App\Service\Scraper;
 
 use App\Entity\Autoliquidacion\AutoliquidacionEmpleado;
 use App\Entity\Autoliquidacion\AutoliquidacionProgreso;
-use App\Entity\Hv;
-use App\Entity\HvEntity;
+use App\Entity\Hv\Hv;
+use App\Entity\Hv\HvEntity;
 use App\Entity\Scraper\Solicitud;
 use App\Message\Scraper\DownloadAutoliquidacion;
 use App\Message\Scraper\GenerateAutoliquidacion;

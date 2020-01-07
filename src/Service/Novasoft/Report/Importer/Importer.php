@@ -3,7 +3,7 @@
 
 namespace App\Service\Novasoft\Report\Importer;
 
-use App\Entity\Empleado;
+use App\Entity\Main\Empleado;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Exception;

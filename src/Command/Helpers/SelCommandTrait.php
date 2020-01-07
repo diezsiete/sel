@@ -4,7 +4,7 @@
 namespace App\Command\Helpers;
 
 
-use App\Entity\Usuario;
+use App\Entity\Main\Usuario;
 use App\Service\Configuracion\Configuracion;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
@@ -14,7 +14,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 trait SelCommandTrait
 {
     /**
-     * @var null|Usuario
+     * @var null|\App\Entity\Main\Usuario
      */
     private $superAdmin = null;
 
@@ -45,7 +45,7 @@ trait SelCommandTrait
     }
 
     /**
-     * @return Usuario|null
+     * @return \App\Entity\Main\Usuario|null
      * @throws NonUniqueResultException
      */
     public function getSuperAdmin($cache = true)

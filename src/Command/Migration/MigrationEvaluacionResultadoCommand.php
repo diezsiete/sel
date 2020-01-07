@@ -15,7 +15,7 @@ use App\Entity\Evaluacion\Pregunta\Pregunta;
 use App\Entity\Evaluacion\Progreso;
 use App\Entity\Evaluacion\Respuesta\Opcion;
 use App\Entity\Evaluacion\Respuesta\Respuesta;
-use App\Entity\Usuario;
+use App\Entity\Main\Usuario;
 use DateTime;
 use Exception;
 use Symfony\Component\Console\Input\InputInterface;

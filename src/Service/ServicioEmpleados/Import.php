@@ -4,9 +4,9 @@
 namespace App\Service\ServicioEmpleados;
 
 
-use App\Entity\Usuario;
-use App\Repository\ConvenioRepository;
-use App\Repository\ReporteNominaRepository;
+use App\Entity\Main\Usuario;
+use App\Repository\Main\ConvenioRepository;
+use App\Repository\Main\ReporteNominaRepository;
 use App\Service\NovasoftSsrs\NovasoftSsrs;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -23,7 +23,7 @@ class Import
      */
     private $reporteNominaRepository;
     /**
-     * @var ConvenioRepository
+     * @var \App\Repository\Main\ConvenioRepository
      */
     private $convenioRepository;
     /**

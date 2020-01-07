@@ -7,7 +7,7 @@ namespace App\DataTable\Type\Hv;
 use App\DataTable\Column\ButtonColumn\ButtonAttrRoute;
 use App\DataTable\Column\ButtonColumn\ButtonColumn;
 use App\DataTable\Column\ButtonColumn\ButtonTypeModal;
-use App\Entity\Estudio;
+use App\Entity\Hv\Estudio;
 use Doctrine\ORM\QueryBuilder;
 use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
 use Omines\DataTablesBundle\Column\DateTimeColumn;

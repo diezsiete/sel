@@ -9,15 +9,15 @@
 namespace App\Service\Novasoft\Report\Mapper;
 
 
-use App\Entity\ReporteNomina;
-use App\Entity\ReporteNominaDetalle;
-use App\Repository\UsuarioRepository;
+use App\Entity\Main\ReporteNomina;
+use App\Entity\Main\ReporteNominaDetalle;
+use App\Repository\Main\UsuarioRepository;
 
 class MapperNom204 extends Mapper
 {
 
     /**
-     * @var ReporteNomina
+     * @var \App\Entity\Main\ReporteNomina
      */
     protected $targetObject;
 
@@ -26,7 +26,7 @@ class MapperNom204 extends Mapper
      */
     protected $mappedObjects = [];
     /**
-     * @var UsuarioRepository
+     * @var \App\Repository\Main\UsuarioRepository
      */
     private $usuarioRepository;
 

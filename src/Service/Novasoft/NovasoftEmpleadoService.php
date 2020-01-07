@@ -4,9 +4,9 @@
 namespace App\Service\Novasoft;
 
 
-use App\Entity\Empleado;
-use App\Entity\Usuario;
-use App\Repository\EmpleadoRepository;
+use App\Entity\Main\Empleado;
+use App\Entity\Main\Usuario;
+use App\Repository\Main\EmpleadoRepository;
 use App\Service\Configuracion\Configuracion;
 use App\Service\ReportesServicioEmpleados;
 use Doctrine\ORM\EntityManagerInterface;

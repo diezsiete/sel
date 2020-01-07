@@ -2,7 +2,7 @@
 
 namespace App\Command\Migration;
 
-use App\Entity\Usuario;
+use App\Entity\Main\Usuario;
 use DateTime;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\Persistence\ManagerRegistry;

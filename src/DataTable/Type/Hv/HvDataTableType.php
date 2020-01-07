@@ -4,8 +4,8 @@
 namespace App\DataTable\Type\Hv;
 
 
-use App\Entity\Hv;
-use App\Entity\Usuario;
+use App\Entity\Hv\Hv;
+use App\Entity\Main\Usuario;
 use Doctrine\ORM\QueryBuilder;
 use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
 use Omines\DataTablesBundle\Column\TextColumn;

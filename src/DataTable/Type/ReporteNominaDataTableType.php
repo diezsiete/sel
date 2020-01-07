@@ -5,7 +5,7 @@ namespace App\DataTable\Type;
 
 
 use App\DataTable\Column\ActionsColumn\ActionsColumn;
-use App\Entity\ReporteNomina;
+use App\Entity\Main\ReporteNomina;
 use Doctrine\ORM\QueryBuilder;
 use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
 use Omines\DataTablesBundle\Column\DateTimeColumn;

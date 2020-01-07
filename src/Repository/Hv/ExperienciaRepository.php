@@ -2,7 +2,7 @@
 
 namespace App\Repository\Hv;
 
-use App\Entity\Experiencia;
+use App\Entity\Hv\Experiencia;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 

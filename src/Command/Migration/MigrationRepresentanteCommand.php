@@ -5,9 +5,9 @@ namespace App\Command\Migration;
 
 
 use App\Command\Helpers\SelCommandTrait;
-use App\Entity\Convenio;
-use App\Entity\Empleado;
-use App\Entity\Representante;
+use App\Entity\Main\Convenio;
+use App\Entity\Main\Empleado;
+use App\Entity\Main\Representante;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 

@@ -2,7 +2,7 @@
 
 namespace App\Repository\Hv;
 
-use App\Entity\Vivienda;
+use App\Entity\Hv\Vivienda;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 

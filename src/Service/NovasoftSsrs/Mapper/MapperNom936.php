@@ -9,7 +9,7 @@
 namespace App\Service\NovasoftSsrs\Mapper;
 
 
-use App\Entity\Convenio;
+use App\Entity\Main\Convenio;
 use App\Service\NovasoftSsrs\Exception\InvalidMappedObject;
 
 

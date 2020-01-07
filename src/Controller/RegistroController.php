@@ -6,7 +6,7 @@ use App\DataTable\Type\Hv\EstudioDataTableType;
 use App\DataTable\Type\Hv\ExperienciaDataTableType;
 use App\DataTable\Type\Hv\FamiliarDataTableType;
 use App\DataTable\Type\Hv\ReferenciaDataTableType;
-use App\Entity\Usuario;
+use App\Entity\Main\Usuario;
 use App\Form\CuentaFormType;
 use App\Form\EstudioFormType;
 use App\Form\ExperienciaFormType;
@@ -143,7 +143,7 @@ class RegistroController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()) {
             $hv = $this->hvWizard->getHv();
-            /** @var Usuario $usuario */
+            /** @var \App\Entity\Main\Usuario $usuario */
             $usuario = $form->getData();
 
             $plainPassword = $usuario->getPassword();

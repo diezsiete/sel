@@ -4,9 +4,9 @@
 namespace App\Service;
 
 
-use App\Entity\Convenio;
-use App\Entity\Empleado;
-use App\Entity\ReporteNomina;
+use App\Entity\Main\Convenio;
+use App\Entity\Main\Empleado;
+use App\Entity\Main\ReporteNomina;
 use App\Service\Configuracion\Configuracion;
 use App\Service\Configuracion\SsrsDb;
 use App\Service\NovasoftSsrs\Entity\ReporteCertificadoIngresos;
@@ -155,7 +155,7 @@ class ReportesServicioEmpleados
     }
 
     /**
-     * @return Convenio[]
+     * @return \App\Entity\Main\Convenio[]
      * @throws SSRSReportException
      */
     public function getConvenios()
@@ -168,7 +168,7 @@ class ReportesServicioEmpleados
      * @param string $convenioCodigo
      * @param DateTime $desde
      * @param DateTime $hasta
-     * @return Empleado[]
+     * @return \App\Entity\Main\Empleado[]
      * @throws SSRSReportException
      * @throws Exception
      */

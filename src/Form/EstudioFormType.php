@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\Estudio;
+use App\Entity\Hv\Estudio;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;

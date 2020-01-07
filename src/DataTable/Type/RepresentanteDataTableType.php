@@ -10,7 +10,7 @@ use App\DataTable\Column\ButtonColumn\ButtonTypeModal;
 use App\DataTable\Column\ButtonColumn\ButtonTypeModalBorrar;
 use App\DataTable\Column\ButtonColumn\ButtonTypeRoute;
 use App\DataTable\Column\ButtonColumn\DatatablePropertyAccessor;
-use App\Entity\Representante;
+use App\Entity\Main\Representante;
 use Doctrine\ORM\QueryBuilder;
 use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
 use Omines\DataTablesBundle\Column\MapColumn;

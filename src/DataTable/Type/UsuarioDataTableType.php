@@ -5,8 +5,8 @@ namespace App\DataTable\Type;
 
 
 use App\DataTable\Column\ActionsColumn\ActionsColumn;
-use App\Entity\Usuario;
-use App\Repository\UsuarioRepository;
+use App\Entity\Main\Usuario;
+use App\Repository\Main\UsuarioRepository;
 use Doctrine\ORM\QueryBuilder;
 use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
 use Omines\DataTablesBundle\Column\TextColumn;

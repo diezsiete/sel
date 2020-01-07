@@ -12,7 +12,7 @@ use App\Command\Helpers\SelCommandTrait;
 use App\Command\Helpers\TraitableCommand\TraitableCommand;
 use App\Entity\Autoliquidacion\Autoliquidacion;
 use App\Entity\Autoliquidacion\AutoliquidacionEmpleado;
-use App\Entity\Convenio;
+use App\Entity\Main\Convenio;
 use App\Repository\Autoliquidacion\AutoliquidacionEmpleadoRepository;
 use App\Repository\Autoliquidacion\AutoliquidacionRepository;
 use App\Service\Autoliquidacion\DatabaseActions;
@@ -125,7 +125,7 @@ class AutoliquidacionCreateCommand extends TraitableCommand
     }
 
     /**
-     * @param string|Convenio $convenio codigo o objeto
+     * @param string|\App\Entity\Main\Convenio $convenio codigo o objeto
      * @param \DateTimeInterface $periodo
      * @param null $usuario
      * @return Autoliquidacion

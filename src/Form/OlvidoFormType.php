@@ -2,9 +2,9 @@
 
 namespace App\Form;
 
-use App\Entity\RestaurarClave;
+use App\Entity\Main\RestaurarClave;
 use App\Form\DataTransformer\RestaurarClaveIdentificacionTransformer;
-use App\Repository\UsuarioRepository;
+use App\Repository\Main\UsuarioRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;

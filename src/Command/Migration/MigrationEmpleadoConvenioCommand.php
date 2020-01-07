@@ -4,9 +4,9 @@
 namespace App\Command\Migration;
 
 
-use App\Entity\Empleado;
-use App\Repository\ConvenioRepository;
-use App\Repository\EmpleadoRepository;
+use App\Entity\Main\Empleado;
+use App\Repository\Main\ConvenioRepository;
+use App\Repository\Main\EmpleadoRepository;
 use App\Service\Scraper\NovasoftDataScraper;
 use App\Service\Scraper\Exception\ScraperNotFoundException;
 use Doctrine\Common\Annotations\Reader;
@@ -22,7 +22,7 @@ class MigrationEmpleadoConvenioCommand extends MigrationCommand
 {
     public static $defaultName = "sel:migration:empleado-convenio";
     /**
-     * @var EmpleadoRepository
+     * @var \App\Repository\Main\EmpleadoRepository
      */
     private $empleadoRepository;
     /**
@@ -30,7 +30,7 @@ class MigrationEmpleadoConvenioCommand extends MigrationCommand
      */
     private $scraper;
     /**
-     * @var ConvenioRepository
+     * @var \App\Repository\Main\ConvenioRepository
      */
     private $convenioRepository;
     /**

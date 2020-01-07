@@ -4,8 +4,8 @@
 namespace App\Service\Novasoft\Report\Mapper\LiquidacionNomina;
 
 
-use App\Entity\Convenio;
-use App\Repository\ConvenioRepository;
+use App\Entity\Main\Convenio;
+use App\Repository\Main\ConvenioRepository;
 use App\Service\Novasoft\Report\Mapper\DataFilter;
 use App\Service\Novasoft\Report\Mapper\Mapper;
 
@@ -13,7 +13,7 @@ class ConvenioMapper extends Mapper
 {
 
     /**
-     * @var ConvenioRepository
+     * @var \App\Repository\Main\ConvenioRepository
      */
     private $convenioRepository;
 

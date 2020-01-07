@@ -4,13 +4,13 @@
 namespace App\Service\Novasoft\Report\Mapper;
 
 
-use App\Entity\Convenio;
-use App\Entity\Empleado;
+use App\Entity\Main\Convenio;
+use App\Entity\Main\Empleado;
 use App\Entity\Novasoft\Report\CentroCosto;
 use App\Entity\Novasoft\Report\TrabajadorActivo;
-use App\Entity\Usuario;
-use App\Repository\ConvenioRepository;
-use App\Repository\EmpleadoRepository;
+use App\Entity\Main\Usuario;
+use App\Repository\Main\ConvenioRepository;
+use App\Repository\Main\EmpleadoRepository;
 use App\Repository\Novasoft\Report\CentroCostoRepository;
 
 class TrabajadoresActivosMapper extends Mapper
@@ -21,7 +21,7 @@ class TrabajadoresActivosMapper extends Mapper
     protected $targetObject;
 
     /**
-     * @var EmpleadoRepository
+     * @var \App\Repository\Main\EmpleadoRepository
      */
     private $empleadoRepository;
     /**

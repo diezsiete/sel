@@ -11,12 +11,12 @@ class Vinculacion
 {
     /**
      * @ORM\Id()
-     * @ORM\Column(type="string", length=8)
+     * @ORM\Column(type="string", length=8, name="no_contrat")
      */
     private $numeroContrato;
 
     /**
-     * @ORM\Column(type="bigint", nullable=true)
+     * @ORM\Column(type="bigint", nullable=true, name="nit_tercer")
      */
     private $nitTercero;
 
@@ -36,7 +36,7 @@ class Vinculacion
     private $usuario;
 
     /**
-     * @ORM\Column(type="string", length=8, nullable=true)
+     * @ORM\Column(type="string", length=8, nullable=true, name="centro_cos")
      */
     private $centroCosto;
 
@@ -56,7 +56,7 @@ class Vinculacion
     private $sueldoMes;
 
     /**
-     * @ORM\Column(type="bigint", nullable=true)
+     * @ORM\Column(type="bigint", nullable=true, name="aux_transp")
      */
     private $auxilioTransporte;
 

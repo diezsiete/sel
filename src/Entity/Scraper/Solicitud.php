@@ -2,7 +2,7 @@
 
 namespace App\Entity\Scraper;
 
-use App\Entity\Hv;
+use App\Entity\Hv\Hv;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -19,7 +19,7 @@ class Solicitud
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Hv")
+     * @ORM\ManyToOne(targetEntity="App\Entity\HV\Hv")
      * @ORM\JoinColumn(nullable=false)
      */
     private $hv;

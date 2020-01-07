@@ -5,8 +5,8 @@ namespace App\Command\NovasoftImport;
 
 
 use App\Command\Helpers\ConsoleProgressBar;
-use App\Entity\EstudioInstituto;
-use App\Repository\EstudioInstitutoRepository;
+use App\Entity\Hv\EstudioInstituto;
+use App\Repository\Hv\EstudioInstitutoRepository;
 use App\Service\Scraper\NovasoftDataScraper;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\ORM\EntityManagerInterface;
@@ -25,7 +25,7 @@ class NiInstitutoCommand extends NiCommand
      */
     private $scraper;
     /**
-     * @var EstudioInstitutoRepository
+     * @var \App\Repository\Hv\EstudioInstitutoRepository
      */
     private $institutoRepository;
 

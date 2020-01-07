@@ -3,7 +3,7 @@
 namespace App\Form;
 
 use App\Constant\HvConstant;
-use App\Entity\Referencia;
+use App\Entity\Hv\Referencia;
 use App\Service\Configuracion\Configuracion;
 use League\Flysystem\Config;
 use Symfony\Component\Form\AbstractType;

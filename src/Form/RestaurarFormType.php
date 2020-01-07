@@ -4,10 +4,10 @@
 namespace App\Form;
 
 
-use App\Entity\RestaurarClave;
-use App\Entity\Usuario;
+use App\Entity\Main\RestaurarClave;
+use App\Entity\Main\Usuario;
 use App\Form\DataTransformer\RestaurarClaveIdentificacionTransformer;
-use App\Repository\UsuarioRepository;
+use App\Repository\Main\UsuarioRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;

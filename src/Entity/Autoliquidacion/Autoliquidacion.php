@@ -2,8 +2,8 @@
 
 namespace App\Entity\Autoliquidacion;
 
-use App\Entity\Convenio;
-use App\Entity\Usuario;
+use App\Entity\Main\Convenio;
+use App\Entity\Main\Usuario;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -22,13 +22,13 @@ class Autoliquidacion
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Convenio", inversedBy="autoliquidaciones", )
+     * @ORM\ManyToOne(targetEntity="App\Entity\Main\Convenio", inversedBy="autoliquidaciones", )
      * @ORM\JoinColumn(name="convenio_codigo", referencedColumnName="codigo", nullable=true)
      */
     private $convenio;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Usuario")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Main\Usuario")
      * @ORM\JoinColumn(nullable=false)
      */
     private $usuario;

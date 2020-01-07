@@ -3,7 +3,7 @@
 namespace App\Entity\Evaluacion;
 
 use App\Entity\Evaluacion\Pregunta\Pregunta;
-use App\Entity\Usuario;
+use App\Entity\Main\Usuario;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -33,7 +33,7 @@ class Evaluacion
     private $slug;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Usuario")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Main\Usuario")
      * @ORM\JoinColumn(nullable=false)
      */
     private $usuario;

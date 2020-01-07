@@ -4,10 +4,10 @@
 namespace App\Service\Hv;
 
 
-use App\Entity\Hv;
-use App\Entity\HvEntity;
-use App\Entity\Usuario;
-use App\Repository\HvRepository;
+use App\Entity\Hv\Hv;
+use App\Entity\Hv\HvEntity;
+use App\Entity\Main\Usuario;
+use App\Repository\Hv\HvRepository;
 use App\Service\Hv\HvWizard\HvWizard;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -20,7 +20,7 @@ class HvResolver implements HvEntity
      */
     private $security;
     /**
-     * @var HvRepository
+     * @var \App\Repository\Hv\HvRepository
      */
     private $hvRepository;
     /**
@@ -29,7 +29,7 @@ class HvResolver implements HvEntity
     private $session;
 
     /**
-     * @var Usuario
+     * @var \App\Entity\Main\Usuario
      */
     private $usuario = null;
 

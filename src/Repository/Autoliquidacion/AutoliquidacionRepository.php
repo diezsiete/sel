@@ -3,7 +3,7 @@
 namespace App\Repository\Autoliquidacion;
 
 use App\Entity\Autoliquidacion\Autoliquidacion;
-use App\Entity\Empleado;
+use App\Entity\Main\Empleado;
 use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
@@ -99,7 +99,7 @@ class AutoliquidacionRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Empleado $empleado
+     * @param \App\Entity\Main\Empleado $empleado
      * @param DateTimeInterface|null $periodo
      * @return Autoliquidacion|Autoliquidacion[]
      */

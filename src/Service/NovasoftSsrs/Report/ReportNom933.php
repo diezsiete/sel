@@ -5,7 +5,7 @@
 
 namespace App\Service\NovasoftSsrs\Report;
 
-use App\Entity\Empleado;
+use App\Entity\Main\Empleado;
 use App\Service\NovasoftSsrs\Mapper\MapperNom933;
 
 class ReportNom933 extends Report

@@ -4,7 +4,7 @@
 namespace App\Service\Novasoft\Report;
 
 
-use App\Entity\Convenio;
+use App\Entity\Main\Convenio;
 use App\Service\Novasoft\Report\Report\LiquidacionNominaReport;
 use App\Service\Novasoft\Report\Report\NominaReport;
 use App\Service\Novasoft\Report\Report\TrabajadoresActivosReport;

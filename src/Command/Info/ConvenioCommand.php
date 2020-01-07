@@ -5,7 +5,7 @@ namespace App\Command\Info;
 
 
 use App\Command\Helpers\TraitableCommand\TraitableCommand;
-use App\Repository\ConvenioRepository;
+use App\Repository\Main\ConvenioRepository;
 use Doctrine\Common\Annotations\Reader;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
@@ -17,7 +17,7 @@ class ConvenioCommand extends TraitableCommand
 {
     protected static $defaultName = "sel:info:convenio";
     /**
-     * @var ConvenioRepository
+     * @var \App\Repository\Main\ConvenioRepository
      */
     private $convenioRepository;
 

@@ -6,7 +6,8 @@ namespace App\Controller;
 use App\DataTable\Type\AutoliquidacionEmpleadoDataTableType;
 use App\Entity\Autoliquidacion\AutoliquidacionEmpleado;
 use App\Entity\Halcon\Vinculacion;
-use App\Repository\EmpleadoRepository;
+use App\Repository\Halcon\VinculacionRepository;
+use App\Repository\Main\EmpleadoRepository;
 use App\Service\Autoliquidacion\FileManager;
 use App\Service\Novasoft\NovasoftEmpleadoService;
 use App\Service\Novasoft\Report\ReportFactory;
@@ -75,11 +76,6 @@ class ServicioEmpleadosController extends BaseController
      */
     public function comprobantesNomina(ReportFactory $reportFactory)
     {
-
-        $vinculacionRepo = $this->getDoctrine()->getRepository(Vinculacion::class, 'halcon');
-        $vinculacion = $vinculacionRepo->find('-1603072');
-        dump($vinculacion);
-
         $nominaReport = $reportFactory->getReporteNomina($this->getUser()->getIdentificacion(), null, null, $this->getSsrsDb());
 
         return $this->render('servicio_empleados/comprobantes-temp.html.twig', [

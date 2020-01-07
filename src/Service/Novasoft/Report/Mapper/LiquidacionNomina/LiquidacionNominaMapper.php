@@ -4,7 +4,7 @@
 namespace App\Service\Novasoft\Report\Mapper\LiquidacionNomina;
 
 
-use App\Entity\Empleado;
+use App\Entity\Main\Empleado;
 use App\Entity\Novasoft\Report\LiquidacionNomina\LiquidacionNomina;
 use App\Service\Novasoft\Report\Mapper\Mapper;
 
@@ -89,7 +89,7 @@ class LiquidacionNominaMapper extends Mapper
     }
 
     /**
-     * @param Empleado $value
+     * @param \App\Entity\Main\Empleado $value
      */
     public function setEmpleado($value)
     {

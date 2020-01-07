@@ -7,9 +7,9 @@ namespace App\DataTable\Type\Hv;
 use App\Constant\HvConstant;
 use App\DataTable\Adapter\GroupByORMAdapter;
 use App\DataTable\Column\ActionsColumn\ActionsColumn;
-use App\Entity\Hv;
-use App\Entity\Vacante;
-use App\Repository\HvRepository;
+use App\Entity\Hv\Hv;
+use App\Entity\Vacante\Vacante;
+use App\Repository\Hv\HvRepository;
 use Doctrine\ORM\QueryBuilder;
 use Knp\Bundle\TimeBundle\Twig\Extension\TimeExtension;
 use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
@@ -24,7 +24,7 @@ use Twig\Environment;
 class AdminHvDataTableType implements DataTableTypeInterface
 {
     /**
-     * @var HvRepository
+     * @var \App\Repository\Hv\HvRepository
      */
     private $hvRepository;
 

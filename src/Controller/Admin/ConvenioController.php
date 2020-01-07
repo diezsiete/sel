@@ -6,9 +6,9 @@ namespace App\Controller\Admin;
 
 use App\DataTable\Type\ConvenioDataTableType;
 use App\DataTable\Type\RepresentanteDataTableType;
-use App\Entity\Convenio;
-use App\Entity\Representante;
-use App\Entity\Usuario;
+use App\Entity\Main\Convenio;
+use App\Entity\Main\Representante;
+use App\Entity\Main\Usuario;
 use App\Form\ProfileFormType;
 use App\Form\RepresentanteFormType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -133,7 +133,7 @@ class ConvenioController extends AbstractController
         $form = $this->createForm(RepresentanteFormType::class, $representante);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var Representante $representante */
+            /** @var \App\Entity\Main\Representante $representante */
             $representante = $form->getData();
             $modifyAllEmails = $representante->getUsuario()->getId() && !$form['emailUnico']->getData();
 

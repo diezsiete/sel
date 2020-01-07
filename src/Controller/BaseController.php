@@ -4,7 +4,7 @@
 namespace App\Controller;
 
 
-use App\Entity\Usuario;
+use App\Entity\Main\Usuario;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;

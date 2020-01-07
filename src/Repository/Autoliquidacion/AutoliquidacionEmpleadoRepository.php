@@ -4,8 +4,8 @@ namespace App\Repository\Autoliquidacion;
 
 use App\Entity\Autoliquidacion\Autoliquidacion;
 use App\Entity\Autoliquidacion\AutoliquidacionEmpleado;
-use App\Entity\Empleado;
-use App\Entity\Representante;
+use App\Entity\Main\Empleado;
+use App\Entity\Main\Representante;
 use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
@@ -84,7 +84,7 @@ class AutoliquidacionEmpleadoRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Representante $representante
+     * @param \App\Entity\Main\Representante $representante
      * @param Autoliquidacion|DateTimeInterface|null $filter
      * @return AutoliquidacionEmpleado[]
      */

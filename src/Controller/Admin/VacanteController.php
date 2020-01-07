@@ -5,7 +5,7 @@ namespace App\Controller\Admin;
 use App\Controller\BaseController;
 use App\DataTable\Type\Hv\AdminHvDataTableType;
 use App\DataTable\Type\VacanteDataTableType;
-use App\Entity\Vacante;
+use App\Entity\Vacante\Vacante;
 use App\Form\VacanteFormType;
 use Omines\DataTablesBundle\DataTableFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -69,7 +69,7 @@ class VacanteController extends BaseController
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
-            /** @var Vacante $vacante */
+            /** @var \App\Entity\Vacante\Vacante $vacante */
             $vacante = $form->getData();
 
             $em = $this->getDoctrine()->getManager();

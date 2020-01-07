@@ -4,7 +4,7 @@
 namespace App\Form;
 
 
-use App\Entity\Representante;
+use App\Entity\Main\Representante;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;

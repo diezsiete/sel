@@ -4,7 +4,7 @@
 namespace App\Serializer;
 
 
-use App\Entity\Hv;
+use App\Entity\Hv\Hv;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

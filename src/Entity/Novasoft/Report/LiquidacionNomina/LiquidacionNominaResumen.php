@@ -2,7 +2,7 @@
 
 namespace App\Entity\Novasoft\Report\LiquidacionNomina;
 
-use App\Entity\Convenio;
+use App\Entity\Main\Convenio;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -20,7 +20,7 @@ class LiquidacionNominaResumen
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Convenio")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Main\Convenio")
      * @ORM\JoinColumn(nullable=false, referencedColumnName="codigo")
      */
     private $convenio;

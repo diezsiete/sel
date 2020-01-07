@@ -8,9 +8,9 @@
 
 namespace App\Service\NovasoftSsrs\Mapper;
 
-use App\Entity\Empleado;
-use App\Entity\Usuario;
-use App\Repository\ConvenioRepository;
+use App\Entity\Main\Empleado;
+use App\Entity\Main\Usuario;
+use App\Repository\Main\ConvenioRepository;
 
 class MapperNomU1503 extends Mapper
 {
@@ -26,7 +26,7 @@ class MapperNomU1503 extends Mapper
     }
 
     /**
-     * @var Empleado
+     * @var \App\Entity\Main\Empleado
      */
     protected $targetObject;
 

@@ -9,7 +9,7 @@ use App\DataTable\Column\ButtonColumn\ButtonColumn;
 use App\DataTable\Column\ButtonColumn\ButtonTypeRoute;
 use App\DataTable\Column\ButtonColumn\DatatablePropertyAccessor;
 use App\Entity\Evaluacion\Progreso;
-use App\Repository\UsuarioRepository;
+use App\Repository\Main\UsuarioRepository;
 use Doctrine\ORM\QueryBuilder;
 use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
 use Omines\DataTablesBundle\Column\DateTimeColumn;

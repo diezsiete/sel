@@ -2,21 +2,21 @@
 
 namespace App\Command\Migration;
 
-use App\Entity\Area;
-use App\Entity\Ciudad;
-use App\Entity\Dpto;
-use App\Entity\Estudio;
-use App\Entity\EstudioCodigo;
-use App\Entity\EstudioInstituto;
-use App\Entity\Experiencia;
-use App\Entity\Familiar;
-use App\Entity\Hv;
-use App\Entity\Idioma;
-use App\Entity\Pais;
-use App\Entity\RedSocial;
-use App\Entity\Referencia;
-use App\Entity\Vivienda;
-use App\Repository\HvRepository;
+use App\Entity\Hv\Area;
+use App\Entity\Main\Ciudad;
+use App\Entity\Main\Dpto;
+use App\Entity\Hv\Estudio;
+use App\Entity\Hv\EstudioCodigo;
+use App\Entity\Hv\EstudioInstituto;
+use App\Entity\Hv\Experiencia;
+use App\Entity\Hv\Familiar;
+use App\Entity\Hv\Hv;
+use App\Entity\Hv\Idioma;
+use App\Entity\Main\Pais;
+use App\Entity\Hv\RedSocial;
+use App\Entity\Hv\Referencia;
+use App\Entity\Hv\Vivienda;
+use App\Repository\Hv\HvRepository;
 use DateTime;
 use PDO;
 use Symfony\Component\Console\Input\InputArgument;
@@ -38,7 +38,7 @@ class MigrationHvEntityCommand extends MigrationCommand
         'idioma' => Idioma::class
     ];
     /**
-     * @var HvRepository
+     * @var \App\Repository\Hv\HvRepository
      */
     protected $hvRepository = null;
 

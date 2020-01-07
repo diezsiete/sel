@@ -4,14 +4,14 @@
 namespace App\Repository\Hv;
 
 
-use App\Entity\Hv;
-use App\Entity\HvEntity;
+use App\Entity\Hv\Hv;
+use App\Entity\Hv\HvEntity;
 
 trait HvChildRepository
 {
     /**
      * @param Hv $hv
-     * @param HvEntity $entity
+     * @param \App\Entity\Hv\HvEntity $entity
      * @return HvEntity[]
      */
     public function findSiblings(Hv $hv, HvEntity $entity)

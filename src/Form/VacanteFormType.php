@@ -4,10 +4,10 @@ namespace App\Form;
 
 use App\Constant\HvConstant;
 use App\Constant\VacanteConstant;
-use App\Entity\Ciudad;
-use App\Entity\LicenciaConduccion;
-use App\Entity\Vacante;
-use App\Repository\CiudadRepository;
+use App\Entity\Main\Ciudad;
+use App\Entity\Hv\LicenciaConduccion;
+use App\Entity\Vacante\Vacante;
+use App\Repository\Main\CiudadRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;

@@ -2,7 +2,7 @@
 
 namespace App\Security\Voter;
 
-use App\Entity\HvEntity;
+use App\Entity\Hv\HvEntity;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Security;

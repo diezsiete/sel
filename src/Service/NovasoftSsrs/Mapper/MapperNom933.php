@@ -3,8 +3,8 @@
 
 namespace App\Service\NovasoftSsrs\Mapper;
 
-use App\Entity\Empleado;
-use App\Entity\Usuario;
+use App\Entity\Main\Empleado;
+use App\Entity\Main\Usuario;
 use App\Service\NovasoftSsrs\Exception\InvalidMappedObject;
 use DateTime;
 

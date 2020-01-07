@@ -9,7 +9,7 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Autoliquidacion\AutoliquidacionProgresoRepository")
  */
-class AutoliquidacionProgreso
+class  AutoliquidacionProgreso
 {
 
     use TimestampableEntity;

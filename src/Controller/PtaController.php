@@ -2,14 +2,14 @@
 
 namespace App\Controller;
 
-use App\Entity\Post;
-use App\Entity\SolicitudServicio;
-use App\Entity\Tag;
+use App\Entity\Main\Post;
+use App\Entity\Main\SolicitudServicio;
+use App\Entity\Main\Tag;
 use App\Form\ContactoFormType;
 use App\Form\Model\ContactoModel;
 use App\Form\SolicitudServicioType;
-use App\Repository\PostRepository;
-use App\Repository\TagRepository;
+use App\Repository\Main\PostRepository;
+use App\Repository\Main\TagRepository;
 use App\Service\Configuracion\Configuracion;
 use App\Service\Configuracion\Oficina;
 use App\Service\Mailer;

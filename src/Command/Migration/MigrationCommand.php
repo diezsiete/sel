@@ -6,8 +6,8 @@ namespace App\Command\Migration;
 
 use App\Command\Helpers\TraitableCommand\TraitableCommand;
 use App\Entity\Autoliquidacion\Autoliquidacion;
-use App\Entity\Usuario;
-use App\Repository\UsuarioRepository;
+use App\Entity\Main\Usuario;
+use App\Repository\Main\UsuarioRepository;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\DBAL\Connection;
@@ -38,7 +38,7 @@ abstract class MigrationCommand extends TraitableCommand
     private $doctrine;
 
     /**
-     * @var UsuarioRepository
+     * @var \App\Repository\Main\UsuarioRepository
      */
     protected $usuarioRepository = null;
 
@@ -211,7 +211,7 @@ abstract class MigrationCommand extends TraitableCommand
     /**
      * @param $idOld
      * @param null|string|false $errorMessage
-     * @return Usuario|null
+     * @return \App\Entity\Main\Usuario|null
      */
     protected function getUsuarioByIdOld($idOld, $errorMessage = null)
     {

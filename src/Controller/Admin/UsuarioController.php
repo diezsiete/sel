@@ -3,7 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\DataTable\Type\UsuarioDataTableType;
-use App\Entity\Usuario;
+use App\Entity\Main\Usuario;
 use App\Form\ProfileFormType;
 use Omines\DataTablesBundle\DataTableFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

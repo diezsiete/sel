@@ -6,7 +6,7 @@ namespace App\Service\ServicioEmpleados;
 
 use App\DataTable\Type\AutoliquidacionEmpleadoDataTableType;
 use App\DataTable\Type\ReporteNominaDataTableType;
-use App\Entity\Usuario;
+use App\Entity\Main\Usuario;
 use Omines\DataTablesBundle\DataTableFactory;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

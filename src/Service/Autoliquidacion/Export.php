@@ -5,10 +5,10 @@ namespace App\Service\Autoliquidacion;
 
 
 use App\Entity\Autoliquidacion\Autoliquidacion;
-use App\Entity\Representante;
-use App\Entity\Usuario;
+use App\Entity\Main\Representante;
+use App\Entity\Main\Usuario;
 use App\Repository\Autoliquidacion\AutoliquidacionEmpleadoRepository;
-use App\Repository\RepresentanteRepository;
+use App\Repository\Main\RepresentanteRepository;
 use Symfony\Component\Security\Core\Security;
 
 abstract class Export
@@ -18,7 +18,7 @@ abstract class Export
      */
     protected $security;
     /**
-     * @var RepresentanteRepository
+     * @var \App\Repository\Main\RepresentanteRepository
      */
     protected $representanteRepo;
     /**
@@ -58,7 +58,7 @@ abstract class Export
 
     /**
      * @param Autoliquidacion $autoliquidacion
-     * @param Usuario|null|Representante $usuario
+     * @param \App\Entity\Main\Usuario|null|Representante $usuario
      * @return string
      */
     public abstract function generate(Autoliquidacion $autoliquidacion, $usuario = null);

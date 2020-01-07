@@ -4,7 +4,7 @@ namespace App\Form;
 
 use App\Constant\HvConstant;
 use App\Constant\VacanteConstant;
-use App\Entity\Familiar;
+use App\Entity\Hv\Familiar;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;

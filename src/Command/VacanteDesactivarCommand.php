@@ -3,7 +3,7 @@
 namespace App\Command;
 
 use App\Constant\VacanteConstant;
-use App\Repository\VacanteRepository;
+use App\Repository\Vacante\VacanteRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

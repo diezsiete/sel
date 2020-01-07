@@ -4,7 +4,7 @@
 namespace App\Service\NovasoftSsrs;
 
 
-use App\Entity\Usuario;
+use App\Entity\Main\Usuario;
 use App\Service\Configuracion\Configuracion;
 use App\Service\Configuracion\SsrsDb;
 use App\Service\NovasoftSsrs\Report\Report;
@@ -216,7 +216,7 @@ class NovasoftSsrs
      * @param Usuario $usuario
      * @param null|\DateTime $fechaInicio
      * @param null|\DateTime $fechaFin
-     * @return \App\Entity\ReporteNomina[]
+     * @return \App\Entity\Main\ReporteNomina[]
      * @throws \SSRS\SSRSReportException
      */
     public function getReporteNomina(Usuario $usuario, $fechaInicio = null, $fechaFin = null)

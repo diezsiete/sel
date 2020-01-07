@@ -2,13 +2,13 @@
 
 namespace App\Controller;
 
-use App\Entity\Post;
-use App\Entity\Tag;
+use App\Entity\Main\Post;
+use App\Entity\Main\Tag;
 use App\Form\CandidatoFormType;
 use App\Form\ContactoFormType;
 use App\Form\Model\CandidatosModel;
-use App\Repository\PostRepository;
-use App\Repository\TagRepository;
+use App\Repository\Main\PostRepository;
+use App\Repository\Main\TagRepository;
 use App\Security\LoginFormAuthenticator;
 use App\Service\Configuracion\Configuracion;
 use App\Service\Mailer;
@@ -24,7 +24,7 @@ use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 class ServilaborController extends AbstractController
 {
     /**
-     * @var PostRepository
+     * @var \App\Repository\Main\PostRepository
      */
     private $postRepo;
 

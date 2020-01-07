@@ -4,7 +4,7 @@
 namespace App\EventListener;
 
 
-use App\Entity\Usuario;
+use App\Entity\Main\Usuario;
 use App\Service\Hv\HvResolver;
 use App\Service\Hv\HvWizard\HvWizard;
 use Symfony\Component\HttpFoundation\RedirectResponse;

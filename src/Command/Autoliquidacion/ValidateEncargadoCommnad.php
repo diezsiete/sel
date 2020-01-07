@@ -8,7 +8,7 @@ use App\Command\Helpers\Loggable;
 
 use App\Command\Helpers\SelCommandTrait;
 use App\Command\Helpers\TraitableCommand\TraitableCommand;
-use App\Repository\ConvenioRepository;
+use App\Repository\Main\ConvenioRepository;
 use Doctrine\Common\Annotations\Reader;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;

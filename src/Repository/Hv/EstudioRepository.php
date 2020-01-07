@@ -2,7 +2,7 @@
 
 namespace App\Repository\Hv;
 
-use App\Entity\Estudio;
+use App\Entity\Hv\Estudio;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 

@@ -2,9 +2,9 @@
 
 namespace App\Command\Migration;
 
-use App\Entity\Ciudad;
-use App\Entity\Dpto;
-use App\Entity\Pais;
+use App\Entity\Main\Ciudad;
+use App\Entity\Main\Dpto;
+use App\Entity\Main\Pais;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -20,7 +20,7 @@ class MigrationCiudadCommand extends MigrationCommand
      */
     private $lastPais = null;
     /**
-     * @var Dpto
+     * @var \App\Entity\Main\Dpto
      */
     private $lastDpto = null;
 

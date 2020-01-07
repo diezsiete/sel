@@ -3,7 +3,7 @@
 namespace App\Form;
 
 use App\Constant\VacanteConstant;
-use App\Entity\Experiencia;
+use App\Entity\Hv\Experiencia;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;

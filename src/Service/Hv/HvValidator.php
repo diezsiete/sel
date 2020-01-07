@@ -4,7 +4,7 @@
 namespace App\Service\Hv;
 
 
-use App\Entity\Hv;
+use App\Entity\Hv\Hv;
 use App\Service\Configuracion\Configuracion;
 use App\Service\Hv\HvWizard\HvWizardRoute;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -34,7 +34,7 @@ class HvValidator
     }
 
     /**
-     * @param Hv $hv
+     * @param \App\Entity\Hv\Hv $hv
      * @return HvWizardRoute[]
      */
     public function validateWizardRoutes(?Hv $hv)

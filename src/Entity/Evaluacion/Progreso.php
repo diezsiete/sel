@@ -4,7 +4,7 @@ namespace App\Entity\Evaluacion;
 
 use App\Entity\Evaluacion\Pregunta\Pregunta;
 use App\Entity\Evaluacion\Respuesta\Respuesta;
-use App\Entity\Usuario;
+use App\Entity\Main\Usuario;
 use App\Repository\Evaluacion\Respuesta\RespuestaRepository;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -27,7 +27,7 @@ class Progreso
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Usuario", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Main\Usuario", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $usuario;

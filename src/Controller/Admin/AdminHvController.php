@@ -3,8 +3,8 @@
 namespace App\Controller\Admin;
 
 use App\DataTable\Type\Hv\AdminHvDataTableType;
-use App\Entity\Hv;
-use App\Repository\HvRepository;
+use App\Entity\Hv\Hv;
+use App\Repository\Hv\HvRepository;
 use Knp\Bundle\TimeBundle\Twig\Extension\TimeExtension;
 use Knp\Component\Pager\PaginatorInterface;
 use Omines\DataTablesBundle\DataTableFactory;

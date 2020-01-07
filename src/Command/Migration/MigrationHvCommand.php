@@ -3,11 +3,11 @@
 namespace App\Command\Migration;
 
 use App\Constant\HvConstant;
-use App\Entity\Ciudad;
-use App\Entity\Dpto;
-use App\Entity\Hv;
-use App\Entity\Pais;
-use App\Entity\Usuario;
+use App\Entity\Main\Ciudad;
+use App\Entity\Main\Dpto;
+use App\Entity\Hv\Hv;
+use App\Entity\Main\Pais;
+use App\Entity\Main\Usuario;
 use DateTime;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -185,7 +185,7 @@ class MigrationHvCommand extends MigrationCommand
 
     /**
      * @param $idOld
-     * @return Usuario|object|null
+     * @return \App\Entity\Main\Usuario|object|null
      * @throws \Exception
      */
     protected function getUsuarioByIdOld($idOld, $errorMessage = null)

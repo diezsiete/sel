@@ -3,7 +3,7 @@
 
 namespace App\Form\DataTransformer;
 
-use App\Repository\UsuarioRepository;
+use App\Repository\Main\UsuarioRepository;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 

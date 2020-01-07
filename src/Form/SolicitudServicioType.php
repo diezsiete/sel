@@ -4,7 +4,7 @@
 namespace App\Form;
 
 
-use App\Entity\SolicitudServicio;
+use App\Entity\Main\SolicitudServicio;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;

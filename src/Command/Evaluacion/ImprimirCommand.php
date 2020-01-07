@@ -7,7 +7,7 @@ namespace App\Command\Evaluacion;
 use App\Entity\Evaluacion\Diapositiva;
 use App\Entity\Evaluacion\Modulo;
 use App\Entity\Evaluacion\Pregunta\Pregunta;
-use App\Entity\Usuario;
+use App\Entity\Main\Usuario;
 use App\Repository\Evaluacion\EvaluacionRepository;
 use App\Repository\Evaluacion\ProgresoRepository;
 use App\Service\Evaluacion\Navegador;

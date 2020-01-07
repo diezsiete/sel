@@ -2,7 +2,7 @@
 
 namespace App\Request\ParamConverter;
 
-use App\Repository\ConvenioRepository;
+use App\Repository\Main\ConvenioRepository;
 use App\Service\Configuracion\Configuracion;
 use App\Service\Pdf\PdfCartaLaboral;
 use App\Service\Pdf\PdfCartaLaboralServilabor;
@@ -28,7 +28,7 @@ class PdfCartaLaboralParamConverter implements ParamConverterInterface
      */
     private $security;
     /**
-     * @var ConvenioRepository
+     * @var \App\Repository\Main\ConvenioRepository
      */
     private $convenioRepository;
 

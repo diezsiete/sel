@@ -4,9 +4,9 @@
 namespace App\Service\PortalClientes;
 
 
-use App\Entity\Convenio;
-use App\Entity\Usuario;
-use App\Repository\RepresentanteRepository;
+use App\Entity\Main\Convenio;
+use App\Entity\Main\Usuario;
+use App\Repository\Main\RepresentanteRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Exception;
 use Symfony\Component\Security\Core\Security;
@@ -19,7 +19,7 @@ class PortalClientesService
      */
     private $security;
     /**
-     * @var RepresentanteRepository
+     * @var \App\Repository\Main\RepresentanteRepository
      */
     private $representanteRepository;
 
@@ -30,8 +30,8 @@ class PortalClientesService
     }
 
     /**
-     * @param Usuario|UserInterface $usuario
-     * @return Convenio|null
+     * @param \App\Entity\Main\Usuario|UserInterface $usuario
+     * @return \App\Entity\Main\Convenio|null
      * @throws NonUniqueResultException
      */
     public function getRepresentanteConvenio($usuario = null)
