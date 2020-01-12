@@ -75,7 +75,7 @@ abstract class Report
         $this->mapper = $mapper;
         $this->db = $configuracion->getSsrsDb()[0]->getNombre();
         $this->utils = $utils;
-        $this->importer = $importer;
+        $this->importer = $importer->setReport($this);
     }
 
 
@@ -128,12 +128,6 @@ abstract class Report
         return $this->render(new RenderAsPDF(), PageCountModeEnum::$Actual);
     }
 
-    public function importPdf()
-    {
-        $this->importer->importFile($this->getFileNamePdf(true), $this->renderPdf());
-    }
-
-
     /**
      * @return mixed
      * @throws SSRSReportException
@@ -141,11 +135,6 @@ abstract class Report
     public function renderMap()
     {
         return $this->reportFormatter->mapCsv($this->renderCSV(), $this->mapper);
-    }
-
-    public function importMap()
-    {
-        $this->importer->import($this->renderMap());
     }
 
     /**
@@ -168,6 +157,13 @@ abstract class Report
         ];
     }
 
+    /**
+     * @return Importer
+     */
+    public function getImporter(): Importer
+    {
+        return $this->importer;
+    }
 
     /**
      * @return ExecutionInfo2

@@ -26,8 +26,9 @@ class ReportFactory implements ServiceSubscriberInterface
 
     /**
      * @param $identificacion
-     * @param null $fechaInicio
-     * @param null $fechaFin
+     * @param null|DateTimeInterface $fechaInicio si no se asigna se toma 2/1/2017
+     * @param null|DateTimeInterface $fechaFin
+     * @param null|string $ssrsdb
      * @return NominaReport
      */
     public function getReporteNomina($identificacion = null, $fechaInicio = null, $fechaFin = null, $ssrsdb = null)

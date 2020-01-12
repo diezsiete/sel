@@ -4,6 +4,7 @@ namespace App\Controller;
 
 
 use App\DataTable\Type\AutoliquidacionEmpleadoDataTableType;
+use App\DataTable\Type\Novasoft\Report\NominaDataTableType;
 use App\Entity\Autoliquidacion\AutoliquidacionEmpleado;
 use App\Entity\Halcon\Vinculacion;
 use App\Repository\Halcon\VinculacionRepository;
@@ -42,12 +43,12 @@ class ServicioEmpleadosController extends BaseController
     }
 
     /**
-     * @Route("/sel/se/comprobantes", name="app_comprobantes", defaults={"header": "Comprobantes de pago"})
-
-    public function comprobantes(DataTableFactory $dataTableFactory, Request $request, ReportFactory $reportFactory)
+     * @Route("/sel/se/comprobantes2", name="se_comprobantes")
+     */
+    public function comprobantes(DataTableFactory $dataTableFactory, Request $request)
     {
         $id = $this->getUser()->getId();
-        $table = $dataTableFactory->createFromType(ReporteNominaDataTableType::class,
+        $table = $dataTableFactory->createFromType(NominaDataTableType::class,
             ['id' => $id], ['searching' => false, 'paging' => false])
             ->handleRequest($request);
         if($table->isCallback()) {
@@ -56,11 +57,12 @@ class ServicioEmpleadosController extends BaseController
         return $this->render('servicio_empleados/comprobantes.html.twig', ['datatable' => $table]);
     }
     /**
-     * @Route("/sel/se/comprobante/{comprobante}", name="app_comprobante")
+     * @Route("/sel/se/comprobante/{source}/{comprobante}", name="se_comprobante", defaults={"source"="novasoft"})
      * @IsGranted("REPORTE_MANAGE", subject="comprobante")
-    public function comprobante(Reportes $reportes, ReporteNomina $comprobante)
+     */
+    public function comprobante(\App\Service\ServicioEmpleados\ReportFactory $reportFactory)
     {
-        $ssrsDb = $this->getSsrsDb();
+        /*$ssrsDb = $this->getSsrsDb();
 
         return $this->renderStream(function () use ($reportes, $comprobante, $ssrsDb) {
             return $reportes->comprobanteStream(
@@ -68,8 +70,8 @@ class ServicioEmpleadosController extends BaseController
                 $comprobante->getUsuario()->getIdentificacion(),
                 $ssrsDb
             );
-        });
-    }*/
+        });*/
+    }
 
     /**
      * @Route("/sel/se/comprobantes", name="app_comprobantes")
@@ -92,7 +94,7 @@ class ServicioEmpleadosController extends BaseController
             $fecha = DateTime::createFromFormat('Ymd', $periodo);
             $ident = $this->getUser()->getIdentificacion();
             // usar write si no se quiere cache
-            $pdfHandler->cache('comprobante', $fecha, $ident, function ($fecha, $ident) use ($reportFactory) {
+            $pdfHandler->write('comprobante', $fecha, $ident, function ($fecha, $ident) use ($reportFactory) {
                 return $reportFactory->getReporteNomina($ident, $fecha, $fecha, $this->getSsrsDb())->renderPdf();
             });
             return $pdfHandler->readStream('comprobante', $fecha, $ident);

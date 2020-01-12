@@ -6,7 +6,7 @@ namespace App\Service;
 
 use App\Entity\Main\Convenio;
 use App\Entity\Main\Empleado;
-use App\Entity\Main\ReporteNomina;
+use App\Entity\Novasoft\Report\Nomina\Nomina;
 use App\Service\Configuracion\Configuracion;
 use App\Service\Configuracion\SsrsDb;
 use App\Service\NovasoftSsrs\Entity\ReporteCertificadoIngresos;
@@ -44,7 +44,7 @@ class ReportesServicioEmpleados
 
     /**
      * @param $empleadoIdent
-     * @return ReporteNomina[]|null
+     * @return Nomina[]|null
      * @deprecated
      */
     public function getComprobantesDePago($empleadoIdent)

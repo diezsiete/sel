@@ -41,6 +41,7 @@ class NiTrabajadorActivoCommand extends NiCommand
         foreach($convenios as $convenio) {
             $this->reportFactory
                 ->trabajadoresActivos($convenio, $periodo)
+                ->getImporter()
                 ->importMap();
         }
     }

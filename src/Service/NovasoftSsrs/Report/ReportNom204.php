@@ -4,7 +4,7 @@
 namespace App\Service\NovasoftSsrs\Report;
 
 
-use App\Entity\Main\ReporteNomina;
+use App\Entity\Novasoft\Report\Nomina\Nomina;
 use App\Repository\Main\UsuarioRepository;
 use App\Service\NovasoftSsrs\Mapper\MapperNom204;
 use App\Service\NovasoftSsrs\ReportFormatter;
@@ -135,7 +135,7 @@ class ReportNom204 extends Report
     }
 
     /**
-     * @return \App\Entity\Main\ReporteNomina[]
+     * @return \App\Entity\Novasoft\Report\Nomina\Nomina[]
      * @throws \SSRS\SSRSReportException
      */
     public function renderMap()

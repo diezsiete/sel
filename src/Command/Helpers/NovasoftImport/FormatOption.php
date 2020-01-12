@@ -32,11 +32,11 @@ trait FormatOption
         }
         switch($format) {
             case 'pdf':
-                $report->importPdf();
+                $report->getImporter()->importPdf();
                 break;
             case 'csv':
             default:
-                $report->importMap();
+                $report->getImporter()->importMap();
                 break;
         }
     }

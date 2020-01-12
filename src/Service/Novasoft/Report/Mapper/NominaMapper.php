@@ -9,24 +9,24 @@
 namespace App\Service\Novasoft\Report\Mapper;
 
 
-use App\Entity\Main\ReporteNomina;
-use App\Entity\Main\ReporteNominaDetalle;
+use App\Entity\Novasoft\Report\Nomina\Nomina;
+use App\Entity\Novasoft\Report\Nomina\NominaDetalle;
 use App\Repository\Main\UsuarioRepository;
 
-class MapperNom204 extends Mapper
+class NominaMapper extends Mapper
 {
 
     /**
-     * @var \App\Entity\Main\ReporteNomina
+     * @var Nomina
      */
     protected $targetObject;
 
     /**
-     * @var ReporteNomina[]
+     * @var Nomina[]
      */
     protected $mappedObjects = [];
     /**
-     * @var \App\Repository\Main\UsuarioRepository
+     * @var UsuarioRepository
      */
     private $usuarioRepository;
 
@@ -38,7 +38,7 @@ class MapperNom204 extends Mapper
 
     protected function instanceTargetObject()
     {
-        return new ReporteNomina();
+        return new Nomina();
     }
 
     protected function defineMap(): array
@@ -174,7 +174,7 @@ class MapperNom204 extends Mapper
     }
 
     /**
-     * @param ReporteNomina[] $objects
+     * @param Nomina[] $objects
      */
     public function addMappedObject(&$objects)
     {
@@ -213,7 +213,7 @@ class MapperNom204 extends Mapper
 
     /**
      * @param string $tipo devengo o deducido
-     * @return ReporteNominaDetalle
+     * @return \App\Entity\Novasoft\Report\Nomina\NominaDetalle
      */
     protected function getLastDetalle($tipo = 'devengo')
     {
@@ -229,7 +229,7 @@ class MapperNom204 extends Mapper
             }
         }
         if(!$lastDetalle) {
-            $lastDetalle = new ReporteNominaDetalle();
+            $lastDetalle = new NominaDetalle();
             $lastDetalle->setTipo($tipo);
             $this->targetObject->addDetalle($lastDetalle);
         }

@@ -6,7 +6,7 @@ namespace App\Service\ServicioEmpleados;
 
 use App\Entity\Main\Usuario;
 use App\Repository\Main\ConvenioRepository;
-use App\Repository\Main\ReporteNominaRepository;
+use App\Repository\Novasoft\Report\Nomina\NominaRepository;
 use App\Service\NovasoftSsrs\NovasoftSsrs;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -19,7 +19,7 @@ class Import
      */
     private $novasoftSsrs;
     /**
-     * @var ReporteNominaRepository
+     * @var \App\Repository\Novasoft\Report\Nomina\NominaRepository
      */
     private $reporteNominaRepository;
     /**
@@ -31,7 +31,7 @@ class Import
      */
     private $em;
 
-    public function __construct(NovasoftSsrs $novasoftSsrs, ReporteNominaRepository $reporteNominaRepository,
+    public function __construct(NovasoftSsrs $novasoftSsrs, NominaRepository $reporteNominaRepository,
                                 ConvenioRepository $convenioRepository, EntityManagerInterface $em)
     {
         $this->novasoftSsrs = $novasoftSsrs;

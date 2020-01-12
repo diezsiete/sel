@@ -27,7 +27,7 @@ abstract class NiCommand extends TraitableCommand
             $this->error($e->errorDescription);
         }
         catch(Exception $e) {
-            $this->error($e->getMessage());
+            $this->error($e);
         }
         return $return;
     }

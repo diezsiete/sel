@@ -21,9 +21,9 @@ class LiquidacionNominaRepository extends ServiceEntityRepository
     }
 
     /**
+     * @noinspection PhpDocMissingThrowsInspection
      * @param LiquidacionNomina $equal
-     * @return LiquidacionNomina[] Returns an array of LiquidacionNominaResumen objects
-     * @throws NonUniqueResultException
+     * @return LiquidacionNomina|null
      */
     public function findEqual(LiquidacionNomina $equal)
     {
@@ -38,7 +38,6 @@ class LiquidacionNominaRepository extends ServiceEntityRepository
             ->setParameter('fechaFinal', $equal->getFechaFinal()->format('Y-m-d'))
             ->setMaxResults(1)
             ->getQuery()
-            ->getOneOrNullResult()
-            ;
+            ->getOneOrNullResult();
     }
 }

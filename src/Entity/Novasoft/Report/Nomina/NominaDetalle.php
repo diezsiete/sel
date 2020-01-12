@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Entity\Main;
+namespace App\Entity\Novasoft\Report\Nomina;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\Main\ReporteNominaDetalleRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Novasoft\Report\Nomina\NominaDetalleRepository")
+ * @ORM\Table(name="novasoft_nomina_detalle")
  */
-class ReporteNominaDetalle
+class NominaDetalle
 {
     /**
      * @ORM\Id()
@@ -42,10 +43,10 @@ class ReporteNominaDetalle
     private $tipo;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Main\ReporteNomina", inversedBy="detalles")
+     * @ORM\ManyToOne(targetEntity="Nomina", inversedBy="detalles")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $reporteNomina;
+    private $nomina;
 
     public function getId(): ?int
     {
@@ -112,14 +113,14 @@ class ReporteNominaDetalle
         return $this;
     }
 
-    public function getReporteNomina(): ?ReporteNomina
+    public function getNomina(): ?Nomina
     {
-        return $this->reporteNomina;
+        return $this->nomina;
     }
 
-    public function setReporteNomina(?ReporteNomina $reporteNomina): self
+    public function setNomina(?Nomina $nomina): self
     {
-        $this->reporteNomina = $reporteNomina;
+        $this->nomina = $nomina;
 
         return $this;
     }

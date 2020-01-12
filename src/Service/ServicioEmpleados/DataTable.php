@@ -5,7 +5,7 @@ namespace App\Service\ServicioEmpleados;
 
 
 use App\DataTable\Type\AutoliquidacionEmpleadoDataTableType;
-use App\DataTable\Type\ReporteNominaDataTableType;
+use App\DataTable\Type\Novasoft\Report\NominaDataTableType;
 use App\Entity\Main\Usuario;
 use Omines\DataTablesBundle\DataTableFactory;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -53,7 +53,7 @@ class DataTable
         $id = $this->security->getUser()->getId();
 
         return $this->dataTableFactory
-            ->createFromType(ReporteNominaDataTableType::class, ['id' => $id], $options)
+            ->createFromType(NominaDataTableType::class, ['id' => $id], $options)
             ->handleRequest($this->request);
     }
 

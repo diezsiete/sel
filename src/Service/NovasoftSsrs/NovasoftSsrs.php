@@ -216,7 +216,7 @@ class NovasoftSsrs
      * @param Usuario $usuario
      * @param null|\DateTime $fechaInicio
      * @param null|\DateTime $fechaFin
-     * @return \App\Entity\Main\ReporteNomina[]
+     * @return \App\Entity\Novasoft\Report\Nomina\Nomina[]
      * @throws \SSRS\SSRSReportException
      */
     public function getReporteNomina(Usuario $usuario, $fechaInicio = null, $fechaFin = null)

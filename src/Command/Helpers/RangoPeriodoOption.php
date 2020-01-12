@@ -6,6 +6,7 @@ namespace App\Command\Helpers;
 
 use App\Command\Helpers\TraitableCommand\Annotation\Configure;
 use DateTime;
+use Exception;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 
@@ -27,10 +28,11 @@ trait RangoPeriodoOption
 
     /**
      * @param InputInterface $input
+     * @param bool|string $leftNullOrDefault
      * @return DateTime|null
-     * @throws \Exception
+     * @throws Exception
      */
-    protected function getInicio(InputInterface $input, $leftNull = false)
+    protected function getInicio(InputInterface $input, $leftNullOrDefault = false)
     {
         $desde = $this->getPeriodo($input, false);
 
@@ -39,7 +41,13 @@ trait RangoPeriodoOption
             if ($desde) {
                 $desde = DateTime::createFromFormat('Y-m-d', $desde);
             } else {
-                $desde = $leftNull ? null : new DateTime();
+                if($leftNullOrDefault) {
+                    $desde = is_bool($leftNullOrDefault)
+                        ? null
+                        : DateTime::createFromFormat('Y-m-d', $leftNullOrDefault);
+                } else {
+                    $desde = new DateTime();
+                }
             }
         }
         return $desde;
@@ -47,8 +55,9 @@ trait RangoPeriodoOption
 
     /**
      * @param InputInterface $input
+     * @param bool $leftNull
      * @return DateTime|null
-     * @throws \Exception
+     * @throws Exception
      */
     protected function getFin(InputInterface $input, $leftNull = false)
     {

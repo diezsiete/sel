@@ -8,6 +8,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Hv\AdjuntoRepository")
+ * @ORM\Table(name="hv_adjunto")
  */
 class Adjunto implements HvEntity
 {

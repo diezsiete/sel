@@ -1,15 +1,17 @@
 <?php
 
-namespace App\Entity\Main;
+namespace App\Entity\Novasoft\Report\Nomina;
 
+use App\Entity\Main\Usuario;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\Main\ReporteNominaRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Novasoft\Report\Nomina\NominaRepository")
+ * @ORM\Table(name="novasoft_nomina")
  */
-class ReporteNomina
+class Nomina
 {
     /**
      * @ORM\Id()
@@ -104,7 +106,7 @@ class ReporteNomina
     private $diasVacacionesPend;
 
     /**
-     * @ORM\OneToMany(targetEntity="ReporteNominaDetalle", mappedBy="reporteNomina", orphanRemoval=true, cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="NominaDetalle", mappedBy="nomina", orphanRemoval=true, cascade={"persist", "remove"})
      */
     private $detalles;
 
@@ -334,30 +336,30 @@ class ReporteNomina
     }
 
     /**
-     * @return Collection|ReporteNominaDetalle[]
+     * @return Collection|NominaDetalle[]
      */
     public function getDetalles(): Collection
     {
         return $this->detalles;
     }
 
-    public function addDetalle(ReporteNominaDetalle $detalle): self
+    public function addDetalle(NominaDetalle $detalle): self
     {
         if (!$this->detalles->contains($detalle)) {
             $this->detalles[] = $detalle;
-            $detalle->setReporteNomina($this);
+            $detalle->setNomina($this);
         }
 
         return $this;
     }
 
-    public function removeDetalle(ReporteNominaDetalle $detalle): self
+    public function removeDetalle(NominaDetalle $detalle): self
     {
         if ($this->detalles->contains($detalle)) {
             $this->detalles->removeElement($detalle);
             // set the owning side to null (unless already changed)
-            if ($detalle->getReporteNomina() === $this) {
-                $detalle->setReporteNomina(null);
+            if ($detalle->getNomina() === $this) {
+                $detalle->setNomina(null);
             }
         }
 

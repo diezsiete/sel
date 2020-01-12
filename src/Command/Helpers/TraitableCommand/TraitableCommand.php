@@ -46,18 +46,18 @@ abstract class TraitableCommand extends Command
     /**
      * @var EventDispatcherInterface
      */
-    private $eventDispatcher;
+    protected $dispatcher;
 
     /**
      * @var Reader
      */
-    private $annotationReader;
+    protected $annotationReader;
 
 
-    public function __construct(Reader $annotationReader, EventDispatcherInterface $eventDispatcher)
+    public function __construct(Reader $annotationReader, EventDispatcherInterface $dispatcher)
     {
         $this->annotationReader = $annotationReader;
-        $this->eventDispatcher = $eventDispatcher;
+        $this->dispatcher = $dispatcher;
 
         $this->addListeners();
 
@@ -66,7 +66,7 @@ abstract class TraitableCommand extends Command
 
     protected function configure()
     {
-        $this->eventDispatcher->dispatch(new ConfigureEvent());
+        $this->dispatcher->dispatch(new ConfigureEvent());
 
         $this->removeListeners(Configure::class);
 
@@ -81,14 +81,23 @@ abstract class TraitableCommand extends Command
 
         $return = parent::run($input, $output);
 
-        $this->eventDispatcher->dispatch(new AfterRunEvent($this, $input, $output));
+        $this->dispatcher->dispatch(new AfterRunEvent($this, $input, $output));
 
         return $return;
     }
 
     public function initialize(InputInterface $input, OutputInterface $output)
     {
-        $this->eventDispatcher->dispatch(new BeforeRunEvent($this, $input, $output));
+        $this->dispatcher->dispatch(new BeforeRunEvent($this, $input, $output));
+    }
+
+    /**
+     * Usado por traits que necesiten este servicio
+     * @return EventDispatcherInterface
+     */
+    protected function getDispatcher()
+    {
+        return $this->dispatcher;
     }
 
     private function addListeners()
@@ -101,7 +110,7 @@ abstract class TraitableCommand extends Command
                 foreach($methodAnnotations as $methodAnnotation) {
                     foreach(static::$annotationsEvents as $annotationClass => $eventClass) {
                         if($methodAnnotation instanceof $annotationClass) {
-                            $this->eventDispatcher->addListener($eventClass, [$this, $methodName]);
+                            $this->dispatcher->addListener($eventClass, [$this, $methodName]);
                         }
                     }
                 }
@@ -117,7 +126,7 @@ abstract class TraitableCommand extends Command
             if($methodAnnotations = $this->annotationReader->getMethodAnnotations($reflectionMethod)) {
                 foreach($methodAnnotations as $methodAnnotation) {
                     if($methodAnnotation instanceof $annotationClass) {
-                        $this->eventDispatcher->removeListener(static::$annotationsEvents[$annotationClass], [$this, $methodName]);
+                        $this->dispatcher->removeListener(static::$annotationsEvents[$annotationClass], [$this, $methodName]);
                     }
                 }
             }

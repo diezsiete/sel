@@ -4,13 +4,15 @@
 namespace App\Service\Novasoft\Report\Report;
 
 
+use App\Entity\Novasoft\Report\Nomina\Nomina;
 use App\Service\Configuracion\Configuracion;
-use App\Service\Novasoft\Report\Importer\GenericImporter;
-use App\Service\Novasoft\Report\Mapper\MapperNom204;
+use App\Service\Novasoft\Report\Importer\NominaImporter;
+use App\Service\Novasoft\Report\Mapper\NominaMapper;
 use App\Service\Novasoft\Report\ReportFormatter;
 use App\Service\Utils;
-use DateTime;
+use DateTimeInterface;
 use SSRS\SSRSReport;
+use SSRS\SSRSReportException;
 
 class NominaReport extends Report
 {
@@ -79,7 +81,7 @@ class NominaReport extends Report
 
 
     public function __construct(SSRSReport $SSRSReport, ReportFormatter $reportFormatter, Configuracion $configuracion,
-                                Utils $utils, MapperNom204 $mapper, GenericImporter $importer)
+                                Utils $utils, NominaMapper $mapper, NominaImporter $importer)
     {
         parent::__construct($SSRSReport, $reportFormatter, $configuracion, $utils, $mapper, $importer);
 
@@ -89,7 +91,7 @@ class NominaReport extends Report
 
 
     /**
-     * @param DateTime $fechaInicio
+     * @param DateTimeInterface $fechaInicio
      * @return $this
      */
     public function setParameterFechaInicio($fechaInicio)
@@ -99,7 +101,7 @@ class NominaReport extends Report
     }
 
     /**
-     * @param DateTime $fechaFin
+     * @param DateTimeInterface $fechaFin
      * @return $this
      */
     public function setParameterFechaFin($fechaFin)
@@ -118,7 +120,10 @@ class NominaReport extends Report
         return $this;
     }
 
-
+    /**
+     * @return Nomina[]
+     * @throws SSRSReportException
+     */
     public function renderMap()
     {
         $map = parent::renderMap();

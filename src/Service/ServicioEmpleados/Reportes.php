@@ -4,7 +4,7 @@
 namespace App\Service\ServicioEmpleados;
 
 
-use App\Entity\Main\ReporteNomina;
+use App\Entity\Novasoft\Report\Nomina\Nomina;
 use App\Service\NovasoftSsrs\NovasoftSsrs;
 use DateInterval;
 use DateTime;
@@ -38,7 +38,7 @@ class Reportes
 
     /**
      * @param $empleadoIdent
-     * @return ReporteNomina[]|null
+     * @return \App\Entity\Novasoft\Report\Nomina\Nomina[]|null
      * @throws SSRSReportException
      */
     public function comprobanteList($empleadoIdent)

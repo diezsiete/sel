@@ -1,27 +1,27 @@
 <?php
-
-
 namespace App\Service\Novasoft\Report\Importer;
-
-
 
 use App\Entity\Novasoft\Report\LiquidacionNomina\LiquidacionNomina;
 use App\Entity\Novasoft\Report\LiquidacionNomina\LiquidacionNominaResumen;
+use App\Repository\Novasoft\Report\LiquidacionNomina\LiquidacionNominaRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 
 class LiquidacionNominaImporter extends Importer
 {
+    /**
+     * @var LiquidacionNominaRepository
+     */
+    private $liquidacionNominaRepo;
 
-    protected function importEntity($entity)
+    /**
+     * @param LiquidacionNominaRepository $liquidacionNominaRepo
+     * @required
+     */
+    public function setLiquidacionNominaRepository(LiquidacionNominaRepository $liquidacionNominaRepo)
     {
-        // si existe una liquidacion nomina con mismos valores borramos para sobreescribir
-        /** @var LiquidacionNomina $equal */
-        $equal = $this->em->getRepository(get_class($entity))->findEqual($entity);
-        if($equal) {
-            $this->em->remove($equal->getResumen());
-            $this->em->flush();
-        }
-        parent::importEntity($entity);
+        $this->liquidacionNominaRepo = $liquidacionNominaRepo;
     }
 
     protected function handleManyToOne($entity, $parent, $mapping)
@@ -38,5 +38,25 @@ class LiquidacionNominaImporter extends Importer
         } else {
             parent::handleManyToOne($entity, $parent, $mapping);
         }
+    }
+
+    /**
+     * @param LiquidacionNomina $entity
+     * @return LiquidacionNomina|null
+     */
+    protected function findEqual($entity)
+    {
+        return $this->liquidacionNominaRepo->findEqual($entity);
+    }
+
+    /**
+     * @param LiquidacionNomina $equal
+     * @return bool
+     */
+    protected function handleEqual($equal): bool
+    {
+        $this->em->remove($equal->getResumen());
+        $this->em->flush();
+        return true;
     }
 }

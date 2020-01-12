@@ -97,6 +97,12 @@ doctrine:
                         dir: '%kernel.project_dir%/src/Entity/Novasoft'
                         prefix: 'App\Entity\Novasoft'
                         alias: Novasoft
+                    ServicioEmpleados:
+                        is_bundle: false
+                        type: annotation
+                        dir: '%kernel.project_dir%/src/Entity/ServicioEmpleados'
+                        prefix: 'App\Entity\ServicioEmpleados'
+                        alias: ServicioEmpleados
                     Scraper:
                         is_bundle: false
                         type: annotation

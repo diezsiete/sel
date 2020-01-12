@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\EventListener;
+namespace App\Event\EventListener;
 
 
 use App\Entity\Main\Usuario;

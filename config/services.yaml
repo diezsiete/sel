@@ -138,7 +138,7 @@ services:
             - { name: knp_menu.renderer, alias: custom }
 
     app.tokens.action_listener:
-        class: App\EventListener\RegistroListener
+        class: App\Event\EventListener\RegistroListener
         arguments:
             - "@security.token_storage"
             - "@router"
