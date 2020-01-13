@@ -208,10 +208,13 @@ class ServicioEmpleadosController extends BaseController
     /**
      * @Route("/sel/se/liquidaciones-de-contrato", name="app_liquidaciones_de_contrato")
      */
-    public function liquidacionesDeContrato(ReportesServicioEmpleados $reportes)
+    public function liquidacionesDeContrato(ReportFactory $reportFactory)
     {
         $identificacion = $this->getUser()->getIdentificacion();
-        $liquidaciones = $reportes->getLiquidacionesDeContrato($identificacion);
+
+        $report = $reportFactory->liquidacionContrato($identificacion, $this->getSsrsDb());
+        $liquidaciones = $report->renderMap();
+
         return $this->render('servicio_empleados/liquidaciones-de-contrato.html.twig', [
             'liquidaciones' => $liquidaciones
         ]);
@@ -220,13 +223,24 @@ class ServicioEmpleadosController extends BaseController
     /**
      * @Route("/sel/se/liquidacion-de-contrato/{fechaIngreso}/{fechaRetiro}", name="app_liquidacion_de_contrato_pdf")
      */
-    public function liquidacionDeContratoPdf(Reportes $reportes, $fechaIngreso, $fechaRetiro)
+    public function liquidacionDeContratoPdf(ReportFactory $reportFactory, $fechaIngreso, $fechaRetiro, ReportPdfHandler $pdfHandler)
     {
-        return $this->renderStream(function () use ($reportes, $fechaIngreso, $fechaRetiro) {
+        return $this->renderStream(function () use ($reportFactory, $fechaIngreso, $fechaRetiro, $pdfHandler) {
             $identificacion = $this->getUser()->getIdentificacion();
             $fechaIngreso = DateTime::createFromFormat('Y-m-d', $fechaIngreso);
             $fechaRetiro = DateTime::createFromFormat('Y-m-d', $fechaRetiro);
-            return $reportes->getLiquidacionStream($identificacion, $fechaIngreso, $fechaRetiro, $this->getSsrsDb());
+
+
+            $pdfHandler->write('liquidacion-contrato', $fechaIngreso, $identificacion,
+                function (DateTimeInterface $fechaIngreso, $ident) use ($reportFactory, $fechaRetiro) {
+                    $report = $reportFactory->liquidacionContrato($ident, $this->getSsrsDb())
+                        ->setParameterFechaInicio($fechaIngreso)
+                        ->setParameterFechaFin($fechaRetiro);
+                    return $report->renderPdf();
+                }
+            );
+
+            return $pdfHandler->readStream('liquidacion-contrato', $fechaIngreso, $identificacion);
         });
     }
 

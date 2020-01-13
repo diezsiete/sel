@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Novasoft\Report\CertificadoIngresosRepository")
+ * @ORM\Table(name="novasoft_certificado_ingresos")
  */
 class CertificadoIngresos
 {

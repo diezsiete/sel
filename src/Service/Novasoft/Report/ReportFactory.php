@@ -7,6 +7,7 @@ namespace App\Service\Novasoft\Report;
 use App\Entity\Main\Convenio;
 use App\Service\Novasoft\Report\Report\CertificadoIngresosReport;
 use App\Service\Novasoft\Report\Report\CertificadoLaboralReport;
+use App\Service\Novasoft\Report\Report\LiquidacionContratoReport;
 use App\Service\Novasoft\Report\Report\LiquidacionNominaReport;
 use App\Service\Novasoft\Report\Report\NominaReport;
 use App\Service\Novasoft\Report\Report\TrabajadoresActivosReport;
@@ -100,12 +101,35 @@ class ReportFactory implements ServiceSubscriberInterface
         return $report;
     }
 
+    /**
+     * @param int $ano
+     * @param string|null $ident
+     * @param string|null $ssrsDb
+     * @return CertificadoIngresosReport
+     */
     public function certificadoIngresos($ano = 2018, ?string $ident = null, string $ssrsDb = null)
     {
         $report = $this->container->get(CertificadoIngresosReport::class);
         $report->setParameterAno($ano);
         if($ident) {
             $report->setParameterCodigoEmpleado($ident);
+        }
+        if($ssrsDb) {
+            $report->setDb($ssrsDb);
+        }
+        return $report;
+    }
+
+    /**
+     * @param string|null $identificacion
+     * @param string|null $ssrsDb
+     * @return LiquidacionContratoReport
+     */
+    public function liquidacionContrato(?string $identificacion = null, ?string $ssrsDb = null)
+    {
+        $report = $this->container->get(LiquidacionContratoReport::class);
+        if($identificacion) {
+            $report->setParameterCodigoEmpleado($identificacion);
         }
         if($ssrsDb) {
             $report->setDb($ssrsDb);
@@ -120,7 +144,8 @@ class ReportFactory implements ServiceSubscriberInterface
             TrabajadoresActivosReport::class,
             LiquidacionNominaReport::class,
             CertificadoLaboralReport::class,
-            CertificadoIngresosReport::class
+            CertificadoIngresosReport::class,
+            LiquidacionContratoReport::class
         ];
     }
 

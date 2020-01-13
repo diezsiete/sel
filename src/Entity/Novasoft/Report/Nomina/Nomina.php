@@ -26,7 +26,7 @@ class Nomina
     private $fecha;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=140)
      */
     private $convenioCodigoNombre;
 
