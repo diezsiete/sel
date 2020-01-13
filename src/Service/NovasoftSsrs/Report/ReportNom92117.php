@@ -14,6 +14,11 @@ use App\Service\NovasoftSsrs\ReportFormatter;
 use App\Service\NovasoftSsrs\ReportServer;
 use App\Service\Utils;
 
+/**
+ * Class ReportNom92117
+ * @package App\Service\NovasoftSsrs\Report
+ * @deprecated
+ */
 class ReportNom92117 extends Report
 {
     protected function getReportPath(): string

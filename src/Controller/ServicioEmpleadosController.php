@@ -17,6 +17,7 @@ use App\Service\Pdf\PdfCartaLaboral;
 use App\Service\ReportesServicioEmpleados;
 use App\Service\ServicioEmpleados\Reportes;
 use DateTime;
+use DateTimeInterface;
 use Exception;
 use Omines\DataTablesBundle\DataTableFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -133,10 +134,20 @@ class ServicioEmpleadosController extends BaseController
     /**
      * @Route("/sel/se/certificados-ingresos", name="app_certificados_ingresos")
      */
-    public function certificadosIngresos(ReportesServicioEmpleados $reportes)
+    public function certificadosIngresos(ReportFactory $reportFactory)
     {
         $identificacion = $this->getUser()->getIdentificacion();
-        $certificados = $reportes->getCertificadosIngresos($identificacion, $this->getSsrsDb());
+
+        $certificados = [];
+        $anos = ["2018", "2017"];
+        foreach ($anos as $ano) {
+            $report = $reportFactory->certificadoIngresos($ano, $identificacion, $this->getSsrsDb());
+            $certificado = $report->renderMap();
+            if($certificado) {
+                $certificados[$ano] = $certificado;
+            }
+        }
+
         return $this->render('servicio_empleados/certificado-ingresos.html.twig', [
             'certificados' => $certificados
         ]);
@@ -145,12 +156,21 @@ class ServicioEmpleadosController extends BaseController
     /**
      * @Route("/sel/se/certificado-ingresos/{periodo}", name="app_certificado_ingresos")
      */
-    public function certificadoIngreso(Reportes $reportes, $periodo)
+    public function certificadoIngreso(ReportFactory $reportFactory, ReportPdfHandler $pdfHandler, $periodo)
     {
-        return $this->renderStream(function () use ($reportes, $periodo) {
+        return $this->renderStream(function () use ($reportFactory, $pdfHandler, $periodo) {
             $identificacion = $this->getUser()->getIdentificacion();
-            $periodo = DateTime::createFromFormat('Y-m-d', $periodo . "-01-01");
-            return $reportes->certificadoIngresosStream($periodo, $identificacion, $this->getSsrsDb());
+
+            $fecha = DateTime::createFromFormat('Y-m-d', $periodo . "-01-01");
+
+            $pdfHandler->write('certificado-ingresos', $fecha, $identificacion,
+                function (DateTimeInterface $fecha, $ident) use ($reportFactory) {
+                    return $reportFactory->certificadoIngresos($fecha->format('Y'), $ident, $this->getSsrsDb())->renderPdf();
+                }
+            );
+
+            return $pdfHandler->readStream('certificado-ingresos', $fecha, $identificacion);
+
         });
     }
 
