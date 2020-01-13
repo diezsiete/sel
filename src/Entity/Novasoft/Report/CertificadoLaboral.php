@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Novasoft\Report\CertificadoLaboralRepository")
- * @ORM\Table(name="certificado_laboral")
+ * @ORM\Table(name="novasoft_certificado_laboral")
  */
 class CertificadoLaboral
 {

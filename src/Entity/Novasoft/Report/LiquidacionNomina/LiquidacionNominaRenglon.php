@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Novasoft\Report\LiquidacionNomina\LiquidacionNominaRenglonRepository")
+ * @ORM\Table(name="novasoft_liquidacion_nomina_renglon")
  */
 class LiquidacionNominaRenglon
 {

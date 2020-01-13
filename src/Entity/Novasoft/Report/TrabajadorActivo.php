@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Novasoft\Report\TrabajadorActivoRepository")
+ * @ORM\Table(name="novasoft_trabajador_activo")
  */
 class TrabajadorActivo
 {

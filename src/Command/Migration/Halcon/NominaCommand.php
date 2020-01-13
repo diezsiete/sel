@@ -10,6 +10,7 @@ use App\Entity\Main\Usuario;
 use App\Entity\ServicioEmpleados\Nomina;
 use App\Repository\Halcon\VinculacionRepository;
 use App\Repository\Main\UsuarioRepository;
+use DateTime;
 use Doctrine\Common\Annotations\Reader;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -64,7 +65,7 @@ class NominaCommand extends TraitableCommand
             foreach ($comprobantes as $comprobante) {
                 if($usuario) {
                     $selNomina = $this->createNomina($comprobante, $usuario);
-                    if(!$info) {
+                    if($selNomina && !$info) {
                         $this->em->persist($selNomina);
                     }
                 }
@@ -79,13 +80,17 @@ class NominaCommand extends TraitableCommand
 
     protected function progressBarCount(InputInterface $input, OutputInterface $output): ?int
     {
+        //return 0;
         return $this->vinculacionRepo->countAllDistinctComprobantes();
     }
 
     private function createNomina($halconComprobante, Usuario $usuario)
     {
+        if($halconComprobante['fecha'] === 'undefined') {
+            return null;
+        }
         return (new Nomina())
-            ->setFecha($halconComprobante['fecha'])
+            ->setFecha(DateTime::createFromFormat('Y-m-d', $halconComprobante['fecha']))
             ->setConvenio($halconComprobante['empresa'] ? $halconComprobante['empresa'] : $halconComprobante['compania'])
             ->setSourceHalcon()
             ->setUsuario($usuario)

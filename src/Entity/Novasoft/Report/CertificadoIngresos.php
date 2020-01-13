@@ -2,6 +2,7 @@
 
 namespace App\Entity\Novasoft\Report;
 
+use App\Entity\Main\Usuario;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -176,6 +177,12 @@ class CertificadoIngresos
      * @ORM\Column(type="text", nullable=true)
      */
     private $certificoTexto;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Main\Usuario")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $usuario;
 
     public function getId(): ?int
     {
@@ -562,6 +569,18 @@ class CertificadoIngresos
     public function setCertificoTexto(?string $certificoTexto): self
     {
         $this->certificoTexto = $certificoTexto;
+
+        return $this;
+    }
+
+    public function getUsuario(): ?Usuario
+    {
+        return $this->usuario;
+    }
+
+    public function setUsuario(?Usuario $usuario): self
+    {
+        $this->usuario = $usuario;
 
         return $this;
     }

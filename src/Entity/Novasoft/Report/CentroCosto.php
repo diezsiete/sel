@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Novasoft\Report\CentroCostoRepository")
+ * @ORM\Table(name="novasoft_centro_costo")
  */
 class CentroCosto
 {

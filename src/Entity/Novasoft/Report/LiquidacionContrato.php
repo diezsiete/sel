@@ -3,6 +3,7 @@
 
 namespace App\Entity\Novasoft\Report;
 
+use App\Entity\Main\Usuario;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -12,6 +13,12 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LiquidacionContrato
 {
+    /**
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
+     */
+    private $id;
     /**
      * @var string
      * @ORM\Column(type="string", length=30)
@@ -115,6 +122,20 @@ class LiquidacionContrato
      * @ORM\Column(type="string", length=20)
      */
     private $baseVacaciones;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Main\Usuario")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $usuario;
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
     /**
      * @return string
@@ -491,6 +512,18 @@ class LiquidacionContrato
     public function setBaseVacaciones(string $baseVacaciones): LiquidacionContrato
     {
         $this->baseVacaciones = $baseVacaciones;
+        return $this;
+    }
+
+    public function getUsuario(): ?Usuario
+    {
+        return $this->usuario;
+    }
+
+    public function setUsuario(?Usuario $usuario): self
+    {
+        $this->usuario = $usuario;
+
         return $this;
     }
 }
