@@ -57,7 +57,8 @@ class UserCommand extends TraitableCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $info = $input->getOption('info');
-
+        $batchSize = 20;
+        $i = 0;
         foreach($this->userRepo->findAllToImport() as $user) {
             $usuario = $this->usuarioRepository->findByIdentificacion($user->getUser());
             if(!$usuario) {
@@ -79,15 +80,25 @@ class UserCommand extends TraitableCommand
                 }
                 $message = "IMPORTED";
             } else {
+                $usuario->addRol('ROLE_HALCON');
                 $message = "ALREADY USER DOING NOTING";
             }
+
 
             if($output->isVeryVerbose()) {
                 $output->writeln(sprintf('%-6s %-60s %s', $user->getId(), $user->getNombreCompleto(), $message));
             } else {
                 $this->progressBarAdvance();
             }
+            if (($i % $batchSize) === 0) {
+                $this->em->flush();
+                $this->em->clear();
+            }
+            $i++;
         }
+
+        $this->em->flush();
+        $this->em->clear();
     }
 
     protected function progressBarCount(InputInterface $input, OutputInterface $output): ?int

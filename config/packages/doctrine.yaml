@@ -133,7 +133,8 @@ doctrine:
                         dir: '%kernel.project_dir%/src/Entity/Halcon'
                         prefix: 'App\Entity\Halcon'
                         alias: Halcon
-
+                hydrators:
+                    FETCH_COLUMN: App\Service\Doctrine\Hydrators\FetchColumnHydrator
                 dql:
                     string_functions:
                         ifnull: DoctrineExtensions\Query\Mysql\IfNull

@@ -23,64 +23,51 @@ class VinculacionRepository extends ServiceEntityRepository
         parent::__construct($registry, Vinculacion::class);
     }
 
-    public function findComprobantesByIdent($ident)
+    public function findComprobantesByIdent($ident = null)
     {
-        $sql = "
-            SELECT e.nombre AS Empresa, v.no_contrat AS Contrato, 
-              IFNULL(p.consec_liq, 'Sin definir') AS Consecutivo, 
-              IFNULL(DATE_FORMAT(p.liq_desde, '%Y-%m-%d'), 'Sin definir') AS Fecha 
-            FROM vinculacion v 
-            LEFT JOIN pago_detalle pd ON v.no_contrat = pd.no_contrat 
-            LEFT JOIN periodo p ON pd.consec_liq = p.consec_liq 
-            LEFT JOIN empresa e ON v.usuario = e.usuario 
-            LEFT JOIN compania c ON e.compania = c.compania 
-            WHERE v.nit_tercer = '".$ident ."' 
-            GROUP BY v.usuario, v.no_contrat, p.consec_liq 
-            ORDER BY Fecha DESC";
-
         $qb = $this->createQueryBuilder('v');
         $qb
-            ->select('e.nombre AS Empresa, v.noContrat AS Contrato, c.nombre AS Compania')
-            ->addSelect("IFNULL(p.consecLiq, 'Sin definir') AS Consecutivo")
-            ->addSelect("IFNULL(DATE_FORMAT(p.liqDesde, '%Y-%m-%d'), 'Sin definir') AS Fecha")
+            ->select('e.nombre AS empresa, v.noContrat AS contrato, c.nombre AS compania, v.nitTercer')
+            ->addSelect("IFNULL(p.consecLiq, 'undefined') AS consecutivo")
+            ->addSelect("IFNULL(DATE_FORMAT(p.liqDesde, '%Y-%m-%d'), 'undefined') AS fecha")
             ->leftJoin(PagoDetalle::class, 'pd', 'WITH', 'v.noContrat = pd.noContrat')
             ->leftJoin(Periodo::class, 'p', 'WITH', 'pd.consecLiq = p.consecLiq')
             ->leftJoin(Empresa::class, 'e', 'WITH', 'v.usuario = e.usuario')
             ->leftJoin(Compania::class, 'c', 'WITH', 'e.compania = c.compania')
-            ->where('v.nitTercer = :ident')
             ->groupBy('v.usuario, v.noContrat, p.consecLiq')
-            ->orderBy("Fecha", "DESC")
-            ->setParameter('ident', $ident);
+            ->orderBy("fecha", "DESC")
+        ;
+        if($ident) {
+            $qb->where('v.nitTercer = :ident')
+                ->setParameter('ident', $ident);
+        }
 
         return $qb->getQuery()->getResult();
     }
 
-    // /**
-    //  * @return Vinculacion[] Returns an array of Vinculacion objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findAllNitTerceros()
     {
         return $this->createQueryBuilder('v')
-            ->andWhere('v.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('v.id', 'ASC')
-            ->setMaxResults(10)
+            ->select('v.nitTercer')
+            ->where('v.nitTercer != 0')
+            ->groupBy('v.nitTercer')
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult('FETCH_COLUMN');
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Vinculacion
+    public function countAllDistinctComprobantes()
     {
-        return $this->createQueryBuilder('v')
-            ->andWhere('v.exampleField = :val')
-            ->setParameter('val', $value)
+        $subQuery = $this->createQueryBuilder('v')
+            ->select('v.noContrat')
+            ->leftJoin(PagoDetalle::class, 'pd', 'WITH', 'v.noContrat = pd.noContrat')
+            ->leftJoin(Periodo::class, 'p', 'WITH', 'pd.consecLiq = p.consecLiq')
+            ->groupBy('v.noContrat, p.consecLiq')
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getSQL();
+
+        $query = "SELECT COUNT(*) FROM ($subQuery)x";
+        $statement = $this->_em->getConnection()->prepare($query);
+        $statement->execute();
+        return (int)$statement->fetchColumn();
     }
-    */
 }
