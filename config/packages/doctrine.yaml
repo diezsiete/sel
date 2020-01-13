@@ -134,4 +134,10 @@ doctrine:
                         prefix: 'App\Entity\Halcon'
                         alias: Halcon
 
+                dql:
+                    string_functions:
+                        ifnull: DoctrineExtensions\Query\Mysql\IfNull
+                    datetime_functions:
+                        date_format: DoctrineExtensions\Query\Mysql\DateFormat
+
 

@@ -11,14 +11,14 @@ class Vinculacion
 {
     /**
      * @ORM\Id()
-     * @ORM\Column(type="string", length=8, name="no_contrat")
+     * @ORM\Column(type="string", length=8)
      */
-    private $numeroContrato;
+    private $noContrat;
 
     /**
-     * @ORM\Column(type="bigint", nullable=true, name="nit_tercer")
+     * @ORM\Column(type="bigint", nullable=true)
      */
-    private $nitTercero;
+    private $nitTercer;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
@@ -36,9 +36,9 @@ class Vinculacion
     private $usuario;
 
     /**
-     * @ORM\Column(type="string", length=8, nullable=true, name="centro_cos")
+     * @ORM\Column(type="string", length=8, nullable=true)
      */
-    private $centroCosto;
+    private $centroCos;
 
     /**
      * @ORM\Column(type="string", length=4, nullable=true)
@@ -56,9 +56,9 @@ class Vinculacion
     private $sueldoMes;
 
     /**
-     * @ORM\Column(type="bigint", nullable=true, name="aux_transp")
+     * @ORM\Column(type="bigint", nullable=true)
      */
-    private $auxilioTransporte;
+    private $auxTransp;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
@@ -75,31 +75,26 @@ class Vinculacion
      */
     private $noupdate;
 
-    public function getId(): ?int
+    public function getNoContrat(): ?string
     {
-        return $this->id;
+        return $this->noContrat;
     }
 
-    public function getNumeroContrato(): ?string
+    public function setNoContrat(string $noContrat): self
     {
-        return $this->numeroContrato;
-    }
-
-    public function setNumeroContrato(string $numeroContrato): self
-    {
-        $this->numeroContrato = $numeroContrato;
+        $this->noContrat = $noContrat;
 
         return $this;
     }
 
-    public function getNitTercero(): ?int
+    public function getNitTercer(): ?int
     {
-        return $this->nitTercero;
+        return $this->nitTercer;
     }
 
-    public function setNitTercero(?int $nitTercero): self
+    public function setNitTercer(?int $nitTercer): self
     {
-        $this->nitTercero = $nitTercero;
+        $this->nitTercer = $nitTercer;
 
         return $this;
     }
@@ -140,14 +135,14 @@ class Vinculacion
         return $this;
     }
 
-    public function getCentroCosto(): ?string
+    public function getCentroCos(): ?string
     {
-        return $this->centroCosto;
+        return $this->centroCos;
     }
 
-    public function setCentroCosto(?string $centroCosto): self
+    public function setCentroCos(?string $centroCos): self
     {
-        $this->centroCosto = $centroCosto;
+        $this->centroCos = $centroCos;
 
         return $this;
     }
@@ -188,14 +183,14 @@ class Vinculacion
         return $this;
     }
 
-    public function getAuxilioTransporte(): ?int
+    public function getAuxTransp(): ?int
     {
-        return $this->auxilioTransporte;
+        return $this->auxTransp;
     }
 
-    public function setAuxilioTransporte(?int $auxilioTransporte): self
+    public function setAuxTransp(?int $auxTransp): self
     {
-        $this->auxilioTransporte = $auxilioTransporte;
+        $this->auxTransp = $auxTransp;
 
         return $this;
     }
