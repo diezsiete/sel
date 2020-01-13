@@ -5,6 +5,7 @@ namespace App\Service\Novasoft\Report;
 
 
 use App\Entity\Main\Convenio;
+use App\Service\Novasoft\Report\Report\CertificadoLaboralReport;
 use App\Service\Novasoft\Report\Report\LiquidacionNominaReport;
 use App\Service\Novasoft\Report\Report\NominaReport;
 use App\Service\Novasoft\Report\Report\TrabajadoresActivosReport;
@@ -81,13 +82,31 @@ class ReportFactory implements ServiceSubscriberInterface
                 ->setConvenio($convenio);
     }
 
+    /**
+     * @param string|null $ident
+     * @param string|null $ssrsdb
+     * @return CertificadoLaboralReport
+     */
+    public function certificadoLaboral(?string $ident = null, $ssrsdb = null)
+    {
+        $report = $this->container->get(CertificadoLaboralReport::class);
+        if($ident) {
+            $report->setParameterCodigoEmpleado($ident);
+        }
+        if($ssrsdb) {
+            $report->setDb($ssrsdb);
+        }
+        return $report;
+    }
+
 
     public static function getSubscribedServices()
     {
         return [
             NominaReport::class,
             TrabajadoresActivosReport::class,
-            LiquidacionNominaReport::class
+            LiquidacionNominaReport::class,
+            CertificadoLaboralReport::class
         ];
     }
 }

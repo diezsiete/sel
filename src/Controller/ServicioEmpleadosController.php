@@ -102,28 +102,32 @@ class ServicioEmpleadosController extends BaseController
     }
 
     /**
-     * @Route("/sel/se/certificado-laboral", name="app_certificado_laboral", defaults={ "header" :"Certificado Laboral"})
+     * @Route("/sel/se/certificado-laboral", name="app_certificado_laboral")
      */
-    public function certificadoLaboral(ReportesServicioEmpleados $reportes)
+    public function certificadoLaboral(ReportFactory $reportFactory)
     {
         $identificacion = $this->getUser()->getIdentificacion();
-        $certificados = $reportes->getCertificadosLaborales($identificacion, $this->getSsrsDb());
+
+        $certificadoReport = $reportFactory->certificadoLaboral($identificacion, $this->getSsrsDb());
+        $certificados = $certificadoReport->renderMap();
+
         return $this->render('servicio_empleados/certificado-laboral.html.twig', [
-            'tieneCertificado' => count($certificados) > 0,
+            'tieneCertificado' => count($certificados),
         ]);
     }
 
     /**
      * @Route("/sel/se/certificado-laboral-pdf", name="app_certificado_laboral_pdf")
      */
-    public function certificadoLaboralPdf(ReportesServicioEmpleados $reportes, PdfCartaLaboral $pdf)
+    public function certificadoLaboralPdf(ReportFactory $reportFactory, PdfCartaLaboral $pdf)
     {
-        $identificacion = $this->getUser()->getIdentificacion();
-        $certificado = $reportes->getCertificadoLaboral($identificacion, $this->getSsrsDb());
-        if(!$certificado) {
+        $certificados = $reportFactory
+            ->certificadoLaboral($this->getUser()->getIdentificacion(), $this->getSsrsDb())
+            ->renderMap();
+        if(!$certificados) {
             throw $this->createNotFoundException("Recurso no existe");
         }
-        return $this->renderPdf($pdf->render($certificado));
+        return $this->renderPdf($pdf->render($certificados[0]));
     }
 
     /**
