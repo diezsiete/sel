@@ -19,32 +19,24 @@ class CertificadoLaboralRepository extends ServiceEntityRepository
         parent::__construct($registry, CertificadoLaboral::class);
     }
 
-    // /**
-    //  * @return CertificadoLaboral[] Returns an array of CertificadoLaboral objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @noinspection PhpDocMissingThrowsInspection
+     * @param CertificadoLaboral $certificadoLaboral
+     * @return CertificadoLaboral|null
+     */
+    public function findEqual(CertificadoLaboral $certificadoLaboral)
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
+        return $this->createQueryBuilder('cl')
+            ->andWhere('cl.source = :source')
+            ->andWhere('cl.sourceId = :sourceId')
+            ->andWhere('cl.usuario = :usuario')
+            ->setParameters([
+                'source'   => $certificadoLaboral->getSource(),
+                'sourceId' => $certificadoLaboral->getSourceId(),
+                'usuario'  => $certificadoLaboral->getUsuario()
+            ])
+            ->setMaxResults(1)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getOneOrNullResult();
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?CertificadoLaboral
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

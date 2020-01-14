@@ -48,7 +48,7 @@ class ServicioEmpleadosController extends BaseController
     {
         $id = $this->getUser()->getId();
         $table = $dataTableFactory
-            ->createFromType(NominaDataTableType::class, ['id' => $id], ['searching' => false, 'paging' => false])
+            ->createFromType(NominaDataTableType::class, ['id' => $id], ['searching' => false])
             ->handleRequest($request);
 
         if($table->isCallback()) {
@@ -71,37 +71,6 @@ class ServicioEmpleadosController extends BaseController
             return $pdfHandler->readStream('comprobante', $nomina->getId());
         });
 
-    }
-
-//    /**
-//     * @Route("/sel/se/comprobantes", name="app_comprobantes")
-//     */
-//    public function comprobantesNomina(ReportFactory $reportFactory, DataTableFactory $dataTableFactory, Request $request)
-//    {
-//        $id = $this->getUser()->getId();
-//        $table = $dataTableFactory->createFromType(NominaDataTableType::class,
-//            ['id' => $id], ['searching' => false, 'paging' => false])
-//            ->handleRequest($request);
-//        if($table->isCallback()) {
-//            return $table->getResponse();
-//        }
-//        return $this->render('servicio_empleados/comprobantes.html.twig', ['datatable' => $table]);
-//    }
-
-    /**
-     * @Route("/sel/se/comprobante/{periodo}", name="app_comprobante")
-     */
-    public function comprobanteNomina(ReportFactory $reportFactory, PdfHandler $pdfHandler, $periodo)
-    {
-        return $this->renderStream(function () use ($reportFactory, $pdfHandler, $periodo) {
-            $fecha = DateTime::createFromFormat('Ymd', $periodo);
-            $ident = $this->getUser()->getIdentificacion();
-            // usar write si no se quiere cache
-            $pdfHandler->write('comprobante', $fecha, $ident, function ($fecha, $ident) use ($reportFactory) {
-                return $reportFactory->nomina($ident, $fecha, $fecha, $this->getSsrsDb())->renderPdf();
-            });
-            return $pdfHandler->readStream('comprobante', $fecha, $ident);
-        });
     }
 
     /**
