@@ -8,6 +8,7 @@ use App\Service\Configuracion\Configuracion;
 use App\Service\Novasoft\Report\Importer\Importer;
 use App\Service\Novasoft\Report\Mapper\Mapper;
 use App\Service\Novasoft\Report\ReportFormatter;
+use App\Service\ServicioEmpleados\Report\ReportInterface;
 use App\Service\Utils;
 use SSRS\RenderType\RenderAsCSV;
 use SSRS\RenderType\RenderAsPDF;
@@ -18,7 +19,7 @@ use SSRS\SSRSType\PageCountModeEnum;
 use SSRS\SSRSType\ParameterValue;
 use SSRS\SSRSType\ReportParameterCollection;
 
-abstract class Report
+abstract class Report implements ReportInterface
 {
     protected $path = "";
 

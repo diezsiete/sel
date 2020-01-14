@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="App\Repository\ServicioEmpleados\LiquidacionContratoRepository")
  * @ORM\Table(name="se_liquidacion_contrato")
  */
-class LiquidacionContrato
+class LiquidacionContrato implements ReportInterface
 {
     /**
      * @ORM\Id()

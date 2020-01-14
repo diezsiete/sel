@@ -7,7 +7,11 @@ oneup_flysystem:
         private_uploads_adapter:
             local:
                 directory: '%kernel.project_dir%/%private_uploads_dir_name%'
+        se_report:
+            local:
+                directory: '%kernel.project_dir%/%private_uploads_dir_name%/se/report'
 
+        #TODO deprecated borrar
         novasoft_report:
             local:
                 directory: '%kernel.project_dir%/%private_uploads_dir_name%/novasoft/report'
@@ -29,7 +33,10 @@ oneup_flysystem:
             adapter: public_uploads_adapter
         private_uploads_filesystem:
             adapter: private_uploads_adapter
+        se_report:
+            adapter: se_report
 
+        #TODO deprecated borrar
         novasoft_report:
             adapter: novasoft_report
 

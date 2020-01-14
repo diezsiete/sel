@@ -35,7 +35,7 @@ class VinculacionRepository extends ServiceEntityRepository
             ->leftJoin(Empresa::class, 'e', 'WITH', 'v.usuario = e.usuario')
             ->leftJoin(Compania::class, 'c', 'WITH', 'e.compania = c.compania')
             ->groupBy('v.usuario, v.noContrat, p.consecLiq')
-            ->orderBy("fecha", "DESC")
+            ->orderBy("fecha", "ASC")
         ;
         if($ident) {
             $qb->where('v.nitTercer = :ident')
@@ -55,17 +55,26 @@ class VinculacionRepository extends ServiceEntityRepository
             ->getResult('FETCH_COLUMN');
     }
 
-    public function countAllDistinctComprobantes()
+    public function countAllDistinctComprobantes($identificacion = null)
     {
-        $subQuery = $this->createQueryBuilder('v')
+        $qb = $this->createQueryBuilder('v')
             ->select('v.noContrat')
             ->leftJoin(PagoDetalle::class, 'pd', 'WITH', 'v.noContrat = pd.noContrat')
             ->leftJoin(Periodo::class, 'p', 'WITH', 'pd.consecLiq = p.consecLiq')
-            ->groupBy('v.noContrat, p.consecLiq')
-            ->getQuery()
-            ->getSQL();
+            ->groupBy('v.noContrat, p.consecLiq');
 
+        if($identificacion) {
+            if(!is_array($identificacion) || count($identificacion) === 1) {
+                $identificacion = is_array($identificacion) ? $identificacion[0] : $identificacion;
+                $qb->where("v.nitTercer = '$identificacion'");
+            } else {
+                $qb->where($qb->expr()->in('v.nitTercer', $identificacion));
+            }
+        }
+
+        $subQuery = $qb->getQuery()->getSQL();
         $query = "SELECT COUNT(*) FROM ($subQuery)x";
+
         $statement = $this->_em->getConnection()->prepare($query);
         $statement->execute();
         return (int)$statement->fetchColumn();

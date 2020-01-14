@@ -10,6 +10,7 @@ use App\Entity\Main\Usuario;
 use App\Entity\ServicioEmpleados\Nomina;
 use App\Repository\Halcon\VinculacionRepository;
 use App\Repository\Main\UsuarioRepository;
+use App\Repository\ServicioEmpleados\NominaRepository;
 use DateTime;
 use Doctrine\Common\Annotations\Reader;
 use Symfony\Component\Console\Input\InputArgument;
@@ -32,13 +33,19 @@ class NominaCommand extends TraitableCommand
      * @var UsuarioRepository
      */
     private $usuarioRepository;
+    /**
+     * @var NominaRepository
+     */
+    private $nominaRepository;
 
     public function __construct(Reader $annotationReader, EventDispatcherInterface $dispatcher,
-                                VinculacionRepository $vinculacionRepo, UsuarioRepository $usuarioRepository)
+                                VinculacionRepository $vinculacionRepo, UsuarioRepository $usuarioRepository,
+                                NominaRepository $nominaRepository)
     {
         parent::__construct($annotationReader, $dispatcher);
         $this->vinculacionRepo = $vinculacionRepo;
         $this->usuarioRepository = $usuarioRepository;
+        $this->nominaRepository = $nominaRepository;
     }
 
     protected function configure()
@@ -66,6 +73,9 @@ class NominaCommand extends TraitableCommand
                 if($usuario) {
                     $selNomina = $this->createNomina($comprobante, $usuario);
                     if($selNomina && !$info) {
+                        if($dbSelNomina = $this->nominaRepository->findEqual($selNomina)) {
+                            $this->em->remove($dbSelNomina);
+                        }
                         $this->em->persist($selNomina);
                     }
                 }
@@ -80,8 +90,8 @@ class NominaCommand extends TraitableCommand
 
     protected function progressBarCount(InputInterface $input, OutputInterface $output): ?int
     {
-        //return 0;
-        return $this->vinculacionRepo->countAllDistinctComprobantes();
+        $identificaciones = $input->getArgument('identificaciones');
+        return $this->vinculacionRepo->countAllDistinctComprobantes($identificaciones);
     }
 
     private function createNomina($halconComprobante, Usuario $usuario)
@@ -95,7 +105,6 @@ class NominaCommand extends TraitableCommand
             ->setSourceHalcon()
             ->setUsuario($usuario)
             ->setSourceId("{$halconComprobante['contrato']},{$halconComprobante['consecutivo']},{$halconComprobante['nitTercer']}");
-
     }
 
 };

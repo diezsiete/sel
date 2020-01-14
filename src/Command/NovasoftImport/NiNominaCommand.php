@@ -79,7 +79,7 @@ class NiNominaCommand extends NiCommand
                 $this->info($this->periodo->format('Y-m') . " $dataLog") :
                 $this->info($dataLog, [$desde ? $desde->format('Y-m-d') : null, $hasta->format('Y-m-d')]);
 
-            $reporteNomina = $this->reportFactory->getReporteNomina(
+            $reporteNomina = $this->reportFactory->nomina(
                 $empleado->getUsuario()->getIdentificacion(), $desde, $hasta, $empleado->getSsrsDb());
 
             $importer = $reporteNomina->getImporter()->setUpdate(!$dontUpdate);

@@ -34,7 +34,7 @@ class ReportFactory implements ServiceSubscriberInterface
      * @param null|string $ssrsdb
      * @return NominaReport
      */
-    public function getReporteNomina($identificacion = null, $fechaInicio = null, $fechaFin = null, $ssrsdb = null)
+    public function nomina($identificacion = null, $fechaInicio = null, $fechaFin = null, $ssrsdb = null)
     {
         $reporteNomina = $this->container->get(NominaReport::class);
         if($identificacion) {

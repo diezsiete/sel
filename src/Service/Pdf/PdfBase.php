@@ -121,4 +121,8 @@ abstract class PdfBase extends FPDF
         $this->SetFont($this->customFontFamily,'',$this->customFontSize);
     }
 
+    public function getRMargin(){
+        return $this->GetPageWidth() - $this->rMargin;
+    }
+
 }

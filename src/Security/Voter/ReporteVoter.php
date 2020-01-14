@@ -5,6 +5,7 @@ namespace App\Security\Voter;
 use App\Entity\Autoliquidacion\AutoliquidacionEmpleado;
 use App\Entity\Hv\HvEntity;
 use App\Entity\Novasoft\Report\Nomina\Nomina;
+use App\Entity\ServicioEmpleados\ReportInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Security;
@@ -21,13 +22,12 @@ class ReporteVoter extends Voter
 
     protected function supports($attribute, $subject)
     {
-        return in_array($attribute, ['REPORTE_MANAGE']) && (
-            $subject instanceof Nomina || $subject instanceof AutoliquidacionEmpleado);
+        return in_array($attribute, ['REPORTE_MANAGE']) && $subject instanceof ReportInterface;
     }
 
     /**
      * @param string $attribute
-     * @param \App\Entity\Novasoft\Report\Nomina\Nomina $subject
+     * @param ReportInterface $subject
      * @param TokenInterface $token
      * @return bool
      */

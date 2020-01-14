@@ -28,7 +28,7 @@ class PanelController extends BaseController
             }*/
             $fecha = new DateTime();
 
-            $comprobantes = $reportFactory->getReporteNomina(
+            $comprobantes = $reportFactory->nomina(
                 $this->getUser()->getIdentificacion(),
                 (new DateTime())->sub(new DateInterval('P2M')),
                 null,

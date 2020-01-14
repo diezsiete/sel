@@ -5,12 +5,13 @@ namespace App\Entity\ServicioEmpleados;
 use App\Entity\Main\Usuario;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\Boolean;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ServicioEmpleados\NominaRepository")
  * @ORM\Table(name="se_nomina")
  */
-class Nomina
+class Nomina implements ReportInterface
 {
 
     /**
@@ -78,6 +79,16 @@ class Nomina
     public function getSource(): ?string
     {
         return $this->source;
+    }
+
+    public function isSourceNovasoft(): bool
+    {
+        return $this->source === 'novasoft';
+    }
+
+    public function isSourceHalcon(): bool
+    {
+        return $this->source === 'halcon';
     }
 
     public function setSourceNovasoft(): self

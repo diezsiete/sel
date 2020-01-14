@@ -43,7 +43,7 @@ class MenuBuilder
         $user = $this->security->getUser();
 
 
-        $this->createSelMenu($menu, $user);
+        $this->createSeMenu($menu, $user);
         $this->createAspirantesMenu($menu, $user);
         $this->createEvaluacionMenu($menu, $user);
 
@@ -62,10 +62,10 @@ class MenuBuilder
         return $menu;
     }
 
-    protected function createSelMenu(ItemInterface $menu, UserInterface $user)
+    protected function createSeMenu(ItemInterface $menu, UserInterface $user)
     {
         if ($this->security->isGranted(['ROLE_VER_SE_REPORTES'], $user)) {
-            $menu->addChild('Comprobantes', ['route' => 'app_comprobantes'])
+            $menu->addChild('Comprobantes', ['route' => 'se_comprobantes'])
                 ->setExtra('icon', 'fas fa-dollar-sign');
 
             $menu->addChild('Certificados')

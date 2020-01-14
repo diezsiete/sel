@@ -44,6 +44,9 @@ security:
     role_hierarchy:
         ROLE_EMPLEADO:
             - ROLE_VER_SE_REPORTES
+        ROLE_HALCON:
+            - ROLE_VER_SE_REPORTES
+
         ROLE_OPERADOR:
             - ROLE_ADMIN_USUARIOS
 

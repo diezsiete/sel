@@ -19,32 +19,26 @@ class NominaRepository extends ServiceEntityRepository
         parent::__construct($registry, Nomina::class);
     }
 
-    // /**
-    //  * @return Nomina[] Returns an array of Nomina objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @noinspection PhpDocMissingThrowsInspection
+     * @param Nomina $nomina
+     * @return Nomina|null
+     */
+    public function findEqual(Nomina $nomina)
     {
         return $this->createQueryBuilder('n')
-            ->andWhere('n.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('n.id', 'ASC')
-            ->setMaxResults(10)
+            ->andWhere('n.source = :source')
+            ->andWhere('n.fecha = :fecha')
+            ->andWhere('n.usuario = :usuario')
+            ->andWhere('n.sourceId = :sourceId')
+            ->setParameters([
+                'source'   => $nomina->getSource(),
+                'fecha'    => $nomina->getFecha()->format('Y-m-d'),
+                'usuario'  => $nomina->getUsuario(),
+                'sourceId' => $nomina->getSourceId()
+            ])
+            ->setMaxResults(1)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getOneOrNullResult();
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Nomina
-    {
-        return $this->createQueryBuilder('n')
-            ->andWhere('n.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

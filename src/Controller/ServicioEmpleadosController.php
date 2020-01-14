@@ -4,18 +4,16 @@ namespace App\Controller;
 
 
 use App\DataTable\Type\AutoliquidacionEmpleadoDataTableType;
-use App\DataTable\Type\Novasoft\Report\NominaDataTableType;
+use App\DataTable\Type\ServicioEmpleados\NominaDataTableType;
 use App\Entity\Autoliquidacion\AutoliquidacionEmpleado;
-use App\Entity\Halcon\Vinculacion;
-use App\Repository\Halcon\VinculacionRepository;
+use App\Entity\ServicioEmpleados\Nomina;
 use App\Repository\Main\EmpleadoRepository;
 use App\Service\Autoliquidacion\FileManager;
 use App\Service\Novasoft\NovasoftEmpleadoService;
 use App\Service\Novasoft\Report\ReportFactory;
-use App\Service\Novasoft\Report\ReportPdfHandler;
+use App\Service\ServicioEmpleados\Report\PdfHandler;
 use App\Service\Pdf\PdfCartaLaboral;
-use App\Service\ReportesServicioEmpleados;
-use App\Service\ServicioEmpleados\Reportes;
+use App\Service\ServicioEmpleados\Report\ReportFactory as SeReportFactory;
 use DateTime;
 use DateTimeInterface;
 use Exception;
@@ -44,59 +42,63 @@ class ServicioEmpleadosController extends BaseController
     }
 
     /**
-     * @Route("/sel/se/comprobantes2", name="se_comprobantes")
+     * @Route("/sel/se/comprobantes", name="se_comprobantes")
      */
     public function comprobantes(DataTableFactory $dataTableFactory, Request $request)
     {
         $id = $this->getUser()->getId();
-        $table = $dataTableFactory->createFromType(NominaDataTableType::class,
-            ['id' => $id], ['searching' => false, 'paging' => false])
+        $table = $dataTableFactory
+            ->createFromType(NominaDataTableType::class, ['id' => $id], ['searching' => false, 'paging' => false])
             ->handleRequest($request);
+
         if($table->isCallback()) {
             return $table->getResponse();
         }
+
         return $this->render('servicio_empleados/comprobantes.html.twig', ['datatable' => $table]);
     }
     /**
-     * @Route("/sel/se/comprobante/{source}/{comprobante}", name="se_comprobante", defaults={"source"="novasoft"})
-     * @IsGranted("REPORTE_MANAGE", subject="comprobante")
+     * @Route("/sel/se/comprobante/{nomina}", name="se_comprobante")
+     * @IsGranted("REPORTE_MANAGE", subject="nomina")
      */
-    public function comprobante(\App\Service\ServicioEmpleados\ReportFactory $reportFactory)
+    public function comprobante(SeReportFactory $reportFactory, PdfHandler $pdfHandler, Nomina $nomina)
     {
-        /*$ssrsDb = $this->getSsrsDb();
+        return $this->renderStream(function () use ($reportFactory, $pdfHandler, $nomina) {
+            // usar write si no se quiere cache
+            $pdfHandler->write('comprobante', $nomina->getId(), function () use ($reportFactory, $nomina) {
+                return $reportFactory->getReporteNomina($nomina)->renderPdf();
+            });
+            return $pdfHandler->readStream('comprobante', $nomina->getId());
+        });
 
-        return $this->renderStream(function () use ($reportes, $comprobante, $ssrsDb) {
-            return $reportes->comprobanteStream(
-                $comprobante->getFecha(),
-                $comprobante->getUsuario()->getIdentificacion(),
-                $ssrsDb
-            );
-        });*/
     }
 
-    /**
-     * @Route("/sel/se/comprobantes", name="app_comprobantes")
-     */
-    public function comprobantesNomina(ReportFactory $reportFactory)
-    {
-        $nominaReport = $reportFactory->getReporteNomina($this->getUser()->getIdentificacion(), null, null, $this->getSsrsDb());
-
-        return $this->render('servicio_empleados/comprobantes-temp.html.twig', [
-            'comprobantes' => $nominaReport->renderMap()
-        ]);
-    }
+//    /**
+//     * @Route("/sel/se/comprobantes", name="app_comprobantes")
+//     */
+//    public function comprobantesNomina(ReportFactory $reportFactory, DataTableFactory $dataTableFactory, Request $request)
+//    {
+//        $id = $this->getUser()->getId();
+//        $table = $dataTableFactory->createFromType(NominaDataTableType::class,
+//            ['id' => $id], ['searching' => false, 'paging' => false])
+//            ->handleRequest($request);
+//        if($table->isCallback()) {
+//            return $table->getResponse();
+//        }
+//        return $this->render('servicio_empleados/comprobantes.html.twig', ['datatable' => $table]);
+//    }
 
     /**
      * @Route("/sel/se/comprobante/{periodo}", name="app_comprobante")
      */
-    public function comprobanteNomina(ReportFactory $reportFactory, ReportPdfHandler $pdfHandler, $periodo)
+    public function comprobanteNomina(ReportFactory $reportFactory, PdfHandler $pdfHandler, $periodo)
     {
         return $this->renderStream(function () use ($reportFactory, $pdfHandler, $periodo) {
             $fecha = DateTime::createFromFormat('Ymd', $periodo);
             $ident = $this->getUser()->getIdentificacion();
             // usar write si no se quiere cache
             $pdfHandler->write('comprobante', $fecha, $ident, function ($fecha, $ident) use ($reportFactory) {
-                return $reportFactory->getReporteNomina($ident, $fecha, $fecha, $this->getSsrsDb())->renderPdf();
+                return $reportFactory->nomina($ident, $fecha, $fecha, $this->getSsrsDb())->renderPdf();
             });
             return $pdfHandler->readStream('comprobante', $fecha, $ident);
         });
@@ -156,7 +158,7 @@ class ServicioEmpleadosController extends BaseController
     /**
      * @Route("/sel/se/certificado-ingresos/{periodo}", name="app_certificado_ingresos")
      */
-    public function certificadoIngreso(ReportFactory $reportFactory, ReportPdfHandler $pdfHandler, $periodo)
+    public function certificadoIngreso(ReportFactory $reportFactory, PdfHandler $pdfHandler, $periodo)
     {
         return $this->renderStream(function () use ($reportFactory, $pdfHandler, $periodo) {
             $identificacion = $this->getUser()->getIdentificacion();
@@ -223,7 +225,7 @@ class ServicioEmpleadosController extends BaseController
     /**
      * @Route("/sel/se/liquidacion-de-contrato/{fechaIngreso}/{fechaRetiro}", name="app_liquidacion_de_contrato_pdf")
      */
-    public function liquidacionDeContratoPdf(ReportFactory $reportFactory, $fechaIngreso, $fechaRetiro, ReportPdfHandler $pdfHandler)
+    public function liquidacionDeContratoPdf(ReportFactory $reportFactory, $fechaIngreso, $fechaRetiro, PdfHandler $pdfHandler)
     {
         return $this->renderStream(function () use ($reportFactory, $fechaIngreso, $fechaRetiro, $pdfHandler) {
             $identificacion = $this->getUser()->getIdentificacion();
