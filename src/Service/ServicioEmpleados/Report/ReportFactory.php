@@ -32,7 +32,7 @@ class ReportFactory implements ServiceSubscriberInterface
      * @param Nomina $nomina
      * @return ReportInterface
      */
-    public function getReporteNomina(Nomina $nomina)
+    public function nomina(Nomina $nomina)
     {
         if($nomina->isSourceNovasoft()) {
             $nominaNovasoft = $this->container->get(NovasoftNominaRepo::class)->find($nomina->getSourceId());

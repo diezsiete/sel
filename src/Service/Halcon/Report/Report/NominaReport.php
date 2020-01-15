@@ -67,6 +67,6 @@ class NominaReport extends Report
 
     public function getPdfFileName(): string
     {
-        // TODO: Implement getPdfFileName() method.
+        return "/halcon/nomina/$this->nitTercer-$this->noContrat-$this->consecLiq.pdf";
     }
 }

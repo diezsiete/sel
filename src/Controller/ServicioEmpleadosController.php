@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-
 use App\DataTable\Type\AutoliquidacionEmpleadoDataTableType;
 use App\DataTable\Type\ServicioEmpleados\CertificadoLaboralDataTableType;
 use App\DataTable\Type\ServicioEmpleados\NominaDataTableType;
@@ -62,16 +61,11 @@ class ServicioEmpleadosController extends BaseController
      * @Route("/sel/se/comprobante/{nomina}", name="se_comprobante")
      * @IsGranted("REPORTE_MANAGE", subject="nomina")
      */
-    public function comprobante(SeReportFactory $reportFactory, PdfHandler $pdfHandler, Nomina $nomina)
+    public function comprobante(SeReportFactory $reportFactory, Nomina $nomina)
     {
-        return $this->renderStream(function () use ($reportFactory, $pdfHandler, $nomina) {
-            // usar write si no se quiere cache
-            $pdfHandler->write('comprobante', $nomina->getId(), function () use ($reportFactory, $nomina) {
-                return $reportFactory->getReporteNomina($nomina)->renderPdf();
-            });
-            return $pdfHandler->readStream('comprobante', $nomina->getId());
+        return $this->renderStream(function () use ($reportFactory, $nomina) {
+            return $reportFactory->nomina($nomina)->streamPdf();
         });
-
     }
 
     /**
@@ -103,7 +97,6 @@ class ServicioEmpleadosController extends BaseController
      */
     public function certificadoLaboralPdf(SeReportFactory $reportFactory, CertificadoLaboral $certificado)
     {
-        //$reportFactory->certificadoLaboral($certificado)->renderPdf();
         return $this->renderStream(function () use ($reportFactory, $certificado) {
             return $reportFactory->certificadoLaboral($certificado)->streamPdf();
         });
