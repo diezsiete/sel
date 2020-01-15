@@ -19,33 +19,40 @@ class PdfHandler
         $this->filesystem = $seReportFilesystem;
     }
 
-    public function cache(string $reporteNombre, $id, $callbackSource)
+    public function cache(string $reporteNombre, $callbackSource)
     {
-        $path = $this->buildReportPath($reporteNombre, $id);
+        $path = $reporteNombre;
         if (!$this->filesystem->has($path)) {
-            return $this->filesystem->write($path, $callbackSource($id));
+            return $this->filesystem->write($path, $callbackSource());
         }
         return true;
     }
 
-    public function write(string $reporteNombre, $id, $callbackSource)
+    public function write(string $reporteNombre, $callbackSource)
     {
-        $path = $this->buildReportPath($reporteNombre, $id);
+        $path = $reporteNombre;
         if ($this->filesystem->has($path)) {
-            return $this->filesystem->update($path, $callbackSource($id));
+            return $this->filesystem->update($path, $callbackSource());
         } else {
-            return $this->filesystem->write($path, $callbackSource($id));
+            return $this->filesystem->write($path, $callbackSource());
         }
     }
 
-    public function readStream(string $reporteNombre, $id)
+    public function writeAndStream(string $reporteNombre, $callbackSource)
     {
-        return $this->filesystem->readStream($this->buildReportPath($reporteNombre, $id));
+        $this->write($reporteNombre, $callbackSource);
+        return $this->readStream($reporteNombre);
     }
 
-    protected function buildReportPath(string $reporteNombre, $id)
+    public function cacheAndStream(string $reporteNombre, $callbackSource)
     {
-        return "/$reporteNombre/$id.pdf";
+        $this->cache($reporteNombre, $callbackSource);
+        return $this->readStream($reporteNombre);
+    }
+
+    public function readStream(string $reporteNombre)
+    {
+        return $this->filesystem->readStream($reporteNombre);
     }
 
 }

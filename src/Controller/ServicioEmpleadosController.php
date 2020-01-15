@@ -4,15 +4,16 @@ namespace App\Controller;
 
 
 use App\DataTable\Type\AutoliquidacionEmpleadoDataTableType;
+use App\DataTable\Type\ServicioEmpleados\CertificadoLaboralDataTableType;
 use App\DataTable\Type\ServicioEmpleados\NominaDataTableType;
 use App\Entity\Autoliquidacion\AutoliquidacionEmpleado;
+use App\Entity\ServicioEmpleados\CertificadoLaboral;
 use App\Entity\ServicioEmpleados\Nomina;
 use App\Repository\Main\EmpleadoRepository;
 use App\Service\Autoliquidacion\FileManager;
 use App\Service\Novasoft\NovasoftEmpleadoService;
 use App\Service\Novasoft\Report\ReportFactory;
 use App\Service\ServicioEmpleados\Report\PdfHandler;
-use App\Service\Pdf\PdfCartaLaboral;
 use App\Service\ServicioEmpleados\Report\ReportFactory as SeReportFactory;
 use DateTime;
 use DateTimeInterface;
@@ -74,32 +75,38 @@ class ServicioEmpleadosController extends BaseController
     }
 
     /**
-     * @Route("/sel/se/certificado-laboral", name="app_certificado_laboral")
+     * @Route("/sel/se/certificado-laboral", name="se_certificado_laboral")
      */
-    public function certificadoLaboral(ReportFactory $reportFactory)
+    public function certificadoLaboral(SeReportFactory $seReportFactory, DataTableFactory $dataTableFactory, Request $request)
     {
+        $parameters = [];
         $identificacion = $this->getUser()->getIdentificacion();
+        $certificados = $seReportFactory->certificadoLaboral($identificacion)->renderMap();
+        if(count($certificados) > 1) {
+            $table = $dataTableFactory
+                ->createFromType(CertificadoLaboralDataTableType::class, ['id' => $this->getUser()->getId()], ['searching' => false])
+                ->handleRequest($request);
+            if($table->isCallback()) {
+                return $table->getResponse();
+            }
+            $parameters['datatable'] = $table;
+        } else {
+            $parameters['certificado'] = $certificados ? $certificados[0] : null;
+        }
 
-        $certificadoReport = $reportFactory->certificadoLaboral($identificacion, $this->getSsrsDb());
-        $certificados = $certificadoReport->renderMap();
-
-        return $this->render('servicio_empleados/certificado-laboral.html.twig', [
-            'tieneCertificado' => count($certificados),
-        ]);
+        return $this->render('servicio_empleados/certificado-laboral.html.twig', $parameters);
     }
 
     /**
-     * @Route("/sel/se/certificado-laboral-pdf", name="app_certificado_laboral_pdf")
+     * @Route("/sel/se/certificado-laboral/{certificado}", name="se_certificado_laboral_pdf")
+     * @IsGranted("REPORTE_MANAGE", subject="certificado")
      */
-    public function certificadoLaboralPdf(ReportFactory $reportFactory, PdfCartaLaboral $pdf)
+    public function certificadoLaboralPdf(SeReportFactory $reportFactory, CertificadoLaboral $certificado)
     {
-        $certificados = $reportFactory
-            ->certificadoLaboral($this->getUser()->getIdentificacion(), $this->getSsrsDb())
-            ->renderMap();
-        if(!$certificados) {
-            throw $this->createNotFoundException("Recurso no existe");
-        }
-        return $this->renderPdf($pdf->render($certificados[0]));
+        //$reportFactory->certificadoLaboral($certificado)->renderPdf();
+        return $this->renderStream(function () use ($reportFactory, $certificado) {
+            return $reportFactory->certificadoLaboral($certificado)->streamPdf();
+        });
     }
 
     /**

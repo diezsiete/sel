@@ -216,5 +216,9 @@ abstract class Report implements ReportInterface
             $this->renderStreamIds);
     }
 
-    public abstract function getFileNamePdf($asArray = false);
+    public function streamPdf()
+    {
+        //TODO
+    }
+
 }

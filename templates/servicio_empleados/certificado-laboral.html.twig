@@ -1,4 +1,6 @@
-{% extends 'base.html.twig' %}
+{% set extendTemplate = datatable is defined ? 'datatable/base.datatable.html.twig' : 'base.html.twig'  %}
+
+{% extends extendTemplate %}
 
 {% block title %}
     Certificado laboral
@@ -9,16 +11,27 @@
 {% endblock %}
 
 
-{% block body %}
-    <div class="row">
-        <div class="col">
-            <div class="alert alert-info">
-                <strong>No se abre automáticamente?!</strong> Puede abrir
-                <a href="{{path('app_certificado_laboral_pdf')}}" target="_blank">Certificado laboral aquí</a>.
-            </div>
-            <embed class="pdf-view" type="application/pdf" src="{{ path('app_certificado_laboral_pdf') }}"
-               id="embed" width="100%" height="716">
-        </div>
-    </div>
-{% endblock %}
 
+{% block body %}
+    {% if datatable is not defined %}
+        <div class="row">
+            <div class="col">
+                <div class="alert alert-info">
+                    {% if certificado %}
+                        <strong>No se abre automáticamente?!</strong> Puede abrir
+                        <a href="{{path('se_certificado_laboral_pdf', {id: certificado.id})}}" target="_blank">Certificado laboral aquí</a>.
+                    {% else %}
+                        <p>No hay resultado</p>
+                    {% endif %}
+                </div>
+            {% if certificado %}
+                <embed class="pdf-view" type="application/pdf" src="{{ path('se_certificado_laboral_pdf', {id: certificado.id}) }}"
+                       id="embed" width="100%" height="716">
+            {% endif %}
+            </div>
+        </div>
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+
+{% endblock %}

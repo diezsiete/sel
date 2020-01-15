@@ -73,7 +73,7 @@ class UsuarioDataTableType implements DataTableTypeInterface
             ]];
             if($this->security->isGranted(['ROLE_ALLOWED_TO_SWITCH'], $this->security->getUser())) {
                 $actions[] = [
-                    'route' => ['app_comprobantes', ['_switch_user']],
+                    'route' => ['sel_panel', ['_switch_user']],
                     'icon' => 'fas fa-user-cog',
                     'tooltip' => 'Impersonar'
                 ];

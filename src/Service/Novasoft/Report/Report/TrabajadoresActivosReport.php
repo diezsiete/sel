@@ -104,7 +104,7 @@ class TrabajadoresActivosReport extends Report
         return $this;
     }
 
-    public function getFileNamePdf($asArray = false)
+    public function getPdfFileName(): string
     {
         // TODO: Implement getFileNamePdf() method.
     }

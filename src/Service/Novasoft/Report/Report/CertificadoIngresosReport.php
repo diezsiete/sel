@@ -112,8 +112,8 @@ class CertificadoIngresosReport extends Report
         return $this->reportFormatter->csvContSplittedToAssociative($this->renderCSV());
     }
 
-    public function getFileNamePdf($asArray = false)
+    public function getPdfFileName(): string
     {
-        // TODO: Implement getFileNamePdf() method.
+        // TODO: Implement getPdfFileName() method.
     }
 }

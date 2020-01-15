@@ -175,11 +175,9 @@ class LiquidacionNominaReport extends Report
         $this->parameter_TipLiq = '04';
     }
 
-    public function getFileNamePdf($asArray = false)
+    public function getPdfFileName(): string
     {
         $fecha = $this->parameter_fFecIni->format('Ymd') . '-' . $this->parameter_fFecFin->format('Ymd');
-        return $asArray
-            ? ['liquidacion-nomina', $this->parameter_CodConv, $fecha, 'pdf']
-            : 'liquidacion-nomina' . '/' . $this->parameter_CodConv . '-' . $fecha . '.pdf';
+        return 'liquidacion-nomina' . '/' . $this->parameter_CodConv . '-' . $fecha . '.pdf';
     }
 }

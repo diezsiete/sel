@@ -132,7 +132,7 @@ class NominaReport extends Report
     }
 
 
-    public function getFileNamePdf($asArray = false)
+    public function getPdfFileName(): string
     {
         // TODO: Implement getFileNamePdf() method.
     }

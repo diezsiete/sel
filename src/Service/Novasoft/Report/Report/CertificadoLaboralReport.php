@@ -51,7 +51,7 @@ class CertificadoLaboralReport extends Report
         return $this->reportFormatter->mapCsv($csvAssociative, $this->mapper);
     }
 
-    public function getFileNamePdf($asArray = false)
+    public function getPdfFileName(): string
     {
         // TODO: Implement getFileNamePdf() method.
     }

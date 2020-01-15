@@ -39,4 +39,18 @@ class CertificadoLaboralRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    /**
+     * @param string $identificacion
+     * @return CertificadoLaboral[]
+     */
+    public function findByIdentificacion($identificacion)
+    {
+        return $this->createQueryBuilder('cl')
+            ->join('cl.usuario', 'u')
+            ->where('u.identificacion = :identificacion')
+            ->setParameter('identificacion', $identificacion)
+            ->getQuery()
+            ->getResult();
+    }
 }

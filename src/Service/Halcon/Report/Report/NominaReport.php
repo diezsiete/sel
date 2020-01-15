@@ -6,8 +6,9 @@ namespace App\Service\Halcon\Report\Report;
 
 use App\Repository\Halcon\Report\NominaRepository;
 use App\Service\Pdf\Halcon\NominaPdf;
+use App\Service\ServicioEmpleados\Report\PdfHandler;
 
-class Nomina extends Report
+class NominaReport extends Report
 {
     private $noContrat;
     private $consecLiq;
@@ -21,21 +22,16 @@ class Nomina extends Report
      */
     private $nominaPdf;
 
-    public function __construct(NominaRepository $nominaRepo, NominaPdf $nominaPdf)
+    public function __construct(PdfHandler $pdfHandler, NominaRepository $nominaRepo, NominaPdf $nominaPdf)
     {
+        parent::__construct($pdfHandler);
         $this->nominaRepo = $nominaRepo;
         $this->nominaPdf = $nominaPdf;
     }
 
-    public function renderPdf()
-    {
-        $nomina = $this->nominaRepo->findNomina($this->noContrat, $this->consecLiq, $this->nitTercer);
-        return $this->nominaPdf->build($nomina[0])->Output("S");
-    }
-
     /**
      * @param mixed $noContrat
-     * @return Nomina
+     * @return NominaReport
      */
     public function setNoContrat($noContrat)
     {
@@ -45,7 +41,7 @@ class Nomina extends Report
 
     /**
      * @param mixed $consecLiq
-     * @return Nomina
+     * @return NominaReport
      */
     public function setConsecLiq($consecLiq)
     {
@@ -55,7 +51,7 @@ class Nomina extends Report
 
     /**
      * @param mixed $nitTercer
-     * @return Nomina
+     * @return NominaReport
      */
     public function setNitTercer($nitTercer)
     {
@@ -63,5 +59,14 @@ class Nomina extends Report
         return $this;
     }
 
+    public function renderPdf()
+    {
+        $nomina = $this->nominaRepo->findNomina($this->noContrat, $this->consecLiq, $this->nitTercer);
+        return $this->nominaPdf->build($nomina[0])->Output("S");
+    }
 
+    public function getPdfFileName(): string
+    {
+        // TODO: Implement getPdfFileName() method.
+    }
 }

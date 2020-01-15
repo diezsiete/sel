@@ -14,9 +14,10 @@ class CertificadoLaboralRepository extends ServiceEntityRepository
     }
 
     /**
+     * @noinspection PhpDocMissingThrowsInspection
      * @param mixed $ident
      * @param bool $numeroContrato
-     * @return CertificadoLaboral[]
+     * @return CertificadoLaboral[]|CertificadoLaboral
      */
     public function find($ident, $numeroContrato = false)
     {
@@ -41,15 +42,15 @@ class CertificadoLaboralRepository extends ServiceEntityRepository
         $paramenters = [1 => $ident];
 
         if($numeroContrato){
-            $sql .= " AND v.no_contrat = ?";
+            $sql .= " AND v.no_contrat = ? LIMIT 1";
             $paramenters[2] = $numeroContrato;
         }
 
         $query = $this->_em->createNativeQuery($sql, $this->getResultSetMapping());
         $query->setParameters($paramenters);
 
-        $result = $query->getResult();
-        return $result;
+        return $numeroContrato ? $query->getOneOrNullResult() : $query->getResult();
+
     }
 
     private function getResultSetMapping()
