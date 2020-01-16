@@ -16,8 +16,9 @@ class Empresa
     private $usuario;
 
     /**
-     * @ORM\Id()
-     * @ORM\Column(type="string", length=2)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Halcon\Compania")
+     * @ORM\JoinColumn(name="compania", referencedColumnName="compania")
+     * @var Compania
      */
     private $compania;
 
@@ -56,34 +57,15 @@ class Empresa
      */
     private $estado;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $noupdate = false;
-
 
     public function getUsuario(): ?string
     {
         return $this->usuario;
     }
 
-    public function setUsuario(string $usuario): self
-    {
-        $this->usuario = $usuario;
-
-        return $this;
-    }
-
-    public function getCompania(): ?string
+    public function getCompania(): ?Compania
     {
         return $this->compania;
-    }
-
-    public function setCompania(string $compania): self
-    {
-        $this->compania = $compania;
-
-        return $this;
     }
 
     public function getNombre(): ?string
@@ -91,23 +73,9 @@ class Empresa
         return $this->nombre;
     }
 
-    public function setNombre(?string $nombre): self
-    {
-        $this->nombre = $nombre;
-
-        return $this;
-    }
-
     public function getNit(): ?string
     {
         return $this->nit;
-    }
-
-    public function setNit(?string $nit): self
-    {
-        $this->nit = $nit;
-
-        return $this;
     }
 
     public function getCiudad(): ?string
@@ -115,23 +83,9 @@ class Empresa
         return $this->ciudad;
     }
 
-    public function setCiudad(?string $ciudad): self
-    {
-        $this->ciudad = $ciudad;
-
-        return $this;
-    }
-
     public function getDireccion(): ?string
     {
         return $this->direccion;
-    }
-
-    public function setDireccion(?string $direccion): self
-    {
-        $this->direccion = $direccion;
-
-        return $this;
     }
 
     public function getTelefono(): ?string
@@ -139,46 +93,13 @@ class Empresa
         return $this->telefono;
     }
 
-    public function setTelefono(?string $telefono): self
-    {
-        $this->telefono = $telefono;
-
-        return $this;
-    }
-
     public function getResponsabl(): ?string
     {
         return $this->responsabl;
     }
 
-    public function setResponsabl(?string $responsabl): self
-    {
-        $this->responsabl = $responsabl;
-
-        return $this;
-    }
-
     public function getEstado(): ?string
     {
         return $this->estado;
-    }
-
-    public function setEstado(?string $estado): self
-    {
-        $this->estado = $estado;
-
-        return $this;
-    }
-
-    public function getNoupdate(): ?bool
-    {
-        return $this->noupdate;
-    }
-
-    public function setNoupdate(bool $noupdate): self
-    {
-        $this->noupdate = $noupdate;
-
-        return $this;
     }
 }

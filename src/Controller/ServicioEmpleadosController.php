@@ -10,6 +10,7 @@ use App\Entity\ServicioEmpleados\CertificadoLaboral;
 use App\Entity\ServicioEmpleados\Nomina;
 use App\Repository\Main\EmpleadoRepository;
 use App\Service\Autoliquidacion\FileManager;
+use App\Service\Halcon\Report\Report\CertificadoIngresosReport;
 use App\Service\Novasoft\NovasoftEmpleadoService;
 use App\Service\Novasoft\Report\ReportFactory;
 use App\Service\ServicioEmpleados\Report\PdfHandler;
@@ -105,9 +106,12 @@ class ServicioEmpleadosController extends BaseController
     /**
      * @Route("/sel/se/certificados-ingresos", name="app_certificados_ingresos")
      */
-    public function certificadosIngresos(ReportFactory $reportFactory)
+    public function certificadosIngresos(ReportFactory $reportFactory, CertificadoIngresosReport $report)
     {
         $identificacion = $this->getUser()->getIdentificacion();
+
+        $certificados = $report->setIdentificacion($identificacion)->renderMap();
+        dump($certificados);
 
         $certificados = [];
         $anos = ["2018", "2017"];

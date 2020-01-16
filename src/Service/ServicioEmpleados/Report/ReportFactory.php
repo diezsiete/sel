@@ -8,6 +8,7 @@ use App\Entity\ServicioEmpleados\CertificadoLaboral;
 use App\Entity\ServicioEmpleados\Nomina;
 use App\Entity\ServicioEmpleados\ServicioEmpleadosReport;
 use App\Repository\Novasoft\Report\Nomina\NominaRepository as NovasoftNominaRepo;
+use App\Service\Halcon\Report\Report\CertificadoIngresosReport as HalconCertificadoIngresosReport;
 use App\Service\Novasoft\NovasoftEmpleadoService;
 use App\Service\Novasoft\Report\ReportFactory as NovasoftReportFactory;
 use App\Service\Halcon\Report\ReportFactory as HalconReportFactory;
@@ -74,6 +75,11 @@ class ReportFactory implements ServiceSubscriberInterface
         return $report;
     }
 
+    public function certificadoIngresos($filter = null)
+    {
+
+    }
+
 
     public static function getSubscribedServices()
     {
@@ -82,7 +88,8 @@ class ReportFactory implements ServiceSubscriberInterface
             NovasoftReportFactory::class,
             HalconReportFactory::class,
             NovasoftEmpleadoService::class,
-            CertificadoLaboralReport::class
+            CertificadoLaboralReport::class,
+            HalconCertificadoIngresosReport::class,
         ];
     }
 
