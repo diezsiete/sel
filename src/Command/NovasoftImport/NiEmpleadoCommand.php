@@ -5,6 +5,7 @@ namespace App\Command\NovasoftImport;
 use App\Command\Helpers\PeriodoOption;
 use App\Command\Helpers\RangoPeriodoOption;
 use App\Command\Helpers\SearchByConvenioOrEmpleado;
+use App\Entity\Main\Convenio;
 use App\Entity\Main\Empleado;
 use App\Entity\Main\Usuario;
 use App\Service\ReportesServicioEmpleados;
@@ -24,7 +25,9 @@ class NiEmpleadoCommand extends NiCommand
 {
     use PeriodoOption,
         RangoPeriodoOption,
-        SearchByConvenioOrEmpleado;
+        SearchByConvenioOrEmpleado{
+            getConvenios as getConveniosTrait;
+        }
 
     protected static $defaultName = 'sel:ni:empleado';
 
@@ -67,10 +70,10 @@ class NiEmpleadoCommand extends NiCommand
         $dontCreateUsuario = $input->getOption('dont-create-usuario');
 
 
-        $this->info("---------------------------------------------------------------------------------------");
         if ($this->isSearchConvenio()) {
             foreach ($this->getConvenios() as $convenio) {
                 $codigo = $convenio->getCodigo();
+
                 $ssrsDb = $convenio->getSsrsDb();
                 $empleados = $this->reportesServicioEmpleados->setSsrsDb($ssrsDb)->getEmpleados($codigo, $desde, $hasta);
                 foreach ($empleados as $empleado) {
@@ -186,6 +189,30 @@ class NiEmpleadoCommand extends NiCommand
             ->aceptarTerminos();
         $this->em->persist($usuario);
         return $usuario;
+    }
+
+    /**
+     * @return Convenio[]
+     */
+    protected function getConvenios()
+    {
+        $convenios = [];
+        if($this->isSearchConvenio()) {
+            if($startFrom = $this->input->getOption('start-from')) {
+                $conveniosTmp = $this->convenioRepository->findAll();
+                $convenios = [];
+                foreach($conveniosTmp as $convenio) {
+                    if($startFrom && $convenio->getCodigo() !== $startFrom) {
+                        continue;
+                    }
+                    $startFrom = false;
+                    $convenios[] = $convenio;
+                }
+            } else {
+                $convenios = $this->getConveniosTrait();
+            }
+        }
+        return $convenios;
     }
 
 }
