@@ -19,10 +19,8 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class CertificadoLaboralCommand extends TraitableCommand
+class CertificadoLaboralCommand extends MigrationCommand
 {
-    use SelCommandTrait,
-        ConsoleProgressBar;
 
     protected static $defaultName = "sel:migration:halcon:certificado-laboral";
     /**
@@ -37,46 +35,29 @@ class CertificadoLaboralCommand extends TraitableCommand
      * @var VinculacionRepository
      */
     private $vinculacionRepo;
+
     /**
      * @var array
      */
     private $certificadosLaborales = null;
-    /**
-     * @var UsuarioRepository
-     */
-    private $usuarioRepo;
-    /**
-     * @var Usuario|null|false
-     */
-    private $currentUsuario = false;
 
-    public function __construct(Reader $annotationReader, EventDispatcherInterface $dispatcher,
+
+    public function __construct(Reader $annotationReader, EventDispatcherInterface $dispatcher, UsuarioRepository $usuarioRepo,
                                 HalconCertificadoLaboralRepository $halconCertificadoLaboralRepo,
                                 SeCertificadoLaboralRepository $seCertificadoLaboralRepo,
-                                VinculacionRepository $vinculacionRepo, UsuarioRepository $usuarioRepo)
+                                VinculacionRepository $vinculacionRepo)
     {
-        parent::__construct($annotationReader, $dispatcher);
+        parent::__construct($annotationReader, $dispatcher, $usuarioRepo);
         $this->halconCertificadoLaboralRepo = $halconCertificadoLaboralRepo;
         $this->seCertificadoLaboralRepo = $seCertificadoLaboralRepo;
         $this->vinculacionRepo = $vinculacionRepo;
-        $this->usuarioRepo = $usuarioRepo;
-    }
-
-    protected function configure()
-    {
-        parent::configure();
-        $this->addArgument('identificaciones', InputArgument::OPTIONAL | InputArgument::IS_ARRAY,
-            'Importar identificaciones especificas')
-            ->addOption('info', 'i', InputOption::VALUE_NONE, 'Muestra info, no hace nada');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $batchSize = 20;
-        $i = 0;
         $certificados = $this->getCertificadosLaborales($input);
 
-        foreach($certificados as $certificado) {
+        foreach($this->batch($certificados) as $certificado) {
             $usuario = $this->getUsuario($certificado->identificacion);
             if(!$usuario) {
                 $this->io->warning("usuario '$certificado->identificacion' not found");
@@ -85,18 +66,9 @@ class CertificadoLaboralCommand extends TraitableCommand
                 if($dbCertificadoLaboral = $this->seCertificadoLaboralRepo->findEqual($certificadoLaboral)) {
                     $this->em->remove($dbCertificadoLaboral);
                 }
-
                 $this->em->persist($certificadoLaboral);
-
             }
-            if (($i % $batchSize) === 0) {
-                $this->emFlushAndClear();
-            }
-            $i++;
-            $this->progressBarAdvance();
         }
-
-        $this->emFlushAndClear();
     }
 
     /**
@@ -124,13 +96,6 @@ class CertificadoLaboralCommand extends TraitableCommand
         return count($this->getCertificadosLaborales($input));
     }
 
-    private function getUsuario($identificacion)
-    {
-        if($this->currentUsuario === false || ($this->currentUsuario && $this->currentUsuario->getIdentificacion() !== $identificacion)) {
-            $this->currentUsuario = $this->usuarioRepo->findByIdentificacion($identificacion);
-        }
-        return $this->currentUsuario;
-    }
 
     /**
      * @param HalconCertificadoLaboral $certificado
@@ -148,12 +113,5 @@ class CertificadoLaboralCommand extends TraitableCommand
             ->setUsuario($usuario);
     }
 
-    private function emFlushAndClear()
-    {
-        if(!$this->input->getOption('info')) {
-            $this->em->flush();
-            $this->em->clear();
-            $this->currentUsuario = false;
-        }
-    }
+
 }
