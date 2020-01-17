@@ -5,6 +5,7 @@ namespace App\Service\Halcon\Report\Report;
 
 
 use App\Repository\Halcon\Report\NominaRepository;
+use App\Service\Halcon\Report\Importer\NominaImporter;
 use App\Service\Pdf\Halcon\NominaPdf;
 use App\Service\ServicioEmpleados\Report\PdfHandler;
 
@@ -12,7 +13,7 @@ class NominaReport extends Report
 {
     private $noContrat;
     private $consecLiq;
-    private $nitTercer;
+
     /**
      * @var NominaRepository
      */
@@ -22,9 +23,9 @@ class NominaReport extends Report
      */
     private $nominaPdf;
 
-    public function __construct(PdfHandler $pdfHandler, NominaRepository $nominaRepo, NominaPdf $nominaPdf)
+    public function __construct(PdfHandler $pdfHandler, NominaImporter $importer, NominaRepository $nominaRepo, NominaPdf $nominaPdf)
     {
-        parent::__construct($pdfHandler);
+        parent::__construct($pdfHandler, $importer);
         $this->nominaRepo = $nominaRepo;
         $this->nominaPdf = $nominaPdf;
     }
@@ -49,24 +50,25 @@ class NominaReport extends Report
         return $this;
     }
 
-    /**
-     * @param mixed $nitTercer
-     * @return NominaReport
-     */
-    public function setNitTercer($nitTercer)
-    {
-        $this->nitTercer = $nitTercer;
-        return $this;
-    }
-
     public function renderPdf()
     {
-        $nomina = $this->nominaRepo->findNomina($this->noContrat, $this->consecLiq, $this->nitTercer);
+        $nomina = $this->nominaRepo->findNomina($this->noContrat, $this->consecLiq, $this->usuario->getIdentificacion());
         return $this->nominaPdf->build($nomina[0])->Output("S");
     }
 
     public function getPdfFileName(): string
     {
-        return "/halcon/nomina/$this->nitTercer-$this->noContrat-$this->consecLiq.pdf";
+        $identificacion = $this->usuario->getIdentificacion();
+        return "/halcon/nomina/$identificacion-$this->noContrat-$this->consecLiq.pdf";
+    }
+
+    function renderMap()
+    {
+        // TODO: Implement renderMap() method.
+    }
+
+    function getIdentifier($reportEntity): array
+    {
+        // TODO: Implement getIdentifier() method.
     }
 }

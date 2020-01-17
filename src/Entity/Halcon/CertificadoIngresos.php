@@ -178,7 +178,7 @@ class CertificadoIngresos
     /**
      * @ORM\PostLoad
      */
-    public function loadNullDoctor()
+    public function loadNullEmpresa()
     {
         try {
             $this->empresa->getCompania();

@@ -138,6 +138,7 @@ doctrine:
                 dql:
                     string_functions:
                         ifnull: DoctrineExtensions\Query\Mysql\IfNull
+                        replace: DoctrineExtensions\Query\Mysql\Replace
                     datetime_functions:
                         date_format: DoctrineExtensions\Query\Mysql\DateFormat
 

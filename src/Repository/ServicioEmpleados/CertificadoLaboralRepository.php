@@ -12,32 +12,11 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @method CertificadoLaboral[]    findAll()
  * @method CertificadoLaboral[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class CertificadoLaboralRepository extends ServiceEntityRepository
+class CertificadoLaboralRepository extends ReportRepository
 {
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, CertificadoLaboral::class);
-    }
-
-    /**
-     * @noinspection PhpDocMissingThrowsInspection
-     * @param CertificadoLaboral $certificadoLaboral
-     * @return CertificadoLaboral|null
-     */
-    public function findEqual(CertificadoLaboral $certificadoLaboral)
-    {
-        return $this->createQueryBuilder('cl')
-            ->andWhere('cl.source = :source')
-            ->andWhere('cl.sourceId = :sourceId')
-            ->andWhere('cl.usuario = :usuario')
-            ->setParameters([
-                'source'   => $certificadoLaboral->getSource(),
-                'sourceId' => $certificadoLaboral->getSourceId(),
-                'usuario'  => $certificadoLaboral->getUsuario()
-            ])
-            ->setMaxResults(1)
-            ->getQuery()
-            ->getOneOrNullResult();
     }
 
     /**

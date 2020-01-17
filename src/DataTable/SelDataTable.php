@@ -25,17 +25,18 @@ class SelDataTable extends DataTable
     public function handleRequest(Request $request): DataTable
     {
         parent::handleRequest($request);
+        if($this->form) {
+            $this->form->get('datatable')->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+                $state = SelDataTableState::fromDefaults($this)->setIsFormPreSubmit();
+                $data = [];
+                foreach ($this->adapter->getData($state)->getData() as $row) {
+                    $data[] = $row['datatable'];
+                }
 
-        $this->form->get('datatable')->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
-            $state = SelDataTableState::fromDefaults($this)->setIsFormPreSubmit();
-            $data = [];
-            foreach($this->adapter->getData($state)->getData() as $row) {
-                $data[] = $row['datatable'];
-            }
-
-            $event->setData(implode(",", $data));
-            $state->setIsFormPreSubmit(false);
-        });
+                $event->setData(implode(",", $data));
+                $state->setIsFormPreSubmit(false);
+            });
+        }
 
         return $this;
     }

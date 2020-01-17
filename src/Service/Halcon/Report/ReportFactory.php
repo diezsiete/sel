@@ -7,7 +7,9 @@ namespace App\Service\Halcon\Report;
 
 use App\Service\Halcon\Report\Report\CertificadoIngresosReport;
 use App\Service\Halcon\Report\Report\CertificadoLaboralReport;
+use App\Service\Halcon\Report\Report\LiquidacionContratoReport;
 use App\Service\Halcon\Report\Report\NominaReport;
+use App\Service\Halcon\Report\Report\Report;
 use Psr\Container\ContainerInterface;
 use Symfony\Contracts\Service\ServiceSubscriberInterface;
 
@@ -34,7 +36,7 @@ class ReportFactory implements ServiceSubscriberInterface
         return $this->container->get(NominaReport::class)
             ->setNoContrat($noContrat)
             ->setConsecLiq($consecLiq)
-            ->setNitTercer($nitTercer);
+            ->setIdentificacion($nitTercer);
     }
 
     /**
@@ -65,13 +67,24 @@ class ReportFactory implements ServiceSubscriberInterface
             ->setIdentificacion($identificacion);
     }
 
+    /**
+     * @param $entityName
+     * @return Report
+     */
+    public function getReport($entityName)
+    {
+        $reportName = __NAMESPACE__ . '\\Report\\'.$entityName . 'Report';
+        return $this->container->get($reportName);
+    }
+
 
     public static function getSubscribedServices()
     {
         return [
             NominaReport::class,
             CertificadoLaboralReport::class,
-            CertificadoIngresosReport::class
+            CertificadoIngresosReport::class,
+            LiquidacionContratoReport::class
         ];
     }
 }

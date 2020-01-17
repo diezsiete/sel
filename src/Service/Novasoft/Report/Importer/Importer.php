@@ -3,9 +3,9 @@
 
 namespace App\Service\Novasoft\Report\Importer;
 
-use App\Event\Event\Novasoft\Report\Importer\DeleteEvent;
+use App\Event\Event\ServicioEmpleados\Report\Importer\DeleteEvent;
 use App\Event\Event\Novasoft\Report\Importer\ImporterLogEvent;
-use App\Event\Event\Novasoft\Report\Importer\ImportEvent;
+use App\Event\Event\ServicioEmpleados\Report\Importer\ImportEvent;
 use App\Event\Event\Novasoft\Report\Importer\TestEvent;
 use App\Helper\Loggable;
 use App\Service\Novasoft\Report\Report\Report;
@@ -125,7 +125,7 @@ abstract class Importer
                 $import = $this->handleEqual($equal);
                 if ($import) {
                     $action .= ", deleted and inserted";
-                    $this->dispatcher->dispatch(new DeleteEvent($equalIdentifier, get_class($entity)));
+                    $this->dispatcher->dispatch(new \App\Event\Event\ServicioEmpleados\Report\Importer\DeleteEvent($equalIdentifier, get_class($entity)));
                 }
             } else {
                 $import = false;

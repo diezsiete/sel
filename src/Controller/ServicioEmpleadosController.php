@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\DataTable\SelDataTableFactory;
 use App\DataTable\Type\AutoliquidacionEmpleadoDataTableType;
 use App\DataTable\Type\ServicioEmpleados\CertificadoIngresosDataTableType;
 use App\DataTable\Type\ServicioEmpleados\CertificadoLaboralDataTableType;
+use App\DataTable\Type\ServicioEmpleados\LiquidacionContratoDataTableType;
 use App\DataTable\Type\ServicioEmpleados\NominaDataTableType;
 use App\Entity\Autoliquidacion\AutoliquidacionEmpleado;
 use App\Entity\ServicioEmpleados\CertificadoIngresos;
@@ -12,7 +14,6 @@ use App\Entity\ServicioEmpleados\CertificadoLaboral;
 use App\Entity\ServicioEmpleados\Nomina;
 use App\Repository\Main\EmpleadoRepository;
 use App\Service\Autoliquidacion\FileManager;
-use App\Service\Halcon\Report\Report\CertificadoIngresosReport;
 use App\Service\Novasoft\NovasoftEmpleadoService;
 use App\Service\Novasoft\Report\ReportFactory;
 use App\Service\ServicioEmpleados\Report\PdfHandler;
@@ -169,15 +170,19 @@ class ServicioEmpleadosController extends BaseController
     /**
      * @Route("/sel/se/liquidaciones-de-contrato", name="app_liquidaciones_de_contrato")
      */
-    public function liquidacionesDeContrato(ReportFactory $reportFactory)
+    public function liquidacionesDeContrato(SelDataTableFactory $dataTableFactory, Request $request)
     {
-        $identificacion = $this->getUser()->getIdentificacion();
 
-        $report = $reportFactory->liquidacionContrato($identificacion, $this->getSsrsDb());
-        $liquidaciones = $report->renderMap();
+        $table = $dataTableFactory
+            ->createFromServicioEmpleadosType(LiquidacionContratoDataTableType::class, $this->getUser(), ['searching' => false])
+            ->handleRequest($request);
+
+        if($table->isCallback()) {
+            return $table->getResponse();
+        }
 
         return $this->render('servicio_empleados/liquidaciones-de-contrato.html.twig', [
-            'liquidaciones' => $liquidaciones
+            'datatable' => $table
         ]);
     }
 

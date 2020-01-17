@@ -8,12 +8,12 @@ namespace App\Service\Halcon\Report\Report;
 
 use App\Repository\Halcon\Report\CertificadoLaboralRepository;
 use App\Repository\Halcon\TerceroRepository;
+use App\Service\Halcon\Report\Importer\CertificadoLaboralImporter;
 use App\Service\Pdf\Halcon\CertificadoLaboralPdf;
 use App\Service\ServicioEmpleados\Report\PdfHandler;
 
 class CertificadoLaboralReport extends Report
 {
-    private $identificacion;
 
     private $numeroContrato;
     /**
@@ -29,23 +29,13 @@ class CertificadoLaboralReport extends Report
      */
     private $certificadoLaboralPdf;
 
-    public function __construct(PdfHandler $pdfHandler, CertificadoLaboralPdf $certificadoLaboralPdf,
+    public function __construct(PdfHandler $pdfHandler, CertificadoLaboralImporter $importer, CertificadoLaboralPdf $certificadoLaboralPdf,
                                 CertificadoLaboralRepository $certificadoLaboralRepo, TerceroRepository $terceroRepository)
     {
-        parent::__construct($pdfHandler);
+        parent::__construct($pdfHandler, $importer);
         $this->certificadoLaboralRepo = $certificadoLaboralRepo;
         $this->terceroRepository = $terceroRepository;
         $this->certificadoLaboralPdf = $certificadoLaboralPdf;
-    }
-
-    /**
-     * @param mixed $identificacion
-     * @return CertificadoLaboralReport
-     */
-    public function setIdentificacion($identificacion)
-    {
-        $this->identificacion = $identificacion;
-        return $this;
     }
 
     /**
@@ -60,14 +50,24 @@ class CertificadoLaboralReport extends Report
 
     public function renderPdf()
     {
-        $certificado = $this->certificadoLaboralRepo->findCertificado($this->identificacion, $this->numeroContrato);
-        $tercero = $this->terceroRepository->find($this->identificacion);
+        $certificado = $this->certificadoLaboralRepo->findCertificado($this->usuario->getIdentificacion(), $this->numeroContrato);
+        $tercero = $this->terceroRepository->find($this->usuario->getIdentificacion());
         return $this->certificadoLaboralPdf->build($certificado, $tercero)->Output("S");
     }
 
 
     public function getPdfFileName(): string
     {
-        return '/halcon/certificado-laboral/' . $this->identificacion . '-' . $this->numeroContrato . '.pdf';
+        return '/halcon/certificado-laboral/' . $this->usuario->getIdentificacion() . '-' . $this->numeroContrato . '.pdf';
+    }
+
+    function renderMap()
+    {
+        // TODO: Implement renderMap() method.
+    }
+
+    function getIdentifier($reportEntity): array
+    {
+        // TODO: Implement getIdentifier() method.
     }
 }

@@ -2,10 +2,13 @@
 
 namespace App\Entity\Halcon;
 
+use DateTimeInterface;
+use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Halcon\VinculacionRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Vinculacion
 {
@@ -31,9 +34,11 @@ class Vinculacion
     private $retiro;
 
     /**
-     * @ORM\Column(type="string", length=2, nullable=true)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Halcon\Empresa")
+     * @ORM\JoinColumn(name="usuario", referencedColumnName="usuario")
+     * @var Empresa|null
      */
-    private $usuario;
+    private $empresa;
 
     /**
      * @ORM\Column(type="string", length=8, nullable=true)
@@ -70,21 +75,9 @@ class Vinculacion
      */
     private $estado;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $noupdate;
-
     public function getNoContrat(): ?string
     {
         return $this->noContrat;
-    }
-
-    public function setNoContrat(string $noContrat): self
-    {
-        $this->noContrat = $noContrat;
-
-        return $this;
     }
 
     public function getNitTercer(): ?int
@@ -92,23 +85,9 @@ class Vinculacion
         return $this->nitTercer;
     }
 
-    public function setNitTercer(?int $nitTercer): self
-    {
-        $this->nitTercer = $nitTercer;
-
-        return $this;
-    }
-
-    public function getIngreso(): ?\DateTimeInterface
+    public function getIngreso(): ?DateTimeInterface
     {
         return $this->ingreso;
-    }
-
-    public function setIngreso(?\DateTimeInterface $ingreso): self
-    {
-        $this->ingreso = $ingreso;
-
-        return $this;
     }
 
     public function getRetiro(): ?string
@@ -116,35 +95,9 @@ class Vinculacion
         return $this->retiro;
     }
 
-    public function setRetiro(?string $retiro): self
-    {
-        $this->retiro = $retiro;
-
-        return $this;
-    }
-
-    public function getUsuario(): ?string
-    {
-        return $this->usuario;
-    }
-
-    public function setUsuario(?string $usuario): self
-    {
-        $this->usuario = $usuario;
-
-        return $this;
-    }
-
     public function getCentroCos(): ?string
     {
         return $this->centroCos;
-    }
-
-    public function setCentroCos(?string $centroCos): self
-    {
-        $this->centroCos = $centroCos;
-
-        return $this;
     }
 
     public function getOficina(): ?string
@@ -152,23 +105,9 @@ class Vinculacion
         return $this->oficina;
     }
 
-    public function setOficina(?string $oficina): self
-    {
-        $this->oficina = $oficina;
-
-        return $this;
-    }
-
     public function getCargo(): ?string
     {
         return $this->cargo;
-    }
-
-    public function setCargo(?string $cargo): self
-    {
-        $this->cargo = $cargo;
-
-        return $this;
     }
 
     public function getSueldoMes(): ?int
@@ -176,35 +115,14 @@ class Vinculacion
         return $this->sueldoMes;
     }
 
-    public function setSueldoMes(?int $sueldoMes): self
-    {
-        $this->sueldoMes = $sueldoMes;
-
-        return $this;
-    }
-
     public function getAuxTransp(): ?int
     {
         return $this->auxTransp;
     }
 
-    public function setAuxTransp(?int $auxTransp): self
-    {
-        $this->auxTransp = $auxTransp;
-
-        return $this;
-    }
-
-    public function getAumento(): ?\DateTimeInterface
+    public function getAumento(): ?DateTimeInterface
     {
         return $this->aumento;
-    }
-
-    public function setAumento(?\DateTimeInterface $aumento): self
-    {
-        $this->aumento = $aumento;
-
-        return $this;
     }
 
     public function getEstado(): ?string
@@ -212,22 +130,23 @@ class Vinculacion
         return $this->estado;
     }
 
-    public function setEstado(?string $estado): self
+    /**
+     * @return Empresa|null
+     */
+    public function getEmpresa(): ?Empresa
     {
-        $this->estado = $estado;
-
-        return $this;
+        return $this->empresa;
     }
 
-    public function getNoupdate(): ?bool
+    /**
+     * @ORM\PostLoad
+     */
+    public function loadNullEmpresa()
     {
-        return $this->noupdate;
-    }
-
-    public function setNoupdate(bool $noupdate): self
-    {
-        $this->noupdate = $noupdate;
-
-        return $this;
+        try {
+            $this->empresa->getCompania();
+        } catch (EntityNotFoundException $e) {
+            $this->empresa = null;
+        }
     }
 }

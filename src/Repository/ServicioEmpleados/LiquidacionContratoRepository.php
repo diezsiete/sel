@@ -12,39 +12,12 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @method LiquidacionContrato[]    findAll()
  * @method LiquidacionContrato[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class LiquidacionContratoRepository extends ServiceEntityRepository
+class LiquidacionContratoRepository extends ReportRepository
 {
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, LiquidacionContrato::class);
     }
 
-    // /**
-    //  * @return LiquidacionContrato[] Returns an array of LiquidacionContrato objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('l')
-            ->andWhere('l.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('l.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?LiquidacionContrato
-    {
-        return $this->createQueryBuilder('l')
-            ->andWhere('l.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

@@ -5,8 +5,8 @@ namespace App\Event\EventSubscriber\ServicioEmpleados;
 
 use App\Entity\Novasoft\Report\Nomina\Nomina;
 use App\Entity\ServicioEmpleados\Nomina as SeNomina;
-use App\Event\Event\Novasoft\Report\Importer\DeleteEvent;
-use App\Event\Event\Novasoft\Report\Importer\ImportEvent;
+use App\Event\Event\ServicioEmpleados\Report\Importer\DeleteEvent;
+use App\Event\Event\ServicioEmpleados\Report\Importer\ImportEvent;
 use App\Repository\ServicioEmpleados\NominaRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

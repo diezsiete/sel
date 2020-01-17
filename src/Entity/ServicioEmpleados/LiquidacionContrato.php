@@ -24,9 +24,9 @@ class LiquidacionContrato extends ServicioEmpleadosReport
     private $fechaRetiro;
 
     /**
-     * @ORM\Column(type="string", length=60, nullable=true)
+     * @ORM\Column(type="string", length=105, nullable=true)
      */
-    private $cargo;
+    protected $convenio;
 
     /**
      * @ORM\Column(type="string", length=40, nullable=true)
@@ -57,17 +57,24 @@ class LiquidacionContrato extends ServicioEmpleadosReport
         return $this;
     }
 
-    public function getCargo(): ?string
+    /**
+     * @return mixed
+     */
+    public function getConvenio()
     {
-        return $this->cargo;
+        return $this->convenio;
     }
 
-    public function setCargo(?string $cargo): self
+    /**
+     * @param mixed $convenio
+     * @return LiquidacionContrato
+     */
+    public function setConvenio($convenio)
     {
-        $this->cargo = $cargo;
-
+        $this->convenio = $convenio;
         return $this;
     }
+
 
     public function getContrato(): ?string
     {

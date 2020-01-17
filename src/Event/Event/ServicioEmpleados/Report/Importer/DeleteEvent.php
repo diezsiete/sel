@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Event\Event\Novasoft\Report\Importer;
+namespace App\Event\Event\ServicioEmpleados\Report\Importer;
 
 
 use Symfony\Contracts\EventDispatcher\Event;

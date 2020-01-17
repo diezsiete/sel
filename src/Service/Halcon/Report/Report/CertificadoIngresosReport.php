@@ -7,19 +7,17 @@ namespace App\Service\Halcon\Report\Report;
 
 
 use App\Repository\Halcon\CertificadoIngresosRepository;
+use App\Service\Halcon\Report\Importer\CertificadoIngresosImporter;
 use App\Service\Pdf\Halcon\CertificadoIngresosPdf;
 use App\Service\ServicioEmpleados\Report\PdfHandler;
 
 class CertificadoIngresosReport extends Report
 {
-    private $identificacion;
-
-    private $usuario;
-
     private $noContrat;
 
     private $ano;
 
+    private $empresaUsuario;
 
     /**
      * @var CertificadoIngresosRepository
@@ -30,32 +28,13 @@ class CertificadoIngresosReport extends Report
      */
     private $pdfService;
 
-    public function __construct(PdfHandler $pdfHandler, CertificadoIngresosRepository $certificadoIngresosRepo,
+    public function __construct(PdfHandler $pdfHandler, CertificadoIngresosImporter $importer,
+                                CertificadoIngresosRepository $certificadoIngresosRepo,
                                 CertificadoIngresosPdf $pdfService)
     {
-        parent::__construct($pdfHandler);
+        parent::__construct($pdfHandler, $importer);
         $this->certificadoIngresosRepo = $certificadoIngresosRepo;
         $this->pdfService = $pdfService;
-    }
-
-    /**
-     * @param string $identificacion
-     * @return $this
-     */
-    public function setIdentificacion($identificacion)
-    {
-        $this->identificacion = $identificacion;
-        return $this;
-    }
-
-    /**
-     * @param string $usuario
-     * @return CertificadoIngresosReport
-     */
-    public function setUsuario($usuario)
-    {
-        $this->usuario = $usuario;
-        return $this;
     }
 
     /**
@@ -78,11 +57,17 @@ class CertificadoIngresosReport extends Report
         return $this;
     }
 
+    public function setEmpresaUsuario($empresaUsuario)
+    {
+        $this->empresaUsuario = $empresaUsuario;
+        return $this;
+    }
+
     public function renderMap()
     {
-        $criteria = ['nitTercer' => $this->identificacion];
-        if($this->usuario) {
-            $criteria['usuario'] = $this->usuario;
+        $criteria = ['nitTercer' => $this->usuario->getIdentificacion()];
+        if($this->empresaUsuario) {
+            $criteria['usuario'] = $this->empresaUsuario;
         }
         if($this->noContrat) {
             $criteria['noContrat'] = $this->noContrat;
@@ -97,7 +82,7 @@ class CertificadoIngresosReport extends Report
     public function renderPdf()
     {
         $certificado = $this->certificadoIngresosRepo->findCertificado(
-            $this->identificacion, $this->usuario, $this->noContrat, $this->ano
+            $this->usuario->getIdentificacion(), $this->usuario, $this->noContrat, $this->ano
         );
 
         return $this->pdfService->build($certificado)->Output("S");
@@ -107,9 +92,14 @@ class CertificadoIngresosReport extends Report
     public function getPdfFileName(): string
     {
         return '/halcon/certificado-laboral/'
-            . $this->identificacion . '-'
-            . $this->usuario . '-'
+            . $this->usuario->getIdentificacion() . '-'
+            . $this->empresaUsuario . '-'
             . $this->noContrat . '-'
             . $this->ano . '.pdf';
+    }
+
+    function getIdentifier($reportEntity): array
+    {
+        // TODO: Implement getIdentifier() method.
     }
 }
