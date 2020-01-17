@@ -20,6 +20,7 @@ use App\Service\Novasoft\Report\ReportFactory;
 use App\Service\Novasoft\Report\ReportPdfHandler;
 use App\Service\Pdf\PdfCartaLaboral;
 use App\Service\ReportesServicioEmpleados;
+use App\Service\ServicioEmpleados\DataTableBuilder;
 use App\Service\ServicioEmpleados\Report\ReportFactory as SeReportFactory;
 use App\Service\ServicioEmpleados\Reportes;
 use DateTime;
@@ -49,11 +50,9 @@ class ServicioEmpleadosController extends BaseController
     /**
      * @Route("/sel/se/comprobantes", name="se_comprobantes")
      */
-    public function comprobantes(SelDataTableFactory $dataTableFactory, Request $request)
+    public function comprobantes(DataTableBuilder $dataTableBuilder)
     {
-        $table = $dataTableFactory
-            ->createFromServicioEmpleadosType(NominaDataTableType::class, $this->getUser(), ['searching' => false])
-            ->handleRequest($request);
+        $table = $dataTableBuilder->nomina();
 
         if($table->isCallback()) {
             return $table->getResponse();
@@ -74,21 +73,7 @@ class ServicioEmpleadosController extends BaseController
         });
     }
 
-    /**
-     * @Route("/sel/se/comprobante-temp/{periodo}", name="app_comprobante")
-     */
-    public function comprobanteNomina(ReportFactory $reportFactory, ReportPdfHandler $pdfHandler, $periodo)
-    {
-        return $this->renderStream(function () use ($reportFactory, $pdfHandler, $periodo) {
-            $fecha = DateTime::createFromFormat('Ymd', $periodo);
-            $ident = $this->getUser()->getIdentificacion();
-            // usar write si no se quiere cache
-            $pdfHandler->cache('comprobante', $fecha, $ident, function ($fecha, $ident) use ($reportFactory) {
-                return $reportFactory->nomina($ident, $fecha, $fecha, $this->getSsrsDb())->renderPdf();
-            });
-            return $pdfHandler->readStream('comprobante', $fecha, $ident);
-        });
-    }
+
 
 //    /**
 //     * @Route("/sel/se/certificado-laboral", name="se_certificado_laboral")

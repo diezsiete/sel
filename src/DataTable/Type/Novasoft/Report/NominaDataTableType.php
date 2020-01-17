@@ -13,6 +13,12 @@ use Omines\DataTablesBundle\Column\TextColumn;
 use Omines\DataTablesBundle\DataTable;
 use Omines\DataTablesBundle\DataTableTypeInterface;
 
+/**
+ * Class NominaDataTableType
+ * @package App\DataTable\Type\Novasoft\Report
+ * @deprecated
+ * TODO borrar!!!
+ */
 class NominaDataTableType implements DataTableTypeInterface
 {
     /**

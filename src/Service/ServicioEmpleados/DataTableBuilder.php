@@ -1,20 +1,16 @@
 <?php
 
-
 namespace App\Service\ServicioEmpleados;
 
-
+use App\DataTable\SelDataTableFactory;
 use App\DataTable\Type\AutoliquidacionEmpleadoDataTableType;
-use App\DataTable\Type\Novasoft\Report\NominaDataTableType;
-use App\Entity\Main\Usuario;
+use App\DataTable\Type\ServicioEmpleados\NominaDataTableType;
 use Omines\DataTablesBundle\DataTableFactory;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Security;
 
-class DataTable
+class DataTableBuilder
 {
     /**
      * @var DataTableFactory
@@ -30,7 +26,7 @@ class DataTable
     private $security;
 
 
-    public function __construct(DataTableFactory $dataTableFactory, RequestStack $requestStack, Security $security)
+    public function __construct(SelDataTableFactory $dataTableFactory, RequestStack $requestStack, Security $security)
     {
         $this->dataTableFactory = $dataTableFactory;
         $this->request = $requestStack->getCurrentRequest();
@@ -38,23 +34,18 @@ class DataTable
         $this->security = $security;
     }
 
-    /**
-     * @param Request $request
-     * @param Usuario $usuario
-     * @return \Omines\DataTablesBundle\DataTable
-     */
-    public function comprobantes(array $options = [])
+
+
+    public function nomina($options = [])
     {
         $options = array_merge([
             'searching' => false,
-            'paging' => false
         ], $options);
 
-        $id = $this->security->getUser()->getId();
-
-        return $this->dataTableFactory
-            ->createFromType(NominaDataTableType::class, ['id' => $id], $options)
+        $table = $this->dataTableFactory
+            ->createFromServicioEmpleadosType(NominaDataTableType::class, $this->security->getUser(), $options)
             ->handleRequest($this->request);
+        return $table;
     }
 
     public function certificadosAportes(array $options = [])

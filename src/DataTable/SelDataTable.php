@@ -4,10 +4,12 @@
 namespace App\DataTable;
 
 
+use App\Event\Event\DataTable\PreGetResultsEvent;
 use Omines\DataTablesBundle\DataTable;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class SelDataTable extends DataTable
@@ -37,7 +39,14 @@ class SelDataTable extends DataTable
                 $state->setIsFormPreSubmit(false);
             });
         }
-
         return $this;
+    }
+
+    public function getResponse(): JsonResponse
+    {
+        if ($this->isCallback()) {
+            $this->eventDispatcher->dispatch(new PreGetResultsEvent($this->getState()));
+        }
+        return parent::getResponse();
     }
 }

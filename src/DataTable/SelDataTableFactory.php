@@ -6,12 +6,14 @@ namespace App\DataTable;
 
 use App\DataTable\Type\ServicioEmpleados\ServicioEmpleadosDataTableType;
 use App\Entity\Main\Usuario;
+use App\Event\Event\DataTable\PreGetResultsEvent;
 use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapterEvents;
 use Omines\DataTablesBundle\DataTable;
 use Omines\DataTablesBundle\DataTableFactory;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class SelDataTableFactory extends DataTableFactory
 {
@@ -46,20 +48,23 @@ class SelDataTableFactory extends DataTableFactory
             $builder->add('datatable', HiddenType::class);
         }
 
-        $type = $this->resolveType($type);
-        if($type instanceof PreQueryListenerInterface) {
-            $this->eventDispatcher->addListener(ORMAdapterEvents::PRE_QUERY, [$type, 'preQueryListener']);
-        }
-
         return $dataTable;
     }
 
-    public function createFromServicioEmpleadosType($type, Usuario $usuario, array $options = [])
+    public function createFromServicioEmpleadosType($type, UserInterface $usuario, $typeOptionsOrOptions = [], $options = [])
     {
+        if($options) {
+            $typeOptions = $typeOptionsOrOptions;
+        } else {
+            $typeOptions = [];
+            $options = $typeOptionsOrOptions;
+        }
+
         /** @var  ServicioEmpleadosDataTableType $type */
         $type = $this->resolveType($type);
         $type->setUsuario($usuario);
-        return $this->createFromType($type, [], $options);
+        $this->eventDispatcher->addListener(PreGetResultsEvent::class, [$type, 'preGetResultsListener']);
+        return $this->createFromType($type, $typeOptions, $options);
     }
 
 

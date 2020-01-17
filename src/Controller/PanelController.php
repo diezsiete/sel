@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Service\Novasoft\NovasoftEmpleadoService;
 use App\Service\Novasoft\Report\ReportFactory;
-use App\Service\ServicioEmpleados\DataTable;
+use App\Service\ServicioEmpleados\DataTableBuilder;
 use App\Service\ServicioEmpleados\Import;
 use DateInterval;
 use DateTime;
@@ -16,7 +16,7 @@ class PanelController extends BaseController
     /**
      * @Route("/sel", name="sel_panel")
      */
-    public function panel(DataTable $dataTable, ReportFactory $reportFactory, NovasoftEmpleadoService $novasoftEmpleadoService)
+    public function panel(DataTableBuilder $dataTable, ReportFactory $reportFactory, NovasoftEmpleadoService $novasoftEmpleadoService)
     {
         $datatables = [];
         $comprobantes = [];

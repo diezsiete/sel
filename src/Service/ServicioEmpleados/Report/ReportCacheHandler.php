@@ -64,7 +64,7 @@ class ReportCacheHandler
                 ->setUsuario($usuario)
                 ->getImporter()
                 ->importMap();
-            $this->saveCache($usuario, 'novasoft', $reportEntityClass);
+            //$this->saveCache($usuario, 'novasoft', $reportEntityClass);
         }
 
     }
