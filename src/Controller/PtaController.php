@@ -57,8 +57,9 @@ class PtaController extends BaseController
     /**
      * @Route("/servicios", name="pta_servicios_post", methods={"POST"})
      */
-    public function solicitudServicioSubmit(Request $request)
+    public function solicitudServicioSubmit(Request $request, Mailer $mailer)
     {
+        dd("OK");
         $data = json_decode($request->getContent(), true);
         if ($data === null) {
             throw new BadRequestHttpException('Invalid JSON');
@@ -73,6 +74,8 @@ class PtaController extends BaseController
         $em = $this->getDoctrine()->getManager();
         $em->persist($form->getData());
         $em->flush();
+
+        $mailer->sendSolicitudServicio($form->getData());
 
         return $this->json(['ok' => 1]);
     }
@@ -168,10 +171,19 @@ class PtaController extends BaseController
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
-            dump($form->getData());
-            //$mailer->sendContacto($form->getData());
-            //$this->addFlash('success', 'El mensaje se ha enviado exitosamente');
-            //return $this->redirectToRoute('pta_contacto', ['oficina' => $oficina->getNombre()]);
+            /** @var ContactoModel $data */
+            $data = $form->getData();
+            if($data->solicitudServicio) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($data->solicitudServicio);
+                $em->flush();
+
+                $mailer->sendSolicitudServicio($data->solicitudServicio);
+            } else {
+                $mailer->sendContacto($data);
+            }
+            $this->addFlash('success', 'El mensaje se ha enviado exitosamente');
+            return $this->redirectToRoute('pta_contacto', ['oficina' => $oficina->getNombre()]);
         }
 
         return $this->render('pta/contacto.html.twig', [

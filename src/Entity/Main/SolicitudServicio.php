@@ -102,7 +102,7 @@ class SolicitudServicio
         return $this;
     }
 
-    public function getServicio(): ?string
+    public function getServicio()
     {
         return $this->servicio;
     }

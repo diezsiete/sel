@@ -39,11 +39,11 @@ app:
 
       emails:
         contacto:
-          Dudas, comentarios:
-            - servicioalcliente@pta.com.co
           Solicitud servicios:
             - fernanda.sanchez@pta.com.co
             - angela.pineda@pta.com.co
+          Dudas, comentarios:
+            - servicioalcliente@pta.com.co
           Aportes seguridad social:
             - analista.seguridad@pta.com.co
           Nomina y prestaciones sociales:
