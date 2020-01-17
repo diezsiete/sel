@@ -10,6 +10,7 @@ use App\Service\Novasoft\Report\Report\CertificadoLaboralReport;
 use App\Service\Novasoft\Report\Report\LiquidacionContratoReport;
 use App\Service\Novasoft\Report\Report\LiquidacionNominaReport;
 use App\Service\Novasoft\Report\Report\NominaReport;
+use App\Service\Novasoft\Report\Report\Report;
 use App\Service\Novasoft\Report\Report\TrabajadoresActivosReport;
 use DateTimeInterface;
 use Psr\Container\ContainerInterface;
@@ -135,6 +136,16 @@ class ReportFactory implements ServiceSubscriberInterface
             $report->setDb($ssrsDb);
         }
         return $report;
+    }
+
+    /**
+     * @param $entityName
+     * @return Report
+     */
+    public function getReport($entityName)
+    {
+        $reportName = __NAMESPACE__ . '\\Report\\'.$entityName . 'Report';
+        return $this->container->get($reportName);
     }
 
     public static function getSubscribedServices()

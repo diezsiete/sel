@@ -7,6 +7,7 @@ use App\Entity\Main\Usuario;
 use App\Entity\ServicioEmpleados\ReportCache;
 use App\Repository\ServicioEmpleados\ReportCacheRepository;
 use App\Service\Halcon\Report\ReportFactory as HalconReportFactory;
+use App\Service\Novasoft\Report\ReportFactory as NovasoftReportFactory;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -29,12 +30,17 @@ class ReportCacheHandler
      * @var EntityManagerInterface
      */
     private $em;
+    /**
+     * @var NovasoftReportFactory
+     */
+    private $novasoftReportFactory;
 
     public function __construct(ReportCacheRepository $reportCacheRepo, EntityManagerInterface $em,
-                                HalconReportFactory $halconReportFactory)
+                                HalconReportFactory $halconReportFactory, NovasoftReportFactory $novasoftReportFactory)
     {
         $this->reportCacheRepo = $reportCacheRepo;
         $this->halconReportFactory = $halconReportFactory;
+        $this->novasoftReportFactory = $novasoftReportFactory;
         $this->em = $em;
     }
 
@@ -51,7 +57,19 @@ class ReportCacheHandler
                 $this->saveCache($usuario, 'halcon', $reportEntityClass);
             }
         }
+
+        if (!$cache = $this->reportCacheRepo->findLastCacheForReport($usuario, 'novasoft', $reportEntityClass)) {
+            $report = $this->novasoftReportFactory->getReport($reportEntityClass);
+            $report
+                ->setUsuario($usuario)
+                ->getImporter()
+                ->importMap();
+            $this->saveCache($usuario, 'novasoft', $reportEntityClass);
+        }
+
     }
+
+
 
     private function saveCache(Usuario $usuario, $source, $reportEntityClass)
     {

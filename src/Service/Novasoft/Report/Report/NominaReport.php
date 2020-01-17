@@ -4,11 +4,13 @@
 namespace App\Service\Novasoft\Report\Report;
 
 
+use App\Entity\Main\Usuario;
 use App\Entity\Novasoft\Report\Nomina\Nomina;
 use App\Service\Configuracion\Configuracion;
 use App\Service\Novasoft\Report\Importer\NominaImporter;
 use App\Service\Novasoft\Report\Mapper\NominaMapper;
 use App\Service\Novasoft\Report\ReportFormatter;
+use App\Service\ServicioEmpleados\Report\PdfHandler;
 use App\Service\Utils;
 use DateTimeInterface;
 use SSRS\SSRSReport;
@@ -78,12 +80,16 @@ class NominaReport extends Report
      * @var string
      */
     protected $parameter_Origen = "H";
+    /**
+     * @var DateTimeInterface
+     */
+    private $fecha;
 
 
     public function __construct(SSRSReport $SSRSReport, ReportFormatter $reportFormatter, Configuracion $configuracion,
-                                Utils $utils, NominaMapper $mapper, NominaImporter $importer)
+                                Utils $utils, NominaMapper $mapper, NominaImporter $importer, PdfHandler $pdfHandler)
     {
-        parent::__construct($SSRSReport, $reportFormatter, $configuracion, $utils, $mapper, $importer);
+        parent::__construct($SSRSReport, $reportFormatter, $configuracion, $utils, $mapper, $importer, $pdfHandler);
 
         $this->parameter_FecIni = '2/1/2017';
         $this->parameter_FecFin = $utils->dateFormatToday('m/t/Y');
@@ -96,6 +102,7 @@ class NominaReport extends Report
      */
     public function setParameterFechaInicio($fechaInicio)
     {
+        $this->fecha = $fechaInicio;
         $this->parameter_FecIni = $fechaInicio->format('m/d/Y');
         return $this;
     }
@@ -134,6 +141,13 @@ class NominaReport extends Report
 
     public function getPdfFileName(): string
     {
-        // TODO: Implement getFileNamePdf() method.
+        return 'nomina/novasoft/' . $this->parameter_CodEmp . '-' . $this->fecha->format('Ymd') . '.pdf';
+    }
+
+    public function setUsuario(Usuario $usuario)
+    {
+        parent::setUsuario($usuario);
+        $this->parameter_CodEmp = $usuario->getIdentificacion();
+        return $this;
     }
 }

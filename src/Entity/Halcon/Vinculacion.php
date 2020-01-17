@@ -41,6 +41,11 @@ class Vinculacion
     private $empresa;
 
     /**
+     * @ORM\Column(type="string", length=2, nullable=true)
+     */
+    private $usuario;
+
+    /**
      * @ORM\Column(type="string", length=8, nullable=true)
      */
     private $centroCos;
@@ -74,6 +79,8 @@ class Vinculacion
      * @ORM\Column(type="string", length=3, nullable=true)
      */
     private $estado;
+
+
 
     public function getNoContrat(): ?string
     {

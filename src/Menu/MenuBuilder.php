@@ -72,10 +72,10 @@ class MenuBuilder
                 ->setUri('#')
                 ->setExtra('icon', 'fas fa-file-invoice');
             $menu['Certificados']
-                ->addChild('Laboral', ['route' => 'se_certificado_laboral'])
+                ->addChild('Laboral', ['route' => 'app_certificado_laboral'])
                 ->setExtra('icon', 'fas fa-file-invoice');
             $menu['Certificados']
-                ->addChild('Ingresos y retenciones', ['route' => 'se_certificado_ingresos'])
+                ->addChild('Ingresos y retenciones', ['route' => 'app_certificados_ingresos'])
                 ->setExtra('icon', 'fas fa-file-alt');
             $menu['Certificados']
                 ->addChild('Aportes seguridad social', ['route' => 'app_certificados_aportes'])

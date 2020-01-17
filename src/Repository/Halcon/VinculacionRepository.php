@@ -45,6 +45,8 @@ class VinculacionRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
+
+
     public function findAllNitTerceros()
     {
         return $this->createQueryBuilder('v')

@@ -4,10 +4,12 @@
 namespace App\Service\Novasoft\Report\Report;
 
 
+use App\Entity\Main\Usuario;
 use App\Service\Configuracion\Configuracion;
 use App\Service\Novasoft\Report\Importer\Importer;
 use App\Service\Novasoft\Report\Mapper\Mapper;
 use App\Service\Novasoft\Report\ReportFormatter;
+use App\Service\ServicioEmpleados\Report\PdfHandler;
 use App\Service\ServicioEmpleados\Report\ReportInterface;
 use App\Service\Utils;
 use SSRS\RenderType\RenderAsCSV;
@@ -67,9 +69,17 @@ abstract class Report implements ReportInterface
      * @var Importer
      */
     protected $importer;
+    /**
+     * @var Usuario
+     */
+    protected $usuario;
+    /**
+     * @var PdfHandler
+     */
+    private $pdfHandler;
 
     public function __construct(SSRSReport $SSRSReport, ReportFormatter $reportFormatter, Configuracion $configuracion,
-                                Utils $utils, Mapper $mapper, Importer $importer)
+                                Utils $utils, Mapper $mapper, Importer $importer, PdfHandler $pdfHandler)
     {
         $this->SSRSReport = $SSRSReport;
         $this->reportFormatter = $reportFormatter;
@@ -77,6 +87,7 @@ abstract class Report implements ReportInterface
         $this->db = $configuracion->getSsrsDb()[0]->getNombre();
         $this->utils = $utils;
         $this->importer = $importer->setReport($this);
+        $this->pdfHandler = $pdfHandler;
     }
 
 
@@ -218,7 +229,19 @@ abstract class Report implements ReportInterface
 
     public function streamPdf()
     {
-        //TODO
+        // usar cacheAndStream si se quiere cache
+        return $this->pdfHandler->writeAndStream($this->getPdfFileName(), function () {
+            return $this->renderPdf();
+        });
     }
 
+    /**
+     * @param Usuario $usuario
+     * @return $this
+     */
+    public function setUsuario(Usuario $usuario)
+    {
+        $this->usuario = $usuario;
+        return $this;
+    }
 }

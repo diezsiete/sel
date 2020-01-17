@@ -5,6 +5,7 @@ namespace App\Service\Halcon\Report\Report;
 
 
 use App\Repository\Halcon\Report\NominaRepository;
+use App\Repository\Halcon\VinculacionRepository;
 use App\Service\Halcon\Report\Importer\NominaImporter;
 use App\Service\Pdf\Halcon\NominaPdf;
 use App\Service\ServicioEmpleados\Report\PdfHandler;
@@ -22,12 +23,18 @@ class NominaReport extends Report
      * @var NominaPdf
      */
     private $nominaPdf;
+    /**
+     * @var VinculacionRepository
+     */
+    private $vinculacionRepo;
 
-    public function __construct(PdfHandler $pdfHandler, NominaImporter $importer, NominaRepository $nominaRepo, NominaPdf $nominaPdf)
+    public function __construct(PdfHandler $pdfHandler, NominaImporter $importer,
+                                NominaRepository $nominaRepo, NominaPdf $nominaPdf, VinculacionRepository $vinculacionRepo)
     {
         parent::__construct($pdfHandler, $importer);
         $this->nominaRepo = $nominaRepo;
         $this->nominaPdf = $nominaPdf;
+        $this->vinculacionRepo = $vinculacionRepo;
     }
 
     /**
@@ -64,11 +71,16 @@ class NominaReport extends Report
 
     function renderMap()
     {
-        // TODO: Implement renderMap() method.
+        foreach($this->vinculacionRepo->findComprobantesByIdent($this->usuario->getIdentificacion()) as $comprobante) {
+            yield $comprobante;
+        }
     }
 
     function getIdentifier($reportEntity): array
     {
-        // TODO: Implement getIdentifier() method.
+        return [
+            $reportEntity['contrato'],
+            $reportEntity['consecutivo']
+        ];
     }
 }

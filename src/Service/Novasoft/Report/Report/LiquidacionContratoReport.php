@@ -8,6 +8,7 @@ use App\Service\Configuracion\Configuracion;
 use App\Service\Novasoft\Report\Importer\GenericImporter;
 use App\Service\Novasoft\Report\Mapper\LiquidacionContratoMapper;
 use App\Service\Novasoft\Report\ReportFormatter;
+use App\Service\ServicioEmpleados\Report\PdfHandler;
 use App\Service\Utils;
 use DateTime;
 use DateTimeInterface;
@@ -30,11 +31,15 @@ class LiquidacionContratoReport extends Report
     protected $parameter_cod_cl3 = "%";
     protected $parameter_CodEmp;
     protected $parameter_Origen  = "H";
+    /**
+     * @var DateTimeInterface
+     */
+    private $fechaInicio;
 
     public function __construct(SSRSReport $SSRSReport, ReportFormatter $reportFormatter, Configuracion $configuracion,
-                                Utils $utils, LiquidacionContratoMapper $mapper, GenericImporter $importer)
+                                Utils $utils, LiquidacionContratoMapper $mapper, GenericImporter $importer, PdfHandler $pdfHandler)
     {
-        parent::__construct($SSRSReport, $reportFormatter, $configuracion, $utils, $mapper, $importer);
+        parent::__construct($SSRSReport, $reportFormatter, $configuracion, $utils, $mapper, $importer, $pdfHandler);
         $this->parameter_fFecFin = $this->utils->dateFormatToday('m/t/Y');
     }
 
@@ -46,6 +51,7 @@ class LiquidacionContratoReport extends Report
 
     public function setParameterFechaInicio(DateTimeInterface $fechaInicio)
     {
+        $this->fechaInicio = $fechaInicio;
         $this->parameter_fFecIni = $fechaInicio->format('m/d/Y');
         return $this;
     }
@@ -58,6 +64,6 @@ class LiquidacionContratoReport extends Report
 
     public function getPdfFileName(): string
     {
-        // TODO: Implement getFileNamePdf() method.
+        return 'nomina/liquidacion-contrato/' . $this->parameter_CodEmp . '-' . $this->fechaInicio->format('Ymd') . '.pdf';
     }
 }

@@ -13,7 +13,7 @@ use Omines\DataTablesBundle\Column\TextColumn;
 use Omines\DataTablesBundle\DataTable;
 use Omines\DataTablesBundle\DataTableTypeInterface;
 
-class NominaDataTableType implements DataTableTypeInterface
+class NominaDataTableType extends ServicioEmpleadosDataTableType
 {
     /**
      * @param DataTable $dataTable
@@ -21,8 +21,6 @@ class NominaDataTableType implements DataTableTypeInterface
      */
     public function configure(DataTable $dataTable, array $options)
     {
-        $id = $options['id'];
-
         $dataTable
             ->add('fecha', DateTimeColumn::class, ['label' => 'Fecha', 'format' => 'Y-m-d'])
             ->add('convenio', TextColumn::class, ['label' => 'Convenio', 'orderable' => false])
@@ -44,15 +42,20 @@ class NominaDataTableType implements DataTableTypeInterface
             ->addOrderBy('fecha', DataTable::SORT_DESCENDING)
             ->createAdapter(ORMAdapter::class, [
                 'entity' => Nomina::class,
-                'query' => function (QueryBuilder $builder) use ($id) {
+                'query' => function (QueryBuilder $builder) {
                     $builder
                         ->select('n')
                         ->from(Nomina::class, 'n')
                         ->join('n.usuario', 'usuario')
-                        ->where('usuario.id = :id')
-                        ->setParameter('id', $id);
+                        ->where('usuario = :usuario')
+                        ->setParameter('usuario', $this->usuario);
                 },
             ]);
         $dataTable->setName('reporte-nomina');
+    }
+
+    protected function getReportEntityClass(): string
+    {
+        return Nomina::class;
     }
 }

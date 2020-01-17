@@ -37,7 +37,7 @@ class LiquidacionContratoImporter extends Importer
      * @param CabezaLiquidacion $halconEntity
      * @return ServicioEmpleadosReport
      */
-    protected function buildSeEntity($halconEntity): ServicioEmpleadosReport
+    protected function buildSeEntity($halconEntity): ?ServicioEmpleadosReport
     {
         $convenio = $halconEntity->getVinculacion()->getEmpresa() ? $halconEntity->getVinculacion()->getEmpresa() : null;
         if($convenio && !$convenio->getNombre()) {

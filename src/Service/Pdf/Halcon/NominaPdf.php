@@ -7,7 +7,7 @@ use App\Entity\Halcon\Report\Nomina;
 use App\Entity\Halcon\Report\NominaRenglon;
 use App\Service\Pdf\PdfBase;
 
-class NominaPdf extends PdfBase
+class NominaPdf extends HalconPdfBase
 {
 
     protected $width = 110;

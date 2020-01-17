@@ -53,9 +53,9 @@ class ReportFactory implements ServiceSubscriberInterface
                     $this->getSsrsDb($nomina)
                 );
         } else {
-            list($noContrat, $consecLiq, $nitTercer) = explode(",", $nomina->getSourceId());
+            list($noContrat, $consecLiq) = explode(",", $nomina->getSourceId());
             return $this->container->get(HalconReportFactory::class)
-                ->nomina($noContrat, $consecLiq, $nitTercer);
+                ->nomina($noContrat, $consecLiq, $nomina->getUsuario());
         }
     }
 

@@ -4,6 +4,8 @@
 namespace App\Service\Pdf;
 
 use App\Entity\Novasoft\Report\CertificadoLaboral;
+use App\Service\NovasoftSsrs\Entity\ReporteCertificadoLaboral;
+
 
 class PdfCartaLaboral extends PdfBase
 {
@@ -14,7 +16,8 @@ class PdfCartaLaboral extends PdfBase
     {
     }
 
-    public function render(CertificadoLaboral $certificado)
+    //public function render(CertificadoLaboral $certificado)
+    public function render(ReporteCertificadoLaboral $certificado)
     {
         $compania = $this->compania->getRazon();
         $nit = $this->compania->getNit();
@@ -25,7 +28,8 @@ class PdfCartaLaboral extends PdfBase
         $desde = $certificado->getFechaIngresoTextual();
         $nsalario = $certificado->getNsalario();
         $salario = $certificado->getSalario();
-        $sex = $certificado->isHombre();
+        //$sex = $certificado->isHombre();
+        $sex = $certificado->esHombre();
         $fecing = $certificado->getFechaIngreso()->format('Y-m-d');
         $fecegr = $certificado->getFechaEgreso() ? $certificado->getFechaEgreso()->format('Y-m-d') : null;
 

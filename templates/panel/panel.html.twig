@@ -27,7 +27,7 @@
                         {{ include('servicio_empleados/_comprobantes-temp-table.html.twig') }}
                         <div class="text-right">
                             <br>
-                            <a href="{{ path('se_comprobante', {nomina: 'todo'}) }}" class="btn btn-primary">Ver todos</a>
+                            <a href="{{ path('se_comprobantes') }}" class="btn btn-primary">Ver todos</a>
                         </div>
                     </div>
 
@@ -39,7 +39,8 @@
                     <div class="col-xl-12">
                         <section class="card card-featured-left card-featured-primary mb-3">
                             <div class="card-body">
-                                <a href="{{ path('se_certificado_laboral_pdf') }}" target="_blank">
+                                {#<a href="{{ path('se_certificado_laboral_pdf') }}" target="_blank">#}
+                                <a href="{{ path('app_certificado_laboral_pdf') }}" target="_blank">
                                 <div class="widget-summary">
                                     <div class="widget-summary-col widget-summary-col-icon">
                                         <div class="summary-icon bg-primary">

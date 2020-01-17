@@ -35,7 +35,7 @@ class CertificadoLaboralImporter extends Importer
     }
 
 
-    protected function buildSeEntity($halconEntity): ServicioEmpleadosReport
+    protected function buildSeEntity($halconEntity): ?ServicioEmpleadosReport
     {
         //TODO
     }

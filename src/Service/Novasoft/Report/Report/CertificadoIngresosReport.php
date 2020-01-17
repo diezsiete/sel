@@ -11,6 +11,7 @@ use App\Service\Configuracion\Configuracion;
 use App\Service\Novasoft\Report\Importer\GenericImporter;
 use App\Service\Novasoft\Report\Mapper\CertificadoIngresosMapper;
 use App\Service\Novasoft\Report\ReportFormatter;
+use App\Service\ServicioEmpleados\Report\PdfHandler;
 use App\Service\Utils;
 use DateTime;
 use SSRS\SSRSReport;
@@ -65,11 +66,15 @@ class CertificadoIngresosReport extends Report
      * @var string
      */
     protected $parameter_Ccod_emp = "%";
+    /**
+     * @var string
+     */
+    private $ano;
 
     public function __construct(SSRSReport $SSRSReport, ReportFormatter $reportFormatter, Configuracion $configuracion,
-                                Utils $utils, CertificadoIngresosMapper $mapper, GenericImporter $importer)
+                                Utils $utils, CertificadoIngresosMapper $mapper, GenericImporter $importer, PdfHandler $pdfHandler)
     {
-        parent::__construct($SSRSReport, $reportFormatter, $configuracion, $utils, $mapper, $importer);
+        parent::__construct($SSRSReport, $reportFormatter, $configuracion, $utils, $mapper, $importer, $pdfHandler);
         $this->parameter_fec_exp = (new DateTime())->format('m/d/Y');
     }
 
@@ -79,6 +84,7 @@ class CertificadoIngresosReport extends Report
      */
     public function setParameterAno(string $ano)
     {
+        $this->ano = $ano;
         $pattern = '/(.+\/)\d+$/i';
         $replacement = '${1}' . $ano;
         $this->parameter_Fec_ini = preg_replace($pattern, $replacement, $this->parameter_Fec_ini);
@@ -114,6 +120,6 @@ class CertificadoIngresosReport extends Report
 
     public function getPdfFileName(): string
     {
-        // TODO: Implement getPdfFileName() method.
+        return 'nomina/certificado-ingresos/' . $this->parameter_Ccod_emp . '-'.$this->ano.'.pdf';
     }
 }

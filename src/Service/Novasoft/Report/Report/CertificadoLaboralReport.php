@@ -9,6 +9,7 @@ use App\Service\Configuracion\Configuracion;
 use App\Service\Novasoft\Report\Importer\GenericImporter;
 use App\Service\Novasoft\Report\Mapper\CertificadoLaboralMapper;
 use App\Service\Novasoft\Report\ReportFormatter;
+use App\Service\ServicioEmpleados\Report\PdfHandler;
 use App\Service\Utils;
 use SSRS\SSRSReport;
 use SSRS\SSRSReportException;
@@ -30,9 +31,9 @@ class CertificadoLaboralReport extends Report
 
 
     public function __construct(SSRSReport $SSRSReport, ReportFormatter $reportFormatter, Configuracion $configuracion,
-                                Utils $utils, CertificadoLaboralMapper $mapper, GenericImporter $importer)
+                                Utils $utils, CertificadoLaboralMapper $mapper, GenericImporter $importer, PdfHandler $pdfHandler)
     {
-        parent::__construct($SSRSReport, $reportFormatter, $configuracion, $utils, $mapper, $importer);
+        parent::__construct($SSRSReport, $reportFormatter, $configuracion, $utils, $mapper, $importer, $pdfHandler);
     }
 
     public function setParameterCodigoEmpleado($identificacion)
@@ -53,7 +54,7 @@ class CertificadoLaboralReport extends Report
 
     public function getPdfFileName(): string
     {
-        // TODO: Implement getFileNamePdf() method.
+        return 'nomina/certificado-laboral/' . $this->parameter_cod_emp . '.pdf';
     }
 
 

@@ -62,27 +62,29 @@ abstract class Importer
     protected function importEntity($halconEntity)
     {
         $seEntity = $this->buildSeEntity($halconEntity);
-        $seEntity
-            ->setUsuario($this->report->getUsuario())
-            ->setSourceHalcon()
-            ->setSourceId(implode(',', $this->report->getIdentifier($halconEntity)));
+        if($seEntity) {
+            $seEntity
+                ->setUsuario($this->report->getUsuario())
+                ->setSourceHalcon()
+                ->setSourceId(implode(',', $this->report->getIdentifier($halconEntity)));
 
 
-        $seEntityEqual = $this->getSeEntityRepo()->findBySourceId(
-            $seEntity->getSource(),
-            $seEntity->getUsuario()->getIdentificacion(),
-            $seEntity->getSourceId()
-        );
+            $seEntityEqual = $this->getSeEntityRepo()->findBySourceId(
+                $seEntity->getSource(),
+                $seEntity->getUsuario()->getIdentificacion(),
+                $seEntity->getSourceId()
+            );
 
-        if($seEntityEqual) {
-            $this->em->remove($seEntityEqual);
+            if ($seEntityEqual) {
+                $this->em->remove($seEntityEqual);
+            }
+
+            $this->em->persist($seEntity);
+            $this->em->flush();
         }
-
-        $this->em->persist($seEntity);
-        $this->em->flush();
     }
 
-    protected abstract function buildSeEntity($halconEntity): ServicioEmpleadosReport;
+    protected abstract function buildSeEntity($halconEntity): ?ServicioEmpleadosReport;
 
 
     protected abstract function getSeEntityRepo(): ReportRepository;

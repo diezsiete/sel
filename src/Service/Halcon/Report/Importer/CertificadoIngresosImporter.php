@@ -34,7 +34,7 @@ class CertificadoIngresosImporter extends Importer
         $this->seCertificadoIngresosRepo = $seCertificadoIngresosRepo;
     }
 
-    protected function buildSeEntity($halconEntity): ServicioEmpleadosReport
+    protected function buildSeEntity($halconEntity): ?ServicioEmpleadosReport
     {
         //TODO
     }
