@@ -47,7 +47,7 @@ class HvEntityParamConverter implements ParamConverterInterface
             throw new NotFoundHttpException(
                 sprintf('%s class not found by the @%s annotation.', $entity, $this->getAnnotationName($configuration)));
         }
-        $fullClassName = "App\Entity\\".$className;
+        $fullClassName = "App\Entity\\Hv\\".$className;
         if($id) {
             $repository = $this->registry
                 ->getManagerForClass($fullClassName)
