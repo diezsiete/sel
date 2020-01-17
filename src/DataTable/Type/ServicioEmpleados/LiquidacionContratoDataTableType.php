@@ -28,16 +28,16 @@ class LiquidacionContratoDataTableType extends ServicioEmpleadosDataTableType
             ->add('fechaRetiro', DateTimeColumn::class, ['label' => 'Fecha retiro', 'format' => 'Y-m-d'])
             ->add('convenio', TextColumn::class, ['label' => 'Convenio'])
             ->add('contrato', TextColumn::class, ['label' => 'Contrato'])
-            ->add('actions', ActionsColumn::class, [
+            /*->add('actions', ActionsColumn::class, [
                 'label' => 'PDF',
                 'orderable' => false,
                 'field' => 'usuario.identificacion',
                 'actions' => [
-                    'route' => ['se_certificado_ingresos_pdf', ['certificado' => 'id']],
+                    'route' => ['se_liquidacion_de_contrato_pdf', ['liquidacion' => 'id']],
                     'icon' => 'fas fa-file-pdf',
                     'target' => '_blank'
                 ]
-            ])
+            ])*/
             ->addOrderBy('fechaIngreso', DataTable::SORT_DESCENDING)
             ->createAdapter(ORMAdapter::class, [
                 'entity' => LiquidacionContrato::class,

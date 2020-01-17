@@ -6,10 +6,13 @@ namespace App\Service\ServicioEmpleados\Report;
 
 use App\Entity\ServicioEmpleados\CertificadoIngresos;
 use App\Entity\ServicioEmpleados\CertificadoLaboral;
+use App\Entity\ServicioEmpleados\LiquidacionContrato;
 use App\Entity\ServicioEmpleados\Nomina;
 use App\Entity\ServicioEmpleados\ServicioEmpleadosReport;
 use App\Repository\Novasoft\Report\Nomina\NominaRepository as NovasoftNominaRepo;
 use App\Service\Halcon\Report\Report\CertificadoLaboralReport as HalconCertificadoLaboralReport;
+use App\Service\Halcon\Report\Report\LiquidacionContratoReport as HalconLiquidacionContratoReport;
+use App\Service\Novasoft\Report\Report\LiquidacionContratoReport as NovasoftLiquidacionContratoReport;
 use App\Service\Novasoft\NovasoftEmpleadoService;
 use App\Service\Novasoft\Report\Report\CertificadoLaboralReport as NovasoftCertificadoLaboralReport;
 use App\Service\Novasoft\Report\ReportFactory as NovasoftReportFactory;
@@ -104,6 +107,23 @@ class ReportFactory implements ServiceSubscriberInterface
             }
         }
         return $report;
+    }
+
+    /**
+     * @param LiquidacionContrato $liquidacionContrato
+     * @return HalconLiquidacionContratoReport|NovasoftLiquidacionContratoReport
+     */
+    public function liquidacionContrato(LiquidacionContrato $liquidacionContrato)
+    {
+        if($liquidacionContrato->isSourceNovasoft()) {
+            list($ano, $ident) = explode(",", $liquidacionContrato->getSourceId());
+            return $this->container->get(NovasoftReportFactory::class)
+                ->liquidacionContrato($ano, $ident, $this->getSsrsDb($liquidacionContrato));
+        } else {
+            list($noContrat, $liqDefini) = explode(",", $liquidacionContrato->getSourceId());
+            return $this->container->get(HalconReportFactory::class)
+                ->liquidacionContrato($noContrat, $liqDefini, $liquidacionContrato->getUsuario());
+        }
     }
 
 

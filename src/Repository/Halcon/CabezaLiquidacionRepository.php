@@ -20,16 +20,32 @@ class CabezaLiquidacionRepository extends ServiceEntityRepository
     }
 
     /**
+     * @noinspection PhpDocMissingThrowsInspection
      * @param $identificacion
-     * @return CabezaLiquidacion[]
+     * @param null $noContrato
+     * @param null $liqDefini
+     * @return CabezaLiquidacion[]|CabezaLiquidacion
      */
-    public function findLiquidacionContrato($identificacion)
+    public function findLiquidacionContrato($identificacion, $noContrato = null, $liqDefini = null)
     {
-        return $this->createQueryBuilder('cl')
+        $qb = $this->createQueryBuilder('cl')
             ->andWhere("REPLACE(cl.auxiliar, '.', '') = :identificacion")
-            ->setParameter('identificacion', $identificacion)
-            ->getQuery()
-            ->getResult();
+            ->setParameter('identificacion', $identificacion);
+        if(!$noContrato) {
+            return $qb
+                ->getQuery()
+                ->getResult();
+        } else {
+            $qb
+                ->join('cl.vinculacion', 'v')
+                ->andWhere('v.noContrat = :noContrato')
+                ->andWhere('cl.liqDefini = :liqDefini')
+                ->setParameter('noContrato', $noContrato)
+                ->setParameter('liqDefini', $liqDefini)
+                ->setMaxResults(1)
+                ->getQuery()
+                ->getOneOrNullResult();
+        }
     }
 
 

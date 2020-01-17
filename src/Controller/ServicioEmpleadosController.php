@@ -11,15 +11,12 @@ use App\DataTable\Type\ServicioEmpleados\NominaDataTableType;
 use App\Entity\Autoliquidacion\AutoliquidacionEmpleado;
 use App\Entity\ServicioEmpleados\CertificadoIngresos;
 use App\Entity\ServicioEmpleados\CertificadoLaboral;
+use App\Entity\ServicioEmpleados\LiquidacionContrato;
 use App\Entity\ServicioEmpleados\Nomina;
 use App\Repository\Main\EmpleadoRepository;
 use App\Service\Autoliquidacion\FileManager;
 use App\Service\Novasoft\NovasoftEmpleadoService;
-use App\Service\Novasoft\Report\ReportFactory;
-use App\Service\ServicioEmpleados\Report\PdfHandler;
 use App\Service\ServicioEmpleados\Report\ReportFactory as SeReportFactory;
-use DateTime;
-use DateTimeInterface;
 use Exception;
 use Omines\DataTablesBundle\DataTableFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -187,35 +184,15 @@ class ServicioEmpleadosController extends BaseController
     }
 
     /**
-     * @Route("/sel/se/liquidacion-de-contrato/{fechaIngreso}/{fechaRetiro}", name="app_liquidacion_de_contrato_pdf")
+     * @Route("/sel/se/liquidacion-de-contrato/{liquidacion}", name="se_liquidacion_de_contrato_pdf")
+     * @IsGranted("REPORTE_MANAGE", subject="liquidacion")
      */
-    public function liquidacionDeContratoPdf(ReportFactory $reportFactory, $fechaIngreso, $fechaRetiro, PdfHandler $pdfHandler)
+    public function liquidacionDeContratoPdf(SeReportFactory $reportFactory, LiquidacionContrato $liquidacion)
     {
-        return $this->renderStream(function () use ($reportFactory, $fechaIngreso, $fechaRetiro, $pdfHandler) {
-            $identificacion = $this->getUser()->getIdentificacion();
-            $fechaIngreso = DateTime::createFromFormat('Y-m-d', $fechaIngreso);
-            $fechaRetiro = DateTime::createFromFormat('Y-m-d', $fechaRetiro);
-
-
-            $pdfHandler->write('liquidacion-contrato', $fechaIngreso, $identificacion,
-                function (DateTimeInterface $fechaIngreso, $ident) use ($reportFactory, $fechaRetiro) {
-                    $report = $reportFactory->liquidacionContrato($ident, $this->getSsrsDb())
-                        ->setParameterFechaInicio($fechaIngreso)
-                        ->setParameterFechaFin($fechaRetiro);
-                    return $report->renderPdf();
-                }
-            );
-
-            return $pdfHandler->readStream('liquidacion-contrato', $fechaIngreso, $identificacion);
-        });
+        $reportFactory->liquidacionContrato($liquidacion)->renderPdf();
+//        return $this->renderStream(function () use ($reportFactory, $liquidacion) {
+//            return $reportFactory->liquidacionContrato($liquidacion)->streamPdf();
+//        });
     }
 
-    /**
-     * @return string
-     * @throws Exception
-     */
-    private function getSsrsDb()
-    {
-        return $this->novasoftEmpleadoService->getSsrsDb($this->getUser()->getIdentificacion());
-    }
 }

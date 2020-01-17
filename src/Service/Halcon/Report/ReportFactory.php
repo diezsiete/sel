@@ -5,6 +5,7 @@ namespace App\Service\Halcon\Report;
 
 
 
+use App\Entity\Main\Usuario;
 use App\Service\Halcon\Report\Report\CertificadoIngresosReport;
 use App\Service\Halcon\Report\Report\CertificadoLaboralReport;
 use App\Service\Halcon\Report\Report\LiquidacionContratoReport;
@@ -28,15 +29,15 @@ class ReportFactory implements ServiceSubscriberInterface
     /**
      * @param $noContrat
      * @param $consecLiq
-     * @param $nitTercer
+     * @param Usuario $usuario
      * @return NominaReport
      */
-    public function nomina($noContrat, $consecLiq, $nitTercer)
+    public function nomina($noContrat, $consecLiq, Usuario $usuario)
     {
         return $this->container->get(NominaReport::class)
             ->setNoContrat($noContrat)
             ->setConsecLiq($consecLiq)
-            ->setIdentificacion($nitTercer);
+            ->setUsuario($usuario);
     }
 
     /**
@@ -52,19 +53,33 @@ class ReportFactory implements ServiceSubscriberInterface
     }
 
     /**
-     * @param $usuario
+     * @param $empresaUsuario
      * @param $noContrat
      * @param $ano
-     * @param $identificacion
+     * @param Usuario $usuario
      * @return CertificadoIngresosReport
      */
-    public function certificadoIngresos($usuario, $noContrat, $ano, $identificacion)
+    public function certificadoIngresos($empresaUsuario, $noContrat, $ano, Usuario $usuario)
     {
         return $this->container->get(CertificadoIngresosReport::class)
-            ->setUsuario($usuario)
+            ->setEmpresaUsuario($empresaUsuario)
             ->setNoContrat($noContrat)
             ->setAno($ano)
-            ->setIdentificacion($identificacion);
+            ->setUsuario($usuario);
+    }
+
+    /**
+     * @param $noContrat
+     * @param $liqDefini
+     * @param Usuario $usuario
+     * @return LiquidacionContratoReport
+     */
+    public function liquidacionContrato($noContrat, $liqDefini, Usuario $usuario)
+    {
+        return $this->container->get(LiquidacionContratoReport::class)
+            ->setNoContrat($noContrat)
+            ->setLiqDefini($liqDefini)
+            ->setUsuario($usuario);
     }
 
     /**
