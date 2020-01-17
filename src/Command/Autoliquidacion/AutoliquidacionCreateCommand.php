@@ -165,6 +165,9 @@ class AutoliquidacionCreateCommand extends TraitableCommand
         return $autoliquidacionEmpleado;
     }
 
+    /**
+     * TODO este counter no tiene en cuenta la opcion de representante, ni convenio
+     */
     protected function progressBarCount(InputInterface $input, OutputInterface $output): int
     {
         $rango = $this->getRangoFromPeriodo($input, false);

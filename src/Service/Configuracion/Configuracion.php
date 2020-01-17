@@ -324,4 +324,14 @@ class Configuracion
         }
         return $flipped ? $tiposReferencia : array_flip($tiposReferencia);
     }
+
+    /**
+     * @return string
+     */
+    public function getWebDir(): string
+    {
+        return $this->webDir;
+    }
+
+
 }

@@ -6,7 +6,7 @@ namespace App\Service\ServicioEmpleados\Report\Report;
 
 use App\Repository\ServicioEmpleados\CertificadoLaboralRepository as SeCertificadoLaboralRepository;
 
-class CertificadoLaboral
+class CertificadoLaboralReport
 {
     private $identificacion;
     /**
@@ -21,7 +21,7 @@ class CertificadoLaboral
 
     /**
      * @param mixed $identificacion
-     * @return CertificadoLaboral
+     * @return CertificadoLaboralReport
      */
     public function setIdentificacion($identificacion)
     {

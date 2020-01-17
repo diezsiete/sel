@@ -5,6 +5,7 @@ namespace App\Service\Halcon\Report;
 
 
 
+use App\Service\Halcon\Report\Report\CertificadoIngresosReport;
 use App\Service\Halcon\Report\Report\CertificadoLaboralReport;
 use App\Service\Halcon\Report\Report\NominaReport;
 use Psr\Container\ContainerInterface;
@@ -36,6 +37,11 @@ class ReportFactory implements ServiceSubscriberInterface
             ->setNitTercer($nitTercer);
     }
 
+    /**
+     * @param $ident
+     * @param $numeroContrato
+     * @return CertificadoLaboralReport
+     */
     public function certificadoLaboral($ident, $numeroContrato)
     {
         return $this->container->get(CertificadoLaboralReport::class)
@@ -43,12 +49,29 @@ class ReportFactory implements ServiceSubscriberInterface
             ->setNumeroContrato($numeroContrato);
     }
 
+    /**
+     * @param $usuario
+     * @param $noContrat
+     * @param $ano
+     * @param $identificacion
+     * @return CertificadoIngresosReport
+     */
+    public function certificadoIngresos($usuario, $noContrat, $ano, $identificacion)
+    {
+        return $this->container->get(CertificadoIngresosReport::class)
+            ->setUsuario($usuario)
+            ->setNoContrat($noContrat)
+            ->setAno($ano)
+            ->setIdentificacion($identificacion);
+    }
+
 
     public static function getSubscribedServices()
     {
         return [
             NominaReport::class,
-            CertificadoLaboralReport::class
+            CertificadoLaboralReport::class,
+            CertificadoIngresosReport::class
         ];
     }
 }

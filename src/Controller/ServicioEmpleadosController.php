@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\DataTable\Type\AutoliquidacionEmpleadoDataTableType;
+use App\DataTable\Type\ServicioEmpleados\CertificadoIngresosDataTableType;
 use App\DataTable\Type\ServicioEmpleados\CertificadoLaboralDataTableType;
 use App\DataTable\Type\ServicioEmpleados\NominaDataTableType;
 use App\Entity\Autoliquidacion\AutoliquidacionEmpleado;
+use App\Entity\ServicioEmpleados\CertificadoIngresos;
 use App\Entity\ServicioEmpleados\CertificadoLaboral;
 use App\Entity\ServicioEmpleados\Nomina;
 use App\Repository\Main\EmpleadoRepository;
@@ -104,48 +106,32 @@ class ServicioEmpleadosController extends BaseController
     }
 
     /**
-     * @Route("/sel/se/certificados-ingresos", name="app_certificados_ingresos")
+     * @Route("/sel/se/certificados-ingresos", name="se_certificado_ingresos")
      */
-    public function certificadosIngresos(ReportFactory $reportFactory, CertificadoIngresosReport $report)
+    public function certificadoIngresos(DataTableFactory $dataTableFactory, Request $request)
     {
-        $identificacion = $this->getUser()->getIdentificacion();
+        $id = $this->getUser()->getId();
+        $table = $dataTableFactory
+            ->createFromType(CertificadoIngresosDataTableType::class, ['id' => $id], ['searching' => false])
+            ->handleRequest($request);
 
-        $certificados = $report->setIdentificacion($identificacion)->renderMap();
-        dump($certificados);
-
-        $certificados = [];
-        $anos = ["2018", "2017"];
-        foreach ($anos as $ano) {
-            $report = $reportFactory->certificadoIngresos($ano, $identificacion, $this->getSsrsDb());
-            $certificado = $report->renderMap();
-            if($certificado) {
-                $certificados[$ano] = $certificado;
-            }
+        if($table->isCallback()) {
+            return $table->getResponse();
         }
 
         return $this->render('servicio_empleados/certificado-ingresos.html.twig', [
-            'certificados' => $certificados
+            'datatable' => $table
         ]);
     }
 
     /**
-     * @Route("/sel/se/certificado-ingresos/{periodo}", name="app_certificado_ingresos")
+     * @Route("/sel/se/certificado-ingresos/{certificado}", name="se_certificado_ingresos_pdf")
+     * @IsGranted("REPORTE_MANAGE", subject="certificado")
      */
-    public function certificadoIngreso(ReportFactory $reportFactory, PdfHandler $pdfHandler, $periodo)
+    public function certificadoIngresosPdf(SeReportFactory $reportFactory, CertificadoIngresos $certificado)
     {
-        return $this->renderStream(function () use ($reportFactory, $pdfHandler, $periodo) {
-            $identificacion = $this->getUser()->getIdentificacion();
-
-            $fecha = DateTime::createFromFormat('Y-m-d', $periodo . "-01-01");
-
-            $pdfHandler->write('certificado-ingresos', $fecha, $identificacion,
-                function (DateTimeInterface $fecha, $ident) use ($reportFactory) {
-                    return $reportFactory->certificadoIngresos($fecha->format('Y'), $ident, $this->getSsrsDb())->renderPdf();
-                }
-            );
-
-            return $pdfHandler->readStream('certificado-ingresos', $fecha, $identificacion);
-
+        return $this->renderStream(function () use ($reportFactory, $certificado) {
+            return $reportFactory->certificadoIngresos($certificado)->streamPdf();
         });
     }
 

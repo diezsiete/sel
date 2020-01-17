@@ -185,9 +185,9 @@ class Tercero
         return $this;
     }
 
-    public function getNombre(): ?string
+    public function getNombre($format = true): ?string
     {
-        return $this->formatName($this->nombre);
+        return $format ? $this->formatName($this->nombre) : $this->nombre;
     }
 
     public function setNombre(string $nombre): self

@@ -7,6 +7,7 @@ namespace App\Service\Halcon\Report\Report;
 
 
 use App\Repository\Halcon\CertificadoIngresosRepository;
+use App\Service\Pdf\Halcon\CertificadoIngresosPdf;
 use App\Service\ServicioEmpleados\Report\PdfHandler;
 
 class CertificadoIngresosReport extends Report
@@ -19,15 +20,22 @@ class CertificadoIngresosReport extends Report
 
     private $ano;
 
+
     /**
      * @var CertificadoIngresosRepository
      */
     private $certificadoIngresosRepo;
+    /**
+     * @var CertificadoIngresosPdf
+     */
+    private $pdfService;
 
-    public function __construct(PdfHandler $pdfHandler, CertificadoIngresosRepository $certificadoIngresosRepo)
+    public function __construct(PdfHandler $pdfHandler, CertificadoIngresosRepository $certificadoIngresosRepo,
+                                CertificadoIngresosPdf $pdfService)
     {
         parent::__construct($pdfHandler);
         $this->certificadoIngresosRepo = $certificadoIngresosRepo;
+        $this->pdfService = $pdfService;
     }
 
     /**
@@ -88,9 +96,11 @@ class CertificadoIngresosReport extends Report
 
     public function renderPdf()
     {
-//        $certificado = $this->certificadoLaboralRepo->find($this->identificacion, $this->numeroContrato);
-//        $tercero = $this->terceroRepository->find($this->identificacion);
-//        return $this->certificadoLaboralPdf->build($certificado, $tercero)->Output("S");
+        $certificado = $this->certificadoIngresosRepo->findCertificado(
+            $this->identificacion, $this->usuario, $this->noContrat, $this->ano
+        );
+
+        return $this->pdfService->build($certificado)->Output("S");
     }
 
 

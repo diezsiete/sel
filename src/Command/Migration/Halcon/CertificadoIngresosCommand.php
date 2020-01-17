@@ -51,9 +51,9 @@ class CertificadoIngresosCommand extends MigrationCommand
 
         foreach($this->batch($certificados) as $certificado) {
             if($certificado->getEmpresa()) {
-                $usuario = $this->getUsuario($certificado->getNitTercer());
+                $usuario = $this->getUsuario($certificado->getTercero()->getNitTercer());
                 if(!$usuario) {
-                    $this->io->warning("usuario '{$certificado->getNitTercer()}' not found");
+                    $this->io->warning("usuario '{$certificado->getTercero()->getNitTercer()}' not found");
                 } else {
                     $seCertificado = $this->createCertificadoIngresos($certificado, $usuario);
                     if($dbCertificado = $this->seCertificadoIngresosRepo->findEqual($seCertificado)) {
@@ -80,7 +80,8 @@ class CertificadoIngresosCommand extends MigrationCommand
         $id = [
             $certificado->getEmpresa()->getUsuario(),
             $certificado->getNoContrat(),
-            $certificado->getAno()
+            $certificado->getAno(),
+            $usuario->getIdentificacion()
         ];
         return (new SeCertificadoIngresos())
             ->setPeriodo(DateTime::createFromFormat("Y-m-d", $certificado->getAno() . '-01-01'))

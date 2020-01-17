@@ -39,4 +39,18 @@ class CertificadoIngresosRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    /**
+     * @param string $identificacion
+     * @return CertificadoIngresos[]
+     */
+    public function findByIdentificacion($identificacion)
+    {
+        return $this->createQueryBuilder('ci')
+            ->join('ci.usuario', 'u')
+            ->where('u.identificacion = :identificacion')
+            ->setParameter('identificacion', $identificacion)
+            ->getQuery()
+            ->getResult();
+    }
 }

@@ -33,9 +33,11 @@ class CertificadoIngresos
     private $ano;
 
     /**
-     * @ORM\Column(type="bigint", nullable=true)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Halcon\Tercero")
+     * @ORM\JoinColumn(name="nit_tercer", referencedColumnName="nit_tercer")
+     * @var Tercero|null
      */
-    private $nitTercer;
+    private $tercero;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
@@ -110,9 +112,12 @@ class CertificadoIngresos
         return $this->ano;
     }
 
-    public function getNitTercer(): ?int
+    /**
+     * @return Tercero
+     */
+    public function getTercero()
     {
-        return $this->nitTercer;
+        return $this->tercero;
     }
 
     public function getDesde(): ?DateTimeInterface
@@ -125,49 +130,49 @@ class CertificadoIngresos
         return $this->hasta;
     }
 
-    public function getSalarios(): ?int
+    public function getSalarios($format = true)
     {
-        return $this->salarios;
+        return $format ? number_format($this->salarios) : $this->salarios;
     }
 
-    public function getCesantias(): ?int
+    public function getCesantias($format = true)
     {
-        return $this->cesantias;
+        return $format ? number_format($this->cesantias) : $this->cesantias;
     }
 
-    public function getRepresenta(): ?int
+    public function getRepresenta($format = true)
     {
-        return $this->representa;
+        return $format ? number_format($this->representa) : $this->representa;
     }
 
-    public function getPension(): ?int
+    public function getPension($format = true)
     {
-        return $this->pension;
+        return $format ? number_format($this->pension) : $this->pension;
     }
 
-    public function getOtrosIng(): ?int
+    public function getOtrosIng($format = true)
     {
-        return $this->otrosIng;
+        return $format ? number_format($this->otrosIng) : $this->otrosIng;
     }
 
-    public function getEps(): ?int
+    public function getEps($format = true)
     {
-        return $this->eps;
+        return $format ? number_format($this->eps) : $this->eps;
     }
 
-    public function getAfp(): ?int
+    public function getAfp($format = true)
     {
-        return $this->afp;
+        return $format ? number_format($this->afp) : $this->afp;
     }
 
-    public function getAfpVol(): ?int
+    public function getAfpVol($format = true)
     {
-        return $this->afpVol;
+        return $format ? number_format($this->afpVol) : $this->afpVol;
     }
 
-    public function getRetefuente(): ?int
+    public function getRetefuente($format = true)
     {
-        return $this->retefuente;
+        return $format ? number_format($this->retefuente) : $this->retefuente;
     }
 
     /**
@@ -180,5 +185,42 @@ class CertificadoIngresos
         } catch (EntityNotFoundException $e) {
             $this->empresa = null;
         }
+    }
+
+    public function getCompaniaNombre()
+    {
+        if(!$this->empresa) {
+            return "SIN DEFINIR";
+        }
+        return $this->empresa->getCompania()->getNombre();
+    }
+
+    public function getCompaniaNit()
+    {
+        if(!$this->empresa) {
+            return "SIN DEFINIR";
+        }
+        return $this->empresa->getCompania()->getNit();
+    }
+
+    public function terceroTipoNit()
+    {
+        switch ($this->tercero->getTipoNit()) {
+            case 'EXT':
+                $tipo = 'EXT';
+                break;
+            case 'TID':
+                $tipo = 'TID';
+                break;
+            default:
+                $tipo = 13;
+        }
+        return $tipo;
+    }
+
+    public function getTotalIngresosBrutos($format = true)
+    {
+        $totalIngresosBrutos = $this->salarios + $this->cesantias + $this->representa + $this->pension + $this->otrosIng;
+        return $format ? number_format($totalIngresosBrutos) : $totalIngresosBrutos;
     }
 }

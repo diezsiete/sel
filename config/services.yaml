@@ -111,8 +111,8 @@ services:
         public: true
     App\Service\Pdf\PdfCartaLaboralServilabor:
         public: true
-
-    # Solucion para database de halcon. No funciono como la documentacion indica
+    App\Service\Pdf\Halcon\CertificadoIngresosPdf:
+        arguments: ["P", "mm", "Letter"]
 
 
 

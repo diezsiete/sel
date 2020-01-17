@@ -39,9 +39,24 @@ class CertificadoIngresosRepository extends ServiceEntityRepository
     public function countByIdentificacion($identificacion)
     {
         return (int)$this->findByIdentificacionQuery($identificacion)
-            ->select('COUNT(ci.nitTercer)')
+            ->select('COUNT(ci.noContrat)')
             ->getQuery()
             ->getSingleScalarResult();
+    }
+
+    public function findCertificado($identificacion, $usuario, $noContrat, $ano)
+    {
+        return $this->findByIdentificacionQuery($identificacion)
+            ->join('ci.empresa', 'empresa')
+            ->andWhere('empresa.usuario = :usuario')
+            ->andWhere('ci.noContrat = :noContrat')
+            ->andWhere('ci.ano = :ano')
+            ->setParameter('usuario', $usuario)
+            ->setParameter('noContrat', $noContrat)
+            ->setParameter('ano', $ano)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 
     /**
@@ -50,16 +65,17 @@ class CertificadoIngresosRepository extends ServiceEntityRepository
      */
     private function findByIdentificacionQuery($identificacion)
     {
-        $qb = $this->createQueryBuilder('ci');
+        $qb = $this->createQueryBuilder('ci')
+            ->join('ci.tercero', 't');
 
         if(!$identificacion) {
-            $qb->where('ci.nitTercer != 0');
+            $qb->where('t.nitTercer != 0');
         }
         else if(!is_array($identificacion)) {
-            $qb->where('ci.nitTercer = :identificacion')
+            $qb->where('t.nitTercer = :identificacion')
                 ->setParameter('identificacion', $identificacion);
         } else {
-            $qb->where($qb->expr()->in('ci.nitTercer', $identificacion));
+            $qb->where($qb->expr()->in('t.nitTercer', $identificacion));
         }
 
         return $qb;

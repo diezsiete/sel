@@ -19,7 +19,7 @@ class Solicitud
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\HV\Hv")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Hv\Hv")
      * @ORM\JoinColumn(nullable=false)
      */
     private $hv;
