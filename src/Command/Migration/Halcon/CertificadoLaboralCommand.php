@@ -85,7 +85,7 @@ class CertificadoLaboralCommand extends MigrationCommand
             }
             foreach($identificaciones as $identificacion) {
                 $this->certificadosLaborales = array_merge(
-                    $this->certificadosLaborales, $this->halconCertificadoLaboralRepo->find($identificacion));
+                    $this->certificadosLaborales, $this->halconCertificadoLaboralRepo->findCertificado($identificacion));
             }
         }
         return $this->certificadosLaborales;

@@ -19,7 +19,7 @@ class CertificadoLaboralRepository extends ServiceEntityRepository
      * @param bool $numeroContrato
      * @return CertificadoLaboral[]|CertificadoLaboral
      */
-    public function find($ident, $numeroContrato = false)
+    public function findCertificado($ident, $numeroContrato = false)
     {
         $sql = "
             SELECT v.nit_tercer AS nit_tercer,

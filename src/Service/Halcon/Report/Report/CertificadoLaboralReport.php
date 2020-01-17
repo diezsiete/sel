@@ -60,7 +60,7 @@ class CertificadoLaboralReport extends Report
 
     public function renderPdf()
     {
-        $certificado = $this->certificadoLaboralRepo->find($this->identificacion, $this->numeroContrato);
+        $certificado = $this->certificadoLaboralRepo->findCertificado($this->identificacion, $this->numeroContrato);
         $tercero = $this->terceroRepository->find($this->identificacion);
         return $this->certificadoLaboralPdf->build($certificado, $tercero)->Output("S");
     }
