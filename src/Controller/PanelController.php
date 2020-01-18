@@ -2,13 +2,8 @@
 
 namespace App\Controller;
 
-use App\Service\Novasoft\NovasoftEmpleadoService;
-use App\Service\Novasoft\Report\ReportFactory;
 use App\Service\ServicioEmpleados\DataTableBuilder;
-use App\Service\ServicioEmpleados\Import;
-use DateInterval;
-use DateTime;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Service\ServicioEmpleados\Report\ReportFactory;
 use Symfony\Component\Routing\Annotation\Route;
 
 class PanelController extends BaseController
@@ -16,38 +11,36 @@ class PanelController extends BaseController
     /**
      * @Route("/sel", name="sel_panel")
      */
-    public function panel(DataTableBuilder $dataTable, ReportFactory $reportFactory, NovasoftEmpleadoService $novasoftEmpleadoService)
+    public function panel(DataTableBuilder $dataTable, ReportFactory $reportFactory)
     {
-        $datatables = [];
-        $comprobantes = [];
         if($this->isGranted(['ROLE_EMPLEADO'], $this->getUser())) {
-            /*$tableComprobantes = $dataTable->comprobantes(['dom' => 'l', 'pageLength' => 2]);
-            if($tableComprobantes->isCallback()) {
-                $import->nomina($this->getUser());
-                return $tableComprobantes->getResponse();
-            }*/
-            $fecha = new DateTime();
-
-            $comprobantes = $reportFactory->nomina(
-                $this->getUser()->getIdentificacion(),
-                (new DateTime())->sub(new DateInterval('P2M')),
-                null,
-                $novasoftEmpleadoService->getSsrsDb($this->getUser()->getIdentificacion())
-            )->renderMap();
-
-            $tableAportes = $dataTable->certificadosAportes(['dom' => 'l', 'pageLength' => 3]);
-            if($tableAportes->isCallback()) {
-                return $tableAportes->getResponse();
-            }
-            $datatables = [
-                //'comprobantes' => $tableComprobantes,
-                'aportes' => $tableAportes
-            ];
+            return $this->panelEmpleado($dataTable, $reportFactory);
         }
 
-        return $this->render('panel/panel.html.twig', [
-            'datatables' => $datatables,
-            'comprobantes' => $comprobantes
+        return $this->render('panel/main.html.twig');
+    }
+
+    public function panelEmpleado(DataTableBuilder $dataTable, ReportFactory $reportFactory)
+    {
+        $tableNomina = $dataTable->nomina(['dom' => 't', 'pageLength' => 2]);
+        if($tableNomina->isCallback()) {
+            return $tableNomina->getResponse();
+        }
+        $tableAportes = $dataTable->certificadosAportes(['dom' => 't', 'pageLength' => 3]);
+        if($tableAportes->isCallback()) {
+            return $tableAportes->getResponse();
+        }
+
+        $certificadoLaboral = $reportFactory->certificadoLaboral($this->getUser()->getIdentificacion())->findLast();
+
+        return $this->render('panel/empleado.html.twig', [
+            'datatables' => [
+                'comprobantes' => $tableNomina,
+                'aportes' => $tableAportes
+            ],
+            'certificadoLaboral' => $certificadoLaboral
         ]);
     }
+
+
 }

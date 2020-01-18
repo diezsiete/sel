@@ -4,6 +4,7 @@ namespace App\Repository\ServicioEmpleados;
 
 use App\Entity\ServicioEmpleados\CertificadoLaboral;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -25,11 +26,34 @@ class CertificadoLaboralRepository extends ReportRepository
      */
     public function findByIdentificacion($identificacion)
     {
+        return $this->findByIdentificacionQuery($identificacion)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @noinspection PhpDocMissingThrowsInspection
+     * @param $identificacion
+     * @return CertificadoLaboral|null
+     */
+    public function findLastByIdentificacion($identificacion)
+    {
+        return $this->findByIdentificacionQuery($identificacion)
+            ->orderBy('cl.fechaIngreso', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    /**
+     * @param $identificacion
+     * @return QueryBuilder
+     */
+    private function findByIdentificacionQuery($identificacion)
+    {
         return $this->createQueryBuilder('cl')
             ->join('cl.usuario', 'u')
             ->where('u.identificacion = :identificacion')
-            ->setParameter('identificacion', $identificacion)
-            ->getQuery()
-            ->getResult();
+            ->setParameter('identificacion', $identificacion);
     }
 }

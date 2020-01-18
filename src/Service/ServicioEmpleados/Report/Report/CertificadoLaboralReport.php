@@ -4,6 +4,7 @@
 namespace App\Service\ServicioEmpleados\Report\Report;
 
 
+use App\Entity\ServicioEmpleados\CertificadoLaboral;
 use App\Repository\ServicioEmpleados\CertificadoLaboralRepository as SeCertificadoLaboralRepository;
 
 class CertificadoLaboralReport
@@ -29,8 +30,19 @@ class CertificadoLaboralReport
         return $this;
     }
 
+    /**
+     * @return CertificadoLaboral[]
+     */
     public function renderMap()
     {
         return $this->seCertificadoLaboralRepo->findByIdentificacion($this->identificacion);
+    }
+
+    /**
+     * @return CertificadoLaboral|null
+     */
+    public function findLast()
+    {
+        return $this->seCertificadoLaboralRepo->findLastByIdentificacion($this->identificacion);
     }
 }
