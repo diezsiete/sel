@@ -19,32 +19,22 @@ class CertificadoIngresosRepository extends ServiceEntityRepository
         parent::__construct($registry, CertificadoIngresos::class);
     }
 
-    // /**
-    //  * @return CertificadoIngresos[] Returns an array of CertificadoIngresos objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @noinspection PhpDocMissingThrowsInspection
+     * @param CertificadoIngresos $entity
+     * @return mixed
+     */
+    public function findEqual(CertificadoIngresos $entity)
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
+        return $this->createQueryBuilder('ci')
+            ->andWhere('ci.usuario = :usuario')
+            ->andWhere('ci.periodoCertificacionDe = :de')
+            ->andWhere('ci.periodoCertificacionA = :a')
+            ->setParameter('usuario', $entity->getUsuario())
+            ->setParameter('de', $entity->getPeriodoCertificacionDe()->format('Y-m-d'))
+            ->setParameter('a', $entity->getPeriodoCertificacionA()->format('Y-m-d'))
+            ->setMaxResults(1)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getOneOrNullResult();
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?CertificadoIngresos
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

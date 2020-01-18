@@ -4,7 +4,10 @@
 namespace App\Service\Novasoft\Report\Mapper;
 
 
+use App\Entity\Main\Usuario;
 use App\Entity\Novasoft\Report\CertificadoIngresos;
+use App\Repository\Main\UsuarioRepository;
+use App\Service\Novasoft\Report\Exception\InvalidMappedObject;
 use DateTime;
 
 class CertificadoIngresosMapper extends Mapper
@@ -18,6 +21,16 @@ class CertificadoIngresosMapper extends Mapper
     private $periodoCertificacionDe = [];
     private $periodoCertificacionA = [];
     private $fechaExpedicion = [];
+    /**
+     * @var UsuarioRepository
+     */
+    private $usuarioRepository;
+
+    public function __construct(DataFilter $filter, UsuarioRepository $usuarioRepository)
+    {
+        parent::__construct($filter);
+        $this->usuarioRepository = $usuarioRepository;
+    }
 
     protected function instanceTargetObject()
     {
@@ -27,6 +40,7 @@ class CertificadoIngresosMapper extends Mapper
     protected function defineMap(): array
     {
         return [
+            'textbox228' => 'usuario',
             'Textbox164' => 'DV',
             'textbox39'  => 'primerApellido',
             'textbox165' => 'segundoApellido',
@@ -77,6 +91,16 @@ class CertificadoIngresosMapper extends Mapper
             'Lit7'       => 'certificoTexto',
             'textbox192' => 'certificoTexto',
         ];
+    }
+
+    public function setUsuario($cedula)
+    {
+        $identificacion = preg_replace('/\D/', '', $cedula);
+        $usuario = $this->usuarioRepository->findByIdentificacion($identificacion);
+        if(!$usuario) {
+            throw new InvalidMappedObject("usuario con cedula '$cedula' no existe");
+        }
+        $this->targetObject->setUsuario($usuario);
     }
 
     public function setPeriodoCertificacionDe($value)

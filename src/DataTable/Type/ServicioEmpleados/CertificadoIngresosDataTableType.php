@@ -14,7 +14,7 @@ use Omines\DataTablesBundle\Column\TextColumn;
 use Omines\DataTablesBundle\DataTable;
 use Omines\DataTablesBundle\DataTableTypeInterface;
 
-class CertificadoIngresosDataTableType implements DataTableTypeInterface
+class CertificadoIngresosDataTableType extends ServicioEmpleadosDataTableType
 {
     /**
      * @param DataTable $dataTable
@@ -22,8 +22,6 @@ class CertificadoIngresosDataTableType implements DataTableTypeInterface
      */
     public function configure(DataTable $dataTable, array $options)
     {
-        $id = $options['id'];
-
         $dataTable
             ->add('periodo', DateTimeColumn::class, ['label' => 'Periodo', 'format' => 'Y'])
             ->add('actions', ActionsColumn::class, [
@@ -39,15 +37,20 @@ class CertificadoIngresosDataTableType implements DataTableTypeInterface
             ->addOrderBy('periodo', DataTable::SORT_DESCENDING)
             ->createAdapter(ORMAdapter::class, [
                 'entity' => CertificadoIngresos::class,
-                'query' => function (QueryBuilder $builder) use ($id) {
+                'query' => function (QueryBuilder $builder) {
                     $builder
                         ->select('ci')
                         ->from(CertificadoIngresos::class, 'ci')
                         ->join('ci.usuario', 'usuario')
-                        ->where('usuario.id = :id')
-                        ->setParameter('id', $id);
+                        ->where('usuario = :usuario')
+                        ->setParameter('usuario', $this->usuario);
                 },
             ]);
         $dataTable->setName('certificado-ingresos');
+    }
+
+    protected function getReportEntityClass(): string
+    {
+        return CertificadoIngresos::class;
     }
 }

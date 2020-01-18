@@ -9,6 +9,7 @@ use App\Entity\ServicioEmpleados\CertificadoLaboral;
 use App\Entity\ServicioEmpleados\LiquidacionContrato;
 use App\Entity\ServicioEmpleados\Nomina;
 use App\Entity\ServicioEmpleados\ServicioEmpleadosReport;
+use App\Repository\Novasoft\Report\CertificadoIngresosRepository as NovasoftCertificadoIngresosRepo;
 use App\Repository\Novasoft\Report\Nomina\NominaRepository as NovasoftNominaRepo;
 use App\Service\Halcon\Report\Report\CertificadoLaboralReport as HalconCertificadoLaboralReport;
 use App\Service\Halcon\Report\Report\LiquidacionContratoReport as HalconLiquidacionContratoReport;
@@ -96,14 +97,15 @@ class ReportFactory implements ServiceSubscriberInterface
             }
         } else {
             if($filter->isSourceNovasoft()) {
-                list($ano, $ident) = explode(",", $filter->getSourceId());
+                $certIngresos = $this->container->get(NovasoftCertificadoIngresosRepo::class)->find($filter->getSourceId());
                 return $this->container->get(NovasoftReportFactory::class)
-                    ->certificadoIngresos($ano, $ident, $this->getSsrsDb($filter));
+                    ->certificadoIngresos(
+                        $certIngresos->getAno(), $filter->getUsuario()->getIdentificacion(), $this->getSsrsDb($filter)
+                    );
             } else {
-
-                list($usuario, $noContrat, $ano, $identificacion) = explode(",", $filter->getSourceId());
+                list($empresaUsuario, $noContrat, $ano) = explode(",", $filter->getSourceId());
                 return $this->container->get(HalconReportFactory::class)
-                    ->certificadoIngresos($usuario, $noContrat, $ano, $identificacion);
+                    ->certificadoIngresos($empresaUsuario, $noContrat, $ano, $filter->getUsuario());
             }
         }
         return $report;
@@ -132,6 +134,7 @@ class ReportFactory implements ServiceSubscriberInterface
         return [
             NovasoftNominaRepo::class,
             NovasoftReportFactory::class,
+            NovasoftCertificadoIngresosRepo::class,
             HalconReportFactory::class,
             NovasoftEmpleadoService::class,
             SeCertificadoLaboralReport::class,

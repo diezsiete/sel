@@ -6,9 +6,10 @@
 namespace App\Service\Novasoft\Report\Report;
 
 
+use App\Entity\Main\Usuario;
 use App\Entity\Novasoft\Report\CertificadoIngresos;
 use App\Service\Configuracion\Configuracion;
-use App\Service\Novasoft\Report\Importer\GenericImporter;
+use App\Service\Novasoft\Report\Importer\CertificadoIngresosImporter;
 use App\Service\Novasoft\Report\Mapper\CertificadoIngresosMapper;
 use App\Service\Novasoft\Report\ReportFormatter;
 use App\Service\ServicioEmpleados\Report\PdfHandler;
@@ -72,10 +73,11 @@ class CertificadoIngresosReport extends Report
     private $ano;
 
     public function __construct(SSRSReport $SSRSReport, ReportFormatter $reportFormatter, Configuracion $configuracion,
-                                Utils $utils, CertificadoIngresosMapper $mapper, GenericImporter $importer, PdfHandler $pdfHandler)
+                                Utils $utils, CertificadoIngresosMapper $mapper, CertificadoIngresosImporter $importer, PdfHandler $pdfHandler)
     {
         parent::__construct($SSRSReport, $reportFormatter, $configuracion, $utils, $mapper, $importer, $pdfHandler);
-        $this->parameter_fec_exp = (new DateTime())->format('m/d/Y');
+        $now = new DateTime();
+        $this->parameter_fec_exp = $now->format('m/d/Y');
     }
 
     /**
@@ -109,8 +111,9 @@ class CertificadoIngresosReport extends Report
     public function renderMap()
     {
         $csvAssociative = $this->reportFormatter->csvContSplittedToAssociative($this->renderCSV());
-        $report = $this->reportFormatter->mapCsv($csvAssociative, $this->mapper);
-        return $report ? $report[0] : null;
+        $map = $this->reportFormatter->mapCsv($csvAssociative, $this->mapper);
+        return $map ? $map[0] : null;
+
     }
 
     public function renderAssociative()
@@ -120,6 +123,13 @@ class CertificadoIngresosReport extends Report
 
     public function getPdfFileName(): string
     {
-        return 'nomina/certificado-ingresos/' . $this->parameter_Ccod_emp . '-'.$this->ano.'.pdf';
+        return 'novasoft/certificado-ingresos/' . $this->parameter_Ccod_emp . '-'.$this->ano.'.pdf';
+    }
+
+    public function setUsuario(Usuario $usuario)
+    {
+        parent::setUsuario($usuario);
+        $this->parameter_Ccod_emp = $usuario->getIdentificacion();
+        return $this;
     }
 }

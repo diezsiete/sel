@@ -584,4 +584,9 @@ class CertificadoIngresos
 
         return $this;
     }
+
+    public function getAno()
+    {
+        return $this->getPeriodoCertificacionDe()->format('Y');
+    }
 }

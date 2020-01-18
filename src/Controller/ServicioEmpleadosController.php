@@ -110,35 +110,32 @@ class ServicioEmpleadosController extends BaseController
         });
     }
 
-//    /**
-//     * @Route("/sel/se/certificados-ingresos", name="se_certificado_ingresos")
-//     */
-//    public function certificadoIngresos(DataTableFactory $dataTableFactory, Request $request)
-//    {
-//        $id = $this->getUser()->getId();
-//        $table = $dataTableFactory
-//            ->createFromType(CertificadoIngresosDataTableType::class, ['id' => $id], ['searching' => false])
-//            ->handleRequest($request);
-//
-//        if($table->isCallback()) {
-//            return $table->getResponse();
-//        }
-//
-//        return $this->render('servicio_empleados/certificado-ingresos.html.twig', [
-//            'datatable' => $table
-//        ]);
-//    }
+    /**
+     * @Route("/sel/se/certificado-ingresos", name="se_certificado_ingresos")
+     */
+    public function certificadoIngresos(DataTableBuilder $dataTableBuilder)
+    {
+        $table = $dataTableBuilder->certificadoIngresos();
 
-//    /**
-//     * @Route("/sel/se/certificado-ingresos/{certificado}", name="se_certificado_ingresos_pdf")
-//     * @IsGranted("REPORTE_MANAGE", subject="certificado")
-//     */
-//    public function certificadoIngresosPdf(SeReportFactory $reportFactory, CertificadoIngresos $certificado)
-//    {
-//        return $this->renderStream(function () use ($reportFactory, $certificado) {
-//            return $reportFactory->certificadoIngresos($certificado)->streamPdf();
-//        });
-//    }
+        if($table->isCallback()) {
+            return $table->getResponse();
+        }
+
+        return $this->render('servicio_empleados/certificado-ingresos.html.twig', [
+            'datatable' => $table
+        ]);
+    }
+
+    /**
+     * @Route("/sel/se/certificado-ingresos/{certificado}", name="se_certificado_ingresos_pdf")
+     * @IsGranted("REPORTE_MANAGE", subject="certificado")
+     */
+    public function certificadoIngresosPdf(SeReportFactory $reportFactory, CertificadoIngresos $certificado)
+    {
+        return $this->renderStream(function () use ($reportFactory, $certificado) {
+            return $reportFactory->certificadoIngresos($certificado)->streamPdf();
+        });
+    }
 
     /**
      * @Route("/sel/se/certificados-aportes", name="app_certificados_aportes")
@@ -203,29 +200,7 @@ class ServicioEmpleadosController extends BaseController
 //    }
 
 
-    /**
-     * @Route("/sel/se/certificados-ingresos", name="app_certificados_ingresos")
-     */
-    public function certificadosIngresos(ReportesServicioEmpleados $reportes)
-    {
-        $identificacion = $this->getUser()->getIdentificacion();
-        $certificados = $reportes->getCertificadosIngresos($identificacion, $this->getSsrsDb());
-        return $this->render('servicio_empleados/certificado-ingresos.html.twig', [
-            'certificados' => $certificados
-        ]);
-    }
 
-    /**
-     * @Route("/sel/se/certificado-ingresos/{periodo}", name="app_certificado_ingresos")
-     */
-    public function certificadoIngreso(Reportes $reportes, $periodo)
-    {
-        return $this->renderStream(function () use ($reportes, $periodo) {
-            $identificacion = $this->getUser()->getIdentificacion();
-            $periodo = DateTime::createFromFormat('Y-m-d', $periodo . "-01-01");
-            return $reportes->certificadoIngresosStream($periodo, $identificacion, $this->getSsrsDb());
-        });
-    }
 
     /**
      * @Route("/sel/se/liquidaciones-de-contrato", name="app_liquidaciones_de_contrato")

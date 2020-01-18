@@ -75,7 +75,7 @@ class MenuBuilder
                 ->addChild('Laboral', ['route' => 'se_certificado_laboral'])
                 ->setExtra('icon', 'fas fa-file-invoice');
             $menu['Certificados']
-                ->addChild('Ingresos y retenciones', ['route' => 'app_certificados_ingresos'])
+                ->addChild('Ingresos y retenciones', ['route' => 'se_certificado_ingresos'])
                 ->setExtra('icon', 'fas fa-file-alt');
             $menu['Certificados']
                 ->addChild('Aportes seguridad social', ['route' => 'app_certificados_aportes'])

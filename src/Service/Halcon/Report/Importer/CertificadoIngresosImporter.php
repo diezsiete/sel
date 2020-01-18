@@ -5,11 +5,14 @@ namespace App\Service\Halcon\Report\Importer;
 
 
 use App\Entity\Halcon\CabezaLiquidacion;
+use App\Entity\Halcon\CertificadoIngresos;
+use App\Entity\ServicioEmpleados\CertificadoIngresos as SeCertificadoIngresos;
 use App\Entity\ServicioEmpleados\LiquidacionContrato;
 use App\Entity\ServicioEmpleados\ServicioEmpleadosReport;
 use App\Repository\ServicioEmpleados\CertificadoIngresosRepository as SeCertificadoIngresosRepo;
 use App\Repository\ServicioEmpleados\ReportRepository;
 use App\Service\Halcon\Report\Report\LiquidacionContratoReport;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
@@ -34,9 +37,14 @@ class CertificadoIngresosImporter extends Importer
         $this->seCertificadoIngresosRepo = $seCertificadoIngresosRepo;
     }
 
-    protected function buildSeEntity($halconEntity): ?ServicioEmpleadosReport
+    /**
+     * @param CertificadoIngresos $certificado
+     * @return ServicioEmpleadosReport|null
+     */
+    protected function buildSeEntity($certificado): ?ServicioEmpleadosReport
     {
-        //TODO
+        return (new SeCertificadoIngresos())
+            ->setPeriodo(DateTime::createFromFormat("Y-m-d", $certificado->getAno() . '-01-01'));
     }
 
     protected function getSeEntityRepo(): ReportRepository

@@ -133,9 +133,10 @@ class ReportFormatter implements ServiceSubscriberInterface
      */
     public function mapCsv($csvData, Mapper $mapper, $single = false)
     {
+
         if(is_array($csvData)) {
             //$csvData puede venir como una array sencilla
-            if(!is_array(reset($csvData))) {
+            if($csvData && !is_array(reset($csvData))) {
                 $csvArray = [$csvData];
             } else {
                 $csvArray = $csvData;
@@ -167,6 +168,7 @@ class ReportFormatter implements ServiceSubscriberInterface
             } catch (InvalidMappedObject $e) {
             }
         }
+
         return $single && count($objects) === 1 ? $objects[0] : $objects;
     }
 

@@ -3,13 +3,16 @@
 
 namespace App\Event\EventSubscriber\ServicioEmpleados;
 
+use App\Entity\Novasoft\Report\CertificadoIngresos;
 use App\Entity\Novasoft\Report\CertificadoLaboral;
 use App\Entity\Novasoft\Report\Nomina\Nomina;
+use App\Entity\ServicioEmpleados\CertificadoIngresos as SeCertificadoIngresos;
 use App\Entity\ServicioEmpleados\Nomina as SeNomina;
 use App\Entity\ServicioEmpleados\CertificadoLaboral as SeCertificadoLaboral;
 use App\Event\Event\ServicioEmpleados\Report\Importer\DeleteEvent;
 use App\Event\Event\ServicioEmpleados\Report\Importer\ImportEvent;
 use App\Repository\ServicioEmpleados\NominaRepository;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -55,6 +58,17 @@ class NovasoftImportSubscriber implements EventSubscriberInterface
             ->setSourceId($certificadoLaboral->getId());
 
         $this->em->persist($seCertificadoLaboral);
+        $this->em->flush();
+    }
+
+    protected function importCertificadoIngresos(CertificadoIngresos $certificado)
+    {
+        $seCertificado = (new SeCertificadoIngresos())
+            ->setPeriodo(DateTime::createFromFormat("Y-m-d", $certificado->getPeriodoCertificacionDe()->format('Y') . '-01-01'))
+            ->setSourceNovasoft()
+            ->setSourceId($certificado->getId())
+            ->setUsuario($certificado->getUsuario());
+        $this->em->persist($seCertificado);
         $this->em->flush();
     }
 

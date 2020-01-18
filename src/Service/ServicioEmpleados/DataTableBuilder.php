@@ -4,7 +4,9 @@ namespace App\Service\ServicioEmpleados;
 
 use App\DataTable\SelDataTableFactory;
 use App\DataTable\Type\AutoliquidacionEmpleadoDataTableType;
+use App\DataTable\Type\ServicioEmpleados\CertificadoIngresosDataTableType;
 use App\DataTable\Type\ServicioEmpleados\NominaDataTableType;
+use App\Entity\ServicioEmpleados\CertificadoIngresos;
 use Omines\DataTablesBundle\DataTableFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -44,6 +46,18 @@ class DataTableBuilder
 
         $table = $this->dataTableFactory
             ->createFromServicioEmpleadosType(NominaDataTableType::class, $this->security->getUser(), $options)
+            ->handleRequest($this->request);
+        return $table;
+    }
+
+    public function certificadoIngresos($options = [])
+    {
+        $options = array_merge([
+            'searching' => false,
+        ], $options);
+
+        $table = $this->dataTableFactory
+            ->createFromServicioEmpleadosType(CertificadoIngresosDataTableType::class, $this->security->getUser(), $options)
             ->handleRequest($this->request);
         return $table;
     }
