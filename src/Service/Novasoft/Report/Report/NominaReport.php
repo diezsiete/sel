@@ -141,7 +141,7 @@ class NominaReport extends Report
 
     public function getPdfFileName(): string
     {
-        return 'nomina/novasoft/' . $this->parameter_CodEmp . '-' . $this->fecha->format('Ymd') . '.pdf';
+        return 'novasoft/nomina/' . $this->parameter_CodEmp . '-' . $this->fecha->format('Ymd') . '.pdf';
     }
 
     public function setUsuario(Usuario $usuario)

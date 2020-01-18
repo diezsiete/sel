@@ -4,7 +4,6 @@
 namespace App\Service\Pdf;
 
 use App\Entity\Novasoft\Report\CertificadoLaboral;
-use App\Service\NovasoftSsrs\Entity\ReporteCertificadoLaboral;
 
 
 class PdfCartaLaboral extends PdfBase
@@ -16,8 +15,7 @@ class PdfCartaLaboral extends PdfBase
     {
     }
 
-    //public function render(CertificadoLaboral $certificado)
-    public function render(ReporteCertificadoLaboral $certificado)
+    public function render(CertificadoLaboral $certificado)
     {
         $compania = $this->compania->getRazon();
         $nit = $this->compania->getNit();
@@ -28,13 +26,12 @@ class PdfCartaLaboral extends PdfBase
         $desde = $certificado->getFechaIngresoTextual();
         $nsalario = $certificado->getNsalario();
         $salario = $certificado->getSalario();
-        //$sex = $certificado->isHombre();
-        $sex = $certificado->esHombre();
+        $sex = $certificado->isHombre();
         $fecing = $certificado->getFechaIngreso()->format('Y-m-d');
         $fecegr = $certificado->getFechaEgreso() ? $certificado->getFechaEgreso()->format('Y-m-d') : null;
 
 
-        $main = "" . ($sex ? 'El' : 'La') . utf8_decode(" señor") . ($sex ? '' : 'a') . " " . $certificado->getNombreCompleto()
+        $main = "" . ($sex ? 'El' : 'La') . utf8_decode(" señor") . ($sex ? '' : 'a') . " " . utf8_decode($certificado->getNombreCompleto())
             . " identificad" . ($sex ? 'o' : 'a') . " con "
             . utf8_decode($certificado->getTipoDocumento()) . " No. " . $certificado->getCedula() . "";
 
@@ -87,8 +84,7 @@ class PdfCartaLaboral extends PdfBase
         $this->Ln();
 
         return $this
-            ->firma()
-            ->Output();
+            ->firma();
     }
 
     protected function contentActivo($sex, $companiaNombre, $contratoTermino, $cargo, $desde, $salarioTexto, $salarioNum, $eusuaria = null)

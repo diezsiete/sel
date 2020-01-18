@@ -5,6 +5,8 @@ namespace App\Service\Halcon\Report\Importer;
 
 
 use App\Entity\Halcon\CabezaLiquidacion;
+use App\Entity\Halcon\Report\CertificadoLaboral;
+use App\Entity\ServicioEmpleados\CertificadoLaboral as SeCertificadoLaboral;
 use App\Entity\ServicioEmpleados\LiquidacionContrato;
 use App\Entity\ServicioEmpleados\ServicioEmpleadosReport;
 use App\Repository\ServicioEmpleados\CertificadoLaboralRepository as SeCertificadoLaboralRepo;
@@ -34,10 +36,16 @@ class CertificadoLaboralImporter extends Importer
         $this->seCertificadoLaboralRepo = $seCertificadoLaboralRepo;
     }
 
-
+    /**
+     * @param CertificadoLaboral $halconEntity
+     * @return ServicioEmpleadosReport|null
+     */
     protected function buildSeEntity($halconEntity): ?ServicioEmpleadosReport
     {
-        //TODO
+        return (new SeCertificadoLaboral())
+            ->setFechaIngreso($halconEntity->fechaIngreso)
+            ->setFechaRetiro($halconEntity->fechaRetiro)
+            ->setConvenio($halconEntity->convenio);
     }
 
     protected function getSeEntityRepo(): ReportRepository

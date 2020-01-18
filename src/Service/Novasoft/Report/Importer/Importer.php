@@ -4,8 +4,8 @@
 namespace App\Service\Novasoft\Report\Importer;
 
 use App\Event\Event\ServicioEmpleados\Report\Importer\DeleteEvent;
-use App\Event\Event\Novasoft\Report\Importer\ImporterLogEvent;
 use App\Event\Event\ServicioEmpleados\Report\Importer\ImportEvent;
+use App\Event\Event\Novasoft\Report\Importer\ImporterLogEvent;
 use App\Event\Event\Novasoft\Report\Importer\TestEvent;
 use App\Helper\Loggable;
 use App\Service\Novasoft\Report\Report\Report;
@@ -71,7 +71,7 @@ abstract class Importer
 
     public function importPdf()
     {
-        $this->importFile($this->report->getFileNamePdf(true), $this->report->renderPdf());
+        $this->importFile($this->report->getPdfFileName(), $this->report->renderPdf());
     }
 
     /**
@@ -125,7 +125,8 @@ abstract class Importer
                 $import = $this->handleEqual($equal);
                 if ($import) {
                     $action .= ", deleted and inserted";
-                    $this->dispatcher->dispatch(new \App\Event\Event\ServicioEmpleados\Report\Importer\DeleteEvent($equalIdentifier, get_class($entity)));
+
+                    $this->dispatcher->dispatch(new DeleteEvent($equalIdentifier, get_class($entity)));
                 }
             } else {
                 $import = false;

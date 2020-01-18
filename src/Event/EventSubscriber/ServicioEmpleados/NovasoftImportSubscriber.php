@@ -3,8 +3,10 @@
 
 namespace App\Event\EventSubscriber\ServicioEmpleados;
 
+use App\Entity\Novasoft\Report\CertificadoLaboral;
 use App\Entity\Novasoft\Report\Nomina\Nomina;
 use App\Entity\ServicioEmpleados\Nomina as SeNomina;
+use App\Entity\ServicioEmpleados\CertificadoLaboral as SeCertificadoLaboral;
 use App\Event\Event\ServicioEmpleados\Report\Importer\DeleteEvent;
 use App\Event\Event\ServicioEmpleados\Report\Importer\ImportEvent;
 use App\Repository\ServicioEmpleados\NominaRepository;
@@ -42,11 +44,18 @@ class NovasoftImportSubscriber implements EventSubscriberInterface
         $this->em->flush();
     }
 
-    protected function deleteNomina($entityId)
+    protected function importCertificadoLaboral(CertificadoLaboral $certificadoLaboral)
     {
-        if($seNomina = $this->nominaRepo->findOneBy(['sourceId' => $entityId])) {
-            $this->em->remove($seNomina);
-        }
+        $seCertificadoLaboral = (new SeCertificadoLaboral())
+            ->setUsuario($certificadoLaboral->getUsuario())
+            ->setFechaIngreso($certificadoLaboral->getFechaIngreso())
+            ->setFechaRetiro($certificadoLaboral->getFechaEgreso())
+            ->setConvenio($certificadoLaboral->getEmpresaUsuaria())
+            ->setSourceNovasoft()
+            ->setSourceId($certificadoLaboral->getId());
+
+        $this->em->persist($seCertificadoLaboral);
+        $this->em->flush();
     }
 
     public static function getSubscribedEvents()
@@ -66,8 +75,9 @@ class NovasoftImportSubscriber implements EventSubscriberInterface
 
     public function deleteEvent(DeleteEvent $event)
     {
-        if($handlerMethodName = $this->getHandlerMethodName('delete', $event->entityClass)) {
-            $this->$handlerMethodName($event->entityId);
+        $seEntityClass = $this->getClassName(SeNomina::class, true) . '\\' . $this->getClassName($event->entityClass);
+        if($entity = $this->em->getRepository($seEntityClass)->findOneBy(['sourceId' => $event->entityId])) {
+            $this->em->remove($entity);
         }
     }
 
@@ -78,12 +88,21 @@ class NovasoftImportSubscriber implements EventSubscriberInterface
      */
     protected function getHandlerMethodName($eventName, $entityClass)
     {
-        if(preg_match("/\\\\(\w+)$/", $entityClass, $matches)) {
-            $methodName = $eventName . ucfirst($matches[1]);
+        if($className = $this->getClassName($entityClass)) {
+            $methodName = $eventName . ucfirst($className);
             if(method_exists($this, $methodName)) {
                 return $methodName;
             }
         }
         return false;
     }
+
+    protected function getClassName($entityClass, $getNamespace = false)
+    {
+        if(preg_match("/^(.+)\\\\(\w+)$/", $entityClass, $matches)) {
+            return $getNamespace ? $matches[1] : $matches[2];
+        }
+        return false;
+    }
+
 }

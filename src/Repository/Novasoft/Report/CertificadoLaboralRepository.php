@@ -19,32 +19,30 @@ class CertificadoLaboralRepository extends ServiceEntityRepository
         parent::__construct($registry, CertificadoLaboral::class);
     }
 
-    // /**
-    //  * @return CertificadoLaboral[] Returns an array of CertificadoLaboral objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @noinspection PhpDocMissingThrowsInspection
+     * @param CertificadoLaboral $entity
+     * @return CertificadoLaboral|null
+     */
+    public function findEqual(CertificadoLaboral $entity)
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $qb = $this->createQueryBuilder('cl')
+            ->andWhere('cl.usuario = :usuario')
+            ->andWhere('cl.fechaIngreso = :fechaIngreso')
+            ->andWhere('cl.empresaUsuaria = :empresaUsuaria')
+            ->andWhere('cl.cargo = :cargo')
+            ->setParameter('usuario', $entity->getUsuario())
+            ->setParameter('fechaIngreso', $entity->getFechaIngreso()->format('Y-m-d'))
+            ->setParameter('empresaUsuaria', $entity->getEmpresaUsuaria())
+            ->setParameter('cargo', $entity->getCargo())
+            ->setMaxResults(1);
+        if($entity->getFechaEgreso()) {
+            $qb->andWhere('cl.fechaEgreso = :fechaEgreso')
+                ->setParameter('fechaEgreso', $entity->getFechaEgreso()->format('Y-m-d'));
+        } else {
+            $qb->andWhere($qb->expr()->isNull('cl.fechaEgreso'));
+        }
 
-    /*
-    public function findOneBySomeField($value): ?CertificadoLaboral
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return $qb->getQuery()->getOneOrNullResult();
     }
-    */
 }

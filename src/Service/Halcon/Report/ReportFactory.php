@@ -41,15 +41,15 @@ class ReportFactory implements ServiceSubscriberInterface
     }
 
     /**
-     * @param $ident
      * @param $numeroContrato
+     * @param Usuario $usuario
      * @return CertificadoLaboralReport
      */
-    public function certificadoLaboral($ident, $numeroContrato)
+    public function certificadoLaboral($numeroContrato, Usuario $usuario)
     {
         return $this->container->get(CertificadoLaboralReport::class)
-            ->setIdentificacion($ident)
-            ->setNumeroContrato($numeroContrato);
+            ->setNumeroContrato($numeroContrato)
+            ->setUsuario($usuario);
     }
 
     /**

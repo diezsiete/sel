@@ -73,11 +73,11 @@ class ReportFactory implements ServiceSubscriberInterface
         } else {
             if($filter->isSourceNovasoft()) {
                 return $this->container->get(NovasoftReportFactory::class)
-                    ->certificadoLaboral($filter->getSourceId(), $this->getSsrsDb($filter));
+                    ->certificadoLaboral($filter->getUsuario()->getIdentificacion(), $this->getSsrsDb($filter));
             } else {
-                list($ident, $numeroContrato) = explode(",", $filter->getSourceId());
+                $numeroContrato = $filter->getSourceId();
                 return $this->container->get(HalconReportFactory::class)
-                    ->certificadoLaboral($ident, $numeroContrato);
+                    ->certificadoLaboral($numeroContrato, $filter->getUsuario());
             }
         }
         return $report;

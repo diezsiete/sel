@@ -57,14 +57,15 @@ class ReportCacheHandler
                 $this->saveCache($usuario, 'halcon', $reportEntityClass);
             }
         }
-
-        if (!$cache = $this->reportCacheRepo->findLastCacheForReport($usuario, 'novasoft', $reportEntityClass)) {
-            $report = $this->novasoftReportFactory->getReport($reportEntityClass);
-            $report
-                ->setUsuario($usuario)
-                ->getImporter()
-                ->importMap();
-            //$this->saveCache($usuario, 'novasoft', $reportEntityClass);
+        if($usuario->esRol('ROLE_EMPLEADO')) {
+            if (!$cache = $this->reportCacheRepo->findLastCacheForReport($usuario, 'novasoft', $reportEntityClass)) {
+                $report = $this->novasoftReportFactory->getReport($reportEntityClass);
+                $report
+                    ->setUsuario($usuario)
+                    ->getImporter()
+                    ->importMap();
+                //$this->saveCache($usuario, 'novasoft', $reportEntityClass);
+            }
         }
 
     }

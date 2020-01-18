@@ -49,7 +49,8 @@ class CertificadoLaboralMapper extends Mapper
             'fecing' => 'fechaIngreso',
             'fec_egr' => 'fechaEgreso',
             'fec_ing1' => 'fechaIngresoTextual',
-            'Fcert' => 'fechaCertificadoTextual'
+            'Fcert' => 'fechaCertificadoTextual',
+            'TipoID' => 'tipoDocumento'
         ];
     }
 

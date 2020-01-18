@@ -13,6 +13,11 @@ trait Loggable
      */
     //protected $logger;
 
+    /**
+     * @var null|bool
+     */
+    private $hasLoggerFlag = null;
+
 
     /**
      * System is unusable.
@@ -144,6 +149,16 @@ trait Loggable
      */
     public function log($level, $message, array $context = array())
     {
-        $this->logger->log($level, $message, $context);
+        if($this->hasLogger()) {
+            $this->logger->log($level, $message, $context);
+        }
+    }
+
+    private function hasLogger()
+    {
+        if($this->hasLoggerFlag === null) {
+            $this->hasLoggerFlag = property_exists($this, 'logger') && !!$this->logger;
+        }
+        return $this->hasLoggerFlag;
     }
 }

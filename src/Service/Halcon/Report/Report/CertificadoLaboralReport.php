@@ -6,6 +6,7 @@ namespace App\Service\Halcon\Report\Report;
 
 
 
+use App\Entity\Halcon\Report\CertificadoLaboral;
 use App\Repository\Halcon\Report\CertificadoLaboralRepository;
 use App\Repository\Halcon\TerceroRepository;
 use App\Service\Halcon\Report\Importer\CertificadoLaboralImporter;
@@ -28,6 +29,7 @@ class CertificadoLaboralReport extends Report
      * @var CertificadoLaboralPdf
      */
     private $certificadoLaboralPdf;
+
 
     public function __construct(PdfHandler $pdfHandler, CertificadoLaboralImporter $importer, CertificadoLaboralPdf $certificadoLaboralPdf,
                                 CertificadoLaboralRepository $certificadoLaboralRepo, TerceroRepository $terceroRepository)
@@ -61,13 +63,23 @@ class CertificadoLaboralReport extends Report
         return '/halcon/certificado-laboral/' . $this->usuario->getIdentificacion() . '-' . $this->numeroContrato . '.pdf';
     }
 
+
     function renderMap()
     {
-        // TODO: Implement renderMap() method.
+        foreach($this->certificadoLaboralRepo->findCertificado($this->usuario->getIdentificacion()) as $certificado) {
+            // certificados de Halcon sin fecha retiro no los mostramos. Seguramente siguieron trabajando a novasoft
+            if($certificado->fechaRetiro) {
+                yield $certificado;
+            }
+        }
     }
 
+    /**
+     * @param CertificadoLaboral $reportEntity
+     * @return array
+     */
     function getIdentifier($reportEntity): array
     {
-        // TODO: Implement getIdentifier() method.
+        return [ $reportEntity->contrato ];
     }
 }

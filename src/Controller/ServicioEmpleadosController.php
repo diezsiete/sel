@@ -21,6 +21,7 @@ use App\Service\Novasoft\Report\ReportPdfHandler;
 use App\Service\Pdf\PdfCartaLaboral;
 use App\Service\ReportesServicioEmpleados;
 use App\Service\ServicioEmpleados\DataTableBuilder;
+use App\Service\ServicioEmpleados\Report\ReportCacheHandler;
 use App\Service\ServicioEmpleados\Report\ReportFactory as SeReportFactory;
 use App\Service\ServicioEmpleados\Reportes;
 use DateTime;
@@ -73,41 +74,41 @@ class ServicioEmpleadosController extends BaseController
         });
     }
 
+    /**
+     * @Route("/sel/se/certificado-laboral", name="se_certificado_laboral")
+     */
+    public function certificadoLaboral(SeReportFactory $seReportFactory, DataTableFactory $dataTableFactory, Request $request, ReportCacheHandler $reportCacheHandler)
+    {
+        $reportCacheHandler->handle($this->getUser(), CertificadoLaboral::class);
+        $parameters = [];
 
+        $certificados = $seReportFactory->certificadoLaboral($this->getUser()->getIdentificacion())->renderMap();
 
-//    /**
-//     * @Route("/sel/se/certificado-laboral", name="se_certificado_laboral")
-//     */
-//    public function certificadoLaboral(SeReportFactory $seReportFactory, DataTableFactory $dataTableFactory, Request $request)
-//    {
-//        $parameters = [];
-//        $identificacion = $this->getUser()->getIdentificacion();
-//        $certificados = $seReportFactory->certificadoLaboral($identificacion)->renderMap();
-//        if(count($certificados) > 1) {
-//            $table = $dataTableFactory
-//                ->createFromType(CertificadoLaboralDataTableType::class, ['id' => $this->getUser()->getId()], ['searching' => false])
-//                ->handleRequest($request);
-//            if($table->isCallback()) {
-//                return $table->getResponse();
-//            }
-//            $parameters['datatable'] = $table;
-//        } else {
-//            $parameters['certificado'] = $certificados ? $certificados[0] : null;
-//        }
-//
-//        return $this->render('servicio_empleados/certificado-laboral.html.twig', $parameters);
-//    }
+        if(count($certificados) > 1) {
+            $table = $dataTableFactory
+                ->createFromType(CertificadoLaboralDataTableType::class, ['id' => $this->getUser()->getId()], ['searching' => false])
+                ->handleRequest($request);
+            if($table->isCallback()) {
+                return $table->getResponse();
+            }
+            $parameters['datatable'] = $table;
+        } else {
+            $parameters['certificado'] = $certificados ? $certificados[0] : null;
+        }
 
-//    /**
-//     * @Route("/sel/se/certificado-laboral/{certificado}", name="se_certificado_laboral_pdf")
-//     * @IsGranted("REPORTE_MANAGE", subject="certificado")
-//     */
-//    public function certificadoLaboralPdf(SeReportFactory $reportFactory, CertificadoLaboral $certificado)
-//    {
-//        return $this->renderStream(function () use ($reportFactory, $certificado) {
-//            return $reportFactory->certificadoLaboral($certificado)->streamPdf();
-//        });
-//    }
+        return $this->render('servicio_empleados/certificado-laboral.html.twig', $parameters);
+    }
+
+    /**
+     * @Route("/sel/se/certificado-laboral/{certificado}", name="se_certificado_laboral_pdf")
+     * @IsGranted("REPORTE_MANAGE", subject="certificado")
+     */
+    public function certificadoLaboralPdf(SeReportFactory $reportFactory, CertificadoLaboral $certificado)
+    {
+        return $this->renderStream(function () use ($reportFactory, $certificado) {
+            return $reportFactory->certificadoLaboral($certificado)->streamPdf();
+        });
+    }
 
 //    /**
 //     * @Route("/sel/se/certificados-ingresos", name="se_certificado_ingresos")
@@ -201,31 +202,6 @@ class ServicioEmpleadosController extends BaseController
 ////        });
 //    }
 
-
-    /**
-     * @Route("/sel/se/certificado-laboral", name="app_certificado_laboral", defaults={ "header" :"Certificado Laboral"})
-     */
-    public function certificadoLaboral(ReportesServicioEmpleados $reportes)
-    {
-        $identificacion = $this->getUser()->getIdentificacion();
-        $certificados = $reportes->getCertificadosLaborales($identificacion, $this->getSsrsDb());
-        return $this->render('servicio_empleados/certificado-laboral.html.twig', [
-            'tieneCertificado' => count($certificados) > 0,
-        ]);
-    }
-
-    /**
-     * @Route("/sel/se/certificado-laboral-pdf", name="app_certificado_laboral_pdf")
-     */
-    public function certificadoLaboralPdf(ReportesServicioEmpleados $reportes, PdfCartaLaboral $pdf)
-    {
-        $identificacion = $this->getUser()->getIdentificacion();
-        $certificado = $reportes->getCertificadoLaboral($identificacion, $this->getSsrsDb());
-        if(!$certificado) {
-            throw $this->createNotFoundException("Recurso no existe");
-        }
-        return $this->renderPdf($pdf->render($certificado));
-    }
 
     /**
      * @Route("/sel/se/certificados-ingresos", name="app_certificados_ingresos")
