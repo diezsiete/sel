@@ -12,6 +12,7 @@ use App\Service\Novasoft\Report\Report\LiquidacionNominaReport;
 use App\Service\Novasoft\Report\Report\NominaReport;
 use App\Service\Novasoft\Report\Report\Report;
 use App\Service\Novasoft\Report\Report\TrabajadoresActivosReport;
+use DateTime;
 use DateTimeInterface;
 use Psr\Container\ContainerInterface;
 use Symfony\Contracts\Service\ServiceSubscriberInterface;
@@ -123,14 +124,23 @@ class ReportFactory implements ServiceSubscriberInterface
 
     /**
      * @param string|null $identificacion
+     * @param DateTimeInterface|null $fechaIngreso
+     * @param DateTimeInterface|null $fechaRetiro
      * @param string|null $ssrsDb
      * @return LiquidacionContratoReport
      */
-    public function liquidacionContrato(?string $identificacion = null, ?string $ssrsDb = null)
+    public function liquidacionContrato(?string $identificacion = null, ?DateTimeInterface $fechaIngreso = null,
+                                        ?DateTimeInterface $fechaRetiro = null, ?string $ssrsDb = null)
     {
         $report = $this->container->get(LiquidacionContratoReport::class);
         if($identificacion) {
             $report->setParameterCodigoEmpleado($identificacion);
+        }
+        if($fechaIngreso) {
+            $report->setParameterFechaInicio($fechaIngreso);
+        }
+        if($fechaRetiro) {
+            $report->setParameterFechaFin($fechaRetiro);
         }
         if($ssrsDb) {
             $report->setDb($ssrsDb);

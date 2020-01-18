@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Service\ServicioEmpleados\Report;
-
 
 use App\Entity\ServicioEmpleados\CertificadoIngresos;
 use App\Entity\ServicioEmpleados\CertificadoLaboral;
@@ -10,7 +8,6 @@ use App\Entity\ServicioEmpleados\LiquidacionContrato;
 use App\Entity\ServicioEmpleados\Nomina;
 use App\Entity\ServicioEmpleados\ServicioEmpleadosReport;
 use App\Repository\Novasoft\Report\CertificadoIngresosRepository as NovasoftCertificadoIngresosRepo;
-use App\Repository\Novasoft\Report\Nomina\NominaRepository as NovasoftNominaRepo;
 use App\Service\Halcon\Report\Report\CertificadoLaboralReport as HalconCertificadoLaboralReport;
 use App\Service\Halcon\Report\Report\LiquidacionContratoReport as HalconLiquidacionContratoReport;
 use App\Service\Novasoft\Report\Report\LiquidacionContratoReport as NovasoftLiquidacionContratoReport;
@@ -45,12 +42,11 @@ class ReportFactory implements ServiceSubscriberInterface
     public function nomina(Nomina $nomina)
     {
         if($nomina->isSourceNovasoft()) {
-            $nominaNovasoft = $this->container->get(NovasoftNominaRepo::class)->find($nomina->getSourceId());
             return $this->container->get(NovasoftReportFactory::class)
                 ->nomina(
                     $nomina->getUsuario()->getIdentificacion(),
-                    $nominaNovasoft->getFecha(),
-                    $nominaNovasoft->getFecha(),
+                    $nomina->getFecha(),
+                    $nomina->getFecha(),
                     $this->getSsrsDb($nomina)
                 );
         } else {
@@ -112,19 +108,23 @@ class ReportFactory implements ServiceSubscriberInterface
     }
 
     /**
-     * @param LiquidacionContrato $liquidacionContrato
+     * @param LiquidacionContrato $selLiqContrato
      * @return HalconLiquidacionContratoReport|NovasoftLiquidacionContratoReport
      */
-    public function liquidacionContrato(LiquidacionContrato $liquidacionContrato)
+    public function liquidacionContrato(LiquidacionContrato $selLiqContrato)
     {
-        if($liquidacionContrato->isSourceNovasoft()) {
-            list($ano, $ident) = explode(",", $liquidacionContrato->getSourceId());
+        if($selLiqContrato->isSourceNovasoft()) {
             return $this->container->get(NovasoftReportFactory::class)
-                ->liquidacionContrato($ano, $ident, $this->getSsrsDb($liquidacionContrato));
+                ->liquidacionContrato(
+                    $selLiqContrato->getUsuario()->getIdentificacion(),
+                    $selLiqContrato->getFechaIngreso(),
+                    $selLiqContrato->getFechaRetiro(),
+                    $this->getSsrsDb($selLiqContrato)
+                );
         } else {
-            list($noContrat, $liqDefini) = explode(",", $liquidacionContrato->getSourceId());
+            list($noContrat, $liqDefini) = explode(",", $selLiqContrato->getSourceId());
             return $this->container->get(HalconReportFactory::class)
-                ->liquidacionContrato($noContrat, $liqDefini, $liquidacionContrato->getUsuario());
+                ->liquidacionContrato($noContrat, $liqDefini, $selLiqContrato->getUsuario());
         }
     }
 
@@ -132,7 +132,6 @@ class ReportFactory implements ServiceSubscriberInterface
     public static function getSubscribedServices()
     {
         return [
-            NovasoftNominaRepo::class,
             NovasoftReportFactory::class,
             NovasoftCertificadoIngresosRepo::class,
             HalconReportFactory::class,

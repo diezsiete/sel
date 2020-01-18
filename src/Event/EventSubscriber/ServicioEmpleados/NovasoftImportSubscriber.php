@@ -5,10 +5,13 @@ namespace App\Event\EventSubscriber\ServicioEmpleados;
 
 use App\Entity\Novasoft\Report\CertificadoIngresos;
 use App\Entity\Novasoft\Report\CertificadoLaboral;
+use App\Entity\Novasoft\Report\LiquidacionContrato;
 use App\Entity\Novasoft\Report\Nomina\Nomina;
 use App\Entity\ServicioEmpleados\CertificadoIngresos as SeCertificadoIngresos;
 use App\Entity\ServicioEmpleados\Nomina as SeNomina;
 use App\Entity\ServicioEmpleados\CertificadoLaboral as SeCertificadoLaboral;
+use App\Entity\ServicioEmpleados\LiquidacionContrato as SeLiquidacionContrato;
+use App\Entity\ServicioEmpleados\ServicioEmpleadosReport;
 use App\Event\Event\ServicioEmpleados\Report\Importer\DeleteEvent;
 use App\Event\Event\ServicioEmpleados\Report\Importer\ImportEvent;
 use App\Repository\ServicioEmpleados\NominaRepository;
@@ -36,40 +39,31 @@ class NovasoftImportSubscriber implements EventSubscriberInterface
 
     protected function importNomina(Nomina $entity)
     {
-        $seNomina = (new SeNomina())
-            ->setUsuario($entity->getUsuario())
+        return (new SeNomina())
             ->setFecha($entity->getFecha())
-            ->setConvenio($entity->getConvenioCodigoNombre())
-            ->setSourceNovasoft()
-            ->setSourceId($entity->getId());
-
-        $this->em->persist($seNomina);
-        $this->em->flush();
+            ->setConvenio($entity->getConvenioCodigoNombre());
     }
 
     protected function importCertificadoLaboral(CertificadoLaboral $certificadoLaboral)
     {
-        $seCertificadoLaboral = (new SeCertificadoLaboral())
-            ->setUsuario($certificadoLaboral->getUsuario())
+        return (new SeCertificadoLaboral())
             ->setFechaIngreso($certificadoLaboral->getFechaIngreso())
             ->setFechaRetiro($certificadoLaboral->getFechaEgreso())
-            ->setConvenio($certificadoLaboral->getEmpresaUsuaria())
-            ->setSourceNovasoft()
-            ->setSourceId($certificadoLaboral->getId());
-
-        $this->em->persist($seCertificadoLaboral);
-        $this->em->flush();
+            ->setConvenio($certificadoLaboral->getEmpresaUsuaria());
     }
 
     protected function importCertificadoIngresos(CertificadoIngresos $certificado)
     {
-        $seCertificado = (new SeCertificadoIngresos())
-            ->setPeriodo(DateTime::createFromFormat("Y-m-d", $certificado->getPeriodoCertificacionDe()->format('Y') . '-01-01'))
-            ->setSourceNovasoft()
-            ->setSourceId($certificado->getId())
-            ->setUsuario($certificado->getUsuario());
-        $this->em->persist($seCertificado);
-        $this->em->flush();
+        $periodo = DateTime::createFromFormat("Y-m-d", $certificado->getPeriodoCertificacionDe()->format('Y') . '-01-01');
+        return (new SeCertificadoIngresos())->setPeriodo($periodo);
+    }
+
+    protected function importLiquidacionContrato(LiquidacionContrato $liquidacionContrato)
+    {
+        return (new SeLiquidacionContrato())
+            ->setFechaIngreso($liquidacionContrato->getFechaIngreso())
+            ->setFechaRetiro($liquidacionContrato->getFechaRetiro())
+            ->setContrato($liquidacionContrato->getNumeroContrato());
     }
 
     public static function getSubscribedEvents()
@@ -82,8 +76,29 @@ class NovasoftImportSubscriber implements EventSubscriberInterface
 
     public function importEvent(ImportEvent $event)
     {
-        if($handlerMethodName = $this->getHandlerMethodName('import', $event->entityClass)) {
-            $this->$handlerMethodName($event->entity);
+        /** @var ServicioEmpleadosReport $seEntity */
+        $seEntity = null;
+        switch ($event->entityClass) {
+            case Nomina::class:
+                $seEntity = $this->importNomina($event->entity);
+                break;
+            case CertificadoLaboral::class:
+                $seEntity = $this->importCertificadoLaboral($event->entity);
+                break;
+            case CertificadoIngresos::class:
+                $seEntity = $this->importCertificadoIngresos($event->entity);
+                break;
+            case LiquidacionContrato::class:
+                $seEntity = $this->importLiquidacionContrato($event->entity);
+                break;
+        }
+        if($seEntity) {
+            $seEntity
+                ->setSourceNovasoft()
+                ->setSourceId($event->entity->getId())
+                ->setUsuario($event->entity->getUsuario());
+            $this->em->persist($seEntity);
+            $this->em->flush();
         }
     }
 

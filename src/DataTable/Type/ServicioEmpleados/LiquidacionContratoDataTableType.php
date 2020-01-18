@@ -4,6 +4,7 @@
 namespace App\DataTable\Type\ServicioEmpleados;
 
 
+use App\DataTable\Column\ActionsColumn\ActionsColumn;
 use App\Entity\ServicioEmpleados\LiquidacionContrato;
 use Doctrine\ORM\QueryBuilder;
 use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
@@ -22,19 +23,19 @@ class LiquidacionContratoDataTableType extends ServicioEmpleadosDataTableType
         $dataTable
             ->add('fechaIngreso', DateTimeColumn::class, ['label' => 'Fecha ingreso', 'format' => 'Y-m-d'])
             ->add('fechaRetiro', DateTimeColumn::class, ['label' => 'Fecha retiro', 'format' => 'Y-m-d'])
-            ->add('convenio', TextColumn::class, ['label' => 'Convenio'])
             ->add('contrato', TextColumn::class, ['label' => 'Contrato'])
-            /*->add('actions', ActionsColumn::class, [
+            ->add('actions', ActionsColumn::class, [
                 'label' => 'PDF',
                 'orderable' => false,
                 'field' => 'usuario.identificacion',
                 'actions' => [
-                    'route' => ['se_liquidacion_de_contrato_pdf', ['liquidacion' => 'id']],
+                    'route' => ['se_liquidacion_contrato_pdf', ['liquidacion' => 'id']],
                     'icon' => 'fas fa-file-pdf',
                     'target' => '_blank'
                 ]
-            ])*/
+            ])
             ->addOrderBy('fechaIngreso', DataTable::SORT_DESCENDING)
+            ->addOrderBy('fechaRetiro', DataTable::SORT_DESCENDING)
             ->createAdapter(ORMAdapter::class, [
                 'entity' => LiquidacionContrato::class,
                 'query' => function (QueryBuilder $builder){

@@ -44,7 +44,7 @@ class NominaPdf extends HalconPdfBase
         $this->Image($logoImg ,$this->GetX(), $this->getY() - 3, $image_width);
 
         $this->SetFont('Arial','B',$font_size + 10);
-        $this->Cell(195, $line_height + $logo_margin, 'COMPROBANTE DE PAGO', $border, 0, 'R');
+        $this->Cell(200, $line_height + $logo_margin, 'COMPROBANTE DE PAGO', $border, 0, 'R');
         $this->SetFont('Arial','B',$font_size);
         $this->Ln();
         $this->Ln();

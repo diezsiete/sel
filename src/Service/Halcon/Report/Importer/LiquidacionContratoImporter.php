@@ -39,15 +39,9 @@ class LiquidacionContratoImporter extends Importer
      */
     protected function buildSeEntity($halconEntity): ?ServicioEmpleadosReport
     {
-        $convenio = $halconEntity->getVinculacion()->getEmpresa() ? $halconEntity->getVinculacion()->getEmpresa() : null;
-        if($convenio && !$convenio->getNombre()) {
-            $convenio = $convenio->getCompania()->getNombre();
-        }
-
         return (new LiquidacionContrato())
             ->setFechaIngreso($halconEntity->getIngreso())
             ->setFechaRetiro($halconEntity->getLiquidacio())
-            ->setConvenio($convenio)
             ->setContrato($halconEntity->getVinculacion()->getNoContrat());
     }
 

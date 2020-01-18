@@ -4,10 +4,8 @@ namespace App\Controller;
 
 use App\DataTable\SelDataTableFactory;
 use App\DataTable\Type\AutoliquidacionEmpleadoDataTableType;
-use App\DataTable\Type\ServicioEmpleados\CertificadoIngresosDataTableType;
 use App\DataTable\Type\ServicioEmpleados\CertificadoLaboralDataTableType;
 use App\DataTable\Type\ServicioEmpleados\LiquidacionContratoDataTableType;
-use App\DataTable\Type\ServicioEmpleados\NominaDataTableType;
 use App\Entity\Autoliquidacion\AutoliquidacionEmpleado;
 use App\Entity\ServicioEmpleados\CertificadoIngresos;
 use App\Entity\ServicioEmpleados\CertificadoLaboral;
@@ -16,16 +14,9 @@ use App\Entity\ServicioEmpleados\Nomina;
 use App\Repository\Main\EmpleadoRepository;
 use App\Service\Autoliquidacion\FileManager;
 use App\Service\Novasoft\NovasoftEmpleadoService;
-use App\Service\Novasoft\Report\ReportFactory;
-use App\Service\Novasoft\Report\ReportPdfHandler;
-use App\Service\Pdf\PdfCartaLaboral;
-use App\Service\ReportesServicioEmpleados;
 use App\Service\ServicioEmpleados\DataTableBuilder;
 use App\Service\ServicioEmpleados\Report\ReportCacheHandler;
 use App\Service\ServicioEmpleados\Report\ReportFactory as SeReportFactory;
-use App\Service\ServicioEmpleados\Reportes;
-use DateTime;
-use Exception;
 use Omines\DataTablesBundle\DataTableFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
@@ -168,72 +159,32 @@ class ServicioEmpleadosController extends BaseController
         });
     }
 
-//    /**
-//     * @Route("/sel/se/liquidaciones-de-contrato", name="app_liquidaciones_de_contrato")
-//     */
-//    public function liquidacionesDeContrato(SelDataTableFactory $dataTableFactory, Request $request)
-//    {
-//
-//        $table = $dataTableFactory
-//            ->createFromServicioEmpleadosType(LiquidacionContratoDataTableType::class, $this->getUser(), ['searching' => false])
-//            ->handleRequest($request);
-//
-//        if($table->isCallback()) {
-//            return $table->getResponse();
-//        }
-//
-//        return $this->render('servicio_empleados/liquidaciones-de-contrato.html.twig', [
-//            'datatable' => $table
-//        ]);
-//    }
-
-//    /**
-//     * @Route("/sel/se/liquidacion-de-contrato/{liquidacion}", name="se_liquidacion_de_contrato_pdf")
-//     * @IsGranted("REPORTE_MANAGE", subject="liquidacion")
-//     */
-//    public function liquidacionDeContratoPdf(SeReportFactory $reportFactory, LiquidacionContrato $liquidacion)
-//    {
-//        $reportFactory->liquidacionContrato($liquidacion)->renderPdf();
-////        return $this->renderStream(function () use ($reportFactory, $liquidacion) {
-////            return $reportFactory->liquidacionContrato($liquidacion)->streamPdf();
-////        });
-//    }
-
-
-
-
     /**
-     * @Route("/sel/se/liquidaciones-de-contrato", name="app_liquidaciones_de_contrato")
+     * @Route("/sel/se/liquidacion-contrato", name="se_liquidacion_contrato")
      */
-    public function liquidacionesDeContrato(ReportesServicioEmpleados $reportes)
+    public function liquidacionContrato(SelDataTableFactory $dataTableFactory, Request $request)
     {
-        $identificacion = $this->getUser()->getIdentificacion();
-        $liquidaciones = $reportes->getLiquidacionesDeContrato($identificacion);
-        return $this->render('servicio_empleados/liquidaciones-de-contrato.html.twig', [
-            'liquidaciones' => $liquidaciones
+        $table = $dataTableFactory
+            ->createFromServicioEmpleadosType(LiquidacionContratoDataTableType::class, $this->getUser(), ['searching' => false])
+            ->handleRequest($request);
+
+        if($table->isCallback()) {
+            return $table->getResponse();
+        }
+
+        return $this->render('servicio_empleados/liquidacion-contrato.html.twig', [
+            'datatable' => $table
         ]);
     }
 
     /**
-     * @Route("/sel/se/liquidacion-de-contrato/{fechaIngreso}/{fechaRetiro}", name="app_liquidacion_de_contrato_pdf")
+     * @Route("/sel/se/liquidacion-contrato/{liquidacion}", name="se_liquidacion_contrato_pdf")
+     * @IsGranted("REPORTE_MANAGE", subject="liquidacion")
      */
-    public function liquidacionDeContratoPdf(Reportes $reportes, $fechaIngreso, $fechaRetiro)
+    public function liquidacionDeContratoPdf(SeReportFactory $reportFactory, LiquidacionContrato $liquidacion)
     {
-        return $this->renderStream(function () use ($reportes, $fechaIngreso, $fechaRetiro) {
-            $identificacion = $this->getUser()->getIdentificacion();
-            $fechaIngreso = DateTime::createFromFormat('Y-m-d', $fechaIngreso);
-            $fechaRetiro = DateTime::createFromFormat('Y-m-d', $fechaRetiro);
-            return $reportes->getLiquidacionStream($identificacion, $fechaIngreso, $fechaRetiro, $this->getSsrsDb());
+        return $this->renderStream(function () use ($reportFactory, $liquidacion) {
+            return $reportFactory->liquidacionContrato($liquidacion)->streamPdf();
         });
     }
-
-    /**
-     * @return string
-     * @throws Exception
-     */
-    private function getSsrsDb()
-    {
-        return $this->novasoftEmpleadoService->getSsrsDb($this->getUser()->getIdentificacion());
-    }
-
 }

@@ -86,10 +86,12 @@ class LiquidacionContrato
     private $salud;
     /**
      * @var DateTime
+     * @ORM\Column(type="date")
      */
     private $fechaIngreso;
     /**
      * @var DateTime
+     * @ORM\Column(type="date")
      */
     private $fechaRetiro;
     /**

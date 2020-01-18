@@ -81,7 +81,7 @@ class MenuBuilder
                 ->addChild('Aportes seguridad social', ['route' => 'app_certificados_aportes'])
                 ->setExtra('icon', 'fas fa-lock');
 
-            $menu->addChild('Liquidación de contrato', ['route' => 'app_liquidaciones_de_contrato'])
+            $menu->addChild('Liquidación de contrato', ['route' => 'se_liquidacion_contrato'])
                 ->setExtra('icon', 'fas fa-strikethrough');
         }
     }

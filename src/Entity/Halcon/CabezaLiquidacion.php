@@ -2,7 +2,9 @@
 
 namespace App\Entity\Halcon;
 
+use DateTime;
 use DateTimeInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -73,11 +75,13 @@ class CabezaLiquidacion
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @var DateTime
      */
     private $ingreso;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @var DateTime
      */
     private $liquidacio;
 
@@ -97,7 +101,9 @@ class CabezaLiquidacion
     private $xtermina;
 
     /**
-     * @ORM\Column(type="string", length=2, nullable=true)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Halcon\Banco")
+     * @ORM\JoinColumn(name="banco", referencedColumnName="banco")
+     * @var Banco
      */
     private $banco;
 
@@ -237,6 +243,18 @@ class CabezaLiquidacion
     private $aviso2;
 
     /**
+     *
+     * @var RenglonLiquidacion[]|ArrayCollection
+     * @ORM\OneToMany(targetEntity="App\Entity\Halcon\RenglonLiquidacion", mappedBy="cabeza")
+     */
+    private $renglones;
+
+    public function __construct()
+    {
+        $this->renglones = new ArrayCollection();
+    }
+
+    /**
      * @return Vinculacion
      */
     public function getVinculacion(): Vinculacion
@@ -261,7 +279,7 @@ class CabezaLiquidacion
 
     public function getAuxiliar($format = true): ?string
     {
-        return $format ? str_replace('.', '', $this->auxiliar) : $this->auxiliar;
+        return trim($format ? str_replace('.', '', $this->auxiliar) : $this->auxiliar);
     }
 
     public function getAno(): ?string
@@ -316,10 +334,13 @@ class CabezaLiquidacion
 
     public function getXtermina(): ?string
     {
-        return $this->xtermina;
+        return trim($this->xtermina);
     }
 
-    public function getBanco(): ?string
+    /**
+     * @return Banco
+     */
+    public function getBanco()
     {
         return $this->banco;
     }
@@ -331,7 +352,7 @@ class CabezaLiquidacion
 
     public function getCtaBanco(): ?string
     {
-        return $this->ctaBanco;
+        return trim($this->ctaBanco);
     }
 
     public function getXcomisione(): ?string
@@ -339,109 +360,109 @@ class CabezaLiquidacion
         return $this->xcomisione;
     }
 
-    public function getSuelCes(): ?int
+    public function getSuelCes($format = true)
     {
-        return $this->suelCes;
+        return $format ? number_format($this->suelCes) : $this->suelCes;
     }
 
-    public function getSuelPri(): ?int
+    public function getSuelPri($format = true)
     {
-        return $this->suelPri;
+        return $format ? number_format($this->suelPri) : $this->suelPri;
     }
 
-    public function getSuelVac(): ?int
+    public function getSuelVac($format = true)
     {
-        return $this->suelVac;
+        return $format ? number_format($this->suelVac) : $this->suelVac;
     }
 
-    public function getAuxCes(): ?int
+    public function getAuxCes($format = true)
     {
-        return $this->auxCes;
+        return $format ? number_format($this->auxCes) : $this->auxCes;
     }
 
-    public function getAuxPri(): ?int
+    public function getAuxPri($format = true)
     {
-        return $this->auxPri;
+        return $format ? number_format($this->auxPri) : $this->auxPri;
     }
 
-    public function getAuxVac(): ?int
+    public function getAuxVac($format = true)
     {
-        return $this->auxVac;
+        return $format ? number_format($this->auxVac) : $this->auxVac;
     }
 
-    public function getRecCes(): ?int
+    public function getRecCes($format = true)
     {
-        return $this->recCes;
+        return $format ? number_format($this->recCes) : $this->recCes ;
     }
 
-    public function getRecPri(): ?int
+    public function getRecPri($format = true)
     {
-        return $this->recPri;
+        return $format ? number_format($this->recPri) : $this->recPri;
     }
 
-    public function getRecVac(): ?int
+    public function getRecVac($format = true)
     {
-        return $this->recVac;
+        return $format ? number_format($this->recVac) : $this->recVac;
     }
 
-    public function getExtCes(): ?int
+    public function getExtCes($format = true)
     {
-        return $this->extCes;
+        return $format ? number_format($this->extCes) : $this->extCes;
     }
 
-    public function getExtPri(): ?int
+    public function getExtPri($format = true)
     {
-        return $this->extPri;
+        return $format ? number_format($this->extPri) : $this->extPri;
     }
 
-    public function getExtVac(): ?int
+    public function getExtVac($format = true)
     {
-        return $this->extVac;
+        return $format ? number_format($this->extVac) : $this->extVac;
     }
 
-    public function getComCes(): ?int
+    public function getComCes($format = true)
     {
-        return $this->comCes;
+        return $format ? number_format($this->comCes) : $this->comCes;
     }
 
-    public function getComPri(): ?int
+    public function getComPri($format = true)
     {
-        return $this->comPri;
+        return $format ? number_format($this->comPri) : $this->comPri;
     }
 
-    public function getComVac(): ?int
+    public function getComVac($format = true)
     {
-        return $this->comVac;
+        return $format ? number_format($this->comVac) : $this->comVac;
     }
 
-    public function getBaseCes(): ?int
+    public function getBaseCes($format = true)
     {
-        return $this->baseCes;
+        return $format ? number_format($this->baseCes) : $this->baseCes;
     }
 
-    public function getBasePri(): ?int
+    public function getBasePri($format = true)
     {
-        return $this->basePri;
+        return $format ? number_format($this->basePri) : $this->basePri;
     }
 
-    public function getBaseVac(): ?int
+    public function getBaseVac($format = true)
     {
-        return $this->baseVac;
+        return $format ? number_format($this->baseVac) : $this->baseVac;
     }
 
-    public function getTotDeveng(): ?int
+    public function getTotDeveng($format = true)
     {
-        return $this->totDeveng;
+        return $format ? number_format($this->totDeveng) : $this->totDeveng;
     }
 
-    public function getTotDeduci(): ?int
+    public function getTotDeduci($format = true)
     {
-        return $this->totDeduci;
+        return $format ? number_format($this->totDeduci) : $this->totDeduci;
     }
 
-    public function getNeto(): ?int
+    public function getNeto($format = true)
     {
-        return $this->neto;
+        return $format ? number_format($this->neto) : $this->neto;
     }
 
     public function getAvisoNega(): ?string
@@ -460,14 +481,32 @@ class CabezaLiquidacion
     }
 
     /**
+     * @return RenglonLiquidacion[]|ArrayCollection
+     */
+    public function getRenglones()
+    {
+        return $this->renglones;
+    }
+
+    /**
      * @ORM\PostLoad
      */
-    public function loadNullVinculacion()
+    public function loadNull()
     {
         try {
             $this->vinculacion->getNoContrat();
         } catch (EntityNotFoundException $e) {
             $this->vinculacion = null;
         }
+        try {
+            $this->banco->getNombre();
+        } catch (EntityNotFoundException $e) {
+            $this->banco = new Banco("SIN DEFINIR");
+        }
+    }
+
+    public function getFecha()
+    {
+        return $this->ingreso->format('Y-m-d') . ' / ' . $this->liquidacio->format('Y-m-d');
     }
 }

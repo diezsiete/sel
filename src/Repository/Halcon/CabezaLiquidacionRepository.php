@@ -36,7 +36,7 @@ class CabezaLiquidacionRepository extends ServiceEntityRepository
                 ->getQuery()
                 ->getResult();
         } else {
-            $qb
+            return $qb
                 ->join('cl.vinculacion', 'v')
                 ->andWhere('v.noContrat = :noContrato')
                 ->andWhere('cl.liqDefini = :liqDefini')
