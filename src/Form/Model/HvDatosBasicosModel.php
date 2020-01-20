@@ -34,18 +34,36 @@ class HvDatosBasicosModel
 
     /**
      * @Assert\NotBlank(message="Por favor ingrese su nombre")
+     * @Assert\Regex(
+     *     pattern="/\d|\W/",
+     *     match=false,
+     *     message="Por favor ingrese solo letras"
+     * )
      */
-    public $primerNombre;
+    private $primerNombre;
 
-
-    public $segundoNombre;
+    /**
+     * @Assert\Regex(
+     *     pattern="/\d|\W/",
+     *     match=false,
+     *     message="Por favor ingrese solo letras"
+     * )
+     */
+    private $segundoNombre;
 
     /**
      * @Assert\NotBlank(message="Por favor ingrese su apellido")
      */
-    public $primerApellido;
-    
-    public $segundoApellido;
+    private $primerApellido;
+
+    /**
+     * @Assert\Regex(
+     *     pattern="/\d|\W/",
+     *     match=false,
+     *     message="Por favor ingrese solo letras"
+     * )
+     */
+    private $segundoApellido;
 
 
     /*
@@ -162,6 +180,69 @@ class HvDatosBasicosModel
     
     public $celular;
 
+    public function setPrimerNombre($primerNombre)
+    {
+        $this->primerNombre = strtoupper($primerNombre);
+    }
+
+    public function getPrimerNombre()
+    {
+        return $this->primerNombre;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSegundoNombre()
+    {
+        return $this->segundoNombre;
+    }
+
+    /**
+     * @param mixed $segundoNombre
+     * @return HvDatosBasicosModel
+     */
+    public function setSegundoNombre($segundoNombre)
+    {
+        $this->segundoNombre = strtoupper($segundoNombre);
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPrimerApellido()
+    {
+        return $this->primerApellido;
+    }
+
+    /**
+     * @param mixed $primerApellido
+     * @return HvDatosBasicosModel
+     */
+    public function setPrimerApellido($primerApellido)
+    {
+        $this->primerApellido = strtoupper($primerApellido);
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSegundoApellido()
+    {
+        return $this->segundoApellido;
+    }
+
+    /**
+     * @param mixed $segundoApellido
+     * @return HvDatosBasicosModel
+     */
+    public function setSegundoApellido($segundoApellido)
+    {
+        $this->segundoApellido = strtoupper($segundoApellido);
+        return $this;
+    }
 
     public function getNacPais(): ?Pais
     {
