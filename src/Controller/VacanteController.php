@@ -127,6 +127,6 @@ class VacanteController extends AbstractController
         /** @var NativeFilesystemLoader $x */
         $x = $this->container->get('twig')->getLoader();
         $x->prependPath(__DIR__ . '/../../templates/vacante/aplicar');
-        $x->prependPath(__DIR__ . '/../../templates/' . $bag->get('empresa') . '/app/vacante/aplicar');
+        $x->prependPath(__DIR__ . '/../../templates/' . strtolower($bag->get('empresa')) . '/app/vacante/aplicar');
     }
 }
