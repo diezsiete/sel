@@ -72,7 +72,7 @@ class Empleado
     private $fechaRetiro;
 
     /**
-     * @ORM\Column(type="string", length=65, nullable=true)
+     * @ORM\Column(type="string", length=250, nullable=true)
      */
     private $cargo;
 

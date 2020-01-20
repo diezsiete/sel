@@ -121,12 +121,10 @@ abstract class Importer
         if($equal = $this->findEqual($entity)) {
             $action = "found equal";
             if($this->update) {
-                $equalIdentifier = $this->getIdentifier($equal);
                 $import = $this->handleEqual($equal);
                 if ($import) {
                     $action .= ", deleted and inserted";
-
-                    $this->dispatcher->dispatch(new DeleteEvent($equalIdentifier, get_class($entity)));
+                    $this->dispatchDeleteEvent($equal);
                 }
             } else {
                 $import = false;
@@ -151,10 +149,21 @@ abstract class Importer
             }*/
             $this->em->persist($entity);
             $this->em->flush();
-            $this->dispatcher->dispatch(new ImportEvent($entity));
+            $this->dispatchImportEvent($entity);
         }
 
         return $action;
+    }
+
+    protected function dispatchDeleteEvent($entity)
+    {
+        $identifier = $this->getIdentifier($this->getIdentifier($entity));
+        $this->dispatcher->dispatch(new DeleteEvent($identifier, get_class($entity)));
+    }
+
+    protected function dispatchImportEvent($entity)
+    {
+        $this->dispatcher->dispatch(new ImportEvent($entity));
     }
 
     protected function handleManyToOne($entity, $parent, $mapping)

@@ -179,6 +179,6 @@ class LiquidacionNominaReport extends Report
     public function getPdfFileName(): string
     {
         $fecha = $this->parameter_fFecIni->format('Ymd') . '-' . $this->parameter_fFecFin->format('Ymd');
-        return 'liquidacion-nomina' . '/' . $this->parameter_CodConv . '-' . $fecha . '.pdf';
+        return 'novasoft/liquidacion-nomina' . '/' . $this->parameter_CodConv . '-' . $fecha . '.pdf';
     }
 }

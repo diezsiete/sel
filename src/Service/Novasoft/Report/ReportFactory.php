@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Service\Novasoft\Report;
-
 
 use App\Entity\Main\Convenio;
 use App\Service\Novasoft\Report\Report\CertificadoIngresosReport;
@@ -12,7 +10,7 @@ use App\Service\Novasoft\Report\Report\LiquidacionNominaReport;
 use App\Service\Novasoft\Report\Report\NominaReport;
 use App\Service\Novasoft\Report\Report\Report;
 use App\Service\Novasoft\Report\Report\TrabajadoresActivosReport;
-use DateTime;
+use App\Service\Novasoft\Report\Report\Clientes\ReportFactory as ClientesReportFactory;
 use DateTimeInterface;
 use Psr\Container\ContainerInterface;
 use Symfony\Contracts\Service\ServiceSubscriberInterface;
@@ -158,6 +156,14 @@ class ReportFactory implements ServiceSubscriberInterface
         return $this->container->get($reportName);
     }
 
+    /**
+     * @return ClientesReportFactory
+     */
+    public function clientes()
+    {
+        return $this->container->get(ClientesReportFactory::class);
+    }
+
     public static function getSubscribedServices()
     {
         return [
@@ -166,7 +172,8 @@ class ReportFactory implements ServiceSubscriberInterface
             LiquidacionNominaReport::class,
             CertificadoLaboralReport::class,
             CertificadoIngresosReport::class,
-            LiquidacionContratoReport::class
+            LiquidacionContratoReport::class,
+            ClientesReportFactory::class
         ];
     }
 

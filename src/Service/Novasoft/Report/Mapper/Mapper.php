@@ -39,8 +39,8 @@ abstract class Mapper
             $set_method = "set" . ucfirst($entityAttribute);
             if(method_exists($this, $set_method)) {
                 $this->$set_method($value, $name);
-            } else {
-                $this->getTargetObject()->$set_method($value);
+            } else if($targetObject = $this->getTargetObject()) {
+                $targetObject->$set_method($value);
             }
         }
     }

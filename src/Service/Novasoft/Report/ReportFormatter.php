@@ -9,6 +9,11 @@
 namespace App\Service\Novasoft\Report;
 
 use App\Service\Novasoft\Report\Exception\InvalidMappedObject;
+use App\Service\Novasoft\Report\Mapper\Clientes\ListadoNomina\ListadoNominaEmpleadoMapper;
+use App\Service\Novasoft\Report\Mapper\Clientes\ListadoNomina\ListadoNominaGrupoMapper;
+use App\Service\Novasoft\Report\Mapper\Clientes\ListadoNomina\ListadoNominaGrupoTotalMapper;
+use App\Service\Novasoft\Report\Mapper\Clientes\ListadoNomina\ListadoNominaRenglonMapper;
+use App\Service\Novasoft\Report\Mapper\Clientes\ListadoNomina\ListadoNominaSubgrupoMapper;
 use App\Service\Novasoft\Report\Mapper\LiquidacionNomina\ConvenioMapper;
 use App\Service\Novasoft\Report\Mapper\LiquidacionNomina\EmpleadoMapper;
 use App\Service\Novasoft\Report\Mapper\LiquidacionNomina\RenglonMapper;
@@ -129,6 +134,7 @@ class ReportFormatter implements ServiceSubscriberInterface
      * Converts each row of $csv_data to a object using the Mapper mechanism
      * @param string|array $csvData
      * @param Mapper $mapper
+     * @param bool $single
      * @return mixed array of objects of type the Mapper $targetObject
      */
     public function mapCsv($csvData, Mapper $mapper, $single = false)
@@ -166,10 +172,13 @@ class ReportFormatter implements ServiceSubscriberInterface
                 }
                 $mapper->addMappedObject($objects);
             } catch (InvalidMappedObject $e) {
+                //TODO log este error
             }
         }
-
-        return $single && count($objects) === 1 ? $objects[0] : $objects;
+        if($single) {
+            return count($objects) ? $objects[0] : null;
+        }
+        return $objects;
     }
 
 
@@ -209,7 +218,12 @@ class ReportFormatter implements ServiceSubscriberInterface
             TotalMapper::class,
             ResumenMapper::class,
             ResumenRenglonMapper::class,
-            ResumenTotalMapper::class
+            ResumenTotalMapper::class,
+            ListadoNominaEmpleadoMapper::class,
+            ListadoNominaGrupoMapper::class,
+            ListadoNominaSubgrupoMapper::class,
+            ListadoNominaRenglonMapper::class,
+            ListadoNominaGrupoTotalMapper::class
         ];
     }
 }
