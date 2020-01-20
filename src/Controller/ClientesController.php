@@ -116,9 +116,11 @@ class ClientesController extends BaseController
     /**
      * @Route("/sel/clientes/listado-nomina/{id}/pdf", name="clientes_listado_nomina_detalle_pdf")
      */
-    public function listadoNominaDetallePdf(ListadoNomina $listadoNomina)
+    public function listadoNominaDetallePdf(ListadoNomina $listadoNomina, ReportFactory $reportFactory)
     {
-
+        return $this->renderStream(function () use ($reportFactory, $listadoNomina) {
+            return $reportFactory->clientes()->listadoNomina($listadoNomina)->streamPdf();
+        });
     }
 
     /**
