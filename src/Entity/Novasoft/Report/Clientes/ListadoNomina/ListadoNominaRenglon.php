@@ -20,12 +20,12 @@ class ListadoNominaRenglon
     /**
      * @ORM\Column(type="float")
      */
-    private $cantidad;
+    private $cantidad = 0;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $valor;
+    private $valor = 0;
 
     /**
      * @ORM\ManyToOne(targetEntity="ListadoNominaSubgrupo", inversedBy="renglones")

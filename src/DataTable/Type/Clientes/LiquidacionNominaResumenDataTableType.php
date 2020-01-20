@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\DataTable\Type\PortalClientes;
+namespace App\DataTable\Type\Clientes;
 
 
 use App\DataTable\Column\ActionsColumn\ActionsColumn;
@@ -59,10 +59,10 @@ class LiquidacionNominaResumenDataTableType implements DataTableTypeInterface
                     $builder
                         ->select('lnr')
                         ->from(LiquidacionNominaResumen::class, 'lnr')
+                        ->join('lnr.convenio', 'c')
                         ->join('lnr.total', 't');
                     if($convenioFilter) {
                         $builder
-                            ->join('lnr.convenio', 'c')
                             ->addSelect('c')
                             ->andWhere('lnr.convenio = :convenio')
                             ->setParameter('convenio', $convenioFilter);

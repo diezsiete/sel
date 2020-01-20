@@ -1,0 +1,102 @@
+{% extends 'base.html.twig' %}
+
+
+{% block title %}
+    Listado nomina {{ listadoNomina.fechaNomina|date('Y-m-d') }}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('clientes-report') }}
+{% endblock %}
+
+
+{% block body_header_title %}
+    Listado nomina
+    <small>
+        {{ listadoNomina.fechaNomina|date('Y-m-d') }}
+    </small>
+{% endblock %}
+
+{% block body_header_right %}
+    <ul class="u-list-inline">
+        <li class="list-inline-item g-color-primary">
+            <a href="{{ path('clientes_listado_nomina_detalle_pdf', { id: listadoNomina.id }) }}"
+               class="btn btn-md btn-primary u-btn-outline-primary rounded-0 form-control form-control-lg">
+                <i class="fas fa-file-pdf"></i> Exportar PDF
+            </a>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block main %}
+    {% block body_header %}
+        {{ parent() }}
+    {% endblock %}
+    <div class="container full-width report pb-5">
+
+        <table id="listado-nomina" class="table table-striped table-bordered table-hover data-table dataTable no-footer">
+            <tr>
+                <th colspan="2"></th>
+                {% for grupo in listadoNomina.grupos %}
+                   <th colspan="{{ grupo.subgrupos.count() * 2 + 1 }}" class="grupo-nombre">
+                       {{ grupo.nombre }}
+                   </th>
+                {% endfor %}
+            </tr>
+            <tr>
+                <th rowspan="2">Empleado</th>
+                <th rowspan="2">Cargo</th>
+                {% for grupo in listadoNomina.grupos %}
+                    {% for subgrupo in grupo.subgrupos %}
+                        <th colspan="2" class="subgrupo-nombre">{{ subgrupo.nombre }}</th>
+                    {% endfor %}
+                    <th>Total {{ grupo.nombre }}</th>
+                {% endfor %}
+            </tr>
+            <tr>
+                {% for grupo in listadoNomina.grupos %}
+                    {% for subgrupo in grupo.subgrupos %}
+                        <th class="sm">Cantidad</th>
+                        <th class="sm">Valor</th>
+                    {% endfor %}
+                    <th class="sm">Valor</th>
+                {% endfor %}
+            </tr>
+            {% for empleado in listadoNomina.empleados %}
+                <tr>
+                    <td class="nowrap">{{ empleado.empleado.usuario.nombrePrimeros ~ " - " ~ empleado.identificacion }}</td>
+                    <td class="nowrap">{{ empleado.nombreCargo }}</td>
+                    {% for grupo in listadoNomina.grupos %}
+                        {% for subgrupo in grupo.subgrupos %}
+                            {% set renglon = subgrupo.renglonEmpleado(empleado.identificacion) %}
+                            <td>{{ renglon.cantidad }}</td>
+                            <td>{{ renglon.valor|number_format(0, '.', ',') }}</td>
+                        {% endfor %}
+                        <td>
+                            {{ grupo.totalEmpleado(empleado.identificacion).valor|number_format(0, '.', ',') }}
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+            <tr>
+                <td></td>
+                <td></td>
+                {% for grupo in listadoNomina.grupos %}
+                    {% for subgrupo in grupo.subgrupos %}
+
+                        <td class="strong">{{ subgrupo.cantidadTotal }}</td>
+                        <td class="strong">{{ subgrupo.valorTotal|number_format(0, '.', ',') }}</td>
+                    {% endfor %}
+                    <td class="strong">
+                        {{ grupo.valorTotal|number_format(0, '.', ',') }}
+                    </td>
+                {% endfor %}
+            </tr>
+        </table>
+    </div>
+
+    {% block footer %}
+        {{ parent() }}
+    {% endblock %}
+{% endblock %}

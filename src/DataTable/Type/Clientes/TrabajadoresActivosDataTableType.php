@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\DataTable\Type\PortalClientes;
+namespace App\DataTable\Type\Clientes;
 
 
 use App\DataTable\Column\ActionsColumn\ActionsColumn;

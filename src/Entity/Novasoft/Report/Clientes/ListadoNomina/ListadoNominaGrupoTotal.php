@@ -20,7 +20,7 @@ class ListadoNominaGrupoTotal
     /**
      * @ORM\Column(type="integer")
      */
-    private $valor;
+    private $valor = 0;
 
     /**
      * @ORM\Column(type="string", length=40)
@@ -34,7 +34,7 @@ class ListadoNominaGrupoTotal
     private $grupo;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Novasoft\Report\Clientes\ListadoNomina\ListadoNominaEmpleado", inversedBy="totales")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Novasoft\Report\Clientes\ListadoNomina\ListadoNominaEmpleado")
      */
     private $empleado;
 

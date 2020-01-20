@@ -50,7 +50,8 @@ Encore
     .addEntry('admin-hv-list', './assets/sel/js/page/admin/hv/admin-hv-list.js')
     .addEntry('admin-scraper-hv-list', './assets/sel/js/admin/scraper-hv-list.js')
     .addEntry('admin-scraper-solicitud-list', './assets/sel/js/admin/scraper-solicitud-list.js')
-    .addEntry('portal-clientes', './assets/sel/js/portal-clientes.js')
+    .addEntry('portal-clientes', './assets/sel/js/clientes/portal-clientes.js')
+    .addEntry('clientes-report', './assets/sel/js/clientes/report.js')
 
     //.addEntry('page1', './assets/js/page1.js')
     //.addEntry('page2', './assets/js/page2.js')

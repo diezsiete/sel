@@ -155,4 +155,12 @@ class ListadoNominaSubgrupo
 
         return $this;
     }
+
+    public function getRenglonEmpleado($identificacion)
+    {
+        $filter = $this->renglones->filter(function (ListadoNominaRenglon $renglon) use ($identificacion) {
+            return $renglon->getEmpleado()->getIdentificacion() === $identificacion;
+        });
+        return $filter->count() === 1 ? $filter->first() : new ListadoNominaRenglon();
+    }
 }

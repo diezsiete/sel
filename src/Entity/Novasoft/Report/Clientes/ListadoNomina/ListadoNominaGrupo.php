@@ -2,6 +2,7 @@
 
 namespace App\Entity\Novasoft\Report\Clientes\ListadoNomina;
 
+use App\Repository\Novasoft\Report\Clientes\ListadoNomina\ListadoNominaGrupoTotalRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -162,5 +163,11 @@ class ListadoNominaGrupo
         }
 
         return $this;
+    }
+
+    public function getTotalEmpleado($identificacion)
+    {
+        $filter = $this->totales->matching(ListadoNominaGrupoTotalRepository::filterByIdentCriteria($identificacion));
+        return $filter->count() ? $filter->first() : new ListadoNominaGrupoTotal();
     }
 }

@@ -5,9 +5,11 @@ namespace App\Controller;
 
 
 use App\DataTable\Type\AutoliquidacionEmpleadoDataTableType;
-use App\DataTable\Type\PortalClientes\LiquidacionNominaResumenDataTableType;
-use App\DataTable\Type\PortalClientes\TrabajadoresActivosDataTableType;
+use App\DataTable\Type\Clientes\ListadoNominaResumenDataTableType;
+use App\DataTable\Type\Clientes\LiquidacionNominaResumenDataTableType;
+use App\DataTable\Type\Clientes\TrabajadoresActivosDataTableType;
 use App\Entity\Main\Empleado;
+use App\Entity\Novasoft\Report\Clientes\ListadoNomina\ListadoNomina;
 use App\Entity\Novasoft\Report\LiquidacionNomina\LiquidacionNominaResumen;
 use App\Entity\Novasoft\Report\TrabajadorActivo;
 use App\Repository\Autoliquidacion\AutoliquidacionEmpleadoRepository;
@@ -20,7 +22,7 @@ use Omines\DataTablesBundle\DataTableFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class PortalClientesController extends BaseController
+class ClientesController extends BaseController
 {
     /**
      * @var PortalClientesService
@@ -76,6 +78,47 @@ class PortalClientesController extends BaseController
             'liquidacionesNomina' => $liquidacionesNomina,
             'datatable' => $table
         ]);
+    }
+
+    /**
+     * @Route("/sel/clientes/listado-nomina", name="clientes_listado_nomina")
+     */
+    public function listadoNomina(DataTableFactory $dataTableFactory, Request $request)
+    {
+        $datatableOptions = [];
+        if($convenio = $this->portalClientesService->getRepresentanteConvenio()) {
+            $datatableOptions['convenio'] = $convenio;
+        }
+
+        $datatable = $dataTableFactory
+            ->createFromType(ListadoNominaResumenDataTableType::class, $datatableOptions, ['searching' => true])
+            ->handleRequest($request);
+
+        if($datatable->isCallback()) {
+            return $datatable->getResponse();
+        }
+
+        return $this->render('/clientes/listado-nomina.html.twig', [
+            'datatable' => $datatable
+        ]);
+    }
+
+    /**
+     * @Route("/sel/clientes/listado-nomina/{id}", name="clientes_listado_nomina_detalle")
+     */
+    public function lisadoNominaDetalle(ListadoNomina $listadoNomina)
+    {
+        return $this->render('/clientes/listado-nomina-detalle.html.twig', [
+            'listadoNomina' => $listadoNomina
+        ]);
+    }
+
+    /**
+     * @Route("/sel/clientes/listado-nomina/{id}/pdf", name="clientes_listado_nomina_detalle_pdf")
+     */
+    public function listadoNominaDetallePdf(ListadoNomina $listadoNomina)
+    {
+
     }
 
     /**
