@@ -6,7 +6,6 @@ namespace App\Service\Novasoft\Report\Importer;
 use App\Event\Event\ServicioEmpleados\Report\Importer\DeleteEvent;
 use App\Event\Event\ServicioEmpleados\Report\Importer\ImportEvent;
 use App\Event\Event\Novasoft\Report\Importer\ImporterLogEvent;
-use App\Event\Event\Novasoft\Report\Importer\TestEvent;
 use App\Helper\Loggable;
 use App\Service\Novasoft\Report\Report\Report;
 use Doctrine\ORM\EntityManagerInterface;
@@ -121,10 +120,11 @@ abstract class Importer
         if($equal = $this->findEqual($entity)) {
             $action = "found equal";
             if($this->update) {
+                $equalIdentifier = $this->getIdentifier($equal);
                 $import = $this->handleEqual($equal);
                 if ($import) {
                     $action .= ", deleted and inserted";
-                    $this->dispatchDeleteEvent($equal);
+                    $this->dispatchDeleteEvent($equalIdentifier, get_class($entity));
                 }
             } else {
                 $import = false;
@@ -155,10 +155,9 @@ abstract class Importer
         return $action;
     }
 
-    protected function dispatchDeleteEvent($entity)
+    protected function dispatchDeleteEvent($equalIdentifier, $entityClass)
     {
-        $identifier = $this->getIdentifier($this->getIdentifier($entity));
-        $this->dispatcher->dispatch(new DeleteEvent($identifier, get_class($entity)));
+        $this->dispatcher->dispatch(new DeleteEvent($equalIdentifier, $entityClass));
     }
 
     protected function dispatchImportEvent($entity)

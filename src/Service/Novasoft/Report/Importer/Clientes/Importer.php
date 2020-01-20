@@ -6,7 +6,7 @@ namespace App\Service\Novasoft\Report\Importer\Clientes;
 
 abstract class Importer extends \App\Service\Novasoft\Report\Importer\Importer
 {
-    protected function dispatchDeleteEvent($entity)
+    protected function dispatchDeleteEvent($equalIdentifier, $entityClass)
     {
         // no events to dispatch
     }
