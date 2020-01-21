@@ -123,37 +123,9 @@ class ServilaborController extends AbstractController
     /**
      * @Route("/candidatos", name="servilabor_candidatos", host="%empresa.SERVILABOR.host%")
      */
-    public function candidatos(Request $request, UploaderHelper $uploaderHelper, Mailer $mailer,
-                               ContainerBagInterface $bag, Configuracion $configuracion, UserPasswordEncoderInterface $passwordEncoder,
-                               GuardAuthenticatorHandler $guard, LoginFormAuthenticator $formAuthenticator)
+    public function candidatos()
     {
-        $form = $this->createForm(CandidatoFormType::class, new CandidatosModel());
-        $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()) {
-            /** @var CandidatosModel $data */
-            $data = $form->getData();
-            $usuario = $data->getUsuario($passwordEncoder);
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($usuario);
-            $em->flush();
-
-            if($adjunto = $request->files->get('adjunto')) {
-                $fileMetadata = $uploaderHelper->uploadPrivateFile($adjunto, true, $bag);
-                $subject = '[servilabor.com.co/candidatos] ' . $data->primerNombre . " " . $data->primerApellido;
-                $from = $data->email;
-                $to = $configuracion->getEmails()->getContacto();
-                $mailer->send($subject, $from, $to, 'servilabor/emails/candidatos.html.twig', [
-                    'data' => $data
-                ], $fileMetadata['fullpath']);
-            }
-
-            $this->addFlash('success', "Registrado exitosamente! Bienvenido al portal de Servilabor");
-            return $guard->authenticateUserAndHandleSuccess($usuario, $request, $formAuthenticator, 'main');
-        }
-
-        return $this->render('servilabor/candidatos.html.twig', [
-            'form' => $form->createView()
-        ]);
+        return $this->redirectToRoute('registro_datos_basicos');
     }
 
     /**
