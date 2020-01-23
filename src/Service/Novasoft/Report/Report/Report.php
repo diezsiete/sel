@@ -103,7 +103,7 @@ abstract class Report implements ReportInterface
      */
     public function getParameters()
     {
-        if(!$this->reportParameters) {
+        if (!$this->reportParameters) {
             $this->reportParameters = $this->loadReport()->Parameters;
         }
         return $this->reportParameters;
@@ -201,10 +201,10 @@ abstract class Report implements ReportInterface
     {
         $vars = get_object_vars($this);
         $parameters = [];
-        foreach($vars as $var_name => $var_value) {
-            if(preg_match('/(^parameter_)(.+)/', $var_name, $matches)) {
+        foreach ($vars as $var_name => $var_value) {
+            if (preg_match('/(^parameter_)(.+)/', $var_name, $matches)) {
                 $normalizeMethod = 'normalizeParameter_' . $matches[2];
-                $value = method_exists($this,$normalizeMethod) ? $this->$normalizeMethod() : $var_value;
+                $value = method_exists($this, $normalizeMethod) ? $this->$normalizeMethod() : $var_value;
 
                 $parameterValue = new ParameterValue();
                 $parameterValue->Name = $matches[2];
@@ -223,14 +223,13 @@ abstract class Report implements ReportInterface
     protected function render($renderType, $paginationMode)
     {
         return $this->SSRSReport->Render2($renderType, $paginationMode, $this->renderExtension,
-            $this->renderMimeType, $this->renderEncoding,$this->renderWarnings,
+            $this->renderMimeType, $this->renderEncoding, $this->renderWarnings,
             $this->renderStreamIds);
     }
 
     public function streamPdf()
     {
-        // usar cacheAndStream si se quiere cache
-        return $this->pdfHandler->writeAndStream($this->getPdfFileName(), function () {
+        return $this->pdfHandler->cacheAndStream($this->getPdfFileName(), function () {
             return $this->renderPdf();
         });
     }
@@ -243,5 +242,10 @@ abstract class Report implements ReportInterface
     {
         $this->usuario = $usuario;
         return $this;
+    }
+
+    public function setParametersByEntity($entity, $ssrsDb = null)
+    {
+        // IMPLEMENT
     }
 }

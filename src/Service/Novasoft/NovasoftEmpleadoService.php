@@ -72,12 +72,17 @@ class NovasoftEmpleadoService
         }
     }
 
+    /**
+     * Para usuarios nuevos que no son empleados, puede que ya lo sean en novasoft. Validamos y actualizamos si es el caso
+     * @param Usuario $usuario
+     * @return bool
+     */
     public function addRoleEmpleadoToUsuario(Usuario $usuario)
     {
         try {
             if (!$usuario->esRol(['/EMPLEADO/', '/SUPERADMIN/', '/CLIENTE/'])) {
                 if ($empleadoNovasoft = $this->findInNovasoft($usuario->getIdentificacion())) {
-                    return $this->importEmpleado($empleadoNovasoft, $this->lastSsrsDb);
+                    $this->importEmpleado($empleadoNovasoft, $this->lastSsrsDb);
                 }
             }
         } catch (Exception $e) {
@@ -86,7 +91,7 @@ class NovasoftEmpleadoService
             }
             return null;
         }
-        return null;
+        return $usuario->esRol('ROLE_EMPLEADO');
     }
 
     /**

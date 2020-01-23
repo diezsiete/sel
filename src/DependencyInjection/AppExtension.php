@@ -29,6 +29,7 @@ class AppExtension extends Extension
         $container->setParameter('scraper', $config['scraper']);
         $container->setParameter('hv_wizard_routes', $config['hv_wizard_routes']);
         $container->setParameter('sel_routes', isset($config['sel_routes']) ? $config['sel_routes'] : []);
+        $container->setParameter('se', $config['se']);
         $container->setParameter('env(DB_URL)', '%%empresa.'.$empresa.'.db%%');
     }
 

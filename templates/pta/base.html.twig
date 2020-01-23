@@ -47,10 +47,9 @@
 
 
 
-<body class="{{ is_sel() ? 'is-sel' : '' }}">  {# class="{{ is_sel() ? 'pp-header-open' : '' }}" #}
-
+<body class="{{ is_sel() ? 'is-sel' : '' }} {{ loading_overlay_body_class() }}" {{ loading_overlay_body_options() }}>  {# class="{{ is_sel() ? 'pp-header-open' : '' }}" #}
+{{ loading_overlay() }}
 <div class="body" id="body"> {# class="body{{ is_sel() ? ' menu-open' : '' }}" #}
-
     {% block header %}
         {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
             {{ include('pta/blocks/header/_switch-user.html.twig') }}

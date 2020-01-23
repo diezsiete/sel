@@ -37,7 +37,8 @@
     {% endblock %}
 </head>
 
-<body class="{{ app.user ? 'admin' : '' }}">
+<body class="{{ app.user ? 'admin' : '' }} {{ loading_overlay_body_class() }}" {{ loading_overlay_body_options() }}>
+{{ loading_overlay() }}
 <main>
     {% block header %}
         <!-- Header -->

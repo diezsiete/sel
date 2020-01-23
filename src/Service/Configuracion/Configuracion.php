@@ -7,6 +7,7 @@ namespace App\Service\Configuracion;
 
 use App\Constant\HvConstant;
 use App\Service\Configuracion\Scraper\ScraperConfiguracion;
+use App\Service\Configuracion\ServicioEmpleados\ServicioEmpleados;
 use App\Service\Hv\HvWizard\HvWizardRoute;
 use Exception;
 use Symfony\Bridge\Twig\Extension\AssetExtension;
@@ -95,6 +96,11 @@ class Configuracion
      * @var string
      */
     private $kernelProjectDir;
+
+    /**
+     * @var ServicioEmpleados
+     */
+    private $servicioEmpleadosConfig = null;
 
 
     public function __construct(ContainerBagInterface $bag, $webDir, Packages $packages, Environment $twig, $kernelProjectDir)
@@ -333,5 +339,12 @@ class Configuracion
         return $this->webDir;
     }
 
+    public function servicioEmpleados(): ServicioEmpleados
+    {
+        if($this->servicioEmpleadosConfig === null) {
+            $this->servicioEmpleadosConfig = new ServicioEmpleados($this->bag->get('se'));
+        }
+        return $this->servicioEmpleadosConfig;
+    }
 
 }

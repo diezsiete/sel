@@ -23,3 +23,8 @@
         {{ parent() }}
     {% endblock %}
 {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('servilabor-admin') }}
+{% endblock %}

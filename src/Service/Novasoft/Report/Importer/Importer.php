@@ -8,6 +8,7 @@ use App\Event\Event\ServicioEmpleados\Report\Importer\ImportEvent;
 use App\Event\Event\Novasoft\Report\Importer\ImporterLogEvent;
 use App\Helper\Loggable;
 use App\Service\Novasoft\Report\Report\Report;
+use App\Service\ServicioEmpleados\Report\PdfHandler;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Exception;
@@ -26,10 +27,7 @@ abstract class Importer
      * @var PropertyAccessorInterface
      */
     protected $propertyAccessor;
-    /**
-     * @var FileImporter
-     */
-    protected $fileImporter;
+
     /**
      * @var EventDispatcherInterface
      */
@@ -43,14 +41,18 @@ abstract class Importer
      * @var bool
      */
     protected $update = true;
+    /**
+     * @var PdfHandler
+     */
+    private $pdfHandler;
 
     public function __construct(EntityManagerInterface $em, PropertyAccessorInterface $propertyAccessor,
-                                FileImporter $fileImporter, EventDispatcherInterface $dispatcher)
+                                PdfHandler $pdfHandler, EventDispatcherInterface $dispatcher)
     {
         $this->em = $em;
         $this->propertyAccessor = $propertyAccessor;
-        $this->fileImporter = $fileImporter;
         $this->dispatcher = $dispatcher;
+        $this->pdfHandler = $pdfHandler;
     }
 
     /**
@@ -70,7 +72,16 @@ abstract class Importer
 
     public function importPdf()
     {
-        $this->importFile($this->report->getPdfFileName(), $this->report->renderPdf());
+        $this->pdfHandler->write($this->report->getPdfFileName(), function () {
+            return $this->report->renderPdf();
+        });
+    }
+
+    public function importMapAndPdf()
+    {
+        $this->dispatcher->addListener(ImportEvent::class, [$this, 'importPdfListener']);
+        $this->importMap();
+        $this->dispatcher->removeListener(ImportEvent::class, [$this, 'importPdfListener']);
     }
 
     /**
@@ -97,21 +108,6 @@ abstract class Importer
         }
     }
 
-    /**
-     * @param string|array $reporteNombre
-     * @param mixed $identifier
-     * @param null|string $fecha
-     * @param null|string $ext
-     * @param null|mixed $result
-     */
-    protected function importFile($reporteNombre, $identifier, $fecha = null, $ext = null, $result = null)
-    {
-        if(is_array($reporteNombre)) {
-            $result = $identifier;
-            list($reporteNombre, $identifier, $fecha, $ext) = $reporteNombre;
-        }
-        $this->fileImporter->write($reporteNombre, $identifier, $fecha, $ext, $result);
-    }
 
     protected function importEntity($entity)
     {
@@ -133,20 +129,6 @@ abstract class Importer
         }
 
         if($import) {
-            /** @var ClassMetadataInfo $targetMetadata */
-            /*$targetMetadata = $this->em->getMetadataFactory()->getMetadataFor(get_class($entity));
-            foreach ($targetMetadata->associationMappings as $mapping) {
-
-
-                if ($mapping['type'] === ClassMetadataInfo::ONE_TO_ONE) {
-                    //$this->handleOneToOne($entity, $mapping);
-                }
-
-                // trabajadoresActivos->centroCosto
-                if ($mapping['type'] === ClassMetadataInfo::MANY_TO_ONE) {
-                    //$this->handleManyToOne($entity, $this->getParent($entity, $mapping), $mapping);
-                }
-            }*/
             $this->em->persist($entity);
             $this->em->flush();
             $this->dispatchImportEvent($entity);
@@ -165,36 +147,6 @@ abstract class Importer
         $this->dispatcher->dispatch(new ImportEvent($entity));
     }
 
-    protected function handleManyToOne($entity, $parent, $mapping)
-    {
-        $parentIdentifier = $this->getIdentifier($parent);
-        $parentDb = $parentIdentifier ? $this->em->getRepository(get_class($parent))->find($parentIdentifier) : null;
-        if (!$parentDb) {
-            $this->importEntity($parent);
-            $parentDb = $parent;
-        }
-        $this->propertyAccessor->setValue($entity, $mapping['fieldName'], $parentDb);
-    }
-
-    protected function handleOneToOne($entity, $mapping)
-    {
-        // si es owning side (ej. trabajador activo -> empleado) significa que es unica por lo que eliminamos el anterior registro
-        if($mapping['isOwningSide']) {
-            $entityDb = $this->em->getRepository(get_class($entity))->findOneBy([
-                $mapping['fieldName'] => $this->getIdentifier($this->propertyAccessor->getValue($entity, $mapping['fieldName']))
-            ]);
-            if ($entityDb) {
-                //$this->em->remove($entityDb);
-                //$this->em->flush();
-            }
-        }
-        //no es owning side (ej. liquidacionNomina -> total) no hay que eliminarla
-        else if(!$mapping['cascade']) {
-            throw new Exception("La asociacion oneToOne {$mapping['targetEntity']} no es manejada");
-        }
-
-    }
-
     protected function getIdentifier($entity)
     {
         /** @var ClassMetadataInfo $targetMetadata */
@@ -207,16 +159,6 @@ abstract class Importer
         return $this->propertyAccessor->getValue($entity, $identifierMetadata[0]);
     }
 
-
-    protected function getParent($entity, $mapping)
-    {
-        $parent = $this->propertyAccessor->getValue($entity, $mapping['fieldName']);
-        if(!$parent) {
-            throw new Exception("relacion many to one parent is null");
-        }
-        return $parent;
-    }
-
     public function log($level, $message, array $context = array())
     {
         $this->dispatcher->dispatch(ImporterLogEvent::$level($message, $context));
@@ -227,6 +169,11 @@ abstract class Importer
         $this->info(sprintf("%s %s", $this->getIdentifier($entity), $action));
     }
 
+    public function importPdfListener(ImportEvent $event)
+    {
+        $this->report->setParametersByEntity($event->entity);
+        $this->importPdf();
+    }
 
     protected abstract function findEqual($entity);
 

@@ -3,12 +3,15 @@
 namespace App\Command\NovasoftImport;
 
 use App\Command\Helpers\ConnectToLogEvent;
+use App\Command\Helpers\ConsoleProgressBar;
 use App\Command\Helpers\PeriodoOption;
 use App\Command\Helpers\RangoPeriodoOption;
 use App\Command\Helpers\SearchByConvenioOrEmpleado;
+use App\Entity\Main\Empleado;
 use App\Event\Event\Novasoft\Report\Importer\ImporterLogEvent;
 use App\Repository\Novasoft\Report\Nomina\NominaRepository;
 use App\Service\Novasoft\Report\ReportFactory;
+use App\Service\ServicioEmpleados\Report\ReportCacheHandler;
 use Doctrine\Common\Annotations\Reader;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -20,8 +23,12 @@ class NiNominaCommand extends NiCommand
 {
     use PeriodoOption,
         RangoPeriodoOption,
-        SearchByConvenioOrEmpleado,
-        ConnectToLogEvent;
+        ConnectToLogEvent,
+        SearchByConvenioOrEmpleado {
+            getEmpleados as getEmpleadosTrait;
+        }
+    use ConsoleProgressBar;
+
 
     protected static $defaultName = 'sel:ni:nomina';
 
@@ -36,10 +43,20 @@ class NiNominaCommand extends NiCommand
      * @var ReportFactory
      */
     private $reportFactory;
+    /**
+     * @var ReportCacheHandler
+     */
+    private $reportCacheHandler;
+
+    /**
+     * @var Empleado[]
+     */
+    private $empleados = null;
 
 
     public function __construct(Reader $annotationReader, EventDispatcherInterface $eventDispatcher,
-                                ReportFactory $reportFactory, NominaRepository $reporteNominaRepository)
+                                ReportFactory $reportFactory, NominaRepository $reporteNominaRepository,
+                                ReportCacheHandler $reportCacheHandler)
     {
         $this->optionInicioDescription = 'fecha desde Y-m-d. [omita y se toma desde 2017-02-01]';
 
@@ -47,6 +64,7 @@ class NiNominaCommand extends NiCommand
 
         $this->reporteNominaRepository = $reporteNominaRepository;
         $this->reportFactory = $reportFactory;
+        $this->reportCacheHandler = $reportCacheHandler;
     }
 
 
@@ -63,8 +81,10 @@ class NiNominaCommand extends NiCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $empleados = $this->getEmpleados();
+
         $desde = $this->getInicio($input, '2017-02-01');
-        $hasta = $this->getFin($input);
+        $hasta = $this->getFin($input, 'Y-m-t');
+
         $dontUpdate = $input->getOption('dont-update');
 
 
@@ -84,12 +104,32 @@ class NiNominaCommand extends NiCommand
 
             $importer = $reporteNomina->getImporter()->setUpdate(!$dontUpdate);
 
-            $importer->importMap();
+            $importer->importMapAndPdf();
+            $this->reportCacheHandler->saveCache($empleado->getUsuario(), 'novasoft', 'Nomina');
+
+            $this->progressBarAdvance();
         }
     }
 
     protected function getLogEvent()
     {
         return ImporterLogEvent::class;
+    }
+
+    protected function progressBarCount(InputInterface $input, OutputInterface $output): ?int
+    {
+        return count($this->getEmpleados());
+    }
+
+    /**
+     * @return Empleado|Empleado[]|null
+     * @throws \Doctrine\ORM\Query\QueryException
+     */
+    protected function getEmpleados()
+    {
+        if($this->empleados === null) {
+            $this->empleados = $this->getEmpleadosTrait();
+        }
+        return $this->empleados;
     }
 }

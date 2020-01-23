@@ -7,6 +7,7 @@ import themeVars from './theme-vars';
 import $ from 'jquery';
 
 $(function () {
+
     // en navegador en sel el menu secundario se muestra abierto.
     if (window.matchMedia('(min-width: '+themeVars.menuMinWidth+')').matches) {
         const $body = $('body');

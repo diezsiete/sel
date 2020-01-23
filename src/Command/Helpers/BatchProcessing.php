@@ -27,13 +27,10 @@ trait BatchProcessing
 
     protected function emFlushAndClear()
     {
-        //TODO el command puede no utilizar la opcion info
-        if(!$this->input->getOption('info')) {
-            //TODO el command puede no utilizar trait SelCommandTrait que trae em (entityManagerInterface)
-            $this->em->flush();
-            $this->em->clear();
-            $this->batchEntities = [];
-        }
+        //TODO el command puede no utilizar trait SelCommandTrait que trae em (entityManagerInterface)
+        $this->em->flush();
+        $this->em->clear();
+        $this->batchEntities = [];
     }
 
     protected function setBatchEntity($entityName, $entity = null)

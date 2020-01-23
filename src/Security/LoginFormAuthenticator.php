@@ -3,7 +3,9 @@
 namespace App\Security;
 
 use App\Entity\Main\Usuario;
+use App\Service\Component\LoadingOverlayComponent;
 use App\Service\Novasoft\NovasoftEmpleadoService;
+use App\Service\ServicioEmpleados\Report\ReportCacheHandler;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,16 +34,27 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
      * @var NovasoftEmpleadoService
      */
     private $novasoftEmpleadoService;
+    /**
+     * @var LoadingOverlayComponent
+     */
+    private $loadingOverlay;
+    /**
+     * @var ReportCacheHandler
+     */
+    private $reportCacheHandler;
 
     public function __construct(EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator,
                                 CsrfTokenManagerInterface $csrfTokenManager, UserPasswordEncoderInterface $passwordEncoder,
-                                NovasoftEmpleadoService $novasoftEmpleadoService)
+                                NovasoftEmpleadoService $novasoftEmpleadoService,
+                                LoadingOverlayComponent $loadingOverlay, ReportCacheHandler $reportCacheHandler)
     {
         $this->entityManager = $entityManager;
         $this->urlGenerator = $urlGenerator;
         $this->csrfTokenManager = $csrfTokenManager;
         $this->passwordEncoder = $passwordEncoder;
         $this->novasoftEmpleadoService = $novasoftEmpleadoService;
+        $this->loadingOverlay = $loadingOverlay;
+        $this->reportCacheHandler = $reportCacheHandler;
     }
 
     public function supports(Request $request)
@@ -91,6 +104,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
      * @param mixed $credentials
      * @param UserInterface|Usuario $user
      * @return bool
+     * TODO esto no deberia botar exception
      */
     public function checkCredentials($credentials, UserInterface $user)
     {
@@ -104,7 +118,11 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
             if($user->getType() === 1) {
                 $this->updatePasswordToNewHash($user, $credentials['password']);
             }
-            $this->novasoftEmpleadoService->addRoleEmpleadoToUsuario($user);
+            $esEmpleado = $this->novasoftEmpleadoService->addRoleEmpleadoToUsuario($user);
+
+            if(($esEmpleado || $user->esRol('ROLE_HALCON')) && $this->reportCacheHandler->hasCacheToRenew($user)) {
+                $this->loadingOverlay->enable()->useCallbackRoute('sel_panel_empleado_update');
+            }
         }
 
         return $isValid;

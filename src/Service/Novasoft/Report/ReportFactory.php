@@ -3,6 +3,7 @@
 namespace App\Service\Novasoft\Report;
 
 use App\Entity\Main\Convenio;
+use App\Entity\Novasoft\Report\Nomina\Nomina;
 use App\Service\Novasoft\Report\Report\CertificadoIngresosReport;
 use App\Service\Novasoft\Report\Report\CertificadoLaboralReport;
 use App\Service\Novasoft\Report\Report\LiquidacionContratoReport;
@@ -28,8 +29,8 @@ class ReportFactory implements ServiceSubscriberInterface
     }
 
     /**
-     * @param $identificacion
-     * @param null|DateTimeInterface $fechaInicio si no se asigna se toma 2/1/2017
+     * @param string|Nomina $identificacion
+     * @param null|DateTimeInterface|string $fechaInicio si no se asigna se toma 2/1/2017
      * @param null|DateTimeInterface $fechaFin
      * @param null|string $ssrsdb
      * @return NominaReport
@@ -38,7 +39,12 @@ class ReportFactory implements ServiceSubscriberInterface
     {
         $reporteNomina = $this->container->get(NominaReport::class);
         if($identificacion) {
-            $reporteNomina->setParameterCodigoEmpleado($identificacion);
+            if(is_object($identificacion)) {
+                $reporteNomina->setParametersByEntity($identificacion, $fechaInicio);
+                $fechaInicio = null;
+            } else {
+                $reporteNomina->setParameterCodigoEmpleado($identificacion);
+            }
         }
         if($fechaInicio) {
             $reporteNomina->setParameterFechaInicio($fechaInicio);

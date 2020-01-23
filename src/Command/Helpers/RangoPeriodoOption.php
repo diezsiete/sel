@@ -55,11 +55,11 @@ trait RangoPeriodoOption
 
     /**
      * @param InputInterface $input
-     * @param bool $leftNull
+     * @param bool $leftNullOrDefault
      * @return DateTime|null
      * @throws Exception
      */
-    protected function getFin(InputInterface $input, $leftNull = false)
+    protected function getFin(InputInterface $input, $leftNullOrDefault = false)
     {
         $rangoPeriodo = $this->getRangoFromPeriodo($input, false);
 
@@ -70,7 +70,17 @@ trait RangoPeriodoOption
             if ($hasta) {
                 $hasta = DateTime::createFromFormat('Y-m-d', $hasta);
             } else {
-                $hasta = $leftNull ? null : new DateTime();
+                if($leftNullOrDefault) {
+                    if(is_bool($leftNullOrDefault)) {
+                        $hasta = null;
+                    } else {
+                        $hasta = preg_match('/\d+-\d+-\d+/', $leftNullOrDefault)
+                            ? DateTime::createFromFormat('Y-m-d', $leftNullOrDefault)
+                            : DateTime::createFromFormat('Y-m-d', (new DateTime())->format($leftNullOrDefault));
+                    }
+                } else {
+                    $hasta = new DateTime();
+                }
             }
         }
         return $hasta;

@@ -2,12 +2,30 @@
 
 namespace App\Controller;
 
+use App\Service\Component\LoadingOverlayComponent;
 use App\Service\ServicioEmpleados\DataTableBuilder;
+use App\Service\ServicioEmpleados\Report\ReportCacheHandler;
 use App\Service\ServicioEmpleados\Report\ReportFactory;
+use Exception;
 use Symfony\Component\Routing\Annotation\Route;
 
 class PanelController extends BaseController
 {
+    /**
+     * @var LoadingOverlayComponent
+     */
+    private $loadingOverlay;
+    /**
+     * @var ReportCacheHandler
+     */
+    private $reportCacheHandler;
+
+    public function __construct(LoadingOverlayComponent $loadingOverlay, ReportCacheHandler $reportCacheHandler)
+    {
+        $this->loadingOverlay = $loadingOverlay;
+        $this->reportCacheHandler = $reportCacheHandler;
+    }
+
     /**
      * @Route("/sel", name="sel_panel")
      */
@@ -20,7 +38,7 @@ class PanelController extends BaseController
         return $this->render('panel/main.html.twig');
     }
 
-    public function panelEmpleado(DataTableBuilder $dataTable, ReportFactory $reportFactory)
+    protected function panelEmpleado(DataTableBuilder $dataTable, ReportFactory $reportFactory)
     {
         $tableNomina = $dataTable->nomina(['dom' => 't', 'pageLength' => 2]);
         if($tableNomina->isCallback()) {
@@ -42,5 +60,17 @@ class PanelController extends BaseController
         ]);
     }
 
+    /**
+     * @Route("/sel/panel/empleado/update", name="sel_panel_empleado_update", options={"expose" = true})
+     */
+    public function panelEmpleadoUpdate()
+    {
+        try {
+            $this->reportCacheHandler->handleAll($this->getUser());
+        } catch (Exception $e) {
+            // TODO
+        }
+        return $this->json(['ok' => true]);
+    }
 
 }

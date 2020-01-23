@@ -5,6 +5,8 @@ namespace App\Repository\ServicioEmpleados;
 use App\Entity\Main\Usuario;
 use App\Entity\ServicioEmpleados\ReportCache;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -23,49 +25,34 @@ class ReportCacheRepository extends ServiceEntityRepository
     /**
      * @noinspection PhpDocMissingThrowsInspection
      * @param Usuario $usuario
-     * @param string $report
-     * @return ReportCache|null
+     * @param string $source
+     * @param string|null $report
+     * @return ReportCache|null|ReportCache[]|ArrayCollection
      */
-    public function findLastCacheForReport(Usuario $usuario, string $source, string $report)
+    public function findLastCacheForReport(Usuario $usuario, string $source, ?string $report = null)
     {
-        return $this->createQueryBuilder('rc')
+        $qb = $this->createQueryBuilder('rc')
             ->andWhere('rc.usuario = :usuario')
             ->andWhere('rc.source = :source')
-            ->andWhere('rc.report = :report')
-            ->setMaxResults(1)
             ->setParameter('usuario', $usuario)
-            ->setParameter('source', $source)
-            ->setParameter('report', $report)
-            ->getQuery()
-            ->getOneOrNullResult();
+            ->setParameter('source', $source);
+        if($report) {
+            return $qb
+                ->andWhere('rc.report = :report')
+                ->setParameter('report', $report)
+                ->setMaxResults(1)
+                ->getQuery()
+                ->getOneOrNullResult();
+
+        } else {
+            return new ArrayCollection($qb
+                ->getQuery()
+                ->getResult());
+        }
     }
 
-    // /**
-    //  * @return ReportCache[] Returns an array of ReportCache objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public static function filterByReportCriteria($reportName)
     {
-        return $this->createQueryBuilder('r')
-            ->andWhere('r.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('r.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        return Criteria::create()->where(Criteria::expr()->eq('report', $reportName));
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?ReportCache
-    {
-        return $this->createQueryBuilder('r')
-            ->andWhere('r.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

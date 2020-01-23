@@ -42,13 +42,7 @@ class ReportFactory implements ServiceSubscriberInterface
     public function nomina(Nomina $nomina)
     {
         if($nomina->isSourceNovasoft()) {
-            return $this->container->get(NovasoftReportFactory::class)
-                ->nomina(
-                    $nomina->getUsuario()->getIdentificacion(),
-                    $nomina->getFecha(),
-                    $nomina->getFecha(),
-                    $this->getSsrsDb($nomina)
-                );
+            return $this->container->get(NovasoftReportFactory::class)->nomina($nomina, $this->getSsrsDb($nomina));
         } else {
             list($noContrat, $consecLiq) = explode(",", $nomina->getSourceId());
             return $this->container->get(HalconReportFactory::class)

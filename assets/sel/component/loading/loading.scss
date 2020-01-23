@@ -38,6 +38,15 @@ body > .loading-overlay {
   top: 50%;
   z-index: 10000;
 }
+.bounce-loader.with-text {
+  margin: 0 auto;
+  width: 100%;
+  left:0;
+  top:45%;
+}
+.bounce-loader h4{
+  font-weight: normal;
+}
 
 .bounce-loader .bounce1,
 .bounce-loader .bounce2,

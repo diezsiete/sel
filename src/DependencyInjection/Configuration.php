@@ -21,6 +21,7 @@ class Configuration implements ConfigurationInterface
 
         $rootNode->children()
             ->append($this->addScraperNode())
+            ->append($this->addSeNode())
             ->append($this->addSelRoutesNode())
             ->append($this->addHvWizardRoutes())
             ->arrayNode('empresas')
@@ -154,6 +155,28 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('user')->end()
                             ->scalarNode('password')->end()
                             ->scalarNode('empleador')->end()
+                        ->end()
+                    ->end()
+                ->end();
+        return $node;
+    }
+
+    protected function addSeNode()
+    {
+        $treeBuilder = new TreeBuilder('se');
+        $node =
+            $treeBuilder->getRootNode()
+                ->children()
+                    ->arrayNode('report')
+                        ->useAttributeAsKey('key')
+                        ->arrayPrototype()
+                            ->children()
+                                ->arrayNode('report_description')
+                                    ->children()
+                                        ->scalarNode('test')->defaultNull()->end()
+                                    ->end()
+                                ->end()
+                            ->end()
                         ->end()
                     ->end()
                 ->end();
