@@ -12,6 +12,7 @@ use App\Entity\ServicioEmpleados\ServicioEmpleadosReport;
 use App\Repository\ServicioEmpleados\CertificadoLaboralRepository as SeCertificadoLaboralRepo;
 use App\Repository\ServicioEmpleados\ReportRepository;
 use App\Service\Halcon\Report\Report\LiquidacionContratoReport;
+use App\Service\ServicioEmpleados\Report\PdfHandler;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
@@ -28,10 +29,10 @@ class CertificadoLaboralImporter extends Importer
      */
     private $seCertificadoLaboralRepo;
 
-    public function __construct(EntityManagerInterface $em, EventDispatcherInterface $dispatcher,
+    public function __construct(EntityManagerInterface $em, PdfHandler $pdfHandler,
                                 SeCertificadoLaboralRepo $seCertificadoLaboralRepo)
     {
-        parent::__construct($em, $dispatcher);
+        parent::__construct($em, $pdfHandler);
 
         $this->seCertificadoLaboralRepo = $seCertificadoLaboralRepo;
     }

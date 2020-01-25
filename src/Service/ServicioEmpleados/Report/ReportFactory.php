@@ -41,8 +41,9 @@ class ReportFactory implements ServiceSubscriberInterface
      */
     public function nomina(Nomina $nomina)
     {
-        if($nomina->isSourceNovasoft()) {
-            return $this->container->get(NovasoftReportFactory::class)->nomina($nomina, $this->getSsrsDb($nomina));
+        if ($nomina->isSourceNovasoft()) {
+            return $this->container->get(NovasoftReportFactory::class)->nomina(
+                $nomina->getUsuario()->getIdentificacion(), $nomina->getFecha(), $nomina->getFecha(), $this->getSsrsDb($nomina));
         } else {
             list($noContrat, $consecLiq) = explode(",", $nomina->getSourceId());
             return $this->container->get(HalconReportFactory::class)
@@ -56,13 +57,13 @@ class ReportFactory implements ServiceSubscriberInterface
      */
     public function certificadoLaboral($filter = null)
     {
-        if(!$filter || is_string($filter)) {
+        if (!$filter || is_string($filter)) {
             $report = $this->container->get(SeCertificadoLaboralReport::class);
             if ($filter) {
                 $report->setIdentificacion($filter);
             }
         } else {
-            if($filter->isSourceNovasoft()) {
+            if ($filter->isSourceNovasoft()) {
                 return $this->container->get(NovasoftReportFactory::class)
                     ->certificadoLaboral($filter->getUsuario()->getIdentificacion(), $this->getSsrsDb($filter));
             } else {
@@ -80,13 +81,13 @@ class ReportFactory implements ServiceSubscriberInterface
      */
     public function certificadoIngresos($filter = null)
     {
-        if(!$filter || is_string($filter)) {
+        if (!$filter || is_string($filter)) {
             $report = $this->container->get(SeCertificadoLaboralReport::class);
             if ($filter) {
                 $report->setIdentificacion($filter);
             }
         } else {
-            if($filter->isSourceNovasoft()) {
+            if ($filter->isSourceNovasoft()) {
                 $certIngresos = $this->container->get(NovasoftCertificadoIngresosRepo::class)->find($filter->getSourceId());
                 return $this->container->get(NovasoftReportFactory::class)
                     ->certificadoIngresos(
@@ -107,7 +108,7 @@ class ReportFactory implements ServiceSubscriberInterface
      */
     public function liquidacionContrato(LiquidacionContrato $selLiqContrato)
     {
-        if($selLiqContrato->isSourceNovasoft()) {
+        if ($selLiqContrato->isSourceNovasoft()) {
             return $this->container->get(NovasoftReportFactory::class)
                 ->liquidacionContrato(
                     $selLiqContrato->getUsuario()->getIdentificacion(),
@@ -122,6 +123,15 @@ class ReportFactory implements ServiceSubscriberInterface
         }
     }
 
+    /**
+     * @param ServicioEmpleadosReport $entity
+     * @return ReportInterface
+     */
+    public function getReportByEntity(ServicioEmpleadosReport $entity)
+    {
+        $reportEntityClassName = lcfirst(preg_replace('/.+\\\\(\w+)$/', '$1', get_class($entity)));
+        return $this->$reportEntityClassName($entity);
+    }
 
     public static function getSubscribedServices()
     {

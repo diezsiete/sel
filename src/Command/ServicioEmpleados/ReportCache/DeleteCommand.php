@@ -36,10 +36,10 @@ class DeleteCommand extends TraitableCommand
         }
     }
 
-    protected function findUsuarioIterable(InputInterface $input)
+    protected function findUsuarioQuery(InputInterface $input, $count = false)
     {
         return $this->em->getRepository(ReportCache::class)
-            ->findUsuariosBySourceQuery($this->getSource($input), $input->getArgument('usuario'))->iterate();
+            ->findUsuariosBySourceQuery($this->getSource($input), $input->getArgument('usuario'));
     }
 
 }

@@ -10,6 +10,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\QueryException;
 use Doctrine\ORM\QueryBuilder;
 use Exception;
@@ -69,15 +70,30 @@ class EmpleadoRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param bool|DateTimeInterface $activo
      * @return Usuario[]
      */
-    public function findAllUsuarios()
+    public function findAllUsuarios($activo = false)
     {
-        $qb = $this->_em->createQueryBuilder()
-            ->select('u')
-            ->from(Usuario::class, 'u')
-            ->join($this->_entityName, 'e', 'WITH', 'u = e.usuario');
-        return $qb->getQuery()->getResult();
+        return $this->findAllUsuariosBuilder($activo)->getQuery()->getResult();
+    }
+
+    /**
+     * @param bool|DateTimeInterface $activo
+     * @return Query
+     */
+    public function findAllUsuariosQuery($activo = false)
+    {
+        return $this->findAllUsuariosBuilder($activo)->getQuery();
+    }
+
+    /**
+     * @param bool|DateTimeInterface $activo
+     * @return Query
+     */
+    public function countAllUsuariosQuery($activo = false)
+    {
+        return $this->findAllUsuariosBuilder($activo)->select('COUNT(u.id)')->getQuery();
     }
 
     /**
@@ -217,10 +233,11 @@ class EmpleadoRepository extends ServiceEntityRepository
 
     /**
      * @param DateTimeInterface|null $fechaRetiro
+     * @param string $alias
      * @return Criteria
      * @throws Exception
      */
-    public static function fechaRetiroCriteria(?DateTimeInterface $fechaRetiro = null)
+    public static function fechaRetiroCriteria(?DateTimeInterface $fechaRetiro = null, $alias = '')
     {
         if(!$fechaRetiro) {
             $fechaRetiro = new DateTime();
@@ -228,8 +245,8 @@ class EmpleadoRepository extends ServiceEntityRepository
 
         return Criteria::create()
             ->andWhere(Criteria::expr()->orX(
-                Criteria::expr()->isNull('fechaRetiro'),
-                Criteria::expr()->gt('fechaRetiro', $fechaRetiro)
+                Criteria::expr()->isNull("$alias.fechaRetiro"),
+                Criteria::expr()->gt("$alias.fechaRetiro", $fechaRetiro)
             ));
     }
 
@@ -267,6 +284,24 @@ class EmpleadoRepository extends ServiceEntityRepository
             $qb->addCriteria(static::fechaRetiroCriteria(is_object($activo) ? $activo : null));
         }
 
+        return $qb;
+    }
+
+
+    /**
+     * @noinspection PhpDocMissingThrowsInspection
+     * @param bool|DateTimeInterface $activo
+     * @return QueryBuilder
+     */
+    protected function findAllUsuariosBuilder($activo = false)
+    {
+        $qb = $this->_em->createQueryBuilder()
+            ->select('u')
+            ->from(Usuario::class, 'u')
+            ->join($this->_entityName, 'e', 'WITH', 'u = e.usuario');
+        if($activo) {
+            $qb->addCriteria(static::fechaRetiroCriteria(is_object($activo) ? $activo : null, 'e'));
+        }
         return $qb;
     }
 }

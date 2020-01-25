@@ -6,6 +6,7 @@ namespace App\Service\Halcon\Report\Report;
 
 use App\Entity\Main\Usuario;
 use App\Service\Halcon\Report\Importer\Importer;
+use App\Service\ServicioEmpleados\Report\ImporterInterface;
 use App\Service\ServicioEmpleados\Report\PdfHandler;
 use App\Service\ServicioEmpleados\Report\ReportInterface;
 
@@ -44,7 +45,7 @@ abstract class Report implements ReportInterface
     /**
      * @return Importer
      */
-    public function getImporter(): Importer
+    public function getImporter(): ImporterInterface
     {
         return $this->importer;
     }

@@ -10,6 +10,7 @@ use App\Entity\ServicioEmpleados\ServicioEmpleadosReport;
 use App\Repository\ServicioEmpleados\NominaRepository as SeNominaRepo;
 use App\Repository\ServicioEmpleados\ReportRepository;
 use App\Service\Halcon\Report\Report\LiquidacionContratoReport;
+use App\Service\ServicioEmpleados\Report\PdfHandler;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -27,10 +28,9 @@ class NominaImporter extends Importer
      */
     private $seNominaRepo;
 
-    public function __construct(EntityManagerInterface $em, EventDispatcherInterface $dispatcher,
-                                SeNominaRepo $seNominaRepo)
+    public function __construct(EntityManagerInterface $em, PdfHandler $pdfHandler, SeNominaRepo $seNominaRepo)
     {
-        parent::__construct($em, $dispatcher);
+        parent::__construct($em, $pdfHandler);
 
         $this->seNominaRepo = $seNominaRepo;
     }

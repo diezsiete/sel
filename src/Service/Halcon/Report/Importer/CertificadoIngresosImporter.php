@@ -12,6 +12,7 @@ use App\Entity\ServicioEmpleados\ServicioEmpleadosReport;
 use App\Repository\ServicioEmpleados\CertificadoIngresosRepository as SeCertificadoIngresosRepo;
 use App\Repository\ServicioEmpleados\ReportRepository;
 use App\Service\Halcon\Report\Report\LiquidacionContratoReport;
+use App\Service\ServicioEmpleados\Report\PdfHandler;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -29,10 +30,10 @@ class CertificadoIngresosImporter extends Importer
      */
     private $seCertificadoIngresosRepo;
 
-    public function __construct(EntityManagerInterface $em, EventDispatcherInterface $dispatcher,
+    public function __construct(EntityManagerInterface $em, PdfHandler $pdfHandler,
                                 SeCertificadoIngresosRepo $seCertificadoIngresosRepo)
     {
-        parent::__construct($em, $dispatcher);
+        parent::__construct($em, $pdfHandler);
 
         $this->seCertificadoIngresosRepo = $seCertificadoIngresosRepo;
     }

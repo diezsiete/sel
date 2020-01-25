@@ -8,14 +8,16 @@ use App\Event\Event\ServicioEmpleados\Report\Importer\DeleteEvent;
 use App\Event\Event\ServicioEmpleados\Report\Importer\ImportEvent;
 use App\Helper\Loggable;
 use App\Service\Novasoft\Report\Report\Report;
+use App\Service\ServicioEmpleados\Report\ImporterInterface;
 use App\Service\ServicioEmpleados\Report\PdfHandler;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Exception;
+use SSRS\SSRSReportException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
-abstract class Importer
+abstract class Importer implements ImporterInterface
 {
     use Loggable;
 
@@ -65,6 +67,9 @@ abstract class Importer
         return $this;
     }
 
+    /**
+     * @throws SSRSReportException
+     */
     public function importMap()
     {
         $this->import($this->report->renderMap());
@@ -82,6 +87,9 @@ abstract class Importer
         return $this->pdfHandler->delete($this->report->getPdfFileName());
     }
 
+    /**
+     * @throws SSRSReportException
+     */
     public function importMapAndPdf()
     {
         $this->dispatcher->addListener(ImportEvent::class, [$this, 'importPdfListener']);

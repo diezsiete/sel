@@ -9,6 +9,7 @@ use App\Service\Configuracion\Configuracion;
 use App\Service\Novasoft\Report\Importer\Importer;
 use App\Service\Novasoft\Report\Mapper\Mapper;
 use App\Service\Novasoft\Report\ReportFormatter;
+use App\Service\ServicioEmpleados\Report\ImporterInterface;
 use App\Service\ServicioEmpleados\Report\PdfHandler;
 use App\Service\ServicioEmpleados\Report\ReportInterface;
 use App\Service\Utils;
@@ -172,7 +173,7 @@ abstract class Report implements ReportInterface
     /**
      * @return Importer
      */
-    public function getImporter(): Importer
+    public function getImporter(): ImporterInterface
     {
         return $this->importer;
     }

@@ -11,6 +11,7 @@ use App\Entity\Main\Usuario;
 use App\Event\Event\LogEvent;
 use App\Repository\Main\UsuarioRepository;
 use App\Service\ServicioEmpleados\Report\ReportCacheHandler;
+use Doctrine\ORM\Query;
 use Exception;
 use Generator;
 use Symfony\Component\Console\Input\InputArgument;
@@ -63,7 +64,7 @@ trait ReportCache
      */
     protected function findUsuario(InputInterface $input)
     {
-        $iterableResult = $this->findUsuarioIterable($input);
+        $iterableResult = $this->findUsuarioQuery($input)->iterate();
         while (false !== ($usuario = $iterableResult->next())) {
             $this->currentUsuario = $usuario[0];
             yield $usuario[0];
@@ -100,15 +101,6 @@ trait ReportCache
     }
 
 
-    protected function findUsuarioIterable(InputInterface $input)
-    {
-        $rol = $this->configuracion->servicioEmpleados()->getRolBySource($input->getOption('source'));
-        /** @var UsuarioRepository $usuarioRepository */
-        $usuarioRepository = $this->em->getRepository(Usuario::class);
-        return $usuarioRepository
-            ->findByRolQuery($rol, $input->getArgument('usuario'))->iterate();
-    }
-
     /**
      * @param $level
      * @param $message
@@ -124,4 +116,11 @@ trait ReportCache
     {
         return LogEvent::class;
     }
+
+    /**
+     * @param InputInterface $input
+     * @param bool $count
+     * @return Query
+     */
+    protected abstract function findUsuarioQuery(InputInterface $input, $count = false);
 }

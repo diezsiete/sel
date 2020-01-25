@@ -9,11 +9,13 @@ use App\Entity\ServicioEmpleados\ServicioEmpleadosReport;
 use App\Helper\Loggable;
 use App\Repository\ServicioEmpleados\ReportRepository;
 use App\Service\Halcon\Report\Report\Report;
+use App\Service\ServicioEmpleados\Report\ImporterInterface;
+use App\Service\ServicioEmpleados\Report\PdfHandler;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 
-abstract class Importer
+abstract class Importer implements ImporterInterface
 {
     use Loggable;
 
@@ -21,19 +23,25 @@ abstract class Importer
      * @var EntityManagerInterface
      */
     private $em;
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $dispatcher;
+
     /**
      * @var Report
      */
     protected $report;
+    /**
+     * @var PdfHandler
+     */
+    private $pdfHandler;
 
-    public function __construct(EntityManagerInterface $em, EventDispatcherInterface $dispatcher)
+    /**
+     * @var bool
+     */
+    private $importPdfFlag = false;
+
+    public function __construct(EntityManagerInterface $em, PdfHandler $pdfHandler)
     {
         $this->em = $em;
-        $this->dispatcher = $dispatcher;
+        $this->pdfHandler = $pdfHandler;
     }
 
     /**
@@ -56,6 +64,25 @@ abstract class Importer
         if(!$result) {
             $this->info("no hay reportes");
         }
+    }
+
+    public function importPdf()
+    {
+        $this->pdfHandler->write($this->report->getPdfFileName(), function () {
+            return $this->report->renderPdf();
+        });
+    }
+
+    public function deletePdf()
+    {
+        return $this->pdfHandler->delete($this->report->getPdfFileName());
+    }
+
+    public function importMapAndPdf()
+    {
+        $this->importPdfFlag = true;
+        $this->importMap();
+        $this->importPdfFlag = false;
     }
 
 
@@ -81,6 +108,10 @@ abstract class Importer
 
             $this->em->persist($seEntity);
             $this->em->flush();
+
+            if($this->importPdfFlag) {
+                //$this->report->setParametersBySeEntity($seEntity);
+            }
         }
     }
 

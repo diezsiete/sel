@@ -83,6 +83,18 @@ class UsuarioRepository extends ServiceEntityRepository
      */
     public function findByRolQuery($rol, $idOrIdent = null)
     {
+        $qb = $this->findByRolQueryBuilder($rol, $idOrIdent);
+        return $qb->getQuery();
+    }
+
+    public function countByRolQuery($rol, $idOrIdent = null)
+    {
+        $qb = $this->findByRolQueryBuilder($rol, $idOrIdent);
+        return $qb->select('COUNT(u.id)')->getQuery();
+    }
+
+    protected function findByRolQueryBuilder($rol, $idOrIdent = null)
+    {
         $qb = $this->createQueryBuilder('u');
         if(!is_array($rol)) {
             $qb->andWhere($qb->expr()->like('u.roles', "'%$rol%'"));
@@ -106,8 +118,7 @@ class UsuarioRepository extends ServiceEntityRepository
                 ));
             }
         }
-
-        return $qb->getQuery();
+        return $qb;
     }
 
     /**

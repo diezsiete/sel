@@ -83,4 +83,13 @@ class NominaReport extends Report
             $reportEntity['consecutivo']
         ];
     }
+
+    /**
+     * @param $entity
+     * @return $this
+     */
+    public function setParametersByEntity($entity)
+    {
+        // TODO: Implement setParametersByEntity() method.
+    }
 }

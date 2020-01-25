@@ -5,6 +5,7 @@ namespace App\Service\ServicioEmpleados\Report;
 
 use App\Entity\Main\Usuario;
 use App\Entity\ServicioEmpleados\ReportCache;
+use App\Entity\ServicioEmpleados\ServicioEmpleadosReport;
 use App\Event\Event\LogEvent;
 use App\Helper\Loggable;
 use App\Repository\ServicioEmpleados\ReportCacheRepository;
@@ -19,6 +20,7 @@ use DateInterval;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use SSRS\SSRSReportException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -58,10 +60,15 @@ class ReportCacheHandler
      * @var EventDispatcherInterface
      */
     private $dispatcher;
+    /**
+     * @var ReportFactory
+     */
+    private $reportFactory;
 
     public function __construct(ReportCacheRepository $reportCacheRepo, EntityManagerInterface $em, Configuracion $config,
                                 NovasoftEmpleadoService $novasoftEmpleadoService, EventDispatcherInterface $dispatcher,
-                                HalconReportFactory $halconReportFactory, NovasoftReportFactory $novasoftReportFactory)
+                                HalconReportFactory $halconReportFactory, NovasoftReportFactory $novasoftReportFactory,
+                                ReportFactory $reportFactory)
     {
         $this->reportCacheRepo = $reportCacheRepo;
         $this->halconReportFactory = $halconReportFactory;
@@ -70,6 +77,7 @@ class ReportCacheHandler
         $this->novasoftEmpleadoService = $novasoftEmpleadoService;
         $this->config = $config;
         $this->dispatcher = $dispatcher;
+        $this->reportFactory = $reportFactory;
     }
 
     /**
@@ -125,6 +133,11 @@ class ReportCacheHandler
         }
     }
 
+    /**
+     * @param Usuario $usuario
+     * @param $reportEntityName
+     * @param null $source
+     */
     public function delete(Usuario $usuario, $reportEntityName, $source = null)
     {
         if(!$source) {
@@ -133,15 +146,17 @@ class ReportCacheHandler
             }
         } else {
             $seEntityName = $this->config->servicioEmpleados()->getReportEntityClass($reportEntityName);
-            $this->deleteReportEntities($seEntityName, ['usuario' => $usuario, 'source' => $source]);
+
+            $this->deleteReportEntities($seEntityName, ['usuario' => $usuario, 'source' => $source],
+                function(ServicioEmpleadosReport $entity) use ($reportEntityName) {
+                    $pdfDeleted = $this->reportFactory->getReportByEntity($entity)->getImporter()->deletePdf();
+                    $this->info($pdfDeleted ? "file '$pdfDeleted' deleted" : "no file found to delete");
+                }
+            );
 
             if($source === 'novasoft') {
                 $novasoftEntityName = $this->config->servicioEmpleados()->getReportEntityClass($reportEntityName, $source);
-                $this->deleteReportEntities($novasoftEntityName, ['usuario' => $usuario], function($entity) use ($reportEntityName) {
-                    $reportDeleted = $this->novasoftReportFactory->getReport($reportEntityName)
-                        ->setParametersByEntity($entity)->getImporter()->deletePdf();
-                    $this->info($reportDeleted ? "file '$reportDeleted' deleted" : "no file found to delete");
-                });
+                $this->deleteReportEntities($novasoftEntityName, ['usuario' => $usuario]);
             }
 
             $reportCache = $this->em->getRepository(ReportCache::class)
@@ -201,6 +216,12 @@ class ReportCacheHandler
         }
     }
 
+    /**
+     * @param Usuario $usuario
+     * @param $reportEntityClass
+     * @param bool $ignoreRefreshInterval
+     * @throws SSRSReportException
+     */
     public function handleNovasoft(Usuario $usuario, $reportEntityClass, $ignoreRefreshInterval = false)
     {
         $reportEntityClassClean = $this->getReportEntityClassClean($reportEntityClass);

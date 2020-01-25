@@ -10,6 +10,7 @@ use App\Entity\ServicioEmpleados\ServicioEmpleadosReport;
 use App\Repository\ServicioEmpleados\LiquidacionContratoRepository as SeLiquidacionContratoRepository;
 use App\Repository\ServicioEmpleados\ReportRepository;
 use App\Service\Halcon\Report\Report\LiquidacionContratoReport;
+use App\Service\ServicioEmpleados\Report\PdfHandler;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
@@ -26,10 +27,10 @@ class LiquidacionContratoImporter extends Importer
      */
     private $seLiquidacionContratoRepo;
 
-    public function __construct(EntityManagerInterface $em, EventDispatcherInterface $dispatcher,
+    public function __construct(EntityManagerInterface $em, PdfHandler $pdfHandler,
                                 SeLiquidacionContratoRepository $seLiquidacionContratoRepo)
     {
-        parent::__construct($em, $dispatcher);
+        parent::__construct($em, $pdfHandler);
         $this->seLiquidacionContratoRepo = $seLiquidacionContratoRepo;
     }
 
