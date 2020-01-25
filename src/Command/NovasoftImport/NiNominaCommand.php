@@ -8,7 +8,7 @@ use App\Command\Helpers\PeriodoOption;
 use App\Command\Helpers\RangoPeriodoOption;
 use App\Command\Helpers\SearchByConvenioOrEmpleado;
 use App\Entity\Main\Empleado;
-use App\Event\Event\Novasoft\Report\Importer\ImporterLogEvent;
+use App\Event\Event\LogEvent;
 use App\Repository\Novasoft\Report\Nomina\NominaRepository;
 use App\Service\Novasoft\Report\ReportFactory;
 use App\Service\ServicioEmpleados\Report\ReportCacheHandler;
@@ -113,7 +113,7 @@ class NiNominaCommand extends NiCommand
 
     protected function getLogEvent()
     {
-        return ImporterLogEvent::class;
+        return LogEvent::class;
     }
 
     protected function progressBarCount(InputInterface $input, OutputInterface $output): ?int

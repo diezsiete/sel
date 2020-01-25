@@ -5,6 +5,7 @@ namespace App\Service\Novasoft\Report\Report;
 
 
 use App\Entity\Main\Usuario;
+use App\Entity\Novasoft\Report\LiquidacionContrato;
 use App\Service\Configuracion\Configuracion;
 use App\Service\Novasoft\Report\Importer\LiquidacionContratoImporter;
 use App\Service\Novasoft\Report\Mapper\LiquidacionContratoMapper;
@@ -75,6 +76,20 @@ class LiquidacionContratoReport extends Report
     {
         $this->usuario = $usuario;
         $this->parameter_CodEmp = $usuario->getIdentificacion();
+        return $this;
+    }
+
+    /**
+     * @param LiquidacionContrato $liquidacionContrato
+     * @return LiquidacionContratoReport
+     */
+    public function setParametersByEntity($liquidacionContrato)
+    {
+        $this
+            ->setParameterCodigoEmpleado($liquidacionContrato->getUsuario()->getIdentificacion())
+            ->setParameterFechaInicio($liquidacionContrato->getFechaIngreso())
+            ->setParameterFechaFin($liquidacionContrato->getFechaRetiro())
+            ->setDb($liquidacionContrato->getSsrsDb() ? $liquidacionContrato->getSsrsDb() : $this->db);
         return $this;
     }
 }

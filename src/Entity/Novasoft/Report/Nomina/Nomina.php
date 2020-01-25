@@ -3,6 +3,7 @@
 namespace App\Entity\Novasoft\Report\Nomina;
 
 use App\Entity\Main\Usuario;
+use App\Entity\Novasoft\Report\ServicioEmpleadosReport;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -11,15 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="App\Repository\Novasoft\Report\Nomina\NominaRepository")
  * @ORM\Table(name="novasoft_nomina")
  */
-class Nomina
+class Nomina extends ServicioEmpleadosReport
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
-
     /**
      * @ORM\Column(type="datetime")
      */
@@ -111,12 +105,6 @@ class Nomina
     private $detalles;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Main\Usuario")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $usuario;
-
-    /**
      * @ORM\Column(type="string", length=140, nullable=true)
      */
     private $basePension;
@@ -124,11 +112,6 @@ class Nomina
     public function __construct()
     {
         $this->detalles = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getFecha(): ?\DateTimeInterface
@@ -362,18 +345,6 @@ class Nomina
                 $detalle->setNomina(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getUsuario(): ?Usuario
-    {
-        return $this->usuario;
-    }
-
-    public function setUsuario(?Usuario $usuario): self
-    {
-        $this->usuario = $usuario;
 
         return $this;
     }

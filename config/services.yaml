@@ -47,7 +47,6 @@ services:
     App\Command\Autoliquidacion\AutoliquidacionCreateCommand:
         calls:
             - [setLogger, ['@monolog.logger.sel']]
-
     App\Command\NovasoftImport\NiEmpleadoCommand:
         calls:
             - [setLogger, ['@monolog.logger.ni_empleado']]
@@ -57,6 +56,13 @@ services:
     App\Command\NovasoftImport\NiConvenioCommand:
         calls:
             - [setLogger, ['@monolog.logger.ni_convenio']]
+
+    App\Command\ServicioEmpleados\ReportCache\DeleteCommand:
+        calls:
+            - [setLogger, ['@monolog.logger.se_report_cache_delete']]
+    App\Command\ServicioEmpleados\ReportCache\ImportCommand:
+        calls:
+            - [setLogger, ['@monolog.logger.se_report_cache_import']]
 
 
     # add more service definitions when explicit configuration is needed

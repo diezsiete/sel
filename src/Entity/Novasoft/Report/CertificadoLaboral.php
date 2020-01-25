@@ -9,14 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="App\Repository\Novasoft\Report\CertificadoLaboralRepository")
  * @ORM\Table(name="novasoft_certificado_laboral")
  */
-class CertificadoLaboral
+class CertificadoLaboral extends ServicioEmpleadosReport
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
 
     /**
      * @ORM\Column(type="string", length=140)
@@ -103,16 +97,6 @@ class CertificadoLaboral
      */
     private $fechaCertificadoTextual;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Main\Usuario")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $usuario;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getNombre(): ?string
     {
@@ -319,18 +303,6 @@ class CertificadoLaboral
     public function setFechaCertificadoTextual(?string $fechaCertificadoTextual): self
     {
         $this->fechaCertificadoTextual = $fechaCertificadoTextual;
-
-        return $this;
-    }
-
-    public function getUsuario(): ?Usuario
-    {
-        return $this->usuario;
-    }
-
-    public function setUsuario(?Usuario $usuario): self
-    {
-        $this->usuario = $usuario;
 
         return $this;
     }

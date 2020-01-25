@@ -184,7 +184,7 @@ class Configuracion
 
     public function getLogoPdf()
     {
-        return $this->webDir . $this->packages->getUrl($this->parameters['logo_pdf']);
+        return $this->kernelProjectDir . '/public' . $this->packages->getUrl($this->parameters['logo_pdf']);
     }
 
     public function homeRoute()
@@ -202,7 +202,7 @@ class Configuracion
         if(!$this->certificadoLaboral) {
             $data = $this->parameters['certificado_laboral'];
             $this->certificadoLaboral = new CertificadoLaboral(
-                $this->webDir . $this->packages->getUrl($data['firma']),
+                $this->kernelProjectDir . '/public' . $this->packages->getUrl($data['firma']),
                 $data['firmante'],
                 $data['firmante_cargo'],
                 $data['firmante_contacto']
@@ -294,9 +294,10 @@ class Configuracion
     public function getCompania($name)
     {
         if(!isset($this->companias[$name])) {
+            //TODO documentar esto que no entiendo
             if(isset($this->parameters['companias'][$name])) {
                 $data = array_merge($this->parameters['companias'][$name], [
-                    'logo_pdf' => $this->webDir . $this->packages->getUrl($this->parameters['companias'][$name]['logo_pdf'])
+                    'logo_pdf' => $this->kernelProjectDir . $this->packages->getUrl($this->parameters['companias'][$name]['logo_pdf'])
                 ]);
                 $compania = new Compania($data);
             } else {
@@ -337,6 +338,14 @@ class Configuracion
     public function getWebDir(): string
     {
         return $this->webDir;
+    }
+
+    /**
+     * @return string
+     */
+    public function getKernelProjectDir(): string
+    {
+        return $this->kernelProjectDir;
     }
 
     public function servicioEmpleados(): ServicioEmpleados

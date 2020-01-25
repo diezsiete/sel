@@ -3,9 +3,9 @@
 
 namespace App\Service\Novasoft\Report\Importer;
 
+use App\Event\Event\LogEvent;
 use App\Event\Event\ServicioEmpleados\Report\Importer\DeleteEvent;
 use App\Event\Event\ServicioEmpleados\Report\Importer\ImportEvent;
-use App\Event\Event\Novasoft\Report\Importer\ImporterLogEvent;
 use App\Helper\Loggable;
 use App\Service\Novasoft\Report\Report\Report;
 use App\Service\ServicioEmpleados\Report\PdfHandler;
@@ -75,6 +75,11 @@ abstract class Importer
         $this->pdfHandler->write($this->report->getPdfFileName(), function () {
             return $this->report->renderPdf();
         });
+    }
+
+    public function deletePdf()
+    {
+        return $this->pdfHandler->delete($this->report->getPdfFileName());
     }
 
     public function importMapAndPdf()
@@ -161,12 +166,12 @@ abstract class Importer
 
     public function log($level, $message, array $context = array())
     {
-        $this->dispatcher->dispatch(ImporterLogEvent::$level($message, $context));
+        $this->dispatcher->dispatch(LogEvent::$level($message, $context));
     }
 
     protected function logImportEntity($entity, $action)
     {
-        $this->info(sprintf("%s %s", $this->getIdentifier($entity), $action));
+        $this->info(sprintf("%s[%s] %s", get_class($entity), $this->getIdentifier($entity), $action));
     }
 
     public function importPdfListener(ImportEvent $event)

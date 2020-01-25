@@ -153,16 +153,15 @@ class NominaReport extends Report
 
     /**
      * @param Nomina $nomina
-     * @param null|string $ssrsDb
+     * @return NominaReport
      */
-    public function setParametersByEntity($nomina, $ssrsDb = null)
+    public function setParametersByEntity($nomina)
     {
         $this
             ->setParameterCodigoEmpleado($nomina->getUsuario()->getIdentificacion())
             ->setParameterFechaInicio($nomina->getFecha())
-            ->setParameterFechaFin($nomina->getFecha());
-        if($ssrsDb) {
-            $this->setDb($ssrsDb);
-        }
+            ->setParameterFechaFin($nomina->getFecha())
+            ->setDb($nomina->getSsrsDb() ? $nomina->getSsrsDb() : $this->db);
+        return $this;
     }
 }

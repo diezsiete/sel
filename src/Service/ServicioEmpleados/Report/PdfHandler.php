@@ -55,4 +55,14 @@ class PdfHandler
         return $this->filesystem->readStream($reporteNombre);
     }
 
+    public function delete(string $reportNombre)
+    {
+        $reportDeleted = null;
+        if($this->filesystem->has($reportNombre)) {
+            $reportDeleted = $reportNombre;
+            $this->filesystem->delete($reportNombre);
+        }
+        return $reportDeleted;
+    }
+
 }

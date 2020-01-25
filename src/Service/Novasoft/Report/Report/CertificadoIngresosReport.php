@@ -71,6 +71,10 @@ class CertificadoIngresosReport extends Report
      * @var string
      */
     private $ano;
+    /**
+     * @var array
+     */
+    private $anos = [];
 
     public function __construct(SSRSReport $SSRSReport, ReportFormatter $reportFormatter, Configuracion $configuracion,
                                 Utils $utils, CertificadoIngresosMapper $mapper, CertificadoIngresosImporter $importer, PdfHandler $pdfHandler)
@@ -81,11 +85,15 @@ class CertificadoIngresosReport extends Report
     }
 
     /**
-     * @param string $ano
+     * @param string|string[] $ano
      * @return CertificadoIngresosReport
      */
-    public function setParameterAno(string $ano)
+    public function setParameterAno($ano)
     {
+        if(is_array($ano)) {
+            $this->anos = $ano;
+            $ano = $this->anos[0];
+        }
         $this->ano = $ano;
         $pattern = '/(.+\/)\d+$/i';
         $replacement = '${1}' . $ano;
@@ -105,15 +113,26 @@ class CertificadoIngresosReport extends Report
     }
 
     /**
-     * @return CertificadoIngresos|null
+     * @return CertificadoIngresos|CertificadoIngresos[]|null
      * @throws SSRSReportException
      */
     public function renderMap()
     {
-        $csvAssociative = $this->reportFormatter->csvContSplittedToAssociative($this->renderCSV());
-        $map = $this->reportFormatter->mapCsv($csvAssociative, $this->mapper);
-        return $map ? $map[0] : null;
-
+        if(!$this->anos) {
+            $csvAssociative = $this->reportFormatter->csvContSplittedToAssociative($this->renderCSV());
+            $map = $this->reportFormatter->setSsrsDb($this->db)->mapCsv($csvAssociative, $this->mapper);
+            return $map ? $map[0] : null;
+        } else {
+            $anos = $this->anos;
+            $this->anos = [];
+            $map = [];
+            while($anos) {
+                if($certificado = $this->setParameterAno(array_shift($anos))->renderMap()) {
+                    $map[] = $certificado;
+                }
+            }
+            return $map;
+        }
     }
 
     public function renderAssociative()
@@ -130,6 +149,19 @@ class CertificadoIngresosReport extends Report
     {
         parent::setUsuario($usuario);
         $this->parameter_Ccod_emp = $usuario->getIdentificacion();
+        return $this;
+    }
+
+    /**
+     * @param CertificadoIngresos $certificadoIngresos
+     * @return CertificadoIngresosReport
+     */
+    public function setParametersByEntity($certificadoIngresos)
+    {
+        $this
+            ->setParameterCodigoEmpleado($certificadoIngresos->getUsuario()->getIdentificacion())
+            ->setParameterAno($certificadoIngresos->getAno())
+            ->setDb($certificadoIngresos->getSsrsDb() ? $certificadoIngresos->getSsrsDb() : $this->db);
         return $this;
     }
 }

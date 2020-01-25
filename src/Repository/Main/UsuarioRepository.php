@@ -7,6 +7,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Collections\Expr\Comparison;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use PDO;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -64,7 +65,53 @@ class UsuarioRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return \App\Entity\Main\Usuario[]
+     * @noinspection PhpDocMissingThrowsInspection
+     * @param string|array $rol
+     * @param null|string|array $idOrIdent
+     * @return Usuario[]|Usuario|null
+     */
+    public function findByRol($rol, $idOrIdent = null)
+    {
+        $query = $this->findByRolQuery($rol, $idOrIdent);
+        return $idOrIdent && !is_array($idOrIdent) ? $query->getOneOrNullResult() : $query->getResult();
+    }
+
+    /**
+     * @param $rol
+     * @param null $idOrIdent
+     * @return Query
+     */
+    public function findByRolQuery($rol, $idOrIdent = null)
+    {
+        $qb = $this->createQueryBuilder('u');
+        if(!is_array($rol)) {
+            $qb->andWhere($qb->expr()->like('u.roles', "'%$rol%'"));
+        } else {
+            $qb->andWhere(call_user_func_array([$qb->expr(), 'orX'], array_map(function ($rol) use($qb) {
+                return $qb->expr()->like('u.roles', "'%$rol%'");
+            }, $rol)));
+        }
+        if($idOrIdent) {
+            if(!is_array($idOrIdent)) {
+                $qb->andWhere($qb->expr()->orX(
+                    $qb->expr()->eq('u.id', ':idOrIdent'),
+                    $qb->expr()->eq('u.identificacion', ':idOrIdent')
+                ))
+                    ->setParameter('idOrIdent', $idOrIdent)
+                    ->setMaxResults(1);
+            } else {
+                $qb->andWhere($qb->expr()->orX(
+                    $qb->expr()->in('u.id', $idOrIdent),
+                    $qb->expr()->in('u.identificacion', $idOrIdent)
+                ));
+            }
+        }
+
+        return $qb->getQuery();
+    }
+
+    /**
+     * @return Usuario[]
      */
     public function findEmpleados()
     {

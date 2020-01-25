@@ -5,7 +5,10 @@ monolog:
         - ni_empleado
         - ni_nomina
         - ni_convenio
+        - se_report_cache_import
+        - se_report_cache_delete
         - messenger_audit
+
     handlers:
         ni_empleado:
             type: stream
@@ -22,6 +25,14 @@ monolog:
             path: "%kernel.logs_dir%/ni/convenio.log"
             level: debug
             channels: ni_convenio
+
+        se_report_cache:
+            type: stream
+            path: "%kernel.logs_dir%/se/report-cache.log"
+            level: debug
+            channels:
+                - se_report_cache_import
+                - se_report_cache_delete
 
         messenger:
             type: stream

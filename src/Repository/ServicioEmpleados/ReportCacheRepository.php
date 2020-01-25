@@ -7,6 +7,7 @@ use App\Entity\ServicioEmpleados\ReportCache;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\ORM\Query;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -43,12 +44,49 @@ class ReportCacheRepository extends ServiceEntityRepository
                 ->setMaxResults(1)
                 ->getQuery()
                 ->getOneOrNullResult();
-
         } else {
             return new ArrayCollection($qb
                 ->getQuery()
                 ->getResult());
         }
+    }
+
+    /**
+     * @noinspection PhpDocMissingThrowsInspection
+     * @param string $source
+     * @param string|null $identOrId
+     * @return Usuario|Usuario[]|null
+     */
+    public function findUsuariosBySource(string $source, ?string $identOrId = null)
+    {
+        $query = $this->findUsuariosBySourceQuery($source, $identOrId);
+        return $identOrId ? $query->getOneOrNullResult() : $query->getResult();
+    }
+
+    /**
+     * @param string $source
+     * @param string|null $identOrId
+     * @return Query
+     */
+    public function findUsuariosBySourceQuery(string $source, ?string $identOrId = null)
+    {
+        $qb = $this->_em->createQueryBuilder()
+            ->select('u')
+            ->from(Usuario::class, 'u')
+            ->join($this->_entityName, 'rc', 'WITH', 'u = rc.usuario')
+            ->where('rc.source = :source')
+            ->setParameter('source', $source)
+            ->groupBy('u.id');
+
+        if($identOrId) {
+            $qb->andWhere($qb->expr()->orX(
+                $qb->expr()->eq('u.id', ':identOrId'),
+                $qb->expr()->eq('u.identificacion', ':identOrId')
+            ))
+                ->setParameter('identOrId', $identOrId);
+        }
+
+        return $qb->getQuery();
     }
 
     public static function filterByReportCriteria($reportName)

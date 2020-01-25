@@ -37,11 +37,27 @@ class ReportFormatter implements ServiceSubscriberInterface
      */
     private $container;
 
+    /**
+     * @var string
+     */
+    private $ssrsDb = null;
+
     public function __construct(Utils $utils, ContainerInterface $container)
     {
         $this->utils = $utils;
         $this->container = $container;
     }
+
+    /**
+     * @param string $ssrsDb
+     * @return ReportFormatter
+     */
+    public function setSsrsDb(string $ssrsDb): ReportFormatter
+    {
+        $this->ssrsDb = $ssrsDb;
+        return $this;
+    }
+
 
     /**
      * Converts a csv string to a associative array
@@ -170,11 +186,15 @@ class ReportFormatter implements ServiceSubscriberInterface
                         }
                     }
                 }
+                if($this->ssrsDb) {
+                    $mapper->setSsrsDb($this->ssrsDb);
+                }
                 $mapper->addMappedObject($objects);
             } catch (InvalidMappedObject $e) {
                 //TODO log este error
             }
         }
+        $this->ssrsDb = null;
         if($single) {
             return count($objects) ? $objects[0] : null;
         }

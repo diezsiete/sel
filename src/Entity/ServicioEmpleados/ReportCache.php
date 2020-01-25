@@ -3,6 +3,8 @@
 namespace App\Entity\ServicioEmpleados;
 
 use App\Entity\Main\Usuario;
+use DateTime;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -67,12 +69,15 @@ class ReportCache
         return $this;
     }
 
-    public function getLastUpdate(): ?\DateTimeInterface
+    /**
+     * @return null|DateTimeInterface|DateTime
+     */
+    public function getLastUpdate()
     {
         return $this->lastUpdate;
     }
 
-    public function setLastUpdate(\DateTimeInterface $lastUpdate): self
+    public function setLastUpdate(DateTimeInterface $lastUpdate): self
     {
         $this->lastUpdate = $lastUpdate;
 

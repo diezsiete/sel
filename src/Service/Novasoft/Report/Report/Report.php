@@ -146,7 +146,7 @@ abstract class Report implements ReportInterface
      */
     public function renderMap()
     {
-        return $this->reportFormatter->mapCsv($this->renderCSV(), $this->mapper);
+        return $this->reportFormatter->setSsrsDb($this->db)->mapCsv($this->renderCSV(), $this->mapper);
     }
 
     /**
@@ -244,8 +244,13 @@ abstract class Report implements ReportInterface
         return $this;
     }
 
-    public function setParametersByEntity($entity, $ssrsDb = null)
+    /**
+     * @param $entity
+     * @return $this
+     */
+    public function setParametersByEntity($entity)
     {
         // IMPLEMENT
+        return $this;
     }
 }

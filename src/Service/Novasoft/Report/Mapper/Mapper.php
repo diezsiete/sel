@@ -9,6 +9,8 @@
 namespace App\Service\Novasoft\Report\Mapper;
 
 
+use App\Entity\Novasoft\Report\ServicioEmpleadosReport;
+
 abstract class Mapper
 {
     protected $map;
@@ -62,5 +64,12 @@ abstract class Mapper
     public function getTargetObject()
     {
         return $this->targetObject;
+    }
+
+    public function setSsrsDb($ssrsDb)
+    {
+        if($this->targetObject instanceof ServicioEmpleadosReport) {
+            $this->targetObject->setSsrsDb($ssrsDb);
+        }
     }
 }

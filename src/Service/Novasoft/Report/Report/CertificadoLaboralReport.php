@@ -56,7 +56,7 @@ class CertificadoLaboralReport extends Report
     public function renderMap()
     {
         $csvAssociative = $this->reportFormatter->csvColsSplittedToAssociative($this->renderCSV());
-        return $this->reportFormatter->mapCsv($csvAssociative, $this->mapper);
+        return $this->reportFormatter->setSsrsDb($this->db)->mapCsv($csvAssociative, $this->mapper);
     }
 
     public function getPdfFileName(): string
@@ -75,5 +75,17 @@ class CertificadoLaboralReport extends Report
     {
         $map = $this->renderMap();
         return $this->pdf->render($map[0])->Output("S");
+    }
+
+    /**
+     * @param CertificadoLaboral $certificadoLaboral
+     * @return CertificadoLaboralReport
+     */
+    public function setParametersByEntity($certificadoLaboral)
+    {
+        $this
+            ->setParameterCodigoEmpleado($certificadoLaboral->getUsuario()->getIdentificacion())
+            ->setDb($certificadoLaboral->getSsrsDb() ? $certificadoLaboral->getSsrsDb() : $this->db);
+        return $this;
     }
 }

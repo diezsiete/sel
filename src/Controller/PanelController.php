@@ -40,6 +40,8 @@ class PanelController extends BaseController
 
     protected function panelEmpleado(DataTableBuilder $dataTable, ReportFactory $reportFactory)
     {
+        $this->reportCacheHandler->hasCacheToRenew($this->getUser());
+
         $tableNomina = $dataTable->nomina(['dom' => 't', 'pageLength' => 2]);
         if($tableNomina->isCallback()) {
             return $tableNomina->getResponse();
@@ -65,11 +67,7 @@ class PanelController extends BaseController
      */
     public function panelEmpleadoUpdate()
     {
-        try {
-            $this->reportCacheHandler->handleAll($this->getUser());
-        } catch (Exception $e) {
-            // TODO
-        }
+        $this->reportCacheHandler->handleAll($this->getUser());
         return $this->json(['ok' => true]);
     }
 

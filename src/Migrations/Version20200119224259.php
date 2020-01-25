@@ -38,6 +38,10 @@ final class Version20200119224259 extends AbstractMigration
         $this->addSql('ALTER TABLE novasoft_listado_nomina_renglon ADD CONSTRAINT FK_FB459E57952BE730 FOREIGN KEY (empleado_id) REFERENCES novasoft_listado_nomina_empleado (id)');
         $this->addSql('ALTER TABLE novasoft_listado_nomina_subgrupo ADD CONSTRAINT FK_537B77739C833003 FOREIGN KEY (grupo_id) REFERENCES novasoft_listado_nomina_grupo (id)');
         $this->addSql('ALTER TABLE empleado CHANGE cargo cargo VARCHAR(250) DEFAULT NULL');
+        $this->addSql('ALTER TABLE novasoft_certificado_ingresos ADD ssrs_db VARCHAR(20) DEFAULT NULL');
+        $this->addSql('ALTER TABLE novasoft_certificado_laboral ADD ssrs_db VARCHAR(20) DEFAULT NULL');
+        $this->addSql('ALTER TABLE novasoft_liquidacion_contrato ADD ssrs_db VARCHAR(20) DEFAULT NULL');
+        $this->addSql('ALTER TABLE novasoft_nomina ADD ssrs_db VARCHAR(20) DEFAULT NULL');
     }
 
     public function down(Schema $schema) : void
@@ -59,5 +63,9 @@ final class Version20200119224259 extends AbstractMigration
         $this->addSql('DROP TABLE novasoft_listado_nomina_renglon');
         $this->addSql('DROP TABLE novasoft_listado_nomina_subgrupo');
         $this->addSql('ALTER TABLE empleado CHANGE cargo cargo VARCHAR(65) DEFAULT NULL COLLATE utf8mb4_general_ci');
+        $this->addSql('ALTER TABLE novasoft_certificado_ingresos DROP ssrs_db');
+        $this->addSql('ALTER TABLE novasoft_certificado_laboral DROP ssrs_db');
+        $this->addSql('ALTER TABLE novasoft_liquidacion_contrato DROP ssrs_db');
+        $this->addSql('ALTER TABLE novasoft_nomina DROP ssrs_db');
     }
 }

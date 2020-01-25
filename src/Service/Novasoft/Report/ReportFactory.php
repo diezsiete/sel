@@ -154,7 +154,7 @@ class ReportFactory implements ServiceSubscriberInterface
 
     /**
      * @param $entityName
-     * @return Report
+     * @return Report|CertificadoIngresosReport|NominaReport
      */
     public function getReport($entityName)
     {

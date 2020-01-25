@@ -11,14 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="App\Repository\Novasoft\Report\LiquidacionContratoRepository")
  * @ORM\Table(name="novasoft_liquidacion_contrato")
  */
-class LiquidacionContrato
+class LiquidacionContrato extends ServicioEmpleadosReport
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
     /**
      * @var string
      * @ORM\Column(type="string", length=30)
@@ -124,20 +118,6 @@ class LiquidacionContrato
      * @ORM\Column(type="string", length=20)
      */
     private $baseVacaciones;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Main\Usuario")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $usuario;
-
-    /**
-     * @return mixed
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
 
     /**
      * @return string
@@ -514,18 +494,6 @@ class LiquidacionContrato
     public function setBaseVacaciones(string $baseVacaciones): LiquidacionContrato
     {
         $this->baseVacaciones = $baseVacaciones;
-        return $this;
-    }
-
-    public function getUsuario(): ?Usuario
-    {
-        return $this->usuario;
-    }
-
-    public function setUsuario(?Usuario $usuario): self
-    {
-        $this->usuario = $usuario;
-
         return $this;
     }
 }

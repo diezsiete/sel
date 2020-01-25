@@ -9,15 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="App\Repository\Novasoft\Report\CertificadoIngresosRepository")
  * @ORM\Table(name="novasoft_certificado_ingresos")
  */
-class CertificadoIngresos
+class CertificadoIngresos extends ServicioEmpleadosReport
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
-
     /**
      * @ORM\Column(type="smallint")
      */
@@ -178,16 +171,6 @@ class CertificadoIngresos
      */
     private $certificoTexto;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Main\Usuario")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $usuario;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getDV(): ?int
     {
@@ -569,18 +552,6 @@ class CertificadoIngresos
     public function setCertificoTexto(?string $certificoTexto): self
     {
         $this->certificoTexto = $certificoTexto;
-
-        return $this;
-    }
-
-    public function getUsuario(): ?Usuario
-    {
-        return $this->usuario;
-    }
-
-    public function setUsuario(?Usuario $usuario): self
-    {
-        $this->usuario = $usuario;
 
         return $this;
     }

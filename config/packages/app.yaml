@@ -19,7 +19,8 @@ app:
     report:
       Nomina: ~
       CertificadoLaboral: ~
-      CertificadoIngresos: ~
+      CertificadoIngresos:
+        anos: [2017, 2018]
       LiquidacionContrato: ~
 
   empresas:

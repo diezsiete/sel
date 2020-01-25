@@ -6,7 +6,7 @@ namespace App\Event\Event;
 
 use Symfony\Contracts\EventDispatcher\Event;
 
-abstract class LogEvent extends Event
+class LogEvent extends Event
 {
     /**
      * @var string
