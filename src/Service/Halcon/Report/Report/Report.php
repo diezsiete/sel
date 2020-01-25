@@ -35,7 +35,7 @@ abstract class Report implements ReportInterface
     public function streamPdf()
     {
         // usar cacheAndStream si se quiere cache
-        return $this->pdfHandler->writeAndStream($this->getPdfFileName(), function () {
+        return $this->pdfHandler->cacheAndStream($this->getPdfFileName(), function () {
             return $this->renderPdf();
         });
 

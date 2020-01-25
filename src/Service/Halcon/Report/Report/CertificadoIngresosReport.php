@@ -85,7 +85,7 @@ class CertificadoIngresosReport extends Report
 
     public function getPdfFileName(): string
     {
-        return '/halcon/certificado-laboral/'
+        return '/halcon/certificado-ingresos/'
             . $this->usuario->getIdentificacion() . '-'
             . $this->empresaUsuario . '-'
             . $this->noContrat . '-'

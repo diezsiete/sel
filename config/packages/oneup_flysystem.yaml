@@ -1,5 +1,10 @@
 # Read the documentation: https://github.com/1up-lab/OneupFlysystemBundle/tree/master/Resources/doc/index.md
 oneup_flysystem:
+    cache:
+        psr6_app_cache:
+            psr6:
+                service: cache.flysystem.psr6
+
     adapters:
         public_uploads_adapter:
             local:
@@ -7,9 +12,14 @@ oneup_flysystem:
         private_uploads_adapter:
             local:
                 directory: '%kernel.project_dir%/%private_uploads_dir_name%'
+#        se_report:
+#            local:
+#                directory: '%kernel.project_dir%/%private_uploads_dir_name%/se/report'
         se_report:
-            local:
-                directory: '%kernel.project_dir%/%private_uploads_dir_name%/se/report'
+            awss3v3:
+                client: Aws\S3\S3Client
+                bucket: '%env(empresa:AWS_S3_BUCKET)%'
+                prefix: 'se/report'
 
         #TODO deprecated borrar
         novasoft_report:
@@ -33,8 +43,12 @@ oneup_flysystem:
             adapter: public_uploads_adapter
         private_uploads_filesystem:
             adapter: private_uploads_adapter
+
         se_report:
             adapter: se_report
+        se_report_cached:
+            adapter: se_report
+            cache: psr6_app_cache
 
         #TODO deprecated borrar
         novasoft_report:

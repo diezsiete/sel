@@ -14,9 +14,11 @@ class PdfHandler
      */
     private $filesystem;
 
-    public function __construct(FilesystemInterface $seReportFilesystem)
+
+    public function __construct(FilesystemInterface $seReportCachedFilesystem)
     {
-        $this->filesystem = $seReportFilesystem;
+        //$this->filesystem = $seReportFilesystem;
+        $this->filesystem = $seReportCachedFilesystem;
     }
 
     public function cache(string $reporteNombre, $callbackSource)
