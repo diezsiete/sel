@@ -10,6 +10,8 @@ interface ReportInterface
 
     public function streamPdf();
 
+    public function linkPdf();
+
     public function getPdfFileName(): string;
 
     public function getImporter(): ImporterInterface;

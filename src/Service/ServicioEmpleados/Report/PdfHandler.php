@@ -4,7 +4,7 @@
 namespace App\Service\ServicioEmpleados\Report;
 
 
-use DateTimeInterface;
+use Aws\S3\S3Client;
 use League\Flysystem\FilesystemInterface;
 
 class PdfHandler
@@ -13,12 +13,22 @@ class PdfHandler
      * @var FilesystemInterface
      */
     private $filesystem;
+    /**
+     * @var S3Client
+     */
+    private $s3Client;
+    /**
+     * @var string
+     */
+    private $s3BucketName;
 
 
-    public function __construct(FilesystemInterface $seReportCachedFilesystem)
+    public function __construct(FilesystemInterface $seReportCachedFilesystem, S3Client $s3Client, string $s3BucketName)
     {
         //$this->filesystem = $seReportFilesystem;
         $this->filesystem = $seReportCachedFilesystem;
+        $this->s3Client = $s3Client;
+        $this->s3BucketName = $s3BucketName;
     }
 
     public function cache(string $reporteNombre, $callbackSource)
@@ -65,6 +75,27 @@ class PdfHandler
             $this->filesystem->delete($reportNombre);
         }
         return $reportDeleted;
+    }
+
+    public function cacheAndLink(string $reporteNombre, $callbackSource)
+    {
+        $this->cache($reporteNombre, $callbackSource);
+        return $this->generateLink($reporteNombre);
+    }
+
+    public function generateLink(string $reporteNombre): string
+    {
+        $reporteNombre = 'se/report/'. preg_replace('/^\/(.+)/', '$1', $reporteNombre);
+
+        $cmd = $this->s3Client->getCommand('GetObject', [
+            'Bucket' => $this->s3BucketName,
+            'Key' => $reporteNombre
+        ]);
+
+        $request = $this->s3Client->createPresignedRequest($cmd, '+20 minutes');
+
+        // Get the actual presigned-url
+        return (string)$request->getUri();
     }
 
 }

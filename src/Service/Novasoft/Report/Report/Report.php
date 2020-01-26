@@ -235,6 +235,13 @@ abstract class Report implements ReportInterface
         });
     }
 
+    public function linkPdf()
+    {
+        return $this->pdfHandler->cacheAndLink($this->getPdfFileName(), function () {
+            return $this->renderPdf();
+        });
+    }
+
     /**
      * @param Usuario $usuario
      * @return $this

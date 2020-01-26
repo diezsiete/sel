@@ -42,6 +42,13 @@ abstract class Report implements ReportInterface
 
     }
 
+    public function linkPdf()
+    {
+        return $this->pdfHandler->cacheAndLink($this->getPdfFileName(), function () {
+            return $this->renderPdf();
+        });
+    }
+
     /**
      * @return Importer
      */

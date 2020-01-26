@@ -19,11 +19,13 @@ use App\Service\ServicioEmpleados\Report\ReportCacheHandler;
 use App\Service\ServicioEmpleados\Report\ReportFactory as SeReportFactory;
 use Omines\DataTablesBundle\DataTableFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ServicioEmpleadosController extends BaseController
 {
+
     /**
      * @var EmpleadoRepository
      */
@@ -60,9 +62,8 @@ class ServicioEmpleadosController extends BaseController
      */
     public function comprobante(SeReportFactory $reportFactory, Nomina $nomina)
     {
-        return $this->renderStream(function () use ($reportFactory, $nomina) {
-            return $reportFactory->nomina($nomina)->streamPdf();
-        });
+        return new RedirectResponse($reportFactory->nomina($nomina)->linkPdf());
+        //return $this->renderStream(function () use ($reportFactory, $nomina) { return $reportFactory->nomina($nomina)->streamPdf();});
     }
 
     /**
@@ -96,9 +97,8 @@ class ServicioEmpleadosController extends BaseController
      */
     public function certificadoLaboralPdf(SeReportFactory $reportFactory, CertificadoLaboral $certificado)
     {
-        return $this->renderStream(function () use ($reportFactory, $certificado) {
-            return $reportFactory->certificadoLaboral($certificado)->streamPdf();
-        });
+        return new RedirectResponse($reportFactory->certificadoLaboral($certificado)->linkPdf());
+        //return $this->renderStream(function () use ($reportFactory, $certificado) { return $reportFactory->certificadoLaboral($certificado)->streamPdf();});
     }
 
     /**
@@ -123,9 +123,8 @@ class ServicioEmpleadosController extends BaseController
      */
     public function certificadoIngresosPdf(SeReportFactory $reportFactory, CertificadoIngresos $certificado)
     {
-        return $this->renderStream(function () use ($reportFactory, $certificado) {
-            return $reportFactory->certificadoIngresos($certificado)->streamPdf();
-        });
+        return new RedirectResponse($reportFactory->certificadoIngresos($certificado)->linkPdf());
+//        return $this->renderStream(function () use ($reportFactory, $certificado) { return $reportFactory->certificadoIngresos($certificado)->streamPdf();});
     }
 
     /**
@@ -183,8 +182,7 @@ class ServicioEmpleadosController extends BaseController
      */
     public function liquidacionDeContratoPdf(SeReportFactory $reportFactory, LiquidacionContrato $liquidacion)
     {
-        return $this->renderStream(function () use ($reportFactory, $liquidacion) {
-            return $reportFactory->liquidacionContrato($liquidacion)->streamPdf();
-        });
+        return new RedirectResponse($reportFactory->liquidacionContrato($liquidacion)->linkPdf());
+        //return $this->renderStream(function () use ($reportFactory, $liquidacion) {return $reportFactory->liquidacionContrato($liquidacion)->streamPdf();});
     }
 }

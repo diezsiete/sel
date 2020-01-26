@@ -24,6 +24,7 @@ services:
             $transportFailed : '@messenger.transport.failed'
             $transportScraperHv : '@messenger.transport.scraper_hv'
             $appEnv: '%env(APP_ENV)%'
+            $s3BucketName: '%env(empresa:AWS_S3_BUCKET)%'
 
             $migrationHvAdjuntoPath: '%env(MIGRATION_HV_ADJUNTO)%'
             $migrationDatabaseSeUrl: '%env(DATABASE_SE_URL)%'
