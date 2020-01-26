@@ -10,8 +10,6 @@ use App\Command\Helpers\ServicioEmpleados\ReportCache as ReportCacheTrait;
 use App\Constant\ServicioEmpleadosConstant;
 use App\Entity\Main\Empleado;
 use App\Entity\Main\Usuario;
-use App\Repository\Main\EmpleadoRepository;
-use App\Repository\Main\UsuarioRepository;
 use DateTime;
 use Doctrine\ORM\Query;
 use SSRS\SSRSReportException;
@@ -32,7 +30,8 @@ class ImportCommand extends TraitableCommand
     protected function configure()
     {
         parent::configure();
-        $this->addOption('hard', null, InputOption::VALUE_NONE, 'Borra todo e importa todo')
+        $this
+            ->addOption('hard', null, InputOption::VALUE_NONE, 'Borra todo e importa todo')
             ->addOption('ignore-refresh-interval', null, InputOption::VALUE_NONE, 'Ignora el refresh interval')
             ->addOption('all', null, InputOption::VALUE_NONE,
                 'Para source novasoft, toma todos los empleados, de lo contrario solo toma los activos 
@@ -56,6 +55,7 @@ class ImportCommand extends TraitableCommand
                         $this->reportCacheHandler->handleNovasoft($usuario, $report, $ignoreRefreshInterval);
                     } catch (SSRSReportException $e) {
                         $this->error(get_class($e) . ": " . $e->errorDescription);
+                        throw $e;
                     }
                 } else {
                     $this->reportCacheHandler->handleHalcon($usuario, $report);

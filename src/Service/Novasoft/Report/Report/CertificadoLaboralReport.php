@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Service\Novasoft\Report\Report;
-
 
 use App\Entity\Main\Usuario;
 use App\Entity\Novasoft\Report\CertificadoLaboral;
@@ -13,14 +11,16 @@ use App\Service\Novasoft\Report\ReportFormatter;
 use App\Service\Pdf\PdfCartaLaboral;
 use App\Service\ServicioEmpleados\Report\PdfHandler;
 use App\Service\Utils;
+use Psr\Container\ContainerInterface;
 use SSRS\SSRSReport;
 use SSRS\SSRSReportException;
+use Symfony\Contracts\Service\ServiceSubscriberInterface;
 
 /**
  * Class CertificadoLaboralReport
  * @package App\Service\Novasoft\Report\Report
  */
-class CertificadoLaboralReport extends Report
+class CertificadoLaboralReport extends Report implements ServiceSubscriberInterface
 {
 
     protected $path = "/ReportesWeb/NOM/NOM932";
@@ -31,16 +31,16 @@ class CertificadoLaboralReport extends Report
      */
     protected $parameter_cod_emp;
     /**
-     * @var PdfCartaLaboral
+     * @var ContainerInterface
      */
-    private $pdf;
+    private $container;
 
 
-    public function __construct(SSRSReport $SSRSReport, ReportFormatter $reportFormatter, Configuracion $configuracion, PdfCartaLaboral $pdf,
+    public function __construct(SSRSReport $SSRSReport, ReportFormatter $reportFormatter, Configuracion $configuracion, ContainerInterface $container,
                                 Utils $utils, CertificadoLaboralMapper $mapper, CertificadoLaboralImporter $importer, PdfHandler $pdfHandler)
     {
         parent::__construct($SSRSReport, $reportFormatter, $configuracion, $utils, $mapper, $importer, $pdfHandler);
-        $this->pdf = $pdf;
+        $this->container = $container;
     }
 
     public function setParameterCodigoEmpleado($identificacion)
@@ -74,7 +74,7 @@ class CertificadoLaboralReport extends Report
     public function renderPdf()
     {
         $map = $this->renderMap();
-        return $this->pdf->render($map[0])->Output("S");
+        return $this->container->get(PdfCartaLaboral::class)->render($map[0])->Output("S");
     }
 
     /**
@@ -87,5 +87,13 @@ class CertificadoLaboralReport extends Report
             ->setParameterCodigoEmpleado($certificadoLaboral->getUsuario()->getIdentificacion())
             ->setDb($certificadoLaboral->getSsrsDb() ? $certificadoLaboral->getSsrsDb() : $this->db);
         return $this;
+    }
+
+
+    public static function getSubscribedServices()
+    {
+        return [
+            PdfCartaLaboral::class
+        ];
     }
 }

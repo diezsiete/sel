@@ -89,6 +89,18 @@ class ReportCacheRepository extends ServiceEntityRepository
         return $qb->getQuery();
     }
 
+    public function findUsuariosWithNoCacheQuery(string $rol, $count = null)
+    {
+        $qb = $this->_em->createQueryBuilder();
+        $qb ->select($count ? 'COUNT(u.id)' : 'u')
+            ->from(Usuario::class, 'u')
+            ->leftJoin($this->_entityName, 'rc', 'WITH', 'u = rc.usuario')
+            ->where('rc.id IS NULL')
+            ->andWhere($qb->expr()->like('u.roles', ':rol'))
+            ->setParameter('rol', "%$rol%");
+        return $qb->getQuery();
+    }
+
     public static function filterByReportCriteria($reportName)
     {
         return Criteria::create()->where(Criteria::expr()->eq('report', $reportName));

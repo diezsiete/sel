@@ -116,17 +116,23 @@ services:
 
     App\Service\Pdf\PdfCartaLaboral:
         public: true
+        shared: false
     App\Service\Pdf\PdfCartaLaboralServilabor:
         public: true
+        shared: false
 
     App\Service\Pdf\Halcon\NominaPdf:
         arguments: ["P", "mm", "Letter"]
+        shared: false
     App\Service\Pdf\Halcon\CertificadoLaboralPdf:
         arguments: ["P", "mm", "Letter"]
+        shared: false
     App\Service\Pdf\Halcon\CertificadoIngresosPdf:
         arguments: ["P", "mm", "Letter"]
+        shared: false
     App\Service\Pdf\Halcon\LiquidacionContratoPdf:
         arguments: ["P", "mm", "Letter"]
+        shared: false
 
 
 
