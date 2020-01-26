@@ -4,6 +4,8 @@
 namespace App\Command\Helpers;
 
 
+use App\Entity\Main\Usuario;
+
 trait BatchProcessing
 {
     protected $batchSize = 20;
@@ -44,4 +46,18 @@ trait BatchProcessing
         return $this->batchEntities[$entityName] ?? false;
     }
 
+    /**
+     * @param $identificacion
+     * @return Usuario|null
+     */
+    protected function getBatchUsuario($identificacion)
+    {
+        /** @var Usuario|false|null $batchEntity */
+        $batchEntity = $this->getBatchEntity('usuario');
+        if($batchEntity === false || ($batchEntity && $batchEntity->getIdentificacion() !== $identificacion)) {
+            $batchEntity = $this->em->getRepository(Usuario::class)->findByIdentificacion($identificacion);
+            $this->setBatchEntity('usuario', $batchEntity);
+        }
+        return $batchEntity;
+    }
 }

@@ -38,12 +38,15 @@ class LiquidacionContratoImporter extends Importer
      * @param CabezaLiquidacion $halconEntity
      * @return ServicioEmpleadosReport
      */
-    protected function buildSeEntity($halconEntity): ?ServicioEmpleadosReport
+    public function buildSeEntity($halconEntity): ?ServicioEmpleadosReport
     {
         return (new LiquidacionContrato())
             ->setFechaIngreso($halconEntity->getIngreso())
             ->setFechaRetiro($halconEntity->getLiquidacio())
-            ->setContrato($halconEntity->getVinculacion()->getNoContrat());
+            ->setContrato($halconEntity->getVinculacion()->getNoContrat())
+            ->setUsuario($this->report->getUsuario())
+            ->setSourceHalcon()
+            ->setSourceId(implode(',', $this->report->getIdentifier($halconEntity)));
     }
 
     protected function getSeEntityRepo(): ReportRepository

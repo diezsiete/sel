@@ -93,6 +93,20 @@ class UsuarioRepository extends ServiceEntityRepository
         return $qb->select('COUNT(u.id)')->getQuery();
     }
 
+    public function findIdentsByRol($rol, $idOrIdent = null)
+    {
+        $qb = $this->findByRolQueryBuilder($rol, $idOrIdent)
+            ->select('u.identificacion');
+        return $qb->getQuery()->getResult('FETCH_COLUMN');
+    }
+
+    public function countIdsByRol($rol, $idOrIdent = null)
+    {
+        $qb = $this->findByRolQueryBuilder($rol, $idOrIdent)
+            ->select('COUNT(u.id)');
+        return (int)$qb->getQuery()->getSingleScalarResult();
+    }
+
     protected function findByRolQueryBuilder($rol, $idOrIdent = null)
     {
         $qb = $this->createQueryBuilder('u');

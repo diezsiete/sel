@@ -18,7 +18,8 @@ app:
   se:
     report:
       Nomina: ~
-      CertificadoLaboral: ~
+      CertificadoLaboral:
+        refresh_interval: 'PT12H'
       CertificadoIngresos:
         anos: [2017, 2018]
       LiquidacionContrato: ~

@@ -11,6 +11,7 @@ use App\Entity\ServicioEmpleados\LiquidacionContrato;
 use App\Entity\ServicioEmpleados\ServicioEmpleadosReport;
 use App\Repository\ServicioEmpleados\CertificadoIngresosRepository as SeCertificadoIngresosRepo;
 use App\Repository\ServicioEmpleados\ReportRepository;
+use App\Service\Halcon\Report\Report\CertificadoIngresosReport;
 use App\Service\Halcon\Report\Report\LiquidacionContratoReport;
 use App\Service\ServicioEmpleados\Report\PdfHandler;
 use DateTime;
@@ -21,7 +22,7 @@ class CertificadoIngresosImporter extends Importer
 {
 
     /**
-     * @var LiquidacionContratoReport
+     * @var CertificadoIngresosReport
      */
     protected $report;
 
@@ -42,10 +43,13 @@ class CertificadoIngresosImporter extends Importer
      * @param CertificadoIngresos $certificado
      * @return ServicioEmpleadosReport|null
      */
-    protected function buildSeEntity($certificado): ?ServicioEmpleadosReport
+    public function buildSeEntity($certificado): ?ServicioEmpleadosReport
     {
         return (new SeCertificadoIngresos())
-            ->setPeriodo(DateTime::createFromFormat("Y-m-d", $certificado->getAno() . '-01-01'));
+            ->setPeriodo(DateTime::createFromFormat("Y-m-d", $certificado->getAno() . '-01-01'))
+            ->setUsuario($this->report->getUsuario())
+            ->setSourceHalcon()
+            ->setSourceId(implode(',', $this->report->getIdentifier($certificado)));
     }
 
     protected function getSeEntityRepo(): ReportRepository

@@ -35,14 +35,17 @@ class NominaImporter extends Importer
         $this->seNominaRepo = $seNominaRepo;
     }
 
-    protected function buildSeEntity($halconEntity): ?ServicioEmpleadosReport
+    public function buildSeEntity($halconEntity): ?ServicioEmpleadosReport
     {
         if($halconEntity['fecha'] === 'undefined') {
             return null;
         }
         return (new Nomina())
             ->setFecha(DateTime::createFromFormat('Y-m-d', $halconEntity['fecha']))
-            ->setConvenio($halconEntity['empresa'] ? $halconEntity['empresa'] : $halconEntity['compania']);
+            ->setConvenio($halconEntity['empresa'] ? $halconEntity['empresa'] : $halconEntity['compania'])
+            ->setUsuario($this->report->getUsuario())
+            ->setSourceHalcon()
+            ->setSourceId(implode(',', $this->report->getIdentifier($halconEntity)));
     }
 
     protected function getSeEntityRepo(): ReportRepository

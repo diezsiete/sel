@@ -90,12 +90,6 @@ abstract class Importer implements ImporterInterface
     {
         $seEntity = $this->buildSeEntity($halconEntity);
         if($seEntity) {
-            $seEntity
-                ->setUsuario($this->report->getUsuario())
-                ->setSourceHalcon()
-                ->setSourceId(implode(',', $this->report->getIdentifier($halconEntity)));
-
-
             $seEntityEqual = $this->getSeEntityRepo()->findBySourceId(
                 $seEntity->getSource(),
                 $seEntity->getUsuario()->getIdentificacion(),
@@ -115,7 +109,7 @@ abstract class Importer implements ImporterInterface
         }
     }
 
-    protected abstract function buildSeEntity($halconEntity): ?ServicioEmpleadosReport;
+    public abstract function buildSeEntity($halconEntity): ?ServicioEmpleadosReport;
 
 
     protected abstract function getSeEntityRepo(): ReportRepository;

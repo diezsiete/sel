@@ -11,6 +11,7 @@ use App\Entity\ServicioEmpleados\LiquidacionContrato;
 use App\Entity\ServicioEmpleados\ServicioEmpleadosReport;
 use App\Repository\ServicioEmpleados\CertificadoLaboralRepository as SeCertificadoLaboralRepo;
 use App\Repository\ServicioEmpleados\ReportRepository;
+use App\Service\Halcon\Report\Report\CertificadoLaboralReport;
 use App\Service\Halcon\Report\Report\LiquidacionContratoReport;
 use App\Service\ServicioEmpleados\Report\PdfHandler;
 use Doctrine\ORM\EntityManagerInterface;
@@ -20,7 +21,7 @@ class CertificadoLaboralImporter extends Importer
 {
 
     /**
-     * @var LiquidacionContratoReport
+     * @var CertificadoLaboralReport
      */
     protected $report;
 
@@ -41,12 +42,15 @@ class CertificadoLaboralImporter extends Importer
      * @param CertificadoLaboral $halconEntity
      * @return ServicioEmpleadosReport|null
      */
-    protected function buildSeEntity($halconEntity): ?ServicioEmpleadosReport
+    public function buildSeEntity($halconEntity): ?ServicioEmpleadosReport
     {
         return (new SeCertificadoLaboral())
             ->setFechaIngreso($halconEntity->fechaIngreso)
             ->setFechaRetiro($halconEntity->fechaRetiro)
-            ->setConvenio($halconEntity->convenio);
+            ->setConvenio($halconEntity->convenio)
+            ->setUsuario($this->report->getUsuario())
+            ->setSourceHalcon()
+            ->setSourceId(implode(',', $this->report->getIdentifier($halconEntity)));
     }
 
     protected function getSeEntityRepo(): ReportRepository

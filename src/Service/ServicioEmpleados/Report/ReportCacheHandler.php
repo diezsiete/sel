@@ -95,12 +95,7 @@ class ReportCacheHandler
         if($prevCache) {
             $prevCache->setLastUpdate(new DateTime());
         } else {
-            $cache = (new ReportCache())
-                ->setUsuario($usuarioOrCache)
-                ->setSource($source)
-                ->setReport($reportEntityClass)
-                ->setLastUpdate(new DateTime());
-            $this->em->persist($cache);
+            $this->em->persist($this->buildNewCache($usuarioOrCache, $source, $reportEntityClass));
         }
         $this->em->flush();
     }
@@ -287,6 +282,15 @@ class ReportCacheHandler
         ));
 
         return $isOver;
+    }
+
+    public function buildNewCache(Usuario $usuario, $source, $reportEntityClass)
+    {
+        return (new ReportCache())
+            ->setUsuario($usuario)
+            ->setSource($source)
+            ->setReport($reportEntityClass)
+            ->setLastUpdate(new DateTime());
     }
 
     /**
