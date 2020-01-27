@@ -98,10 +98,10 @@ class NominaReport extends Report
 
 
     /**
-     * @param DateTimeInterface $fechaInicio
+     * @param DateTimeInterface|null $fechaInicio
      * @return $this
      */
-    public function setParameterFechaInicio($fechaInicio)
+    public function setParameterFechaInicio($fechaInicio = null)
     {
         if(!$fechaInicio) {
             $fechaInicio = DateTime::createFromFormat('m/d/Y', '2/1/2017');
