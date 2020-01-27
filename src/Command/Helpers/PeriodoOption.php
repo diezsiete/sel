@@ -48,11 +48,12 @@ trait PeriodoOption
     public function getRangoFromPeriodo(InputInterface $input, $required = true)
     {
         $periodo = $this->getPeriodo($input, $required);
-        if(!$periodo) {
-            return null;
+        $end = null;
+        if($periodo) {
+            $end = DateTime::createFromFormat('Y-m-d', $periodo->format('Y-m-t'));
             //$periodo = DateTime::createFromFormat('Y-m-d', (new DateTime())->format('Y-m') . '-01');
         }
-        $end = DateTime::createFromFormat('Y-m-d', $periodo->format('Y-m-t'));
+
         return (object)['start' => $periodo, 'end' => $end];
     }
 

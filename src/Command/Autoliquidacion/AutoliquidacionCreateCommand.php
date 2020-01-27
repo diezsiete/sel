@@ -16,6 +16,7 @@ use App\Entity\Main\Convenio;
 use App\Repository\Autoliquidacion\AutoliquidacionEmpleadoRepository;
 use App\Repository\Autoliquidacion\AutoliquidacionRepository;
 use App\Service\Autoliquidacion\DatabaseActions;
+use DateTimeInterface;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\ORMException;
@@ -26,15 +27,13 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class AutoliquidacionCreateCommand extends TraitableCommand
 {
-    use Loggable,
-        PeriodoOption,
-        ConsoleProgressBar,
-        SelCommandTrait;
-
     use SearchByConvenioOrEmpleado {
         getConveniosCodigos as getConvenioCodigosTrait;
     }
-
+    use Loggable,
+        PeriodoOption,
+        SelCommandTrait,
+        ConsoleProgressBar;
 
     protected static $defaultName = 'sel:autoliquidacion:create';
 
@@ -118,6 +117,7 @@ class AutoliquidacionCreateCommand extends TraitableCommand
                     $this->createAutoliquidacionEmpleado($autoliquidacion, $empleado, true);
 
                 }
+                $this->progressBarAdvance();
             }
             $this->em->flush();
             $this->em->clear();
@@ -125,14 +125,14 @@ class AutoliquidacionCreateCommand extends TraitableCommand
     }
 
     /**
-     * @param string|\App\Entity\Main\Convenio $convenio codigo o objeto
-     * @param \DateTimeInterface $periodo
+     * @param string|Convenio $convenio codigo o objeto
+     * @param DateTimeInterface $periodo
      * @param null $usuario
      * @return Autoliquidacion
      * @throws NonUniqueResultException
      * @throws ORMException
      */
-    protected function createAutoliquidacion($convenio, \DateTimeInterface $periodo, $usuario = null)
+    protected function createAutoliquidacion($convenio, DateTimeInterface $periodo, $usuario = null)
     {
         if(!is_object($convenio)) {
             $convenio = $this->em->getReference(Convenio::class, $convenio);
@@ -165,13 +165,15 @@ class AutoliquidacionCreateCommand extends TraitableCommand
         return $autoliquidacionEmpleado;
     }
 
-    /**
-     * TODO este counter no tiene en cuenta la opcion de representante, ni convenio
-     */
+
     protected function progressBarCount(InputInterface $input, OutputInterface $output): int
     {
         $rango = $this->getRangoFromPeriodo($input, false);
-        return $this->empleadoRepository->countByRango($rango->start, $rango->end, $this->searchValue);
+        if($this->isSearchConvenio()) {
+            return $this->empleadoRepository->countByRango($rango->start, $rango->end, $this->getConveniosCodigos());
+        } else {
+            return $this->empleadoRepository->countByRango($rango->start, $rango->end, $this->searchValue);
+        }
     }
 
 

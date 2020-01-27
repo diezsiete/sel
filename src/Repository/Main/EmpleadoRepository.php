@@ -10,6 +10,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\QueryException;
 use Doctrine\ORM\QueryBuilder;
@@ -149,20 +150,22 @@ class EmpleadoRepository extends ServiceEntityRepository
 
 
     /**
-     * @param $periodoInicio
-     * @param $periodoFin
+     * @param DateTimeInterface|null $periodoInicio
+     * @param DateTimeInterface|null $periodoFin
      * @param string[]|int[] $search por identificaciones o codigo convenios
      * @return int
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      * @throws QueryException
      */
     public function countByRango($periodoInicio, $periodoFin, $search = [])
     {
         $qb = $this->createQueryBuilder('e');
         $qb
-            ->select($qb->expr()->count('e'))
-            ->addCriteria(static::rangoPeriodoCriteria($periodoInicio, $periodoFin));
+            ->select($qb->expr()->count('e'));
+        if($periodoInicio && $periodoFin) {
+            $qb->addCriteria(static::rangoPeriodoCriteria($periodoInicio, $periodoFin));
+        }
 
         if($search) {
             if(is_numeric($search[0])) {
@@ -213,20 +216,19 @@ class EmpleadoRepository extends ServiceEntityRepository
     }
 
     /**
-     * TODO agregar types a los argumentos
-     * @param $periodoInicio
-     * @param $periodoFin
+     * @param DateTimeInterface $periodoInicio
+     * @param DateTimeInterface $periodoFin
      * @return Criteria
      */
     public static function rangoPeriodoCriteria($periodoInicio, $periodoFin)
     {
         return Criteria::create()
             ->andWhere(Criteria::expr()->andX(
-                Criteria::expr()->lt('fechaIngreso', $periodoFin),
+                Criteria::expr()->lt('fechaIngreso', $periodoFin->format('Y-m-d')),
                 // TODO usar static::fechaRetiroCriteria($periodoInicio)
                 Criteria::expr()->orX(
                     Criteria::expr()->isNull('fechaRetiro'),
-                    Criteria::expr()->gt('fechaRetiro', $periodoInicio)
+                    Criteria::expr()->gte('fechaRetiro', $periodoInicio->format('Y-m-d'))
                 )
             ));
     }
