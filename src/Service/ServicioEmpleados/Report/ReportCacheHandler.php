@@ -128,73 +128,6 @@ class ReportCacheHandler
         }
     }
 
-    /**
-     * @param Usuario $usuario
-     * @param $reportEntityName
-     * @param null $source
-     */
-    public function delete(Usuario $usuario, $reportEntityName, $source = null)
-    {
-        if(!$source) {
-            foreach($this->config->servicioEmpleados()->getSources() as $source) {
-                $this->delete($usuario, $reportEntityName, $source);
-            }
-        } else {
-            $seEntityName = $this->config->servicioEmpleados()->getReportEntityClass($reportEntityName);
-
-            $this->deleteReportEntities($seEntityName, ['usuario' => $usuario, 'source' => $source],
-                function(ServicioEmpleadosReport $entity) use ($reportEntityName) {
-                    $pdfDeleted = $this->reportFactory->getReportByEntity($entity)->getImporter()->deletePdf();
-                    $this->info($pdfDeleted ? "file '$pdfDeleted' deleted" : "no file found to delete");
-                }
-            );
-
-            if($source === 'novasoft') {
-                $novasoftEntityName = $this->config->servicioEmpleados()->getReportEntityClass($reportEntityName, $source);
-                $this->deleteReportEntities($novasoftEntityName, ['usuario' => $usuario]);
-            }
-
-            $reportCache = $this->em->getRepository(ReportCache::class)
-                ->findLastCacheForReport($usuario, $source, $reportEntityName);
-            if($reportCache) {
-                $this->em->remove($reportCache);
-                $this->info("report_cache deleted for '$reportEntityName'");
-            }
-            $this->em->flush();
-        }
-    }
-
-    public function hasCacheToRenew(Usuario $usuario, $source = null)
-    {
-        $hasCacheToRenew = false;
-        if(!$source) {
-            foreach($this->config->servicioEmpleados()->getSources() as $source) {
-                $hasCacheToRenew = $hasCacheToRenew ? $hasCacheToRenew : $this->hasCacheToRenew($usuario, $source);
-            }
-        } else {
-            if($this->config->servicioEmpleados()->usuarioHasRoleForSource($usuario, $source)) {
-                $reportsNames = $this->config->servicioEmpleados()->getReportsNames();
-                $caches = $this->reportCacheRepo->findLastCacheForReport($usuario, $source);
-
-                $hasCacheToRenew = array_reduce($reportsNames, function ($hasCacheToRenew, $reportName) use ($caches) {
-                    return $hasCacheToRenew
-                        ? true
-                        : !((bool)$caches->matching(ReportCacheRepository::filterByReportCriteria($reportName))->count());
-                }, false);
-
-                if(!$hasCacheToRenew && $source === 'novasoft') {
-                    foreach($reportsNames as $reportName) {
-                        if(!$hasCacheToRenew) {
-                            /** @var ReportCache $cache */
-                            $cache = $caches->matching(ReportCacheRepository::filterByReportCriteria($reportName))->first();
-                            $hasCacheToRenew = $this->isRefreshIntervalOver($reportName, $cache->getLastUpdate());
-                        }
-                    }
-                }
-            }
-        }
-        return $hasCacheToRenew;
-    }
 
     public function handleHalcon(Usuario $usuario, $reportEntityClass)
     {
@@ -257,6 +190,77 @@ class ReportCacheHandler
             }
         }
     }
+
+    /**
+     * @param Usuario $usuario
+     * @param $reportEntityName
+     * @param null $source
+     */
+    public function delete(Usuario $usuario, $reportEntityName, $source = null)
+    {
+        if(!$source) {
+            foreach($this->config->servicioEmpleados()->getSources() as $source) {
+                $this->delete($usuario, $reportEntityName, $source);
+            }
+        } else {
+            $seEntityName = $this->config->servicioEmpleados()->getReportEntityClass($reportEntityName);
+
+            $this->deleteReportEntities($seEntityName, ['usuario' => $usuario, 'source' => $source],
+                function(ServicioEmpleadosReport $entity) use ($reportEntityName) {
+                    $pdfDeleted = $this->reportFactory->getReportByEntity($entity)->getImporter()->deletePdf();
+                    $this->info($pdfDeleted ? "file '$pdfDeleted' deleted" : "no file found to delete");
+                }
+            );
+
+            if($source === 'novasoft') {
+                $novasoftEntityName = $this->config->servicioEmpleados()->getReportEntityClass($reportEntityName, $source);
+                $this->deleteReportEntities($novasoftEntityName, ['usuario' => $usuario]);
+            }
+
+            $reportCache = $this->em->getRepository(ReportCache::class)
+                ->findLastCacheForReport($usuario, $source, $reportEntityName);
+            if($reportCache) {
+                $this->em->remove($reportCache);
+                $this->info("report_cache deleted for '$reportEntityName'");
+            }
+            $this->em->flush();
+        }
+    }
+
+    public function hasCacheToRenew(Usuario $usuario, $source = null, $reports = [])
+    {
+        $reports = is_array($reports) ? $reports : [$reports];
+        $hasCacheToRenew = false;
+        if(!$source) {
+            foreach($this->config->servicioEmpleados()->getSources() as $source) {
+                $hasCacheToRenew = $hasCacheToRenew ? $hasCacheToRenew : $this->hasCacheToRenew($usuario, $source, $reports);
+            }
+        } else {
+            if($this->config->servicioEmpleados()->usuarioHasRoleForSource($usuario, $source)) {
+                $reportsNames = $reports ? $reports : $this->config->servicioEmpleados()->getReportsNames();
+                $caches = $this->reportCacheRepo->findLastCacheForReport($usuario, $source);
+
+                $hasCacheToRenew = array_reduce($reportsNames, function ($hasCacheToRenew, $reportName) use ($caches) {
+                    return $hasCacheToRenew
+                        ? true
+                        : !((bool)$caches->matching(ReportCacheRepository::filterByReportCriteria($reportName))->count());
+                }, false);
+
+                if(!$hasCacheToRenew && $source === 'novasoft') {
+                    foreach($reportsNames as $reportName) {
+                        if(!$hasCacheToRenew) {
+                            /** @var ReportCache $cache */
+                            $cache = $caches->matching(ReportCacheRepository::filterByReportCriteria($reportName))->first();
+                            $hasCacheToRenew = $this->isRefreshIntervalOver($reportName, $cache->getLastUpdate());
+                        }
+                    }
+                }
+            }
+        }
+        return $hasCacheToRenew;
+    }
+
+
 
     /**
      * @noinspection PhpDocMissingThrowsInspection

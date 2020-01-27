@@ -33,7 +33,7 @@ abstract class ServicioEmpleadosDataTableType implements DataTableTypeInterface
     {
         //para que el cache solo se ejecute al inicializar, no en paginaciones u otras acciones
         if($event->getState()->isInitial()) {
-            // $this->cacheHandler->handle($this->usuario, $this->getReportEntityClass());
+            $this->cacheHandler->handle($this->usuario, $this->getReportEntityClass());
         }
 
     }
