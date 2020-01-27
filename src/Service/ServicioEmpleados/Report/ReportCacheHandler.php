@@ -164,6 +164,10 @@ class ReportCacheHandler
             if (!$cache) {
                 $import = true;
                 switch($reportEntityClassClean) {
+                    case 'Nomina':
+                    case 'LiquidacionContrato':
+                        $this->novasoftBuildNoCache($report);
+                        break;
                     case 'CertificadoIngresos':
                         $this->novasoftBuildNoCacheCertificadoIngresos($report);
                         break;
@@ -295,6 +299,18 @@ class ReportCacheHandler
             ->setSource($source)
             ->setReport($reportEntityClass)
             ->setLastUpdate(new DateTime());
+    }
+
+    /**
+     * @param NominaReport|LiquidacionContratoReport $report
+     * @throws Exception
+     */
+    private function novasoftBuildNoCache($report)
+    {
+        $fechaFin = DateTime::createFromFormat('Y-m-d', (new DateTime())->format('Y-m-t'));
+        $report
+            ->setParameterFechaInicio()
+            ->setParameterFechaFin($fechaFin);
     }
 
     /**

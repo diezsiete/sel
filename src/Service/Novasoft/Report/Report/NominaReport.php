@@ -12,6 +12,7 @@ use App\Service\Novasoft\Report\Mapper\NominaMapper;
 use App\Service\Novasoft\Report\ReportFormatter;
 use App\Service\ServicioEmpleados\Report\PdfHandler;
 use App\Service\Utils;
+use DateTime;
 use DateTimeInterface;
 use SSRS\SSRSReport;
 use SSRS\SSRSReportException;
@@ -102,6 +103,9 @@ class NominaReport extends Report
      */
     public function setParameterFechaInicio($fechaInicio)
     {
+        if(!$fechaInicio) {
+            $fechaInicio = DateTime::createFromFormat('m/d/Y', '2/1/2017');
+        }
         $this->fecha = $fechaInicio;
         $this->parameter_FecIni = $fechaInicio->format('m/d/Y');
         return $this;
