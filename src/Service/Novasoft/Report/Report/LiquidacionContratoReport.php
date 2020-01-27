@@ -12,6 +12,7 @@ use App\Service\Novasoft\Report\Mapper\LiquidacionContratoMapper;
 use App\Service\Novasoft\Report\ReportFormatter;
 use App\Service\ServicioEmpleados\Report\PdfHandler;
 use App\Service\Utils;
+use DateTime;
 use DateTimeInterface;
 use SSRS\SSRSReport;
 
@@ -50,8 +51,11 @@ class LiquidacionContratoReport extends Report
         return $this;
     }
 
-    public function setParameterFechaInicio(DateTimeInterface $fechaInicio)
+    public function setParameterFechaInicio(?DateTimeInterface $fechaInicio = null)
     {
+        if(!$fechaInicio) {
+            $fechaInicio = DateTime::createFromFormat('m/d/Y', '2/1/2017');
+        }
         $this->fechaInicio = $fechaInicio;
         $this->parameter_fFecIni = $fechaInicio->format('m/d/Y');
         return $this;

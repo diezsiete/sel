@@ -187,6 +187,11 @@ class Configuracion
         return $this->kernelProjectDir . '/public' . $this->packages->getUrl($this->parameters['logo_pdf']);
     }
 
+    public function getPdfResourcePath($resource)
+    {
+        return $this->kernelProjectDir . '/public' . $this->packages->getUrl($resource);
+    }
+
     public function homeRoute()
     {
         return $this->parameters['home_route'];
