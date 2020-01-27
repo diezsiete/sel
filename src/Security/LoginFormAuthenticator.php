@@ -120,9 +120,9 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
             }
             $esEmpleado = $this->novasoftEmpleadoService->addRoleEmpleadoToUsuario($user);
 
-            if(($esEmpleado || $user->esRol('ROLE_HALCON')) && $this->reportCacheHandler->hasCacheToRenew($user)) {
+            /*if(($esEmpleado || $user->esRol('ROLE_HALCON')) && $this->reportCacheHandler->hasCacheToRenew($user)) {
                 $this->loadingOverlay->enable()->useCallbackRoute('sel_panel_empleado_update');
-            }
+            }*/
         }
 
         return $isValid;

@@ -40,9 +40,9 @@ class PanelController extends BaseController
 
     protected function panelEmpleado(DataTableBuilder $dataTable, ReportFactory $reportFactory)
     {
-        if(!$this->loadingOverlay->isEnabled() && $this->reportCacheHandler->hasCacheToRenew($this->getUser())) {
+        /*if(!$this->loadingOverlay->isEnabled() && $this->reportCacheHandler->hasCacheToRenew($this->getUser())) {
             $this->loadingOverlay->enable();
-        }
+        }*/
 
         $tableNomina = $dataTable->nomina(['dom' => 't', 'pageLength' => 2]);
         if($tableNomina->isCallback()) {
