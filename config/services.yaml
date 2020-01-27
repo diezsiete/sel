@@ -97,6 +97,12 @@ services:
     App\Service\Hv\HvWizard\HvWizard:
         factory: '@App\Service\Hv\HvWizard\HvWizardFactory'
 
+    App\Service\Novasoft\SqlServer\Connection:
+        arguments:
+            - '%env(empresa:SQL_SERVER_NAME)%'
+            - '%env(empresa:SQL_SERVER_DB)%'
+            - '%env(empresa:SQL_SERVER_USER)%'
+            - '%env(empresa:SQL_SERVER_PASSWORD)%'
 
     App\Service\NovasoftSsrs\ReportServer:
         arguments:
@@ -133,6 +139,8 @@ services:
     App\Service\Pdf\Halcon\LiquidacionContratoPdf:
         arguments: ["P", "mm", "Letter"]
         shared: false
+
+
 
 
 
