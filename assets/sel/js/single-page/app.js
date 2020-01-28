@@ -3,7 +3,7 @@ import UsuarioSearch from './components/UsuarioSearch';
 
 import ImageApp from './components/ImageApp';
 
-//Vue.component('image-app', ImageApp);
+Vue.component('image-app', ImageApp);
 Vue.component('usuario-search', UsuarioSearch);
 
 

@@ -34,6 +34,7 @@
     import axios from 'axios';
     import imageList from './ImageList';
     import imageUploader from './ImageUploader';
+    import Routing from './../../router'
 
     export default {
         components: {
@@ -59,7 +60,7 @@
             },
             fetchImagesData() {
                 axios
-                    .get('/api/images')
+                    .get(Routing.generate('sel_admin_api_archivo_list'))
                     .then(response => (this.images = response.data.items))
             }
         },

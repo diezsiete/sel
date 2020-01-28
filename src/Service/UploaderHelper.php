@@ -6,12 +6,16 @@ use Exception;
 use Gedmo\Sluggable\Util\Urlizer;
 use League\Flysystem\FileNotFoundException;
 use League\Flysystem\FilesystemInterface;
-use phpDocumentor\Reflection\Types\Self_;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
+/**
+ * Class UploaderHelper
+ * @package App\Service
+ * @deprecated
+ */
 class UploaderHelper
 {
     const HV_ADJUNTO = 'hv_adjunto';

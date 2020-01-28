@@ -20,14 +20,14 @@
         },
         methods: {
             onDropzoneSuccess(file, response) {
-                this.$emit('new-image', response);
-                this.$refs.vueDropzone.removeFile(file);
+                //this.$emit('new-image', response);
+                //this.$refs.vueDropzone.removeFile(file);
             }
         },
         data: function () {
             return {
                 dropzoneOptions: {
-                    url: Routing.generate('sel_admin_api_archivo'),
+                    url: Routing.generate('sel_admin_api_archivo_create'),
                     thumbnailWidth: 150
                 }
             }
