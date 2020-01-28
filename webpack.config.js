@@ -19,11 +19,11 @@ const destinationFilename = Encore.isProduction() ? assetDestinationProd : asset
 
 Encore
 // directory where compiled assets will be stored
-    //.setOutputPath('public/build/')
-    // public path used by the web server to access the output path
-    //.setPublicPath('/build')
-    // only needed for CDN's or sub-directory deploy
-    //.setManifestKeyPrefix('build/')
+//.setOutputPath('public/build/')
+// public path used by the web server to access the output path
+//.setPublicPath('/build')
+// only needed for CDN's or sub-directory deploy
+//.setManifestKeyPrefix('build/')
 
     .setOutputPath('public/build/' + empresa.toLowerCase())
     .setPublicPath('/build/' + empresa.toLowerCase())
@@ -52,6 +52,8 @@ Encore
     .addEntry('admin-scraper-solicitud-list', './assets/sel/js/admin/scraper-solicitud-list.js')
     .addEntry('portal-clientes', './assets/sel/js/clientes/portal-clientes.js')
     .addEntry('clientes-report', './assets/sel/js/clientes/report.js')
+    .addEntry('single-page', './assets/sel/js/single-page/app.js')
+
 
     //.addEntry('page1', './assets/js/page1.js')
     //.addEntry('page2', './assets/js/page2.js')
@@ -103,7 +105,11 @@ Encore
         options['process.env'].GOOGLEMAPS_KEY = JSON.stringify(dotenv.parsed["GOOGLEMAPS_KEY_" + empresa.toUpperCase()]);
     })
 
+    .enableVueLoader()
+
     .addPlugin(new CaseSensitivePathsPlugin(), -10);
+
+
 
     // uncomment if you use TypeScript
     //.enableTypeScriptLoader()

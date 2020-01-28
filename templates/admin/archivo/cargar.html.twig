@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('single-page') }}
+{% endblock %}
+
+
+{% block body_header_right %}
+    {{ parent() }}
+{% endblock %}
+
+
+{% block body %}
+    <div class="row">
+        <div class="col">
+            <div id="single-page">
+                <usuario-search></usuario-search>
+{#                <image-app></image-app>#}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('single-page') }}
+{% endblock %}
