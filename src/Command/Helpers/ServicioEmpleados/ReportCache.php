@@ -25,6 +25,7 @@ trait ReportCache
     }
     use ConnectToLogEvent;
 
+    protected $usuarioArgumentDescription = 'id o ident del usuario';
     protected $reportsOptionDescription = "El o los reportes para afectar";
 
     /**
@@ -37,13 +38,14 @@ trait ReportCache
      */
     protected $currentUsuario;
 
+
     /**
      * @Configure
      */
     public function addReportCacheArgumentsAndOptions()
     {
         $this
-            ->addArgument('usuario', InputArgument::OPTIONAL, 'id o ident del usuario')
+            ->addArgument('usuario', InputArgument::OPTIONAL, $this->usuarioArgumentDescription)
             ->addOption('reports', 'r', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, $this->reportsOptionDescription)
             ->addOption('source', 's', InputOption::VALUE_REQUIRED, 'novasoft o halcon', 'novasoft');
         return $this;

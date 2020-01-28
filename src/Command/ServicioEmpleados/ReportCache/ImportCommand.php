@@ -29,6 +29,7 @@ class ImportCommand extends TraitableCommand
 
     protected function configure()
     {
+        $this->usuarioArgumentDescription = 'id o ident del usuario, o codigo convenio. Si se deja vacio toma todos';
         parent::configure();
         $this
             ->addOption('hard', null, InputOption::VALUE_NONE, 'Borra todo e importa todo')
@@ -55,7 +56,7 @@ class ImportCommand extends TraitableCommand
                         $this->reportCacheHandler->handleNovasoft($usuario, $report, $ignoreRefreshInterval);
                     } catch (SSRSReportException $e) {
                         $this->error(get_class($e) . ": " . $e->errorDescription);
-                        throw $e;
+                        //throw $e;
                     }
                 } else {
                     $this->reportCacheHandler->handleHalcon($usuario, $report);
@@ -83,7 +84,7 @@ class ImportCommand extends TraitableCommand
         $source = $input->getOption('source');
         $usuario = $input->getArgument('usuario');
         $all = $input->getOption('all');
-        if($source === ServicioEmpleadosConstant::SOURCE_HALCON || $usuario) {
+        if($source === ServicioEmpleadosConstant::SOURCE_HALCON || ($usuario && is_numeric($usuario))) {
             $rol = $this->configuracion->servicioEmpleados()->getRolBySource($source);
             $usuarioRepository = $this->em->getRepository(Usuario::class);
 
@@ -92,11 +93,18 @@ class ImportCommand extends TraitableCommand
                 : $usuarioRepository->findByRolQuery($rol, $usuario);
         } else {
             $empleadoRepository = $this->em->getRepository(Empleado::class);
-
             $activo = $all ? false : DateTime::createFromFormat('Y-m-d', (new DateTime())->format('Y-m-') . '01');
-            return $count
-                ? $empleadoRepository->countAllUsuariosQuery($activo)
-                : $empleadoRepository->findAllUsuariosQuery($activo);
+            if(!$usuario) {
+                return $count
+                    ? $empleadoRepository->countAllUsuariosQuery($activo)
+                    : $empleadoRepository->findAllUsuariosQuery($activo);
+            }
+            //usuario es el codigo de un convenio
+            else {
+                return $count
+                    ? $empleadoRepository->countByConvenioQuery($usuario, $activo)
+                    : $empleadoRepository->findByConvenioQuery($usuario, $activo);
+            }
         }
     }
 }

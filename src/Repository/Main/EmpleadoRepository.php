@@ -119,6 +119,17 @@ class EmpleadoRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    public function findByConvenioQuery($codigoConvenio = null, $activo = false)
+    {
+        return $this->findByConvenioBuilder($codigoConvenio, $activo)->getQuery();
+    }
+
+    public function countByConvenioQuery($codigoConvenio = null, $activo = false)
+    {
+        return $this->findByConvenioBuilder($codigoConvenio, $activo)
+            ->select('COUNT(e.id)')
+            ->getQuery();
+    }
 
 
     public function findBySsrsDb($ssrsDb)
@@ -225,11 +236,7 @@ class EmpleadoRepository extends ServiceEntityRepository
         return Criteria::create()
             ->andWhere(Criteria::expr()->andX(
                 Criteria::expr()->lt('fechaIngreso', $periodoFin->format('Y-m-d')),
-                // TODO usar static::fechaRetiroCriteria($periodoInicio)
-                Criteria::expr()->orX(
-                    Criteria::expr()->isNull('fechaRetiro'),
-                    Criteria::expr()->gte('fechaRetiro', $periodoInicio->format('Y-m-d'))
-                )
+                static::fechaRetiroCriteriaExpr( $periodoInicio)
             ));
     }
 
@@ -241,15 +248,8 @@ class EmpleadoRepository extends ServiceEntityRepository
      */
     public static function fechaRetiroCriteria(?DateTimeInterface $fechaRetiro = null, $alias = '')
     {
-        if(!$fechaRetiro) {
-            $fechaRetiro = new DateTime();
-        }
-
-        return Criteria::create()
-            ->andWhere(Criteria::expr()->orX(
-                Criteria::expr()->isNull("$alias.fechaRetiro"),
-                Criteria::expr()->gt("$alias.fechaRetiro", $fechaRetiro)
-            ));
+        $fechaRetiro = !$fechaRetiro ? new DateTime() : $fechaRetiro;
+        return Criteria::create()->andWhere(static::fechaRetiroCriteriaExpr($fechaRetiro, $alias));
     }
 
     public static function convenioCriteria($codigos) {
@@ -305,5 +305,14 @@ class EmpleadoRepository extends ServiceEntityRepository
             $qb->addCriteria(static::fechaRetiroCriteria(is_object($activo) ? $activo : null, 'e'));
         }
         return $qb;
+    }
+
+    protected static function fechaRetiroCriteriaExpr(DateTimeInterface $fechaRetiro, $alias = '')
+    {
+        $alias = $alias ? ".$alias" : "";
+        return Criteria::expr()->orX(
+            Criteria::expr()->isNull($alias."fechaRetiro"),
+            Criteria::expr()->gte($alias."fechaRetiro", $fechaRetiro->format('Y-m-d'))
+        );
     }
 }
