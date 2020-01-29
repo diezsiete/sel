@@ -8,10 +8,10 @@
             tile
         >
             <v-toolbar flat>
-                <v-toolbar-title>{{ usuarioNombre }}</v-toolbar-title>
+                <v-toolbar-title>{{ empleadoNombre }}</v-toolbar-title>
 
                 <v-spacer></v-spacer>
-                <usuario-search v-on:usuario-select="onUsuarioSelect"></usuario-search>
+                <usuario-search placeholder="Buscar empleado"></usuario-search>
 
                 <!--<v-btn icon>
                     <v-icon>mdi-magnify</v-icon>
@@ -28,7 +28,7 @@
             <v-container>
                 <v-row justify="space-between">
                     <v-col cols="auto">
-
+                        <archivos-browser ref="archivosBrowser"></archivos-browser>
                     </v-col>
                 </v-row>
             </v-container>
@@ -40,22 +40,30 @@
 
 <script>
     import usuarioSearch from '@/components/UsuarioSearch'
+    import archivosBrowser from './ArchivosBrowser'
+    import store from "@/store/store";
+    import { mapState } from 'vuex';
 
     export default {
         name: "Archivos",
+        store,
         components: {
-            usuarioSearch
+            usuarioSearch,
+            archivosBrowser
         },
-        data() {
-            return {
-                usuarioNombre: 'Seleccione un usuario'
+        computed: mapState({
+            // empleado: function() {
+            //     return store.state.empleado
+            // },
+            empleadoNombre(state) {
+                if(state.empleado) {
+                    this.$refs.archivosBrowser.loadFiles();
+                    return `${state.empleado.nombreCompleto}  - ${state.empleado.identificacion}`
+                } else {
+                    return "Seleccione un empleado"
+                }
             }
-        },
-        methods: {
-            onUsuarioSelect(usuario) {
-                this.usuarioNombre = `${usuario.nombreCompleto}  - ${usuario.identificacion}`
-            }
-        }
+        })
     }
 </script>
 

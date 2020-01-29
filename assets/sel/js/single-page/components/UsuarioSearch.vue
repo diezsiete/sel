@@ -1,8 +1,8 @@
 <template>
     <autocomplete
             :search="search"
-            placeholder="Buscar Usuario"
-            aria-label="Buscar Usuario"
+            v-bind:placeholder="placeholder"
+            v-bind:aria-label="placeholder"
             :get-result-value="getResultValue"
             @submit="onSubmit"
             :debounce-time="500"
@@ -25,7 +25,7 @@
         methods: {
             onSubmit(result) {
                 if(result) {
-                    this.$emit('usuario-select', result)
+                    this.$store.dispatch('setEmpleado', result);
                     this.$refs.autocompleteField.setValue("");
                     this.$refs.autocompleteField.$refs.input.blur()
                 }
@@ -45,6 +45,12 @@
                 getResultValue(usuario) {
                     return `${usuario.nombreCompleto} - ${usuario.identificacion}`
                 },
+            }
+        },
+        props: {
+            placeholder: {
+                type: String,
+                default: "Buscar Usuario"
             }
         }
     }
