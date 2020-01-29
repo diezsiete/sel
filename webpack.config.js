@@ -1,6 +1,8 @@
 const Encore = require('@symfony/webpack-encore');
 const dotenv = require('dotenv').config({ path: '.env.local' });
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
+const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin')
+const path = require('path');
 
 // Manually configure the runtime environment if not already configured yet by the "encore" command.
 // It's useful when you use tools that rely on webpack.config.js file.
@@ -105,10 +107,28 @@ Encore
         options['process.env'].GOOGLEMAPS_KEY = JSON.stringify(dotenv.parsed["GOOGLEMAPS_KEY_" + empresa.toUpperCase()]);
     })
 
+    /*.addRule({
+        test: /\.s(c|a)ss$/,
+        use: [
+            'vue-style-loader',
+            'css-loader',
+            {
+                loader: 'sass-loader',
+                options: {
+                    implementation: require('sass'),
+                    fiber: require('fibers'),
+                    indentedSyntax: true // optional
+                },
+            },
+        ],
+    })*/
     .enableVueLoader()
+    .addAliases({
+        "@": path.resolve(__dirname, 'assets/sel/js/single-page')
+    })
 
-    .addPlugin(new CaseSensitivePathsPlugin(), -10);
-
+    .addPlugin(new CaseSensitivePathsPlugin(), -10)
+    .addPlugin(new VuetifyLoaderPlugin())
 
 
     // uncomment if you use TypeScript
@@ -128,4 +148,7 @@ Encore
 
 require(`./assets/${empresa}/webpack.config`)(Encore);
 
-module.exports = Encore.getWebpackConfig();
+const config = Encore.getWebpackConfig();
+// console.log(config);
+// process.exit();
+module.exports = config;

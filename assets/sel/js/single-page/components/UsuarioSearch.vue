@@ -7,6 +7,7 @@
             @submit="onSubmit"
             :debounce-time="500"
             auto-select
+            ref="autocompleteField"
     ></autocomplete>
 </template>
 
@@ -23,7 +24,11 @@
         },
         methods: {
             onSubmit(result) {
-                // TODO
+                if(result) {
+                    this.$emit('usuario-select', result)
+                    this.$refs.autocompleteField.setValue("");
+                    this.$refs.autocompleteField.$refs.input.blur()
+                }
             }
         },
         data: function () {

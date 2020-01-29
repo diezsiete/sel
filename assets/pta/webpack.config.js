@@ -1,4 +1,4 @@
-const themeVars = require('./js/theme-vars');
+/*const themeVars = require('./js/theme-vars');
 const sass = require("node-sass");
 const sassUtils = require("node-sass-utils")(sass);
 
@@ -34,7 +34,7 @@ const getVarsToSass = function (keys) {
     }
     result = sassUtils.castToSass(result);
     return result;
-};
+};*/
 
 module.exports = function(encore) {
     encore.addEntry('app', './assets/pta/js/app.js')
@@ -45,9 +45,9 @@ module.exports = function(encore) {
         .addEntry('contacto', './assets/pta/js/contacto.js')
         .addEntry('admin-pta', './assets/pta/js/admin.js')
         .addStyleEntry('induccion-pta', './assets/pta/css/evaluacion.scss')
-        .enableSassLoader(options => {
-            options.functions = {
-                "get($keys)": getVarsToSass
-            }
-        })
+        // .enableSassLoader(options => {
+        //     options.functions = {
+        //         "get($keys)": getVarsToSass
+        //     }
+        // })
 };

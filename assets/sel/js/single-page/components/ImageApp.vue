@@ -6,6 +6,7 @@
                     <h1 class="text-center">Ponka-fy Me</h1>
                 </div>
             </div>
+
             <div class="row no-gutters">
                 <div class="col-xs-12 col-md-6 px-5" style="background-color: #659dbd; padding-bottom: 150px;">
                     <h2 class="text-center mb-5 pt-5 text-white">First: Upload Photo</h2>

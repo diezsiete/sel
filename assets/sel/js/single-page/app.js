@@ -1,13 +1,22 @@
 import Vue from 'vue';
-import UsuarioSearch from './components/UsuarioSearch';
+import Vuetify from 'vuetify'
+import 'vuetify/dist/vuetify.min.css'
 
+import Archivos from './components/Archivos/Archivos';
+
+import UsuarioSearch from './components/UsuarioSearch';
 import ImageApp from './components/ImageApp';
 
-Vue.component('image-app', ImageApp);
-Vue.component('usuario-search', UsuarioSearch);
+Vue.component('archivos', Archivos);
+
+//Vue.component('image-app', ImageApp);
+//Vue.component('usuario-search', UsuarioSearch);
 
 
+Vue.use(Vuetify);
 
-const app = new Vue({
-    el: '#single-page'
-});
+const vuetify = new Vuetify({})
+
+new Vue({
+    vuetify,
+}).$mount('#single-page')
