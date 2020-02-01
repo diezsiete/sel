@@ -20,6 +20,6 @@ class SearchController extends BaseController
     public function searchUsuario($term, $rol, UsuarioRepository $usuarioRepository)
     {
         $rol = $rol ? "ROLE_" . strtoupper($rol) : null;
-        return $this->json($usuarioRepository->search(urldecode($term), $rol));
+        return $this->json($usuarioRepository->search(urldecode($term), $rol), 200, [], ['groups' => ['api']]);
     }
 }

@@ -5,8 +5,16 @@ namespace App\Controller\Admin\Api;
 
 
 use App\Controller\BaseController;
+use App\Entity\Archivo\Archivo;
+use App\Entity\Main\Usuario;
+use App\Exception\UploadedFileValidationErrorsException;
+use App\Repository\Archivo\ArchivoRepository;
+use App\Service\Archivo\ArchivoManager;
 use App\Service\File\FileManager;
+use Exception;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -16,34 +24,91 @@ class ArchivoController extends BaseController
 {
 
     /**
-     * @Route("/sel/admin/api/archivo", methods="GET", name="sel_admin_api_archivo_list", options={"expose" = true})
+     * @Route("/sel/admin/api/{usuario}/archivo/list", methods="GET", name="sel_admin_api_archivo_list", options={"expose" = true})
      */
-    public function list()
+    public function list(ArchivoRepository $archivoRepository, ?Usuario $usuario = null)
     {
-        return $this->json([
-            'items' => []
-        ]);
+        if(!$usuario) {
+            //$usuario = $this->getUser();
+            $usuario = $this->getSuperAdmin();
+        }
+
+        return $this->json($archivoRepository->findAllByOwner($usuario), 200, [], ['groups' => ['api']]);
+    }
+
+    //TODO este debe ser PUT
+    /**
+     * @Route("/sel/admin/api/{usuario}/archivo",
+     *     methods="POST",
+     *     name="sel_admin_api_archivo_create",
+     *     options={"expose" = true},
+     *     defaults={"usuario" = null}
+     * )
+     */
+    public function create(Request $request, ArchivoManager $archivoManager, ?Usuario $usuario = null)
+    {
+        if(!$usuario) {
+            //$usuario = $this->getUser();
+            $usuario = $this->getSuperAdmin();
+        }
+        try {
+            /** @var UploadedFile $file */
+            $file = $request->files->get('file');
+            $archivo = $archivoManager->uploadArchivo($file, $usuario);
+            return $this->json($archivo, 200, [], ['groups' => ['api']]);
+        } catch (UploadedFileValidationErrorsException $e) {
+            return $this->json($e->getErrors(), 400);
+        } catch (Exception $e) {
+            return $this->json(['detail' => $e->getMessage()], 400);
+        }
     }
 
     /**
-     * @Route("/sel/admin/api/archivo", methods="POST", name="sel_admin_api_archivo_create", options={"expose" = true})
+     * @Route("/sel/admin/api/{usuario}/archivo", methods="DELETE", name="sel_admin_api_archivo_delete", options={"expose" = true})
      */
-    public function create(Request $request, ValidatorInterface $validator, FileManager $fileManager)
+    public function delete(ArchivoManager $archivoManager, Request $request, ?Usuario $usuario = null)
     {
-        /** @var UploadedFile $imageFile */
-        $imageFile = $request->files->get('file');
-
-        $errors = $validator->validate($imageFile, [
-            new NotBlank()
-        ]);
-
-        if (count($errors) > 0) {
-            return $this->json($errors, 400);
+        if(!$usuario) {
+            //$usuario = $this->getUser();
+            $usuario = $this->getSuperAdmin();
         }
-        /** @var UploadedFile $imageFile */
-        $imageFile = $request->files->get('file');
-        $newFilename = $fileManager->uploadFile($imageFile);
+        $ok = $archivoManager->deleteById($request->query->get('ids'));
 
-        return $this->json(['ok' => $newFilename]);
+        return $this->json(['ok' => $ok]);
+    }
+
+    /**
+     * @Route(
+     *     "/sel/admin/api/{usuario}/archivo/{archivo}",
+     *     methods="GET",
+     *     name="sel_admin_api_archivo_view",
+     *     options={"expose" = true},
+     *     requirements={"archivo"="\d+"}
+     * )
+     */
+    public function view(ArchivoManager $archivoManager, Archivo $archivo)
+    {
+        return new RedirectResponse($archivoManager->generateLink($archivo));
+    }
+
+    /**
+     * @Route("/sel/admin/api/{usuario}/archivo/{archivo}/{originalFilename}",
+     *     methods="POST",
+     *     name="sel_admin_api_archivo_update_original_filename",
+     *     options={"expose" = true},
+     *     requirements={"archivo"="\d+", "originalFilename"=".+"}
+     * )
+     */
+    public function update(ArchivoManager $archivoManager, Archivo $archivo, $originalFilename)
+    {
+        try {
+            //TODO test poner $originalFilename vacio y mirar error
+            $archivo = $archivoManager->updateOriginalFilename($archivo, urldecode($originalFilename));
+            return $this->json($archivo, 200, [], ['groups' => ['api']]);
+        } catch (UploadedFileValidationErrorsException $e) {
+            return $this->json($e->getErrors(), 400);
+        } catch (Exception $e) {
+            return $this->json(['detail' => $e->getMessage()], 400);
+        }
     }
 }

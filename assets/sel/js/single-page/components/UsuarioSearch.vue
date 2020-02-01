@@ -25,10 +25,14 @@
         methods: {
             onSubmit(result) {
                 if(result) {
-                    this.$store.dispatch('setEmpleado', result);
-                    this.$refs.autocompleteField.setValue("");
-                    this.$refs.autocompleteField.$refs.input.blur()
+                    this.clearInput()
+                        .$emit('usuario-selected', result);
                 }
+            },
+            clearInput() {
+                this.$refs.autocompleteField.setValue("");
+                this.$refs.autocompleteField.$refs.input.blur();
+                return this;
             }
         },
         data: function () {
@@ -43,7 +47,7 @@
                     }
                 }),
                 getResultValue(usuario) {
-                    return `${usuario.nombreCompleto} - ${usuario.identificacion}`
+                    return `${usuario.nombrePrimeros} - ${usuario.identificacion}`
                 },
             }
         },

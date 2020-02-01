@@ -67,6 +67,12 @@ doctrine:
                 auto_mapping: true
                 connection: default
                 mappings:
+                    Archivo:
+                        is_bundle: false
+                        type: annotation
+                        dir: '%kernel.project_dir%/src/Entity/Archivo'
+                        prefix: 'App\Entity\Archivo'
+                        alias: Archivo
                     Autoliquidacion:
                         is_bundle: false
                         type: annotation

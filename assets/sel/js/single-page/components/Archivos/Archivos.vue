@@ -1,46 +1,73 @@
 <template>
+    <div class="override">
     <v-app>
-
         <v-card
             color="grey lighten-4"
             flat
-            height="200px"
-            tile
-        >
+            tile>
             <v-toolbar flat>
                 <v-toolbar-title>{{ empleadoNombre }}</v-toolbar-title>
-
                 <v-spacer></v-spacer>
-                <usuario-search placeholder="Buscar empleado"></usuario-search>
-
-                <!--<v-btn icon>
-                    <v-icon>mdi-magnify</v-icon>
+                <v-btn class="ma-2" large outlined color="success" id="toolbar-upload-file" :disabled="!empleado">
+                    <v-icon left>mdi-arrow-up-bold-box-outline</v-icon> Cargar archivo
                 </v-btn>
-                <v-btn icon>
-                    <v-icon>mdi-heart</v-icon>
-                </v-btn>
-
-                <v-btn icon>
-                    <v-icon>mdi-dots-vertical</v-icon>
-                </v-btn>-->
+                <usuario-search placeholder="Buscar empleado" v-on:usuario-selected="onUsuarioSelected">
+                </usuario-search>
             </v-toolbar>
 
-            <v-container>
-                <v-row justify="space-between">
-                    <v-col cols="auto">
-                        <archivos-browser ref="archivosBrowser"></archivos-browser>
-                    </v-col>
-                </v-row>
+            <v-container class="card-content">
+                <div class="loader-container">
+                    <file-uploader
+                            :url="uploadUrl"
+                            clickable="#toolbar-upload-file"
+                            ref="fileUploader"
+                            :enabled="!!empleado"
+                            :min-height-auto="archivos.length > 0">
+                        <v-row no-gutters v-if="!!empleado && archivos.length > 0">
+                            <v-col :cols="!!archivoSelected ? 8 : 12">
+                                <archivos-browser
+                                    id="archivos-browser"
+                                    ref="archivosBrowser"
+                                    clickable="#toolbar-upload-file"
+                                    v-bind:class="{disabled: !empleado}"
+                                ></archivos-browser>
+                            </v-col>
+
+                            <v-col v-if="!!archivoSelected">
+                                <archivo-detail></archivo-detail>
+                            </v-col>
+                        </v-row>
+                        <div class="dropzone-custom-content" v-else>
+                            <div v-if="!!empleado">
+                                <v-icon>mdi-arrow-up-bold-box-outline</v-icon>
+                                <div class="subtitle">
+                                    Arrastre aqui para cargar archivos, <br>
+                                    o seleccione el boton "Cargar archivo"
+                                </div>
+                            </div>
+                        </div>
+                    </file-uploader>
+                    <div class="text-center loader" v-if="loading">
+                        <v-progress-circular
+                            :indeterminate="true"
+                            :rotate="0"
+                            :size="32"
+                            :width="4"
+                        ></v-progress-circular>
+                    </div>
+                </div>
             </v-container>
 
         </v-card>
-
     </v-app>
+    </div>
 </template>
 
 <script>
     import usuarioSearch from '@/components/UsuarioSearch'
+    import fileUploader from "./ArchivoUploader";
     import archivosBrowser from './ArchivosBrowser'
+    import archivoDetail from './ArchivoDetail'
     import store from "@/store/store";
     import { mapState } from 'vuex';
 
@@ -49,24 +76,83 @@
         store,
         components: {
             usuarioSearch,
-            archivosBrowser
+            archivosBrowser,
+            archivoDetail,
+            fileUploader
         },
         computed: mapState({
-            // empleado: function() {
-            //     return store.state.empleado
-            // },
+            loading: state => state.loading,
+            empleado: state => state.empleado,
+            archivos: state => state.archivos,
+            archivoSelected: state => state.archivoSelected,
             empleadoNombre(state) {
-                if(state.empleado) {
-                    this.$refs.archivosBrowser.loadFiles();
-                    return `${state.empleado.nombreCompleto}  - ${state.empleado.identificacion}`
-                } else {
-                    return "Seleccione un empleado"
-                }
+                return state.empleado
+                    ? `${state.empleado.nombreCompleto}  - ${state.empleado.identificacion}`
+                    : "Seleccione un empleado"
+            },
+            uploadUrl: 'archivoCreateUrl'
+        }),
+        methods: {
+            async onUsuarioSelected(result) {
+                (await this.$store.dispatch('setEmpleado', result)).dispatch('fetchArchivos');
             }
-        })
+        }
     }
 </script>
 
-<style scoped>
+<style lang="scss"  type="text/scss">
+    #single-page {
+        position: relative;
+        z-index: 2;
+    }
+    .override {
+        .v-application--wrap {
+            min-height: auto;
+        }
+    }
+    .v-toolbar {
+        position:relative;
+        z-index: 2;
+    }
+    .card-content {
+        position:relative;
+        z-index: 1;
+    }
+    #archivos-browser {
+        position: relative;
+    }
+    #archivos-browser.disabled {
+        display: none;
+    }
+    .loader-container {
+        position: relative;
+        margin: 0;
+        padding: 0;
+
+        .loader {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: #00000033;
+            padding: inherit;
+
+            .v-progress-circular{
+                margin: 90px;
+            }
+        }
+    }
+
+    .dropzone-custom-content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+    }
+
+    .subtitle {
+        color: #314b5f;
+    }
 
 </style>

@@ -83,6 +83,12 @@ class PdfHandler
         return $this->generateLink($reporteNombre);
     }
 
+    /**
+     * TODO utilizar S3Helper Trait
+     * @param string $reporteNombre
+     * @return string
+     * @deprecated
+     */
     public function generateLink(string $reporteNombre): string
     {
         $reporteNombre = 'se/report/'. preg_replace('/^\/(.+)/', '$1', $reporteNombre);

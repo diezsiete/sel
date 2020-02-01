@@ -107,4 +107,9 @@ class BaseController extends AbstractController
             "Content-Length" => filesize($filePath)
         ]);
     }
+
+    public function getSuperAdmin()
+    {
+        return $this->getDoctrine()->getRepository(Usuario::class)->superAdmin();
+    }
 }
