@@ -7,6 +7,7 @@ namespace App\Helper;
 use Gedmo\Sluggable\Util\Urlizer;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use App\Constant\File as FileConstant;
 
 trait FileHelper
 {
@@ -64,5 +65,21 @@ trait FileHelper
         $originalFilename = $this->getOriginalFilename($file);
         $extension = $this->getExtension($file);
         return Urlizer::urlize(pathinfo($originalFilename, PATHINFO_FILENAME)) . '-' . uniqid() . '.' . $extension;
+    }
+
+    /**
+     * @param File $file
+     * @param bool $useExtensionForMicrosoft Los mimeTypes de microsoft son muy largos, dejar solo la extension
+     * @return string|null
+     */
+    public function getMimeType($file, $useExtensionForMicrosoft = false)
+    {
+        $mimeType = $file->getMimeType();
+        if($mimeType && $useExtensionForMicrosoft && preg_match("/^(application\/mswor|application\/vnd).+/", $mimeType)) {
+            if($extension = array_search($mimeType, FileConstant::microsoftMimeTypes)) {
+                $mimeType = $extension;
+            }
+        }
+        return $mimeType;
     }
 }

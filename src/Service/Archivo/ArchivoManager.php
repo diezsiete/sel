@@ -72,7 +72,7 @@ class ArchivoManager
         $archivo = (new Archivo())
             ->setFilename($uniqueFilename)
             ->setOriginalFilename($this->fileManager->getOriginalFilenameWithoutExtension($file))
-            ->setMimeType($file->getMimeType())
+            ->setMimeType($this->fileManager->getMimeType($file, true))
             ->setSize($file->getSize())
             ->setExtension($this->fileManager->getExtension($file))
             ->setOwner($owner);
