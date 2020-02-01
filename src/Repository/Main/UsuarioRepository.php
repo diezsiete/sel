@@ -145,6 +145,7 @@ class UsuarioRepository extends ServiceEntityRepository
         }
         return $qb
             ->andWhere($this->userSearchExpressionStrict($qb, $term))
+            ->setMaxResults(15)
             ->getQuery()
             ->getResult();
     }

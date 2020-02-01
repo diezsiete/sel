@@ -31,7 +31,7 @@ export default new Vuex.Store({
         SET_ARCHIVOS (state, archivos) {
             state.archivos = archivos;
         },
-        ADD_ARCHIVO (state, archivo) {
+        PREPEND_ARCHIVO (state, archivo) {
             state.archivos.unshift(archivo);
         },
         REMOVE_ARCHIVOS_BY_IDS (state, ids) {
@@ -75,8 +75,12 @@ export default new Vuex.Store({
             commit('SET_ARCHIVOS', response.data);
             commit('SET_LOADING_STATUS', false);
         },
-        addArchivo ({commit}, archivo) {
-            commit('ADD_ARCHIVO', archivo);
+        addArchivo ({commit}, archivos) {
+            if(Array.isArray(archivos)) {
+                archivos.forEach(archivo => commit('PREPEND_ARCHIVO', archivo))
+            } else {
+                commit('PREPEND_ARCHIVO', archivos)
+            }
         },
         //TODO botar excepcion desde el servidor
         async deleteArchivos({commit, state}, ids) {

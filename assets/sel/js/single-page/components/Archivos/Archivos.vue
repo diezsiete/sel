@@ -9,7 +9,7 @@
                 <v-toolbar-title>{{ empleadoNombre }}</v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-btn class="ma-2" large outlined color="success" id="toolbar-upload-file" :disabled="!empleado">
-                    <v-icon left>mdi-arrow-up-bold-box-outline</v-icon> Cargar archivo
+                    <v-icon left>mdi-arrow-up-bold-box-outline</v-icon> Cargar archivos
                 </v-btn>
                 <usuario-search placeholder="Buscar empleado" v-on:usuario-selected="onUsuarioSelected">
                 </usuario-search>
@@ -42,7 +42,7 @@
                                 <v-icon>mdi-arrow-up-bold-box-outline</v-icon>
                                 <div class="subtitle">
                                     Arrastre aqui para cargar archivos, <br>
-                                    o seleccione el boton "Cargar archivo"
+                                    o seleccione el boton "Cargar archivos"
                                 </div>
                             </div>
                         </div>

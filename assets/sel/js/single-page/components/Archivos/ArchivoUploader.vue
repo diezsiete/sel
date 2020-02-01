@@ -8,6 +8,7 @@
             }"
             ref="vueDropzone"
             v-on:vdropzone-success="onDropzoneSuccess"
+            v-on:vdropzone-success-multiple="onDropzoneSuccessMultiple"
             :options="dropzoneOptions"
             v-on:vdropzone-drag-over="onDropzoneDragEnter"
             v-on:vdropzone-drag-leave="onDropzoneDragEnd"
@@ -46,13 +47,23 @@
                     clickable: this.clickable,
                     //para que no muestre el preview de cargando archivo
                     previewTemplate: '<div></div>',
+                    uploadMultiple: true,
                 },
                 isDragging: false
             }
         },
         methods: {
             onDropzoneSuccess(file, response) {
-                this.$refs.vueDropzone.removeFile(file);
+                if(!this.$refs.vueDropzone.options.uploadMultiple) {
+                    this.$refs.vueDropzone.removeFile(file);
+                    this.$store.dispatch('addArchivo', response);
+                    this.$store.dispatch('disableLoading');
+                }
+            },
+            onDropzoneSuccessMultiple(files, response) {
+                for(let file in files) {
+                    this.$refs.vueDropzone.removeFile(file);
+                }
                 this.$store.dispatch('addArchivo', response);
                 this.$store.dispatch('disableLoading');
             },

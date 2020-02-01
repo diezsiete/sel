@@ -41,26 +41,27 @@ class ArchivoController extends BaseController
      * @Route("/sel/admin/api/{usuario}/archivo",
      *     methods="POST",
      *     name="sel_admin_api_archivo_create",
-     *     options={"expose" = true},
-     *     defaults={"usuario" = null}
+     *     options={"expose" = true}
      * )
      */
-    public function create(Request $request, ArchivoManager $archivoManager, ?Usuario $usuario = null)
+    public function create(Request $request, ArchivoManager $archivoManager, Usuario $usuario)
     {
-        if(!$usuario) {
-            //$usuario = $this->getUser();
-            $usuario = $this->getSuperAdmin();
+        /** @var UploadedFile[] $file */
+        $files = $request->files->get('file');
+        if(!is_array($files)) {
+            $files = [$files];
         }
-        try {
-            /** @var UploadedFile $file */
-            $file = $request->files->get('file');
-            $archivo = $archivoManager->uploadArchivo($file, $usuario);
-            return $this->json($archivo, 200, [], ['groups' => ['api']]);
-        } catch (UploadedFileValidationErrorsException $e) {
-            return $this->json($e->getErrors(), 400);
-        } catch (Exception $e) {
-            return $this->json(['detail' => $e->getMessage()], 400);
+        $archivos = [];
+        foreach($files as $file) {
+            try {
+                $archivos[] = $archivoManager->uploadArchivo($file, $usuario);
+            } catch (UploadedFileValidationErrorsException $e) {
+                return $this->json($e->getErrors(), 400);
+            } catch (Exception $e) {
+                return $this->json(['detail' => $e->getMessage()], 400);
+            }
         }
+        return $this->json($archivos, 200, [], ['groups' => ['api']]);
     }
 
     /**
