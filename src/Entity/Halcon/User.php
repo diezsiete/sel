@@ -154,10 +154,9 @@ class User
 
             $nameExplode = explode('/', $name);
             $this->primerApellido = $nameExplode[0];
-            if(!isset($nameExplode[1])) {
-                dd($this->id);
+            if(isset($nameExplode[1])) {
+                $this->segundoApellido = $nameExplode[1];
             }
-            $this->segundoApellido = $nameExplode[1];
 
             $nombresPila = explode(" ", $nameExplode[2]);
             $this->primerNombre = $nombresPila[0];

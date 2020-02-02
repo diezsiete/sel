@@ -59,7 +59,6 @@ class PtaController extends BaseController
      */
     public function solicitudServicioSubmit(Request $request, Mailer $mailer)
     {
-        dd("OK");
         $data = json_decode($request->getContent(), true);
         if ($data === null) {
             throw new BadRequestHttpException('Invalid JSON');
