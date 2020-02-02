@@ -5,6 +5,7 @@ namespace App\Service\Excel;
 
 
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
+use PhpOffice\PhpSpreadsheet\Exception;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
@@ -36,6 +37,11 @@ class Read
             ->rangeToArray($pRange, $nullValue = null, $calculateFormulas = true, $formatData = true, $returnCellRef = false);
     }
 
+    /**
+     * @param string $col eg 'A'
+     * @return array
+     * @throws Exception
+     */
     public function col($col)
     {
         $worksheet = $this->spreadsheet->getActiveSheet();
