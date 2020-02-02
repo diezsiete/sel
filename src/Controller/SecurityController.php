@@ -10,7 +10,9 @@ use App\Form\RestaurarFormType;
 use App\Repository\Main\RestaurarClaveRepository;
 use App\Security\LoginFormAuthenticator;
 use App\Service\Mailer;
+use App\Service\Utils;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -57,29 +59,37 @@ class SecurityController extends BaseController
     /**
      * @Route("/olvido", name="security_olvido")
      */
-    public function olvido(Request $request, RestaurarClaveRepository $restaurarClaveRepository, Mailer $mailer)
+    public function olvido(Request $request, RestaurarClaveRepository $restaurarClaveRepository, Mailer $mailer, Utils $utils)
     {
         $form = $this->createForm(OlvidoFormType::class);
         $form->handleRequest($request);
         $email = null;
+        $errorCantSend = "";
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var RestaurarClave $restaurarClave */
             $restaurarClave = $form->getData();
             $email = $restaurarClave->getUsuario()->getEmail();
-
-            if($prevRestaurarClave = $restaurarClaveRepository->findByUsuario($restaurarClave->getUsuario())) {
-                $this->em()->remove($prevRestaurarClave);
+            if($email && $utils->emailIsValid($email)) {
+                if($prevRestaurarClave = $restaurarClaveRepository->findByUsuario($restaurarClave->getUsuario())) {
+                    $this->em()->remove($prevRestaurarClave);
+                    $this->em()->flush();
+                }
+                $this->em()->persist($restaurarClave);
                 $this->em()->flush();
-            }
-            $this->em()->persist($restaurarClave);
-            $this->em()->flush();
 
-            $mailer->sendOlvido($restaurarClave);
+                $mailer->sendOlvido($restaurarClave);
+            } else {
+                //TODO automatizar este proceso que permita enviar un mensaje directamente para agilizar proceso de actualizacion de correo
+                $errorCantSend = !$email
+                    ? "aunque tenemos su cedula registrada, no tenemos un correo asociado con su cedula"
+                    : "el correo registrado '$email' no es valido";
+            }
         }
 
         return $this->render('security/olvido.html.twig', [
             'form' => $form->createView(),
-            'email' => $email
+            'email' => $email,
+            'errorCantSend' => $errorCantSend
         ]);
     }
 

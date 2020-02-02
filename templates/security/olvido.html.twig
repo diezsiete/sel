@@ -44,6 +44,11 @@
 
                             {{ form_end(form) }}
 
+                        {% elseif errorCantSend %}
+                            <div class="alert alert-danger text-center">
+                                Lo sentimos, {{ errorCantSend }}.
+                                Por favor comuniquese con nuestras oficinas para dar solución a su problema.
+                            </div>
                         {% else %}
                             <div class="alert alert-success text-center">
                                 Un correo se ha enviado a <strong>{{ email }}</strong> con instrucciones para restaurar contraseña
