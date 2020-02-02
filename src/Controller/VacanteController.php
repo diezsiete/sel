@@ -29,6 +29,8 @@ class VacanteController extends AbstractController
      */
     public function listado(VacanteRepository $vacanteRepository, Request $request)
     {
+        //temporal 
+        return $this->redirect('https://pta.t3rs.co/');
         $search = $request->get('s');
         $categoria = $request->get('c');
         $categoriaId = $request->get('cid');
@@ -63,6 +65,8 @@ class VacanteController extends AbstractController
      */
     public function detalle(Vacante $vacante)
     {
+        //temporal
+        return $this->redirect('https://pta.t3rs.co/');
         return $this->render('vacante/detalle.html.twig', [
             'vacante' => $vacante
         ]);
@@ -74,6 +78,8 @@ class VacanteController extends AbstractController
     public function aplicar(Vacante $vacante, AuthenticationUtils $authenticationUtils, $wizard, $step,
                             ContainerBagInterface $bag, HvWizard $hvWizard, SessionInterface $session, EntityManagerInterface $em)
     {
+        //temporal
+        return $this->redirect('https://pta.t3rs.co/');
         $usuario = $this->getUser();
         $puedeAplicar = true;
         if(!$usuario) {
