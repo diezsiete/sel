@@ -34,6 +34,10 @@ class RedSocial implements HvEntity
     /**
      * @ORM\Column(type="string", length=145)
      * @Assert\NotNull(message="Ingrese cuenta")
+     * @Assert\Length(
+     *      max = 145,
+     *      maxMessage = "La cuenta supera el limite de {{ limit }} caracteres"
+     * )
      * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $cuenta;

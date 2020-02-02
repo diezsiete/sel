@@ -35,6 +35,10 @@ class Estudio implements HvEntity
     /**
      * @ORM\Column(type="string", length=75)
      * @Assert\NotNull(message="Ingrese nombre del estudio")
+     * @Assert\Length(
+     *      max = 75,
+     *      maxMessage = "El titulo supera el limite de {{ limit }} caracteres"
+     * )
      * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $nombre;
@@ -55,6 +59,10 @@ class Estudio implements HvEntity
 
     /**
      * @ORM\Column(type="string", length=75, nullable=true)
+     * @Assert\Length(
+     *      max = 75,
+     *      maxMessage = "El nombre supera el limite de {{ limit }} caracteres"
+     * )
      * @Groups("main")
      */
     private $institutoNombreAlt;

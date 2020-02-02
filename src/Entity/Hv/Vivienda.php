@@ -30,6 +30,10 @@ class Vivienda implements HvEntity
     /**
      * @ORM\Column(type="string", length=40)
      * @Assert\NotNull(message="Ingrese dirección")
+     * @Assert\Length(
+     *      max = 40,
+     *      maxMessage = "La dirección supera el limite de {{ limit }} caracteres"
+     * )
      * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $direccion;

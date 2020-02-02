@@ -27,6 +27,10 @@ class Familiar implements HvEntity
     /**
      * @ORM\Column(type="string", length=15)
      * @Assert\NotNull(message="Ingrese primer apellido")
+     * @Assert\Length(
+     *      max = 15,
+     *      maxMessage = "El apellido supera el limite de {{ limit }} caracteres"
+     * )
      * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $primerApellido;
@@ -34,6 +38,10 @@ class Familiar implements HvEntity
     /**
      * @ORM\Column(type="string", length=15)
      * @Assert\NotNull(message="Ingrese segundo apellido")
+     * @Assert\Length(
+     *      max = 15,
+     *      maxMessage = "El apellido supera el limite de {{ limit }} caracteres"
+     * )
      * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $segundoApellido;
@@ -41,6 +49,10 @@ class Familiar implements HvEntity
     /**
      * @ORM\Column(type="string", length=30)
      * @Assert\NotNull(message="Ingrese nombre")
+     * @Assert\Length(
+     *      max = 30,
+     *      maxMessage = "El nombre supera el limite de {{ limit }} caracteres"
+     * )
      * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $nombre;
@@ -83,6 +95,10 @@ class Familiar implements HvEntity
 
     /**
      * @ORM\Column(type="string", length=35, nullable=true)
+     * @Assert\Length(
+     *      max = 35,
+     *      maxMessage = "La identificación supera el limite de {{ limit }} caracteres"
+     * )
      * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $identificacion;

@@ -29,6 +29,10 @@ class Referencia implements HvEntity
     /**
      * @ORM\Column(type="string", length=105)
      * @Assert\NotNull(message="Ingrese nombre")
+     * @Assert\Length(
+     *      max = 105,
+     *      maxMessage = "El nombre supera el limite de {{ limit }} caracteres"
+     * )
      * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $nombre;
@@ -36,6 +40,10 @@ class Referencia implements HvEntity
     /**
      * @ORM\Column(type="string", length=145)
      * @Assert\NotNull(message="Ingrese ocupación")
+     * @Assert\Length(
+     *      max = 145,
+     *      maxMessage = "La ocupación supera el limite de {{ limit }} caracteres"
+     * )
      * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $ocupacion;
@@ -43,6 +51,10 @@ class Referencia implements HvEntity
     /**
      * @ORM\Column(type="string", length=45, nullable=true)
      * @Assert\NotNull(message="Ingrese parentesco")
+     * @Assert\Length(
+     *      max = 45,
+     *      maxMessage = "El parentesco supera el limite de {{ limit }} caracteres"
+     * )
      * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $parentesco;
@@ -50,7 +62,11 @@ class Referencia implements HvEntity
     /**
      * @ORM\Column(type="string", length=20)
      * @Assert\NotNull(message="Ingrese celular de la referencia")
-     * @Assert\Positive(message="Ingrese valor numerico")
+     * @Assert\Regex(pattern="/^[0-9]+$/", message="Solo se aceptan numeros")
+     * @Assert\Length(
+     *      max = 20,
+     *      maxMessage = "El celular supera el limite de {{ limit }} caracteres"
+     * )
      * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $celular;
@@ -58,19 +74,31 @@ class Referencia implements HvEntity
     /**
      * @ORM\Column(type="string", length=20, nullable=true)
      * @Assert\NotNull(message="Ingrese telefono de la referencia")
-     * @Assert\Positive(message="Ingrese valor numerico")
+     * @Assert\Regex(pattern="/^[0-9]+$/", message="Solo se aceptan numeros")
+     * @Assert\Length(
+     *      max = 20,
+     *      maxMessage = "El telefono supera el limite de {{ limit }} caracteres"
+     * )
      * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $telefono;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
+     * @Assert\Length(
+     *      max = 50,
+     *      maxMessage = "La dirección supera el limite de {{ limit }} caracteres"
+     * )
      * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $direccion;
 
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
+     * @Assert\Length(
+     *      max = 100,
+     *      maxMessage = "Nombre supera el limite de {{ limit }} caracteres"
+     * )
      * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $entidad;

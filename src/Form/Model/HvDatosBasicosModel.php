@@ -23,12 +23,22 @@ class HvDatosBasicosModel
     /**
      * @Assert\NotBlank(message="Por favor ingrese identificación")
      * @Assert\Regex(pattern="/^[0-9]+$/", message="Solo se aceptan numeros")
+     * @Assert\Length(
+     *      min = 5,
+     *      max = 20,
+     *      minMessage = "La identificación debe tener al menos {{ limit }} caracteres",
+     *      maxMessage = "La identificación supera el limite de {{ limit }} caracteres"
+     * )
      */
     public $identificacion;
 
     /**
      * @Assert\NotBlank(message="Por favor ingrese correo")
      * @Assert\Email(message="Ingrese un email valido")
+     * @Assert\Length(
+     *      max = 140,
+     *      maxMessage = "El correo supera el limite de {{ limit }} caracteres"
+     * )
      */
     public $email;
 
@@ -39,6 +49,10 @@ class HvDatosBasicosModel
      *     match=false,
      *     message="Por favor ingrese solo letras"
      * )
+     * @Assert\Length(
+     *      max = 60,
+     *      maxMessage = "El nombre supera el limite de {{ limit }} caracteres"
+     * )
      */
     private $primerNombre;
 
@@ -48,11 +62,19 @@ class HvDatosBasicosModel
      *     match=false,
      *     message="Por favor ingrese solo letras"
      * )
+     * @Assert\Length(
+     *      max = 60,
+     *      maxMessage = "El nombre supera el limite de {{ limit }} caracteres"
+     * )
      */
     private $segundoNombre;
 
     /**
      * @Assert\NotBlank(message="Por favor ingrese su apellido")
+     * @Assert\Length(
+     *      max = 60,
+     *      maxMessage = "El apellido supera el limite de {{ limit }} caracteres"
+     * )
      */
     private $primerApellido;
 
@@ -61,6 +83,10 @@ class HvDatosBasicosModel
      *     pattern="/\d|\W/",
      *     match=false,
      *     message="Por favor ingrese solo letras"
+     * )
+     * @Assert\Length(
+     *      max = 60,
+     *      maxMessage = "El apellido supera el limite de {{ limit }} caracteres"
      * )
      */
     private $segundoApellido;
@@ -77,7 +103,7 @@ class HvDatosBasicosModel
     public $nacPais;
 
     /**
-     * @var \App\Entity\Main\Dpto
+     * @var Dpto
      */
     public $nacDpto;
 
@@ -93,12 +119,12 @@ class HvDatosBasicosModel
     public $identPais;
 
     /**
-     * @var \App\Entity\Main\Dpto
+     * @var Dpto
      */
     public $identDpto;
 
     /**
-     * @var \App\Entity\Main\Ciudad
+     * @var Ciudad
      */
     public $identCiudad;
 
@@ -107,7 +133,7 @@ class HvDatosBasicosModel
     public $estadoCivil;
 
     /**
-     * @var \App\Entity\Main\Pais
+     * @var Pais
      * @Assert\NotNull(message="Ingrese pais de residencia")
      */
     public $resiPais;
@@ -118,17 +144,25 @@ class HvDatosBasicosModel
     public $resiDpto;
 
     /**
-     * @var \App\Entity\Main\Ciudad
+     * @var Ciudad
      */
     public $resiCiudad;
 
     /**
      * @Assert\NotNull(message="Ingrese barrio")
+     * @Assert\Length(
+     *      max = 45,
+     *      maxMessage = "Barrio supera el limite de {{ limit }} caracteres"
+     * )
      */
     public $barrio;
 
     /**
      * @Assert\NotNull(message="Ingrese dirección")
+     * @Assert\Length(
+     *      max = 60,
+     *      maxMessage = "La dirección supera el limite de {{ limit }} caracteres"
+     * )
      */
     public $direccion;
 
@@ -140,6 +174,10 @@ class HvDatosBasicosModel
 
     /**
      * @Assert\Email(message="Ingrese un email valido")
+     * @Assert\Length(
+     *      max = 100,
+     *      maxMessage = "Email alternativo supera el limite de {{ limit }} caracteres"
+     * )
      */
     public $emailAlt;
 
@@ -155,7 +193,6 @@ class HvDatosBasicosModel
 
     /**
      * @Assert\NotBlank(message="Ingrese su fecha de nacimiento")
-     * @Assert\Date(message="Ingrese fecha valida de nacimiento")
      */
     public $nacimiento;
 
@@ -175,9 +212,23 @@ class HvDatosBasicosModel
      * @Assert\NotNull(message="Ingrese nivel academico")
      */
     public $nivelAcademico;
-    
+
+    /**
+     * @Assert\Regex(pattern="/^[0-9]+$/", message="Solo se aceptan numeros")
+     * @Assert\Length(
+     *      max = 17,
+     *      maxMessage = "Teléfono supera el limite de {{ limit }} caracteres"
+     * )
+     */
     public $telefono;
-    
+
+    /**
+     * @Assert\Regex(pattern="/^[0-9]+$/", message="Solo se aceptan numeros")
+     * @Assert\Length(
+     *      max = 17,
+     *      maxMessage = "Teléfono supera el limite de {{ limit }} caracteres"
+     * )
+     */
     public $celular;
 
     public function setPrimerNombre($primerNombre)
@@ -288,8 +339,8 @@ class HvDatosBasicosModel
     }
 
     /**
-     * @param \App\Entity\Hv\Hv $hv
-     * @return \App\Entity\Hv\Hv
+     * @param Hv $hv
+     * @return Hv
      */
     public function fillHv(Hv $hv)
     {

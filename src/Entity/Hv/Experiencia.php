@@ -29,6 +29,10 @@ class Experiencia implements HvEntity
     /**
      * @ORM\Column(type="string", length=55)
      * @Assert\NotNull(message="Ingrese nombre de la empresa")
+     * @Assert\Length(
+     *      max = 55,
+     *      maxMessage = "Nombre de la empresa supera el limite de {{ limit }} caracteres"
+     * )
      * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $empresa;
@@ -36,6 +40,10 @@ class Experiencia implements HvEntity
     /**
      * @ORM\Column(type="string", length=45)
      * @Assert\NotNull(message="Ingrese cargo")
+     * @Assert\Length(
+     *      max = 45,
+     *      maxMessage = "El cargo supera el limite de {{ limit }} caracteres"
+     * )
      * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $cargo;
@@ -77,12 +85,20 @@ class Experiencia implements HvEntity
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
      * @Assert\NotNull(message="Ingrese nombre del jefe")
+     * @Assert\Length(
+     *      max = 100,
+     *      maxMessage = "El nombre supera el limite de {{ limit }} caracteres"
+     * )
      * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $jefeInmediato;
 
     /**
      * @ORM\Column(type="string", length=20, nullable=true)
+     * @Assert\Length(
+     *      max = 20,
+     *      maxMessage = "Salario basico supera el limite de {{ limit }} caracteres"
+     * )
      * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $salarioBasico;
@@ -90,6 +106,11 @@ class Experiencia implements HvEntity
     /**
      * @ORM\Column(type="string", length=20, nullable=true)
      * @Assert\NotNull(message="Ingrese telefono del jefe inmediato")
+     * @Assert\Regex(pattern="/^[0-9]+$/", message="Solo se aceptan numeros")
+     * @Assert\Length(
+     *      max = 20,
+     *      maxMessage = "El telefono supera el limite de {{ limit }} caracteres"
+     * )
      * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $telefonoJefe;
