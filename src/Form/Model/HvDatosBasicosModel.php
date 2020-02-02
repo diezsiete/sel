@@ -45,7 +45,7 @@ class HvDatosBasicosModel
     /**
      * @Assert\NotBlank(message="Por favor ingrese su nombre")
      * @Assert\Regex(
-     *     pattern="/\d|\W/",
+     *     pattern="/\d|(?! )\W/",
      *     match=false,
      *     message="Por favor ingrese solo letras"
      * )
@@ -58,7 +58,7 @@ class HvDatosBasicosModel
 
     /**
      * @Assert\Regex(
-     *     pattern="/\d|\W/",
+     *     pattern="/\d|(?! )\W/",
      *     match=false,
      *     message="Por favor ingrese solo letras"
      * )
@@ -71,6 +71,11 @@ class HvDatosBasicosModel
 
     /**
      * @Assert\NotBlank(message="Por favor ingrese su apellido")
+     * @Assert\Regex(
+     *     pattern="/\d|(?! )\W/",
+     *     match=false,
+     *     message="Por favor ingrese solo letras"
+     * )
      * @Assert\Length(
      *      max = 60,
      *      maxMessage = "El apellido supera el limite de {{ limit }} caracteres"
@@ -80,7 +85,7 @@ class HvDatosBasicosModel
 
     /**
      * @Assert\Regex(
-     *     pattern="/\d|\W/",
+     *     pattern="/\d|(?! )\W/",
      *     match=false,
      *     message="Por favor ingrese solo letras"
      * )
