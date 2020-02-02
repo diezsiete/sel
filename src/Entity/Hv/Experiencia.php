@@ -57,6 +57,7 @@ class Experiencia implements HvEntity
 
     /**
      * @ORM\Column(type="smallint")
+     * @Assert\NotNull(message="Ingrese duracion")
      * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $duracion;

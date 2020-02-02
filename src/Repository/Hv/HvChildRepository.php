@@ -11,7 +11,7 @@ trait HvChildRepository
 {
     /**
      * @param Hv $hv
-     * @param \App\Entity\Hv\HvEntity $entity
+     * @param HvEntity $entity
      * @return HvEntity[]
      */
     public function findSiblings(Hv $hv, HvEntity $entity)

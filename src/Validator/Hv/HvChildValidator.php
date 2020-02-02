@@ -2,6 +2,7 @@
 
 namespace App\Validator\Hv;
 
+use App\Entity\Hv\Estudio;
 use App\Repository\Hv\HvChildRepository;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -27,7 +28,7 @@ class HvChildValidator extends ConstraintValidator
     }
 
     /**
-     * @param \App\Entity\Hv\Estudio $value
+     * @param Estudio $value
      * @param Constraint|HvChild $constraint
      */
     public function validate($value, Constraint $constraint)
