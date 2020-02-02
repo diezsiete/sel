@@ -47,6 +47,10 @@ class Utils
         return  strftime($format_output,$date->getTimestamp());
     }
 
+    /**
+     * @param bool $mes_index utilizar format n-1
+     * @return array|mixed
+     */
     public function meses($mes_index = false)
     {
 

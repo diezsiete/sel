@@ -12,6 +12,13 @@ use ZipArchive;
 class ExportZip extends Export
 {
 
+    /**
+     * @param Autoliquidacion $autoliquidacion
+     * @param null $usuario
+     * @return string
+     * @throws Exception
+     * @deprecated debe utilizar App\Helper\File\Zip
+     */
     public function generate(Autoliquidacion $autoliquidacion, $usuario = null)
     {
         $empleados = $this->getAutoliquidacionEmpleadosByRepresentante($autoliquidacion, $usuario);

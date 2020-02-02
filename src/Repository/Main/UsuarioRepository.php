@@ -107,34 +107,6 @@ class UsuarioRepository extends ServiceEntityRepository
         return (int)$qb->getQuery()->getSingleScalarResult();
     }
 
-    protected function findByRolQueryBuilder($rol, $idOrIdent = null)
-    {
-        $qb = $this->createQueryBuilder('u');
-        if(!is_array($rol)) {
-            $qb->andWhere($qb->expr()->like('u.roles', "'%$rol%'"));
-        } else {
-            $qb->andWhere(call_user_func_array([$qb->expr(), 'orX'], array_map(function ($rol) use($qb) {
-                return $qb->expr()->like('u.roles', "'%$rol%'");
-            }, $rol)));
-        }
-        if($idOrIdent) {
-            if(!is_array($idOrIdent)) {
-                $qb->andWhere($qb->expr()->orX(
-                    $qb->expr()->eq('u.id', ':idOrIdent'),
-                    $qb->expr()->eq('u.identificacion', ':idOrIdent')
-                ))
-                    ->setParameter('idOrIdent', $idOrIdent)
-                    ->setMaxResults(1);
-            } else {
-                $qb->andWhere($qb->expr()->orX(
-                    $qb->expr()->in('u.id', $idOrIdent),
-                    $qb->expr()->in('u.identificacion', $idOrIdent)
-                ));
-            }
-        }
-        return $qb;
-    }
-
     /**
      * @return Usuario[]
      */
@@ -160,29 +132,105 @@ class UsuarioRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult('FETCH_COLUMN');
     }
 
+    /**
+     * @param string $term
+     * @param string|string[]|null $rol
+     * @return mixed
+     */
+    public function search(string $term, $rol = null)
+    {
+        $qb = $this->createQueryBuilder('u');
+        if($rol) {
+            $this->filterRol($rol, $qb);
+        }
+        return $qb
+            ->andWhere($this->userSearchExpressionStrict($qb, $term))
+            ->setMaxResults(15)
+            ->getQuery()
+            ->getResult();
+    }
+
 
     public function userSearchExpression(QueryBuilder $qb, $search, $alias = 'u', $parameterKey = 'search')
     {
         $expr = $qb->expr()->orX(
-            $qb->expr()->like($alias . '.identificacion', ':'.$parameterKey),
-            $qb->expr()->like(
-                $qb->expr()->concat(
-                    $qb->expr()->concat(
-                        $qb->expr()->concat(
-                            $alias.'.primerNombre',
-                            'COALESCE(' . $qb->expr()->concat($qb->expr()->literal(' '), $alias.'.segundoNombre') . ', \'\')'
-                        ),
-                        $qb->expr()->literal(' ')
-                    ),
-                    $qb->expr()->concat(
-                        $alias.'.primerApellido',
-                        'COALESCE(' . $qb->expr()->concat($qb->expr()->literal(' '), $alias.'.segundoApellido') . ', \'\')'
-                    )
-                ),
-                ':'.$parameterKey
-            )
+            $this->userSearchExpressionIdentificacion($qb, $alias, $parameterKey),
+            $this->userSearchExpressionNombres($qb, $alias, $parameterKey)
         );
         $qb->setParameter($parameterKey, "%" . str_replace(" ", "%", $search) . "%");
         return $expr;
+    }
+
+    public function userSearchExpressionStrict(QueryBuilder $qb, $search, $alias = 'u', $parameterKey = 'search')
+    {
+        $qb->setParameter($parameterKey, "%" . str_replace(" ", "%", $search) . "%");
+        return is_numeric($search)
+            ? $this->userSearchExpressionIdentificacion($qb, $alias, $parameterKey)
+            : $this->userSearchExpressionNombres($qb, $alias, $parameterKey);
+    }
+
+    protected function userSearchExpressionIdentificacion(QueryBuilder $qb, $alias = 'u', $parameterKey = 'search')
+    {
+        return $qb->expr()->like($alias . '.identificacion', ':'.$parameterKey);
+    }
+
+    protected function userSearchExpressionNombres(QueryBuilder $qb, $alias = 'u', $parameterKey = 'search')
+    {
+        return $qb->expr()->like(
+            $qb->expr()->concat(
+                $qb->expr()->concat(
+                    $qb->expr()->concat(
+                        $alias.'.primerNombre',
+                        'COALESCE(' . $qb->expr()->concat($qb->expr()->literal(' '), $alias.'.segundoNombre') . ', \'\')'
+                    ),
+                    $qb->expr()->literal(' ')
+                ),
+                $qb->expr()->concat(
+                    $alias.'.primerApellido',
+                    'COALESCE(' . $qb->expr()->concat($qb->expr()->literal(' '), $alias.'.segundoApellido') . ', \'\')'
+                )
+            ),
+            ':'.$parameterKey
+        );
+    }
+
+    protected function findByRolQueryBuilder($rol, $idOrIdent = null)
+    {
+        $qb = $this->filterRol($rol);
+        if($idOrIdent) {
+            if(!is_array($idOrIdent)) {
+                $qb->andWhere($qb->expr()->orX(
+                    $qb->expr()->eq('u.id', ':idOrIdent'),
+                    $qb->expr()->eq('u.identificacion', ':idOrIdent')
+                ))
+                    ->setParameter('idOrIdent', $idOrIdent)
+                    ->setMaxResults(1);
+            } else {
+                $qb->andWhere($qb->expr()->orX(
+                    $qb->expr()->in('u.id', $idOrIdent),
+                    $qb->expr()->in('u.identificacion', $idOrIdent)
+                ));
+            }
+        }
+        return $qb;
+    }
+
+    /**
+     * @param string|string[] $rol
+     * @param QueryBuilder|null $qb
+     * @return QueryBuilder
+     */
+    protected function filterRol($rol, ?QueryBuilder $qb = null)
+    {
+        $qb = !$qb ? $this->createQueryBuilder('u') : $qb;
+
+        if(!is_array($rol)) {
+            $qb->andWhere($qb->expr()->like('u.roles', "'%$rol%'"));
+        } else {
+            $qb->andWhere(call_user_func_array([$qb->expr(), 'orX'], array_map(function ($rol) use($qb) {
+                return $qb->expr()->like('u.roles', "'%$rol%'");
+            }, $rol)));
+        }
+        return $qb;
     }
 }

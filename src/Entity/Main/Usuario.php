@@ -24,13 +24,14 @@ class Usuario implements UserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"api"})
      */
     private $id;
 
     /**
      * @Assert\NotBlank(message="Por favor ingrese identificación")
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Groups({"scraper", "scraper-hv", "scraper-hv-child"})
+     * @Groups({"scraper", "scraper-hv", "scraper-hv-child", "api"})
      */
     private $identificacion;
 
@@ -50,33 +51,33 @@ class Usuario implements UserInterface
      * @Assert\NotBlank(message="Por favor ingrese correo")
      * @Assert\Email()
      * @ORM\Column(type="string", length=140, nullable=true)
-     * @Groups({"scraper", "scraper-hv"})
+     * @Groups({"scraper", "scraper-hv", "api"})
      */
     private $email;
 
     /**
      * @Assert\NotBlank(message="Por favor ingrese su nombre")
      * @ORM\Column(type="string", length=60)
-     * @Groups({"scraper", "scraper-hv"})
+     * @Groups({"scraper", "scraper-hv", "api"})
      */
     private $primerNombre;
 
     /**
      * @ORM\Column(type="string", length=60, nullable=true)
-     * @Groups({"scraper", "scraper-hv"})
+     * @Groups({"scraper", "scraper-hv", "api"})
      */
     private $segundoNombre;
 
     /**
      * @Assert\NotBlank(message="Por favor ingrese su apellido")
      * @ORM\Column(type="string", length=60)
-     * @Groups({"scraper", "scraper-hv"})
+     * @Groups({"scraper", "scraper-hv", "api"})
      */
     private $primerApellido;
 
     /**
      * @ORM\Column(type="string", length=60, nullable=true)
-     * @Groups({"scraper", "scraper-hv"})
+     * @Groups({"scraper", "scraper-hv", "api"})
      */
     private $segundoApellido;
 
@@ -359,6 +360,12 @@ class Usuario implements UserInterface
         return $this;
     }
 
+    /**
+     * @param bool $solo_primeros
+     * @param bool $ucfirst
+     * @return string
+     * @Groups({"api"})
+     */
     public function getNombreCompleto($solo_primeros = false, $ucfirst = false)
     {
         $primer_nombre = $ucfirst ? ucfirst(mb_strtolower($this->primerNombre)) : $this->primerNombre;
@@ -376,6 +383,10 @@ class Usuario implements UserInterface
         return $return;
     }
 
+    /**
+     * @return string
+     * @Groups({"api"})
+     */
     public function getNombrePrimeros()
     {
         return $this->getNombreCompleto(true, true);

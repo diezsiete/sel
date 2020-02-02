@@ -13,11 +13,17 @@ class Connection
      * @var PDO
      */
     private $conn;
+    private $serverName;
+    private $database;
+    private $user;
+    private $password;
 
     public function __construct($serverName, $database, $user, $password)
     {
-        $this->conn = new PDO( "sqlsrv:server=$serverName ; Database=$database", $user, $password);
-        $this->conn->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+        $this->serverName = $serverName;
+        $this->database = $database;
+        $this->user = $user;
+        $this->password = $password;
     }
 
     /**
@@ -27,8 +33,20 @@ class Connection
      */
     public function execute($tsql, $params = [])
     {
-        $statement = $this->conn->prepare($tsql);
+        $statement = $this->connection()->prepare($tsql);
         $statement->execute($params);
         return $statement;
+    }
+
+    /**
+     * @return PDO
+     */
+    private function connection()
+    {
+        if(!$this->conn) {
+            $this->conn = new PDO( "sqlsrv:server=$this->serverName ; Database=$this->database", $this->user, $this->password);
+            $this->conn->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+        }
+        return $this->conn;
     }
 }

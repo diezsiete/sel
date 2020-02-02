@@ -1,6 +1,8 @@
 const Encore = require('@symfony/webpack-encore');
 const dotenv = require('dotenv').config({ path: '.env.local' });
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
+const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin')
+const path = require('path');
 
 // Manually configure the runtime environment if not already configured yet by the "encore" command.
 // It's useful when you use tools that rely on webpack.config.js file.
@@ -19,11 +21,11 @@ const destinationFilename = Encore.isProduction() ? assetDestinationProd : asset
 
 Encore
 // directory where compiled assets will be stored
-    //.setOutputPath('public/build/')
-    // public path used by the web server to access the output path
-    //.setPublicPath('/build')
-    // only needed for CDN's or sub-directory deploy
-    //.setManifestKeyPrefix('build/')
+//.setOutputPath('public/build/')
+// public path used by the web server to access the output path
+//.setPublicPath('/build')
+// only needed for CDN's or sub-directory deploy
+//.setManifestKeyPrefix('build/')
 
     .setOutputPath('public/build/' + empresa.toLowerCase())
     .setPublicPath('/build/' + empresa.toLowerCase())
@@ -52,6 +54,8 @@ Encore
     .addEntry('admin-scraper-solicitud-list', './assets/sel/js/admin/scraper-solicitud-list.js')
     .addEntry('portal-clientes', './assets/sel/js/clientes/portal-clientes.js')
     .addEntry('clientes-report', './assets/sel/js/clientes/report.js')
+    .addEntry('single-page', './assets/sel/js/single-page/app.js')
+
 
     //.addEntry('page1', './assets/js/page1.js')
     //.addEntry('page2', './assets/js/page2.js')
@@ -103,7 +107,29 @@ Encore
         options['process.env'].GOOGLEMAPS_KEY = JSON.stringify(dotenv.parsed["GOOGLEMAPS_KEY_" + empresa.toUpperCase()]);
     })
 
-    .addPlugin(new CaseSensitivePathsPlugin(), -10);
+    /*.addRule({
+        test: /\.s(c|a)ss$/,
+        use: [
+            'vue-style-loader',
+            'css-loader',
+            {
+                loader: 'sass-loader',
+                options: {
+                    implementation: require('sass'),
+                    fiber: require('fibers'),
+                    indentedSyntax: true // optional
+                },
+            },
+        ],
+    })*/
+    .enableVueLoader()
+    .addAliases({
+        "@": path.resolve(__dirname, 'assets/sel/js/single-page')
+    })
+
+    .addPlugin(new CaseSensitivePathsPlugin(), -10)
+    .addPlugin(new VuetifyLoaderPlugin())
+
 
     // uncomment if you use TypeScript
     //.enableTypeScriptLoader()
@@ -122,4 +148,7 @@ Encore
 
 require(`./assets/${empresa}/webpack.config`)(Encore);
 
-module.exports = Encore.getWebpackConfig();
+const config = Encore.getWebpackConfig();
+// console.log(config);
+// process.exit();
+module.exports = config;
