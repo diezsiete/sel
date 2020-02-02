@@ -5,6 +5,8 @@ namespace App\Helper;
 
 
 use Gedmo\Sluggable\Util\Urlizer;
+use League\Flysystem\Adapter\AbstractAdapter;
+use League\Flysystem\FilesystemInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use App\Constant\File as FileConstant;
@@ -81,5 +83,18 @@ trait FileHelper
             }
         }
         return $mimeType;
+    }
+
+    /**
+     * TODO por ahora creo que solo funciona con filesystem local, probar con AWS
+     * @param FilesystemInterface $filesystem
+     * @param string|null $prependPath
+     * @return string
+     */
+    protected function getFilesystemPathPrefix(FilesystemInterface $filesystem, ?string $prependPath = null)
+    {
+        /** @var AbstractAdapter $adapter */
+        $adapter = $filesystem->getAdapter();
+        return $adapter->getPathPrefix() . ($prependPath ? $prependPath : "");
     }
 }

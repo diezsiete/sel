@@ -9,20 +9,15 @@ use App\Entity\Archivo\Archivo;
 use App\Entity\Main\Usuario;
 use App\Exception\UploadedFileValidationErrorsException;
 use App\Repository\Archivo\ArchivoRepository;
-use App\Service\Archivo\ArchivoManager;
-use App\Service\File\FileManager;
+use App\Service\File\ArchivoManager;
 use Exception;
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ArchivoController extends BaseController
 {
-
     /**
      * @Route("/sel/admin/api/{usuario}/archivo/list", methods="GET", name="sel_admin_api_archivo_list", options={"expose" = true})
      */
@@ -111,5 +106,44 @@ class ArchivoController extends BaseController
         } catch (Exception $e) {
             return $this->json(['detail' => $e->getMessage()], 400);
         }
+    }
+
+    /**
+     * @Route("/sel/admin/api/{usuario}/archivo/download",
+     *     methods="POST",
+     *     name="sel_admin_api_archivo_download",
+     *     options={"expose" = true},
+     * )
+     */
+    public function download(ArchivoManager $archivoManager, Usuario $usuario, Request $request)
+    {
+        $archivosIds = $this->jsonPostParseBody($request)->request->get('archivos');
+        $url = "";
+        if($archivosIds) {
+            if(count($archivosIds) === 1) {
+                $url = $archivoManager->generateLink((int)$archivosIds[0]);
+            } else {
+                $archivoManager->downloadLocalClearDirectory($usuario);
+                foreach($archivosIds as $archivoId) {
+                    $archivoManager->downloadLocal((int)$archivoId);
+                }
+                $archivoManager->downloadLocalZip($usuario);
+                $url = $this->generateUrl('sel_admin_api_archivo_download_zip', [
+                    'usuario' => $usuario->getId(),
+                ]);
+            }
+        }
+        return $this->json(['url' => $url]);
+    }
+
+    /**
+     * @Route("/sel/admin/api/{usuario}/archivo/download/zip",
+     *     methods="GET",
+     *     name="sel_admin_api_archivo_download_zip"
+     * )
+     */
+    public function downloadZip(ArchivoManager $archivoManager, Usuario $usuario)
+    {
+        return $this->renderZip($archivoManager->downloadLocalZipPath($usuario), $usuario->getIdentificacion() . ".zip");
     }
 }

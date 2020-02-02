@@ -11,7 +11,7 @@ export default new Vuex.Store({
         empleado: null,
         archivos: [],
         archivoListUrl: Router.generate('sel_admin_api_archivo_list'),
-        archivoCreateUrl: Router.generate('sel_admin_api_archivo_create'),
+        archivoCreateUrl: Router.generate('sel_admin_api_archivo_create', {usuario: null}),
         archivoBorrarUrl: Router.generate('sel_admin_api_archivo_delete'),
         archivoVerUrl: null,
         loading: false,

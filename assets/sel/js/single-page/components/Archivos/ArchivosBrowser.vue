@@ -20,9 +20,10 @@
                     <td class="text-left white--text" colspan="4">
                         <span class="cantidad">{{ archivosChecked.length }} seleccionados</span>
                         <span class="separator">|</span>
-                        <v-btn small class="api-call">Descargar</v-btn>
-                        <v-btn small outlined color="white"  class="api-call"
-                               v-on:click="borrarArchivosSeleccionados">
+                        <v-btn small class="api-call" @click="descargarArchivosSeleccionados">
+                            Descargar
+                        </v-btn>
+                        <v-btn small outlined color="white"  class="api-call" @click="borrarArchivosSeleccionados">
                             Borrar
                         </v-btn>
                     </td>
@@ -46,6 +47,8 @@
 
 <script>
     import { mapState } from 'vuex';
+    import Router from "./../../../router";
+    import axios from 'axios';
 
     export default {
         name: "ArchivosBrowser",
@@ -75,12 +78,22 @@
                     this.archivosChecked = [];
                 }
             },
+            selectArchivo(archivo) {
+                this.$store.dispatch('toggleArchivo', archivo)
+            },
             async borrarArchivosSeleccionados() {
                 await this.$store.dispatch('deleteArchivos', this.archivosChecked);
                 this.archivosChecked = [];
             },
-            selectArchivo(archivo) {
-                this.$store.dispatch('toggleArchivo', archivo)
+            async descargarArchivosSeleccionados() {
+                await this.$store.dispatch('enableLoading');
+                const response = await axios.post(Router.generate('sel_admin_api_archivo_download', {usuario: this.empleado.id}), {
+                    archivos: this.archivosChecked
+                });
+                await this.$store.dispatch('disableLoading');
+                if(response.data.url) {
+                    window.open(response.data.url, '_blank');
+                }
             }
         }
     }

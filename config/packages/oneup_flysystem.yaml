@@ -17,6 +17,10 @@ oneup_flysystem:
                 bucket: '%env(empresa:AWS_S3_BUCKET)%'
                 prefix: 'se/report'
 
+        local:
+            local:
+                directory: '%kernel.project_dir%/var/uploads'
+
         #TODO deprecated borrar
 #        se_report:
 #            local:
@@ -54,6 +58,9 @@ oneup_flysystem:
         se_report_cached:
             adapter: se_report
             cache: psr6_app_cache
+
+        local:
+            adapter: local
 
         #TODO deprecated borrar
         public_uploads_filesystem:

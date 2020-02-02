@@ -3,9 +3,7 @@ namespace App\Service\File;
 
 use App\Exception\UploadedFileValidationErrorsException;
 use App\Helper\FileHelper;
-use App\Helper\S3Helper;
 use Exception;
-use Gedmo\Sluggable\Util\Urlizer;
 use League\Flysystem\FileNotFoundException;
 use League\Flysystem\FilesystemInterface;
 use Symfony\Component\HttpFoundation\File\File;
@@ -14,7 +12,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\File as FileConstraint;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class FileManager
+abstract class FileManager
 {
     use FileHelper;
 
