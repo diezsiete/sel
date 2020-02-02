@@ -13,7 +13,11 @@
     <meta name="description" content="PTA SAS líderes en servicios de suministro, selección, evaluación y administración de personal temporal en Colombia">
     <meta name="author" content="PTA SAS">
 
-    <link rel="canonical" href="{{ url(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}" />
+
+    {# fix subrequest de aplicar vacante este route bota null #}
+    {% if(app.request.attributes.get('_route')) %}
+        <link rel="canonical" href="{{ url(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}" />
+    {% endif %}
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="{{ asset("build/pta/images/favicon.ico") }}" type="image/x-icon" />
@@ -40,7 +44,10 @@
 
     <meta property="og:title" content="PTA - Personal temporal y asesorias" />
     <meta property="og:description" content="Pagina web PTA SAS líderes en servicios de suministro, selección, evaluación y administración de personal temporal en Colombia" />
-    <meta property="og:url" content="{{ url(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}" />
+    {# fix subrequest de aplicar vacante este route bota null #}
+    {% if(app.request.attributes.get('_route')) %}
+        <meta property="og:url" content="{{ url(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}" />
+    {% endif %}
     <meta name="twitter:site" content="@pta_sas"/>
     <meta property="article:publisher" content="https://www.facebook.com/pta.com.co"/>
 </head>
