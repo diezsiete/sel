@@ -32,7 +32,7 @@
             <tbody>
             <tr v-for="archivo in archivos" :key="archivo.id" v-on:click="selectArchivo(archivo)" class="archivo">
                 <td>
-                    <v-checkbox :value="archivo.id" v-model="archivosChecked" v-on:click.native.stop>
+                    <v-checkbox :value="archivo.id" v-model="archivosChecked" v-on:click.native.stop="checkArchivo(archivo)">
                     </v-checkbox>
                 </td>
                 <td class="text-left">{{ archivo.originalFilename}}</td>
@@ -66,6 +66,7 @@
         computed: mapState({
             empleado: state => state.empleado,
             archivos: state => state.archivos,
+            archivoSelected: state => state.archivoSelected
         }),
         methods: {
             clearArchivosChecked() {
@@ -80,6 +81,11 @@
             },
             selectArchivo(archivo) {
                 this.$store.dispatch('toggleArchivo', archivo)
+            },
+            checkArchivo(archivo) {
+                if(this.archivoSelected && this.archivoSelected.id !== archivo.id ) {
+                    this.$store.dispatch('toggleArchivo', archivo)
+                }
             },
             async borrarArchivosSeleccionados() {
                 await this.$store.dispatch('deleteArchivos', this.archivosChecked);
