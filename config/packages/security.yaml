@@ -65,12 +65,20 @@ security:
         ROLE_EVALUACION_ADMIN:
             - ROLE_ADMIN_EVALUACIONES
 
+        ROLE_ARCHIVO_CLIENTE:
+            - ROLE_ARCHIVO_VER
+            - ROLE_ARCHIVO_DESCARGAR
+        ROLE_ARCHIVO_ADMIN:
+            - ROLE_ARCHIVO_CLIENTE
+            - ROLE_ARCHIVO_CARGAR
+
         ROLE_ADMIN:
             - ROLE_OPERADOR
             - ROLE_VACANTES_ADMIN
             - ROLE_REPRESENTANTE_SERVICIO
             - ROLE_ALLOWED_TO_SWITCH
             - ROLE_EVALUACION_ADMIN
+            - ROLE_ARCHIVO_ADMIN
         ROLE_SUPERADMIN:
             - ROLE_ADMIN
 
@@ -89,7 +97,7 @@ security:
         - { path: ^/sel/clientes, roles: [ROLE_REPRESENTANTE_CLIENTE, ROLE_REPRESENTANTE_SERVICIO]}
         - { path: ^/sel/admin/evaluacion, roles: [ROLE_OPERADOR, ROLE_EVALUACION_ADMIN]}
         - { path: ^/sel/admin/autoliquidacion, roles: [ROLE_VER_AUTOLIQUIDACIONES]}
-        - { path: ^/sel/admin, roles: [ROLE_OPERADOR, ROLE_VACANTES, ROLE_VACANTES_ADMIN]}
+        - { path: ^/sel/admin, roles: [ROLE_OPERADOR, ROLE_VACANTES, ROLE_VACANTES_ADMIN, ROLE_ARCHIVO_ADMIN]}
         - { path: ^/evaluacion, roles: IS_AUTHENTICATED_REMEMBERED }
         # las demas paginas serán restringidas
         - { path: ^/sel, roles: IS_AUTHENTICATED_REMEMBERED }

@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ArchivoController extends BaseController
 {
     /**
-     * @Route("/sel/admin/archivo/cargar", name="sel_admin_archivo_cargar")
+     * @Route("/sel/admin/archivo", name="sel_admin_archivo")
      */
     public function cargar()
     {

@@ -50,6 +50,8 @@ class MenuBuilder
         $this->createPortalClientesMenu($menu, $user);
 
         $this->createAdminMenu($menu, $user);
+
+        $this->createArchivoMenu($menu, $user);
         
         if($this->security->isGranted('ROLE_SUPERADMIN', $this->security->getUser())) {
             $menu->addChild('Solicitudes', ['route' => 'admin_scraper_solicitud_list'])
@@ -110,7 +112,7 @@ class MenuBuilder
 
     protected function createEvaluacionMenu(ItemInterface $menu, $user)
     {
-        if(!$this->security->isGranted(['ROLE_ADMIN_EVALUACIONES', 'ROLE_OPERADOR', 'ROLE_REPRESENTANTE_CLIENTE'], $user)) {
+        if(!$this->security->isGranted(['ROLE_ADMIN_EVALUACIONES', 'ROLE_OPERADOR', 'ROLE_REPRESENTANTE_CLIENTE', 'ROLE_ARCHIVO_ADMIN'], $user)) {
             /*$menu->addChild('Evaluacion')
                 ->setUri('#')
                 ->setExtra('icon', 'fas fa-clipboard-list');
@@ -194,6 +196,15 @@ class MenuBuilder
                         ->setExtra($childData['extra']['name'], $childData['extra']['value']);
                 }
             }
+        }
+    }
+
+    public function createArchivoMenu(ItemInterface $menu, $user)
+    {
+        if($this->security->isGranted('ROLE_ARCHIVO_CARGAR', $user)) {
+            $menu
+                ->addChild('Archivo', ['route' => 'sel_admin_archivo'])
+                ->setExtra('icon', 'fas fa-file');
         }
     }
 
