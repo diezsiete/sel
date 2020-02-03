@@ -2,11 +2,9 @@ import $ from 'jquery';
 import 'chosen-js';
 import 'chosen-js/chosen.css'
 import 'jquery.maskedinput';
-import './component/datepicker';
-import './component/chosen-pais-dpto-ciudad';
-import './../css/registro.scss';
-import './registro';
-import './datatable';
+import './../component/datepicker';
+import './../component/chosen-pais-dpto-ciudad';
+import './../datatable';
 
 import HvTable from './hv-table';
 

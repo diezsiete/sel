@@ -42,9 +42,13 @@ Encore
     .addEntry('datatable', './assets/sel/js/datatable.js')
     .addStyleEntry('induccion', './assets/sel/css/evaluacion/induccion.scss')
     .addStyleEntry('induccion-titulo', './assets/sel/css/evaluacion/induccion-titulo.scss')
-    .addEntry('hv', './assets/sel/js/hv.js')
-    .addEntry('hv-entity', './assets/sel/js/hv-entity.js')
-    .addEntry('hv-adjunto', './assets/sel/js/hv-adjunto.js')
+
+    .addEntry('hv', './assets/sel/js/vacantes/hv.js')
+    .addEntry('hv-entity', './assets/sel/js/vacantes/hv-entity.js')
+    .addEntry('hv-adjunto', './assets/sel/js/vacantes/hv-adjunto.js')
+    .addEntry('registro-hv', './assets/sel/js/vacantes/registro-hv.js')
+    .addEntry('registro-hv-entity', './assets/sel/js/vacantes/registro-hv-entity.js')
+
     .addEntry('cuenta', './assets/sel/js/cuenta.js')
     .addEntry('admin', './assets/sel/js/admin.js')
     .addEntry('admin-vacante-form', './assets/sel/js/page/admin/vacante/vacante-form.js')

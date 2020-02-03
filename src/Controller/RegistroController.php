@@ -83,7 +83,6 @@ class RegistroController extends AbstractController
      */
     public function estudios(RequestStack $requestStack, DataTableFactory $dataTableFactory)
     {
-
         if($routeInvalid = $this->hvWizard->validatePrevStepsValid()) {
             return $this->redirectToRoute($routeInvalid->route, $routeInvalid->parameters);
         }
@@ -143,7 +142,7 @@ class RegistroController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()) {
             $hv = $this->hvWizard->getHv();
-            /** @var \App\Entity\Main\Usuario $usuario */
+            /** @var Usuario $usuario */
             $usuario = $form->getData();
 
             $plainPassword = $usuario->getPassword();

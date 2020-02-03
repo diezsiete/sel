@@ -153,7 +153,7 @@ class HvWizard
     {
         for ($i = 0; $i < $this->step; $i++) {
             if(!$this->routes->getByStep($i)->valid){
-                $this->routes->getByStep($i);
+                return $this->routes->getByStep($i);
             }
         }
         return null;
