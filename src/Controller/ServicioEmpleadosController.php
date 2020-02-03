@@ -95,8 +95,9 @@ class ServicioEmpleadosController extends BaseController
      * @Route("/sel/se/certificado-laboral/{certificado}", name="se_certificado_laboral_pdf")
      * @IsGranted("REPORTE_MANAGE", subject="certificado")
      */
-    public function certificadoLaboralPdf(SeReportFactory $reportFactory, CertificadoLaboral $certificado)
+    public function certificadoLaboralPdf(SeReportFactory $reportFactory, CertificadoLaboral $certificado, ReportCacheHandler $reportCacheHandler)
     {
+        $reportCacheHandler->handle($this->getUser(), CertificadoLaboral::class);
         return new RedirectResponse($reportFactory->certificadoLaboral($certificado)->linkPdf());
         //return $this->renderStream(function () use ($reportFactory, $certificado) { return $reportFactory->certificadoLaboral($certificado)->streamPdf();});
     }
