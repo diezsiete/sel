@@ -66,14 +66,14 @@ class ArchivoManager extends FileManager
      */
     public function uploadArchivo(UploadedFile $file, Usuario $owner)
     {
-        $uniqueFilename = $this->fileManager->uploadUploadedFile($file, $this->path($owner));
+        $uniqueFilename = $this->uploadUploadedFile($file, $this->path($owner));
 
         $archivo = (new Archivo())
             ->setFilename($uniqueFilename)
-            ->setOriginalFilename($this->fileManager->getOriginalFilenameWithoutExtension($file))
-            ->setMimeType($this->fileManager->getMimeType($file, true))
+            ->setOriginalFilename($this->getOriginalFilenameWithoutExtension($file))
+            ->setMimeType($this->getMimeType($file, true))
             ->setSize($file->getSize())
-            ->setExtension($this->fileManager->getExtension($file))
+            ->setExtension($this->getExtension($file))
             ->setOwner($owner);
 
         $this->em->persist($archivo);
@@ -91,7 +91,7 @@ class ArchivoManager extends FileManager
         $ids = is_array($id) ? $id : [$id];
         foreach($ids as $id) {
             if ($archivo = $this->archivoRepository->find($id)) {
-                $this->fileManager->delete($this->path($archivo));
+                $this->delete($this->path($archivo));
                 $this->em->remove($archivo);
             }
         }
