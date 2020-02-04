@@ -1,3 +1,8 @@
+.pp-header.table-row .pta-img-logo {
+  background-position-x: left !important;
+  margin: 15px auto auto 15px;
+}
+
 .pp-header.table-row:before {
   background: none;
 }
@@ -5,13 +10,19 @@
 #evaluacion.container {
   padding-top: 25px;
 }
+.pp-header~* {
+  position:initial;
+}
+body #body .pp-header+.alert {
+  top: 72px;
+  position: relative;
+}
 
 @media (min-width: 1152px) {
-  .pp-header~* {
-    position:initial;
-  }
-  body #body .pp-header+.alert {
-    top: 72px;
-    position: relative;
+
+
+  .pp-header.table-row .pta-img-logo {
+    background-position-x: left !important;
+    margin: 0;
   }
 }

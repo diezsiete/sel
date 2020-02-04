@@ -302,7 +302,7 @@ body #body.menu-close .pp-header.table-row>div {
     box-sizing: border-box;
     height: 100%;
     left: 0;
-    min-height: 1500px;
+    //min-height: 1500px;
     overflow: hidden;
     position: absolute;
     padding-top: 18px;
@@ -765,6 +765,9 @@ body #body.menu-close .pp-header.table-row>div {
     height: 40px;
     z-index: 1
 }
+.pp-header.table-row .pta-img-logo.blue {
+    background: transparent url(../../img/SVG/1.svg) center center no-repeat;
+}
 
 .pp-header.table-row .pta-img-logo:focus,.pp-header.table-row .pta-img-logo:active {
     box-shadow: 0 0 1px 1px #eaeced;
@@ -773,7 +776,6 @@ body #body.menu-close .pp-header.table-row>div {
 
 @media (min-width: $menu-min-width) {
     .pp-header.table-row .pta-img-logo {
-        /*background:transparent url(https://www.paypalobjects.com/webstatic/i/logo/rebrand/ppcom-white.svg) center center no-repeat;*/
         background:transparent url(../../img/logo-blanco.png) center center no-repeat;
         background-size: contain;
         height: 43px;
@@ -783,13 +785,10 @@ body #body.menu-close .pp-header.table-row>div {
         top: 13px;
         width: 136px
     }
-    .pp-header.table-row .pta-img-logo.blue {
-        background: transparent url(../../img/SVG/1.svg) center center no-repeat;
-    }
 }
 
 .no-svg .pp-header.table-row .pta-img-logo {
-    background: url(https://www.paypalobjects.com/digitalassets/c/website/logo/full-text/pp_rv_hl.png);
+    background: url(../../img/logo-blanco.png);
     background-repeat: no-repeat;
     float: left;
     width: 136px

@@ -10,13 +10,28 @@
     Evaluacion - {{ evaluacion.nombre }}
 {% endblock %}
 
-{% block nav %}
-    {{ include('pta/app/evaluacion/_nav.html.twig') }}
+{% block header %}
+    {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
+        {{ include('pta/blocks/header/_switch-user.html.twig') }}
+    {% endif %}
+    <header class="table-row pp-header{{ is_sel() ? ' sel' : '' }}{{ app.user ? ' sel-active' : '' }}" role="banner">
+        <div>
+            <div class="containerCentered ">
+                <a href="{{ path('pta_index') }}" class="{% block header_logo_class %}pta-img-logo blue{% endblock %}">PTA</a>
+
+                <div id="header-buttons" class="header-buttons">
+                    <a href="{{ path('evaluacion_resultados') }}" id="ul-btn" class="btn btn-small btn-primary">
+                        Salir
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
 {% endblock %}
 
-{% block nav_admin %}
-{% endblock %}
-{% block header_logo_class %}{{ parent() }} blue{% endblock %}
+
+
+
 
 {% block main %}
     {{ include('default/_flash_messages.html.twig') }}
