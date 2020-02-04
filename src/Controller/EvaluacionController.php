@@ -104,6 +104,9 @@ class EvaluacionController extends BaseController
      */
     public function pregunta(Navegador $navegador, Request $request, Mensaje $mensaje)
     {
+        if(!$navegador->getPregunta()) {
+            return $this->redirect($navegador->getCurrentRoute());
+        }
         $respuesta = $navegador->getEvaluador()->buildRespuesta();
         $form = $this->createForm(EvaluacionRespuestaFormType::class, $respuesta);
 
@@ -153,6 +156,9 @@ class EvaluacionController extends BaseController
      */
     public function diapositiva(Navegador $navegador, Mensaje $mensaje)
     {
+        if(!$navegador->getDiapositiva()) {
+            return $this->redirect($navegador->getCurrentRoute());
+        }
         if($mensaje->hasFlashMessage()) {
             $this->addFlash($mensaje->flashMessageType(), $mensaje->flashMessage());
         }
