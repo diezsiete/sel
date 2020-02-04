@@ -1,14 +1,21 @@
-- name: Extract Webpack build
-  unarchive:
-    src: "{{ playbook_dir }}/../public/build.tgz"
-    dest: "{{ release_public_path }}"
-    owner: "{{ owner }}"
-    group: "{{ group }}"
+- name: Install node dependencies
+  yarn:
+    path: "{{ ansistrano_release_path.stdout }}"
 
-#- name: Move webpack.tar.gz
-#  command: "mv ~/build.tar.gz {{ release_public_path }}/."
-#
-#- name: Unpack webpack.tar.gz
-#  command: "tar -xzvf {{ release_public_path }}/build.tar.gz"
+#- name: Install node dependencies
+#  command: yarn install
 #  args:
-#    warn: no
+#    chdir: "{{ ansistrano_release_path.stdout }}"
+
+- name: Install webpack encore assets
+  command: yarn build
+  args:
+    chdir: "{{ ansistrano_release_path.stdout }}"
+
+
+#- name: Extract Webpack build
+#  unarchive:
+#    src: "{{ playbook_dir }}/../public/build.tgz"
+#    dest: "{{ release_public_path }}"
+#    owner: "{{ owner }}"
+#    group: "{{ group }}"

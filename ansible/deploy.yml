@@ -12,6 +12,7 @@
         archive:
           path: "{{ playbook_dir }}/../public/img"
           dest: "{{ playbook_dir }}/../public/img.tgz"
+        when: empresa == "pta"
 
 - hosts: ptagd
 

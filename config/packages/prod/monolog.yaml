@@ -2,11 +2,16 @@ monolog:
     handlers:
         main:
             type: fingers_crossed
-            action_level: error
-            handler: nested
-            excluded_404s:
-                # regex: exclude all 404 errors from the logs
-                - ^/
+            action_level: critical
+            handler: grouped
+              # to also log 400 level errors (but not 404's):
+              # action_level: error
+              # excluded_404s:
+            # regex: exclude all 404 errors from the logs
+            # - ^/
+        grouped:
+            type:    group
+            members: [nested, deduplicated]
         nested:
             type: stream
             path: "%kernel.logs_dir%/%kernel.environment%.log"
@@ -23,3 +28,15 @@ monolog:
             handler: deprecation
             max_level: info
             channels: ["php"]
+
+        deduplicated:
+            type:    deduplication
+            handler: swift
+        swift:
+            type:         swift_mailer
+            from_email:   'direccion.comercial@servilabor.com.co'
+            to_email:     'guerrerojosedario@gmail.com'
+            subject:      'An Error Occurred! %%message%%'
+            level:        debug
+            formatter:    monolog.formatter.html
+            content_type: text/html
