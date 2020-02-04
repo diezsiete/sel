@@ -52,7 +52,7 @@ class Evaluador
     {
         $respuesta = $this->getRespuesta();
         if($respuesta) {
-            if($pregunta->getDiapositivas() && !$respuesta->evaluar()) {
+            if($pregunta->getDiapositivas()->count() && !$respuesta->evaluar()) {
                 return $pregunta->getDiapositivas()->first();
             }
         }
