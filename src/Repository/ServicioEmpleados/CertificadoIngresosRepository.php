@@ -32,4 +32,25 @@ class CertificadoIngresosRepository extends ReportRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * @noinspection PhpDocMissingThrowsInspection
+     * @param CertificadoIngresos $certificadoIngresos
+     * @return CertificadoIngresos|null
+     */
+    public function findEqual(CertificadoIngresos $certificadoIngresos)
+    {
+        return $this->createQueryBuilder('ci')
+            ->andWhere('ci.source = :source')
+            ->andWhere('ci.sourceId = :sourceId')
+            ->andWhere('ci.usuario = :usuario')
+            ->setParameters([
+                'source'   => $certificadoIngresos->getSource(),
+                'sourceId' => $certificadoIngresos->getSourceId(),
+                'usuario'  => $certificadoIngresos->getUsuario()
+            ])
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

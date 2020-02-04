@@ -12,7 +12,7 @@ if (!Encore.isRuntimeEnvironmentConfigured()) {
 
 let empresa = dotenv.parsed.EMPRESA.toLowerCase();
 if(process.env.EMPRESA) {
-    empresa = process.env.EMPRESA
+    empresa = process.env.EMPRESA.toLowerCase();
 }
 
 const assetDestinationProd = '[name].[hash:8].[ext]';

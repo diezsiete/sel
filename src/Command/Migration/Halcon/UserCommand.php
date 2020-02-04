@@ -8,6 +8,7 @@ use App\Command\Helpers\ConsoleProgressBar;
 use App\Command\Helpers\SelCommandTrait;
 use App\Command\Helpers\TraitableCommand\TraitableCommand;
 use App\Entity\Main\Usuario;
+use App\Repository\Halcon\TerceroRepository;
 use App\Repository\Halcon\UserRepository;
 use App\Repository\Main\UsuarioRepository;
 use Doctrine\Common\Annotations\Reader;
@@ -37,33 +38,43 @@ class UserCommand extends TraitableCommand
      * @var UserPasswordEncoderInterface
      */
     private $passwordEncoder;
+    /**
+     * @var TerceroRepository
+     */
+    private $terceroRepository;
 
     public function __construct(Reader $annotationReader, EventDispatcherInterface $dispatcher,
-                                UserRepository $userRepo, UsuarioRepository $usuarioRepository,
+                                UserRepository $userRepo, TerceroRepository $terceroRepository,
+                                UsuarioRepository $usuarioRepository,
                                 UserPasswordEncoderInterface $passwordEncoder)
     {
         parent::__construct($annotationReader, $dispatcher);
         $this->userRepo = $userRepo;
         $this->usuarioRepository = $usuarioRepository;
         $this->passwordEncoder = $passwordEncoder;
+        $this->terceroRepository = $terceroRepository;
     }
 
     protected function configure()
     {
         parent::configure();
-        $this->addOption('info', 'i', InputOption::VALUE_NONE, 'Muestra info, no hace nada');
+        $this->addOption('info', 'i', InputOption::VALUE_NONE, 'Muestra info, no hace nada')
+            ->addOption('tercero', null, InputOption::VALUE_NONE,
+                'Si utilizar para importar usuarios la tabla tercero , por defecto utiliza user');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $info = $input->getOption('info');
+        $table = $input->getOption('tercero') ? 'tercero' : 'user';
         $batchSize = 20;
         $i = 0;
-        foreach($this->userRepo->findAllToImport() as $user) {
-            $usuario = $this->usuarioRepository->findByIdentificacion($user->getUser());
+        foreach($this->getUserRepo()->findAllToImport() as $user) {
+            $identificacion = $table === 'tercero' ? $user->getNitTercer() : $user->getUser();
+            $usuario = $this->usuarioRepository->findByIdentificacion($identificacion);
             if(!$usuario) {
                 $usuario = (new Usuario())
-                    ->setIdentificacion($user->getUser())
+                    ->setIdentificacion($identificacion)
                     ->addRol('ROLE_HALCON')
                     ->setPrimerNombre($user->getPrimerNombre())
                     ->setSegundoNombre($user->getSegundoNombre())
@@ -86,7 +97,7 @@ class UserCommand extends TraitableCommand
 
 
             if($output->isVeryVerbose()) {
-                $output->writeln(sprintf('%-6s %-60s %s', $user->getId(), $user->getNombreCompleto(), $message));
+                $output->writeln(sprintf('%-6s %-60s %s', $identificacion, $user->getNombreCompleto(), $message));
             } else {
                 $this->progressBarAdvance();
             }
@@ -103,6 +114,14 @@ class UserCommand extends TraitableCommand
 
     protected function progressBarCount(InputInterface $input, OutputInterface $output): ?int
     {
-        return $this->userRepo->countAllToImport();
+        return $this->getUserRepo()->countAllToImport();
+    }
+
+    /**
+     * @return TerceroRepository|UserRepository
+     */
+    protected function getUserRepo()
+    {
+        return $this->input->getOption('tercero') ? $this->terceroRepository : $this->userRepo;
     }
 }

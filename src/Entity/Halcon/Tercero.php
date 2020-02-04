@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Halcon\TerceroRepository")
+ * @ORM\HasLifecycleCallbacks
  */
 class Tercero
 {
@@ -120,10 +121,15 @@ class Tercero
      */
     private $cuenta;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+    private $nameParsed = null;
+
+    private $primerNombre = "";
+
+    private $segundoNombre = "";
+
+    private $primerApellido = "";
+
+    private $segundoApellido = "";
 
     public function getNitTercer(): ?int
     {
@@ -394,5 +400,70 @@ class Tercero
             $name = str_replace('//', ' ', $name);
         $name = str_replace('/', ' ', $name);
         return $name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrimerNombre(): string
+    {
+        return $this->primerNombre;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSegundoNombre(): string
+    {
+        return $this->segundoNombre;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrimerApellido(): string
+    {
+        return $this->primerApellido;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSegundoApellido(): string
+    {
+        return $this->segundoApellido;
+    }
+
+    public function getNombreCompleto()
+    {
+        return $this->primerNombre . ($this->segundoNombre ? " " . $this->segundoNombre : "") . " " . $this->primerApellido
+            . ($this->segundoApellido ? " " . $this->segundoApellido : "");
+    }
+
+    /**
+     * @ORM\PostLoad
+     */
+    public function parseName()
+    {
+        if($this->nameParsed === null && substr($this->nombre, -1) === "/") {
+            $this->nameParsed = [];
+            // removemos el ultimo slash del nombre, para que explode no retorne un valor adicional
+            $name = substr($this->nombre, 0, strlen($this->nombre) - 1);
+
+            $nameExplode = explode('/', $name);
+            $this->primerApellido = $nameExplode[0];
+            if(isset($nameExplode[1])) {
+                $this->segundoApellido = $nameExplode[1];
+            }
+
+            $nombresPila = explode(" ", $nameExplode[2]);
+            $this->primerNombre = $nombresPila[0];
+            unset($nombresPila[0]);
+            if($nombresPila) {
+                $this->segundoNombre = array_reduce($nombresPila, function ($carry, $item) {
+                    return $carry ? $carry . " " . $item : $carry . $item;
+                }, "");
+            }
+        }
     }
 }

@@ -56,4 +56,25 @@ class CertificadoLaboralRepository extends ReportRepository
             ->where('u.identificacion = :identificacion')
             ->setParameter('identificacion', $identificacion);
     }
+
+    /**
+     * @noinspection PhpDocMissingThrowsInspection
+     * @param CertificadoLaboral $certificadoLaboral
+     * @return CertificadoLaboral|null
+     */
+    public function findEqual(CertificadoLaboral $certificadoLaboral)
+    {
+        return $this->createQueryBuilder('cl')
+            ->andWhere('cl.source = :source')
+            ->andWhere('cl.sourceId = :sourceId')
+            ->andWhere('cl.usuario = :usuario')
+            ->setParameters([
+                'source'   => $certificadoLaboral->getSource(),
+                'sourceId' => $certificadoLaboral->getSourceId(),
+                'usuario'  => $certificadoLaboral->getUsuario()
+            ])
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

@@ -17,7 +17,7 @@
           - var/log
           - var/uploads
 
-      ansistrano_keep_releases: 3
+      ansistrano_keep_releases: 6
 
       ansistrano_deploy_via: git
       ansistrano_git_repo: git@github.com:diezsiete/sel.git

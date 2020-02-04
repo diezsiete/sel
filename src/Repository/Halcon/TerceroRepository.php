@@ -5,6 +5,7 @@ namespace App\Repository\Halcon;
 use App\Entity\Halcon\Tercero;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use function Doctrine\ORM\QueryBuilder;
 
 /**
  * @method Tercero|null find($id, $lockMode = null, $lockVersion = null)
@@ -19,32 +20,29 @@ class TerceroRepository extends ServiceEntityRepository
         parent::__construct($registry, Tercero::class);
     }
 
-    // /**
-    //  * @return Tercero[] Returns an array of Tercero objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return Tercero[]
+     */
+    public function findAllToImport()
     {
-        return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('t.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        return $this->allToImportQuery()->getQuery()->getResult();
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Tercero
+    /**
+     * @noinspection PhpDocMissingThrowsInspection
+     * @return mixed
+     */
+    public function countAllToImport()
     {
-        return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return (int)$this->allToImportQuery()->select('COUNT(t.nitTercer)')->getQuery()->getSingleScalarResult();
     }
-    */
+
+    protected function allToImportQuery()
+    {
+        $qb = $this->createQueryBuilder('t');
+        return $qb->where($qb->expr()->andX(
+            $qb->expr()->neq('t.nitTercer', '0'),
+            $qb->expr()->like('t.nombre', $qb->expr()->literal('%/%'))
+        ));
+    }
 }
