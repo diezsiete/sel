@@ -63,18 +63,18 @@ class Evaluador
     {
         $pregunta = $respuesta->getPregunta();
         $porcentajeExito = $pregunta->getPorcentajeExito();
+        $porcentaje = $respuesta->evaluar() ? $porcentajeExito : 0;
         // nueva respuesta
         if(!$respuesta->getProgreso()) {
             $this->progreso
                 ->addRespuesta($respuesta)
-                ->addPorcentajeCompletitud($porcentajeExito)
-                ->addPorcentajeExito($respuesta->evaluar() ? $porcentajeExito : 0);
+                ->addPorcentajeCompletitud($porcentaje)
+                ->addPorcentajeExito($porcentaje);
         }
         // ya respondida anteriormente
         else {
             $oldRespuesta = $this->getRespuesta($pregunta);
             $oldPorcentaje = $oldRespuesta->evaluar() ? $porcentajeExito : 0;
-            $porcentaje = $respuesta->evaluar() ? $porcentajeExito : 0;
             $this->progreso
                 ->restPorcentajeExito($oldPorcentaje)
                 ->restPorcentajeCompletitud($oldPorcentaje)

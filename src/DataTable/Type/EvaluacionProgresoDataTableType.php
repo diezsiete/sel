@@ -78,7 +78,7 @@ class EvaluacionProgresoDataTableType implements DataTableTypeInterface
                 'field' => 'usuario.nombreCompleto',
                 'orderable' => false
             ])
-            ->add('porcentajeCompletitud', TextColumn::class, ['label' => 'Completitud %', 'orderable' => false])
+            //->add('porcentajeCompletitud', TextColumn::class, ['label' => 'Completitud %', 'orderable' => false])
             ->add('porcentajeExito', TextColumn::class, ['label' => 'Exito %', 'orderable' => false])
             ->add('actions', ActionsColumn::class, [
                 'label' => '',
