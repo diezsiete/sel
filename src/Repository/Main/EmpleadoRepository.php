@@ -309,7 +309,7 @@ class EmpleadoRepository extends ServiceEntityRepository
 
     protected static function fechaRetiroCriteriaExpr(DateTimeInterface $fechaRetiro, $alias = '')
     {
-        $alias = $alias ? ".$alias" : "";
+        $alias = $alias ? "$alias." : "";
         return Criteria::expr()->orX(
             Criteria::expr()->isNull($alias."fechaRetiro"),
             Criteria::expr()->gte($alias."fechaRetiro", $fechaRetiro->format('Y-m-d'))
