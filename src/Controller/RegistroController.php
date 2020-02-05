@@ -133,7 +133,7 @@ class RegistroController extends AbstractController
                            GuardAuthenticatorHandler $guard, LoginFormAuthenticator $formAuthenticator)
     {
         if($routeInvalid = $this->hvWizard->validatePrevStepsValid()) {
-            return $this->redirectToRoute($routeInvalid);
+            return $this->redirectToRoute($routeInvalid->route, $routeInvalid->parameters);
         }
 
         $usuario = $this->hvWizard->getUsuario();
