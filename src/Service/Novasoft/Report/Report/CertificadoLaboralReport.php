@@ -5,10 +5,12 @@ namespace App\Service\Novasoft\Report\Report;
 use App\Entity\Main\Usuario;
 use App\Entity\Novasoft\Report\CertificadoLaboral;
 use App\Service\Configuracion\Configuracion;
+use App\Service\Novasoft\NovasoftEmpleadoService;
 use App\Service\Novasoft\Report\Importer\CertificadoLaboralImporter;
 use App\Service\Novasoft\Report\Mapper\CertificadoLaboralMapper;
 use App\Service\Novasoft\Report\ReportFormatter;
 use App\Service\Pdf\PdfCartaLaboral;
+use App\Service\Pdf\PdfCartaLaboralServilabor;
 use App\Service\ServicioEmpleados\Report\PdfHandler;
 use App\Service\Utils;
 use Psr\Container\ContainerInterface;
@@ -34,6 +36,10 @@ class CertificadoLaboralReport extends Report implements ServiceSubscriberInterf
      * @var ContainerInterface
      */
     private $container;
+    /**
+     * @var Configuracion
+     */
+    protected $configuracion;
 
 
     public function __construct(SSRSReport $SSRSReport, ReportFormatter $reportFormatter, Configuracion $configuracion, ContainerInterface $container,
@@ -41,6 +47,7 @@ class CertificadoLaboralReport extends Report implements ServiceSubscriberInterf
     {
         parent::__construct($SSRSReport, $reportFormatter, $configuracion, $utils, $mapper, $importer, $pdfHandler);
         $this->container = $container;
+        $this->configuracion = $configuracion;
     }
 
     public function setParameterCodigoEmpleado($identificacion)
@@ -74,7 +81,14 @@ class CertificadoLaboralReport extends Report implements ServiceSubscriberInterf
     public function renderPdf()
     {
         $map = $this->renderMap();
-        return $this->container->get(PdfCartaLaboral::class)->render($map[0])->Output("S");
+        $pdfService = $this->container->get($this->configuracion->getEmpresa(true) === 'servilabor'
+            ? PdfCartaLaboralServilabor::class : PdfCartaLaboral::class);
+
+        if($ssrsDb = $this->container->get(NovasoftEmpleadoService::class)->getSsrsDb(trim($map[0]->getCedula()))) {
+            $pdfService->setCompania($ssrsDb);
+        }
+
+        return $pdfService->render($map[0])->Output("S");
     }
 
     /**
@@ -93,7 +107,9 @@ class CertificadoLaboralReport extends Report implements ServiceSubscriberInterf
     public static function getSubscribedServices()
     {
         return [
-            PdfCartaLaboral::class
+            PdfCartaLaboral::class,
+            PdfCartaLaboralServilabor::class,
+            NovasoftEmpleadoService::class,
         ];
     }
 }

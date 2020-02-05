@@ -17,6 +17,11 @@ class CertificadoIngresos extends ServicioEmpleadosReport
      */
     private $periodo;
 
+    /**
+     * @ORM\Column(type="string", length=28)
+     */
+    protected $sourceId;
+
     public function getPeriodo(): ?DateTimeInterface
     {
         return $this->periodo;

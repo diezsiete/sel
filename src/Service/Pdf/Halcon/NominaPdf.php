@@ -22,6 +22,11 @@ class NominaPdf extends HalconPdfBase
     public function build(Nomina $nomina)
     {
         $logoImg = $this->compania->getLogoPdf();
+        //universal servilabor
+        if($nomina->usuario == 'AW' && $this->configuracion->getCompanias()) {
+            $compania = $this->configuracion->getCompanias()['UNIVERSAL'];
+            $logoImg = $compania->getLogoPdf();
+        }
 
         $devengadosTotal  = $nomina->devengados  ? str_replace(',', '', end($nomina->devengados)->total) : 0;
         $deduccionesTotal = $nomina->deducciones ? str_replace(',', '', end($nomina->deducciones)->total) : 0;

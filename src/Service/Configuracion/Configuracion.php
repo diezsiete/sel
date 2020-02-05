@@ -76,8 +76,14 @@ class Configuracion
 
     /**
      * @var Compania[]
+     * @deprecated
      */
     private $companias = [];
+
+    /**
+     * @var Compania[]
+     */
+    private $companias2 = [];
 
     /**
      * @var Compania
@@ -296,11 +302,16 @@ class Configuracion
     }
 
 
+    /**
+     * @param $name
+     * @return Compania|mixed
+     * @deprecated mal hecho genera confusion con las companias de servilabor, user getCompanias
+     */
     public function getCompania($name)
     {
         if(!isset($this->companias[$name])) {
-            //TODO documentar esto que no entiendo
             if(isset($this->parameters['companias'][$name])) {
+                //Companias como universal a su logo le agrega el path absoluto al logo pdf
                 $data = array_merge($this->parameters['companias'][$name], [
                     'logo_pdf' => $this->kernelProjectDir . $this->packages->getUrl($this->parameters['companias'][$name]['logo_pdf'])
                 ]);
@@ -322,6 +333,17 @@ class Configuracion
             $this->companias[$name] = $compania;
         }
         return $this->companias[$name];
+    }
+
+    public function getCompanias()
+    {
+        if(!$this->companias2 && isset($this->parameters['companias'])) {
+            foreach($this->parameters['companias'] as $companiaName => $config) {
+                $config['logo_pdf'] = $this->kernelProjectDir . '/public' . $this->packages->getUrl($config['logo_pdf']);
+                $this->companias2[$companiaName] = new Compania($config);
+            }
+        }
+        return $this->companias2;
     }
 
 

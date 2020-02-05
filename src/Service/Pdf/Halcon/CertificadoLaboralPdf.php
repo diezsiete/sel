@@ -14,6 +14,11 @@ class CertificadoLaboralPdf extends HalconPdfBase
 
     protected $firmaImageWidth = 73;
 
+    /**
+     * @var CertificadoLaboral
+     */
+    private $certificadoLaboral;
+
     protected static $colsMapping = [
         "Empresa Usuaria" => 'convenio',
         'Cargo o Labor' => 'cargo',
@@ -23,10 +28,24 @@ class CertificadoLaboralPdf extends HalconPdfBase
         'Salario Contratación' => 'salario'
     ];
 
-    public function build(CertificadoLaboral $certificadoLaboral, Tercero $tercero)
+    public function Header()
     {
         $logoImg = $this->compania->getLogoPdf();
+        //universal servilabor
+        if($this->certificadoLaboral->usuario == 'AW' && $this->configuracion->getCompanias()) {
+            $compania = $this->configuracion->getCompanias()['UNIVERSAL'];
+            $logoImg = $compania->getLogoPdf();
+        }
 
+        $imageWidth = 38;
+
+        $this->Image($logoImg ,$this->GetX() + 149, $this->getY() + 3, $imageWidth);
+        $this->Cell(0, $this->lineHeight + 15 , '', 0, 1);
+    }
+
+    public function build(CertificadoLaboral $certificadoLaboral, Tercero $tercero)
+    {
+        $this->certificadoLaboral = $certificadoLaboral;
         $nombre  = trim($tercero->getNombre());
         $sx    = strtoupper($tercero->getSexo()) == 'F' ? 0 : 1;
         $nit_tercer = $tercero->getNitTercer();

@@ -279,7 +279,7 @@ class HtmlParser {
                 return $sb;
             } else {
                 $match = false;
-                for ($idx = 0; $idx < count($chars); $idx++) {
+                for ($idx = 0; $idx < strlen($chars); $idx++) {
                     if ($ch == $chars[$idx]) {
                         $match = true;
                         break;
