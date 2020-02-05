@@ -120,6 +120,10 @@ services:
             - '@SSRS\Common\Credentials'
             - '%env(NOVASOFT_SSRS_URL)%'
 
+    App\Service\Halcon\Report\Report\CertificadoLaboralReport:
+        calls:
+            - [setPdfService, ['@=service("App\\Service\\Configuracion\\Configuracion").getEmpresa(true) === "servilabor" ? service("App\\Service\\Pdf\\Halcon\\CertificadoLaboralServilaborPdf") : service("App\\Service\\Pdf\\Halcon\\CertificadoLaboralPdf")' ]]
+
     App\Service\Pdf\PdfCartaLaboral:
         public: true
         shared: false
@@ -131,6 +135,9 @@ services:
         arguments: ["P", "mm", "Letter"]
         shared: false
     App\Service\Pdf\Halcon\CertificadoLaboralPdf:
+        arguments: ["P", "mm", "Letter"]
+        shared: false
+    App\Service\Pdf\Halcon\CertificadoLaboralServilaborPdf:
         arguments: ["P", "mm", "Letter"]
         shared: false
     App\Service\Pdf\Halcon\CertificadoIngresosPdf:

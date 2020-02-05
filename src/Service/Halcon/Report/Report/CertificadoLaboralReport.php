@@ -11,6 +11,7 @@ use App\Repository\Halcon\Report\CertificadoLaboralRepository;
 use App\Repository\Halcon\TerceroRepository;
 use App\Service\Halcon\Report\Importer\CertificadoLaboralImporter;
 use App\Service\Pdf\Halcon\CertificadoLaboralPdf;
+use App\Service\Pdf\Halcon\CertificadoLaboralServilaborPdf;
 use App\Service\ServicioEmpleados\Report\PdfHandler;
 
 class CertificadoLaboralReport extends Report
@@ -25,19 +26,27 @@ class CertificadoLaboralReport extends Report
      * @var TerceroRepository
      */
     private $terceroRepository;
+
     /**
-     * @var CertificadoLaboralPdf
+     * @var CertificadoLaboralPdf|CertificadoLaboralServilaborPdf
      */
-    private $certificadoLaboralPdf;
+    private $pdfService;
 
 
-    public function __construct(PdfHandler $pdfHandler, CertificadoLaboralImporter $importer, CertificadoLaboralPdf $certificadoLaboralPdf,
+    public function __construct(PdfHandler $pdfHandler, CertificadoLaboralImporter $importer,
                                 CertificadoLaboralRepository $certificadoLaboralRepo, TerceroRepository $terceroRepository)
     {
         parent::__construct($pdfHandler, $importer);
         $this->certificadoLaboralRepo = $certificadoLaboralRepo;
         $this->terceroRepository = $terceroRepository;
-        $this->certificadoLaboralPdf = $certificadoLaboralPdf;
+    }
+
+    /**
+     * @param CertificadoLaboralPdf|CertificadoLaboralServilaborPdf $pdfService
+     */
+    public function setPdfService($pdfService)
+    {
+        $this->pdfService = $pdfService;
     }
 
     /**
@@ -54,7 +63,7 @@ class CertificadoLaboralReport extends Report
     {
         $certificado = $this->certificadoLaboralRepo->findCertificado($this->usuario->getIdentificacion(), $this->numeroContrato);
         $tercero = $this->terceroRepository->find($this->usuario->getIdentificacion());
-        return $this->certificadoLaboralPdf->build($certificado, $tercero)->Output("S");
+        return $this->pdfService->build($certificado, $tercero)->Output("S");
     }
 
 

@@ -17,7 +17,7 @@ class CertificadoLaboralPdf extends HalconPdfBase
     /**
      * @var CertificadoLaboral
      */
-    private $certificadoLaboral;
+    protected $certificadoLaboral;
 
     protected static $colsMapping = [
         "Empresa Usuaria" => 'convenio',
