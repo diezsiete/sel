@@ -19,32 +19,19 @@ class DptoRepository extends ServiceEntityRepository
         parent::__construct($registry, Dpto::class);
     }
 
-    // /**
-    //  * @return Dpto[] Returns an array of Dpto objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @param Dpto $dpto
+     * @return bool
+     * @noinspection PhpDocMissingThrowsInspection
+     */
+    public function dptoHasCiudades($dpto)
     {
-        return $this->createQueryBuilder('d')
-            ->andWhere('d.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('d.id', 'ASC')
-            ->setMaxResults(10)
+        return (bool) $this->createQueryBuilder('d')
+            ->select('COUNT(c.id)')
+            ->join('d.ciudades', 'c')
+            ->where('d = :dpto')
+            ->setParameter('dpto', $dpto)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getSingleScalarResult();
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Dpto
-    {
-        return $this->createQueryBuilder('d')
-            ->andWhere('d.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

@@ -8,6 +8,7 @@ use App\Entity\Main\Dpto;
 use App\Entity\Hv\Hv;
 use App\Entity\Main\Pais;
 use App\Entity\Main\Usuario;
+use App\Validator\Hv\Ubicacion;
 use App\Validator\IdentificacionUnica;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -15,6 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class HvDatosBasicosModel
  * @package App\Form\Model
  * @IdentificacionUnica(path="identificacion")
+ * @Ubicacion()
  */
 class HvDatosBasicosModel
 {

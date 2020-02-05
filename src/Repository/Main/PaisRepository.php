@@ -19,32 +19,19 @@ class PaisRepository extends ServiceEntityRepository
         parent::__construct($registry, Pais::class);
     }
 
-    // /**
-    //  * @return Pais[] Returns an array of Pais objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @param Pais $pais
+     * @return bool
+     * @noinspection PhpDocMissingThrowsInspection
+     */
+    public function paisHasDptos($pais)
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
+        return (bool) $this->createQueryBuilder('p')
+            ->select('COUNT(d.id)')
+            ->join('p.dptos', 'd')
+            ->where('p = :pais')
+            ->setParameter('pais', $pais)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getSingleScalarResult();
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Pais
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }
