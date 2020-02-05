@@ -148,6 +148,7 @@ services:
         alias: knp_menu.twig.extension
 
     app.menu_builder:
+        factory: ['App\Menu\MenuBuilderFactory', 'test']
         class: App\Menu\MenuBuilder
         arguments: ["@knp_menu.factory"]
         tags:

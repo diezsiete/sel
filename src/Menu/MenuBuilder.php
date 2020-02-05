@@ -12,15 +12,15 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class MenuBuilder
 {
-    private $factory;
+    protected $factory;
     /**
      * @var Security
      */
-    private $security;
+    protected $security;
     /**
      * @var HvResolver
      */
-    private $hvResolver;
+    protected $hvResolver;
 
     /**
      * @param FactoryInterface $factory
