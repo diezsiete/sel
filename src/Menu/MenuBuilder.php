@@ -248,12 +248,14 @@ class MenuBuilder
             'routeParameters' => [
                 'codigo' => $options['codigo']
             ]])
-            ->setExtra('icon', 'fas fa-user-circle');
+            //->setExtra('icon', 'fas fa-user-circle')
+        ;
         $menu->addChild('Empleados', [
             'route' => 'admin_convenio_empleados',
             'routeParameters' => ['codigo' => $options['codigo']]
         ])
-            ->setExtra('icon', 'fas fa-columns');
+            //->setExtra('icon', 'fas fa-columns')
+        ;
 
         return $menu;
     }

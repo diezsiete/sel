@@ -1,0 +1,19 @@
+{% extends 'datatable/base.datatable.html.twig' %}
+
+{% block title %}
+    Convenio - Empleados
+{% endblock %}
+
+{% block body_header_title %}
+    Empleados {{ convenio.nombre }} <small>{{ convenio.codigo }}</small>
+{% endblock %}
+
+{% block body %}
+    {{ include('admin/convenio/_tabs.html.twig') }}
+    {{ parent() }}
+{% endblock %}
+
+
+
+
+

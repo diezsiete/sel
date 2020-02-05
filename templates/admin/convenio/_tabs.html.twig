@@ -1,11 +1,20 @@
 {% set menu = knp_menu_get('convenio', [], {codigo: convenio.codigo}) %}
 
-<div class="tab-navigation collapse">
+<div class="tab-navigation">
     <nav>
         {{ knp_menu_render(
             menu, {
-                'currentClass': 'nav-active',
-                'rootClass': 'nav nav-pills',
+                'currentClass': 'active',
+                'root': {
+                    'attributes': {
+                        'class': 'nav nav-pills',
+                    }
+                },
+                'link': {
+                    'attributes': {
+                        'class': 'nav-link'
+                    }
+                }
             }, 'custom') }}
     </nav>
 </div>

@@ -34,6 +34,7 @@ class EmpleadoRepository extends ServiceEntityRepository
     /**
      * @param string|string[] $identificacion
      * @return Empleado|null|Empleado[]
+     * @noinspection PhpDocMissingThrowsInspection
      */
     public function findByIdentificacion($identificacion)
     {
@@ -43,7 +44,8 @@ class EmpleadoRepository extends ServiceEntityRepository
         if(is_array($identificacion)) {
             $qb->andWhere($qb->expr()->in('u.identificacion', ':identificacion'));
         }else{
-            $qb->andWhere('u.identificacion = :identificacion');
+            $qb->andWhere('u.identificacion = :identificacion')
+                ->setMaxResults(1);
         }
 
         $query = $qb->setParameter('identificacion', $identificacion)
@@ -100,6 +102,7 @@ class EmpleadoRepository extends ServiceEntityRepository
     /**
      * @param string|string[]|null $codigoConvenio
      * @param bool|DateTimeInterface|null $activo
+     * @param string $field
      * @return Empleado[]
      * @throws QueryException
      */

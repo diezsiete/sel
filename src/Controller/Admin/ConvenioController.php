@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 
 
 use App\DataTable\Type\ConvenioDataTableType;
+use App\DataTable\Type\ConvenioEmpleadoDataTableType;
 use App\DataTable\Type\RepresentanteDataTableType;
 use App\Entity\Main\Convenio;
 use App\Entity\Main\Representante;
@@ -19,6 +20,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\VarDumper\Cloner\Data;
 
 
 class ConvenioController extends AbstractController
@@ -122,9 +124,18 @@ class ConvenioController extends AbstractController
     /**
      * @Route("/sel/admin/convenio/{codigo}/empleados", name="admin_convenio_empleados")
      */
-    public function empleados(Convenio $convenio)
+    public function empleados(Request $request, Convenio $convenio, DataTableFactory $dataTableFactory)
     {
-
+        $datatable = $dataTableFactory->createFromType(ConvenioEmpleadoDataTableType::class, ['convenio' => $convenio], [
+            'searching' => true
+        ])->handleRequest($request);
+        if($datatable->isCallback()) {
+            return $datatable->getResponse();
+        }
+        return $this->render('admin/convenio/empleados.html.twig', [
+            'convenio' => $convenio,
+            'datatable' => $datatable
+        ]);
     }
 
 
