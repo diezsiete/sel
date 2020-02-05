@@ -1,18 +1,20 @@
 <?php
 
 
-namespace App\Command\Mail\Excel;
+namespace App\Command\Mail;
 
 
 use App\Command\Helpers\TraitableCommand\TraitableCommand;
 use App\Service\Excel\Factory;
 use App\Service\Utils;
 use Doctrine\Common\Annotations\Reader;
+use Exception;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 
@@ -32,14 +34,19 @@ class ExcelMasivoCommand extends TraitableCommand
      * @var Utils
      */
     private $utils;
+    /**
+     * @var Filesystem
+     */
+    private $filesystem;
 
     public function __construct(Reader $annotationReader, EventDispatcherInterface $eventDispatcher,
-                                Factory $excelFactory, MailerInterface $mailer, Utils $utils)
+                                Factory $excelFactory, MailerInterface $mailer, Utils $utils, Filesystem $filesystem)
     {
         parent::__construct($annotationReader, $eventDispatcher);
         $this->excelFactory = $excelFactory;
         $this->mailer = $mailer;
         $this->utils = $utils;
+        $this->filesystem = $filesystem;
     }
 
     protected function configure()
@@ -53,18 +60,22 @@ class ExcelMasivoCommand extends TraitableCommand
             ->addOption('html', null, InputOption::VALUE_OPTIONAL, 'Html opcional como body del correo')
             ->addOption('text', 't', InputOption::VALUE_OPTIONAL, 'Texto opcional como body del correo')
             ->addOption('prueba', 'p', InputOption::VALUE_OPTIONAL|InputOption::VALUE_IS_ARRAY,
-                'Utilizar para probar, no envia correo, excepto t sea un correo', []);
+                'Utilizar para probar, no envia correo, excepto p sea un correo', [])
+            ->addOption('adjunto', 'a', InputOption::VALUE_IS_ARRAY| InputOption::VALUE_REQUIRED, 'Path absoluto al archivo a adjuntar')
+            ->addOption('img', 'i', InputOption::VALUE_IS_ARRAY| InputOption::VALUE_REQUIRED, 'Si el correo es una sola imagen, path a la imagen');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $emails = $this->obtainEmails($input);
         $prueba = $this->getPruebaOption($input);
+        $adjuntos = $this->getAdjuntos($input);
+        $imgs = $this->getImgs($input);
 
         foreach($emails as $email) {
             if($this->utils->emailIsValid($email)) {
                 if(!$prueba || is_array($prueba)) {
-                    $emailObject = $this->buildEmail($email);
+                    $emailObject = $this->buildEmail($email, $adjuntos, $imgs);
                     $this->mailer->send($emailObject);
                 }
                 $this->io->success($email);
@@ -151,17 +162,53 @@ class ExcelMasivoCommand extends TraitableCommand
         return $this->input->getOption('html') ?? "";
     }
 
-    protected function buildEmail(string $to): Email
+    protected function buildEmail(string $to, $adjuntos = [], $img = []): Email
     {
         $email = (new Email())
                 ->from($this->getFrom())
                 ->to($to)
                 ->subject($this->getSubject());
-        if($html = $this->getHtml()) {
+        if($img) {
+            $html = "";
+            for($i = 1; $i <= count($img); $i++) {
+                $email->embedFromPath($img[$i - 1], 'img' . $i);
+                $html .= '<img src="cid:img'.$i.'">';
+            }
             $email->html($html);
         } else {
-            $email->text($this->getText());
+            if ($html = $this->getHtml()) {
+                $email->html($html);
+            } else {
+                $email->text($this->getText());
+            }
+        }
+        if($adjuntos) {
+            foreach($adjuntos as $adjunto) {
+                $email->attachFromPath($adjunto);
+            }
         }
         return $email;
+    }
+
+    protected function getAdjuntos(InputInterface $input)
+    {
+        $adjuntos = $input->getOption('adjunto');
+        foreach($adjuntos as $adjunto) {
+            if(!$this->filesystem->exists($adjunto)) {
+                throw new Exception("Adjunto '$adjunto' not found");
+            }
+        }
+        return $adjuntos;
+    }
+
+    protected function getImgs(InputInterface $input)
+    {
+        $imgs = $input->getOption('img');
+        foreach($imgs as $img) {
+            if (!$this->filesystem->exists($img)) {
+                throw new Exception("Imagen '$img' not found");
+            }
+        }
+        return $imgs;
     }
 }
