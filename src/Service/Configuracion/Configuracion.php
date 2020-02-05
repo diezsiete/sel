@@ -313,7 +313,7 @@ class Configuracion
             if(isset($this->parameters['companias'][$name])) {
                 //Companias como universal a su logo le agrega el path absoluto al logo pdf
                 $data = array_merge($this->parameters['companias'][$name], [
-                    'logo_pdf' => $this->kernelProjectDir . $this->packages->getUrl($this->parameters['companias'][$name]['logo_pdf'])
+                    'logo_pdf' => $this->kernelProjectDir . '/public' . $this->packages->getUrl($this->parameters['companias'][$name]['logo_pdf'])
                 ]);
                 $compania = new Compania($data);
             } else {
