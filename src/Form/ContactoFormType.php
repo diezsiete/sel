@@ -39,7 +39,6 @@ class ContactoFormType extends AbstractType
         $to = $options['to'];
         $dataClass = $options['data_class'];
 
-
         if(is_array($to)) {
             $asuntos = array_keys($to);
             $builder->add('asunto', ChoiceType::class, [
@@ -65,7 +64,24 @@ class ContactoFormType extends AbstractType
                 $this->formModifier($event->getForm()->getParent(), $event->getData());
             });
         } else {
-            $this->buildDefault($builder->getForm());
+            $builder
+                ->add('nombre', null, [
+                    'constraints' => [
+                        new NotBlank(['message' => "Ingrese su nombre"])
+                    ]
+                ])
+                ->add('from', EmailType::class, [
+                    'label' => 'Correo electrónico',
+                    'constraints' => [
+                        new NotBlank(['message' => "Ingrese su correo"]),
+                        new Email(['message' => "Ingrese un email valido"])
+                    ]
+                ])
+                ->add('mensaje', TextareaType::class, [
+                    'constraints' => [
+                        new NotBlank(['message' => "Ingrese mensaje"])
+                    ]
+                ]);
         }
 
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use ($to) {
