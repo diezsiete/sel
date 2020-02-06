@@ -4,10 +4,6 @@
       empresa: pta
 
   tasks:
-      - name: Local webpack
-        include: "{{ playbook_dir }}/include/local-webpack.yml"
-        when: webpack is defined
-
       - name: Archive blog images
         archive:
           path: "{{ playbook_dir }}/../public/img"
@@ -54,25 +50,7 @@
   vars:
       empresa: pta
   tasks:
-      - name: Remove archive webpack
-        file:
-            path: "{{ playbook_dir }}/../public/build.tgz"
-            state: absent
-        when: webpack is defined
-
       - name: Remove archive images
         file:
             path: "{{ playbook_dir }}/../public/img.tgz"
             state: absent
-
-      - name: yarn dev build assets
-        command: yarn build-assets
-        when: webpack is defined
-        environment:
-            EMPRESA: "{{ empresa }}"
-
-      - name: yarn dev build
-        command: yarn encore dev
-        when: webpack is defined
-        environment:
-            EMPRESA: "{{ empresa }}"
