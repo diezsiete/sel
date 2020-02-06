@@ -17,15 +17,30 @@
             {{ form_row(representanteForm.usuario.email) }}
         {% else %}
             {{ form_row(representanteForm.email) }}
-            {{ form_row(representanteForm.emailUnico) }}
+            {% if representanteForm.emailTodos is defined %}
+                {{ form_row(representanteForm.emailTodos) }}
+            {% endif %}
         {% endif %}
 
         <hr class="dotted tall">
 
-        <div class="form-row">
-            {{ form_row(representanteForm.usuario.roles, {container_attr: {class: 'col-md-6'}}) }}
-            {{ form_row(representanteForm.encargado, {container_attr: {class: 'col-md-6'}}) }}
-        </div>
+        {% if representanteForm.usuario.roles is defined %}
+            <div class="form-row">
+                {{ form_row(representanteForm.usuario.roles, {container_attr: {class: 'col-md-12'}}) }}
+            </div>
+            <div class="form-row">
+                {{ form_row(representanteForm.encargado, {container_attr: {class: 'col-md-6'}}) }}
+                {{ form_row(representanteForm.archivo, {container_attr: {class: 'col-md-6'}}) }}
+            </div>
+        {% elseif representanteForm.encargado is defined %}
+            <div class="form-row">
+                {{ form_row(representanteForm.encargado, {container_attr: {class: 'col-md-12'}}) }}
+            </div>
+        {% elseif representanteForm.archivo is defined %}
+            <div class="form-row">
+                {{ form_row(representanteForm.archivo, {container_attr: {class: 'col-md-12'}}) }}
+            </div>
+        {% endif %}
 
         <div class="form-row">
             <div class="col-md-12 text-right mt-3">

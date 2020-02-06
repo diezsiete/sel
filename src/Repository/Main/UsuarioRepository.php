@@ -54,6 +54,27 @@ class UsuarioRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param $identificacionOrCorreo
+     * @return Usuario|null
+     * @noinspection PhpDocMissingThrowsInspection
+     */
+    public function findByIdentificacionOrCorreo(string $identificacionOrCorreo)
+    {
+        $qb = $this->createQueryBuilder('u')
+            ->where('u.identificacion = :identificacionOrCorreo')
+            ->setParameter('identificacionOrCorreo', $identificacionOrCorreo)
+            ->setMaxResults(1);
+
+        $usuario =  $qb->getQuery()->getOneOrNullResult();
+
+        if (!$usuario) {
+            $qb->where('u.email = :identificacionOrCorreo');
+        }
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
+    /**
      * @return Usuario|null
      * @throws NonUniqueResultException
      */

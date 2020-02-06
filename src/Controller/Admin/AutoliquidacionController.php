@@ -6,7 +6,7 @@ use App\Controller\BaseController;
 use App\DataTable\SelDataTableFactory;
 use App\DataTable\Type\AutoliquidacionDataTableType;
 use App\DataTable\Type\AutoliquidacionEmpleadoDataTableType;
-use App\DataTable\Type\ConvenioDataTableType;
+use App\DataTable\Type\Clientes\ConvenioDataTableType;
 use App\Entity\Autoliquidacion\Autoliquidacion;
 use App\Entity\Main\Convenio;
 use App\Repository\Main\RepresentanteRepository;

@@ -41,12 +41,24 @@ class Representante
     /**
      * @ORM\Column(type="boolean")
      */
-    private $encargado;
+    private $encargado = false;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $bcc;
+    private $bcc = false;
+
+    /**
+     * @ORM\Column(type="boolean")
+     * @var bool
+     */
+    private $archivo = false;
+
+    /**
+     * @ORM\Column(type="boolean")
+     * @var bool
+     */
+    private $archivoBcc = false;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Main\Empleado", mappedBy="representante")
@@ -181,5 +193,54 @@ class Representante
             }
         }
         return null;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isArchivo(): bool
+    {
+        return $this->archivo;
+    }
+
+    /**
+     * @param bool|null $archivo
+     * @return Representante
+     */
+    public function setArchivo($archivo): Representante
+    {
+        if($archivo === null) {
+            $this->archivo = $this->archivoBcc = false;
+        } else {
+            $this->archivo = $archivo;
+            $this->archivoBcc = !$archivo;
+        }
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isArchivoBcc(): bool
+    {
+        return $this->archivoBcc;
+    }
+
+    /**
+     * @param bool $archivoBcc
+     * @return Representante
+     */
+    public function setArchivoBcc(bool $archivoBcc): Representante
+    {
+        $this->archivoBcc = $archivoBcc;
+        return $this;
+    }
+
+    /**
+     * Para el formulario que retorne el valor apropiado para el radio
+     */
+    public function whichArchivo()
+    {
+        return !$this->archivo && !$this->archivoBcc ? null : $this->archivo;
     }
 }

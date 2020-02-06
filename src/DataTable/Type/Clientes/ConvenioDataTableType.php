@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\DataTable\Type;
+namespace App\DataTable\Type\Clientes;
 
 
 use App\DataTable\Adapter\GroupByORMAdapter;

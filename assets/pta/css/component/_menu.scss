@@ -87,7 +87,12 @@ body #body.menu-open #menu-button:after {
         position: absolute;
         top: 130px;
         width: 100%;
-        z-index:10;
+        z-index:1;
+    }
+
+    // alert cuando estamos impersonando
+    body #body.menu-open > #header + .pp-header+#main-alert {
+        top: 163px;
     }
 
     body #body.menu-open #main {

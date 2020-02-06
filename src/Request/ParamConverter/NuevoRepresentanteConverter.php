@@ -46,12 +46,13 @@ class NuevoRepresentanteConverter implements ParamConverterInterface
         $object = null;
 
         if($identifier) {
-            $usuario = $this->em->getRepository(Usuario::class)->findByIdentificacion($identifier);
+            $usuario = $this->em->getRepository(Usuario::class)->findByIdentificacionOrCorreo($identifier);
 
             if ($usuario) {
                 $representante = $this->em->getRepository(Representante::class)
                     ->findBy(['convenio' => $convenio, 'usuario' => $usuario]);
-                if (!$representante) {
+                // por ahora un representante puede estar asignado dos veces una para autoliquidaciones y otra para archivo
+                if (!$representante || count($representante) === 1) {
                     $this->flashBag->clear();
                     $this->flashBag->add('success', 'Usuario ya registrado en el sistema.');
                 } else {

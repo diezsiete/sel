@@ -50,16 +50,11 @@ class MenuBuilder
         $this->createPortalClientesMenu($menu, $user);
 
         $this->createAdminMenu($menu, $user);
-
-        $this->createArchivoMenu($menu, $user);
         
         if($this->security->isGranted('ROLE_SUPERADMIN', $this->security->getUser())) {
             $menu->addChild('Solicitudes', ['route' => 'admin_scraper_solicitud_list'])
                 ->setExtra('icon', 'fas fa-microchip');
         }
-
-
-
 
         return $menu;
     }
@@ -143,11 +138,7 @@ class MenuBuilder
                     ->setExtra('icon', 'fas fa-users');
             }
 
-            if($this->security->isGranted([$roles['ROLE_ADMIN_AUTOLIQUIDACIONES']], $user)) {
-                $menu
-                    ->addChild('Convenios', ['route' => 'admin_convenio_list'])
-                    ->setExtra('icon', 'fas fa-building');
-            }
+
             if($this->security->isGranted([$roles['ROLE_VER_AUTOLIQUIDACIONES']], $user)) {
                 $menu
                     ->addChild('Pagos Seg. Social', ['route' => 'admin_autoliquidacion_list'])
@@ -165,8 +156,21 @@ class MenuBuilder
 
     protected function createPortalClientesMenu(ItemInterface $menu, $user)
     {
+        $childs = [];
+        if($this->security->isGranted(['ROLE_ADMIN_AUTOLIQUIDACIONES', 'ROLE_ARCHIVO_CARGAR'], $user)) {
+            $childs['Convenios'] = [
+                'options' => ['route' => 'admin_convenio_list'],
+                'extra' => ['name' => 'icon', 'value' => 'fas fa-building']
+            ];
+            if($this->security->isGranted('ROLE_ARCHIVO_CARGAR', $user)) {
+                $childs['Archivo'] = [
+                    'options' => ['route' => 'sel_admin_archivo'],
+                    'extra' => ['name' => 'icon', 'value' => 'fas fa-file']
+                ];
+            }
+        }
         if($this->security->isGranted(['ROLE_VER_AUTOLIQUIDACIONES'], $user)) {
-            $childs = [
+            $childs = array_merge($childs, [
                 'Trabajadores activos' => [
                     'options' => ['route' => 'clientes_trabajadores_activos'],
                     'extra' => ['name' => 'icon', 'value' => 'fas fa-users']
@@ -179,32 +183,24 @@ class MenuBuilder
                     'options' => ['route' => 'clientes_liquidaciones_nomina'],
                     'extra' => ['name' => 'icon', 'value' => 'fas fa-clipboard-list']
                 ]
-            ];
-            if(!$this->security->isGranted('ROLE_ADMIN', $user)){
-                foreach ($childs as $childName => $childData) {
-                    $menu
-                        ->addChild($childName, $childData['options'])
-                        ->setExtra($childData['extra']['name'], $childData['extra']['value']);
-                }
-            } else {
-                $menu->addChild('Portal clientes')
-                    ->setUri('#')
-                    ->setExtra('icon', 'fas fa-cog');
-                foreach ($childs as $childName => $childData) {
-                    $menu['Portal clientes']
-                        ->addChild($childName, $childData['options'])
-                        ->setExtra($childData['extra']['name'], $childData['extra']['value']);
-                }
-            }
-        }
-    }
+            ]);
 
-    public function createArchivoMenu(ItemInterface $menu, $user)
-    {
-        if($this->security->isGranted('ROLE_ARCHIVO_CARGAR', $user)) {
-            $menu
-                ->addChild('Archivo', ['route' => 'sel_admin_archivo'])
-                ->setExtra('icon', 'fas fa-file');
+        }
+        if(!$this->security->isGranted(['ROLE_ADMIN', 'ROLE_ARCHIVO_CARGAR'], $user)){
+            foreach ($childs as $childName => $childData) {
+                $menu
+                    ->addChild($childName, $childData['options'])
+                    ->setExtra($childData['extra']['name'], $childData['extra']['value']);
+            }
+        } else {
+            $menu->addChild('Portal clientes')
+                ->setUri('#')
+                ->setExtra('icon', 'fas fa-cog');
+            foreach ($childs as $childName => $childData) {
+                $menu['Portal clientes']
+                    ->addChild($childName, $childData['options'])
+                    ->setExtra($childData['extra']['name'], $childData['extra']['value']);
+            }
         }
     }
 

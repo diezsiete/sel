@@ -4,9 +4,9 @@
 namespace App\Controller\Admin;
 
 
-use App\DataTable\Type\ConvenioDataTableType;
+use App\DataTable\Type\Clientes\ConvenioDataTableType;
 use App\DataTable\Type\ConvenioEmpleadoDataTableType;
-use App\DataTable\Type\RepresentanteDataTableType;
+use App\DataTable\Type\Clientes\RepresentanteDataTableType;
 use App\Entity\Main\Convenio;
 use App\Entity\Main\Representante;
 use App\Entity\Main\Usuario;
@@ -144,9 +144,9 @@ class ConvenioController extends AbstractController
         $form = $this->createForm(RepresentanteFormType::class, $representante);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var \App\Entity\Main\Representante $representante */
+            /** @var Representante $representante */
             $representante = $form->getData();
-            $modifyAllEmails = $representante->getUsuario()->getId() && !$form['emailUnico']->getData();
+            $modifyAllEmails = $representante->getUsuario()->getId() && isset($form['emailTodos']) && $form['emailTodos']->getData();
 
             $em->persist($representante);
             if($modifyAllEmails) {
