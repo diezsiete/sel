@@ -4,3 +4,6 @@ app:
     empresas:
         SERVILABOR:
             php_exec: /opt/php71/bin/php
+
+    novasoftapi:
+        url: http://34.201.35.157:80

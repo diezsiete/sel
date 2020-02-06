@@ -97,13 +97,6 @@ services:
     App\Service\Hv\HvWizard\HvWizard:
         factory: '@App\Service\Hv\HvWizard\HvWizardFactory'
 
-    App\Service\Novasoft\SqlServer\Connection:
-        arguments:
-            - '%env(empresa:SQL_SERVER_NAME)%'
-            - '%env(empresa:SQL_SERVER_DB)%'
-            - '%env(empresa:SQL_SERVER_USER)%'
-            - '%env(empresa:SQL_SERVER_PASSWORD)%'
-
     App\Service\NovasoftSsrs\ReportServer:
         arguments:
             - '%env(NOVASOFT_SSRS_USERNAME)%'
@@ -123,6 +116,11 @@ services:
     App\Service\Halcon\Report\Report\CertificadoLaboralReport:
         calls:
             - [setPdfService, ['@=service("App\\Service\\Configuracion\\Configuracion").getEmpresa(true) === "servilabor" ? service("App\\Service\\Pdf\\Halcon\\CertificadoLaboralServilaborPdf") : service("App\\Service\\Pdf\\Halcon\\CertificadoLaboralPdf")' ]]
+
+    App\Service\Novasoft\Api\NovasoftApiClient:
+        arguments:
+            $url: '@=service("App\\Service\\Configuracion\\Configuracion").napi().url'
+            $db: '@=service("App\\Service\\Configuracion\\Configuracion").napi().db'
 
     App\Service\Pdf\PdfCartaLaboral:
         public: true
@@ -146,8 +144,6 @@ services:
     App\Service\Pdf\Halcon\LiquidacionContratoPdf:
         arguments: ["P", "mm", "Letter"]
         shared: false
-
-
 
 
 

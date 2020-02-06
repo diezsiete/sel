@@ -8,6 +8,9 @@ app:
       password: '%env(empresa:SCRAPER_AEL_PASSWORD)%'
       empleador: '%env(lowercase:EMPRESA)%'
 
+  novasoftapi:
+    url: http://localhost:8001
+
   sel_routes:
       ignore: [
         'pta_index', 'pta_servicios', 'pta_nosotros', 'vacante_listado', 'vacante_detalle', 'vacante_aplicar',
@@ -74,6 +77,9 @@ app:
         novasoft:
           browser: 'novasoft.cguerrero'
 
+      novasoftapi:
+        db: PTA
+
     SERVILABOR:
       host: '%env(HOST_SERVILABOR)%'
       razon: SERVILABOR S.A.S
@@ -118,6 +124,9 @@ app:
       scraper:
         novasoft:
           browser: 'novasoft'
+
+      novasoftapi:
+        db: SERVILABOR
 
   # TODO borar
   hv_wizard_routes:

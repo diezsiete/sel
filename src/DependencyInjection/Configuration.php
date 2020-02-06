@@ -21,6 +21,7 @@ class Configuration implements ConfigurationInterface
 
         $rootNode->children()
             ->append($this->addScraperNode())
+            ->append($this->addNovasoftApiNode())
             ->append($this->addSeNode())
             ->append($this->addSelRoutesNode())
             ->append($this->addHvWizardRoutes())
@@ -53,6 +54,7 @@ class Configuration implements ConfigurationInterface
                         ->append($this->addDocumentosLaborales())
                         ->append($this->addCompaniasNode())
                         ->append($this->addScraperEmpresaNode())
+                        ->append($this->addNovasoftApiEmpresaNode())
                     ->end()
                 ->end()
             ->end()
@@ -161,6 +163,17 @@ class Configuration implements ConfigurationInterface
         return $node;
     }
 
+    protected function addNovasoftApiNode()
+    {
+        $treeBuilder = new TreeBuilder('novasoftapi');
+        $node =
+            $treeBuilder->getRootNode()
+                ->children()
+                    ->scalarNode('url')->end()
+                ->end();
+        return $node;
+    }
+
     protected function addSeNode()
     {
         $treeBuilder = new TreeBuilder('se');
@@ -209,6 +222,17 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('browser')->end()
                         ->end()
                     ->end()
+                ->end();
+        return $node;
+    }
+
+    protected function addNovasoftApiEmpresaNode()
+    {
+        $treeBuilder = new TreeBuilder('novasoftapi');
+        $node =
+            $treeBuilder->getRootNode()
+                ->children()
+                    ->scalarNode('db')->end()
                 ->end();
         return $node;
     }

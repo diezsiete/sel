@@ -13,10 +13,10 @@ use App\Service\NovasoftSsrs\Entity\ReporteCertificadoIngresos;
 use App\Service\NovasoftSsrs\Entity\ReporteCertificadoLaboral;
 use App\Service\NovasoftSsrs\Entity\ReporteLiquidacion;
 use App\Service\NovasoftSsrs\NovasoftSsrs;
-use App\Service\NovasoftSsrs\Report\Report;
 use App\Service\NovasoftSsrs\Report\ReportNom933;
 use App\Service\NovasoftSsrs\Report\ReportNomU1503;
 use DateTime;
+use DateTimeInterface;
 use Exception;
 use SSRS\SSRSReportException;
 
@@ -60,7 +60,7 @@ class ReportesServicioEmpleados
     }
 
     /**
-     * @param string|\DateTimeInterface $fecha
+     * @param string|DateTimeInterface $fecha
      * @param $empleadoIdent
      * @return mixed
      * @deprecated
@@ -155,7 +155,7 @@ class ReportesServicioEmpleados
     }
 
     /**
-     * @return \App\Entity\Main\Convenio[]
+     * @return Convenio[]
      * @throws SSRSReportException
      */
     public function getConvenios()
@@ -168,7 +168,7 @@ class ReportesServicioEmpleados
      * @param string $convenioCodigo
      * @param DateTime $desde
      * @param DateTime $hasta
-     * @return \App\Entity\Main\Empleado[]
+     * @return Empleado[]
      * @throws SSRSReportException
      * @throws Exception
      */

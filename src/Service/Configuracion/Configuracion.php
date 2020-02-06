@@ -6,6 +6,7 @@ namespace App\Service\Configuracion;
 
 
 use App\Constant\HvConstant;
+use App\Service\Configuracion\Novasoft\NovasoftApiConfiguracion;
 use App\Service\Configuracion\Scraper\ScraperConfiguracion;
 use App\Service\Configuracion\ServicioEmpleados\ServicioEmpleados;
 use App\Service\Hv\HvWizard\HvWizardRoute;
@@ -66,6 +67,11 @@ class Configuracion
      * @var ScraperConfiguracion
      */
     private $scraper = null;
+
+    /**
+     * @var NovasoftApiConfiguracion
+     */
+    private $novasoftApiConfig = null;
 
     private $documentosLaborales = [];
 
@@ -270,6 +276,14 @@ class Configuracion
         return $this->scraper;
     }
 
+    public function napi(): NovasoftApiConfiguracion
+    {
+        if(!$this->novasoftApiConfig) {
+            $this->novasoftApiConfig = new NovasoftApiConfiguracion($this->bag->get('novasoftapi'), $this->parameters['novasoftapi']);
+        }
+        return $this->novasoftApiConfig;
+    }
+
     /**
      * @param null|string $searchKey
      * @return DocumentoLaboral[]|DocumentoLaboral
@@ -382,5 +396,8 @@ class Configuracion
         }
         return $this->servicioEmpleadosConfig;
     }
+
+
+
 
 }
