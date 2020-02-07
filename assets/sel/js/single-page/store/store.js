@@ -15,7 +15,7 @@ export default new Vuex.Store({
         archivoBorrarUrl: Router.generate('sel_admin_api_archivo_delete'),
         archivoVerUrl: null,
         loading: false,
-        errorMessage: null,
+        alert: null,
         archivoSelected: null,
         archivoSelectedOriginalFilename: null,
     },
@@ -40,8 +40,11 @@ export default new Vuex.Store({
         SET_LOADING_STATUS(state, status) {
             state.loading = status;
         },
-        SET_ERROR_MESSAGE(state, message) {
-            state.errorMessage = message
+        SET_ALERT(state, message, type="warning") {
+            state.alert = {message, type}
+        },
+        DISABLE_ALERT(state) {
+            state.alert = null
         },
         SELECT_ARCHIVO(state, archivo) {
             state.archivoSelected = archivo;
@@ -90,16 +93,20 @@ export default new Vuex.Store({
             commit('SET_LOADING_STATUS', false);
         },
         enableLoading(context) {
+            context.commit('DISABLE_ALERT');
             context.commit('SET_LOADING_STATUS', true)
         },
         disableLoading(context) {
             context.commit('SET_LOADING_STATUS', false)
         },
-        showErrorMessage({commit}, message) {
-            commit('SET_ERROR_MESSAGE', message);
+        showMessage({commit}, message, type="warning") {
+            commit('SET_ALERT', message, type);
             setTimeout(() => {
-                commit('SET_ERROR_MESSAGE', null);
+                commit('DISABLE_ALERT');
             }, 10000);
+        },
+        hideMessage({commit}) {
+            commit('DISABLE_ALERT');
         },
         toggleArchivo({commit, state}, archivo) {
             if(!state.archivoSelected || state.archivoSelected.id !== archivo.id) {

@@ -4,6 +4,8 @@
 namespace App\Service\Novasoft\Api;
 
 
+use Symfony\Component\HttpClient\Exception\ClientException;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class NovasoftApiClient
@@ -35,9 +37,17 @@ class NovasoftApiClient
         return $this->url;
     }
 
+
     public function empleado(string $id) {
-        $response = $this->httpClient->request('GET', $this->url . "/empleados/$id");
-        return $response->toArray();
+        try {
+            $response = $this->httpClient->request('GET', $this->url . "/empleado/$id");
+            return $response->toArray();
+        } catch (ClientException $e) {
+            if($e->getCode() === 404) {
+                return null;
+            }
+            throw $e;
+        }
     }
 
 

@@ -83,7 +83,7 @@ class Empleado
     private $convenio;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Main\Usuario")
+     * @ORM\OneToOne(targetEntity="App\Entity\Main\Usuario", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $usuario;

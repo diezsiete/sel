@@ -8,14 +8,22 @@
             <v-toolbar flat>
                 <v-toolbar-title>{{ empleadoNombre }}</v-toolbar-title>
                 <v-spacer></v-spacer>
+                <v-btn class="ma-2" large outlined color="success" id="toolbar-send-email" v-if="empleado && archivos.length > 0">
+                    <v-icon left>mdi-arrow-up-bold-box-outline</v-icon> Enviar correo
+                </v-btn>
+
                 <v-btn class="ma-2" large outlined color="success" id="toolbar-upload-file" :disabled="!empleado">
                     <v-icon left>mdi-arrow-up-bold-box-outline</v-icon> Cargar archivos
                 </v-btn>
                 <usuario-search placeholder="Buscar empleado" v-on:usuario-selected="onUsuarioSelected">
                 </usuario-search>
-            </v-toolbar>
 
+            </v-toolbar>
+            <v-alert :type="alert.type" dense border="left" class="main-alert" v-if="alert" dismissible>
+                {{ alert.message }}
+            </v-alert>
             <v-container class="card-content">
+
                 <div class="loader-container">
                     <file-uploader
                             :url="uploadUrl"
@@ -90,7 +98,8 @@
                     ? `${state.empleado.nombreCompleto}  - ${state.empleado.identificacion}`
                     : "Seleccione un empleado"
             },
-            uploadUrl: 'archivoCreateUrl'
+            uploadUrl: 'archivoCreateUrl',
+            alert: state => state.alert
         }),
         methods: {
             async onUsuarioSelected(result) {
@@ -153,6 +162,9 @@
 
     .subtitle {
         color: #314b5f;
+    }
+    .main-alert {
+        margin-bottom: 0;
     }
 
 </style>
