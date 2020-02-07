@@ -75,7 +75,7 @@
             },
             onDropzoneError(file, message, xhr) {
                 this.$store.dispatch('disableLoading');
-                this.$store.dispatch('showErrorMessage', `${file.name} ${message.detail}`);
+                this.$store.dispatch('showMessage', {message: `${file.name} ${message.detail}`, type: 'error'});
             },
             onDropzoneSending(file, xhr, formData) {
                 this.$store.dispatch('enableLoading');

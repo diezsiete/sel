@@ -9,7 +9,7 @@
                 <v-toolbar-title>{{ empleadoNombre }}</v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-btn class="ma-2" large outlined color="success" id="toolbar-send-email" v-if="empleado && archivos.length > 0">
-                    <v-icon left>mdi-arrow-up-bold-box-outline</v-icon> Enviar correo
+                    <v-icon left>mdi-email</v-icon> Correo
                 </v-btn>
 
                 <v-btn class="ma-2" large outlined color="success" id="toolbar-upload-file" :disabled="!empleado">

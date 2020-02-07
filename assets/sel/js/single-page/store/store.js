@@ -40,8 +40,8 @@ export default new Vuex.Store({
         SET_LOADING_STATUS(state, status) {
             state.loading = status;
         },
-        SET_ALERT(state, message, type="warning") {
-            state.alert = {message, type}
+        SET_ALERT(state, alert) {
+            state.alert = alert
         },
         DISABLE_ALERT(state) {
             state.alert = null
@@ -99,8 +99,10 @@ export default new Vuex.Store({
         disableLoading(context) {
             context.commit('SET_LOADING_STATUS', false)
         },
-        showMessage({commit}, message, type="warning") {
-            commit('SET_ALERT', message, type);
+        showMessage({commit}, payload) {
+            const message = typeof payload === 'object' ? payload.message : payload;
+            const type = typeof payload === 'object' && payload.type ? payload.type : 'warning';
+            commit('SET_ALERT', {message, type});
             setTimeout(() => {
                 commit('DISABLE_ALERT');
             }, 10000);
