@@ -16,6 +16,7 @@
         "league/flysystem-cached-adapter": "^1.0",
         "omines/datatables-bundle": "^0.3.0",
         "oneup/flysystem-bundle": "^3.1",
+        "oneup/uploader-bundle": "^2.2",
         "phpoffice/phpspreadsheet": "^1.9",
         "sensio/framework-extra-bundle": "^5.3",
         "setasign/fpdf": "1.8.1",

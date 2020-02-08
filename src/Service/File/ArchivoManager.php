@@ -64,16 +64,26 @@ class ArchivoManager extends FileManager
      * @return Archivo
      * @throws UploadedFileValidationErrorsException
      */
-    public function uploadArchivo(UploadedFile $file, Usuario $owner)
+    public function uploadArchivo(UploadedFile $file, Usuario $owner): Archivo
     {
-        $uniqueFilename = $this->uploadUploadedFile($file, $this->path($owner));
+        return $this->createArchivo(
+            $this->uploadUploadedFile($file, $this->path($owner)),
+            $this->getOriginalFilenameWithoutExtension($file),
+            $this->getMimeType($file, true),
+            $file->getSize(),
+            $this->getExtension($file),
+            $owner
+        );
+    }
 
+    public function createArchivo($filename, $originalFilename, $mimeType, $size, $extension, Usuario $owner): Archivo
+    {
         $archivo = (new Archivo())
-            ->setFilename($uniqueFilename)
-            ->setOriginalFilename($this->getOriginalFilenameWithoutExtension($file))
-            ->setMimeType($this->getMimeType($file, true))
-            ->setSize($file->getSize())
-            ->setExtension($this->getExtension($file))
+            ->setFilename($filename)
+            ->setOriginalFilename($originalFilename)
+            ->setMimeType($mimeType)
+            ->setSize($size)
+            ->setExtension($extension)
             ->setOwner($owner);
 
         $this->em->persist($archivo);
@@ -86,9 +96,9 @@ class ArchivoManager extends FileManager
      * @param $id
      * @return bool
      */
-    public function deleteById($id)
+    public function deleteById($deleteId)
     {
-        $ids = is_array($id) ? $id : [$id];
+        $ids = is_array($deleteId) ? $deleteId : [$deleteId];
         foreach($ids as $id) {
             if ($archivo = $this->archivoRepository->find($id)) {
                 $this->delete($this->path($archivo));

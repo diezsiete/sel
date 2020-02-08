@@ -14,7 +14,7 @@ use App\Constant\File as FileConstant;
 trait FileHelper
 {
     /**
-     * @param File $file
+     * @param File|UploadedFile $file
      * @return string|null
      */
     public function getOriginalFilename($file)
@@ -28,7 +28,7 @@ trait FileHelper
     }
 
     /**
-     * @param File|$file
+     * @param File|UploadedFile $file
      * @return string|null
      */
     public function getOriginalFilenameWithoutExtension($file)

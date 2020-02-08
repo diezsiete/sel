@@ -11,7 +11,8 @@ export default new Vuex.Store({
         empleado: null,
         archivos: [],
         archivoListUrl: Router.generate('sel_admin_api_archivo_list'),
-        archivoCreateUrl: Router.generate('sel_admin_api_archivo_create', {usuario: null}),
+        //archivoCreateUrl: Router.generate('sel_admin_api_archivo_create', {usuario: null}),
+        archivoCreateUrl: Router.generate('_uploader_upload_archivo'),
         archivoBorrarUrl: Router.generate('sel_admin_api_archivo_delete'),
         archivoVerUrl: null,
         loading: false,
@@ -25,7 +26,7 @@ export default new Vuex.Store({
         },
         UPDATE_URLS(state, id) {
             state.archivoListUrl   = Router.generate('sel_admin_api_archivo_list',   {usuario: id});
-            state.archivoCreateUrl = Router.generate('sel_admin_api_archivo_create', {usuario: id});
+            //state.archivoCreateUrl = Router.generate('sel_admin_api_archivo_create', {usuario: id});
             state.archivoBorrarUrl = Router.generate('sel_admin_api_archivo_delete', {usuario: id});
         },
         SET_ARCHIVOS (state, archivos) {
@@ -103,9 +104,9 @@ export default new Vuex.Store({
             const message = typeof payload === 'object' ? payload.message : payload;
             const type = typeof payload === 'object' && payload.type ? payload.type : 'warning';
             commit('SET_ALERT', {message, type});
-            setTimeout(() => {
+            /*setTimeout(() => {
                 commit('DISABLE_ALERT');
-            }, 10000);
+            }, 10000);*/
         },
         hideMessage({commit}) {
             commit('DISABLE_ALERT');
