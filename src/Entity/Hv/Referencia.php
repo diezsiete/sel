@@ -27,10 +27,10 @@ class Referencia implements HvEntity
     private $tipo;
 
     /**
-     * @ORM\Column(type="string", length=105)
+     * @ORM\Column(type="string", length=200)
      * @Assert\NotNull(message="Ingrese nombre")
      * @Assert\Length(
-     *      max = 105,
+     *      max = 200,
      *      maxMessage = "El nombre supera el limite de {{ limit }} caracteres"
      * )
      * @Groups({"main", "scraper", "scraper-hv-child"})
@@ -38,10 +38,10 @@ class Referencia implements HvEntity
     private $nombre;
 
     /**
-     * @ORM\Column(type="string", length=145)
+     * @ORM\Column(type="string", length=200)
      * @Assert\NotNull(message="Ingrese ocupación")
      * @Assert\Length(
-     *      max = 145,
+     *      max = 200,
      *      maxMessage = "La ocupación supera el limite de {{ limit }} caracteres"
      * )
      * @Groups({"main", "scraper", "scraper-hv-child"})
@@ -49,10 +49,10 @@ class Referencia implements HvEntity
     private $ocupacion;
 
     /**
-     * @ORM\Column(type="string", length=45, nullable=true)
+     * @ORM\Column(type="string", length=50, nullable=true)
      * @Assert\NotNull(message="Ingrese parentesco")
      * @Assert\Length(
-     *      max = 45,
+     *      max = 50,
      *      maxMessage = "El parentesco supera el limite de {{ limit }} caracteres"
      * )
      * @Groups({"main", "scraper", "scraper-hv-child"})
@@ -60,11 +60,11 @@ class Referencia implements HvEntity
     private $parentesco;
 
     /**
-     * @ORM\Column(type="string", length=20)
+     * @ORM\Column(type="string", length=50)
      * @Assert\NotNull(message="Ingrese celular de la referencia")
      * @Assert\Regex(pattern="/^[0-9]+$/", message="Solo se aceptan numeros")
      * @Assert\Length(
-     *      max = 20,
+     *      max = 50,
      *      maxMessage = "El celular supera el limite de {{ limit }} caracteres"
      * )
      * @Groups({"main", "scraper", "scraper-hv-child"})
@@ -72,11 +72,11 @@ class Referencia implements HvEntity
     private $celular;
 
     /**
-     * @ORM\Column(type="string", length=20, nullable=true)
+     * @ORM\Column(type="string", length=50, nullable=true)
      * @Assert\NotNull(message="Ingrese telefono de la referencia")
      * @Assert\Regex(pattern="/^[0-9]+$/", message="Solo se aceptan numeros")
      * @Assert\Length(
-     *      max = 20,
+     *      max = 50,
      *      maxMessage = "El telefono supera el limite de {{ limit }} caracteres"
      * )
      * @Groups({"main", "scraper", "scraper-hv-child"})
@@ -94,9 +94,9 @@ class Referencia implements HvEntity
     private $direccion;
 
     /**
-     * @ORM\Column(type="string", length=100, nullable=true)
+     * @ORM\Column(type="string", length=200, nullable=true)
      * @Assert\Length(
-     *      max = 100,
+     *      max = 200,
      *      maxMessage = "Nombre supera el limite de {{ limit }} caracteres"
      * )
      * @Groups({"main", "scraper", "scraper-hv-child"})

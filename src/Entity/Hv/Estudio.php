@@ -33,10 +33,10 @@ class Estudio implements HvEntity
     private $codigo;
 
     /**
-     * @ORM\Column(type="string", length=75)
+     * @ORM\Column(type="string", length=50)
      * @Assert\NotNull(message="Ingrese nombre del estudio")
      * @Assert\Length(
-     *      max = 75,
+     *      max = 50,
      *      maxMessage = "El titulo supera el limite de {{ limit }} caracteres"
      * )
      * @Groups({"main", "scraper", "scraper-hv-child"})
@@ -84,7 +84,7 @@ class Estudio implements HvEntity
     private $graduado;
 
     /**
-     * @ORM\Column(type="smallint", nullable=true)
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $semestresAprobados;
 
@@ -92,10 +92,10 @@ class Estudio implements HvEntity
      * @ORM\Column(type="boolean", nullable=true)
      * @Groups({"main", "scraper", "scraper-hv-child"})
      */
-    private $cancelo;
+    private $cancelo = 0;
 
     /**
-     * @ORM\Column(type="string", length=15, nullable=true)
+     * @ORM\Column(type="string", length=13, nullable=true)
      */
     private $numeroTarjeta;
 

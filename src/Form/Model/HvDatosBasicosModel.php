@@ -27,7 +27,7 @@ class HvDatosBasicosModel
      * @Assert\Regex(pattern="/^[0-9]+$/", message="Solo se aceptan numeros")
      * @Assert\Length(
      *      min = 5,
-     *      max = 20,
+     *      max = 12,
      *      minMessage = "La identificación debe tener al menos {{ limit }} caracteres",
      *      maxMessage = "La identificación supera el limite de {{ limit }} caracteres"
      * )
@@ -38,7 +38,7 @@ class HvDatosBasicosModel
      * @Assert\NotBlank(message="Por favor ingrese correo")
      * @Assert\Email(message="Ingrese un email valido")
      * @Assert\Length(
-     *      max = 140,
+     *      max = 100,
      *      maxMessage = "El correo supera el limite de {{ limit }} caracteres"
      * )
      */
@@ -52,7 +52,7 @@ class HvDatosBasicosModel
      *     message="Por favor ingrese solo letras"
      * )
      * @Assert\Length(
-     *      max = 60,
+     *      max = 50,
      *      maxMessage = "El nombre supera el limite de {{ limit }} caracteres"
      * )
      */
@@ -65,7 +65,7 @@ class HvDatosBasicosModel
      *     message="Por favor ingrese solo letras"
      * )
      * @Assert\Length(
-     *      max = 60,
+     *      max = 50,
      *      maxMessage = "El nombre supera el limite de {{ limit }} caracteres"
      * )
      */
@@ -79,7 +79,7 @@ class HvDatosBasicosModel
      *     message="Por favor ingrese solo letras"
      * )
      * @Assert\Length(
-     *      max = 60,
+     *      max = 50,
      *      maxMessage = "El apellido supera el limite de {{ limit }} caracteres"
      * )
      */
@@ -92,7 +92,7 @@ class HvDatosBasicosModel
      *     message="Por favor ingrese solo letras"
      * )
      * @Assert\Length(
-     *      max = 60,
+     *      max = 50,
      *      maxMessage = "El apellido supera el limite de {{ limit }} caracteres"
      * )
      */
@@ -167,7 +167,7 @@ class HvDatosBasicosModel
     /**
      * @Assert\NotNull(message="Ingrese dirección")
      * @Assert\Length(
-     *      max = 60,
+     *      max = 50,
      *      maxMessage = "La dirección supera el limite de {{ limit }} caracteres"
      * )
      */
@@ -232,7 +232,7 @@ class HvDatosBasicosModel
     /**
      * @Assert\Regex(pattern="/^[0-9]+$/", message="Solo se aceptan numeros")
      * @Assert\Length(
-     *      max = 17,
+     *      max = 50,
      *      maxMessage = "Teléfono supera el limite de {{ limit }} caracteres"
      * )
      */

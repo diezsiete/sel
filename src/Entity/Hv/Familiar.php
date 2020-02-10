@@ -37,7 +37,6 @@ class Familiar implements HvEntity
 
     /**
      * @ORM\Column(type="string", length=15)
-     * @Assert\NotNull(message="Ingrese segundo apellido")
      * @Assert\Length(
      *      max = 15,
      *      maxMessage = "El apellido supera el limite de {{ limit }} caracteres"
@@ -73,30 +72,30 @@ class Familiar implements HvEntity
     private $parentesco;
 
     /**
-     * @ORM\Column(type="smallint")
+     * @ORM\Column(type="integer")
      * @Assert\NotNull(message="Ingrese ocupación")
      * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $ocupacion;
 
     /**
-     * @ORM\Column(type="smallint", nullable=true)
+     * @ORM\Column(type="integer")
      * @Assert\NotNull(message="Ingrese genero")
      * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $genero;
 
     /**
-     * @ORM\Column(type="smallint", nullable=true)
+     * @ORM\Column(type="integer")
      * @Assert\NotNull(message="Ingrese estado civil")
      * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $estadoCivil;
 
     /**
-     * @ORM\Column(type="string", length=35, nullable=true)
+     * @ORM\Column(type="string", length=12, nullable=true)
      * @Assert\Length(
-     *      max = 35,
+     *      max = 12,
      *      maxMessage = "La identificación supera el limite de {{ limit }} caracteres"
      * )
      * @Groups({"main", "scraper", "scraper-hv-child"})
@@ -104,13 +103,13 @@ class Familiar implements HvEntity
     private $identificacion;
 
     /**
-     * @ORM\Column(type="string", length=2, nullable=true)
+     * @ORM\Column(type="string", length=2)
      * @Groups({"main", "scraper", "scraper-hv-child"})
      */
-    private $identificacionTipo;
+    private $identificacionTipo = 0;
 
     /**
-     * @ORM\Column(type="string", length=3, nullable=true)
+     * @ORM\Column(type="string", length=2)
      * @Assert\NotNull(message="Ingrese nivel academico")
      * @Groups({"main", "scraper", "scraper-hv-child"})
      */

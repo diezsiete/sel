@@ -39,7 +39,7 @@ class Dpto
     private $ciudades;
 
     /**
-     * @ORM\Column(type="string", length=7, nullable=true)
+     * @ORM\Column(type="string", length=2, nullable=true)
      * @Groups({"scraper", "scraper-hv", "scraper-hv-child"})
      * @SerializedName("id")
      */

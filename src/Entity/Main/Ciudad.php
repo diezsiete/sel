@@ -38,7 +38,7 @@ class Ciudad
     private $pais;
 
     /**
-     * @ORM\Column(type="string", length=7, nullable=true)
+     * @ORM\Column(type="string", length=5, nullable=true)
      * @Groups({"scraper", "scraper-hv", "scraper-hv-child"})
      * @SerializedName("id")
      */

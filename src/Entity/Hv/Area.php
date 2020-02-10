@@ -14,6 +14,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class Area
 {
     /**
+     * TODO: en novasoft esto es smallint
      * @ORM\Id()
      * @ORM\Column(type="string", length=7)
      * @Groups({"main", "scraper", "scraper-hv-child"})

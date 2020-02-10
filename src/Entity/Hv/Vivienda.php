@@ -61,24 +61,24 @@ class Vivienda implements HvEntity
     private $ciudad;
 
     /**
-     * @ORM\Column(type="smallint", nullable=true)
+     * @ORM\Column(type="integer", nullable=true)
      * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $estrato;
 
     /**
-     * @ORM\Column(type="smallint", nullable=true)
+     * @ORM\Column(type="integer")
      * @Assert\NotNull(message="Seleccione tipo de vivienda")
      * @Groups({"main", "scraper", "scraper-hv-child"})
      */
-    private $tipoVivienda;
+    private $tipoVivienda = 1;
 
     /**
-     * @ORM\Column(type="smallint", nullable=true)
+     * @ORM\Column(type="smallint")
      * @Assert\NotNull(message="Ingrese valor")
      * @Groups({"main", "scraper", "scraper-hv-child"})
      */
-    private $tenedor;
+    private $tenedor = 1;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)

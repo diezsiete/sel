@@ -25,17 +25,17 @@ class RedSocial implements HvEntity
     protected $id;
 
     /**
-     * @ORM\Column(type="smallint")
+     * @ORM\Column(type="integer")
      * @Assert\NotNull(message="Ingrese tipo de red social")
      * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $tipo;
 
     /**
-     * @ORM\Column(type="string", length=145)
+     * @ORM\Column(type="string", length=100)
      * @Assert\NotNull(message="Ingrese cuenta")
      * @Assert\Length(
-     *      max = 145,
+     *      max = 100,
      *      maxMessage = "La cuenta supera el limite de {{ limit }} caracteres"
      * )
      * @Groups({"main", "scraper", "scraper-hv-child"})

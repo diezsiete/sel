@@ -12,7 +12,7 @@ class EstudioInstituto
 {
     /**
      * @ORM\Id()
-     * @ORM\Column(type="string", length=7)
+     * @ORM\Column(type="string", length=10)
      * @Groups({"main", "scraper", "scraper-hv-child"})
      */
     private $id;

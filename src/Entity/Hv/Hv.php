@@ -72,7 +72,7 @@ class Hv implements HvEntity
     private $identCiudad;
 
     /**
-     * @ORM\Column(type="smallint")
+     * @ORM\Column(type="integer")
      * @Groups({"scraper", "scraper-hv"})
      */
     private $genero;
@@ -110,14 +110,14 @@ class Hv implements HvEntity
     private $barrio;
 
     /**
-     * @ORM\Column(type="string", length=60, nullable=true)
+     * @ORM\Column(type="string", length=50, nullable=true)
      * @Assert\NotNull(message="Ingrese dirección")
      * @Groups({"scraper", "scraper-hv"})
      */
     private $direccion;
 
     /**
-     * @ORM\Column(type="string", length=2)
+     * @ORM\Column(type="string", length=3)
      * @Groups({"scraper", "scraper-hv"})
      */
     private $grupoSanguineo;
@@ -179,7 +179,7 @@ class Hv implements HvEntity
     private $lmilitarClase;
 
     /**
-     * @ORM\Column(type="bigint", nullable=true)
+     * @ORM\Column(type="string", length=12, nullable=true)
      */
     private $lmilitarNumero;
 
@@ -216,7 +216,7 @@ class Hv implements HvEntity
     private $telefono;
 
     /**
-     * @ORM\Column(type="string", length=17, nullable=true)
+     * @ORM\Column(type="string", length=50, nullable=true)
      * @Groups({"scraper", "scraper-hv"})
      */
     private $celular;
