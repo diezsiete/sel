@@ -51,7 +51,7 @@ class HvClient extends NovasoftApiClient
     {
         $childNormalized = $this->normalizer->normalize($entity, null, ['groups' => ['napi:hv-child:post']]);
         $childNormalized['hv'] = "/api/hv/{$childNormalized['hv']}";
-        return $this->sendPost('/'.$this->symbol->toSnakeCase($entity), $childNormalized);
+        return $this->sendPost('/'.$this->symbol->toSnakeCase($entity, '-'), $childNormalized);
     }
 
     /**
@@ -68,7 +68,7 @@ class HvClient extends NovasoftApiClient
     public function putChild(HvEntity $entity)
     {
         $childNormalized = $this->normalizer->normalize($entity, null, ['groups' => ['napi:hv-child:put']]);
-        return $this->sendPut("/{$this->symbol->toSnakeCase($entity)}/{$entity->getNapiId()}", $childNormalized);
+        return $this->sendPut("/{$this->symbol->toSnakeCase($entity, '-')}/{$entity->getNapiId()}", $childNormalized);
     }
 
     /**
@@ -84,7 +84,7 @@ class HvClient extends NovasoftApiClient
      */
     public function deleteChild(string $napiId, string $childClass)
     {
-        return $this->sendDelete("/{$this->symbol->toSnakeCase($childClass)}/{$napiId}");
+        return $this->sendDelete("/{$this->symbol->toSnakeCase($childClass, '-')}/{$napiId}");
     }
 
 

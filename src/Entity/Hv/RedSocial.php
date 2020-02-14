@@ -32,6 +32,12 @@ class RedSocial implements HvEntity
     private $tipo;
 
     /**
+     * @var int
+     * @Groups("messenger:hv-child:put")
+     */
+    private $prevTipo;
+
+    /**
      * @ORM\Column(type="string", length=100)
      * @Assert\NotNull(message="Ingrese cuenta")
      * @Assert\Length(
@@ -45,7 +51,7 @@ class RedSocial implements HvEntity
     /**
      * @ORM\ManyToOne(targetEntity="Hv", inversedBy="redesSociales")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups("napi:hv-child:post")
+     * @Groups({"napi:hv-child:post", "messenger:hv-child:put"})
      * @var Hv
      */
     protected $hv;
@@ -74,8 +80,19 @@ class RedSocial implements HvEntity
 
     public function setTipo(?int $tipo): self
     {
+        $this->prevTipo = $this->tipo;
         $this->tipo = $tipo;
+        return $this;
+    }
 
+    public function getPrevTipo(): ?int
+    {
+        return $this->prevTipo;
+    }
+
+    public function setPrevTipo(int $prevTipo): RedSocial
+    {
+        $this->prevTipo = $prevTipo;
         return $this;
     }
 
@@ -93,6 +110,7 @@ class RedSocial implements HvEntity
 
     public function getNapiId(): string
     {
-        // TODO: Implement getNapiId() method.
+        $tipo = $this->prevTipo ?? $this->tipo;
+        return "hv={$this->hv->getNapiId()};tipo=$tipo";
     }
 }
