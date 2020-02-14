@@ -35,7 +35,7 @@ class RedSocial implements HvEntity
      * @var int
      * @Groups("messenger:hv-child:put")
      */
-    private $prevTipo;
+    private $tipoPrev;
 
     /**
      * @ORM\Column(type="string", length=100)
@@ -80,19 +80,19 @@ class RedSocial implements HvEntity
 
     public function setTipo(?int $tipo): self
     {
-        $this->prevTipo = $this->tipo;
+        $this->tipoPrev = $this->tipo;
         $this->tipo = $tipo;
         return $this;
     }
 
-    public function getPrevTipo(): ?int
+    public function getTipoPrev(): ?int
     {
-        return $this->prevTipo;
+        return $this->tipoPrev;
     }
 
-    public function setPrevTipo(int $prevTipo): RedSocial
+    public function setTipoPrev(int $tipoPrev): RedSocial
     {
-        $this->prevTipo = $prevTipo;
+        $this->tipoPrev = $tipoPrev;
         return $this;
     }
 
@@ -110,7 +110,7 @@ class RedSocial implements HvEntity
 
     public function getNapiId(): string
     {
-        $tipo = $this->prevTipo ?? $this->tipo;
+        $tipo = $this->tipoPrev ?? $this->tipo;
         return "hv={$this->hv->getNapiId()};tipo=$tipo";
     }
 }

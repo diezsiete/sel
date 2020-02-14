@@ -34,29 +34,35 @@ class Vivienda implements HvEntity
      *      max = 40,
      *      maxMessage = "La dirección supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
      */
     private $direccion;
+
+    /**
+     * @var string
+     * @Groups("messenger:hv-child:put")
+     */
+    private $direccionPrev;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Main\Pais")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotNull(message="Seleccione pais donde se ubica la vivienda")
-     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "messenger:hv-child:put", "napi:hv-child:put", "scraper", "scraper-hv-child"})
      */
     private $pais;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Main\Dpto")
      * @Assert\NotNull(message="Seleccione departamento donde se ubica la vivienda")
-     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "messenger:hv-child:put", "scraper", "scraper-hv-child"})
      */
     private $dpto;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Main\Ciudad")
      * @Assert\NotNull(message="Seleccione ciudad donde se ubica la vivienda")
-     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "messenger:hv-child:put", "scraper", "scraper-hv-child"})
      */
     private $ciudad;
 
@@ -89,7 +95,8 @@ class Vivienda implements HvEntity
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Hv\Hv", inversedBy="viviendas")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups("napi:hv-child:post")
+     * @Groups({"napi:hv-child:post", "messenger:hv-child:put"})
+     * @var Hv
      */
     protected $hv;
 
@@ -106,7 +113,6 @@ class Vivienda implements HvEntity
     public function setHv(?Hv $hv): self
     {
         $this->hv = $hv;
-
         return $this;
     }
 
@@ -117,8 +123,19 @@ class Vivienda implements HvEntity
 
     public function setDireccion(?string $direccion): self
     {
+        $this->direccionPrev = $this->direccion;
         $this->direccion = $direccion;
+        return $this;
+    }
 
+    public function getDireccionPrev(): ?string
+    {
+        return $this->direccionPrev;
+    }
+
+    public function setDireccionPrev(string $direccionPrev): Vivienda
+    {
+        $this->direccionPrev = $direccionPrev;
         return $this;
     }
 
@@ -208,6 +225,7 @@ class Vivienda implements HvEntity
 
     public function getNapiId(): string
     {
-        // TODO: Implement getNapiId() method.
+        $direccion = $this->direccionPrev ?? $this->direccion;
+        return "hv={$this->hv->getNapiId()};direccion=$direccion";
     }
 }

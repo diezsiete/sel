@@ -15,13 +15,13 @@ class Ciudad
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups("main")
+     * @Groups({"main", "messenger:hv-child:put"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups("main")
+     * @Groups({"main", "messenger:hv-child:put"})
      */
     private $nombre;
 
@@ -39,7 +39,7 @@ class Ciudad
 
     /**
      * @ORM\Column(type="string", length=5, nullable=true)
-     * @Groups({"napi:hv:post", "napi:hv:put", "nap:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv", "scraper-hv-child"})
+     * @Groups({"napi:hv:post", "napi:hv:put", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv", "scraper-hv-child"})
      * @SerializedName("id")
      */
     private $nId;
@@ -111,6 +111,8 @@ class Ciudad
 
         return $this;
     }
+
+
 
     public function getNPaisId(): ?string
     {
