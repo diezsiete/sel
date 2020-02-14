@@ -22,7 +22,7 @@ class Referencia implements HvEntity
     /**
      * @ORM\Column(type="smallint")
      * @Assert\NotNull(message="Ingrese el tipo de referencia")
-     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:referencia:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
      */
     private $tipo;
 
@@ -33,7 +33,7 @@ class Referencia implements HvEntity
      *      max = 200,
      *      maxMessage = "El nombre supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:referencia:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
      */
     private $nombre;
 
@@ -44,7 +44,7 @@ class Referencia implements HvEntity
      *      max = 200,
      *      maxMessage = "La ocupación supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:referencia:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
      */
     private $ocupacion;
 
@@ -55,7 +55,7 @@ class Referencia implements HvEntity
      *      max = 50,
      *      maxMessage = "El parentesco supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:referencia:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
      */
     private $parentesco;
 
@@ -67,7 +67,7 @@ class Referencia implements HvEntity
      *      max = 50,
      *      maxMessage = "El celular supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:referencia:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
      */
     private $celular;
 
@@ -79,7 +79,7 @@ class Referencia implements HvEntity
      *      max = 50,
      *      maxMessage = "El telefono supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:referencia:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
      */
     private $telefono;
 
@@ -89,7 +89,7 @@ class Referencia implements HvEntity
      *      max = 50,
      *      maxMessage = "La dirección supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:referencia:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
      */
     private $direccion;
 
@@ -99,14 +99,14 @@ class Referencia implements HvEntity
      *      max = 200,
      *      maxMessage = "Nombre supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:referencia:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
      */
     private $entidad;
 
     /**
      * @ORM\ManyToOne(targetEntity="Hv", inversedBy="referencias")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups("napi:hv-child:post")
+     * @Groups({"napi:hv-child:post", "messenger:hv-child:put"})
      * @var Hv
      */
     protected $hv;
@@ -141,7 +141,6 @@ class Referencia implements HvEntity
     public function setTipo($tipo): self
     {
         $this->tipo = $tipo;
-
         return $this;
     }
 
@@ -243,6 +242,6 @@ class Referencia implements HvEntity
 
     public function getNapiId(): string
     {
-        // TODO: Implement getNapiId() method.
+        return "hv={$this->hv->getNapiId()};tipo={$this->tipo}";
     }
 }

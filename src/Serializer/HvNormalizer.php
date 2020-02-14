@@ -14,8 +14,10 @@ class HvNormalizer extends HvEntityNormalizer implements NormalizerInterface
     public function normalize($object, $format = null, array $context = [])
     {
         $data = parent::normalize($object, $format, $context);
-        $data += $data['usuario'];
-        unset($data['usuario']);
+        if(isset($data['usuario'])) {
+            $data += $data['usuario'];
+            unset($data['usuario']);
+        }
         return $data;
     }
 

@@ -255,7 +255,7 @@ class Hv implements HvEntity
 
     /**
      * @ORM\OneToMany(targetEntity="Referencia", mappedBy="hv", orphanRemoval=true)
-     * @Groups({"napi:hv:post", "scraper", "referencias"})
+     * @Groups({"napi:hv:post", "napi:referencia:post", "scraper", "referencias"})
      */
     private $referencias;
 

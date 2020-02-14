@@ -87,5 +87,22 @@ class HvClient extends NovasoftApiClient
         return $this->sendDelete("/{$this->symbol->toSnakeCase($childClass, '-')}/{$napiId}");
     }
 
+    public function saveReferencias(HvEntity $hvEntity)
+    {
+        $hv = $hvEntity->getHv();
+        if($hv && $hv->getUsuario()) {
+            $hvNormalized = $this->normalizer->normalize($hvEntity->getHv(), null, ['groups' => ['napi:referencia:post']]);
+            return $this->sendPut("/hv/{$hv->getUsuario()->getIdentificacion()}", $hvNormalized);
+        }
+        return null;
+    }
 
+    public function deleteReferencias(HvEntity $hvEntity)
+    {
+        $hv = $hvEntity->getHv();
+        if($hv && $hv->getUsuario()) {
+            return $this->sendPut("/hv/{$hv->getUsuario()->getIdentificacion()}", ['referencias' => []]);
+        }
+        return null;
+    }
 }
