@@ -6,24 +6,29 @@ namespace App\Message\Novasoft\Api;
 
 class UpdateHvChildInNovasoft
 {
-    private $childId;
+    /**
+     * @var array
+     */
+    private $childNormalized;
     /**
      * @var string
      */
     private $childClass;
+    private $hvId;
 
-    public function __construct($childId, string $childClass)
+    public function __construct(array $childNormalized, string $childClass, $hvId)
     {
-        $this->childId = $childId;
+        $this->childNormalized = $childNormalized;
         $this->childClass = $childClass;
+        $this->hvId = $hvId;
     }
 
     /**
-     * @return mixed
+     * @return array
      */
-    public function getChildId()
+    public function getChildNormalized(): array
     {
-        return $this->childId;
+        return $this->childNormalized;
     }
 
     /**
@@ -32,5 +37,13 @@ class UpdateHvChildInNovasoft
     public function getChildClass(): string
     {
         return $this->childClass;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getHvId()
+    {
+        return $this->hvId;
     }
 }

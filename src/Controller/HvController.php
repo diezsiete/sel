@@ -179,8 +179,9 @@ class HvController extends BaseController
             throw new BadRequestHttpException('Invalid JSON');
         }
         $entityId = $entity->getId();
-
-        $entity->setHv($hvResolver->getHv());
+        /** @var Hv $hv */
+        $hv = $hvResolver->getHv();
+        $entity->setHv($hv);
         
         $form = $this->createForm($formType, $entity);
         $form->submit($data);
@@ -197,7 +198,10 @@ class HvController extends BaseController
 
         // si el usuario ya esta registrado
         if($entity->getHv()->getUsuario()) {
-            $hvClient->putChild($entity);
+            //$hvClient->putChild($entity);
+            //dump(json_encode($hvClient->postChild($entity)));
+//            $napiMessenger->insertChild($entity, $hv);
+            $napiMessenger->updateChild($entity, $hv);
 //            $entityId
 //                ? $napiMessenger->updateChild($entity)
 //                : $napiMessenger->insertChild($entity);

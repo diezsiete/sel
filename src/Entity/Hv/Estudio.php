@@ -34,6 +34,12 @@ class Estudio implements HvEntity
     private $codigo;
 
     /**
+     * @var EstudioCodigo
+     * @Groups("messenger:hv-child:put")
+     */
+    private $codigoPrev;
+
+    /**
      * @ORM\Column(type="string", length=50)
      * @Assert\NotNull(message="Ingrese nombre del estudio")
      * @Assert\Length(
@@ -52,6 +58,12 @@ class Estudio implements HvEntity
      * @var EstudioInstituto
      */
     private $instituto;
+
+    /**
+     * @var EstudioInstituto
+     * @Groups("messenger:hv-child:put")
+     */
+    private $institutoPrev;
 
     /**
      * @ORM\Column(type="date", nullable=true)
@@ -104,7 +116,7 @@ class Estudio implements HvEntity
     /**
      * @ORM\ManyToOne(targetEntity="Hv", inversedBy="estudios")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups("napi:hv-child:post")
+     * @Groups({"napi:hv-child:post", "napi:hv-child:put"})
      * @var Hv
      */
     protected $hv;
@@ -133,8 +145,19 @@ class Estudio implements HvEntity
 
     public function setCodigo(?EstudioCodigo $codigo): self
     {
+        $this->codigoPrev = $this->codigo;
         $this->codigo = $codigo;
+        return $this;
+    }
 
+    public function getCodigoPrev(): ?EstudioCodigo
+    {
+        return $this->codigoPrev;
+    }
+
+    public function setCodigoPrev(EstudioCodigo $codigoPrev): Estudio
+    {
+        $this->codigoPrev = $codigoPrev;
         return $this;
     }
 
@@ -161,8 +184,20 @@ class Estudio implements HvEntity
 
     public function setInstituto(?EstudioInstituto $instituto): self
     {
+        $this->institutoPrev = $this->instituto;
         $this->instituto = $instituto;
+        return $this;
+    }
 
+
+    public function getInstitutoPrev(): ?EstudioInstituto
+    {
+        return $this->institutoPrev;
+    }
+
+    public function setInstitutoPrev(EstudioInstituto $institutoPrev): Estudio
+    {
+        $this->institutoPrev = $institutoPrev;
         return $this;
     }
 
@@ -264,8 +299,8 @@ class Estudio implements HvEntity
 
     public function getNapiId(): string
     {
-        return "hv={$this->hv->getNapiId()};"
-            . "codigo={$this->codigo->getId()};"
-            . "instituto={$this->instituto->getId()}";
+        $codigo = $this->codigoPrev ?? $this->codigo;
+        $instituto = $this->institutoPrev ?? $this->instituto;
+        return "hv={$this->hv->getNapiId()};codigo={$codigo->getId()};instituto={$instituto->getId()}";
     }
 }

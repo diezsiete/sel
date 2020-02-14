@@ -22,12 +22,13 @@ class Hv implements HvEntity
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups("messenger:hv-child:put")
      */
     private $id;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Main\Usuario", cascade={"persist", "remove"})
-     * @Groups({"napi:hv:post", "napi:hv:put", "napi:hv-child:post", "scraper", "scraper-hv", "scraper-hv-child"})
+     * @Groups({"napi:hv:post", "napi:hv:put", "napi:hv-child:post", "messenger:hv-child:put", "scraper", "scraper-hv", "scraper-hv-child"})
      * @var Usuario
      */
     private $usuario;

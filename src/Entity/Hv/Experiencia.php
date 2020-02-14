@@ -39,6 +39,7 @@ class Experiencia implements HvEntity
 
     /**
      * @var string
+     * @Groups("messenger:hv-child:put")
      */
     private $empresaPrev;
 
@@ -55,6 +56,7 @@ class Experiencia implements HvEntity
 
     /**
      * @var string
+     * @Groups("messenger:hv-child:put")
      */
     private $cargoPrev;
 
@@ -141,7 +143,7 @@ class Experiencia implements HvEntity
     /**
      * @ORM\ManyToOne(targetEntity="Hv", inversedBy="experiencia")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups("napi:hv-child:post")
+     * @Groups({"napi:hv-child:post", "messenger:hv-child:put"})
      * @var Hv
      */
     protected $hv;
@@ -163,7 +165,6 @@ class Experiencia implements HvEntity
         return $this;
     }
 
-
     public function getEmpresa(): ?string
     {
         return $this->empresa;
@@ -176,6 +177,17 @@ class Experiencia implements HvEntity
         return $this;
     }
 
+    public function getEmpresaPrev(): ?string
+    {
+        return $this->empresaPrev;
+    }
+
+    public function setEmpresaPrev(string $empresaPrev): Experiencia
+    {
+        $this->empresaPrev = $empresaPrev;
+        return $this;
+    }
+
     public function getCargo(): ?string
     {
         return $this->cargo;
@@ -185,6 +197,17 @@ class Experiencia implements HvEntity
     {
         $this->cargoPrev = $this->cargo;
         $this->cargo = $cargo;
+        return $this;
+    }
+
+    public function getCargoPrev(): ?string
+    {
+        return $this->cargoPrev;
+    }
+
+    public function setCargoPrev(string $cargoPrev): Experiencia
+    {
+        $this->cargoPrev = $cargoPrev;
         return $this;
     }
 

@@ -8,38 +8,37 @@ use App\Entity\Hv\HvEntity;
 use App\Exception\Novasoft\Api\NotFoundException;
 use App\Message\Novasoft\Api\UpdateHvChildInNovasoft;
 use App\Service\Novasoft\Api\Client\HvClient;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 class UpdateHvChildInNovasoftHandler implements MessageHandlerInterface
 {
     /**
-     * @var EntityManagerInterface
-     */
-    private $em;
-    /**
      * @var HvClient
      */
     private $client;
+    /**
+     * @var DenormalizerInterface
+     */
+    private $denormalizer;
 
-    public function __construct(EntityManagerInterface $em, HvClient $client)
+    public function __construct(HvClient $client, DenormalizerInterface $denormalizer)
     {
-        $this->em = $em;
         $this->client = $client;
+        $this->denormalizer = $denormalizer;
     }
 
     public function __invoke(UpdateHvChildInNovasoft $message)
     {
-        $this->em->clear();
-        /** @var HvEntity $hvEntity */
-        $hvEntity = $this->em->getRepository($message->getChildClass())->find($message->getChildId());
-        if($hvEntity) {
-            try {
-                $this->client->putChild($hvEntity);
-            } catch(NotFoundException $e) {
-                $this->client->postChild($hvEntity);
-            }
 
+        /** @var HvEntity $hvEntity */
+        $hvEntity = $this->denormalizer->denormalize(
+            $message->getChildNormalized(), $message->getChildClass(), null, ['groups' => ['messenger:hv-child:put', 'napi:hv-child:put']]
+        );
+        try {
+            $this->client->putChild($hvEntity);
+        } catch(NotFoundException $e) {
+            $this->client->postChild($hvEntity);
         }
     }
 }

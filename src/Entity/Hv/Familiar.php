@@ -36,6 +36,12 @@ class Familiar implements HvEntity
     private $primerApellido;
 
     /**
+     * @var string
+     * @Groups("messenger:hv-child:put")
+     */
+    private $primerApellidoPrev;
+
+    /**
      * @ORM\Column(type="string", length=15, nullable=true)
      * @Assert\Length(
      *      max = 15,
@@ -55,6 +61,12 @@ class Familiar implements HvEntity
      * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
      */
     private $nombre;
+
+    /**
+     * @var string
+     * @Groups("messenger:hv-child:put")
+     */
+    private $nombrePrev;
 
     /**
      * @ORM\Column(type="date", nullable=true)
@@ -118,7 +130,7 @@ class Familiar implements HvEntity
     /**
      * @ORM\ManyToOne(targetEntity="Hv", inversedBy="familiares")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups("napi:hv-child:post")
+     * @Groups({"napi:hv-child:post", "messenger:hv-child:put"})
      * @var Hv
      */
     protected $hv;
@@ -140,7 +152,6 @@ class Familiar implements HvEntity
         return $this;
     }
 
-
     public function getPrimerApellido(): ?string
     {
         return $this->primerApellido;
@@ -148,8 +159,23 @@ class Familiar implements HvEntity
 
     public function setPrimerApellido(?string $primerApellido): self
     {
+        $this->primerApellidoPrev = $this->primerApellido;
         $this->primerApellido = $primerApellido;
+        return $this;
+    }
 
+    public function getPrimerApellidoPrev(): ?string
+    {
+        return $this->primerApellidoPrev;
+    }
+
+    /**
+     * @param string $primerApellidoPrev
+     * @return Familiar
+     */
+    public function setPrimerApellidoPrev(string $primerApellidoPrev): Familiar
+    {
+        $this->primerApellidoPrev = $primerApellidoPrev;
         return $this;
     }
 
@@ -161,7 +187,6 @@ class Familiar implements HvEntity
     public function setSegundoApellido(?string $segundoApellido): self
     {
         $this->segundoApellido = $segundoApellido;
-
         return $this;
     }
 
@@ -170,10 +195,26 @@ class Familiar implements HvEntity
         return $this->nombre;
     }
 
+
     public function setNombre(?string $nombre): self
     {
+        $this->nombrePrev = $this->nombre;
         $this->nombre = $nombre;
+        return $this;
+    }
 
+    public function getNombrePrev(): ?string
+    {
+        return $this->nombrePrev;
+    }
+
+    /**
+     * @param string $nombrePrev
+     * @return Familiar
+     */
+    public function setNombrePrev(string $nombrePrev): Familiar
+    {
+        $this->nombrePrev = $nombrePrev;
         return $this;
     }
 
@@ -275,6 +316,8 @@ class Familiar implements HvEntity
 
     public function getNapiId(): string
     {
-        // TODO: Implement getNapiId() method.
+        $primerApellido = $this->primerApellidoPrev ?? $this->primerApellido;
+        $nombre = $this->nombrePrev ?? $this->nombre;
+        return "hv={$this->hv->getNapiId()};primerApellido=$primerApellido;nombre=$nombre";
     }
 }

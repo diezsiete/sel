@@ -9,6 +9,7 @@ use App\Message\Novasoft\Api\InsertHvInNovasoft;
 use App\Message\Novasoft\Api\UpdateHvChildInNovasoft;
 use App\Message\Novasoft\Api\UpdateHvInNovasoft;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -22,10 +23,20 @@ class NovasoftApiMessenger
      * @var MessageBusInterface
      */
     private $messageBus;
+    /**
+     * @var NormalizerInterface
+     */
+    private $normalizer;
+    /**
+     * @var DenormalizerInterface
+     */
+    private $denormalizer;
 
-    public function __construct(MessageBusInterface $messageBus)
+    public function __construct(MessageBusInterface $messageBus, NormalizerInterface $normalizer, DenormalizerInterface $denormalizer)
     {
         $this->messageBus = $messageBus;
+        $this->normalizer = $normalizer;
+        $this->denormalizer = $denormalizer;
     }
 
     public function insert(Hv $hv)
@@ -38,14 +49,15 @@ class NovasoftApiMessenger
         $this->messageBus->dispatch(new UpdateHvInNovasoft($hv->getId()));
     }
 
-    public function insertChild(HvEntity $entity)
+    public function insertChild(HvEntity $entity, Hv $hv)
     {
-        $this->messageBus->dispatch(new InsertHvChildInNovasoft($entity->getId(), get_class($entity)));
+        $this->messageBus->dispatch(new InsertHvChildInNovasoft($entity->getId(), get_class($entity), $hv->getId()));
     }
 
-    public function updateChild(HvEntity $entity)
+    public function updateChild(HvEntity $entity, Hv $hv)
     {
-        $this->messageBus->dispatch(new UpdateHvChildInNovasoft($entity, get_class($entity)));
+        $childNormalized = $this->normalizer->normalize($entity, null, ['groups' => ['messenger:hv-child:put', 'napi:hv-child:put']]);
+        $this->messageBus->dispatch(new UpdateHvChildInNovasoft($childNormalized, get_class($entity), $hv->getId()));
     }
 
     public function deleteChild(HvEntity $entity, Hv $hv)
