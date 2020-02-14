@@ -198,8 +198,7 @@ class HvController extends BaseController
 
         // si el usuario ya esta registrado
         if($entity->getHv()->getUsuario()) {
-            //$hvClient->putChild($entity);
-            //dump(json_encode($hvClient->postChild($entity)));
+//            dump(json_encode($hvClient->postChild($entity)));
 //            $napiMessenger->insertChild($entity, $hv);
             $napiMessenger->updateChild($entity, $hv);
 //            $entityId
