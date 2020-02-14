@@ -7,7 +7,8 @@ namespace App\Service\Novasoft\Api\Importer;
 use App\Entity\Main\Empleado;
 use App\Entity\Main\Usuario;
 use App\Repository\Main\ConvenioRepository;
-use App\Service\Novasoft\Api\NovasoftApiClient;
+use App\Service\Novasoft\Api\Client\EmpleadoClient;
+use App\Service\Novasoft\Api\Client\NovasoftApiClient;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -15,7 +16,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class EmpleadoImporter
 {
     /**
-     * @var NovasoftApiClient
+     * @var \App\Service\Novasoft\Api\Client\NovasoftApiClient
      */
     private $client;
     /**
@@ -31,7 +32,7 @@ class EmpleadoImporter
      */
     private $em;
 
-    public function __construct(NovasoftApiClient $client, ConvenioRepository $convenioRepo,
+    public function __construct(EmpleadoClient $client, ConvenioRepository $convenioRepo,
                                 UserPasswordEncoderInterface $passwordEncoder, EntityManagerInterface $em)
     {
         $this->client = $client;
@@ -46,7 +47,7 @@ class EmpleadoImporter
      */
     public function import($identificacion)
     {
-        $empleadoSqlsrv = $this->client->empleado($identificacion);
+        $empleadoSqlsrv = $this->client->get($identificacion);
 
 
         //TODO por ahora se hace manual la conversion, la idea es que sea automatica con serializer

@@ -27,7 +27,7 @@ class RedSocial implements HvEntity
     /**
      * @ORM\Column(type="integer")
      * @Assert\NotNull(message="Ingrese tipo de red social")
-     * @Groups({"main", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
      */
     private $tipo;
 
@@ -38,13 +38,15 @@ class RedSocial implements HvEntity
      *      max = 100,
      *      maxMessage = "La cuenta supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"main", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
      */
     private $cuenta;
 
     /**
      * @ORM\ManyToOne(targetEntity="Hv", inversedBy="redesSociales")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("napi:hv-child:post")
+     * @var Hv
      */
     protected $hv;
 
@@ -87,5 +89,10 @@ class RedSocial implements HvEntity
         $this->cuenta = $cuenta;
 
         return $this;
+    }
+
+    public function getNapiId(): string
+    {
+        // TODO: Implement getNapiId() method.
     }
 }

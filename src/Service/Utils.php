@@ -177,6 +177,7 @@ class Utils
      * @param $input
      * @param string $glue
      * @return string
+     * @deprecated usar nuevos utils varchar o symbol segun el caso
      */
     function fromCamelCase($input, $glue = "_") {
         preg_match_all('!([A-Z][A-Z0-9]*(?=$|[A-Z][a-z0-9])|[A-Za-z][a-z0-9]+)!', $input, $matches);

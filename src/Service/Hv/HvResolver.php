@@ -75,4 +75,9 @@ class HvResolver implements HvEntity
     {
         $this->usuario = $usuario;
     }
+
+    public function getNapiId(): string
+    {
+        return '';
+    }
 }

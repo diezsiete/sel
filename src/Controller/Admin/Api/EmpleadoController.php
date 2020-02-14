@@ -9,7 +9,7 @@ use App\Entity\Main\Empleado;
 use App\Entity\Main\Usuario;
 use App\Repository\Main\ConvenioRepository;
 use App\Service\Novasoft\Api\Importer\EmpleadoImporter;
-use App\Service\Novasoft\Api\NovasoftApiClient;
+use App\Service\Novasoft\Api\Client\NovasoftApiClient;
 use Symfony\Component\Routing\Annotation\Route;
 
 class EmpleadoController extends BaseController

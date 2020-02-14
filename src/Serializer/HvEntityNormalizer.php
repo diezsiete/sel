@@ -125,6 +125,10 @@ class HvEntityNormalizer implements NormalizerInterface
         if(is_array($data)) {
             if(count($data) === 1) {
                 $data = $data[array_key_first($data)];
+                // napi:hv-child:post hv => num ident
+                if(is_array($data) && count($data) === 1) {
+                    $data = $data[array_key_first($data)];
+                }
             } else {
                 $data = $data ? $data : null;
             }

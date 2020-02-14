@@ -101,4 +101,9 @@ class Adjunto implements HvEntity
     {
         return UploaderHelper::HV_ADJUNTO . '/' . $this->getFilename();
     }
+
+    public function getNapiId(): string
+    {
+        return '';
+    }
 }

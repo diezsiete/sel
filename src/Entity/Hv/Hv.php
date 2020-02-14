@@ -27,7 +27,8 @@ class Hv implements HvEntity
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Main\Usuario", cascade={"persist", "remove"})
-     * @Groups({"scraper", "scraper-hv", "scraper-hv-child"})
+     * @Groups({"napi:hv:post", "napi:hv:put", "napi:hv-child:post", "scraper", "scraper-hv", "scraper-hv-child"})
+     * @var Usuario
      */
     private $usuario;
 
@@ -35,19 +36,19 @@ class Hv implements HvEntity
      * @ORM\ManyToOne(targetEntity="App\Entity\Main\Pais")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotNull(message="Ingrese pais de nacimiento")
-     * @Groups({"scraper", "scraper-hv"})
+     * @Groups({"napi:hv:post", "napi:hv:put", "scraper", "scraper-hv"})
      */
     private $nacPais;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Main\Dpto")
-     * @Groups({"scraper", "scraper-hv"})
+     * @Groups({"napi:hv:post", "napi:hv:put", "scraper", "scraper-hv"})
      */
     private $nacDpto;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Main\Ciudad")
-     * @Groups({"scraper", "scraper-hv"})
+     * @Groups({"napi:hv:post", "napi:hv:put", "scraper", "scraper-hv"})
      */
     private $nacCiudad;
 
@@ -55,89 +56,89 @@ class Hv implements HvEntity
      * @ORM\ManyToOne(targetEntity="App\Entity\Main\Pais")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotNull(message="Ingrese pais de identificación")
-     * @Groups({"scraper", "scraper-hv"})
+     * @Groups({"napi:hv:post", "napi:hv:put", "scraper", "scraper-hv"})
      */
     private $identPais;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Main\Dpto")
-     * @Groups({"scraper", "scraper-hv"})
+     * @Groups({"napi:hv:post", "napi:hv:put", "scraper", "scraper-hv"})
      */
     private $identDpto;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Main\Ciudad")
-     * @Groups({"scraper", "scraper-hv"})
+     * @Groups({"napi:hv:post", "napi:hv:put", "scraper", "scraper-hv"})
      */
     private $identCiudad;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"scraper", "scraper-hv"})
+     * @Groups({"napi:hv:post", "napi:hv:put", "scraper", "scraper-hv"})
      */
     private $genero;
 
     /**
      * @ORM\Column(type="smallint")
-     * @Groups({"scraper", "scraper-hv"})
+     * @Groups({"napi:hv:post", "napi:hv:put", "scraper", "scraper-hv"})
      */
     private $estadoCivil;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Main\Pais")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"scraper", "scraper-hv"})
+     * @Groups({"napi:hv:post", "napi:hv:put", "scraper", "scraper-hv"})
      */
     private $resiPais;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Main\Dpto")
-     * @Groups({"scraper", "scraper-hv"})
+     * @Groups({"napi:hv:post", "napi:hv:put", "scraper", "scraper-hv"})
      */
     private $resiDpto;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Main\Ciudad")
-     * @Groups({"scraper", "scraper-hv"})
+     * @Groups({"napi:hv:post", "napi:hv:put", "scraper", "scraper-hv"})
      */
     private $resiCiudad;
 
     /**
      * @ORM\Column(type="string", length=45, nullable=true)
      * @Assert\NotNull(message="Ingrese barrio")
-     * @Groups({"scraper", "scraper-hv"})
+     * @Groups({"napi:hv:post", "napi:hv:put", "scraper", "scraper-hv"})
      */
     private $barrio;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
      * @Assert\NotNull(message="Ingrese dirección")
-     * @Groups({"scraper", "scraper-hv"})
+     * @Groups({"napi:hv:post", "napi:hv:put", "scraper", "scraper-hv"})
      */
     private $direccion;
 
     /**
      * @ORM\Column(type="string", length=3)
-     * @Groups({"scraper", "scraper-hv"})
+     * @Groups({"napi:hv:post", "napi:hv:put", "scraper", "scraper-hv"})
      */
     private $grupoSanguineo;
 
     /**
      * @ORM\Column(type="string", length=1)
-     * @Groups({"scraper", "scraper-hv"})
+     * @Groups({"napi:hv:post", "napi:hv:put", "scraper", "scraper-hv"})
      */
     private $factorRh;
 
     /**
      * @ORM\Column(type="smallint")
-     * @Groups({"scraper", "scraper-hv"})
+     * @Groups({"napi:hv:post", "napi:hv:put", "scraper", "scraper-hv"})
      */
     private $nacionalidad;
 
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
      * @Assert\Email(message="Ingrese un email valido")
-     * @Groups({"scraper", "scraper-hv"})
+     * @Groups({"napi:hv:post", "napi:hv:put", "scraper", "scraper-hv"})
      */
     private $emailAlt;
 
@@ -163,13 +164,13 @@ class Hv implements HvEntity
 
     /**
      * @ORM\Column(type="string", length=2)
-     * @Groups({"scraper", "scraper-hv"})
+     * @Groups({"napi:hv:post", "napi:hv:put", "scraper", "scraper-hv"})
      */
     private $identificacionTipo;
 
     /**
      * @ORM\Column(type="date", nullable=true)
-     * @Groups({"scraper", "scraper-hv"})
+     * @Groups({"napi:hv:post", "napi:hv:put", "scraper", "scraper-hv"})
      */
     private $nacimiento;
 
@@ -205,61 +206,61 @@ class Hv implements HvEntity
 
     /**
      * @ORM\Column(type="string", length=3)
-     * @Groups({"scraper", "scraper-hv"})
+     * @Groups({"napi:hv:post", "napi:hv:put", "scraper", "scraper-hv"})
      */
     private $nivelAcademico;
 
     /**
      * @ORM\Column(type="string", length=17, nullable=true)
-     * @Groups({"scraper", "scraper-hv"})
+     * @Groups({"napi:hv:post", "napi:hv:put", "scraper", "scraper-hv"})
      */
     private $telefono;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
-     * @Groups({"scraper", "scraper-hv"})
+     * @Groups({"napi:hv:post", "napi:hv:put", "scraper", "scraper-hv"})
      */
     private $celular;
 
     /**
      * @ORM\OneToMany(targetEntity="Estudio", mappedBy="hv", orphanRemoval=true)
-     * @Groups({"scraper", "estudios"})
+     * @Groups({"napi:hv:post", "scraper", "estudios"})
      */
     private $estudios;
 
     /**
      * @ORM\OneToMany(targetEntity="Experiencia", mappedBy="hv", orphanRemoval=true)
-     * @Groups({"scraper", "experiencia"})
+     * @Groups({"napi:hv:post", "scraper", "experiencia"})
      */
     private $experiencia;
 
     /**
      * @ORM\OneToMany(targetEntity="Familiar", mappedBy="hv", orphanRemoval=true)
-     * @Groups({"scraper", "familiares"})
+     * @Groups({"napi:hv:post", "scraper", "familiares"})
      */
     private $familiares;
 
     /**
      * @ORM\OneToMany(targetEntity="Idioma", mappedBy="hv", orphanRemoval=true)
-     * @Groups({"scraper", "idiomas"})
+     * @Groups({"napi:hv:post", "scraper", "idiomas"})
      */
     private $idiomas;
 
     /**
      * @ORM\OneToMany(targetEntity="RedSocial", mappedBy="hv", orphanRemoval=true)
-     * @Groups({"scraper", "redesSociales"})
+     * @Groups({"napi:hv:post", "scraper", "redesSociales"})
      */
     private $redesSociales;
 
     /**
      * @ORM\OneToMany(targetEntity="Referencia", mappedBy="hv", orphanRemoval=true)
-     * @Groups({"scraper", "referencias"})
+     * @Groups({"napi:hv:post", "scraper", "referencias"})
      */
     private $referencias;
 
     /**
      * @ORM\OneToMany(targetEntity="Vivienda", mappedBy="hv", orphanRemoval=true)
-     * @Groups({"scraper", "viviendas"})
+     * @Groups({"napi:hv:post", "scraper", "viviendas"})
      */
     private $viviendas;
 
@@ -974,5 +975,10 @@ class Hv implements HvEntity
         }
 
         return $this;
+    }
+
+    public function getNapiId(): string
+    {
+        return $this->usuario->getIdentificacion();
     }
 }

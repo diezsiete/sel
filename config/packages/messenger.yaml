@@ -26,10 +26,16 @@ framework:
             sync: 'sync://'
 
         routing:
-            # Route your messages to the transports
+            App\Message\Novasoft\Api\InsertHvInNovasoft: async
+            App\Message\Novasoft\Api\UpdateHvInNovasoft: async
+            App\Message\Novasoft\Api\InsertHvChildInNovasoft: async
+            App\Message\Novasoft\Api\UpdateHvChildInNovasoft: async
+            App\Message\Novasoft\Api\DeleteHvChildInNovasoft: async
+
+            'App\Message\Scraper\GenerateAutoliquidacion': async
+            'App\Message\Scraper\DownloadAutoliquidacion': async2
+
             'App\Message\Scraper\UpdateHvDatosBasicosInNovasoft': async
             'App\Message\Scraper\InsertHvInNovasoft': async
             'App\Message\Scraper\InsertHvChildInNovasoft': async
             'App\Message\Scraper\UpdateHvChildsInNovasoft': async
-            'App\Message\Scraper\GenerateAutoliquidacion': async
-            'App\Message\Scraper\DownloadAutoliquidacion': async2

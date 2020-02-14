@@ -41,12 +41,12 @@ class Representante
     /**
      * @ORM\Column(type="boolean")
      */
-    private $encargado = false;
+    private $encargado = null;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $bcc = false;
+    private $bcc = null;
 
     /**
      * @ORM\Column(type="boolean")
@@ -111,10 +111,11 @@ class Representante
         return $this->encargado;
     }
 
-    public function setEncargado(bool $encargado): self
+    public function setEncargado($encargado): self
     {
         $this->encargado = $encargado;
         $this->bcc = !$this->encargado;
+
         return $this;
     }
 

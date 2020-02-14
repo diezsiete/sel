@@ -23,6 +23,8 @@ use App\Form\RedSocialFormType;
 use App\Form\ReferenciaFormType;
 use App\Form\ViviendaFormType;
 use App\Service\Hv\HvResolver;
+use App\Service\Novasoft\Api\Client\HvClient;
+use App\Service\Novasoft\Api\NovasoftApiMessenger;
 use App\Service\Scraper\ScraperMessenger;
 use Omines\DataTablesBundle\DataTableFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -50,7 +52,7 @@ class HvController extends BaseController
      * @Route("/sel/hv/datos-basicos", name="hv_datos_basicos")
      * @IsGranted("HV_MANAGE", subject="hvResolver")
      */
-    public function datosBasicos(Request $request, HvResolver $hvResolver, ScraperMessenger $scraperMessenger)
+    public function datosBasicos(Request $request, HvResolver $hvResolver, NovasoftApiMessenger $napiMessenger)
     {
         $hvdto = (new HvDatosBasicosModel())
             ->fillFromEntities($this->getUser(), $hvResolver->getHv());
@@ -73,8 +75,7 @@ class HvController extends BaseController
 
             // si el usuario ya esta registrado
             if($hv->getUsuario()) {
-                // $scraperMessenger->insertToNovasoft($hv);
-                $scraperMessenger->updateDatosBasicos($hv);
+                $napiMessenger->update($hv);
             }
 
             $this->addFlash('success', "Datos guardados exitosamente");
@@ -170,14 +171,15 @@ class HvController extends BaseController
      * @Route("/hv/entity/update/{entity}/{id}", name="hv_entity_update", defaults={"id"=null})
      * @IsGranted("HV_MANAGE", subject="entity")
      */
-    public function entityUpdate(HvEntity $entity, Request $request, HvResolver $hvResolver, $formType, ScraperMessenger $scraperMessenger)
+    public function entityUpdate(HvEntity $entity, Request $request, HvResolver $hvResolver, $formType,
+                                 HvClient $hvClient, NovasoftApiMessenger $napiMessenger)
     {
         $data = json_decode($request->getContent(), true);
         if ($data === null) {
             throw new BadRequestHttpException('Invalid JSON');
         }
         $entityId = $entity->getId();
-        
+
         $entity->setHv($hvResolver->getHv());
         
         $form = $this->createForm($formType, $entity);
@@ -188,16 +190,17 @@ class HvController extends BaseController
 
         /** @var HvEntity $entity */
         $entity = $form->getData();
-        
+
         $em = $this->getDoctrine()->getManager();
         $em->persist($entity);
         $em->flush();
 
         // si el usuario ya esta registrado
         if($entity->getHv()->getUsuario()) {
-            $entityId
-                ? $scraperMessenger->updateChild($entity->getHv(), get_class($entity))
-                : $scraperMessenger->insertChild($entity);
+            $hvClient->putChild($entity);
+//            $entityId
+//                ? $napiMessenger->updateChild($entity)
+//                : $napiMessenger->insertChild($entity);
         }
 
         return $this->json(['ok' => 1]);
@@ -207,7 +210,7 @@ class HvController extends BaseController
      * @Route("/hv/entity/delete/{entity}/{id}", name="hv_entity_delete")
      * @IsGranted("HV_MANAGE", subject="entity")
      */
-    public function entityDelete(HvEntity $entity, ScraperMessenger $scraperMessenger)
+    public function entityDelete(HvEntity $entity,  HvClient $hvClient, NovasoftApiMessenger $napiMessenger)
     {
         $childClass = get_class($entity);
         $hv = $entity->getHv();
@@ -217,9 +220,8 @@ class HvController extends BaseController
         $em->flush();
 
         // si el usuario ya esta registrado
-        if($hv->getUsuario()) {
-            $scraperMessenger->updateChild($hv, $childClass);
-            // $scraperMessenger->deleteChild($hv, $childClass);
+        if($hv && $hv->getUsuario()) {
+            $napiMessenger->deleteChild($entity, $hv);
         }
 
         return $this->json(['ok' => 1]);

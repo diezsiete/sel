@@ -1,12 +1,12 @@
 ---
-#- name: Install node dependencies
-#  yarn:
-#    path: "{{ ansistrano_release_path.stdout }}"
-
 - name: Install node dependencies
-  command: /usr/local/sbin/yarn install
-  args:
-    chdir: "{{ ansistrano_release_path.stdout }}"
+  yarn:
+    path: "{{ ansistrano_release_path.stdout }}"
+
+#- name: Install node dependencies
+#  command: /usr/local/sbin/yarn install
+#  args:
+#    chdir: "{{ ansistrano_release_path.stdout }}"
 
 - name: Install webpack encore assets
   command: /usr/local/sbin/yarn build

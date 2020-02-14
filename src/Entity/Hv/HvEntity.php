@@ -8,4 +8,6 @@ interface HvEntity
     public function getId(): ?int;
 
     public function getHv(): ?Hv;
+
+    public function getNapiId() : string;
 }

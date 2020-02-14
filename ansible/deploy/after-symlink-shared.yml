@@ -4,7 +4,6 @@
 
 - name: Remote webpack
   include: "{{ playbook_dir }}/include/remote-webpack.yml"
-  when: webpack is defined
 
 - name: Extract images
   unarchive:

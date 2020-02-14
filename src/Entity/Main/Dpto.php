@@ -40,7 +40,7 @@ class Dpto
 
     /**
      * @ORM\Column(type="string", length=2, nullable=true)
-     * @Groups({"scraper", "scraper-hv", "scraper-hv-child"})
+     * @Groups({"napi:hv:post", "napi:hv:put", "nap:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv", "scraper-hv-child"})
      * @SerializedName("id")
      */
     private $nId;

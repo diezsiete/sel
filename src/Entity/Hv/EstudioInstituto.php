@@ -13,7 +13,7 @@ class EstudioInstituto
     /**
      * @ORM\Id()
      * @ORM\Column(type="string", length=10)
-     * @Groups({"main", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "napi:hv-child:delete", "scraper", "scraper-hv-child"})
      */
     private $id;
 

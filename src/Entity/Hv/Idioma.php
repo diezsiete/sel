@@ -27,20 +27,22 @@ class Idioma implements HvEntity
     /**
      * @ORM\Column(type="string", length=3)
      * @Assert\NotNull(message="Ingrese idioma")
-     * @Groups({"main", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
      */
     private $idiomaCodigo;
 
     /**
      * @ORM\Column(type="string", length=2)
      * @Assert\NotNull(message="Ingrese nivel destreza")
-     * @Groups({"main", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
      */
     private $destreza;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Hv\Hv", inversedBy="idiomas")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("napi:hv-child:post")
+     * @var Hv
      */
     protected $hv;
 
@@ -83,5 +85,10 @@ class Idioma implements HvEntity
         $this->destreza = $destreza;
 
         return $this;
+    }
+
+    public function getNapiId(): string
+    {
+        // TODO: Implement getNapiId() method.
     }
 }

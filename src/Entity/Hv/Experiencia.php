@@ -33,9 +33,14 @@ class Experiencia implements HvEntity
      *      max = 150,
      *      maxMessage = "Nombre de la empresa supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"main", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
      */
     private $empresa;
+
+    /**
+     * @var string
+     */
+    private $empresaPrev;
 
     /**
      * @ORM\Column(type="string", length=45)
@@ -44,41 +49,46 @@ class Experiencia implements HvEntity
      *      max = 45,
      *      maxMessage = "El cargo supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"main", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
      */
     private $cargo;
+
+    /**
+     * @var string
+     */
+    private $cargoPrev;
 
     /**
      * @ORM\ManyToOne(targetEntity="Area", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotNull(message="Selecione area")
-     * @Groups({"main", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
      */
     private $area;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      * @Assert\NotNull(message="Ingrese descripcion")
-     * @Groups({"main", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
      */
     private $descripcion;
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @Groups({"main", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
      */
     private $logrosObtenidos;
 
     /**
      * @ORM\Column(type="smallint")
      * @Assert\NotNull(message="Ingrese duracion")
-     * @Groups({"main", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
      */
     private $duracion;
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @Groups({"main", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
      */
     private $motivoRetiro;
 
@@ -89,7 +99,7 @@ class Experiencia implements HvEntity
      *      max = 100,
      *      maxMessage = "El nombre supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"main", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
      */
     private $jefeInmediato;
 
@@ -99,7 +109,7 @@ class Experiencia implements HvEntity
      *      max = 20,
      *      maxMessage = "Salario basico supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"main", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
      */
     private $salarioBasico;
 
@@ -111,26 +121,28 @@ class Experiencia implements HvEntity
      *      max = 15,
      *      maxMessage = "El telefono supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"main", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
      */
     private $telefonoJefe;
 
     /**
      * @ORM\Column(type="date", nullable=true)
      * @Assert\NotNull(message="Ingrese fecha")
-     * @Groups({"main", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
      */
     private $fechaIngreso;
 
     /**
      * @ORM\Column(type="date", nullable=true)
-     * @Groups({"main", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
      */
     private $fechaRetiro;
 
     /**
      * @ORM\ManyToOne(targetEntity="Hv", inversedBy="experiencia")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("napi:hv-child:post")
+     * @var Hv
      */
     protected $hv;
 
@@ -159,8 +171,8 @@ class Experiencia implements HvEntity
 
     public function setEmpresa(string $empresa): self
     {
+        $this->empresaPrev = $this->empresa;
         $this->empresa = $empresa;
-
         return $this;
     }
 
@@ -171,8 +183,8 @@ class Experiencia implements HvEntity
 
     public function setCargo(string $cargo): self
     {
+        $this->cargoPrev = $this->cargo;
         $this->cargo = $cargo;
-
         return $this;
     }
 
@@ -294,5 +306,12 @@ class Experiencia implements HvEntity
         $this->fechaRetiro = $fechaRetiro;
 
         return $this;
+    }
+
+    public function getNapiId(): string
+    {
+        $empresa = $this->empresaPrev ?? $this->empresa;
+        $cargo = $this->cargoPrev ?? $this->cargo;
+        return "hv={$this->hv->getNapiId()};empresa={$empresa};cargo={$cargo}";
     }
 }

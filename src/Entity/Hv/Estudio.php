@@ -28,7 +28,8 @@ class Estudio implements HvEntity
      * @ORM\ManyToOne(targetEntity="EstudioCodigo")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotNull(message="Seleccione el area de estudio")
-     * @Groups({"main", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
+     * @var EstudioCodigo
      */
     private $codigo;
 
@@ -39,7 +40,7 @@ class Estudio implements HvEntity
      *      max = 50,
      *      maxMessage = "El titulo supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"main", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
      */
     private $nombre;
 
@@ -47,13 +48,14 @@ class Estudio implements HvEntity
      * @ORM\ManyToOne(targetEntity="EstudioInstituto")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotNull(message="Seleccione instituto. Si no lo encuentra seleccione opción 'NO APLICA'")
-     * @Groups({"main", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "scraper", "scraper-hv-child"})
+     * @var EstudioInstituto
      */
     private $instituto;
 
     /**
      * @ORM\Column(type="date", nullable=true)
-     * @Groups({"main", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
      */
     private $fin;
 
@@ -79,7 +81,7 @@ class Estudio implements HvEntity
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
-     * @Groups({"main", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
      */
     private $graduado;
 
@@ -90,7 +92,7 @@ class Estudio implements HvEntity
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
-     * @Groups({"main", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
      */
     private $cancelo = 0;
 
@@ -102,6 +104,8 @@ class Estudio implements HvEntity
     /**
      * @ORM\ManyToOne(targetEntity="Hv", inversedBy="estudios")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("napi:hv-child:post")
+     * @var Hv
      */
     protected $hv;
 
@@ -256,5 +260,12 @@ class Estudio implements HvEntity
         $this->numeroTarjeta = $numeroTarjeta;
 
         return $this;
+    }
+
+    public function getNapiId(): string
+    {
+        return "hv={$this->hv->getNapiId()};"
+            . "codigo={$this->codigo->getId()};"
+            . "instituto={$this->instituto->getId()}";
     }
 }

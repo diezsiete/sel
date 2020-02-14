@@ -34,7 +34,7 @@ class Vivienda implements HvEntity
      *      max = 40,
      *      maxMessage = "La dirección supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"main", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "scraper", "scraper-hv-child"})
      */
     private $direccion;
 
@@ -42,53 +42,54 @@ class Vivienda implements HvEntity
      * @ORM\ManyToOne(targetEntity="App\Entity\Main\Pais")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotNull(message="Seleccione pais donde se ubica la vivienda")
-     * @Groups({"main", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
      */
     private $pais;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Main\Dpto")
      * @Assert\NotNull(message="Seleccione departamento donde se ubica la vivienda")
-     * @Groups({"main", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
      */
     private $dpto;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Main\Ciudad")
      * @Assert\NotNull(message="Seleccione ciudad donde se ubica la vivienda")
-     * @Groups({"main", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
      */
     private $ciudad;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"main", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
      */
     private $estrato;
 
     /**
      * @ORM\Column(type="integer")
      * @Assert\NotNull(message="Seleccione tipo de vivienda")
-     * @Groups({"main", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
      */
     private $tipoVivienda = 1;
 
     /**
      * @ORM\Column(type="smallint")
      * @Assert\NotNull(message="Ingrese valor")
-     * @Groups({"main", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
      */
     private $tenedor = 1;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
-     * @Groups({"main", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
      */
     private $viviendaActual;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Hv\Hv", inversedBy="viviendas")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("napi:hv-child:post")
      */
     protected $hv;
 
@@ -203,5 +204,10 @@ class Vivienda implements HvEntity
         $this->viviendaActual = $viviendaActual;
 
         return $this;
+    }
+
+    public function getNapiId(): string
+    {
+        // TODO: Implement getNapiId() method.
     }
 }

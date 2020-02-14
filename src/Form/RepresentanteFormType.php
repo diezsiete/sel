@@ -58,7 +58,7 @@ class RepresentanteFormType extends AbstractType
                     'data' => $representante->getUsuario()->getEmail()
                 ]);
             if($esAdmin) {
-                $this->add('emailTodos', CheckboxType::class, [
+                $builder->add('emailTodos', CheckboxType::class, [
                     'label' => 'Aplicar correo a todos los convenios',
                     'required' => false,
                     'mapped' => false

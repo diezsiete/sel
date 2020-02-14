@@ -17,7 +17,7 @@ class Area
      * TODO: en novasoft esto es smallint
      * @ORM\Id()
      * @ORM\Column(type="string", length=7)
-     * @Groups({"main", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
      */
     private $id;
 
@@ -48,9 +48,9 @@ class Area
     }
 
 
-    public function getId(): ?string
+    public function getId()
     {
-        return $this->id;
+        return (int)$this->id;
     }
 
     public function getNombre(): ?string

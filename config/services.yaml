@@ -25,6 +25,8 @@ services:
             $transportScraperHv : '@messenger.transport.scraper_hv'
             $appEnv: '%env(APP_ENV)%'
             $s3BucketName: '%env(empresa:AWS_S3_BUCKET)%'
+            $napiUrl: '@=service("App\\Service\\Configuracion\\Configuracion").napi().url'
+            $napiDb: '@=service("App\\Service\\Configuracion\\Configuracion").napi().db'
 
             $migrationHvAdjuntoPath: '%env(MIGRATION_HV_ADJUNTO)%'
             $migrationDatabaseSeUrl: '%env(DATABASE_SE_URL)%'
@@ -116,11 +118,6 @@ services:
     App\Service\Halcon\Report\Report\CertificadoLaboralReport:
         calls:
             - [setPdfService, ['@=service("App\\Service\\Configuracion\\Configuracion").getEmpresa(true) === "servilabor" ? service("App\\Service\\Pdf\\Halcon\\CertificadoLaboralServilaborPdf") : service("App\\Service\\Pdf\\Halcon\\CertificadoLaboralPdf")' ]]
-
-    App\Service\Novasoft\Api\NovasoftApiClient:
-        arguments:
-            $url: '@=service("App\\Service\\Configuracion\\Configuracion").napi().url'
-            $db: '@=service("App\\Service\\Configuracion\\Configuracion").napi().db'
 
     App\Service\Pdf\PdfCartaLaboral:
         public: true
