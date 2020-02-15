@@ -4,18 +4,22 @@
 namespace App\Service\Novasoft\Api\Importer;
 
 
+use App\Entity\Main\Convenio;
 use App\Entity\Main\Empleado;
-use App\Entity\Main\Usuario;
 use App\Repository\Main\ConvenioRepository;
+use App\Repository\Main\EmpleadoRepository;
+use App\Repository\Main\UsuarioRepository;
 use App\Service\Novasoft\Api\Client\EmpleadoClient;
+use App\Service\Novasoft\Api\Client\NovasoftApiClient;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 class EmpleadoImporter
 {
     /**
-     * @var \App\Service\Novasoft\Api\Client\NovasoftApiClient
+     * @var NovasoftApiClient
      */
     private $client;
     /**
@@ -34,12 +38,22 @@ class EmpleadoImporter
      * @var DenormalizerInterface
      */
     private $denormalizer;
+    /**
+     * @var EmpleadoRepository
+     */
+    private $empleadoRepo;
+    /**
+     * @var UsuarioRepository
+     */
+    private $usuarioRepo;
 
-    public function __construct(EmpleadoClient $client, DenormalizerInterface $denormalizer, ConvenioRepository $convenioRepo,
+    public function __construct(EmpleadoClient $client, DenormalizerInterface $denormalizer,
+                                EmpleadoRepository $empleadoRepo, ConvenioRepository $convenioRepo,
                                 UserPasswordEncoderInterface $passwordEncoder, EntityManagerInterface $em)
     {
         $this->client = $client;
         $this->denormalizer = $denormalizer;
+        $this->empleadoRepo = $empleadoRepo;
         $this->convenioRepo = $convenioRepo;
         $this->passwordEncoder = $passwordEncoder;
         $this->em = $em;
@@ -48,90 +62,77 @@ class EmpleadoImporter
     /**
      * @param $identificacion
      * @return Empleado|null
+     * @throws ExceptionInterface
      */
     public function import($identificacion)
     {
         $response = $this->client->get($identificacion);
-        dump($response);
-        $empleado = $this->denormalizer->denormalize($response, Empleado::class);
-        dump($empleado);
+        /** @var Empleado $empleadoNapi */
+        $empleadoNapi = $this->denormalizer->denormalize($response, Empleado::class);
 
-        //TODO por ahora se hace manual la conversion, la idea es que sea automatica con serializer
-//        if($empleadoSqlsrv) {
-//            $empleado = (new Empleado())
-//                ->setSexo($empleadoSqlsrv['sexo'])
-//                ->setEstadoCivil($empleadoSqlsrv['estadoCivil']);
-//
-//            if($empleadoConvenio = $this->fetchEmpleadoConvenio($empleadoSqlsrv)) {
-//                $fechaIngreso = DateTime::createFromFormat('Y-m-d', $empleadoConvenio['fechaIngreso']);
-//                $fechaRetiro = $empleadoConvenio['fechaRetiro']
-//                    ? DateTime::createFromFormat('Y-m-d', $empleadoConvenio['fechaRetiro']) : null;
-//
-//                $empleado
-//                    ->setFechaIngreso($fechaIngreso)
-//                    ->setFechaRetiro($fechaRetiro);
-//
-//                if($convenio = $this->convenioRepo->find($empleadoConvenio['codigoConvenio'])) {
-//                    $empleado->setConvenio($convenio);
-//                }
-//            }
-//
-//            $usuario = $this->createUsuario(
-//                $empleadoSqlsrv['identificacion'], $empleadoSqlsrv['primerNombre'], $empleadoSqlsrv['segundoNombre'],
-//                $empleadoSqlsrv['primerApellido'], $empleadoSqlsrv['segundoApellido']);
-//
-//            $empleado->setUsuario($usuario);
-//
-//            $this->em->persist($empleado);
-//            $this->em->flush();
-//        } else {
-//            $empleado = null;
-//        }
-//
-//        return $empleado;
-    }
-
-
-    private function createUsuario($ident, $nom1, $nom2, $apellido1, $apellido2)
-    {
-        $usuario = (new Usuario())
-            //TODO todavia no se si usar identificacion o codigo, (extranjeros)
-            ->setIdentificacion($ident)
-            ->setPrimerNombre($nom1)
-            ->setSegundoNombre($nom2)
-            ->setPrimerApellido($apellido1)
-            ->setSegundoApellido($apellido2);
-
-        $pass = substr($usuario->getIdentificacion(), -4);
-        $encodedPass = $this->passwordEncoder->encodePassword($usuario, $pass);
-        $usuario
-            ->setPassword($encodedPass)
-            ->addRol('ROLE_EMPLEADO')
-            ->aceptarTerminos();
-
-        return $usuario;
-    }
-
-    private function fetchEmpleadoConvenio($data)
-    {
-        $empleadoConvenio = null;
-        if($empleadoConvenios = $data['empleadoConvenios']) {
-            if (count($empleadoConvenios) === 1) {
-                $empleadoConvenio = $empleadoConvenios[0];
-            } else {
-                $sinFechaRetiro = [];
-                foreach ($empleadoConvenios as $empleadoConvenio) {
-                    if ($empleadoConvenio['fechaRetiro'] === null) {
-                        $sinFechaRetiro[] = $empleadoConvenio;
-                    }
-                }
-                if ($sinFechaRetiro) {
-                    $empleadoConvenio = $sinFechaRetiro[count($sinFechaRetiro) - 1];
-                } else {
-                    $empleadoConvenio = $empleadoConvenios[count($empleadoConvenios) - 1];
-                }
+        $convenio = null;
+        $persist = false;
+        if($convenioNapi = $empleadoNapi->getConvenio()) {
+            $convenio = $this->convenioRepo->find($convenioNapi->getCodigo());
+            if(!$convenio) {
+                $convenio = $convenioNapi;
+                $persist = true;
             }
         }
-        return $empleadoConvenio;
+
+        $empleado = $this->empleadoRepo->findByIdentificacion($empleadoNapi->getUsuario()->getIdentificacion());
+        if($empleado) {
+            $empleado = $this->updateEmpleado($empleado, $empleadoNapi, $convenio);
+        } else {
+            $empleado = $this->createEmpleado($empleadoNapi, $convenio);
+            $persist = (bool)$empleado;
+        }
+
+        if($persist) {
+            $this->em->persist($empleado);
+        }
+        $this->em->flush();
+
+        return $empleado;
     }
+
+    private function updateEmpleado(Empleado $empleado, Empleado $empleadoNapi, ?Convenio $convenio = null)
+    {
+        $empleado
+            ->setSexo($empleadoNapi->getSexo())
+            ->setEstadoCivil($empleadoNapi->getEstadoCivil())
+            ->setNacimiento($empleadoNapi->getNacimiento())
+            ->setFechaIngreso($empleadoNapi->getFechaIngreso())
+            ->setFechaRetiro($empleadoNapi->getFechaRetiro())
+            ->setConvenio($convenio);
+
+        if($usuarioNapi = $empleadoNapi->getUsuario()) {
+            $empleado->getUsuario()
+                ->setPrimerApellido($usuarioNapi->getPrimerApellido())
+                ->setSegundoApellido($usuarioNapi->getSegundoApellido())
+                ->setPrimerNombre($usuarioNapi->getPrimerNombre())
+                ->setSegundoNombre($usuarioNapi->getSegundoNombre())
+                ->setEmail($usuarioNapi->getEmail())
+                ->addRol('ROLE_EMPLEADO');
+        }
+        return $empleado;
+    }
+
+    private function createEmpleado(Empleado $empleadoNapi, ?Convenio $convenio = null): ?Empleado
+    {
+        $empleado = null;
+        if($usuarioNapi = $empleadoNapi->getUsuario()) {
+            $pass = substr($usuarioNapi->getIdentificacion(), -4);
+            $encodedPass = $this->passwordEncoder->encodePassword($usuarioNapi, $pass);
+            $usuarioNapi
+                ->setPassword($encodedPass)
+                ->addRol('ROLE_EMPLEADO')
+                ->aceptarTerminos();
+            $empleadoNapi->setConvenio($convenio);
+            $empleado = $empleadoNapi;
+        }
+        return $empleado;
+    }
+
+
 }

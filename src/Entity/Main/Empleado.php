@@ -77,7 +77,7 @@ class Empleado
     private $cargo;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Main\Convenio", inversedBy="empleados", cascade={"remove"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Main\Convenio", inversedBy="empleados", cascade={"persist"})
      * @ORM\JoinColumn(name="convenio_codigo", referencedColumnName="codigo")
      */
     private $convenio;
