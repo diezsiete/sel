@@ -50,7 +50,7 @@ class HvClient extends NovasoftApiClient
     public function postChild(HvEntity $entity)
     {
         $childNormalized = $this->normalizer->normalize($entity, null, ['groups' => ['napi:hv-child:post']]);
-        $childNormalized['hv'] = "/api/hv/{$childNormalized['hv']}";
+        $childNormalized['hv'] = $this->buildUrl("/hv/{$childNormalized['hv']}");
         return $this->sendPost('/'.$this->symbol->toSnakeCase($entity, '-'), $childNormalized);
     }
 

@@ -19,10 +19,6 @@ class ImportEmpleadoCommand extends TraitableCommand
     protected static $defaultName = 'sel:napi:import:empleado';
 
     /**
-     * @var \App\Service\Novasoft\Api\Client\NovasoftApiClient
-     */
-    private $client;
-    /**
      * @var EmpleadoImporter
      */
     private $importer;

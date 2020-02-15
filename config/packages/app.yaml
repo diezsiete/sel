@@ -78,7 +78,7 @@ app:
           browser: 'novasoft.cguerrero'
 
       novasoftapi:
-        db: PTA
+        db: pta
 
     SERVILABOR:
       host: '%env(HOST_SERVILABOR)%'
@@ -126,7 +126,7 @@ app:
           browser: 'novasoft'
 
       novasoftapi:
-        db: SERVILABOR
+        db: servilabor
 
   # TODO borar
   hv_wizard_routes:

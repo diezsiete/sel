@@ -10,6 +10,6 @@ class EmpleadoClient extends NovasoftApiClient
 {
     public function get(string $id)
     {
-        return $this->sendGet("/empleado/$id");
+        return $this->sendGet("/empleado/$id/sel");
     }
 }

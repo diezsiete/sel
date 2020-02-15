@@ -40,21 +40,28 @@ abstract class NovasoftApiClient
     public function __construct(HttpClientInterface $httpClient, string $napiUrl, string $napiDb, NormalizerInterface $normalizer)
     {
         $this->httpClient = $httpClient;
-        $this->url = $napiUrl . '/api';
+        $this->url = "$napiUrl/$napiDb/api";
         $this->db = $napiDb;
         $this->normalizer = $normalizer;
     }
 
+    /**
+     * @param $url
+     * @return mixed|null
+     * @throws ClientExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
+     */
     protected function sendGet($url)
     {
         try {
-            $response = $this->httpClient->request('GET', $this->buildUrl($url));
-            return $response->toArray();
-        } catch (ClientException $e) {
-            if($e->getCode() === 404) {
-                return null;
-            }
-            throw $e;
+            return $this->request('GET', $url, static function (ResponseInterface $response) {
+                return $response->toArray();
+            });
+        } catch (NotFoundException $e) {
+            return null;
         }
     }
 
@@ -140,7 +147,7 @@ abstract class NovasoftApiClient
         }
     }
 
-    private function buildUrl($url): string
+    protected function buildUrl($url): string
     {
         return $this->url . $url;
     }
