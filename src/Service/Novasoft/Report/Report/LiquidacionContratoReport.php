@@ -19,6 +19,21 @@ use SSRS\SSRSReport;
 class LiquidacionContratoReport extends Report
 {
     protected $path = "/ReportesWeb/NOM/NOM701";
+    //RS_rhh_Repnom701
+        // rs_gen_empresa
+        // rs_gen_ccosto
+        // rs_gen_Sucur
+        // rs_gen_cl1
+        // rs_gen_cl2
+        // rs_gen_cl3
+        // rs_rhh_tipliq
+        // rs_rhh_ConsEmplea
+        // rs_rhh_ConsEmplea
+        // rs_gen_Cia
+        //SELECT     CONVERT(DATETIME, substring(val_var,7,4)+substring(val_var,4,2)+substring(val_var,1,2)) AS val_var
+        //FROM         nom_vargen
+        //WHERE     (num_var = 1)
+        //rs_rhh_Convenio_Usuario
 
 
     protected $parameter_Ind_Fec = "1";

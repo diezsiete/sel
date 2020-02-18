@@ -22,6 +22,10 @@ use SSRS\SSRSReportException;
 class CertificadoIngresosReport extends Report
 {
     protected $path = "/ReportesWeb/NOM/NOM921_17";
+    //sp_rhh_CertfcadoParam
+        // rs_gen_empresa
+        // select val_var from nom_vargen where num_var ='100'
+        // select val_var from nom_vargen where num_var ='101'
 
     /**
      * @var string

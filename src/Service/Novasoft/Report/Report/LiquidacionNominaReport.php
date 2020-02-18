@@ -15,6 +15,18 @@ use SSRS\SSRSReport;
 class LiquidacionNominaReport extends Report
 {
     protected $path = "/ReportesWeb/NOM/NOM1529";
+    // sp_rhh_RepNom211
+        // select * from sis_aplicacion where cod_apl ='nom'
+        // rs_gen_empresa
+        // rs_gen_ccosto
+        // rs_gen_Sucur
+        // rs_gen_cl1
+        // rs_gen_cl2
+        // rs_gen_cl3
+        // rs_gen_Cia
+        // SELECT R.Cod_SGC from web_reportes R where R.cod_apl='NOM' AND cod_rep = 'NOM1529'
+        // rs_rhh_tipliq
+        // rs_rhh_Convenio_Usuario
 
     /**
      * Filtrar por:

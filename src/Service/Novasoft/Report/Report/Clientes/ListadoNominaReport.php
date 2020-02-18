@@ -31,6 +31,21 @@ class ListadoNominaReport extends Report
     }
 
     protected $path = "/ReportesWeb/NOM/NOMU201C";
+    // usr_sp_rhh_RepDetPTA
+        // rs_gen_empresa
+        // rs_rhh_tipliq
+        /* DECLARE @rotulo VARCHAR(200);
+           exec sp_gen_RotuloCad 1,@rotulo OUTPUT
+           SELECT @rotulo */
+        /* select '%' AS cod_conv, 'TODOS' AS nom_conv
+            union all
+            select cod_conv, cod_conv+' - '+nom_conv AS nom_conv
+            from rhh_convenio */
+        // rs_gen_Sucur
+        // rs_gen_ccosto
+        // rs_gen_cl1
+        // rs_gen_cl2
+        // rs_gen_cl3
 
     /**
      * @var string Tipo Liquidación

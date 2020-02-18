@@ -22,7 +22,10 @@ use SSRS\SSRSReport;
 class TrabajadoresActivosReport extends Report
 {
     protected $path = "/ReportesWeb/NOM/NOM1527";
-
+    // rs_rhh_InfEmpleaActivos
+        // select * from sis_aplicacion where cod_apl ='nom'
+        // rs_gen_empresa
+        // SELECT R.Cod_SGC from web_reportes R where R.cod_apl='NOM' AND cod_rep = 'NOM1527'
     /**
      * Fecha Consulta Reporte
      * Si no se asigna toma hoy
