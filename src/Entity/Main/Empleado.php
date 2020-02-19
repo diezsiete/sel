@@ -4,6 +4,7 @@ namespace App\Entity\Main;
 
 use App\Entity\Autoliquidacion\AutoliquidacionEmpleado;
 use App\Entity\Novasoft\Report\LiquidacionNomina\LiquidacionNomina;
+use App\Helper\Novasoft\Api\NapiAwareChangeEntity;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -14,6 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Empleado
 {
+    use NapiAwareChangeEntity;
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -127,9 +129,7 @@ class Empleado
 
     public function setSexo($sexo): self
     {
-        $this->sexo = $sexo;
-
-        return $this;
+        return $this->set('sexo', $sexo);
     }
 
     public function getEstadoCivil(): ?string
@@ -139,9 +139,7 @@ class Empleado
 
     public function setEstadoCivil(?string $estadoCivil): self
     {
-        $this->estadoCivil = $estadoCivil;
-
-        return $this;
+        return $this->set('estadoCivil', $estadoCivil);
     }
 
     public function getHijos(): ?int
@@ -163,9 +161,7 @@ class Empleado
 
     public function setNacimiento(?DateTimeInterface $nacimiento): self
     {
-        $this->nacimiento = $nacimiento;
-
-        return $this;
+        return $this->set('nacimiento', $nacimiento);
     }
 
     public function getTelefono1(): ?string
@@ -224,9 +220,7 @@ class Empleado
 
     public function setFechaIngreso(DateTimeInterface $fechaIngreso): self
     {
-        $this->fechaIngreso = $fechaIngreso;
-
-        return $this;
+        return $this->set('fechaIngreso', $fechaIngreso);
     }
 
     public function getFechaRetiro(): ?DateTimeInterface
@@ -236,9 +230,7 @@ class Empleado
 
     public function setFechaRetiro(?DateTimeInterface $fechaRetiro): self
     {
-        $this->fechaRetiro = $fechaRetiro;
-
-        return $this;
+        return $this->set('fechaRetiro', $fechaRetiro);
     }
 
     public function getCargo(): ?string

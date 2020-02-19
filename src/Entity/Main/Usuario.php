@@ -2,6 +2,7 @@
 
 namespace App\Entity\Main;
 
+use App\Helper\Novasoft\Api\NapiAwareChangeEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -19,6 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Usuario implements UserInterface
 {
     use TimestampableEntity;
+    use NapiAwareChangeEntity;
 
     /**
      * @ORM\Id()
@@ -127,7 +129,6 @@ class Usuario implements UserInterface
     public function setIdentificacion($identificacion): self
     {
         $this->identificacion = $identificacion;
-
         return $this;
     }
 
@@ -252,9 +253,7 @@ class Usuario implements UserInterface
 
     public function setEmail($email): self
     {
-        $this->email = $email;
-
-        return $this;
+        return $this->set('email', $email);
     }
 
     public function getPrimerNombre(): ?string
@@ -268,9 +267,7 @@ class Usuario implements UserInterface
      */
     public function setPrimerNombre($primerNombre): self
     {
-        $this->primerNombre = $primerNombre;
-
-        return $this;
+        return $this->set('primerNombre', $primerNombre);
     }
 
     public function getSegundoNombre(): ?string
@@ -280,9 +277,7 @@ class Usuario implements UserInterface
 
     public function setSegundoNombre(?string $segundoNombre): self
     {
-        $this->segundoNombre = $segundoNombre;
-
-        return $this;
+        return $this->set('segundoNombre', $segundoNombre);
     }
 
     public function getPrimerApellido(): ?string
@@ -296,9 +291,7 @@ class Usuario implements UserInterface
      */
     public function setPrimerApellido($primerApellido): self
     {
-        $this->primerApellido = $primerApellido;
-
-        return $this;
+        return $this->set('primerApellido', $primerApellido);
     }
 
     public function getSegundoApellido(): ?string
@@ -308,9 +301,7 @@ class Usuario implements UserInterface
 
     public function setSegundoApellido(?string $segundoApellido): self
     {
-        $this->segundoApellido = $segundoApellido;
-
-        return $this;
+        return $this->set('segundoApellido', $segundoApellido);
     }
 
     public function getActivo(): ?bool

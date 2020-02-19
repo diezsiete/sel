@@ -5,25 +5,26 @@ namespace App\Service\Novasoft\Api\Client;
 
 
 use App\Entity\Main\Empleado;
-use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
+use Throwable;
 
 class EmpleadoClient extends NovasoftApiClient
 {
+
     /**
      * @param string $id
      * @return Empleado|null
-     * @throws ClientExceptionInterface
-     * @throws DecodingExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws TransportExceptionInterface
      */
-    public function get(string $id)
+    public function get(string $id): ?Empleado
     {
-        return $this->sendGet("/empleado/$id/sel");
+        $empleado = null;
+        try {
+            if ($data = $this->sendGet("/empleado/$id/sel")) {
+                /** @var Empleado $empleado */
+                $empleado = $this->denormalizer->denormalize($data, Empleado::class);
+            }
+        } catch (Throwable $e) {
+            $this->exceptionHandler->handle($e);
+        }
+        return $empleado;
     }
 }

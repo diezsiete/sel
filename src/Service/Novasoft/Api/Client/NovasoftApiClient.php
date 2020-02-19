@@ -4,9 +4,11 @@
 namespace App\Service\Novasoft\Api\Client;
 
 use App\Exception\Novasoft\Api\NotFoundException;
+use App\Service\ExceptionHandler;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\HttpClient\Exception\ClientException;
 use Symfony\Component\HttpClient\Exception\TransportException;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
@@ -27,22 +29,29 @@ abstract class NovasoftApiClient
      * @var string
      */
     private $url;
-    /**
-     * @var string
-     */
-    private $db;
 
     /**
      * @var NormalizerInterface
      */
     protected $normalizer;
+    /**
+     * @var DenormalizerInterface
+     */
+    protected $denormalizer;
+    /**
+     * @var ExceptionHandler
+     */
+    protected $exceptionHandler;
 
-    public function __construct(HttpClientInterface $httpClient, string $napiUrl, string $napiDb, NormalizerInterface $normalizer)
+    public function __construct(HttpClientInterface $httpClient, string $napiUrl, string $napiDb,
+                                NormalizerInterface $normalizer, DenormalizerInterface $denormalizer,
+                                ExceptionHandler $exceptionHandler)
     {
         $this->httpClient = $httpClient;
         $this->url = "$napiUrl/$napiDb/api";
-        $this->db = $napiDb;
         $this->normalizer = $normalizer;
+        $this->denormalizer = $denormalizer;
+        $this->exceptionHandler = $exceptionHandler;
     }
 
     /**

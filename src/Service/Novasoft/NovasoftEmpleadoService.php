@@ -60,10 +60,10 @@ class NovasoftEmpleadoService
         $this->reportesServicioEmpleados = $reportesServicioEmpleados;
     }
 
-    public function verifyUsuarioIsEmpleado(Usuario $usuario)
+
+    public function updateFromNovasoft(Usuario $usuario)
     {
         $empleado = $this->napiEmpleadoClient->get($usuario->getIdentificacion());
-        dump($empleado);
     }
 
 
