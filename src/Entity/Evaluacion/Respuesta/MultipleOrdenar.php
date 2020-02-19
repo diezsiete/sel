@@ -22,8 +22,8 @@ class MultipleOrdenar extends MultipleUnica
      * @var Opcion[]|ArrayCollection
      * @ORM\OneToMany(targetEntity="App\Entity\Evaluacion\Respuesta\Opcion", mappedBy="respuesta", orphanRemoval=true, cascade={"persist"})
      * @Assert\Count(
-     *      min = 5,
-     *      max = 5,
+     *      min = 4,
+     *      max = 4,
      *      exactMessage = "Seleccione una opcion",
      * )
      */
