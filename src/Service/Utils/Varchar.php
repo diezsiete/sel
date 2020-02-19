@@ -21,4 +21,21 @@ class Varchar
         }
         return implode($glue, $ret);
     }
+
+    /**
+     * Convierte string camel_case a CamelCase
+     * @param $string
+     * @param string $separator
+     * @return string|string[]
+     */
+    public function camelize($string, $separator = '_')
+    {
+        return lcfirst($this->pascalize($string, $separator));
+    }
+
+
+    public function pascalize($string, $separator = '_')
+    {
+        return str_replace(' ', '', mb_convert_case(str_replace($separator, ' ', $string), MB_CASE_TITLE));
+    }
 }

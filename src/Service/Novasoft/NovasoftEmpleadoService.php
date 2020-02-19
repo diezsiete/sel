@@ -8,6 +8,7 @@ use App\Entity\Main\Empleado;
 use App\Entity\Main\Usuario;
 use App\Repository\Main\EmpleadoRepository;
 use App\Service\Configuracion\Configuracion;
+use App\Service\Novasoft\Api\Client\EmpleadoClient;
 use App\Service\ReportesServicioEmpleados;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -41,20 +42,37 @@ class NovasoftEmpleadoService
      * @var string
      */
     private $appEnv;
+    /**
+     * @var EmpleadoClient
+     */
+    private $napiEmpleadoClient;
 
-    public function __construct(Configuracion $configuracion, ReportesServicioEmpleados $reportesServicioEmpleados, $appEnv,
-                                EmpleadoRepository $empleadoRepository, EntityManagerInterface $em, UserPasswordEncoderInterface $passwordEncoder)
+    public function __construct(Configuracion $configuracion, $appEnv, EntityManagerInterface $em,
+                                EmpleadoRepository $empleadoRepository, UserPasswordEncoderInterface $passwordEncoder,
+                                EmpleadoClient $napiEmpleadoClient, ReportesServicioEmpleados $reportesServicioEmpleados)
     {
-
         $this->configuracion = $configuracion;
-        $this->reportesServicioEmpleados = $reportesServicioEmpleados;
-        $this->empleadoRepository = $empleadoRepository;
-        $this->em = $em;
-        $this->passwordEncoder = $passwordEncoder;
         $this->appEnv = $appEnv;
+        $this->em = $em;
+        $this->empleadoRepository = $empleadoRepository;
+        $this->passwordEncoder = $passwordEncoder;
+        $this->napiEmpleadoClient = $napiEmpleadoClient;
+        $this->reportesServicioEmpleados = $reportesServicioEmpleados;
+    }
+
+    public function verifyUsuarioIsEmpleado(Usuario $usuario)
+    {
+        $empleado = $this->napiEmpleadoClient->get($usuario->getIdentificacion());
+        dump($empleado);
     }
 
 
+    /**
+     * @param $ident
+     * @return Empleado|Empleado[]|bool|null
+     * @throws Exception
+     * @deprecated
+     */
     public function updateEmpleado($ident)
     {
         try {
@@ -76,6 +94,7 @@ class NovasoftEmpleadoService
      * Para usuarios nuevos que no son empleados, puede que ya lo sean en novasoft. Validamos y actualizamos si es el caso
      * @param Usuario $usuario
      * @return bool
+     * @deprecated use verify usuario verifyUsuarioIsEmpleado
      */
     public function addRoleEmpleadoToUsuario(Usuario $usuario)
     {
@@ -94,10 +113,13 @@ class NovasoftEmpleadoService
         return $usuario->esRol('ROLE_EMPLEADO');
     }
 
+
+
     /**
      * @param $ident
      * @return bool|Empleado
      * @throws Exception
+     * @deprecated
      */
     public function findInNovasoft($ident)
     {

@@ -206,6 +206,7 @@ class Utils
      * @param $string
      * @param string $separator
      * @return mixed
+     * @deprecated utilizar camelize de Util\Varchar
      */
     public function convertToCamelCase($string, $separator = "_")
     {

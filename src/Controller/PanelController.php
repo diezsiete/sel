@@ -2,14 +2,19 @@
 
 namespace App\Controller;
 
+use App\Annotation\SelRoute;
 use App\Service\Component\LoadingOverlayComponent;
+use App\Service\Novasoft\Api\Client\EmpleadoClient;
 use App\Service\ServicioEmpleados\DataTableBuilder;
 use App\Service\ServicioEmpleados\Report\ReportCacheHandler;
 use App\Service\ServicioEmpleados\Report\ReportFactory;
 use Exception;
 use Symfony\Component\Routing\Annotation\Route;
 
-class PanelController extends BaseController
+/**
+ * @Route("/sel", name="sel_panel")
+ */
+class PanelController extends BaseController implements ActionBasedOnRole
 {
     /**
      * @var LoadingOverlayComponent
@@ -26,19 +31,13 @@ class PanelController extends BaseController
         $this->reportCacheHandler = $reportCacheHandler;
     }
 
-    /**
-     * @Route("/sel", name="sel_panel")
-     */
-    public function panel(DataTableBuilder $dataTable, ReportFactory $reportFactory)
-    {
-        if($this->isGranted(['ROLE_EMPLEADO'], $this->getUser())) {
-            return $this->panelEmpleado($dataTable, $reportFactory);
-        }
 
+    public function __invoke()
+    {
         return $this->render('panel/main.html.twig');
     }
 
-    protected function panelEmpleado(DataTableBuilder $dataTable, ReportFactory $reportFactory)
+    protected function empleado(DataTableBuilder $dataTable, ReportFactory $reportFactory)
     {
         /*if(!$this->loadingOverlay->isEnabled() && $this->reportCacheHandler->hasCacheToRenew($this->getUser())) {
             $this->loadingOverlay->enable();
@@ -64,13 +63,15 @@ class PanelController extends BaseController
         ]);
     }
 
-    /**
-     * @Route("/sel/panel/empleado/update", name="sel_panel_empleado_update", options={"expose" = true})
-     */
-    public function panelEmpleadoUpdate()
-    {
-        $this->reportCacheHandler->handleAll($this->getUser());
-        return $this->json(['ok' => true]);
-    }
+//    /**
+//     * @Route("/sel/panel/empleado/update", name="sel_panel_empleado_update", options={"expose" = true})
+//     */
+//    public function panelEmpleadoUpdate()
+//    {
+//        $this->reportCacheHandler->handleAll($this->getUser());
+//        return $this->json(['ok' => true]);
+//    }
+
+
 
 }
