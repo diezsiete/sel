@@ -63,7 +63,7 @@ class Email
             $encargados = $convenio->getEncargados();
             $convenioBccs = $convenio->getBcc(true);
             if (!$encargados->count()) {
-                for ($i = 0; $i < count($convenioBccs); $i++) {
+                for ($i = 0, $iMax = count($convenioBccs); $i < $iMax; $i++) {
                     if ($i > 0) {
                         $bccs[] = $convenioBccs[$i];
                     }
@@ -80,12 +80,15 @@ class Email
         $subject = 'Autoliquidación Empleados ' . $autoliquidacion->getPeriodo()->format('Y-m')
             . ' ' . $autoliquidacion->getConvenio()->getNombre();
 
+        //puede ser .zip o .pdf
+        $extension = preg_replace('/(.*)(\.\w+)$/', '$2', $path);
+
         $email = (new \Symfony\Component\Mime\Email())
             ->from($this->configuracion->getMail())
             ->to($recipient)
             ->subject($subject)
             ->html('<p>Buen día</p><p>Adjuntamos los pdfs del pago de seguridad social de los empleados</p><p>Feliz día</p>')
-            ->attachFromPath($path, $autoliquidacion->getConvenio()->getCodigo() . '.zip')
+            ->attachFromPath($path, $autoliquidacion->getConvenio()->getCodigo() . $extension)
         ;
 
         foreach ($bcc as $bccEmail) {

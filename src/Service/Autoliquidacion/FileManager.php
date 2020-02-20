@@ -124,6 +124,12 @@ class FileManager
         return $this->kernelProjectDir . $this->privateUploadsBaseUrl . $path;
     }
 
+    public function absolutePdfExportPath(DateTimeInterface $periodo, string $codigo)
+    {
+        $path = $this->getPath($periodo, $codigo, static::DIR_EXPORT_PDF);
+        return $this->kernelProjectDir . $this->privateUploadsBaseUrl . $path;
+    }
+
     public function getFileSize(DateTimeInterface $periodo, $name, $dir = null, $format = 'B')
     {
         $size = $this->privateFilesystem->getSize($this->getPath($periodo, $name, $dir));

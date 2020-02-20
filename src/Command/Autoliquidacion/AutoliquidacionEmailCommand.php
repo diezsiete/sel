@@ -13,6 +13,7 @@ use App\Entity\Main\Convenio;
 use App\Entity\Main\Representante;
 use App\Service\Autoliquidacion\Email;
 use App\Service\Autoliquidacion\Export;
+use App\Service\Autoliquidacion\ExportPdf;
 use App\Service\Autoliquidacion\ExportZip;
 use DateTime;
 use Doctrine\Common\Annotations\Reader;
@@ -41,12 +42,18 @@ class AutoliquidacionEmailCommand extends TraitableCommand
      * @var Export
      */
     private $export;
+    /**
+     * @var ExportPdf
+     */
+    private $exportPdf;
 
-    public function __construct(Reader $annotationReader, EventDispatcherInterface $eventDispatcher, Email $email, ExportZip $export)
+    public function __construct(Reader $annotationReader, EventDispatcherInterface $eventDispatcher, Email $email,
+                                ExportZip $export, ExportPdf $exportPdf)
     {
         parent::__construct($annotationReader, $eventDispatcher);
         $this->email = $email;
         $this->export = $export;
+        $this->exportPdf = $exportPdf;
     }
 
     protected function configure()
@@ -58,7 +65,7 @@ class AutoliquidacionEmailCommand extends TraitableCommand
             ->addArgument('convenios', InputArgument::IS_ARRAY | InputArgument::OPTIONAL,
                 'convenios codigos para enviar (si no se elige se envia a todos los disponibles)' )
             ->addOption('recipient', null, InputOption::VALUE_OPTIONAL,
-                "para pruebas. Todos los correos se envian a esta direccion")
+                'para pruebas. Todos los correos se envian a esta direccion')
             ->addOption('bcc', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL,
                 'para pruebas. Todos los correos bcc se envian a esta direccion')
             ->addOption('bcc-merge', null, InputOption::VALUE_NONE,
@@ -75,8 +82,8 @@ class AutoliquidacionEmailCommand extends TraitableCommand
     {
         $testRecipient = $input->getOption('recipient') ? [$input->getOption('recipient')] : [];
         $testBcc = $input->getOption('bcc');
-        $testBcc = !$testBcc ? null : array_filter($testBcc, function($value) {
-            return !!$value;
+        $testBcc = !$testBcc ? null : array_filter($testBcc, static function($value) {
+            return (bool)$value;
         });
 
         $bccMerge = $input->getOption('bcc-merge');
@@ -93,37 +100,23 @@ class AutoliquidacionEmailCommand extends TraitableCommand
 
             $this->logConvenio($autoliq->getConvenio(), $porcentajeEjecucion);
 
-
-            $send = ($force || !$force && $porcentajeEjecucion === 100) && (!$sendedNot || !$autoliq->isEmailSended());
+            $send = ($force || (!$force && $porcentajeEjecucion === 100)) && (!$sendedNot || !$autoliq->isEmailSended());
             if($send) {
                 $recipients = $this->email->getRecipients($autoliq->getConvenio(), $testRecipient);
 
                 foreach($recipients as $recipient) {
-
                     $bccs = $this->email->getBccsEmails($autoliq->getConvenio(), $testBcc, $bccMerge);
-
                     $this->logRecipients($recipient, $bccs);
-
                     try {
-                        $zipPath = $this->export->generate($autoliq, is_object($recipient) ? $recipient : null);
-
-                        $archiveSize = $this->export->getSize($autoliq);
-
-                        $this->logFile($zipPath, $archiveSize);
-
-                        if($archiveSize < $cuotaAdjunto) {
-                            if (!$input->getOption('dont-send')) {
-
-                                $recipientEmail = is_object($recipient) ? $recipient->getEmail() : $recipient;
-                                $this->email->send($autoliq, $zipPath, $recipientEmail, $bccs);
-                                $this->info("Exito envio de email");
-                                if(!$testRecipient) {
-                                    $autoliq->setEmailSended(1);
-                                    $this->em->flush();
-                                }
+                        $filePath = $this->generateExportFile($autoliq, $recipient, $cuotaAdjunto);
+                        if($filePath && !$input->getOption('dont-send')) {
+                            $recipientEmail = is_object($recipient) ? $recipient->getEmail() : $recipient;
+                            $this->email->send($autoliq, $filePath, $recipientEmail, $bccs);
+                            $this->info('Exito envio de email');
+                            if(!$testRecipient) {
+                                $autoliq->setEmailSended(1);
+                                $this->em->flush();
                             }
-                        } else {
-                            $this->error("Error, archivo supera la cuota de adjunto [$cuotaAdjunto]");
                         }
                     } catch(Exception $e) {
                         $this->error($e->getMessage());
@@ -142,6 +135,28 @@ class AutoliquidacionEmailCommand extends TraitableCommand
         return $this->periodo;
     }
 
+    private function generateExportFile(Autoliquidacion $autoliq, $recipient, $cuotaAdjunto)
+    {
+        $export = $this->export;
+
+        //fix temp
+        //TODO permitir que esto sea via configuracion
+        $codigo = $autoliq->getConvenio()->getCodigo();
+        if(in_array($codigo, ['GEOCOL', 'STECOL'])) {
+            $export = $this->exportPdf;
+        }
+
+        $path = $export->generate($autoliq, is_object($recipient) ? $recipient : null);
+        $size = $export->getSize($autoliq);
+
+        $this->logFile($path, $size);
+        if($size > $cuotaAdjunto) {
+            $this->error("Error, archivo supera la cuota de adjunto [$cuotaAdjunto]");
+            return null;
+        }
+        return $path;
+    }
+
     protected function getConvenios($codigos = [])
     {
         $convenioRepo = $this->em->getRepository(Convenio::class);
@@ -152,7 +167,7 @@ class AutoliquidacionEmailCommand extends TraitableCommand
 
     private function logConvenio(Convenio $convenio, $porcentajeEjecucion)
     {
-        $this->info(sprintf("%s %s [%d]", $convenio->getCodigo(), $convenio->getNombre(), $porcentajeEjecucion));
+        $this->info(sprintf('%s %s [%d]', $convenio->getCodigo(), $convenio->getNombre(), $porcentajeEjecucion));
     }
 
     /**
@@ -160,19 +175,19 @@ class AutoliquidacionEmailCommand extends TraitableCommand
      */
     private function logRecipients($recipient, $bccs = [])
     {
-        $this->info(sprintf('    %s', "Encargado : " . (is_object($recipient)
+        $this->info(sprintf('    %s', 'Encargado : ' . (is_object($recipient)
             ? "{$recipient->getUsuario()->getNombreCompleto()} [{$recipient->getEmail()}]"
-            : "{$recipient}"
+            : (string)($recipient)
         )));
-        $this->info("    bcss: " . (!$bccs ? "no" : ""));
+        $this->info('    bcss: ' . (!$bccs ? 'no' : ''));
         foreach($bccs as $bcc){
-            $this->info("      " . $bcc);
+            $this->info('      ' . $bcc);
         }
     }
 
     private function logFile($path, $size)
     {
-        $this->info("    Archivo [exito] : " . $path);
-        $this->info("    Archivo [size MB] : "  . $size);
+        $this->info('    Archivo [exito] : ' . $path);
+        $this->info('    Archivo [size MB] : ' . $size);
     }
 }

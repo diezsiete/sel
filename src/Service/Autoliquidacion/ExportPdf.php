@@ -41,8 +41,7 @@ class ExportPdf extends Export
             FileManager::DIR_EXPORT_PDF
         );
 
-        return $this->fileManager->getPath(
-            $autoliquidacion->getPeriodo(), $autoliquidacion->getConvenio()->getCodigo(), FileManager::DIR_EXPORT_PDF);
+        return $this->fileManager->absolutePdfExportPath($autoliquidacion->getPeriodo(), $autoliquidacion->getConvenio()->getCodigo());
     }
 
     public function stream(Autoliquidacion $autoliquidacion, ?Usuario $usuario = null)
@@ -52,5 +51,13 @@ class ExportPdf extends Export
             $autoliquidacion->getConvenio()->getCodigo(),
             FileManager::DIR_EXPORT_PDF
         );
+    }
+
+    public function getSize(Autoliquidacion $autoliquidacion)
+    {
+        return $this->fileManager->getFileSize(
+            $autoliquidacion->getPeriodo(),
+            $autoliquidacion->getConvenio()->getCodigo(),
+            FileManager::DIR_EXPORT_PDF, 'MB');
     }
 }
