@@ -280,12 +280,12 @@ class Experiencia implements HvEntity
         return $this;
     }
 
-    public function getSalarioBasico(): ?string
+    public function getSalarioBasico(): ?int
     {
         return $this->salarioBasico;
     }
 
-    public function setSalarioBasico(?string $salarioBasico): self
+    public function setSalarioBasico($salarioBasico): self
     {
         $this->salarioBasico = $salarioBasico;
 
