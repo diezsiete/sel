@@ -61,7 +61,7 @@ class NovasoftApiMessenger
     {
         $message = new UpdateHvInNovasoft($hv->getId());
         //$this->messageBus->dispatch($message);
-        $this->dispatchMessageWithSolicitud($hv, $message);
+        $this->dispatchMessageWithSolicitud($hv, $message, [$hv->getId()]);
     }
 
     public function insertChild(HvEntity $entity, Hv $hv)
@@ -87,7 +87,7 @@ class NovasoftApiMessenger
         $this->dispatchMessageWithSolicitud($hv, $message);
     }
 
-    private function dispatchMessageWithSolicitud(Hv $hv, $message)
+    private function dispatchMessageWithSolicitud(Hv $hv, $message, $data = [])
     {
         $solicitud = (new Solicitud())
             ->setHv($hv)

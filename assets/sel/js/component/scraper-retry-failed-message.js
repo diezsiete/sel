@@ -26,7 +26,8 @@ export default {
 
 
     _buttonClick($button) {
-        if($button.hasClass('btn-outline-danger') || ($button.hasClass('btn-outline-primary') && !$button.hasClass('spin'))) {
+        //if($button.hasClass('btn-outline-danger') || ($button.hasClass('btn-outline-primary') && !$button.hasClass('spin'))) {
+        if(false) {
             const id = $button.data('id');
             this._buttonSetEstadoStyle(id, 1);
             const route = Routing.generate('admin_scraper_retry_failed_message', {'hvId': id});

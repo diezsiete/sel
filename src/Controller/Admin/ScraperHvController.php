@@ -67,6 +67,7 @@ class ScraperHvController extends BaseController
      */
     public function retryFailedMessage(SolicitudRepository $solicitudRepository, ScraperMessenger $scraperMessenger, $hvId)
     {
+        return $this->json([$hvId => SolicitudRepository::EJECUTADO_ERROR]);
         $failedMessages = $solicitudRepository->findFailedByHvId($hvId);
         foreach($failedMessages as $failedMessage) {
             $this->em()->remove($failedMessage);
