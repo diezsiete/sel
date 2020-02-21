@@ -2,8 +2,8 @@
 - name: Remote symfony
   include: "{{ playbook_dir }}/include/remote-symfony.yml"
 
-- name: Remote webpack
-  include: "{{ playbook_dir }}/include/remote-webpack.yml"
+#- name: Remote webpack
+#  include: "{{ playbook_dir }}/include/remote-webpack.yml"
 
 - name: Extract images
   unarchive:
