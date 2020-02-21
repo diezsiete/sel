@@ -42,16 +42,25 @@ abstract class NovasoftApiClient
      * @var ExceptionHandler
      */
     protected $exceptionHandler;
+    /**
+     * @var string
+     */
+    private $napiDb;
+    /**
+     * @var string
+     */
+    private $napiDbTmp;
 
     public function __construct(HttpClientInterface $httpClient, string $napiUrl, string $napiDb,
                                 NormalizerInterface $normalizer, DenormalizerInterface $denormalizer,
                                 ExceptionHandler $exceptionHandler)
     {
         $this->httpClient = $httpClient;
-        $this->url = "$napiUrl/$napiDb/api";
+        $this->url = $napiUrl;
         $this->normalizer = $normalizer;
         $this->denormalizer = $denormalizer;
         $this->exceptionHandler = $exceptionHandler;
+        $this->napiDb = $napiDb;
     }
 
     /**
@@ -158,6 +167,13 @@ abstract class NovasoftApiClient
 
     protected function buildUrl($url): string
     {
-        return $this->url . $url;
+        $db = $this->napiDbTmp ?: $this->napiDb;
+        return "{$this->url}/{$db}/api{$url}";
+    }
+
+    protected function db(?string $db = null)
+    {
+        $this->napiDbTmp = $db;
+        return $this;
     }
 }

@@ -14,6 +14,11 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
+/**
+ * Class NovasoftEmpleadoService
+ * @package App\Service\Novasoft
+ * @deprecated
+ */
 class NovasoftEmpleadoService
 {
     /**
@@ -49,21 +54,14 @@ class NovasoftEmpleadoService
 
     public function __construct(Configuracion $configuracion, $appEnv, EntityManagerInterface $em,
                                 EmpleadoRepository $empleadoRepository, UserPasswordEncoderInterface $passwordEncoder,
-                                EmpleadoClient $napiEmpleadoClient, ReportesServicioEmpleados $reportesServicioEmpleados)
+                                ReportesServicioEmpleados $reportesServicioEmpleados)
     {
         $this->configuracion = $configuracion;
         $this->appEnv = $appEnv;
         $this->em = $em;
         $this->empleadoRepository = $empleadoRepository;
         $this->passwordEncoder = $passwordEncoder;
-        $this->napiEmpleadoClient = $napiEmpleadoClient;
         $this->reportesServicioEmpleados = $reportesServicioEmpleados;
-    }
-
-
-    public function updateFromNovasoft(Usuario $usuario)
-    {
-        $empleado = $this->napiEmpleadoClient->get($usuario->getIdentificacion());
     }
 
 
@@ -154,6 +152,12 @@ class NovasoftEmpleadoService
         }
     }
 
+    /**
+     * @param Empleado $empleado
+     * @param string $ssrsDb
+     * @return Empleado|Empleado[]|bool|null
+     * @deprecated
+     */
     private function importEmpleado(Empleado $empleado, string $ssrsDb)
     {
         $usuario = $this->updateUsuario($empleado->getUsuario());
@@ -180,7 +184,11 @@ class NovasoftEmpleadoService
         return $empleado;
     }
 
-
+    /**
+     * @param Empleado $empleado
+     * @return Empleado|Empleado[]|bool|null
+     * @deprecated
+     */
     private function updateEmpleadoDatabase(Empleado $empleado)
     {
         $updated = false;
@@ -208,6 +216,10 @@ class NovasoftEmpleadoService
         return $updated;
     }
 
+    /**
+     * @param Empleado $empleado
+     * @deprecated
+     */
     private function insertEmpleadoDatabase(Empleado $empleado)
     {
         if($empleado->getConvenio() && $empleado->getConvenio()->hasEncargados()) {
@@ -216,7 +228,11 @@ class NovasoftEmpleadoService
         $this->em->persist($empleado);
     }
 
-
+    /**
+     * @param Usuario $usuario
+     * @return Usuario|bool|object|null
+     * @deprecated
+     */
     private function updateUsuario(Usuario $usuario)
     {
         $usuarioDb = $this->em->getRepository(Usuario::class)
@@ -235,6 +251,11 @@ class NovasoftEmpleadoService
         return $updated;
     }
 
+    /**
+     * @param Usuario $usuario
+     * @return Usuario
+     * @deprecated
+     */
     private function insertUsuario(Usuario $usuario)
     {
         $pass = substr($usuario->getIdentificacion(), -4);
@@ -246,4 +267,6 @@ class NovasoftEmpleadoService
         $this->em->persist($usuario);
         return $usuario;
     }
+
+
 }

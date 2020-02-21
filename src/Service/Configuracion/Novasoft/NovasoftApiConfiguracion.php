@@ -11,13 +11,26 @@ class NovasoftApiConfiguracion
      */
     public $url;
     /**
-     * @var string
+     * @var string[]
      */
-    public $db;
+    private $db;
 
     public function __construct($config, $empresaConfig)
     {
         $this->url = $config['url'];
         $this->db = $empresaConfig['db'];
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getDb(): array
+    {
+        return $this->db;
+    }
+
+    public function getDbPrincipal()
+    {
+        return $this->db[0];
     }
 }

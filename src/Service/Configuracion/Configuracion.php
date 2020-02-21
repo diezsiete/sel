@@ -396,8 +396,4 @@ class Configuracion
         }
         return $this->servicioEmpleadosConfig;
     }
-
-
-
-
 }

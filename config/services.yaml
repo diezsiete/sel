@@ -26,7 +26,7 @@ services:
             $appEnv: '%env(APP_ENV)%'
             $s3BucketName: '%env(empresa:AWS_S3_BUCKET)%'
             $napiUrl: '@=service("App\\Service\\Configuracion\\Configuracion").napi().url'
-            $napiDb: '@=service("App\\Service\\Configuracion\\Configuracion").napi().db'
+            $napiDb: '@=service("App\\Service\\Configuracion\\Configuracion").napi().getDbPrincipal()'
 
             $migrationHvAdjuntoPath: '%env(MIGRATION_HV_ADJUNTO)%'
             $migrationDatabaseSeUrl: '%env(DATABASE_SE_URL)%'

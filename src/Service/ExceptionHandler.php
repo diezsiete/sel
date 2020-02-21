@@ -18,7 +18,7 @@ class ExceptionHandler
     public function handle(Throwable $e): void
     {
         if($this->appEnv === 'dev') {
-            throw $e;
+            //throw $e;
         } else {
             //TODO, enviar correo admin
         }

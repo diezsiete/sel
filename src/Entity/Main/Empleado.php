@@ -87,13 +87,20 @@ class Empleado
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Main\Usuario", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
+     * @var Usuario
      */
     private $usuario;
 
     /**
      * @ORM\Column(type="string", length=20, nullable=true)
+     * @deprecated
      */
     private $ssrsDb;
+
+    /**
+     * @var string
+     */
+    private $novasoftDb;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Autoliquidacion\AutoliquidacionEmpleado", mappedBy="empleado", orphanRemoval=true)
@@ -271,20 +278,34 @@ class Empleado
 
     /**
      * @return string|null
+     * @deprecated
      */
     public function getSsrsDb()
     {
         return $this->ssrsDb;
     }
 
+    public function getNovasoftDb()
+    {
+        return $this->novasoftDb;
+    }
+
     /**
      * @param mixed $ssrsDb
      * @return Empleado
+     * @deprecated
      */
     public function setSsrsDb($ssrsDb)
     {
         $this->ssrsDb = $ssrsDb;
         return $this;
+    }
+
+    public function setNovasoftDb($db)
+    {
+        $this->ssrsDb = strtoupper($db);
+        $this->novasoftDb = $this->ssrsDb ? strtolower($this->ssrsDb) : null;
+        return $this->set('novasoftDb', $db);
     }
 
     public function addAutoliquidacion(AutoliquidacionEmpleado $autoliquidacion): self
@@ -351,6 +372,18 @@ class Empleado
         }
 
         return $this;
+    }
+
+    public function isNapiChanged(): bool
+    {
+        $changed = $this->napiChanged;
+        if (!$changed && $this->getUsuario()) {
+            $changed = $this->getUsuario()->isNapiChanged();
+            if (!$changed && $this->getConvenio()) {
+                $changed = $this->getConvenio()->getCodigo() === null;
+            }
+        }
+        return $changed;
     }
 
 }

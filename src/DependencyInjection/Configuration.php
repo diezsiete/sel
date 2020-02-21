@@ -177,7 +177,7 @@ class Configuration implements ConfigurationInterface
     protected function addSeNode()
     {
         $treeBuilder = new TreeBuilder('se');
-        $node =
+        return
             $treeBuilder->getRootNode()
                 ->children()
                     ->arrayNode('report')
@@ -208,48 +208,47 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end();
-        return $node;
     }
 
     protected function addScraperEmpresaNode()
     {
         $treeBuilder = new TreeBuilder('scraper');
-        $node =
-            $treeBuilder->getRootNode()
-                ->children()
-                    ->arrayNode('novasoft')
-                        ->children()
-                            ->scalarNode('browser')->end()
-                        ->end()
+        return $treeBuilder->getRootNode()
+            ->children()
+                ->arrayNode('novasoft')
+                    ->children()
+                        ->scalarNode('browser')->end()
                     ->end()
-                ->end();
-        return $node;
+                ->end()
+            ->end();
     }
 
     protected function addNovasoftApiEmpresaNode()
     {
         $treeBuilder = new TreeBuilder('novasoftapi');
-        $node =
-            $treeBuilder->getRootNode()
-                ->children()
-                    ->scalarNode('db')->end()
-                ->end();
-        return $node;
+        return $treeBuilder->getRootNode()
+            ->children()
+                ->arrayNode('db')
+                    ->beforeNormalization()
+                    ->ifString()
+                        ->then(static function($v) { return [$v]; })
+                    ->end()
+                    ->prototype('scalar')->end()
+                ->end()
+            ->end();
     }
 
     protected function addSelRoutesNode()
     {
         $treeBuilder = new TreeBuilder('sel_routes');
-        $node =
-            $treeBuilder->getRootNode()
-                // ->canBeEnabled()
-                ->children()
-                    ->arrayNode('ignore')
-                        // ->canBeEnabled()
-                        ->scalarPrototype()->end()
-                    ->end()
-                ->end();
-        return $node;
+        return $treeBuilder->getRootNode()
+            // ->canBeEnabled()
+            ->children()
+                ->arrayNode('ignore')
+                    // ->canBeEnabled()
+                    ->scalarPrototype()->end()
+                ->end()
+            ->end();
     }
 
 
@@ -257,7 +256,7 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder('documentos_laborales');
 
-        $node = $treeBuilder->getRootNode()
+        return $treeBuilder->getRootNode()
             ->requiresAtLeastOneElement()
             ->useAttributeAsKey('nombre')
             ->normalizeKeys(false)
@@ -267,9 +266,7 @@ class Configuration implements ConfigurationInterface
                     ->scalarNode('title')->end()
                     ->scalarNode('pdf')->defaultValue(null)->end()
                 ->end()
-            ->end()
-        ;
-        return $node;
+            ->end();
     }
 
     private function addCompaniasNode()

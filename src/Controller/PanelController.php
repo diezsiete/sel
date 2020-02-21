@@ -3,8 +3,11 @@
 namespace App\Controller;
 
 use App\Annotation\SelRoute;
+use App\Repository\Main\UsuarioRepository;
 use App\Service\Component\LoadingOverlayComponent;
 use App\Service\Novasoft\Api\Client\EmpleadoClient;
+use App\Service\Novasoft\Api\EmpleadoService;
+use App\Service\Novasoft\NovasoftEmpleadoService;
 use App\Service\ServicioEmpleados\DataTableBuilder;
 use App\Service\ServicioEmpleados\Report\ReportCacheHandler;
 use App\Service\ServicioEmpleados\Report\ReportFactory;
@@ -33,6 +36,11 @@ class PanelController extends BaseController implements ActionBasedOnRole
 
 
     public function __invoke()
+    {
+        return $this->render('panel/main.html.twig');
+    }
+
+    public function superadmin()
     {
         return $this->render('panel/main.html.twig');
     }
