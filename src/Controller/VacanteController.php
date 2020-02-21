@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Vacante\Vacante;
 use App\Repository\Vacante\VacanteRepository;
+use App\Service\Configuracion\Configuracion;
 use App\Service\Hv\HvWizard\HvWizard;
 use App\Service\Hv\HvWizard\HvWizardRoutesAplicar;
 use Doctrine\ORM\EntityManagerInterface;
@@ -27,10 +28,12 @@ class VacanteController extends AbstractController
     /**
      * @Route("/ofertas", name="vacante_listado")
      */
-    public function listado(VacanteRepository $vacanteRepository, Request $request)
+    public function listado(VacanteRepository $vacanteRepository, Request $request, Configuracion $configuracion)
     {
-        //temporal 
-        return $this->redirect('https://pta.t3rs.co/');
+        if($configuracion->getEmpresa(true) === 'pta') {
+            //temporal
+            return $this->redirect('https://pta.t3rs.co/');
+        }
         $search = $request->get('s');
         $categoria = $request->get('c');
         $categoriaId = $request->get('cid');
