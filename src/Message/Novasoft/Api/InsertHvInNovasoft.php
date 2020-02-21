@@ -6,6 +6,11 @@ namespace App\Message\Novasoft\Api;
 
 class InsertHvInNovasoft
 {
+    use MessageWithScraperSolicitud;
+
+    /**
+     * @var int
+     */
     private $hvId;
 
     public function __construct($hvId)

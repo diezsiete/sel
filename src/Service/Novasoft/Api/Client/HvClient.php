@@ -6,10 +6,11 @@ namespace App\Service\Novasoft\Api\Client;
 
 use App\Entity\Hv\Hv;
 use App\Entity\Hv\HvEntity;
-use App\Entity\Hv\RedSocial;
 use App\Exception\Novasoft\Api\NotFoundException;
+use App\Service\ExceptionHandler;
 use App\Service\Utils\Symbol;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
@@ -25,17 +26,23 @@ class HvClient extends NovasoftApiClient
      */
     private $symbol;
 
-    public function __construct(HttpClientInterface $httpClient, string $napiUrl, string $napiDb,
-                                NormalizerInterface $normalizer, Symbol $symbol)
+    public function __construct(HttpClientInterface $httpClient, string $napiUrl, string $napiDb, NormalizerInterface $normalizer,
+                                DenormalizerInterface $denormalizer, ExceptionHandler $exceptionHandler, Symbol $symbol)
     {
-        parent::__construct($httpClient, $napiUrl, $napiDb, $normalizer);
+        parent::__construct($httpClient, $napiUrl, $napiDb, $normalizer, $denormalizer, $exceptionHandler);
         $this->symbol = $symbol;
     }
 
+    /**
+     * @param Hv $hv
+     * @return array
+     * @throws ExceptionInterface
+     * @throws TransportExceptionInterface
+     */
     public function post(Hv $hv)
     {
         $hvNormalized = $this->normalizer->normalize($hv, null, ['groups' => ['napi:hv:post']]);
-        $this->sendPost('/hv', $hvNormalized);
+        return $this->sendPost('/hv', $hvNormalized);
     }
 
     public function put(Hv $hv)

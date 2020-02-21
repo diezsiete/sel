@@ -78,7 +78,7 @@ class HvController extends BaseController
                 $napiMessenger->update($hv);
             }
 
-            $this->addFlash('success', "Datos guardados exitosamente");
+            $this->addFlash('success', 'Datos guardados exitosamente');
             $this->redirectToRoute('hv_datos_basicos');
         }
 

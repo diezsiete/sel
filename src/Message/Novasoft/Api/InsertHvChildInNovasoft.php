@@ -6,6 +6,8 @@ namespace App\Message\Novasoft\Api;
 
 class InsertHvChildInNovasoft
 {
+    use MessageWithScraperSolicitud;
+
     private $childId;
     /**
      * @var string

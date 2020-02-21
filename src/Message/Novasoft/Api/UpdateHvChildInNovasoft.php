@@ -6,6 +6,7 @@ namespace App\Message\Novasoft\Api;
 
 class UpdateHvChildInNovasoft
 {
+    use MessageWithScraperSolicitud;
     /**
      * @var array
      */

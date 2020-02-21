@@ -6,6 +6,7 @@ namespace App\Message\Novasoft\Api;
 
 class DeleteHvChildInNovasoft
 {
+    use MessageWithScraperSolicitud;
     /**
      * @var string
      */

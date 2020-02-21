@@ -12,6 +12,8 @@ use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 class UpdateHvInNovasoftHandler implements MessageHandlerInterface
 {
+    use MessageWithScraperSolicitudHandler;
+
     /**
      * @var HvRepository
      */
@@ -37,7 +39,10 @@ class UpdateHvInNovasoftHandler implements MessageHandlerInterface
         $this->em->clear();
         $hv = $this->hvRepo->find($message->getHvId());
         if($hv) {
-            $this->client->put($hv);
+            //$this->client->put($hv);
+            $this->handleRequest($this->em, $message, function () use($hv) {
+                return $this->client->put($hv);
+            });
         }
     }
 }
