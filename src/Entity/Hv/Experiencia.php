@@ -106,11 +106,8 @@ class Experiencia implements HvEntity
     private $jefeInmediato;
 
     /**
-     * @ORM\Column(type="string", length=20, nullable=true)
-     * @Assert\Length(
-     *      max = 20,
-     *      maxMessage = "Salario basico supera el limite de {{ limit }} caracteres"
-     * )
+     * @ORM\Column(type="bigint", nullable=true)
+     * @Assert\Regex(pattern="/^[0-9]+$/", message="Solo se aceptan numeros")
      * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
      */
     private $salarioBasico;
