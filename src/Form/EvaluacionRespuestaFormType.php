@@ -18,6 +18,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Count;
 
 class EvaluacionRespuestaFormType extends AbstractType
 {
@@ -27,10 +28,21 @@ class EvaluacionRespuestaFormType extends AbstractType
         $respuesta = $options['data'];
 
         if($respuesta instanceof MultipleOrdenar) {
+            $minMax = $respuesta->getPregunta()->getOpciones()->count();
             $builder->add('opciones', EvaluacionMultipleOrdenarType::class, [
                 'choices' => $respuesta->getPregunta()->getOpciones(),
-                'data' => $respuesta
+                'data' => $respuesta,
+                'constraints' => [
+                    new Count([
+                        'min' => $minMax,
+                        'max' => $minMax,
+                        'exactMessage' => 'Seleccione una opcion',
+                    ])
+                ]
             ]);
+//            'constraints' => [
+//                new NotBlank(['message' => "Ingrese su nombre"])
+//            ]
         } else {
             $builder->add('opciones', EntityType::class, [
                 'class' => Opcion::class,

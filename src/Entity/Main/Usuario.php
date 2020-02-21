@@ -272,7 +272,7 @@ class Usuario implements UserInterface
 
     public function getSegundoNombre(): ?string
     {
-        return $this->segundoNombre;
+        return $this->segundoNombre ?? '';
     }
 
     public function setSegundoNombre(?string $segundoNombre): self
@@ -296,7 +296,7 @@ class Usuario implements UserInterface
 
     public function getSegundoApellido(): ?string
     {
-        return $this->segundoApellido;
+        return $this->segundoApellido ?? '';
     }
 
     public function setSegundoApellido(?string $segundoApellido): self

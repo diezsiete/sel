@@ -5,6 +5,7 @@ namespace App\Entity\Evaluacion\Respuesta;
 
 use App\Entity\Evaluacion\Pregunta\MultipleOrdenar as PreguntaMultipleOrdenar;
 use App\Validator\EvaluacionMultipleOrdenar;
+use Countable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -16,16 +17,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @method PreguntaMultipleOrdenar getPregunta()
  * @EvaluacionMultipleOrdenar()
  */
-class MultipleOrdenar extends MultipleUnica
+class MultipleOrdenar extends MultipleUnica implements Countable
 {
     /**
      * @var Opcion[]|ArrayCollection
      * @ORM\OneToMany(targetEntity="App\Entity\Evaluacion\Respuesta\Opcion", mappedBy="respuesta", orphanRemoval=true, cascade={"persist"})
-     * @Assert\Count(
-     *      min = 4,
-     *      max = 4,
-     *      exactMessage = "Seleccione una opcion",
-     * )
      */
     protected $opciones;
 
@@ -87,4 +83,11 @@ class MultipleOrdenar extends MultipleUnica
         return $ok;
     }
 
+    /**
+     * @inheritDoc
+     */
+    public function count()
+    {
+        return $this->opciones->count();
+    }
 }

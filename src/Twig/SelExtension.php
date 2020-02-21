@@ -2,6 +2,7 @@
 
 namespace App\Twig;
 
+use App\Service\Component\LoadingOverlayComponent;
 use App\Service\Configuracion\Configuracion;
 use App\Service\Utils;
 use DateTime;
@@ -51,7 +52,11 @@ class SelExtension extends AbstractExtension implements ServiceSubscriberInterfa
     {
         return [
             new TwigFunction('master_request', [$this, 'masterRequest']),
-            new TwigFunction('is_sel', [$this, 'isSel'])
+            new TwigFunction('is_sel', [$this, 'isSel']),
+
+            new TwigFunction('loading_overlay_body_class', [$this, 'loadingOverlayBodyClass']),
+            new TwigFunction('loading_overlay_body_options', [$this, 'loadingOverlayBodyOptions'], ['is_safe' => ['html']]),
+            new TwigFunction('loading_overlay', [$this, 'loadingOverlayTemplate'], ['is_safe' => ['html']])
         ];
     }
 
@@ -83,13 +88,50 @@ class SelExtension extends AbstractExtension implements ServiceSubscriberInterfa
         return $this->container->get(Utils::class)->meses($n - 1);
     }
 
+    public function loadingOverlayBodyClass()
+    {
+        if($this->container->get(LoadingOverlayComponent::class)->isEnabled()) {
+            return 'loading-overlay-showing';
+        }
+        return '';
+    }
+
+    public function loadingOverlayBodyOptions()
+    {
+        $component = $this->container->get(LoadingOverlayComponent::class);
+        if($component->isEnabled()) {
+            return "data-loading-overlay data-loading-overlay-options='".$component->encodeOptions()."'";
+        }
+        return '';
+    }
+
+    public function loadingOverlayTemplate()
+    {
+        $component = $this->container->get(LoadingOverlayComponent::class);
+        if($component->isEnabled()) {
+            $component->clearSession();
+            return
+                '<div class="loading-overlay">
+                    <div class="bounce-loader with-text">
+                        <h4>Estamos cargando su información, por favor espere un momento</h4>
+                        <div class="bounce1"></div>
+                        <div class="bounce2"></div>
+                        <div class="bounce3"></div>
+                    </div>
+                </div>';
+        }
+        return '';
+    }
+
+
 
     public static function getSubscribedServices()
     {
         return [
             RequestStack::class,
             Utils::class,
-            Configuracion::class
+            Configuracion::class,
+            LoadingOverlayComponent::class,
         ];
     }
 }

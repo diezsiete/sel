@@ -105,14 +105,14 @@ class Hv implements HvEntity
     private $resiCiudad;
 
     /**
-     * @ORM\Column(type="string", length=45, nullable=true)
+     * @ORM\Column(type="string", length=50, nullable=true)
      * @Assert\NotNull(message="Ingrese barrio")
      * @Groups({"napi:hv:post", "napi:hv:put", "scraper", "scraper-hv"})
      */
     private $barrio;
 
     /**
-     * @ORM\Column(type="string", length=50, nullable=true)
+     * @ORM\Column(type="string", length=40, nullable=true)
      * @Assert\NotNull(message="Ingrese dirección")
      * @Groups({"napi:hv:post", "napi:hv:put", "scraper", "scraper-hv"})
      */

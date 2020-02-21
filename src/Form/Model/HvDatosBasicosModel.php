@@ -158,7 +158,7 @@ class HvDatosBasicosModel
     /**
      * @Assert\NotNull(message="Ingrese barrio")
      * @Assert\Length(
-     *      max = 45,
+     *      max = 50,
      *      maxMessage = "Barrio supera el limite de {{ limit }} caracteres"
      * )
      */
@@ -167,7 +167,7 @@ class HvDatosBasicosModel
     /**
      * @Assert\NotNull(message="Ingrese dirección")
      * @Assert\Length(
-     *      max = 50,
+     *      max = 40,
      *      maxMessage = "La dirección supera el limite de {{ limit }} caracteres"
      * )
      */
