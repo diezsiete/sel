@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Service\Novasoft\Api\Client;
-
 
 use App\Entity\Hv\Hv;
 use App\Entity\Hv\HvEntity;
@@ -34,6 +32,21 @@ class HvClient extends NovasoftApiClient
     }
 
     /**
+     * @param Hv|string $hv objeto o identificacion
+     * @return mixed|null
+     * @throws ClientExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
+     */
+    public function get($hv)
+    {
+        $identificacion = is_object($hv) ? $hv->getUsuario()->getIdentificacion() : $hv;
+        return $this->sendGet('/hv/' . $identificacion);
+    }
+
+    /**
      * @param Hv $hv
      * @return array
      * @throws ExceptionInterface
@@ -52,6 +65,33 @@ class HvClient extends NovasoftApiClient
             return $this->sendPut("/hv/{$hv->getUsuario()->getIdentificacion()}", $hvNormalized);
         }
         return null;
+    }
+
+    /**
+     * @param Hv|string $hv objeto o identificacion
+     * @return int
+     * @throws ClientExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws NotFoundException
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
+     */
+    public function delete($hv)
+    {
+        $identificacion = is_object($hv) ? $hv->getUsuario()->getIdentificacion() : $hv;
+        return $this->sendDelete('/hv/' . $identificacion);
+    }
+
+
+    /**
+     * @param Hv|string $hv
+     * @param $childClassName
+     */
+    public function getChild($hv, $childClassName)
+    {
+        $identificacion = is_object($hv) ? $hv->getUsuario()->getIdentificacion() : $hv;
+        return $this->sendGet('/' . $this->symbol->toSnakeCase($childClassName, '-'));
     }
 
     public function postChild(HvEntity $entity)

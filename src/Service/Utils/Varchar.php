@@ -34,7 +34,7 @@ class Varchar
     }
 
 
-    public function pascalize($string, $separator = '_')
+    public function pascalize($string, $separator = ['_', '-'])
     {
         return str_replace(' ', '', mb_convert_case(str_replace($separator, ' ', $string), MB_CASE_TITLE));
     }
