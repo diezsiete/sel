@@ -59,6 +59,7 @@ Encore
     .addEntry('portal-clientes', './assets/sel/js/clientes/portal-clientes.js')
     .addEntry('clientes-report', './assets/sel/js/clientes/report.js')
     .addEntry('single-page', './assets/sel/js/single-page/app.js')
+    .addEntry('single-page-clientes', './assets/sel/js/single-page/clientes.js')
 
 
     //.addEntry('page1', './assets/js/page1.js')

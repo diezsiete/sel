@@ -47,6 +47,8 @@ class ListadoNominaReport extends Report
         // rs_gen_cl2
         // rs_gen_cl3
 
+    //=IIf(Fields!Nat_liq.Value = 1, "DEVENGO", IIF(Fields!Nat_liq.Value = 2, "DEDUCCION",IIF(Fields!Nat_liq.Value=3,"NETOS",IIF(Fields!Nat_liq.Value=4,"APORTES EMPLEADOR",IIF(Fields!Nat_liq.Value=5,"BASES","PROVISIONES/PARAFISCALES")))))
+
     /**
      * @var string Tipo Liquidación
      *  "%": <TODOS> (restringida)
