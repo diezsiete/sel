@@ -23,7 +23,7 @@ class Area
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Groups("main")
+     * @Groups({"main", "messenger:hv-child:put"})
      */
     private $nombre;
 

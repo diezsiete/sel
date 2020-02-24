@@ -1,6 +1,7 @@
 <?php
 namespace App\Service\Novasoft\Api;
 
+use App\Entity\Hv\Experiencia;
 use App\Entity\Hv\Hv;
 use App\Entity\Hv\HvEntity;
 use App\Entity\Scraper\Solicitud;
@@ -73,7 +74,14 @@ class NovasoftApiMessenger
 
     public function updateChild(HvEntity $entity, Hv $hv)
     {
+        /** @var array $childNormalized */
         $childNormalized = $this->normalizer->normalize($entity, null, ['groups' => ['messenger:hv-child:put', 'napi:hv-child:put']]);
+
+        // fix chimbo inconsistencia experiencia tipo id entre sel y novasoft
+        if(isset($childNormalized['area']['id']) && get_class($entity) === Experiencia::class) {
+            $childNormalized['area']['id'] = (string)$childNormalized['area']['id'];
+        }
+
         $message = new UpdateHvChildInNovasoft($childNormalized, get_class($entity), $hv->getId());
 //        $this->messageBus->dispatch($message);
         $this->dispatchMessageWithSolicitud($hv, $message);
