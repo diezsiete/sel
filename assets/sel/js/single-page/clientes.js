@@ -3,16 +3,17 @@ import Vue from 'vue';
 import 'vuetify/dist/vuetify.min.css'
 import './../../css/single-page.scss';
 
-import '@progress/kendo-theme-default/dist/all.css'
+//import '@progress/kendo-theme-default/dist/all.css'
 //import { DropDownList } from '@progress/kendo-vue-dropdowns';
 
-import ListadoNomina from './components/Clientes/ListadoNomina';
+//import ListadoNomina from './components/Clientes/ListadoNomina';
+import ListadoNomina2 from "@/components/Clientes/ListadoNomina2";
 import Vuetify from "vuetify";
 
 
 
 //Vue.component('dropdownlist', DropDownList);
-Vue.component('listado-nomina', ListadoNomina);
+Vue.component('listado-nomina2', ListadoNomina2);
 Vue.use(Vuetify);
 const vuetify = new Vuetify({});
 
