@@ -20,7 +20,8 @@ export default new Vuex.Store({
         rows: [],
         convenio: 'INDMIL',
         fecha: '2020-01-31',
-        loading: false
+        loading: false,
+        totales: {}
     },
     mutations: {
         SET_LOADING_STATUS(state, status) {
@@ -29,8 +30,28 @@ export default new Vuex.Store({
         SET_COLUMNS(state, naturalezas) {
             state.columns = naturalezas;
         },
-        SET_ROWS(state, rows) {
+        SET_RESUMENES(state, rows) {
             state.rows = rows
+        },
+        UPDATE_RESUMEN_TO_DETALLE(state, {identificacion, detalle}) {
+            state.rows.forEach(stateResumen => {
+                if(stateResumen.identificacion === identificacion) {
+                    state.totales[stateResumen.identificacion] = {
+                        devengo: stateResumen.devengo,
+                        deduccion: stateResumen.deduccion,
+                        netos: stateResumen.netos,
+                        aportes: stateResumen.aportes,
+                        bases: stateResumen.bases,
+                        provisionesParafiscales: stateResumen.provisionesParafiscales
+                    };
+                    stateResumen.devengo = detalle[0].conceptos
+                    stateResumen.deduccion = detalle[1].conceptos
+                    stateResumen.netos = detalle[2].conceptos
+                    stateResumen.aportes = detalle[3].conceptos
+                    stateResumen.bases = detalle[4].conceptos
+                    stateResumen.provisionesParafiscales = detalle[5].conceptos
+                }
+            })
         }
     },
     actions: {
@@ -49,8 +70,15 @@ export default new Vuex.Store({
             const response = await axios.get(Router.generate('sel_api_listado_nomina_resumen', {
                 convenio: state.convenio, fecha: state.fecha
             }));
-            const rows = response.data['hydra:member'];
-            commit('SET_ROWS', rows);
+            const resumenes = response.data['hydra:member'];
+            commit('SET_RESUMENES', resumenes);
+        },
+        async modifyResumenWithDetalle({commit, state}, resumen) {
+            const response = await axios.get(Router.generate('sel_api_listado_nomina_detalle', {
+                convenio: state.convenio, fecha: state.fecha, empleado: resumen.identificacion
+            }));
+            const detalle = response.data['hydra:member'];
+            commit('UPDATE_RESUMEN_TO_DETALLE', {identificacion: resumen.identificacion, detalle})
         }
     }
 })
