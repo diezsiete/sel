@@ -19,7 +19,7 @@ class PortalClientesService
      */
     private $security;
     /**
-     * @var \App\Repository\Main\RepresentanteRepository
+     * @var RepresentanteRepository
      */
     private $representanteRepository;
 
@@ -43,6 +43,18 @@ class PortalClientesService
                 $convenio = $representante->getConvenio();
             } else {
                 throw new Exception("Usuario {$usuario->getId()} acceso a admin autoliquidacion, no es admin y no es representante");
+            }
+        }
+        return $convenio;
+    }
+
+    public function getConvenio(Usuario $usuario)
+    {
+        $convenio = null;
+        if(!$this->security->isGranted('/ADMIN/') &&
+            $this->security->isGranted(['ROLE_REPRESENTANTE_CLIENTE', 'ROLE_REPRESENTANTE_SERVICIO'])) {
+            if($representante = $this->representanteRepository->findByUsuario($usuario)) {
+                $convenio = $representante->getConvenio();
             }
         }
         return $convenio;

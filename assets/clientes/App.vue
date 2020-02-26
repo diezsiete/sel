@@ -16,9 +16,15 @@
 
     export default {
         name: 'app',
+        props: ["convenio", "isAdmin"],
         components: {
             Header,
             Footer
+        },
+        beforeMount() {
+            const convenio = JSON.parse(this.convenio);
+            const isAdmin = !!this.isAdmin;
+            this.$store.dispatch('bootstrap', {convenio, isAdmin})
         }
     }
 </script>

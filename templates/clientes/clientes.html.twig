@@ -10,7 +10,7 @@
 {% block body %}
     <div class="row">
         <div class="col">
-            <div id="app"></div>
+            <div id="app" data-convenio="{{ convenio|json_encode }}" data-is-admin="{{ isAdmin }}"></div>
         </div>
     </div>
 {% endblock %}

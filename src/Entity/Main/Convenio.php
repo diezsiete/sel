@@ -281,10 +281,10 @@ class Convenio implements \JsonSerializable
     public function jsonSerialize()
     {
         return [
-            "codigo" => $this->codigo,
-            "nombre" => $this->nombre,
-            "codigoCliente" => $this->codigoCliente,
-            "direccion" => $this->direccion
+            'codigo' => $this->codigo,
+            'nombre' => $this->nombre,
+            'codigoCliente' => $this->codigoCliente,
+            'direccion' => $this->direccion
         ];
     }
 

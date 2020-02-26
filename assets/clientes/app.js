@@ -5,11 +5,21 @@ import App from './App.vue'
 import vuetify from "./plugins/Vuetify";
 import './style/single-page.scss';
 
+const rootElement = document.getElementById('app');
 
-
-const app = new Vue({
-    render: h => h(App),
+const rootComponent = Vue.extend(App);
+// noinspection JSValidateTypes
+new rootComponent({
+    el: rootElement,
+    propsData: { ...rootElement.dataset },
     store,
     router,
     vuetify
-}).$mount('#app');
+});
+
+// const app = new Vue({
+//     render: h => h(App),
+//     store,
+//     router,
+//     vuetify
+// }).$mount('#app');

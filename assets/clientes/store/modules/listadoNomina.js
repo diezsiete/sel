@@ -52,9 +52,9 @@ export default {
         }
     },
     actions: {
-        async requestNominas({commit, rootState}){
+        async requestNominas({commit, rootGetters}){
             const response = await axios.get(Router.generate('sel_api_listado_nomina_fechas', {
-                convenio: rootState.convenio
+                convenio: rootGetters.convenio
             }));
             const nominas = response.data['hydra:member'];
             commit('SET_NOMINAS', nominas)
@@ -62,16 +62,16 @@ export default {
         updateFecha({commit}, fecha) {
             commit('SET_FECHA', fecha);
         },
-        async requestResumenes({commit, state,  rootState}) {
+        async requestResumenes({commit, state,  rootGetters}) {
             const response = await axios.get(Router.generate('sel_api_listado_nomina_resumen', {
-                convenio: rootState.convenio, fecha: state.fecha
+                convenio: rootGetters.convenio, fecha: state.fecha
             }));
             const resumenes = response.data['hydra:member'];
             commit('SET_RESUMENES', resumenes);
         },
-        async modifyResumenWithDetalle({commit, state, rootState}, resumen) {
+        async modifyResumenWithDetalle({commit, state, rootGetters}, resumen) {
             const response = await axios.get(Router.generate('sel_api_listado_nomina_detalle', {
-                convenio: rootState.convenio, fecha: state.fecha, empleado: resumen.identificacion
+                convenio: rootGetters.convenio, fecha: state.fecha, empleado: resumen.identificacion
             }));
             const detalle = response.data['hydra:member'];
             commit('UPDATE_RESUMEN_TO_DETALLE', {identificacion: resumen.identificacion, detalle})
