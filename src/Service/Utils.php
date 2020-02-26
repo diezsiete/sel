@@ -53,7 +53,6 @@ class Utils
      */
     public function meses($mes_index = false)
     {
-
         $meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
         return $mes_index !== false ? $meses[$mes_index] : $meses;
     }

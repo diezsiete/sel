@@ -10,6 +10,13 @@ use Symfony\Component\Routing\Annotation\Route;
 class ListadoNomina extends BaseController
 {
     /**
+     * @Route("/api/listado-nomina/{convenio}", methods="GET", name="sel_api_listado_nomina_fechas", options={"expose" = true})
+     */
+    public function fechas()
+    {
+        
+    }
+    /**
      * @Route("/api/listado-nomina/{convenio}/{fecha}/conceptos", methods="GET", name="sel_api_listado_nomina_conceptos", options={"expose" = true})
      */
     public function conceptos()
