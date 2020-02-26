@@ -24,7 +24,7 @@ class Clientes extends BaseController
         $user = $this->getUser();
         $convenio = $portalClientesService->getConvenio($user);
         $isAdmin = $user->esRol(['/ADMIN/', '/SERVICIO/']);
-        $convenio = $convenioRepo->find('ALMLAN');
+        $convenio = $convenioRepo->find('INDMIL');
         return $this->render('/clientes/clientes.html.twig', [
             'convenio' => $convenio,
             'isAdmin'  => $isAdmin

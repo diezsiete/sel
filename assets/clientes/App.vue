@@ -1,25 +1,20 @@
 <template>
-    <div id="root">
+    <v-app>
         <div class="content">
             <Header :project-name="'kendo'" />
             <router-view></router-view>
         </div>
-        <div class="footer">
-            <Footer />
-        </div>
-    </div>
+    </v-app>
 </template>
 
 <script>
     import Header from './components/Header.vue'
-    import Footer from './components/Footer.vue'
 
     export default {
         name: 'app',
         props: ["convenio", "isAdmin"],
         components: {
-            Header,
-            Footer
+            Header
         },
         beforeMount() {
             const convenio = JSON.parse(this.convenio);
@@ -30,5 +25,7 @@
 </script>
 
 <style lang="scss">
-    /*@import './assets/styles/app.scss';*/
+    #app{
+        background-color: #ecedf0;
+    }
 </style>

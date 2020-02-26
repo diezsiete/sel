@@ -24,7 +24,7 @@
                 :search="search"
                 hide-default-footer
                 item-key="nombre"
-                loading
+                :loading="isLoading"
                 loading-text="Cargando... Por favor espere"
                 show-expand
                 :single-expand="singleExpand"
@@ -126,6 +126,7 @@
                     { value: 'provisionesParafiscales', text: 'Provisiones/Parafiscales'},
                     { text: '', value: 'data-table-expand' },
                 ],
+                isLoading: true
             }
         },
         computed: mapState('listadoNomina', {
@@ -135,15 +136,18 @@
         }),
         methods: {
             async onItemExpanded({item, value}) {
+                this.isLoading = true;
                 if(value) {
                     await this.$store.dispatch('listadoNomina/modifyResumenWithDetalle', item);
                 } else {
                     await this.$store.dispatch('listadoNomina/modifyDetalleWithResumen', item)
                 }
+                this.isLoading = false;
             },
         },
         async mounted() {
             await this.$store.dispatch('listadoNomina/requestResumenes');
+            this.isLoading = false;
             //const dt = this.$refs.dataTable;
         }
     }
@@ -151,9 +155,6 @@
 
 <style lang="scss"  type="text/scss">
     #listado-nomina {
-        /*.v-progress-linear__indeterminate .long{*/
-        /*    background-color: #0ae4ff;*/
-        /*}*/
         th:not(:first-child) {
             text-align: right;
         }
@@ -169,12 +170,12 @@
             font-size: .9em;
         }
 
-        tr td:not(:first-child) {
-            text-align: right;
+        tr td:not(:first-child):not(:last-child) {
+            text-align: right !important;
 
         }
 
-        tbody tr:not(.v-data-table__expanded__content) td {
+        tbody tr.v-data-table__expanded.v-data-table__expanded__row td {
             vertical-align: top;
 
             .concepto {

@@ -9,7 +9,8 @@
                 :search="search"
                 class="elevation-1"
                 item-key="fecha"
-                loading loading-text="Cargando... Por favor espere"
+                :loading="isLoading"
+                loading-text="Cargando... Por favor espere"
         >
             <template v-slot:item.action="{ item }">
                 <v-btn small outlined color="indigo" :to="{
@@ -34,6 +35,7 @@
         }),
         data () {
             return {
+                isLoading: true,
                 search: '',
                 headers: [
                     { text: 'Codigo', value: 'codigo' },
@@ -43,8 +45,9 @@
                 ],
             }
         },
-        mounted() {
-            this.$store.dispatch('listadoNomina/requestNominas');
+        async mounted() {
+            await this.$store.dispatch('listadoNomina/requestNominas');
+            this.isLoading = false;
         }
     }
 </script>
