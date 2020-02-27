@@ -178,11 +178,11 @@ class MenuBuilder
                 'Listado nomina' => [
                     'options' => ['route' => 'clientes_listado_nomina2'],
                     'extra' => ['name' => 'icon', 'value' => 'fas fa-clipboard-list']
-                ],
+                ]/*,
                 'Liquidación nomina' => [
                     'options' => ['route' => 'clientes_liquidaciones_nomina'],
                     'extra' => ['name' => 'icon', 'value' => 'fas fa-clipboard-list']
-                ]
+                ]*/
             ]);
 
         }

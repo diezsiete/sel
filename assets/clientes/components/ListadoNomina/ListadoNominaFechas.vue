@@ -15,7 +15,7 @@
             <template v-slot:item.action="{ item }">
                 <v-btn small outlined color="indigo" :to="{
                     name: 'ListadoNominaResumen',
-                    params: { convenio: 'ALMLAN', fecha: item.fecha}
+                    params: { convenio: convenio.codigo, fecha: item.fecha}
                 }">
                     <v-icon>navigate_next</v-icon>
                 </v-btn>
@@ -44,7 +44,7 @@
                     { text: 'Codigo', value: 'codigo' },
                     { text: 'Nombre', value: 'nombre' },
                     { text: 'Fecha', value: 'fecha' },
-                    { text: 'Actions', value: 'action', sortable: false },
+                    { text: 'Detalle', value: 'action', sortable: false },
                 ],
             }
         },
