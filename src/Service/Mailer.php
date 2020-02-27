@@ -13,6 +13,11 @@ use Swift_Attachment;
 use Swift_Mailer;
 use Swift_Message;
 
+/**
+ * Class Mailer
+ * @package App\Service
+ * @deprecated
+ */
 class Mailer
 {
     /**

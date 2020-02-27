@@ -10,7 +10,12 @@ use App\Entity\Main\Convenio;
 use App\Entity\Main\Usuario;
 use App\Exception\UploadedFileValidationErrorsException;
 use App\Repository\Archivo\ArchivoRepository;
+use App\Repository\Main\UsuarioRepository;
+use App\Service\ExceptionHandler;
+use App\Service\File\ArchivoEmailManager;
 use App\Service\File\ArchivoManager;
+use App\Service\Mail\Mail;
+use App\Service\Utils\Solicitud;
 use Exception;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -168,17 +173,42 @@ class ArchivoController extends BaseController
      *     options={"expose" = true},
      * )
      */
-    public function enviarCorreo(Request $request, ArchivoRepository $archivoRepo, ArchivoManager $archivoManager)
+    public function enviarCorreo(Request $request,  Mail $mail, ExceptionHandler $eHandler,
+                                 ArchivoEmailManager $archivoManager, Solicitud $solicitudUtil)
     {
-        $owners = $this->jsonPostParseBody($request)->request->get('owners');
-        $archivosCount = 0;
-        foreach($owners as $ownerId) {
-            $archivos = $archivoRepo->findAllByOwner($ownerId);
-            foreach($archivos as $archivo) {
-                $archivoManager->downloadLocal($archivo);
+        $ok = false;
+        $name = 'email';
+        try {
+            $mail
+                ->from('info@servilabor.com.co')
+                // TODO utlizar los correos de los representantes
+                ->to('guerrerojosedario@gmail.com')
+                ->subject('Envio archivos empleados');
+
+            $owners = $solicitudUtil->jsonPostParseBody($request)->request->get('owners');
+            if($archivoManager->createSendFile($owners, $name)) {
+                $zipPath = $archivoManager->createZip($name);
+                if($archivoManager->isZipSendable($name)) {
+                    $mail->html('<h3>Buen dia</h3><p>Adjuntamos archivos de los empleados</p>')
+                        ->attach($zipPath);
+                } else {
+                    $link = $archivoManager->generateZipLink($name);
+                    $mail->html('<h3>Buen dia</h3>
+                                       <p>Se han cargado nuevos archivos de empleados</p>
+                                       <p>Puede descargar el comprimido de ellos en el siguiente link: </p>
+                                       <a href="'.$link.'">Descargar archivos</a>
+                                       <p>Adicionalemente siempre estaran disponibles en nuestra pagina web.</p>
+                                       <p><a href="https://pta.com.co">Ver en pagina web</a></p><p>Gracias</p>');
+                }
+                $mail->send();
             }
+            $ok = true;
+        } catch (Exception $e) {
+            $eHandler->handle($e);
+        } finally {
+            $archivoManager->deleteSendFile($name);
         }
-        return $this->json(['owners' => $archivosCount]);
+        return $this->json(['ok' => $ok]);
     }
 
 }

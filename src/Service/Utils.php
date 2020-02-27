@@ -10,6 +10,11 @@ namespace App\Service;
 use Egulias\EmailValidator\EmailValidator;
 use Egulias\EmailValidator\Validation\RFCValidation;
 
+/**
+ * Class Utils
+ * @package App\Service
+ * @deprecated
+ */
 class Utils
 {
     private $emailValidator = null;
@@ -71,10 +76,10 @@ class Utils
     }
 
     /**
-     * TODO : agregar a biblioteca
      * Version 1.0
      * @param $val
      * @return int|mixed|string
+     * @deprecated
      */
     function return_bytes($val) 
     {
@@ -93,6 +98,10 @@ class Utils
         return $val;
     }
 
+    /**
+     * @return mixed
+     * @deprecated
+     */
     function max_file_upload_in_bytes() 
     {
         //select maximum upload size

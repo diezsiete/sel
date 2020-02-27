@@ -295,6 +295,15 @@
     "swiftmailer/swiftmailer": {
         "version": "v6.2.1"
     },
+    "symfony/amazon-mailer": {
+        "version": "4.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "4.3",
+            "ref": "5dc61848401953f3ba03515d925904d2804c6ad5"
+        }
+    },
     "symfony/asset": {
         "version": "v4.2.8"
     },
