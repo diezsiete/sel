@@ -5,8 +5,13 @@ import axios from 'axios';
 
 Vue.use(Vuex);
 
+import enviar from './modules/enviar'
+
 export default new Vuex.Store({
     strict: true,
+    modules: {
+        enviar
+    },
     state: {
         empleado: null,
         archivos: [],

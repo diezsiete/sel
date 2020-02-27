@@ -6,6 +6,7 @@ namespace App\Controller\Admin\Api;
 
 use App\Controller\BaseController;
 use App\Entity\Archivo\Archivo;
+use App\Entity\Main\Convenio;
 use App\Entity\Main\Usuario;
 use App\Exception\UploadedFileValidationErrorsException;
 use App\Repository\Archivo\ArchivoRepository;
@@ -146,4 +147,38 @@ class ArchivoController extends BaseController
     {
         return $this->renderZip($archivoManager->downloadLocalZipPath($usuario), $usuario->getIdentificacion() . ".zip");
     }
+
+
+    /**
+     * @Route("/sel/admin/api/archivo/find-usuarios-by-convenio-with-archivos/{codigo}",
+     *     name="sel_admin_api_archvio_find_usuarios_by_convenio_with_archivos",
+     *     options={"expose" = true}
+     * )
+     */
+    public function findByConvenioWithArchivos(Convenio $convenio, ArchivoRepository $archivoRepo)
+    {
+        $result = $archivoRepo->findUsuariosByConvenioWithArchivos($convenio);
+        return $this->json($result, 200, [], ['groups' => ['api']]);
+    }
+
+    /**
+     * @Route("/sel/admin/api/archivo/enviar-correo",
+     *     methods="POST",
+     *     name="sel_admin_api_archivo_enviar_correo",
+     *     options={"expose" = true},
+     * )
+     */
+    public function enviarCorreo(Request $request, ArchivoRepository $archivoRepo, ArchivoManager $archivoManager)
+    {
+        $owners = $this->jsonPostParseBody($request)->request->get('owners');
+        $archivosCount = 0;
+        foreach($owners as $ownerId) {
+            $archivos = $archivoRepo->findAllByOwner($ownerId);
+            foreach($archivos as $archivo) {
+                $archivoManager->downloadLocal($archivo);
+            }
+        }
+        return $this->json(['owners' => $archivosCount]);
+    }
+
 }

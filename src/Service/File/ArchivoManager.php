@@ -12,6 +12,7 @@ use App\Helper\S3Helper;
 use App\Repository\Archivo\ArchivoRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use League\Flysystem\FileExistsException;
 use League\Flysystem\FileNotFoundException;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemInterface;
@@ -145,7 +146,7 @@ class ArchivoManager extends FileManager
     /**
      * @param Archivo|int $archivo
      * @throws FileNotFoundException
-     * @throws \League\Flysystem\FileExistsException
+     * @throws FileExistsException
      */
     public function downloadLocal($archivo)
     {
