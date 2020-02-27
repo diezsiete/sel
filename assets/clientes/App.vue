@@ -1,7 +1,6 @@
 <template>
     <v-app>
         <div class="content">
-            <Header :project-name="'kendo'" />
             <router-view></router-view>
         </div>
     </v-app>
@@ -12,14 +11,15 @@
 
     export default {
         name: 'app',
-        props: ["convenio", "isAdmin"],
+        props: ["convenio", "isAdmin", "empleado"],
         components: {
             Header
         },
         beforeMount() {
             const convenio = JSON.parse(this.convenio);
             const isAdmin = !!this.isAdmin;
-            this.$store.dispatch('bootstrap', {convenio, isAdmin})
+            const empleado = this.empleado || null;
+            this.$store.dispatch('bootstrap', {convenio, isAdmin, empleado})
         }
     }
 </script>

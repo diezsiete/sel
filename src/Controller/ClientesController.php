@@ -34,51 +34,9 @@ class ClientesController extends BaseController
         $this->portalClientesService = $portalClientesService;
     }
 
-    /**
-     * @Route("/sel/clientes/trabajadores-activos", name="clientes_trabajadores_activos")
-     */
-    public function trabajadoresActivos(DataTableFactory $dataTableFactory, Request $request)
-    {
-        $datatableOptions = [];
-        if($convenio = $this->portalClientesService->getRepresentanteConvenio()) {
-            $datatableOptions['convenio'] = $convenio;
-        }
-        $datatable = $dataTableFactory
-            ->createFromType(TrabajadoresActivosDataTableType::class, $datatableOptions, ['searching' => true])
-            ->handleRequest($request);
 
-        if($datatable->isCallback()) {
-            return $datatable->getResponse();
-        }
 
-        return $this->render('/clientes/trabajadores-activos.html.twig', [
-            'datatable' => $datatable
-        ]);
-    }
 
-    /**
-     * @Route("/sel/clientes/empleado/{id}", name="clientes_trabajador_activo_detalle")
-     */
-    public function trabajadorActivo(TrabajadorActivo $trabajadorActivo, LiquidacionNominaRepository $repository,
-                                     DataTableFactory $dataTableFactory, Request $request)
-    {
-        $liquidacionesNomina = $repository->findBy(['empleado' => $trabajadorActivo->getEmpleado()]);
-
-        $table = $dataTableFactory
-            ->createFromType(AutoliquidacionEmpleadoDataTableType::class, [
-                'empleado' => $trabajadorActivo->getEmpleado()
-            ], ['searching' => true])
-            ->handleRequest($request);
-        if($table->isCallback()) {
-            return $table->getResponse();
-        }
-
-        return $this->render('/clientes/trabajador-activo-detalle.html.twig', [
-            'trabajadorActivo' => $trabajadorActivo,
-            'liquidacionesNomina' => $liquidacionesNomina,
-            'datatable' => $table
-        ]);
-    }
 
     /**
      * @Route("/sel/clientes/listado-nomina", name="clientes_listado_nomina")

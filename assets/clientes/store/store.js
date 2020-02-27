@@ -11,14 +11,14 @@ export default new Vuex.Store({
     },
     state: {
         convenio: null,
-        isAdmin: false
+        isAdmin: false,
+        empleado: null,
     },
     mutations: {
-        SET_CONVENIO(state, convenio) {
-            state.convenio = convenio;
-        },
-        SET_IS_ADMIN(state, isAdmin) {
-            state.isAdmin = isAdmin;
+        BOOTSTRAP(state, payload) {
+            state.convenio = payload.convenio;
+            state.isAdmin = payload.isAdmin;
+            state.empleado = payload.empleado;
         }
     },
     getters: {
@@ -28,8 +28,11 @@ export default new Vuex.Store({
     },
     actions: {
         bootstrap({commit}, payload) {
-            commit('SET_CONVENIO', payload.convenio);
-            commit('SET_IS_ADMIN', payload.isAdmin);
+            commit('BOOTSTRAP', {
+                convenio: payload.convenio,
+                isAdmin: payload.isAdmin,
+                empleado: payload.empleado
+            });
         }
     }
 })

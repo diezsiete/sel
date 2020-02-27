@@ -1,8 +1,8 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "@clientes/pages/Home";
-import Bar from "@clientes/pages/Bar";
 import ListadoNominaResumen from "@clientes/pages/ListadoNomina/Resumen"
+import TrabajadorActivoDetalle from "@clientes/components/TrabajadorActivoDetalle";
 
 Vue.use(VueRouter);
 
@@ -20,9 +20,9 @@ export default new VueRouter({
             component: ListadoNominaResumen
         },
         {
-            path: "/sel/clientes/bar",
-            name: "Bar",
-            component: Bar
+            path: "/sel/clientes/empleado/:empleadoId",
+            name: "TrabajadorActivoDetalle",
+            component: TrabajadorActivoDetalle
         }
     ]
 });

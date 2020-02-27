@@ -78,7 +78,7 @@ class TrabajadorActivo
     private $adminPension;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Novasoft\Report\CentroCosto", inversedBy="trabajadoresActivos")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Novasoft\Report\CentroCosto", inversedBy="trabajadoresActivos", cascade={"persist"})
      * @ORM\JoinColumn(referencedColumnName="codigo")
      */
     private $centroCosto;

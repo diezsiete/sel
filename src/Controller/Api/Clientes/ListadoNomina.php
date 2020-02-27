@@ -36,4 +36,11 @@ class ListadoNomina extends BaseController
     public function detalle()
     {
     }
+
+    /**
+     * @Route("/api/listado-nomina/{convenio}/resumen/{empleado}", methods="GET", name="sel_api_listado_nomina_resumen_empleado", options={"expose" = true})
+     */
+    public function resumenEmpleado()
+    {
+    }
 }

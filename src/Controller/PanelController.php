@@ -71,6 +71,7 @@ class PanelController extends BaseController implements ActionBasedOnRole
         ]);
     }
 
+
 //    /**
 //     * @Route("/sel/panel/empleado/update", name="sel_panel_empleado_update", options={"expose" = true})
 //     */
