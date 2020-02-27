@@ -5,7 +5,7 @@
             color="deep-purple accent-4">
             <v-tab>Nominas</v-tab>
             <v-tab>Archivos</v-tab>
-            <v-tab>Abstract</v-tab>
+            <v-tab>Seguridad social</v-tab>
 
 
             <v-tab-item key="Nominas">
@@ -18,9 +18,9 @@
                     <archivos-empleado></archivos-empleado>
                 </v-card>
             </v-tab-item>
-            <v-tab-item key="Abstract">
+            <v-tab-item key="Seguridad social">
                 <v-card flat>
-                    <v-card-text>Abstract</v-card-text>
+                    <v-data-table item-key="name" class="elevation-1" loading loading-text="Loading... Please wait"></v-data-table>
                 </v-card>
             </v-tab-item>
 
