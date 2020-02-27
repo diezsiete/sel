@@ -117,6 +117,7 @@ class BaseController extends AbstractController
     /**
      * @param Request $request
      * @return Request
+     * @deprecated TODO utilizar el servicio Soliciutd::jsonPostParseBody
      */
     protected function jsonPostParseBody(Request $request)
     {

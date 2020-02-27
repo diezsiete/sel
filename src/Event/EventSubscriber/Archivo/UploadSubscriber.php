@@ -9,7 +9,8 @@ use App\Repository\Main\UsuarioRepository;
 use App\Service\File\ArchivoManager;
 use Oneup\UploaderBundle\Event\PostPersistEvent;
 use Oneup\UploaderBundle\Event\PreUploadEvent;
-use Oneup\UploaderBundle\Uploader\File\FilesystemFile;
+//use Oneup\UploaderBundle\Uploader\File\FilesystemFile;
+use Oneup\UploaderBundle\Uploader\File\FlysystemFile;
 use Oneup\UploaderBundle\UploadEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\File\File;
@@ -42,9 +43,9 @@ class UploadSubscriber implements EventSubscriberInterface
 
     public function preUpload(PreUploadEvent $event): void
     {
-        /** @var FilesystemFile $file */
+        /** @var FlysystemFile $file */
         $file = $event->getFile();
-        $this->originalFiles[$file->getInode()] = $this->archivoManager->getOriginalFilenameWithoutExtension($file);
+        //$this->originalFiles[$file->getInode()] = $this->archivoManager->getOriginalFilenameWithoutExtension($file);
     }
 
     public function onUpload(PostPersistEvent $event)
@@ -53,19 +54,22 @@ class UploadSubscriber implements EventSubscriberInterface
         /** @var Usuario $owner */
         $owner = $this->usuarioRepo->find($request->get('owner'));
 
-        /** @var File $file */
+        /** @var FlysystemFile $file */
         $file = $event->getFile();
-        if(isset($this->originalFiles[$file->getInode()])) {
+        //$inode = $file->getInode();
+        $inode = 'No-existe';
+        if(isset($this->originalFiles[$inode])) {
             $originalFilename = $this->originalFiles[$file->getInode()];
             unset($this->originalFiles[$file->getInode()]);
         } else {
-            $originalFilename = $file->getFilename();
+            $originalFilename = $file->getPathname();
         }
 
+
         $archivo = $this->archivoManager->createArchivo(
-            $file->getFilename(),
+            $file->getPathname(),
             $originalFilename,
-            $this->archivoManager->getMimeType($file, true),
+            $file->getExtension(),
             $file->getSize(),
             $file->getExtension(), $owner);
 
