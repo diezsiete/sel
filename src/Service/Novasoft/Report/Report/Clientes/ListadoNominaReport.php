@@ -162,9 +162,21 @@ class ListadoNominaReport extends Report
         $this->parameter_CodEmp = $identificacion;
     }
 
+    public function linkExcel()
+    {
+        return $this->pdfHandler->cacheAndLink($this->getExcelFileName(), function () {
+            return $this->renderExcel();
+        });
+    }
+
     public function getPdfFileName(): string
     {
         $fecha = $this->parameter_FecIni->format('Ymd') . '-' . $this->parameter_FecFin->format('Ymd');
         return 'novasoft/clientes/listado-nomina/' . $this->parameter_cod_conv . '-' . $fecha . '.pdf';
+    }
+
+    protected function getExcelFileName()
+    {
+        return str_replace('.pdf', '.xls', $this->getPdfFileName());
     }
 }

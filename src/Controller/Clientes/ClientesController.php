@@ -10,6 +10,7 @@ use App\DataTable\Type\Clientes\TrabajadoresActivosDataTableType;
 use App\Entity\Novasoft\Report\TrabajadorActivo;
 use App\Repository\Main\ConvenioRepository;
 use App\Repository\Novasoft\Report\LiquidacionNomina\LiquidacionNominaRepository;
+use App\Service\Novasoft\Report\ReportFactory;
 use App\Service\PortalClientes\PortalClientesService;
 use Omines\DataTablesBundle\DataTableFactory;
 use Symfony\Component\HttpFoundation\Request;
@@ -98,6 +99,15 @@ class ClientesController extends BaseController
             'convenio' => $convenio,
             'isAdmin'  => $isAdmin,
         ]);
+    }
+
+    /**
+     * @Route("/sel/clientes/listado-nomina2/download/{convenio}/{fecha1}/{fecha2}", name="clientes_listado_nomina2")
+     */
+    public function listadoNominaDownload(ReportFactory $reportFactory, $convenio, $fecha1, $fecha2)
+    {
+        $report = $reportFactory->clientes()->listadoNomina($convenio, $fecha1, $fecha2);
+        $report->linkExcel();
     }
 
     /**

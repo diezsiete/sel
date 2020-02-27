@@ -14,6 +14,7 @@ use App\Service\ServicioEmpleados\Report\PdfHandler;
 use App\Service\ServicioEmpleados\Report\ReportInterface;
 use App\Service\Utils;
 use SSRS\RenderType\RenderAsCSV;
+use SSRS\RenderType\RenderAsEXCEL;
 use SSRS\RenderType\RenderAsPDF;
 use SSRS\SSRSReport;
 use SSRS\SSRSReportException;
@@ -24,7 +25,7 @@ use SSRS\SSRSType\ReportParameterCollection;
 
 abstract class Report implements ReportInterface
 {
-    protected $path = "";
+    protected $path = '';
 
     /**
      * @var SSRSReport
@@ -77,7 +78,7 @@ abstract class Report implements ReportInterface
     /**
      * @var PdfHandler
      */
-    private $pdfHandler;
+    protected $pdfHandler;
 
     public function __construct(SSRSReport $SSRSReport, ReportFormatter $reportFormatter, Configuracion $configuracion,
                                 Utils $utils, Mapper $mapper, Importer $importer, PdfHandler $pdfHandler)
@@ -122,6 +123,7 @@ abstract class Report implements ReportInterface
         return substr($csv, 3);
     }
 
+
     /**
      * @return array
      * @throws SSRSReportException
@@ -139,6 +141,13 @@ abstract class Report implements ReportInterface
         $this->loadReport();
         $this->SSRSReport->setExecutionParameters2($this->getExecutionParameters());
         return $this->render(new RenderAsPDF(), PageCountModeEnum::$Actual);
+    }
+
+    public function renderExcel()
+    {
+        $this->loadReport();
+        $this->SSRSReport->setExecutionParameters2($this->getExecutionParameters());
+        return $this->render(new RenderAsEXCEL(), PageCountModeEnum::$Actual);
     }
 
     /**
