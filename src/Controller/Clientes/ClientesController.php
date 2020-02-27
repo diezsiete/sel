@@ -14,6 +14,7 @@ use App\Service\PortalClientes\PortalClientesService;
 use Omines\DataTablesBundle\DataTableFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Class Clientes
@@ -58,7 +59,8 @@ class ClientesController extends BaseController
      * @Route("/sel/clientes/empleado/{id}", name="clientes_trabajador_activo_detalle")
      */
     public function trabajadorActivo(TrabajadorActivo $trabajadorActivo, LiquidacionNominaRepository $repository,
-                                     DataTableFactory $dataTableFactory, Request $request, ConvenioRepository $convenioRepo)
+                                     DataTableFactory $dataTableFactory, Request $request,
+                                     ConvenioRepository $convenioRepo, NormalizerInterface $normalizer)
     {
         $liquidacionesNomina = $repository->findBy(['empleado' => $trabajadorActivo->getEmpleado()]);
 
@@ -71,6 +73,8 @@ class ClientesController extends BaseController
             return $table->getResponse();
         }
 
+        $empleado = $normalizer->normalize($trabajadorActivo, 'json', ['groups' =>['api']])['empleado'];
+
         $convenio = $convenioRepo->find('PTASAS0001');
         $isAdmin = $this->getUser()->esRol(['/ADMIN/', '/SERVICIO/']);
         return $this->render('/clientes/trabajador-activo-detalle.html.twig', [
@@ -79,7 +83,7 @@ class ClientesController extends BaseController
             'datatable' => $table,
             'convenio' => $convenio,
             'isAdmin'  => $isAdmin,
-            'empleado' => $trabajadorActivo->getEmpleado()->getUsuario()->getIdentificacion()
+            'empleado' => $empleado
         ]);
     }
 

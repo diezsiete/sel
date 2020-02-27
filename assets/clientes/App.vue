@@ -18,7 +18,7 @@
         beforeMount() {
             const convenio = JSON.parse(this.convenio);
             const isAdmin = !!this.isAdmin;
-            const empleado = this.empleado || null;
+            const empleado = this.empleado ? JSON.parse(this.empleado) :  null;
             this.$store.dispatch('bootstrap', {convenio, isAdmin, empleado})
         }
     }

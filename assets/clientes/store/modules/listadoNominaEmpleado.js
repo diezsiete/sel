@@ -50,7 +50,7 @@ export default {
 
         async requestResumenesEmpleado({commit, rootState, rootGetters}) {
             const response = await axios.get(Router.generate('sel_api_listado_nomina_resumen_empleado', {
-                convenio: rootGetters.convenio, empleado: rootState.empleado
+                convenio: rootGetters.convenio, empleado: rootState.empleado.usuario.identificacion
             }));
             const resumenes = response.data['hydra:member'];
             commit('SET_RESUMENES', resumenes);

@@ -4,7 +4,7 @@
             background-color="white"
             color="deep-purple accent-4">
             <v-tab>Nominas</v-tab>
-            <v-tab>City</v-tab>
+            <v-tab>Archivos</v-tab>
             <v-tab>Abstract</v-tab>
 
 
@@ -15,7 +15,7 @@
             </v-tab-item>
             <v-tab-item key="City">
                 <v-card flat>
-                    <v-card-text>City</v-card-text>
+                    <archivos-empleado></archivos-empleado>
                 </v-card>
             </v-tab-item>
             <v-tab-item key="Abstract">
@@ -30,10 +30,12 @@
 
 <script>
     import ListadoNominaEmpleado from "@clientes/components/ListadoNomina/ListadoNominaEmpleado";
+    import ArchivosEmpleado from "@clientes/components/ArchivosEmpleado/ArchivosEmpleado";
     export default {
         name: "TrabajadorActivoDetalle",
         components: {
-            ListadoNominaEmpleado
+            ListadoNominaEmpleado,
+            ArchivosEmpleado
         },
         data () {
             return {

@@ -2,12 +2,14 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 Vue.use(Vuex);
 
-import listadoNomina from './modules/listadoNomina'
+import listadoNomina from './modules/listadoNomina';
+import archivosEmpleado from "@clientes/store/modules/archivosEmpleado";
 
 export default new Vuex.Store({
     strict: true,
     modules: {
-        listadoNomina
+        listadoNomina,
+        archivosEmpleado,
     },
     state: {
         convenio: null,

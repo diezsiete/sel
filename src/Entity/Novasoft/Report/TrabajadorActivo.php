@@ -6,6 +6,7 @@ use App\Entity\Main\Convenio;
 use App\Entity\Main\Empleado;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Novasoft\Report\TrabajadorActivoRepository")
@@ -29,6 +30,7 @@ class TrabajadorActivo
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Main\Empleado")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("api")
      */
     private $empleado;
 
