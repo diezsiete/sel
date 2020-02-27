@@ -4,7 +4,7 @@
     {{ parent() }}
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
-    {{ encore_entry_link_tags('single-page-clientes') }}
+    {{ encore_entry_link_tags('clientes') }}
 {% endblock %}
 
 
@@ -14,12 +14,12 @@
 {% block body %}
     <div class="row">
         <div class="col">
-            <div id="app"></div>
+            <div id="app" data-convenio="{{ convenio|json_encode }}" data-is-admin="{{ isAdmin }}"></div>
         </div>
     </div>
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
-    {{ encore_entry_script_tags('single-page-clientes') }}
+    {{ encore_entry_script_tags('clientes') }}
 {% endblock %}

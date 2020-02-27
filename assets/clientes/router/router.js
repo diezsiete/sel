@@ -10,7 +10,7 @@ export default new VueRouter({
     mode: "history",
     routes: [
         {
-            path: "/sel/clientes",
+            path: "/sel/clientes/listado-nomina2",
             name: "Home",
             component: Home
         },

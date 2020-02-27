@@ -1,7 +1,7 @@
 <template>
     <v-card>
         <v-card-title>
-            Nominas
+            Nominas <v-list-item-subtitle>{{convenio.nombre}}</v-list-item-subtitle>
         </v-card-title>
         <v-data-table
                 :headers="headers"
@@ -29,10 +29,13 @@
 
     export default {
         name: "ListadoNominaFechas",
-        computed: mapState('listadoNomina', {
-            //columns: state => state.columns,
-            nominas: state => state.nominas,
-        }),
+        computed: {
+            ...mapState(['convenio']),
+            ...mapState('listadoNomina', {
+                //columns: state => state.columns,
+                nominas: state => state.nominas
+            }),
+        },
         data () {
             return {
                 isLoading: true,

@@ -176,7 +176,7 @@ class MenuBuilder
                     'extra' => ['name' => 'icon', 'value' => 'fas fa-users']
                 ],
                 'Listado nomina' => [
-                    'options' => ['route' => 'clientes_listado_nomina'],
+                    'options' => ['route' => 'clientes_listado_nomina2'],
                     'extra' => ['name' => 'icon', 'value' => 'fas fa-clipboard-list']
                 ],
                 'Liquidación nomina' => [

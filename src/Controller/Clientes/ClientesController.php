@@ -88,6 +88,19 @@ class ClientesController extends BaseController
     }
 
     /**
+     * @Route("/sel/clientes/listado-nomina2", name="clientes_listado_nomina2")
+     */
+    public function listadoNomina(ConvenioRepository $convenioRepo)
+    {
+        $convenio = $convenioRepo->find('INDMIL');
+        $isAdmin = $this->getUser()->esRol(['/ADMIN/', '/SERVICIO/']);
+        return $this->render('/clientes/listado-nomina/listado.html.twig', [
+            'convenio' => $convenio,
+            'isAdmin'  => $isAdmin,
+        ]);
+    }
+
+    /**
      * @Route("/sel/clientes/{etc}", name="clientes", defaults={"etc":null}, requirements={"etc":".*"})
      */
     public function clientes(PortalClientesService $portalClientesService, ConvenioRepository $convenioRepo)
