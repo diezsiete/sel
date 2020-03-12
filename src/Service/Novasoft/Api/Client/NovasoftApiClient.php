@@ -63,6 +63,11 @@ abstract class NovasoftApiClient
         $this->napiDb = $napiDb;
     }
 
+    public function getDb()
+    {
+        return $this->napiDbTmp ?: $this->napiDb;
+    }
+
     /**
      * @param $url
      * @return mixed|null
@@ -72,7 +77,7 @@ abstract class NovasoftApiClient
      * @throws ServerExceptionInterface
      * @throws TransportExceptionInterface
      */
-    protected function sendGet($url)
+    public function sendGet($url)
     {
         try {
             return $this->request('GET', $url, static function (ResponseInterface $response) {
@@ -167,7 +172,12 @@ abstract class NovasoftApiClient
 
     protected function buildUrl($url): string
     {
-        $db = $this->napiDbTmp ?: $this->napiDb;
+        $db = $this->getDb();
+        $base = "/{$db}/api";
+
+        //urls de hydra collection ya vienen con $base, eliminamos
+        $url = str_replace($base, '', $url);
+
         return "{$this->url}/{$db}/api{$url}";
     }
 

@@ -24,7 +24,7 @@ class EmpleadoController extends BaseController
      */
     public function import(string $identificacion, EmpleadoImporter $importer)
     {
-        $empleado = $importer->import($identificacion);
+        $empleado = $importer->importEmpleado($identificacion);
         return $this->json(['empleado' => $empleado ? $empleado->getUsuario() : null]);
     }
 }

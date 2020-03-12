@@ -50,6 +50,12 @@ services:
     App\Command\Autoliquidacion\AutoliquidacionCreateCommand:
         calls:
             - [setLogger, ['@monolog.logger.sel']]
+
+    App\Command\NovasoftApi\Import\ImportEmpleadoCommand:
+        calls:
+            - [setLogger, ['@monolog.logger.napi_import_empleado']]
+
+    #DEPRECATED
     App\Command\NovasoftImport\NiEmpleadoCommand:
         calls:
             - [setLogger, ['@monolog.logger.ni_empleado']]

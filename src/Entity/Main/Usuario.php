@@ -169,7 +169,7 @@ class Usuario implements UserInterface
     {
         $newRoles = is_array($rolName) ? $rolName : [$rolName];
         foreach ($newRoles as $newRole) {
-            if (!in_array($newRole, $this->roles)) {
+            if (!in_array($newRole, $this->roles, true)) {
                 $this->roles[] = $newRole;
             }
         }

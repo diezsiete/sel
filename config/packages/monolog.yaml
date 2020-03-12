@@ -1,7 +1,9 @@
 monolog:
     channels:
         - sel
+        - napi_import_empleado
         - scraper
+        #deprecated
         - ni_empleado
         - ni_nomina
         - ni_convenio
@@ -10,6 +12,12 @@ monolog:
         - messenger_audit
 
     handlers:
+        napi_import_empleado:
+            type: stream
+            path: "%kernel.logs_dir%/napi/import/empleado.log"
+            level: debug
+            channels: napi_import_empleado
+        #deprecated
         ni_empleado:
             type: stream
             path: "%kernel.logs_dir%/ni/empleado.log"

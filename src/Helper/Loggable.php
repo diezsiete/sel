@@ -157,7 +157,7 @@ trait Loggable
     private function hasLogger()
     {
         if($this->hasLoggerFlag === null) {
-            $this->hasLoggerFlag = property_exists($this, 'logger') && !!$this->logger;
+            $this->hasLoggerFlag = property_exists($this, 'logger') && (bool)$this->logger;
         }
         return $this->hasLoggerFlag;
     }

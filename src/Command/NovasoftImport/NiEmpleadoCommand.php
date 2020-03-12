@@ -20,6 +20,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 /**
  * Class NiEmpleadoCommand
  * @package App\Command\NovasoftImport
+ * @deprecated
  */
 class NiEmpleadoCommand extends NiCommand
 {
@@ -53,7 +54,7 @@ class NiEmpleadoCommand extends NiCommand
 
     protected function configure()
     {
-        $this->setDescription('Actualizar empleados desde novasoft')
+        $this->setDescription('[DEPRECATED] Actualizar empleados desde novasoft')
             ->addOption('start-from', null, InputOption::VALUE_OPTIONAL,
                 'Codigo convenio desde donde se empieza la importacion. Ignora argumento search')
             ->addOption('dont-create-usuario', null, InputOption::VALUE_NONE,

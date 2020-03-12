@@ -60,65 +60,42 @@ class EmpleadoImporter
     }
 
     /**
+     * @return EmpleadoClient
+     */
+    public function getClient(): EmpleadoClient
+    {
+        return $this->client;
+    }
+
+    /**
      * @param $identificacion
      * @return Empleado|null
-     * @throws ExceptionInterface
      */
-    public function import($identificacion)
+    public function getNapiEmpleado($identificacion): ?Empleado
     {
-        $response = $this->client->get($identificacion);
-        /** @var Empleado $empleadoNapi */
-        $empleadoNapi = $this->denormalizer->denormalize($response, Empleado::class);
-
-        $convenio = null;
-        $persist = false;
-        if($convenioNapi = $empleadoNapi->getConvenio()) {
-            $convenio = $this->convenioRepo->find($convenioNapi->getCodigo());
-            if(!$convenio) {
-                $convenio = $convenioNapi;
-                $persist = true;
+        return $this->client->get($identificacion);
+    }
+    /**
+     * @param string|Empleado|null $empleado string identificacion, Empleado asume el objeto retornado por napi, null hace nada
+     * @return Empleado|null
+     */
+    public function importEmpleado($empleado): ?Empleado
+    {
+        if($empleado) {
+            $empleado = $empleado instanceof Empleado ? $empleado : $this->getNapiEmpleado($empleado);
+            if ($empleado) {
+                $empleado->getUsuario()->addRol('ROLE_EMPLEADO');
+                if (!$empleado->getId()) {
+                    $empleado = $this->createEmpleado($empleado);
+                    $this->em->persist($empleado);
+                }
+                $this->em->flush();
             }
         }
-
-        $empleado = $this->empleadoRepo->findByIdentificacion($empleadoNapi->getUsuario()->getIdentificacion());
-        if($empleado) {
-            $empleado = $this->updateEmpleado($empleado, $empleadoNapi, $convenio);
-        } else {
-            $empleado = $this->createEmpleado($empleadoNapi, $convenio);
-            $persist = (bool)$empleado;
-        }
-
-        if($persist) {
-            $this->em->persist($empleado);
-        }
-        $this->em->flush();
-
         return $empleado;
     }
 
-    private function updateEmpleado(Empleado $empleado, Empleado $empleadoNapi, ?Convenio $convenio = null)
-    {
-        $empleado
-            ->setSexo($empleadoNapi->getSexo())
-            ->setEstadoCivil($empleadoNapi->getEstadoCivil())
-            ->setNacimiento($empleadoNapi->getNacimiento())
-            ->setFechaIngreso($empleadoNapi->getFechaIngreso())
-            ->setFechaRetiro($empleadoNapi->getFechaRetiro())
-            ->setConvenio($convenio);
-
-        if($usuarioNapi = $empleadoNapi->getUsuario()) {
-            $empleado->getUsuario()
-                ->setPrimerApellido($usuarioNapi->getPrimerApellido())
-                ->setSegundoApellido($usuarioNapi->getSegundoApellido())
-                ->setPrimerNombre($usuarioNapi->getPrimerNombre())
-                ->setSegundoNombre($usuarioNapi->getSegundoNombre())
-                ->setEmail($usuarioNapi->getEmail())
-                ->addRol('ROLE_EMPLEADO');
-        }
-        return $empleado;
-    }
-
-    private function createEmpleado(Empleado $empleadoNapi, ?Convenio $convenio = null): ?Empleado
+    private function createEmpleado(Empleado $empleadoNapi): ?Empleado
     {
         $empleado = null;
         if($usuarioNapi = $empleadoNapi->getUsuario()) {
@@ -128,7 +105,6 @@ class EmpleadoImporter
                 ->setPassword($encodedPass)
                 ->addRol('ROLE_EMPLEADO')
                 ->aceptarTerminos();
-            $empleadoNapi->setConvenio($convenio);
             $empleado = $empleadoNapi;
         }
         return $empleado;
