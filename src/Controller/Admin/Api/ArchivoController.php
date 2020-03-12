@@ -188,7 +188,7 @@ class ArchivoController extends BaseController
             $owners = $solicitudUtil->jsonPostParseBody($request)->request->get('owners');
             if($archivoManager->createSendFile($owners, $name)) {
                 $zipPath = $archivoManager->createZip($name);
-                if($archivoManager->isZipSendable($name)) {
+                if($archivoManager->isZipSendable($name, 8)) {
                     $mail->html('<h3>Buen dia</h3><p>Adjuntamos archivos de los empleados</p>')
                         ->attach($zipPath);
                 } else {

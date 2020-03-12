@@ -76,7 +76,7 @@ class ClientesController extends BaseController
 
         $empleado = $normalizer->normalize($trabajadorActivo, 'json', ['groups' =>['api']])['empleado'];
 
-        $convenio = $convenioRepo->find('PTASAS0001');
+        $convenio = $convenioRepo->find('INDMIL');
         $isAdmin = $this->getUser()->esRol(['/ADMIN/', '/SERVICIO/']);
         return $this->render('/clientes/trabajador-activo-detalle.html.twig', [
             'trabajadorActivo' => $trabajadorActivo,
@@ -102,7 +102,7 @@ class ClientesController extends BaseController
     }
 
     /**
-     * @Route("/sel/clientes/listado-nomina2/download/{convenio}/{fecha1}/{fecha2}", name="clientes_listado_nomina2")
+     * @Route("/sel/clientes/listado-nomina2/download/{convenio}/{fecha1}/{fecha2}", name="clientes_listado_nomina2_download")
      */
     public function listadoNominaDownload(ReportFactory $reportFactory, $convenio, $fecha1, $fecha2)
     {

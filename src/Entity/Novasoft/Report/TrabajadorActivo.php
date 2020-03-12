@@ -28,7 +28,7 @@ class TrabajadorActivo
     private $convenio;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Main\Empleado")
+     * @ORM\OneToOne(targetEntity="App\Entity\Main\Empleado", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      * @Groups("api")
      */
@@ -79,11 +79,6 @@ class TrabajadorActivo
      */
     private $adminPension;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Novasoft\Report\CentroCosto", inversedBy="trabajadoresActivos", cascade={"persist"})
-     * @ORM\JoinColumn(referencedColumnName="codigo")
-     */
-    private $centroCosto;
 
 
     public function getId(): ?int

@@ -77,6 +77,7 @@
                 await axios.post(Router.generate('sel_admin_api_archivo_enviar_correo'), {
                     owners: this.ownersIdsSelected
                 });
+                this.$store.dispatch('disableLoading');
             }
         }
     }
