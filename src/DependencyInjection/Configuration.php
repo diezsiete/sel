@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection NullPointerExceptionInspection */
 
 
 namespace App\DependencyInjection;
@@ -21,6 +21,7 @@ class Configuration implements ConfigurationInterface
 
         $rootNode->children()
             ->append($this->addScraperNode())
+            ->append($this->addAelNode())
             ->append($this->addNovasoftApiNode())
             ->append($this->addSeNode())
             ->append($this->addSelRoutesNode())
@@ -143,24 +144,26 @@ class Configuration implements ConfigurationInterface
     protected function addScraperNode()
     {
         $treeBuilder = new TreeBuilder('scraper');
-        $node =
-            $treeBuilder->getRootNode()
-                ->children()
-                    ->scalarNode('url')->end()
-                    ->arrayNode('novasoft')
-                        ->children()
-                            ->scalarNode('conexion')->end()
-                        ->end()
+        return $treeBuilder->getRootNode()
+            ->children()
+                ->scalarNode('url')->end()
+                ->arrayNode('novasoft')
+                    ->children()
+                        ->scalarNode('conexion')->end()
                     ->end()
-                    ->arrayNode('ael')
-                        ->children()
-                            ->scalarNode('user')->end()
-                            ->scalarNode('password')->end()
-                            ->scalarNode('empleador')->end()
-                        ->end()
-                    ->end()
-                ->end();
-        return $node;
+                ->end()
+            ->end();
+    }
+    protected function addAelNode()
+    {
+        $treeBuilder = new TreeBuilder('ael');
+        return $treeBuilder->getRootNode()
+            ->children()
+                ->scalarNode('url')->end()
+                ->scalarNode('user')->end()
+                ->scalarNode('password')->end()
+                ->scalarNode('empleador')->end()
+            ->end();
     }
 
     protected function addNovasoftApiNode()

@@ -1,11 +1,15 @@
 <?php
 
 
-namespace App\Service\Configuracion\Scraper;
+namespace App\Service\Configuracion;
 
 
 class Ael
 {
+    /**
+     * @var string
+     */
+    private $url;
     /**
      * @var string
      */
@@ -21,9 +25,18 @@ class Ael
 
     public function __construct($config)
     {
+        $this->url = $config['url'];
         $this->user = $config['user'];
         $this->password = $config['password'];
         $this->empleador = $config['empleador'];
+    }
+
+    /**
+     * @return string
+     */
+    public function getUrl(): string
+    {
+        return $this->url;
     }
 
     /**

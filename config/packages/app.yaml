@@ -3,10 +3,11 @@ app:
     url: http://localhost:8666
     novasoft:
       conexion: '%env(lowercase:EMPRESA)%'
-    ael:
-      user: '%env(empresa:SCRAPER_AEL_USER)%'
-      password: '%env(empresa:SCRAPER_AEL_PASSWORD)%'
-      empleador: '%env(lowercase:EMPRESA)%'
+  ael:
+    url: http://localhost:8666
+    user: '%env(empresa:SCRAPER_AEL_USER)%'
+    password: '%env(empresa:SCRAPER_AEL_PASSWORD)%'
+    empleador: '%env(lowercase:EMPRESA)%'
 
   novasoftapi:
     url: http://localhost:8001

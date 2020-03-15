@@ -208,7 +208,7 @@ class Autoliquidacion
         $porcentajeEjecucion = $count ? $exito * 100 / $count : 0;
 
         $porcentajeEjecucion = floor($porcentajeEjecucion);
-        $this->porcentajeEjecucion = intval($porcentajeEjecucion);
+        $this->porcentajeEjecucion = (int)$porcentajeEjecucion;
         return $this;
     }
 }

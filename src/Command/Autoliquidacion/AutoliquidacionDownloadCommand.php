@@ -15,7 +15,14 @@ use App\Entity\Autoliquidacion\AutoliquidacionEmpleado;
 use App\Entity\Autoliquidacion\AutoliquidacionProgreso;
 use App\Repository\Autoliquidacion\AutoliquidacionEmpleadoRepository;
 use App\Repository\Autoliquidacion\AutoliquidacionProgresoRepository;
+use App\Service\Ael\AelClient;
+use App\Service\Autoliquidacion\FileManager;
 use App\Service\Scraper\AutoliquidacionScraper;
+use App\Service\Scraper\Exception\ScraperClientException;
+use App\Service\Scraper\Exception\ScraperConflictException;
+use App\Service\Scraper\Exception\ScraperException;
+use App\Service\Scraper\Exception\ScraperNotFoundException;
+use App\Service\Scraper\Exception\ScraperTimeoutException;
 use App\Service\Scraper\ScraperMessenger;
 use Doctrine\Common\Annotations\Reader;
 use Symfony\Component\Console\Input\InputInterface;
@@ -32,30 +39,29 @@ class AutoliquidacionDownloadCommand extends TraitableCommand
         SelCommandTrait;
 
     protected static $defaultName = 'sel:autoliquidacion:download';
-
-    /**
-     * @var AutoliquidacionScraper
-     */
-    private $scraper;
-    /**
-     * @var ScraperMessenger
-     */
-    private $scraperMessenger;
     /**
      * @var AutoliquidacionProgresoRepository
      */
     private $autoliquidacionProgresoRepository;
 
     private $autoliquidacionesEmpleado = null;
+    /**
+     * @var AelClient
+     */
+    private $aelClient;
+    /**
+     * @var FileManager
+     */
+    private $autoliquidacionService;
 
     public function __construct(Reader $annotationReader, EventDispatcherInterface $eventDispatcher,
                                 AutoliquidacionProgresoRepository $autoliquidacionProgresoRepository,
-                                AutoliquidacionScraper $scraper, ScraperMessenger $scraperMessenger)
+                                AelClient $aelClient, FileManager $autoliquidacionService)
     {
         parent::__construct($annotationReader, $eventDispatcher);
-        $this->scraper = $scraper;
-        $this->scraperMessenger = $scraperMessenger;
         $this->autoliquidacionProgresoRepository = $autoliquidacionProgresoRepository;
+        $this->aelClient = $aelClient;
+        $this->autoliquidacionService = $autoliquidacionService;
     }
 
     protected function configure()
@@ -74,41 +80,41 @@ class AutoliquidacionDownloadCommand extends TraitableCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $periodo = $this->getPeriodo($input);
+
         $autoliquidaciones = $this->getAutoliquidacionesEmpleado($periodo, $input->getOption('overwrite'));
 
         if($autoliquidaciones) {
-
-            $autoliquidacionProgreso = (new AutoliquidacionProgreso())->setTotal(count($autoliquidaciones));
-            $this->em->persist($autoliquidacionProgreso);
-            $this->em->flush();
-
+//            $autoliquidacionProgreso = (new AutoliquidacionProgreso())->setTotal(count($autoliquidaciones));
+//            $this->em->persist($autoliquidacionProgreso);
+//            $this->em->flush();
             foreach($autoliquidaciones as $autoliquidacion) {
                 if($output->isVeryVerbose()) {
                     $this->output->writeln($autoliquidacion->getEmpleado()->getUsuario()->getIdentificacion());
                 }
+                try {
+                    $ident = $autoliquidacion->getUsuario()->getIdentificacion();
 
-                $this->scraperMessenger->generateAutoliquidacion($autoliquidacion, $autoliquidacionProgreso);
-            }
+                    $this->aelClient->certificadoDownload($ident, $periodo);
+                    $resource = $this->aelClient->pdfDownload($ident, $periodo);
+                    $this->autoliquidacionService->uploadPdfResource($periodo, $ident, $resource);
+                    $this->aelClient->pdfDelete($ident, $periodo);
 
-            // esperando a que todas las autoliquidaciones se descarguen
-            $autoliquidacionProgresoCount = $autoliquidacionProgreso->getCount();
-            while($autoliquidacionProgreso->getCount() < $autoliquidacionProgreso->getTotal()) {
-                $this->em->clear(AutoliquidacionProgreso::class);
-                usleep(2000000);
-                $autoliquidacionProgreso = $this->autoliquidacionProgresoRepository->find($autoliquidacionProgreso->getId());
-                if($output->isVeryVerbose()) {
-                    $this->output->writeln("COUNT : " . $autoliquidacionProgreso->getCount());
-                    $this->output->writeln("PORCENTAJE : " . $autoliquidacionProgreso->getPorcentaje());
+                    $autoliquidacion->setExito(true)->setCode(200);
+                    $autoliquidacion->getAutoliquidacion()->calcularPorcentajeEjecucion();
+//                    $autoliquidacionProgreso->setLastMessage($message);
+                } catch (\Exception $e) {
+                    $autoliquidacion
+                        ->setExito(false)
+                        ->setSalida($e->getMessage())
+                        ->setCode($e->getCode());
                 }
-                if($autoliquidacionProgresoCount < $autoliquidacionProgreso->getCount()) {
-                    $this->progressBarAdvance();
-                    $autoliquidacionProgresoCount = $autoliquidacionProgreso->getCount();
-                }
+                $this->progressBarAdvance();
             }
-
         } else {
-            $this->io->writeln("No hay autolquidaciones para descargar");
+            $this->io->writeln('No hay autolquidaciones para descargar');
         }
+
+        $this->em->flush();
     }
 
     /**

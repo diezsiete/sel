@@ -28,7 +28,7 @@ class ScraperException extends Exception implements HttpExceptionInterface
      * @param $log
      * @return ScraperConflictException|ScraperException|ScraperNotFoundException|ScraperTimeoutException
      */
-    public static function create($message, $code, $log = "")
+    public static function create($message, $code, $log = '')
     {
         switch($code) {
             case ResponseManager::NOTFOUND:

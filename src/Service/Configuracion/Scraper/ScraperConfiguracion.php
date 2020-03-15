@@ -3,15 +3,8 @@
 namespace App\Service\Configuracion\Scraper;
 
 
-use App\Service\Configuracion\Configuracion;
-
 class ScraperConfiguracion
 {
-    /**
-     * @var Configuracion
-     */
-    private $configuracion;
-
     /**
      * @var string
      */
@@ -22,18 +15,11 @@ class ScraperConfiguracion
      */
     private $novasoft;
 
-    /**
-     * @var Ael
-     */
-    private $ael;
 
-
-    public function __construct(Configuracion $configuracion, $config, $empresaConfig)
+    public function __construct($config, $empresaConfig)
     {
-        $this->configuracion = $configuracion;
         $this->url = $config['url'];
         $this->novasoft = new Novasoft($config['novasoft'], $empresaConfig['novasoft']);
-        $this->ael = new Ael($config['ael']);
     }
 
     /**
@@ -51,13 +37,5 @@ class ScraperConfiguracion
     public function getNovasoft(): Novasoft
     {
         return $this->novasoft;
-    }
-
-    /**
-     * @return Ael
-     */
-    public function getAel(): Ael
-    {
-        return $this->ael;
     }
 }

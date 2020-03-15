@@ -1,6 +1,8 @@
 app:
     scraper:
         url: http://34.201.35.157:8666
+    ael:
+        url: http://34.201.35.157:8667
     empresas:
         SERVILABOR:
             php_exec: /opt/php71/bin/php

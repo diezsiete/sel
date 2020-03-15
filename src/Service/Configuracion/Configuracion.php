@@ -69,6 +69,11 @@ class Configuracion
     private $scraper = null;
 
     /**
+     * @var Ael
+     */
+    private $ael;
+
+    /**
      * @var NovasoftApiConfiguracion
      */
     private $novasoftApiConfig = null;
@@ -271,9 +276,20 @@ class Configuracion
     public function getScraper()
     {
         if(!$this->scraper) {
-            $this->scraper = new ScraperConfiguracion($this, $this->bag->get('scraper'), $this->parameters['scraper']);
+            $this->scraper = new ScraperConfiguracion($this->bag->get('scraper'), $this->parameters['scraper']);
         }
         return $this->scraper;
+    }
+
+    /**
+     * @return Ael
+     */
+    public function ael()
+    {
+        if(!$this->ael) {
+            $this->ael = new Ael($this->bag->get('ael'));
+        }
+        return $this->ael;
     }
 
     public function napi(): NovasoftApiConfiguracion
