@@ -75,9 +75,10 @@ class AutoliquidacionEmpleadoDataTableType implements DataTableTypeInterface
                         ->join('ae.autoliquidacion', 'a')
                         ->join('ae.empleado', 'e')
                         ->join('e.usuario', 'u');
-                        //->andWhere('ae.exito = 1');
                     if($id){
-                        $builder->andWhere('u.id = :id')
+                        $builder
+                            ->andWhere('ae.exito = 1')
+                            ->andWhere('u.id = :id')
                             ->setParameter('id', $id);
                     }
                     else if($convenio && $periodo) {
