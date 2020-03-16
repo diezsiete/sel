@@ -149,6 +149,9 @@ services:
         shared: false
 
 
+    App\Uploader\Namer\ArchivoNamer:
+        public: true
+
 
     Knp\Menu\Twig\MenuExtension:
         alias: knp_menu.twig.extension

@@ -5,9 +5,11 @@ namespace App\Controller\Admin\Api;
 
 
 use App\Controller\BaseController;
+use App\Entity\Main\Convenio;
 use App\Entity\Main\Empleado;
 use App\Entity\Main\Usuario;
 use App\Repository\Main\ConvenioRepository;
+use App\Repository\Main\EmpleadoRepository;
 use App\Service\Novasoft\Api\Importer\EmpleadoImporter;
 use App\Service\Novasoft\Api\Client\NovasoftApiClient;
 use Symfony\Component\Routing\Annotation\Route;

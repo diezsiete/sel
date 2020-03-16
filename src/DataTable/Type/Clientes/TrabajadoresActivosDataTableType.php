@@ -7,16 +7,26 @@ namespace App\DataTable\Type\Clientes;
 use App\DataTable\Column\ActionsColumn\ActionsColumn;
 use App\DataTable\Column\NumberFormatColumn;
 use App\Entity\Novasoft\Report\TrabajadorActivo;
+use App\Repository\Main\UsuarioRepository;
 use Doctrine\ORM\QueryBuilder;
 use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
 use Omines\DataTablesBundle\Column\DateTimeColumn;
 use Omines\DataTablesBundle\Column\TextColumn;
 use Omines\DataTablesBundle\DataTable;
+use Omines\DataTablesBundle\DataTableState;
 use Omines\DataTablesBundle\DataTableTypeInterface;
 
 class TrabajadoresActivosDataTableType implements DataTableTypeInterface
 {
+    /**
+     * @var UsuarioRepository
+     */
+    private $usuarioRepository;
 
+    public function __construct(UsuarioRepository $usuarioRepository)
+    {
+        $this->usuarioRepository = $usuarioRepository;
+    }
     /**
      * @param DataTable $dataTable
      * @param array $options
@@ -84,6 +94,15 @@ class TrabajadoresActivosDataTableType implements DataTableTypeInterface
                             ->setParameter('convenio', $convenioFilter);
                     }
                 },
+                'criteria' => [
+                    function(QueryBuilder $builder, DataTableState $state) {
+                        if($state->getGlobalSearch()) {
+                            $builder->andWhere(
+                                $this->usuarioRepository->userSearchExpression($builder, $state->getGlobalSearch())
+                            );
+                        }
+                    },
+                ]
             ])
         ;
 

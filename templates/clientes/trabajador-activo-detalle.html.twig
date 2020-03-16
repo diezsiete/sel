@@ -11,11 +11,13 @@
     {{ parent() }}
     {{ encore_entry_link_tags('admin-hv') }}
     {{ encore_entry_link_tags('portal-clientes') }}
+    {{ encore_entry_link_tags('clientes') }}
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
     {{ encore_entry_script_tags('portal-clientes') }}
+    {{ encore_entry_script_tags('clientes') }}
 {% endblock %}
 
 
@@ -85,39 +87,12 @@
         </div>
 
         <div class="col-xl-12">
-
-            <div class="tabs">
-                <ul class="nav nav-tabs tabs-primary">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#nomina" data-toggle="tab">
-                            <i class="fas fa-columns mr-2" aria-hidden="true"></i>
-                            Liquidacion nomina
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#seguridad" data-toggle="tab">
-                            <i class="fas fa-copy mr-2" aria-hidden="true"></i>Pagos seguridad social</a>
-                    </li>
-                </ul>
-                <div class="tab-content">
-                    <div id="nomina" class="tab-pane active">
-                        <table class="table liquidacion-nomina">
-                            {% for liquidacionNomina in liquidacionesNomina %}
-                                {{ liquidacion_nomina(liquidacionNomina, false, true) }}
-                            {% endfor %}
-                        </table>
-                    </div>
-                    <div id="seguridad" class="tab-pane">
-                        <div class="row">
-                            <div class="col">
-                                <div class="datatable" {{ sel_datatable_settings(datatable) }}>
-                                    Loading...
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div id="app"
+                 data-convenio="{{ convenio|json_encode }}"
+                 data-is-admin="{{ isAdmin }}"
+                 data-empleado="{{ empleado|json_encode }}">
             </div>
+
         </div>
     </div>
 

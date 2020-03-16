@@ -17,4 +17,12 @@ class ArchivoController extends BaseController
     {
         return $this->render('admin/archivo/cargar.html.twig');
     }
+
+    /**
+     * @Route("/sel/admin/archivo/enviar", name="sel_admin_archivo_enviar")
+     */
+    public function enviar()
+    {
+        return $this->render('admin/archivo/cargar.html.twig');
+    }
 }

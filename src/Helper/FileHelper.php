@@ -66,7 +66,7 @@ trait FileHelper
     {
         $originalFilename = $this->getOriginalFilename($file);
         $extension = $this->getExtension($file);
-        return Urlizer::urlize(pathinfo($originalFilename, PATHINFO_FILENAME)) . '-' . uniqid() . '.' . $extension;
+        return Urlizer::urlize(pathinfo($originalFilename, PATHINFO_FILENAME)) . '-' . uniqid('', true) . '.' . $extension;
     }
 
     /**

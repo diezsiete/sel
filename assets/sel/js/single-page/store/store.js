@@ -5,14 +5,19 @@ import axios from 'axios';
 
 Vue.use(Vuex);
 
+import enviar from './modules/enviar'
+
 export default new Vuex.Store({
     strict: true,
+    modules: {
+        enviar
+    },
     state: {
         empleado: null,
         archivos: [],
         archivoListUrl: Router.generate('sel_admin_api_archivo_list'),
-        //archivoCreateUrl: Router.generate('sel_admin_api_archivo_create', {usuario: null}),
-        archivoCreateUrl: Router.generate('_uploader_upload_archivo'),
+        archivoCreateUrl: Router.generate('sel_admin_api_archivo_create', {usuario: null}),
+        //archivoCreateUrl: Router.generate('_uploader_upload_archivo'),
         archivoBorrarUrl: Router.generate('sel_admin_api_archivo_delete'),
         archivoVerUrl: null,
         loading: false,
@@ -26,7 +31,7 @@ export default new Vuex.Store({
         },
         UPDATE_URLS(state, id) {
             state.archivoListUrl   = Router.generate('sel_admin_api_archivo_list',   {usuario: id});
-            //state.archivoCreateUrl = Router.generate('sel_admin_api_archivo_create', {usuario: id});
+            state.archivoCreateUrl = Router.generate('sel_admin_api_archivo_create', {usuario: id});
             state.archivoBorrarUrl = Router.generate('sel_admin_api_archivo_delete', {usuario: id});
         },
         SET_ARCHIVOS (state, archivos) {

@@ -12,6 +12,7 @@ use App\Helper\S3Helper;
 use App\Repository\Archivo\ArchivoRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use League\Flysystem\FileExistsException;
 use League\Flysystem\FileNotFoundException;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemInterface;
@@ -28,23 +29,23 @@ class ArchivoManager extends FileManager
     /**
      * @var FileManager
      */
-    private $fileManager;
+    protected $fileManager;
     /**
      * @var EntityManagerInterface
      */
-    private $em;
+    protected $em;
     /**
      * @var ArchivoRepository
      */
-    private $archivoRepository;
+    protected $archivoRepository;
     /**
      * @var ValidatorInterface
      */
-    private $validator;
+    protected $validator;
     /**
      * @var FilesystemInterface
      */
-    private $localFilesystem;
+    protected $localFilesystem;
 
     public function __construct(FilesystemInterface $selFilesystem, ValidatorInterface $validator,
                                 FilesystemInterface $localFilesystem, EntityManagerInterface $em,
@@ -144,11 +145,14 @@ class ArchivoManager extends FileManager
 
     /**
      * @param Archivo|int $archivo
+     * @param string $prefix
+     * @return string|null
+     * @throws FileExistsException
      * @throws FileNotFoundException
-     * @throws \League\Flysystem\FileExistsException
      */
-    public function downloadLocal($archivo)
+    public function downloadLocal($archivo, $prefix = '')
     {
+        $targetPath = null;
         $archivo = is_object($archivo) ? $archivo : $this->archivoRepository->find($archivo);
         if($archivo) {
             $sourcePath = $this->path($archivo);
@@ -157,7 +161,7 @@ class ArchivoManager extends FileManager
                 throw new Exception(sprintf("Error abriendo stream para '%s'", $sourcePath));
             }
 
-            $targetPath = $this->downloadLocalUniqueTargetPath($archivo);
+            $targetPath = $this->downloadLocalUniqueTargetPath($archivo, $prefix);
 
             $result = $this->localFilesystem->writeStream($targetPath, $resource);
             if($result === false) {
@@ -166,6 +170,7 @@ class ArchivoManager extends FileManager
             if (is_resource($resource)) {
                 fclose($resource);
             }
+            return $targetPath;
         }
     }
 
@@ -173,7 +178,7 @@ class ArchivoManager extends FileManager
     {
         return $this->zip(
             $this->localFilesystem,
-            $this->path($usuario) . ".zip",
+            $this->path($usuario) . '.zip',
             $this->path($usuario),
             $this->getFilesystemPathPrefix($this->localFilesystem)
         );
@@ -181,15 +186,19 @@ class ArchivoManager extends FileManager
 
     public function downloadLocalZipPath(Usuario $usuario)
     {
-        return $this->path($usuario, $this->localFilesystem) . ".zip";
+        return $this->path($usuario, $this->localFilesystem) . '.zip';
     }
+    
 
-    private function downloadLocalUniqueTargetPath(Archivo $archivo)
+    protected function downloadLocalUniqueTargetPath(Archivo $archivo, $prefix = '')
     {
-        $targetPath = $this->path($archivo->getOwner()) . "/{$archivo->getOriginalFilename()}.{$archivo->getExtension()}";
+        $path = $prefix
+            ? str_replace('archivo/', "archivo/$prefix/", $this->path($archivo->getOwner()))
+            : $this->path($archivo->getOwner());
+        $targetPath = $path . "/{$archivo->getOriginalFilename()}.{$archivo->getExtension()}";
         $counter = 1;
         while($this->localFilesystem->has($targetPath)) {
-            $targetPath = $this->path($archivo->getOwner()) . "/{$archivo->getOriginalFilename()}-{$counter}.{$archivo->getExtension()}";
+            $targetPath = $path . "/{$archivo->getOriginalFilename()}-{$counter}.{$archivo->getExtension()}";
             $counter++;
         }
         return $targetPath;
@@ -200,13 +209,13 @@ class ArchivoManager extends FileManager
      * @param FilesystemInterface|null $absolute
      * @return string
      */
-    private function path($ownerOrArchivo = null, ?FilesystemInterface $absolute = null)
+    protected function path($ownerOrArchivo = null, ?FilesystemInterface $absolute = null)
     {
-        $path = "archivo";
+        $path = 'archivo';
         if($ownerOrArchivo) {
             $archivo = $ownerOrArchivo instanceof Archivo ? $ownerOrArchivo : null;
             $owner = $archivo ? $archivo->getOwner() : $ownerOrArchivo;
-            $path = "{$path}/{$owner->getIdentificacion()}" . ($archivo ? "/{$archivo->getFilename()}" : "");
+            $path = "{$path}/{$owner->getIdentificacion()}" . ($archivo ? "/{$archivo->getFilename()}" : '');
         }
 
         return $absolute ? $this->getFilesystemPathPrefix($absolute, $path) : $path;

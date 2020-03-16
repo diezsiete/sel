@@ -10,6 +10,7 @@ use App\Service\Configuracion\Configuracion;
 use App\Service\Novasoft\Report\Importer\GenericImporter;
 use App\Service\Novasoft\Report\Mapper\TrabajadoresActivosMapper;
 use App\Service\Novasoft\Report\ReportFormatter;
+use App\Service\ServicioEmpleados\Report\PdfHandler;
 use App\Service\Utils;
 use DateTimeInterface;
 use SSRS\SSRSReport;
@@ -71,9 +72,9 @@ class TrabajadoresActivosReport extends Report
 
 
     public function __construct(SSRSReport $SSRSReport, ReportFormatter $reportFormatter, Configuracion $configuracion,
-                                Utils $utils, TrabajadoresActivosMapper $mapper, GenericImporter $importer)
+                                Utils $utils, TrabajadoresActivosMapper $mapper, GenericImporter $importer, PdfHandler $pdfHandler)
     {
-        parent::__construct($SSRSReport, $reportFormatter, $configuracion, $utils, $mapper, $importer);
+        parent::__construct($SSRSReport, $reportFormatter, $configuracion, $utils, $mapper, $importer, $pdfHandler);
     }
 
     protected function normalizeParameter_Fecha()

@@ -10,6 +10,7 @@ use App\Repository\Main\RepresentanteRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Main\ConvenioRepository")
@@ -20,6 +21,7 @@ class Convenio implements \JsonSerializable
     /**
      * @ORM\Id()
      * @ORM\Column(type="string", length=45)
+     * @Groups("api")
      */
     private $codigo;
 
@@ -30,11 +32,13 @@ class Convenio implements \JsonSerializable
 
     /**
      * @ORM\Column(type="string", length=105)
+     * @Groups("api")
      */
     private $nombre;
 
     /**
      * @ORM\Column(type="string", length=145, nullable=true)
+     * @Groups("api")
      */
     private $direccion;
 
@@ -281,10 +285,10 @@ class Convenio implements \JsonSerializable
     public function jsonSerialize()
     {
         return [
-            "codigo" => $this->codigo,
-            "nombre" => $this->nombre,
-            "codigoCliente" => $this->codigoCliente,
-            "direccion" => $this->direccion
+            'codigo' => $this->codigo,
+            'nombre' => $this->nombre,
+            'codigoCliente' => $this->codigoCliente,
+            'direccion' => $this->direccion
         ];
     }
 

@@ -6,10 +6,16 @@ namespace App\Controller\Admin\Api;
 
 use App\Controller\BaseController;
 use App\Entity\Archivo\Archivo;
+use App\Entity\Main\Convenio;
 use App\Entity\Main\Usuario;
 use App\Exception\UploadedFileValidationErrorsException;
 use App\Repository\Archivo\ArchivoRepository;
+use App\Repository\Main\UsuarioRepository;
+use App\Service\ExceptionHandler;
+use App\Service\File\ArchivoEmailManager;
 use App\Service\File\ArchivoManager;
+use App\Service\Mail\Mail;
+use App\Service\Utils\Solicitud;
 use Exception;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -146,4 +152,63 @@ class ArchivoController extends BaseController
     {
         return $this->renderZip($archivoManager->downloadLocalZipPath($usuario), $usuario->getIdentificacion() . ".zip");
     }
+
+
+    /**
+     * @Route("/sel/admin/api/archivo/find-usuarios-by-convenio-with-archivos/{codigo}",
+     *     name="sel_admin_api_archvio_find_usuarios_by_convenio_with_archivos",
+     *     options={"expose" = true}
+     * )
+     */
+    public function findByConvenioWithArchivos(Convenio $convenio, ArchivoRepository $archivoRepo)
+    {
+        $result = $archivoRepo->findUsuariosByConvenioWithArchivos($convenio);
+        return $this->json($result, 200, [], ['groups' => ['api']]);
+    }
+
+    /**
+     * @Route("/sel/admin/api/archivo/enviar-correo",
+     *     methods="POST",
+     *     name="sel_admin_api_archivo_enviar_correo",
+     *     options={"expose" = true},
+     * )
+     */
+    public function enviarCorreo(Request $request,  Mail $mail, ExceptionHandler $eHandler,
+                                 ArchivoEmailManager $archivoManager, Solicitud $solicitudUtil)
+    {
+        $ok = false;
+        $name = 'email';
+        try {
+            $mail
+                ->from('info@servilabor.com.co')
+                // TODO utlizar los correos de los representantes
+                ->to('guerrerojosedario@gmail.com')
+                ->subject('Envio archivos empleados');
+
+            $owners = $solicitudUtil->jsonPostParseBody($request)->request->get('owners');
+            if($archivoManager->createSendFile($owners, $name)) {
+                $zipPath = $archivoManager->createZip($name);
+                if($archivoManager->isZipSendable($name, 8)) {
+                    $mail->html('<h3>Buen dia</h3><p>Adjuntamos archivos de los empleados</p>')
+                        ->attach($zipPath);
+                } else {
+                    $link = $archivoManager->generateZipLink($name);
+                    $mail->html('<h3>Buen dia</h3>
+                                       <p>Se han cargado nuevos archivos de empleados</p>
+                                       <p>Puede descargar el comprimido de ellos en el siguiente link: </p>
+                                       <a href="'.$link.'">Descargar archivos</a>
+                                       <p>Adicionalemente siempre estaran disponibles en nuestra pagina web.</p>
+                                       <p><a href="https://pta.com.co">Ver en pagina web</a></p><p>Gracias</p>');
+                }
+                $mail->send();
+            }
+            $ok = true;
+        } catch (Exception $e) {
+            $eHandler->handle($e);
+        } finally {
+            $archivoManager->deleteSendFile($name);
+        }
+        return $this->json(['ok' => $ok]);
+    }
+
 }

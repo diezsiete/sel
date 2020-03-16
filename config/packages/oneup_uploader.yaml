@@ -4,3 +4,7 @@ oneup_uploader:
         # This is a mapping example, remove it and create your own mappings.
         archivo:
             frontend: dropzone # or any uploader you use in the frontend
+            storage:
+                type: flysystem
+                filesystem: oneup_flysystem.sel_filesystem
+            namer: App\Uploader\Namer\ArchivoNamer

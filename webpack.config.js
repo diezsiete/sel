@@ -59,7 +59,7 @@ Encore
     .addEntry('portal-clientes', './assets/sel/js/clientes/portal-clientes.js')
     .addEntry('clientes-report', './assets/sel/js/clientes/report.js')
     .addEntry('single-page', './assets/sel/js/single-page/app.js')
-    .addEntry('single-page-clientes', './assets/sel/js/single-page/clientes.js')
+    .addEntry('clientes', './assets/clientes/app.js')
 
 
     //.addEntry('page1', './assets/js/page1.js')
@@ -129,7 +129,8 @@ Encore
     })*/
     .enableVueLoader()
     .addAliases({
-        "@": path.resolve(__dirname, 'assets/sel/js/single-page')
+        "@": path.resolve(__dirname, 'assets/sel/js/single-page'),
+        "@clientes": path.resolve(__dirname, 'assets/clientes'),
     })
 
     .addPlugin(new CaseSensitivePathsPlugin(), -10)

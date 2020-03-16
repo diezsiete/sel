@@ -6,6 +6,7 @@ use App\Entity\Main\Convenio;
 use App\Entity\Main\Empleado;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Novasoft\Report\TrabajadorActivoRepository")
@@ -27,8 +28,9 @@ class TrabajadorActivo
     private $convenio;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Main\Empleado")
+     * @ORM\OneToOne(targetEntity="App\Entity\Main\Empleado", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("api")
      */
     private $empleado;
 
@@ -77,11 +79,6 @@ class TrabajadorActivo
      */
     private $adminPension;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Novasoft\Report\CentroCosto", inversedBy="trabajadoresActivos")
-     * @ORM\JoinColumn(referencedColumnName="codigo")
-     */
-    private $centroCosto;
 
 
     public function getId(): ?int

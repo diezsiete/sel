@@ -206,4 +206,6 @@ class ConvenioRepository extends ServiceEntityRepository
 
         return $qb->getQuery()->getResult();
     }
+
+
 }
