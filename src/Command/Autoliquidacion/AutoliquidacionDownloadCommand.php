@@ -108,13 +108,12 @@ class AutoliquidacionDownloadCommand extends TraitableCommand
                         ->setSalida($e->getMessage())
                         ->setCode($e->getCode());
                 }
+                $this->em->flush();
                 $this->progressBarAdvance();
             }
         } else {
             $this->io->writeln('No hay autolquidaciones para descargar');
         }
-
-        $this->em->flush();
     }
 
     /**
