@@ -100,14 +100,14 @@ class AutoliquidacionDownloadCommand extends TraitableCommand
                     $this->aelClient->pdfDelete($ident, $periodo);
 
                     $autoliquidacion->setExito(true)->setCode(200);
-                    $autoliquidacion->getAutoliquidacion()->calcularPorcentajeEjecucion();
 //                    $autoliquidacionProgreso->setLastMessage($message);
                 } catch (\Exception $e) {
                     $autoliquidacion
-                        ->setExito(false)
+                        ->setExito($e->getCode() === 404)
                         ->setSalida($e->getMessage())
                         ->setCode($e->getCode());
                 }
+                $autoliquidacion->getAutoliquidacion()->calcularPorcentajeEjecucion();
                 $this->em->flush();
                 $this->progressBarAdvance();
             }
