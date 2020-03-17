@@ -10,35 +10,35 @@ use Symfony\Component\Routing\Annotation\Route;
 class ListadoNomina extends BaseController
 {
     /**
-     * @Route("/api/listado-nomina/{convenio}", methods="GET", name="sel_api_listado_nomina_fechas", options={"expose" = true})
+     * @Route("/apx/listado-nomina/{convenio}", methods="GET", name="sel_api_listado_nomina_fechas", options={"expose" = true})
      */
     public function fechas()
     {
         
     }
     /**
-     * @Route("/api/listado-nomina/{convenio}/{fecha}/conceptos", methods="GET", name="sel_api_listado_nomina_conceptos", options={"expose" = true})
+     * @Route("/apx/listado-nomina/{convenio}/{fecha}/conceptos", methods="GET", name="sel_api_listado_nomina_conceptos", options={"expose" = true})
      */
     public function conceptos()
     {
     }
 
     /**
-     * @Route("/api/listado-nomina/{convenio}/{fecha}/resumen", methods="GET", name="sel_api_listado_nomina_resumen", options={"expose" = true})
+     * @Route("/apx/listado-nomina/{convenio}/{fecha}/resumen", methods="GET", name="sel_api_listado_nomina_resumen", options={"expose" = true})
      */
     public function resumen()
     {
     }
 
     /**
-     * @Route("/api/listado-nomina/{convenio}/{fecha}/{empleado}", methods="GET", name="sel_api_listado_nomina_detalle", options={"expose" = true})
+     * @Route("/apx/listado-nomina/{convenio}/{fecha}/{empleado}", methods="GET", name="sel_api_listado_nomina_detalle", options={"expose" = true})
      */
     public function detalle()
     {
     }
 
     /**
-     * @Route("/api/listado-nomina/{convenio}/resumen/{empleado}", methods="GET", name="sel_api_listado_nomina_resumen_empleado", options={"expose" = true})
+     * @Route("/apx/listado-nomina/{convenio}/resumen/{empleado}", methods="GET", name="sel_api_listado_nomina_resumen_empleado", options={"expose" = true})
      */
     public function resumenEmpleado()
     {

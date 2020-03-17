@@ -26,6 +26,11 @@ class UsuarioNormalizer extends ObjectNormalizer
         return $type === Usuario::class;
     }
 
+    public function supportsNormalization($data, $format = null)
+    {
+        return $data instanceof Usuario;
+    }
+
     public function denormalize($data, $class, $format = null, array $context = [])
     {
         if($usuario = $this->usuarioRepo->findByIdentificacion($data['identificacion'])) {

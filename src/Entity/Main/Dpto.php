@@ -2,13 +2,27 @@
 
 namespace App\Entity\Main;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
+ * @ApiResource(
+ *     shortName="Departamento",
+ *     collectionOperations={
+ *         "get" = {"path": "/departamentos"},
+ *     },
+ *     itemOperations={
+ *         "get" = {"path": "/departamento/{id}"},
+ *     },
+ *     normalizationContext={"groups"={"t3rs:dpto:read"}},
+ * )
+ * @ApiFilter(SearchFilter::class, properties={"pais": "exact", "nombre": "partial"})
  * @ORM\Entity(repositoryClass="App\Repository\Main\DptoRepository")
  */
 class Dpto
@@ -17,19 +31,20 @@ class Dpto
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"main", "messenger:hv-child:put"})
+     * @Groups({"main", "messenger:hv-child:put", "t3rs:dpto:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"main", "messenger:hv-child:put"})
+     * @Groups({"main", "messenger:hv-child:put", "t3rs:dpto:read"})
      */
     private $nombre;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Main\Pais", inversedBy="dptos")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("t3rs:dpto:read")
      */
     private $pais;
 

@@ -2,6 +2,7 @@
 
 namespace App\Entity\Hv;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Main\Ciudad;
 use App\Entity\Main\Dpto;
 use App\Entity\Main\Usuario;
@@ -14,6 +15,16 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @ApiResource(
+ *     collectionOperations={
+ *         "post"={"path"="/hv"}
+ *     },
+ *     itemOperations={
+ *         "get"
+ *     },
+ *     normalizationContext={"groups"={"api:hv:write"}},
+ *     denormalizationContext={"groups"={"api:hv:write"}}
+ * )
  * @ORM\Entity(repositoryClass="App\Repository\Hv\HvRepository")
  */
 class Hv implements HvEntity
@@ -34,22 +45,25 @@ class Hv implements HvEntity
     private $usuario;
 
     /**
+     * Pais de nacimiento
      * @ORM\ManyToOne(targetEntity="App\Entity\Main\Pais")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotNull(message="Ingrese pais de nacimiento")
-     * @Groups({"napi:hv:post", "napi:hv:put", "scraper", "scraper-hv"})
+     * @Groups({"napi:hv:post", "napi:hv:put", "api:hv:write", "scraper", "scraper-hv"})
      */
     private $nacPais;
 
     /**
+     * Departamento de nacimiento
      * @ORM\ManyToOne(targetEntity="App\Entity\Main\Dpto")
-     * @Groups({"napi:hv:post", "napi:hv:put", "scraper", "scraper-hv"})
+     * @Groups({"napi:hv:post", "napi:hv:put", "api:hv:write", "scraper", "scraper-hv"})
      */
     private $nacDpto;
 
     /**
+     * Ciudad de nacimiento
      * @ORM\ManyToOne(targetEntity="App\Entity\Main\Ciudad")
-     * @Groups({"napi:hv:post", "napi:hv:put", "scraper", "scraper-hv"})
+     * @Groups({"napi:hv:post", "napi:hv:put", "api:hv:write", "scraper", "scraper-hv"})
      */
     private $nacCiudad;
 
@@ -57,82 +71,100 @@ class Hv implements HvEntity
      * @ORM\ManyToOne(targetEntity="App\Entity\Main\Pais")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotNull(message="Ingrese pais de identificación")
-     * @Groups({"napi:hv:post", "napi:hv:put", "scraper", "scraper-hv"})
+     * @Groups({"napi:hv:post", "napi:hv:put", "api:hv:write", "scraper", "scraper-hv"})
      */
     private $identPais;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Main\Dpto")
-     * @Groups({"napi:hv:post", "napi:hv:put", "scraper", "scraper-hv"})
+     * @Groups({"napi:hv:post", "napi:hv:put", "api:hv:write", "scraper", "scraper-hv"})
      */
     private $identDpto;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Main\Ciudad")
-     * @Groups({"napi:hv:post", "napi:hv:put", "scraper", "scraper-hv"})
+     * @Groups({"napi:hv:post", "napi:hv:put", "api:hv:write", "scraper", "scraper-hv"})
      */
     private $identCiudad;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"napi:hv:post", "napi:hv:put", "scraper", "scraper-hv"})
+     * @Assert\Choice({1, 2, 3})
+     * @Groups({"napi:hv:post", "napi:hv:put", "api:hv:write", "scraper", "scraper-hv"})
      */
     private $genero;
 
     /**
      * @ORM\Column(type="smallint")
-     * @Groups({"napi:hv:post", "napi:hv:put", "scraper", "scraper-hv"})
+     * @Assert\Choice({1, 2, 3, 4, 5})
+     * @Groups({"napi:hv:post", "napi:hv:put", "api:hv:write", "scraper", "scraper-hv"})
      */
     private $estadoCivil;
 
     /**
+     * Pais de residencia
      * @ORM\ManyToOne(targetEntity="App\Entity\Main\Pais")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"napi:hv:post", "napi:hv:put", "scraper", "scraper-hv"})
+     * @Groups({"napi:hv:post", "napi:hv:put", "api:hv:write", "scraper", "scraper-hv"})
      */
     private $resiPais;
 
     /**
+     * Departamento de residencia
      * @ORM\ManyToOne(targetEntity="App\Entity\Main\Dpto")
-     * @Groups({"napi:hv:post", "napi:hv:put", "scraper", "scraper-hv"})
+     * @Groups({"napi:hv:post", "napi:hv:put", "api:hv:write", "scraper", "scraper-hv"})
      */
     private $resiDpto;
 
     /**
+     * Ciudad de residencia
      * @ORM\ManyToOne(targetEntity="App\Entity\Main\Ciudad")
-     * @Groups({"napi:hv:post", "napi:hv:put", "scraper", "scraper-hv"})
+     * @Groups({"napi:hv:post", "napi:hv:put", "api:hv:write", "scraper", "scraper-hv"})
      */
     private $resiCiudad;
 
     /**
+     * Barrio donde reside
      * @ORM\Column(type="string", length=50, nullable=true)
      * @Assert\NotNull(message="Ingrese barrio")
-     * @Groups({"napi:hv:post", "napi:hv:put", "scraper", "scraper-hv"})
+     * @Assert\Length(
+     *      max = 50,
+     *      maxMessage = "Barrio supera el limite de {{ limit }} caracteres"
+     * )
+     * @Groups({"napi:hv:post", "napi:hv:put", "api:hv:write", "scraper", "scraper-hv"})
      */
     private $barrio;
 
     /**
+     * Dirección residencia
      * @ORM\Column(type="string", length=40, nullable=true)
      * @Assert\NotNull(message="Ingrese dirección")
-     * @Groups({"napi:hv:post", "napi:hv:put", "scraper", "scraper-hv"})
+     * @Assert\Length(
+     *      max = 40,
+     *      maxMessage = "La dirección supera el limite de {{ limit }} caracteres"
+     * )
+     * @Groups({"napi:hv:post", "napi:hv:put", "api:hv:write", "scraper", "scraper-hv"})
      */
     private $direccion;
 
     /**
      * @ORM\Column(type="string", length=3)
+     * @Assert\Choice({"A", "B", "AB", "O"})
      * @Groups({"napi:hv:post", "napi:hv:put", "scraper", "scraper-hv"})
      */
     private $grupoSanguineo;
 
     /**
      * @ORM\Column(type="string", length=1)
-     * @Groups({"napi:hv:post", "napi:hv:put", "scraper", "scraper-hv"})
+     * @Assert\Choice({"+", "-"})
+     * @Groups({"napi:hv:post", "napi:hv:put", "api:hv:write", "scraper", "scraper-hv"})
      */
     private $factorRh;
 
     /**
      * @ORM\Column(type="smallint")
-     * @Groups({"napi:hv:post", "napi:hv:put", "scraper", "scraper-hv"})
+     * @Assert\Choice({1, 2, 3})
+     * @Groups({"napi:hv:post", "napi:hv:put", "api:hv:write", "scraper", "scraper-hv"})
      */
     private $nacionalidad;
 
@@ -170,8 +202,10 @@ class Hv implements HvEntity
     private $identificacionTipo;
 
     /**
+     * Fecha de nacimiento
      * @ORM\Column(type="date", nullable=true)
-     * @Groups({"napi:hv:post", "napi:hv:put", "scraper", "scraper-hv"})
+     * @Assert\NotBlank(message="Ingrese fecha de nacimiento")
+     * @Groups({"napi:hv:post", "napi:hv:put", "api:hv:write", "scraper", "scraper-hv"})
      */
     private $nacimiento;
 
@@ -207,7 +241,7 @@ class Hv implements HvEntity
 
     /**
      * @ORM\Column(type="string", length=3)
-     * @Groups({"napi:hv:post", "napi:hv:put", "scraper", "scraper-hv"})
+     * @Groups({"napi:hv:post", "napi:hv:put", "api:hv:write", "scraper", "scraper-hv"})
      */
     private $nivelAcademico;
 
@@ -287,6 +321,7 @@ class Hv implements HvEntity
         $this->referencias = new ArrayCollection();
         $this->viviendas = new ArrayCollection();
         $this->vacantes = new ArrayCollection();
+        $this->usuario = new Usuario();
     }
 
     public function getId(): ?int
@@ -981,5 +1016,155 @@ class Hv implements HvEntity
     public function getNapiId(): string
     {
         return $this->usuario->getIdentificacion();
+    }
+
+    /**
+     * Numero de cedula del aspirante
+     * @Assert\NotBlank(message="Por favor ingrese identificación")
+     * @Assert\Regex(pattern="/^[0-9]+$/", message="Solo se aceptan numeros")
+     * @Assert\Length(
+     *      min = 5,
+     *      max = 12,
+     *      minMessage = "La identificación debe tener al menos {{ limit }} caracteres",
+     *      maxMessage = "La identificación supera el limite de {{ limit }} caracteres"
+     * )
+     * @Groups({"api:hv:write"})
+     */
+    public function getIdentificacion(): ?string
+    {
+        return $this->usuario ? $this->usuario->getIdentificacion() : null;
+    }
+
+    /**
+     * @param string $identificacion
+     * @Groups({"api:hv:write"})
+     */
+    public function setIdentificacion(string $identificacion)
+    {
+        $this->usuario ? $this->usuario->setIdentificacion($identificacion) : null;
+    }
+
+    /**
+     * @Assert\NotBlank(message="Por favor ingrese nombre")
+     * @Assert\Regex(
+     *     pattern="/\d|(?! )\W/",
+     *     match=false,
+     *     message="Por favor ingrese solo letras"
+     * )
+     * @Assert\Length(
+     *      max = 50,
+     *      maxMessage = "El nombre supera el limite de {{ limit }} caracteres"
+     * )
+     * @Groups({"api:hv:write"})
+     */
+    public function getPrimerNombre(): ?string
+    {
+        return $this->usuario ? $this->usuario->getPrimerNombre() : null;
+    }
+
+    /**
+     * @param string $primerNombre
+     * @Groups({"api:hv:write"})
+     */
+    public function setPrimerNombre($primerNombre)
+    {
+        $this->usuario ? $this->usuario->setPrimerNombre($primerNombre) : null;
+    }
+
+    /**
+     * @Assert\Regex(
+     *     pattern="/\d|(?! )\W/",
+     *     match=false,
+     *     message="Por favor ingrese solo letras"
+     * )
+     * @Assert\Length(
+     *      max = 50,
+     *      maxMessage = "El nombre supera el limite de {{ limit }} caracteres"
+     * )
+     * @Groups({"api:hv:write"})
+     */
+    public function getSegundoNombre(): ?string
+    {
+        return $this->usuario ? $this->usuario->getSegundoNombre() : null;
+    }
+
+    /**
+     * @param string|null $segundoNombre
+     * @Groups({"api:hv:write"})
+     */
+    public function setSegundoNombre(?string $segundoNombre)
+    {
+        $this->usuario ? $this->usuario->setSegundoNombre($segundoNombre) : null;
+    }
+
+    /**
+     * @Assert\NotBlank(message="Por favor ingrese su apellido")
+     * @Assert\Regex(
+     *     pattern="/\d|(?! )\W/",
+     *     match=false,
+     *     message="Por favor ingrese solo letras"
+     * )
+     * @Assert\Length(
+     *      max = 50,
+     *      maxMessage = "El apellido supera el limite de {{ limit }} caracteres"
+     * )
+     * @Groups({"api:hv:write"})
+     */
+    public function getPrimerApellido(): ?string
+    {
+        return $this->usuario ? $this->usuario->getPrimerApellido() : null;
+    }
+
+    /**
+     * @param string $primerApellido
+     * @Groups({"api:hv:write"})
+     */
+    public function setPrimerApellido($primerApellido)
+    {
+        $this->usuario ? $this->usuario->setPrimerApellido($primerApellido) : null;
+    }
+
+    /**
+     * @Assert\Regex(
+     *     pattern="/\d|(?! )\W/",
+     *     match=false,
+     *     message="Por favor ingrese solo letras"
+     * )
+     * @Assert\Length(
+     *      max = 50,
+     *      maxMessage = "El apellido supera el limite de {{ limit }} caracteres"
+     * )
+     * @Groups({"api:hv:write"})
+     */
+    public function getSegundoApellido(): ?string
+    {
+        return $this->usuario ? $this->usuario->getSegundoApellido() : null;
+    }
+
+    /**
+     * @param string|null $segundoApellido
+     * @Groups({"api:hv:write"})
+     */
+    public function setSegundoApellido(?string $segundoApellido)
+    {
+        $this->usuario ? $this->usuario->setSegundoApellido($segundoApellido) : null;
+    }
+    /**
+     * @Assert\NotBlank(message="Por favor ingrese correo")
+     * @Assert\Email()
+     * @Groups({"api:hv:write"})
+     */
+    public function getEmail(): ?string
+    {
+        return $this->usuario ? $this->usuario->getEmail() : null;
+    }
+
+    /**
+     * @param string $email
+     * @Groups({"api:hv:write"})
+     */
+    public function setEmail($email)
+    {
+        $this->usuario ? $this->usuario->setEmail($email) : null;
     }
 }

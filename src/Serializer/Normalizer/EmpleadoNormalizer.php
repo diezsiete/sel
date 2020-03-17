@@ -26,6 +26,11 @@ class EmpleadoNormalizer extends ObjectNormalizer
         return $type === Empleado::class;
     }
 
+    public function supportsNormalization($data, $format = null)
+    {
+        return $data instanceof Empleado;
+    }
+
     public function denormalize($data, $class, $format = null, array $context = [])
     {
         if($empleado = $this->empleadoRepo->findByIdentificacion($data['usuario']['identificacion'])) {

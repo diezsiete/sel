@@ -2,12 +2,25 @@
 
 namespace App\Entity\Main;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
+ * @ApiResource(
+ *     collectionOperations={
+ *         "get" = {"path": "/ciudades"},
+ *     },
+ *     itemOperations={
+ *         "get" = {"path": "/ciudad/{id}"},
+ *     },
+ *     normalizationContext={"groups"={"t3rs:ciudad:read"}},
+ * )
  * @ORM\Entity(repositoryClass="App\Repository\Main\CiudadRepository")
+ * @ApiFilter(SearchFilter::class, properties={"pais": "exact", "dpto": "exact", "nombre": "partial"})
  */
 class Ciudad
 {
@@ -15,25 +28,27 @@ class Ciudad
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"main", "messenger:hv-child:put"})
+     * @Groups({"main", "messenger:hv-child:put", "t3rs:ciudad:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"main", "messenger:hv-child:put"})
+     * @Groups({"main", "messenger:hv-child:put", "t3rs:ciudad:read"})
      */
     private $nombre;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Main\Dpto", inversedBy="ciudades")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"t3rs:ciudad:read"})
      */
     private $dpto;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Main\Pais", inversedBy="ciudades")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"t3rs:ciudad:read"})
      */
     private $pais;
 

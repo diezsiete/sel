@@ -26,6 +26,11 @@ class ConvenioNormalizer extends ObjectNormalizer
         return $type === Convenio::class;
     }
 
+    public function supportsNormalization($data, $format = null)
+    {
+        return $data instanceof Convenio;
+    }
+
     public function denormalize($data, $class, $format = null, array $context = [])
     {
         if($convenio = $this->convenioRepo->find($data['codigo'])) {
