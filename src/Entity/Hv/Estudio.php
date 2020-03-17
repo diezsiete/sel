@@ -2,12 +2,20 @@
 
 namespace App\Entity\Hv;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
 use App\Validator\Hv\HvChild as HvChildConstraint;
 
 /**
+ * @ApiResource(
+ *     collectionOperations={},
+ *     itemOperations={"get"},
+ *     normalizationContext={"groups"={"api:hv:read"}},
+ *     denormalizationContext={"groups"={"api:hv:write"}},
+ *     attributes={"validation_groups"={"Default", "api"}}
+ * )
  * @ORM\Entity(repositoryClass="App\Repository\Hv\EstudioRepository")
  * @HvChildConstraint(
  *     message="No puede tener dos estudios con la misma area en el mismo instituto",
@@ -20,7 +28,7 @@ class Estudio implements HvEntity
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups("main")
+     * @Groups({"main", "api:hv:read"})
      */
     protected $id;
 
@@ -28,7 +36,7 @@ class Estudio implements HvEntity
      * @ORM\ManyToOne(targetEntity="EstudioCodigo")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotNull(message="Seleccione el area de estudio")
-     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "api:hv:write", "api:hv:read", "scraper", "scraper-hv-child"})
      * @var EstudioCodigo
      */
     private $codigo;
@@ -46,7 +54,7 @@ class Estudio implements HvEntity
      *      max = 50,
      *      maxMessage = "El titulo supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "api:hv:write", "api:hv:read", "scraper", "scraper-hv-child"})
      */
     private $nombre;
 
@@ -54,7 +62,7 @@ class Estudio implements HvEntity
      * @ORM\ManyToOne(targetEntity="EstudioInstituto")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotNull(message="Seleccione instituto. Si no lo encuentra seleccione opción 'NO APLICA'")
-     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "api:hv:write", "scraper", "scraper-hv-child"})
      * @var EstudioInstituto
      */
     private $instituto;

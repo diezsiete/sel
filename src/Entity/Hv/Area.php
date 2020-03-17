@@ -2,13 +2,26 @@
 
 namespace App\Entity\Hv;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Vacante\Vacante;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
+ * @ApiResource(
+ *     collectionOperations={
+ *         "get" = {"path": "/areas"},
+ *     },
+ *     itemOperations={
+ *         "get" = {"path": "/area/{id}"},
+ *     },
+ *     normalizationContext={"groups"={"api:area:read"}},
+ * )
+ * @ApiFilter(SearchFilter::class, properties={"nombre": "partial"})
  * @ORM\Entity(repositoryClass="App\Repository\Hv\AreaRepository")
  */
 class Area
@@ -17,13 +30,13 @@ class Area
      * TODO: en novasoft esto es smallint
      * @ORM\Id()
      * @ORM\Column(type="string", length=7)
-     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "api:area:read", "scraper", "scraper-hv-child"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Groups({"main", "messenger:hv-child:put"})
+     * @Groups({"main", "messenger:hv-child:put", "api:area:read"})
      */
     private $nombre;
 

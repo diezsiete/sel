@@ -4,6 +4,7 @@ namespace App\Validator\Hv;
 
 use App\Entity\Hv\Estudio;
 use App\Repository\Hv\HvChildRepository;
+use App\Service\Utils\Symbol;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
@@ -20,11 +21,16 @@ class HvChildValidator extends ConstraintValidator
      * @var PropertyAccessorInterface
      */
     private $propertyAccessor;
+    /**
+     * @var Symbol
+     */
+    private $symbol;
 
-    public function __construct(EntityManagerInterface $em, PropertyAccessorInterface $propertyAccessor)
+    public function __construct(EntityManagerInterface $em, PropertyAccessorInterface $propertyAccessor, Symbol $symbol)
     {
         $this->em = $em;
         $this->propertyAccessor = $propertyAccessor;
+        $this->symbol = $symbol;
     }
 
     /**
@@ -33,7 +39,16 @@ class HvChildValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        $siblings = $this->getRepository($value)->findSiblings($value->getHv(), $value);
+        $siblings = [];
+        if($hv = $value->getHv()) {
+            if ($hv->getId()) {
+                $siblings = $this->getRepository($value)->findSiblings($hv, $value);
+            }
+            // en api que se crea hv de un solo totazo, no se compara contra bd
+            else {
+                $siblings = $hv->getChildsExcept($this->symbol, $value);
+            }
+        }
 
 
         if($constraint->rules) {

@@ -8,10 +8,12 @@ use App\Entity\Main\Dpto;
 use App\Entity\Main\Usuario;
 use App\Entity\Main\Pais;
 use App\Entity\Vacante\Vacante;
+use App\Service\Utils\Symbol;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -22,8 +24,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     itemOperations={
  *         "get"
  *     },
- *     normalizationContext={"groups"={"api:hv:write"}},
- *     denormalizationContext={"groups"={"api:hv:write"}}
+ *     normalizationContext={"groups"={"api:hv:read"}},
+ *     denormalizationContext={"groups"={"api:hv:write"}},
+ *     attributes={"validation_groups"={"Default", "api"}}
  * )
  * @ORM\Entity(repositoryClass="App\Repository\Hv\HvRepository")
  */
@@ -33,9 +36,9 @@ class Hv implements HvEntity
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups("messenger:hv-child:put")
+     * @Groups({"messenger:hv-child:put"})
      */
-    private $id;
+    public $id;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Main\Usuario", cascade={"persist", "remove"})
@@ -49,21 +52,21 @@ class Hv implements HvEntity
      * @ORM\ManyToOne(targetEntity="App\Entity\Main\Pais")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotNull(message="Ingrese pais de nacimiento")
-     * @Groups({"napi:hv:post", "napi:hv:put", "api:hv:write", "scraper", "scraper-hv"})
+     * @Groups({"napi:hv:post", "napi:hv:put", "api:hv:write", "api:hv:read", "scraper", "scraper-hv"})
      */
     private $nacPais;
 
     /**
      * Departamento de nacimiento
      * @ORM\ManyToOne(targetEntity="App\Entity\Main\Dpto")
-     * @Groups({"napi:hv:post", "napi:hv:put", "api:hv:write", "scraper", "scraper-hv"})
+     * @Groups({"napi:hv:post", "napi:hv:put", "api:hv:write", "api:hv:read", "scraper", "scraper-hv"})
      */
     private $nacDpto;
 
     /**
      * Ciudad de nacimiento
      * @ORM\ManyToOne(targetEntity="App\Entity\Main\Ciudad")
-     * @Groups({"napi:hv:post", "napi:hv:put", "api:hv:write", "scraper", "scraper-hv"})
+     * @Groups({"napi:hv:post", "napi:hv:put", "api:hv:write", "api:hv:read", "scraper", "scraper-hv"})
      */
     private $nacCiudad;
 
@@ -71,33 +74,33 @@ class Hv implements HvEntity
      * @ORM\ManyToOne(targetEntity="App\Entity\Main\Pais")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotNull(message="Ingrese pais de identificación")
-     * @Groups({"napi:hv:post", "napi:hv:put", "api:hv:write", "scraper", "scraper-hv"})
+     * @Groups({"napi:hv:post", "napi:hv:put", "api:hv:write", "api:hv:read", "scraper", "scraper-hv"})
      */
     private $identPais;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Main\Dpto")
-     * @Groups({"napi:hv:post", "napi:hv:put", "api:hv:write", "scraper", "scraper-hv"})
+     * @Groups({"napi:hv:post", "napi:hv:put", "api:hv:write", "api:hv:read", "scraper", "scraper-hv"})
      */
     private $identDpto;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Main\Ciudad")
-     * @Groups({"napi:hv:post", "napi:hv:put", "api:hv:write", "scraper", "scraper-hv"})
+     * @Groups({"napi:hv:post", "napi:hv:put", "api:hv:write", "api:hv:read", "scraper", "scraper-hv"})
      */
     private $identCiudad;
 
     /**
-     * @ORM\Column(type="integer")
-     * @Assert\Choice({1, 2, 3})
-     * @Groups({"napi:hv:post", "napi:hv:put", "api:hv:write", "scraper", "scraper-hv"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Hv\Genero")
+     * @ORM\JoinColumn(name="genero", referencedColumnName="id", nullable=false)
+     * @Groups({"napi:hv:post", "napi:hv:put", "api:hv:write", "api:hv:read", "scraper", "scraper-hv"})
      */
     private $genero;
 
     /**
-     * @ORM\Column(type="smallint")
-     * @Assert\Choice({1, 2, 3, 4, 5})
-     * @Groups({"napi:hv:post", "napi:hv:put", "api:hv:write", "scraper", "scraper-hv"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Hv\EstadoCivil")
+     * @ORM\JoinColumn(name="estado_civil", referencedColumnName="id", nullable=false)
+     * @Groups({"napi:hv:post", "napi:hv:put", "api:hv:write", "api:hv:read", "scraper", "scraper-hv"})
      */
     private $estadoCivil;
 
@@ -105,21 +108,21 @@ class Hv implements HvEntity
      * Pais de residencia
      * @ORM\ManyToOne(targetEntity="App\Entity\Main\Pais")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"napi:hv:post", "napi:hv:put", "api:hv:write", "scraper", "scraper-hv"})
+     * @Groups({"napi:hv:post", "napi:hv:put", "api:hv:write", "api:hv:read", "scraper", "scraper-hv"})
      */
     private $resiPais;
 
     /**
      * Departamento de residencia
      * @ORM\ManyToOne(targetEntity="App\Entity\Main\Dpto")
-     * @Groups({"napi:hv:post", "napi:hv:put", "api:hv:write", "scraper", "scraper-hv"})
+     * @Groups({"napi:hv:post", "napi:hv:put", "api:hv:write", "api:hv:read", "scraper", "scraper-hv"})
      */
     private $resiDpto;
 
     /**
      * Ciudad de residencia
      * @ORM\ManyToOne(targetEntity="App\Entity\Main\Ciudad")
-     * @Groups({"napi:hv:post", "napi:hv:put", "api:hv:write", "scraper", "scraper-hv"})
+     * @Groups({"napi:hv:post", "napi:hv:put", "api:hv:write", "api:hv:read", "scraper", "scraper-hv"})
      */
     private $resiCiudad;
 
@@ -131,7 +134,7 @@ class Hv implements HvEntity
      *      max = 50,
      *      maxMessage = "Barrio supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"napi:hv:post", "napi:hv:put", "api:hv:write", "scraper", "scraper-hv"})
+     * @Groups({"napi:hv:post", "napi:hv:put", "api:hv:write", "api:hv:read", "scraper", "scraper-hv"})
      */
     private $barrio;
 
@@ -143,28 +146,28 @@ class Hv implements HvEntity
      *      max = 40,
      *      maxMessage = "La dirección supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"napi:hv:post", "napi:hv:put", "api:hv:write", "scraper", "scraper-hv"})
+     * @Groups({"napi:hv:post", "napi:hv:put", "api:hv:write", "api:hv:read", "scraper", "scraper-hv"})
      */
     private $direccion;
 
     /**
-     * @ORM\Column(type="string", length=3)
-     * @Assert\Choice({"A", "B", "AB", "O"})
-     * @Groups({"napi:hv:post", "napi:hv:put", "scraper", "scraper-hv"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Hv\GrupoSanguineo")
+     * @ORM\JoinColumn(name="grupo_sanguineo", referencedColumnName="id", nullable=false)
+     * @Groups({"napi:hv:post", "napi:hv:put", "api:hv:write", "api:hv:read", "scraper", "scraper-hv"})
      */
     private $grupoSanguineo;
 
     /**
-     * @ORM\Column(type="string", length=1)
-     * @Assert\Choice({"+", "-"})
-     * @Groups({"napi:hv:post", "napi:hv:put", "api:hv:write", "scraper", "scraper-hv"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Hv\FactorRh")
+     * @ORM\JoinColumn(name="factor_rh", referencedColumnName="id", nullable=false)
+     * @Groups({"napi:hv:post", "napi:hv:put", "api:hv:write", "api:hv:read", "scraper", "scraper-hv"})
      */
     private $factorRh;
 
     /**
-     * @ORM\Column(type="smallint")
-     * @Assert\Choice({1, 2, 3})
-     * @Groups({"napi:hv:post", "napi:hv:put", "api:hv:write", "scraper", "scraper-hv"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Hv\Nacionalidad")
+     * @ORM\JoinColumn(name="nacionalidad", referencedColumnName="id", nullable=false)
+     * @Groups({"napi:hv:post", "napi:hv:put", "api:hv:write", "api:hv:read", "scraper", "scraper-hv"})
      */
     private $nacionalidad;
 
@@ -196,7 +199,8 @@ class Hv implements HvEntity
     private $personasCargo;
 
     /**
-     * @ORM\Column(type="string", length=2)
+     * @ORM\ManyToOne(targetEntity="IdentificacionTipo")
+     * @ORM\JoinColumn(name="identificacion_tipo", referencedColumnName="id", nullable=false)
      * @Groups({"napi:hv:post", "napi:hv:put", "scraper", "scraper-hv"})
      */
     private $identificacionTipo;
@@ -205,7 +209,7 @@ class Hv implements HvEntity
      * Fecha de nacimiento
      * @ORM\Column(type="date", nullable=true)
      * @Assert\NotBlank(message="Ingrese fecha de nacimiento")
-     * @Groups({"napi:hv:post", "napi:hv:put", "api:hv:write", "scraper", "scraper-hv"})
+     * @Groups({"napi:hv:post", "napi:hv:put", "api:hv:write", "api:hv:read", "scraper", "scraper-hv"})
      */
     private $nacimiento;
 
@@ -240,8 +244,9 @@ class Hv implements HvEntity
     private $deudasConcepto;
 
     /**
-     * @ORM\Column(type="string", length=3)
-     * @Groups({"napi:hv:post", "napi:hv:put", "api:hv:write", "scraper", "scraper-hv"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Hv\NivelAcademico")
+     * @ORM\JoinColumn(name="nivel_academico", referencedColumnName="id", nullable=false)
+     * @Groups({"napi:hv:post", "napi:hv:put", "api:hv:write", "api:hv:read", "scraper", "scraper-hv"})
      */
     private $nivelAcademico;
 
@@ -259,15 +264,27 @@ class Hv implements HvEntity
 
     /**
      * @ORM\OneToMany(targetEntity="Estudio", mappedBy="hv", orphanRemoval=true)
-     * @Groups({"napi:hv:post", "scraper", "estudios"})
+     * @Groups({"napi:hv:post", "api:hv:write", "scraper", "estudios"})
+     * @Assert\Count(
+     *     min = 1,
+     *     minMessage = "Se espera minimo un estudio",
+     *     groups={"api"}
+     * )
+     * @Assert\Valid()
      */
     private $estudios;
 
     /**
      * @ORM\OneToMany(targetEntity="Experiencia", mappedBy="hv", orphanRemoval=true)
-     * @Groups({"napi:hv:post", "scraper", "experiencia"})
+     * @Groups({"napi:hv:post", "api:hv:write", "scraper", "experiencia"})
+     * @Assert\Count(
+     *     min = 1,
+     *     minMessage = "Se espera minimo una experiencia",
+     *     groups={"api"}
+     * )
+     * @Assert\Valid()
      */
-    private $experiencia;
+    private $experiencias;
 
     /**
      * @ORM\OneToMany(targetEntity="Familiar", mappedBy="hv", orphanRemoval=true)
@@ -289,7 +306,13 @@ class Hv implements HvEntity
 
     /**
      * @ORM\OneToMany(targetEntity="Referencia", mappedBy="hv", orphanRemoval=true)
-     * @Groups({"napi:hv:post", "napi:referencia:post", "scraper", "referencias"})
+     * @Groups({"napi:hv:post", "napi:referencia:post", "api:hv:write", "scraper", "referencias"})
+     * @Assert\Count(
+     *     min = 3,
+     *     minMessage = "Se espera minimo tres referencias",
+     *     groups={"api"}
+     * )
+     * @Assert\Valid()
      */
     private $referencias;
 
@@ -305,16 +328,20 @@ class Hv implements HvEntity
      */
     private $adjunto;
 
-
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Vacante\Vacante", mappedBy="hvs")
      */
     private $vacantes;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $t3rs;
+
     public function __construct()
     {
         $this->estudios = new ArrayCollection();
-        $this->experiencia = new ArrayCollection();
+        $this->experiencias = new ArrayCollection();
         $this->familiares = new ArrayCollection();
         $this->idiomas = new ArrayCollection();
         $this->redesSociales = new ArrayCollection();
@@ -329,6 +356,9 @@ class Hv implements HvEntity
         return $this->id;
     }
 
+    /**
+     * @Assert\Valid(groups={"api"})
+     */
     public function getUsuario(): ?Usuario
     {
         return $this->usuario;
@@ -413,24 +443,24 @@ class Hv implements HvEntity
         return $this;
     }
 
-    public function getGenero(): ?int
+    public function getGenero()
     {
         return $this->genero;
     }
 
-    public function setGenero(int $genero): self
+    public function setGenero($genero): self
     {
         $this->genero = $genero;
 
         return $this;
     }
 
-    public function getEstadoCivil(): ?int
+    public function getEstadoCivil()
     {
         return $this->estadoCivil;
     }
 
-    public function setEstadoCivil(int $estadoCivil): self
+    public function setEstadoCivil($estadoCivil): self
     {
         $this->estadoCivil = $estadoCivil;
 
@@ -644,15 +674,15 @@ class Hv implements HvEntity
     /**
      * @return Collection|Experiencia[]
      */
-    public function getExperiencia(): Collection
+    public function getExperiencias(): Collection
     {
-        return $this->experiencia;
+        return $this->experiencias;
     }
 
     public function addExperiencia(Experiencia $experiencia): self
     {
-        if (!$this->experiencia->contains($experiencia)) {
-            $this->experiencia[] = $experiencia;
+        if (!$this->experiencias->contains($experiencia)) {
+            $this->experiencias[] = $experiencia;
             $experiencia->setHv($this);
         }
 
@@ -661,8 +691,8 @@ class Hv implements HvEntity
 
     public function removeExperiencia(Experiencia $experiencia): self
     {
-        if ($this->experiencia->contains($experiencia)) {
-            $this->experiencia->removeElement($experiencia);
+        if ($this->experiencias->contains($experiencia)) {
+            $this->experiencias->removeElement($experiencia);
             // set the owning side to null (unless already changed)
             if ($experiencia->getHv() === $this) {
                 $experiencia->setHv(null);
@@ -672,12 +702,12 @@ class Hv implements HvEntity
         return $this;
     }
 
-    public function getIdentificacionTipo(): ?string
+    public function getIdentificacionTipo()
     {
         return $this->identificacionTipo;
     }
 
-    public function setIdentificacionTipo(string $identTipo): self
+    public function setIdentificacionTipo($identTipo): self
     {
         $this->identificacionTipo = $identTipo;
 
@@ -702,23 +732,23 @@ class Hv implements HvEntity
         return $familiares;
     }
 
-    public function addFamiliare(Familiar $familiare): self
+    public function addFamiliar(Familiar $familiar): self
     {
-        if (!$this->familiares->contains($familiare)) {
-            $this->familiares[] = $familiare;
-            $familiare->setHv($this);
+        if (!$this->familiares->contains($familiar)) {
+            $this->familiares[] = $familiar;
+            $familiar->setHv($this);
         }
 
         return $this;
     }
 
-    public function removeFamiliare(Familiar $familiare): self
+    public function removeFamiliar(Familiar $familiar): self
     {
-        if ($this->familiares->contains($familiare)) {
-            $this->familiares->removeElement($familiare);
+        if ($this->familiares->contains($familiar)) {
+            $this->familiares->removeElement($familiar);
             // set the owning side to null (unless already changed)
-            if ($familiare->getHv() === $this) {
-                $familiare->setHv(null);
+            if ($familiar->getHv() === $this) {
+                $familiar->setHv(null);
             }
         }
 
@@ -764,23 +794,23 @@ class Hv implements HvEntity
         return $this->redesSociales;
     }
 
-    public function addRedesSociale(RedSocial $redesSociale): self
+    public function addRedesSocial(RedSocial $redesSocial): self
     {
-        if (!$this->redesSociales->contains($redesSociale)) {
-            $this->redesSociales[] = $redesSociale;
-            $redesSociale->setHv($this);
+        if (!$this->redesSociales->contains($redesSocial)) {
+            $this->redesSociales[] = $redesSocial;
+            $redesSocial->setHv($this);
         }
 
         return $this;
     }
 
-    public function removeRedesSociale(RedSocial $redesSociale): self
+    public function removeRedesSocial(RedSocial $redesSocial): self
     {
-        if ($this->redesSociales->contains($redesSociale)) {
-            $this->redesSociales->removeElement($redesSociale);
+        if ($this->redesSociales->contains($redesSocial)) {
+            $this->redesSociales->removeElement($redesSocial);
             // set the owning side to null (unless already changed)
-            if ($redesSociale->getHv() === $this) {
-                $redesSociale->setHv(null);
+            if ($redesSocial->getHv() === $this) {
+                $redesSocial->setHv(null);
             }
         }
 
@@ -855,9 +885,27 @@ class Hv implements HvEntity
                 $vivienda->setHv(null);
             }
         }
-
         return $this;
     }
+
+    public function getChilds(Symbol $symbol, $child)
+    {
+        $childClass = $symbol->removeNamespaceFromClassName($child);
+        if($childClass === 'RedSocial') {
+            $childClass = 'RedesSociales';
+        } else {
+            $childClass .= 's';
+        }
+        return $this->{'get' . $childClass}();
+    }
+
+    public function getChildsExcept(Symbol $symbol, $child)
+    {
+        return $this->getChilds($symbol, $child)->filter(function ($sibling) use ($child) {
+            return $sibling !== $child;
+        });
+    }
+
 
     public function getNacimiento(): ?\DateTimeInterface
     {
@@ -943,12 +991,12 @@ class Hv implements HvEntity
         return $this;
     }
 
-    public function getNivelAcademico(): ?string
+    public function getNivelAcademico()
     {
         return $this->nivelAcademico;
     }
 
-    public function setNivelAcademico(string $nivelAcademico): self
+    public function setNivelAcademico($nivelAcademico): self
     {
         $this->nivelAcademico = $nivelAcademico;
 
@@ -1013,6 +1061,24 @@ class Hv implements HvEntity
         return $this;
     }
 
+    /**
+     * @return bool|null
+     */
+    public function getT3rs(): ?bool
+    {
+        return $this->t3rs;
+    }
+
+    /**
+     * @param bool $t3rs
+     * @return Hv
+     */
+    public function isT3rs($t3rs): Hv
+    {
+        $this->t3rs = $t3rs;
+        return $this;
+    }
+
     public function getNapiId(): string
     {
         return $this->usuario->getIdentificacion();
@@ -1028,7 +1094,7 @@ class Hv implements HvEntity
      *      minMessage = "La identificación debe tener al menos {{ limit }} caracteres",
      *      maxMessage = "La identificación supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"api:hv:write"})
+     * @Groups({"api:hv:read"})
      */
     public function getIdentificacion(): ?string
     {
@@ -1055,7 +1121,7 @@ class Hv implements HvEntity
      *      max = 50,
      *      maxMessage = "El nombre supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"api:hv:write"})
+     * @Groups({"api:hv:read"})
      */
     public function getPrimerNombre(): ?string
     {
@@ -1081,7 +1147,7 @@ class Hv implements HvEntity
      *      max = 50,
      *      maxMessage = "El nombre supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"api:hv:write"})
+     * @Groups({"api:hv:read"})
      */
     public function getSegundoNombre(): ?string
     {
@@ -1108,7 +1174,7 @@ class Hv implements HvEntity
      *      max = 50,
      *      maxMessage = "El apellido supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"api:hv:write"})
+     * @Groups({"api:hv:read"})
      */
     public function getPrimerApellido(): ?string
     {
@@ -1134,7 +1200,7 @@ class Hv implements HvEntity
      *      max = 50,
      *      maxMessage = "El apellido supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"api:hv:write"})
+     * @Groups({"api:hv:read"})
      */
     public function getSegundoApellido(): ?string
     {
@@ -1152,7 +1218,7 @@ class Hv implements HvEntity
     /**
      * @Assert\NotBlank(message="Por favor ingrese correo")
      * @Assert\Email()
-     * @Groups({"api:hv:write"})
+     * @Groups({"api:hv:read"})
      */
     public function getEmail(): ?string
     {

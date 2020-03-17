@@ -2,10 +2,15 @@
 
 namespace App\Form;
 
-use App\Constant\HvConstant;
+use App\Entity\Hv\EstadoCivil;
+use App\Entity\Hv\FactorRh;
+use App\Entity\Hv\Genero;
+use App\Entity\Hv\GrupoSanguineo;
+use App\Entity\Hv\IdentificacionTipo;
+use App\Entity\Hv\Nacionalidad;
+use App\Entity\Hv\NivelAcademico;
 use App\Entity\Main\Ciudad;
 use App\Entity\Main\Dpto;
-use App\Entity\Hv\Hv;
 use App\Entity\Main\Pais;
 use App\Form\Model\HvDatosBasicosModel;
 use App\Repository\Main\UsuarioRepository;
@@ -15,15 +20,12 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints as Assert;
 
 class HvFormType extends AbstractType
 {
@@ -99,8 +101,8 @@ class HvFormType extends AbstractType
             ->add('email', EmailType::class, [
                 'required' => true,
             ])
-            ->add('identificacionTipo', ChoiceType::class, [
-                'choices' => array_flip(HvConstant::IDENTIFICACION_TIPO),
+            ->add('identificacionTipo', EntityType::class, [
+                'class' => IdentificacionTipo::class,
                 'label' => 'Tipo de identificación',
                 'required' => true
             ])
@@ -122,28 +124,28 @@ class HvFormType extends AbstractType
                 'format' => 'yyyy-MM-dd',
                 'help' => 'Utilizar el formato ej: 2010-10-23',
             ])
-            ->add('genero', ChoiceType::class, [
-                'choices' => array_flip(HvConstant::GENERO),
+            ->add('genero', EntityType::class, [
+                'class' => Genero::class,
                 'required' => true,
             ])
-            ->add('estadoCivil', ChoiceType::class, [
-                'choices' => array_flip(HvConstant::ESTADO_CIVIL),
+            ->add('estadoCivil', EntityType::class, [
+                'class' => EstadoCivil::class,
                 'label' => 'Estado civil',
                 'required' => true,
             ])
 
-            ->add('grupoSanguineo', ChoiceType::class, [
-                'choices' => array_flip(HvConstant::GRUPO_SANGUINEO),
+            ->add('grupoSanguineo', EntityType::class, [
+                'class' => GrupoSanguineo::class,
                 'label' => 'Grupo sanguineo',
                 'required' => true,
             ])
-            ->add('factorRh', ChoiceType::class, [
-                'choices' => array_flip(HvConstant::FACTOR_RH),
+            ->add('factorRh', EntityType::class, [
+                'class' => FactorRh::class,
                 'label' => 'Factor RH',
                 'required' => true,
             ])
-            ->add('nacionalidad', ChoiceType::class, [
-                'choices' => array_flip(HvConstant::NACIONALIDAD),
+            ->add('nacionalidad', EntityType::class, [
+                'class' => Nacionalidad::class,
                 'required' => true,
             ])
 
@@ -166,8 +168,9 @@ class HvFormType extends AbstractType
             ->add('telefono')
             ->add('celular')
 
-            ->add('nivelAcademico', ChoiceType::class, [
-                'choices' => array_flip(HvConstant::NIVEL_ACADEMICO)
+            ->add('nivelAcademico', EntityType::class, [
+                'class' => NivelAcademico::class,
+                'required' => true,
             ])
             /*->add('estatura', null, [
                 'label' => 'Estatura (Metros)'

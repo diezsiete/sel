@@ -14,7 +14,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\Main\UsuarioRepository")
  * @UniqueEntity(
  *     fields={"identificacion"},
- *     message="Identificación ya registrada"
+ *     message="Identificación ya registrada",
+ *     groups={"Default", "api"}
  * )
  */
 class Usuario implements UserInterface
@@ -31,7 +32,7 @@ class Usuario implements UserInterface
     private $id;
 
     /**
-     * @Assert\NotBlank(message="Por favor ingrese identificación")
+     * @Assert\NotBlank(message="Por favor ingrese identificación", groups={"Default", "api"})
      * @ORM\Column(type="string", length=180, unique=true)
      * @Groups({"napi:hv:post", "napi:hv-child:post", "messenger:hv-child:put", "scraper", "scraper-hv", "scraper-hv-child", "api"})
      */
@@ -44,21 +45,21 @@ class Usuario implements UserInterface
 
     /**
      * @var string The hashed password
-     * @Assert\NotBlank(message="Por favor ingrese contraseña")
+     * @Assert\NotBlank(message="Por favor ingrese contraseña", groups={"Default"})
      * @ORM\Column(type="string")
      */
     private $password;
 
     /**
-     * @Assert\NotBlank(message="Por favor ingrese correo")
-     * @Assert\Email()
+     * @Assert\NotBlank(message="Por favor ingrese correo", groups={"Default", "api"})
+     * @Assert\Email(groups={"Default", "api"})
      * @ORM\Column(type="string", length=140, nullable=true)
      * @Groups({"napi:hv:post", "napi:hv:put", "scraper", "scraper-hv", "api"})
      */
     private $email;
 
     /**
-     * @Assert\NotBlank(message="Por favor ingrese su nombre")
+     * @Assert\NotBlank(message="Por favor ingrese su nombre", groups={"Default", "api"})
      * @ORM\Column(type="string", length=60)
      * @Groups({"napi:hv:post", "napi:hv:put", "scraper", "scraper-hv", "api"})
      */
@@ -71,7 +72,7 @@ class Usuario implements UserInterface
     private $segundoNombre;
 
     /**
-     * @Assert\NotBlank(message="Por favor ingrese su apellido")
+     * @Assert\NotBlank(message="Por favor ingrese su apellido", groups={"Default", "api"})
      * @ORM\Column(type="string", length=60)
      * @Groups({"napi:hv:post", "napi:hv:put", "scraper", "scraper-hv", "api"})
      */

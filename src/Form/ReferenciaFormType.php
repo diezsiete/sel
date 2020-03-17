@@ -2,12 +2,11 @@
 
 namespace App\Form;
 
-use App\Constant\HvConstant;
 use App\Entity\Hv\Referencia;
+use App\Entity\Hv\ReferenciaTipo;
 use App\Service\Configuracion\Configuracion;
-use League\Flysystem\Config;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -26,9 +25,9 @@ class ReferenciaFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('tipo', ChoiceType::class, [
+            ->add('tipo', EntityType::class, [
                 'label' => 'Tipo de referencia',
-                'choices' => $this->configuracion->getHvReferenciaTipo(),
+                'class' => ReferenciaTipo::class,
                 'placeholder' => 'Seleccione...'
             ])
             ->add('nombre', null, [

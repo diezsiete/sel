@@ -23,7 +23,7 @@ class HvPersister implements ContextAwareDataPersisterInterface
      */
     public function persist($data, array $context = [])
     {
-        // call your persistence layer to save $data
+        $data->id = 123123123222;
         return $data;
     }
 

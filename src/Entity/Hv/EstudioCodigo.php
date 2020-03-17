@@ -2,10 +2,23 @@
 
 namespace App\Entity\Hv;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
+ * @ApiResource(
+ *     collectionOperations={
+ *         "get" = {"path": "/estudio-codigos"},
+ *     },
+ *     itemOperations={
+ *         "get" = {"path": "/estudio-codigo/{id}"},
+ *     },
+ *     normalizationContext={"groups"={"api:estudio-codigo:read"}}
+ * )
+ * @ApiFilter(SearchFilter::class, properties={"nombre": "partial"})
  * @ORM\Entity(repositoryClass="App\Repository\Hv\EstudioCodigoRepository")
  */
 class EstudioCodigo
@@ -13,13 +26,13 @@ class EstudioCodigo
     /**
      * @ORM\Id()
      * @ORM\Column(type="string", length=5)
-     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "messenger:hv-child:put", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "messenger:hv-child:put", "api:estudio-codigo:read", "scraper", "scraper-hv-child"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=45)
-     * @Groups("main")
+     * @Groups({"main", "api:estudio-codigo:read"})
      */
     private $nombre;
 

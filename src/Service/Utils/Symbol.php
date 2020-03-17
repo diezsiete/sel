@@ -23,8 +23,13 @@ class Symbol
      */
     public function toSnakeCase($object, $glue = '_'): string
     {
-        $class = is_object($object) ? get_class($object) : $object;
-        $classNameClean = preg_replace('/.+\\\\(\w+)$/', '$1', $class);
+        $classNameClean = $this->removeNamespaceFromClassName($object);
         return $this->varchar->toSnakeCase($classNameClean, $glue);
+    }
+
+    public function removeNamespaceFromClassName($className)
+    {
+        $className = is_object($className) ? get_class($className) : $className;
+        return preg_replace('/.+\\\\(\w+)$/', '$1', $className);
     }
 }

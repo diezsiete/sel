@@ -2,10 +2,10 @@
 
 namespace App\Form;
 
-use App\Constant\VacanteConstant;
 use App\Entity\Hv\Experiencia;
+use App\Entity\Hv\ExperienciaDuracion;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -27,10 +27,10 @@ class ExperienciaFormType extends AbstractType
                 'label' => 'Area del cargo',
                 'placeholder' => 'Seleccione...'
             ])
-            ->add('duracion', ChoiceType::class, [
+            ->add('duracion', EntityType::class, [
                 'label' => 'Duración',
                 'placeholder' => 'Seleccione...',
-                'choices' => array_flip(VacanteConstant::EXPERIENCIA)
+                'class' => ExperienciaDuracion::class
             ])
             ->add('descripcion', TextareaType::class, [
                 'label' => 'Descripción',

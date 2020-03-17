@@ -105,7 +105,7 @@ class HvValidator
 
     public function validateExperiencia(?Hv $hv)
     {
-        return !$hv || $hv->getExperiencia()->count() === 0 ? "Se necesita minimo un registro de experiencia" : true;
+        return !$hv || $hv->getExperiencias()->count() === 0 ? "Se necesita minimo un registro de experiencia" : true;
     }
 
     public function validateReferencias(?Hv $hv)
