@@ -58,6 +58,9 @@
 {{ loading_overlay() }}
 <div class="body" id="body"> {# class="body{{ is_sel() ? ' menu-open' : '' }}" #}
     {% block header %}
+        {% if not app.user %}
+            {{ include('pta/blocks/header/_coronavirus.html.twig') }}
+        {% endif %}
         {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
             {{ include('pta/blocks/header/_switch-user.html.twig') }}
         {% endif %}
