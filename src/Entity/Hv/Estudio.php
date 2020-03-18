@@ -18,8 +18,8 @@ use App\Validator\Hv\HvChild as HvChildConstraint;
  * )
  * @ORM\Entity(repositoryClass="App\Repository\Hv\EstudioRepository")
  * @HvChildConstraint(
- *     message="No puede tener dos estudios con la misma area en el mismo instituto",
- *     uniqueFields={"codigo", "instituto"}
+ *     uniqueFields={"codigo", "instituto"},
+ *     message="No puede tener dos estudios con la misma area en el mismo instituto"
  * )
  */
 class Estudio implements HvEntity

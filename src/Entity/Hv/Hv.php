@@ -9,6 +9,7 @@ use App\Entity\Main\Usuario;
 use App\Entity\Main\Pais;
 use App\Entity\Vacante\Vacante;
 use App\Service\Utils\Symbol;
+use App\Validator\Hv\HvChild as HvChildConstraint;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -310,6 +311,11 @@ class Hv implements HvEntity
      * @Assert\Count(
      *     min = 3,
      *     minMessage = "Se espera minimo tres referencias",
+     *     groups={"api"}
+     * )
+     * @HvChildConstraint(
+     *     atLeastOneForEach="tipo",
+     *     message="Debe existir al menos una referencia de cada tipo",
      *     groups={"api"}
      * )
      * @Assert\Valid()

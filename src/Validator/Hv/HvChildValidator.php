@@ -3,8 +3,11 @@
 namespace App\Validator\Hv;
 
 use App\Entity\Hv\Estudio;
+use App\Entity\Hv\HvEntity;
+use App\Entity\Hv\Referencia;
 use App\Repository\Hv\HvChildRepository;
 use App\Service\Utils\Symbol;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
@@ -34,10 +37,23 @@ class HvChildValidator extends ConstraintValidator
     }
 
     /**
-     * @param Estudio $value
+     * @param Estudio|Referencia|HvEntity $value
      * @param Constraint|HvChild $constraint
      */
     public function validate($value, Constraint $constraint)
+    {
+        if($constraint->atLeastOneForEach) {
+            $this->validateAtLeastOneForEach($value, $constraint);
+        } else {
+            $this->validateUniqueFields($value, $constraint);
+        }
+    }
+
+    /**
+     * @param HvEntity $value
+     * @param Constraint|HvChild $constraint
+     */
+    private function validateUniqueFields($value, Constraint $constraint)
     {
         $siblings = [];
         if($hv = $value->getHv()) {
@@ -49,8 +65,6 @@ class HvChildValidator extends ConstraintValidator
                 $siblings = $hv->getChildsExcept($this->symbol, $value);
             }
         }
-
-
         if($constraint->rules) {
             foreach($constraint->rules as $rule) {
                 foreach($siblings as $sibling) {
@@ -66,6 +80,35 @@ class HvChildValidator extends ConstraintValidator
                 }
             }
         }
+    }
+
+    /**
+     * @param Referencia[]|ArrayCollection $value
+     * @param Constraint|HvChild $constraint
+     * @return bool
+     */
+    private function validateAtLeastOneForEach($value, Constraint $constraint)
+    {
+        $databaseValues = null;
+        foreach ($value as $child) {
+            $childValue = $this->propertyAccessor->getValue($child, $constraint->atLeastOneForEach);
+            if($databaseValues === null) {
+                $databaseValues = $this->em->getRepository(get_class($childValue))->findAll();
+            }
+            $databaseValues = array_filter($databaseValues, function ($databaseValue) use ($childValue) {
+                return $databaseValue !== $childValue;
+            });
+        }
+
+        if($databaseValues) {
+            $this->context
+                ->buildViolation($constraint->message . '. Faltan de tipo: ' . (array_reduce($databaseValues, function ($carry, $item) {
+                        return $carry . ($carry ? ', ' : '') . $item->getNombre();
+                })))
+                ->addViolation();
+            return false;
+        }
+        return true;
     }
 
     /**
