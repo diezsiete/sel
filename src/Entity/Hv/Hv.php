@@ -3,6 +3,7 @@
 namespace App\Entity\Hv;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Annotation\Serializer\NormalizeFunction;
 use App\Entity\Main\Ciudad;
 use App\Entity\Main\Dpto;
 use App\Entity\Main\Usuario;
@@ -136,6 +137,7 @@ class Hv implements HvEntity
      *      maxMessage = "Barrio supera el limite de {{ limit }} caracteres"
      * )
      * @Groups({"napi:hv:post", "napi:hv:put", "api:hv:write", "api:hv:read", "scraper", "scraper-hv"})
+     * @NormalizeFunction("strtoupper", groups={"napi:hv:post", "napi:hv:put"})
      */
     private $barrio;
 
@@ -148,6 +150,7 @@ class Hv implements HvEntity
      *      maxMessage = "La dirección supera el limite de {{ limit }} caracteres"
      * )
      * @Groups({"napi:hv:post", "napi:hv:put", "api:hv:write", "api:hv:read", "scraper", "scraper-hv"})
+     * @NormalizeFunction("strtoupper", groups={"napi:hv:post", "napi:hv:put"})
      */
     private $direccion;
 

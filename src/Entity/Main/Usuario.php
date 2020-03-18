@@ -2,6 +2,7 @@
 
 namespace App\Entity\Main;
 
+use App\Annotation\Serializer\NormalizeFunction;
 use App\Helper\Novasoft\Api\NapiAwareChangeEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
@@ -62,12 +63,14 @@ class Usuario implements UserInterface
      * @Assert\NotBlank(message="Por favor ingrese su nombre", groups={"Default", "api"})
      * @ORM\Column(type="string", length=60)
      * @Groups({"napi:hv:post", "napi:hv:put", "scraper", "scraper-hv", "api"})
+     * @NormalizeFunction("strtoupper", groups={"napi:hv:post", "napi:hv:put"})
      */
     private $primerNombre;
 
     /**
      * @ORM\Column(type="string", length=60, nullable=true)
      * @Groups({"napi:hv:post", "napi:hv:put", "scraper", "scraper-hv", "api"})
+     * @NormalizeFunction("strtoupper", groups={"napi:hv:post", "napi:hv:put"})
      */
     private $segundoNombre;
 
@@ -75,12 +78,14 @@ class Usuario implements UserInterface
      * @Assert\NotBlank(message="Por favor ingrese su apellido", groups={"Default", "api"})
      * @ORM\Column(type="string", length=60)
      * @Groups({"napi:hv:post", "napi:hv:put", "scraper", "scraper-hv", "api"})
+     * @NormalizeFunction("strtoupper", groups={"napi:hv:post", "napi:hv:put"})
      */
     private $primerApellido;
 
     /**
      * @ORM\Column(type="string", length=60, nullable=true)
      * @Groups({"napi:hv:post", "napi:hv:put", "scraper", "scraper-hv", "api"})
+     * @NormalizeFunction("strtoupper", groups={"napi:hv:post", "napi:hv:put"})
      */
     private $segundoApellido;
 

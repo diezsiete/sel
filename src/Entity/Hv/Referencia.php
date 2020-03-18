@@ -3,6 +3,7 @@
 namespace App\Entity\Hv;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Annotation\Serializer\NormalizeFunction;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -43,6 +44,7 @@ class Referencia implements HvEntity
      *      maxMessage = "El nombre supera el limite de {{ limit }} caracteres"
      * )
      * @Groups({"main", "napi:hv:post", "napi:referencia:post", "napi:hv-child:put", "api:hv:read", "api:hv:write", "scraper", "scraper-hv-child"})
+     * @NormalizeFunction("strtoupper", groups={"napi:hv:post", "napi:referencia:post", "napi:hv-child:put"})
      */
     private $nombre;
 
@@ -54,6 +56,7 @@ class Referencia implements HvEntity
      *      maxMessage = "La ocupación supera el limite de {{ limit }} caracteres"
      * )
      * @Groups({"main", "napi:hv:post", "napi:referencia:post", "napi:hv-child:put", "api:hv:read", "api:hv:write", "scraper", "scraper-hv-child"})
+     * @NormalizeFunction("strtoupper", groups={"napi:hv:post", "napi:referencia:post", "napi:hv-child:put"})
      */
     private $ocupacion;
 
@@ -65,6 +68,7 @@ class Referencia implements HvEntity
      *      maxMessage = "El parentesco supera el limite de {{ limit }} caracteres"
      * )
      * @Groups({"main", "napi:hv:post", "napi:referencia:post", "napi:hv-child:put", "api:hv:read", "api:hv:write", "scraper", "scraper-hv-child"})
+     * @NormalizeFunction("strtoupper", groups={"napi:hv:post", "napi:referencia:post", "napi:hv-child:put"})
      */
     private $parentesco;
 
@@ -99,6 +103,7 @@ class Referencia implements HvEntity
      *      maxMessage = "La dirección supera el limite de {{ limit }} caracteres"
      * )
      * @Groups({"main", "napi:hv:post", "napi:referencia:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
+     * @NormalizeFunction("strtoupper", groups={"napi:hv:post", "napi:referencia:post", "napi:hv-child:put"})
      */
     private $direccion;
 
