@@ -9,7 +9,7 @@
     <div class="thumb-info-title">
         <span class="thumb-info-inner">{{ hv.usuario.nombreCompleto }}</span>
         <span class="thumb-info-type">
-            <span class="identificacion-tipo">{{ constant('App\\Constant\\HvConstant::IDENTIFICACION_TIPO')[hv.identificacionTipo] }}</span>
+            <span class="identificacion-tipo">{{ hv.identificacionTipo.nombre }}</span>
             <br>
             {{ hv.usuario.identificacion }}
         </span>
@@ -21,7 +21,7 @@
 <div class="col-md-3">
 <h5 class="mb-2 mt-3">Identificación</h5>
 <p class="text-2">
-    <b>{{ constant('App\\Constant\\HvConstant::IDENTIFICACION_TIPO')[hv.identificacionTipo] }}</b> -
+    <b>{{ hv.identificacionTipo.nombre }}</b> -
     {{ hv.usuario.identificacion }}<br>
     <b>De : </b>
     {{ hv.identCiudad.nombre }}, {{ hv.identDpto }}, {{ hv.identPais }}
@@ -68,9 +68,9 @@
 <div class="col-md-3">
 <h5 class="mb-2 mt-3">Información Adicional</h5>
 <p class="text-2">
-    <b>Estado civil:</b> {{ constant('App\\Constant\\HvConstant::ESTADO_CIVIL')[hv.estadoCivil] }}<br>
-    <b>Grupo sanguineo</b> {{ hv.grupoSanguineo ~ " " ~ hv.factorRh }}<br>
-    <b>Nacionalidad</b> {{ constant('App\\Constant\\HvConstant::NACIONALIDAD')[hv.nacionalidad] }}<br>
+    <b>Estado civil:</b> {{ hv.estadoCivil.nombre }}<br>
+    <b>Grupo sanguineo</b> {{ hv.grupoSanguineo.nombre ~ " " ~ hv.factorRh.nombre }}<br>
+    <b>Nacionalidad</b> {{ hv.nacionalidad.nombre }}<br>
 </p>
 </div>
 

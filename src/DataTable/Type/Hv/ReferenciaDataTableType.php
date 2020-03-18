@@ -40,9 +40,7 @@ class ReferenciaDataTableType implements DataTableTypeInterface
         $hv = $options['hv'];
 
         $dataTable
-            ->add('tipo', TextColumn::class, ['label' => 'Tipo de referencia', 'render' => function($id) {
-                return $this->configuracion->getHvReferenciaTipo(false)[$id];
-            }])
+            ->add('tipo', TextColumn::class, ['label' => 'Tipo de referencia', 'field' => 'tipo.nombre'])
             ->add('nombre', TextColumn::class, ['label' => 'Nombre'])
             ->add('ocupacion', TextColumn::class, ['label' => 'Ocupación'])
             ->add('parentesco', TextColumn::class, ['label' => 'Parentesco'])
@@ -64,6 +62,7 @@ class ReferenciaDataTableType implements DataTableTypeInterface
                     $builder
                         ->select('r')
                         ->from(Referencia::class, 'r')
+                        ->join('r.tipo', 'tipo')
                         ->where('r.hv = :hv')
                         ->setParameter('hv', $hv);
                 },

@@ -55,8 +55,10 @@ class AdminHvDataTableType implements DataTableTypeInterface
             ->add('edad', DateTimeColumn::class, ['label' => 'Edad', 'field' => 'hv.nacimiento', 'format' => 'Y-m-d', 'render' => function($value, $context) {
                 return $this->timeExtension->diff($value);
             }])
-            ->add('nivelAcademico', MapColumn::class, ['label' => 'Nivel academico', 'field' => 'hv.nivelAcademico',
-                'orderable' => false, 'map' => HvConstant::NIVEL_ACADEMICO])
+            ->add('nivelAcademico', TextColumn::class, [
+                'label' => 'Nivel academico',
+                'field' => 'na.nombre',
+                'orderable' => false])
             ->add('actions', ActionsColumn::class, [
                 'label' => '',
                 'field' => 'hv.id',
@@ -82,6 +84,7 @@ class AdminHvDataTableType implements DataTableTypeInterface
                     $builder
                         ->select('hv')
                         ->from(Hv::class, 'hv')
+                        ->join('hv.nivelAcademico', 'na')
                         ->where('usuario is not null');
 
                     $this->hvRepository->searchQueryBuilderFields($builder);

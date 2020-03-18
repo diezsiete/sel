@@ -2,7 +2,7 @@
     <div class="timeline timeline-simple mt-3 mb-3">
         <div class="tm-body">
             <ol class="tm-items">
-                {% for experiencia in hv.experiencia %}
+                {% for experiencia in hv.experiencias %}
                     <li>
                         <div class="tm-box">
                             <form>
@@ -27,7 +27,7 @@
                                     <div class="form-group col-sm-6">
                                         <label for="duracion">Duración</label>
                                         <input type="text" readonly class="form-control-plaintext" id="duracion"
-                                               value="{{ constant('App\\Constant\\VacanteConstant::EXPERIENCIA')[experiencia.duracion]}}">
+                                               value="{{ experiencia.duracion.nombre}}">
                                     </div>
                                 </div>
                                 <div class="row">

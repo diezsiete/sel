@@ -38,7 +38,7 @@ class InsertHvInNovasoftHandler implements MessageHandlerInterface
         $this->em->clear();
         $hv = $this->hvRepo->find($message->getHvId());
         if($hv) {
-            //$this->client->post($hv);
+            $this->client->post($hv);
             $this->handleRequest($this->em, $message, function () use($hv) {
                 return $this->client->post($hv);
             });

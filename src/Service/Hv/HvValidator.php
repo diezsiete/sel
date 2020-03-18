@@ -5,8 +5,10 @@ namespace App\Service\Hv;
 
 
 use App\Entity\Hv\Hv;
+use App\Repository\Hv\ReferenciaTipoRepository;
 use App\Service\Configuracion\Configuracion;
 use App\Service\Hv\HvWizard\HvWizardRoute;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class HvValidator
@@ -25,12 +27,18 @@ class HvValidator
      * @var Configuracion
      */
     private $configuracion;
+    /**
+     * @var ReferenciaTipoRepository
+     */
+    private $referenciaTipoRepo;
 
-    public function __construct(ValidatorInterface $validator, Configuracion $configuracion)
+    public function __construct(ValidatorInterface $validator, Configuracion $configuracion,
+                                ReferenciaTipoRepository $referenciaTipoRepo)
     {
         $this->validator = $validator;
         $this->hvWizardRoutes = $configuracion->getHvWizardRoutes();
         $this->configuracion = $configuracion;
+        $this->referenciaTipoRepo = $referenciaTipoRepo;
     }
 
     /**
@@ -71,7 +79,7 @@ class HvValidator
      */
     public function validateStep($stepKey, ?Hv $hv, $noMethodReturn = true)
     {
-        $validarMethod = "validate" . ucfirst($stepKey);
+        $validarMethod = 'validate' . ucfirst($stepKey);
         if(method_exists($this, $validarMethod)) {
             return $this->$validarMethod($hv);
         } else {
@@ -83,16 +91,16 @@ class HvValidator
     {
         $errorMessage = false;
         if(!$hv || !$hv->getUsuario()) {
-            $errorMessage = "Datos básicos invalidos";
+            $errorMessage = 'Datos básicos invalidos';
         }
         if(!$errorMessage) {
             if (count($this->validator->validate($hv))) {
-                $errorMessage = "Datos básicos invalidos";
+                $errorMessage = 'Datos básicos invalidos';
             }
         }
         if(!$errorMessage) {
             if(count($this->validator->validate($hv->getUsuario()))) {
-                $errorMessage = "Datos básicos invalidos";
+                $errorMessage = 'Datos básicos invalidos';
             }
         }
         return $errorMessage === false ? true : $errorMessage;
@@ -100,26 +108,28 @@ class HvValidator
 
     public function validateEstudios(?Hv $hv)
     {
-        return !$hv || $hv->getEstudios()->count() === 0 ? "Se necesita minimo un registro de estudios" : true;
+        return !$hv || $hv->getEstudios()->count() === 0 ? 'Se necesita minimo un registro de estudios' : true;
     }
 
     public function validateExperiencia(?Hv $hv)
     {
-        return !$hv || $hv->getExperiencias()->count() === 0 ? "Se necesita minimo un registro de experiencia" : true;
+        return !$hv || $hv->getExperiencias()->count() === 0 ? 'Se necesita minimo un registro de experiencia' : true;
     }
 
     public function validateReferencias(?Hv $hv)
     {
-        $referenciasRequired = $this->configuracion->getHvReferenciaTipo(false);
+        $referenciasRequired = $this->referenciaTipoRepo->getKeyPair();
         if($hv) {
             foreach ($hv->getReferencias() as $referencia) {
-                unset($referenciasRequired[$referencia->getTipo()]);
+                if($referenciaTipo = $referencia->getTipo()) {
+                    unset($referenciasRequired[$referenciaTipo->getId()]);
+                }
             }
         }
         if($referenciasRequired) {
             $lastReferencia = array_pop($referenciasRequired);
-            return "Falta completar referencias de tipo : " . implode(", ", $referenciasRequired)
-                . (count($referenciasRequired) ? " y " : " ") . $lastReferencia;
+            return 'Falta completar referencias de tipo : ' . implode(', ', $referenciasRequired)
+                . (count($referenciasRequired) ? ' y ' : ' ') . $lastReferencia;
         }
         return true;
     }

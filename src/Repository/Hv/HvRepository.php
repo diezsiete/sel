@@ -68,21 +68,21 @@ class HvRepository extends ServiceEntityRepository
     public function searchQueryBuilderFields(QueryBuilder $qb, $alias = 'hv')
     {
         $joinsDef = [
-            'usuario' => ['join' => $alias . ".usuario", 'alias' => 'usuario'],
-            'resiCiudad' => ['join' => $alias.".resiCiudad", 'alias' => 'resiCiudad', 'type' => 'left'],
-            'estudio' => ['join' => $alias.".estudios", 'alias' => 'estudio', 'type' => 'left'],
+            'usuario' => ['join' => $alias . '.usuario', 'alias' => 'usuario'],
+            'resiCiudad' => ['join' => $alias. '.resiCiudad', 'alias' => 'resiCiudad', 'type' => 'left'],
+            'estudio' => ['join' => $alias. '.estudios', 'alias' => 'estudio', 'type' => 'left'],
             //'estudioCodigo' => ['join' => "estudio.codigo", 'alias' => 'estudioCodigo'],
-            'experiencia' => ['join' => $alias.".experiencia", 'alias' => 'experiencia', 'type' => 'left'],
+            'experiencia' => ['join' => $alias. '.experiencias', 'alias' => 'experiencia', 'type' => 'left'],
             //'experienciaArea' => ['join' => 'experiencia.area', 'alias' => 'experienciaArea'],
             //'adjunto' => ['join' => $alias.".adjunto", 'alias' => 'adjunto', 'type' => 'left']
         ];
         $select = implode(', ', array_keys($joinsDef));
         $qb->addSelect($select);
         foreach($joinsDef as $join) {
-            $type = isset($join['type']) ? $join['type'] : 'inner';
+            $type = $join['type'] ?? 'inner';
             $qb->{$type . 'Join'}($join['join'], $join['alias']);
         }
-        $qb->orderBy($alias . ".id", 'DESC');
+        $qb->orderBy($alias . '.id', 'DESC');
         $qb->groupBy("$alias.id");
         /*$qb
             ->addSelect('usuario, resiCiudad, estudio, estudioCodigo, experiencia, experienciaArea, adjunto')

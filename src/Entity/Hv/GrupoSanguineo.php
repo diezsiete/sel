@@ -24,7 +24,7 @@ class GrupoSanguineo
     /**
      * @ORM\Id()
      * @ORM\Column(type="string", length=3)
-     * @Groups("t3rs:read")
+     * @Groups({"napi:hv:post", "napi:hv:put", "t3rs:read"})
      */
     private $id;
 

@@ -137,14 +137,16 @@ class Referencia implements HvEntity
         return $this;
     }
 
-
-    public function getTipo(): ?int
+    /**
+     * @return ReferenciaTipo|null
+     */
+    public function getTipo()
     {
         return $this->tipo;
     }
 
     /**
-     * @param integer $tipo
+     * @param ReferenciaTipo $tipo
      * @return Referencia
      */
     public function setTipo($tipo): self

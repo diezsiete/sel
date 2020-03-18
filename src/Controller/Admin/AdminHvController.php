@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\DataTable\Type\Hv\AdminHvDataTableType;
 use App\Entity\Hv\Hv;
 use App\Repository\Hv\HvRepository;
+use App\Repository\Hv\ReferenciaTipoRepository;
 use Knp\Bundle\TimeBundle\Twig\Extension\TimeExtension;
 use Knp\Component\Pager\PaginatorInterface;
 use Omines\DataTablesBundle\DataTableFactory;
@@ -36,10 +37,11 @@ class AdminHvController extends AbstractController
     /**
      * @Route("/sel/admin/hv/{id}", name="admin_hv_detalle", requirements={"id"="\d+"})
      */
-    public function detalle(Hv $hv)
+    public function detalle(Hv $hv, ReferenciaTipoRepository $referenciaTipoRepo)
     {
         return $this->render('admin/hv/detalle/detalle.html.twig', [
-            'hv' => $hv
+            'hv' => $hv,
+            'tiposReferencia' => $referenciaTipoRepo->getKeyPair()
         ]);
     }
 

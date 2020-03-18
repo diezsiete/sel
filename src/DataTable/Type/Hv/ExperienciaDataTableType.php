@@ -30,9 +30,7 @@ class ExperienciaDataTableType implements DataTableTypeInterface
             ->add('empresa', TextColumn::class, ['label' => 'Nombre de la empresa'])
             ->add('cargo', TextColumn::class, ['label' => 'Cargo'])
             ->add('experiencia', TextColumn::class, ['label' => 'Area de experiencia', 'field' => 'area.nombre'])
-            ->add('duracion', TextColumn::class, ['label' => 'Duración', 'render' => function($id) {
-                return VacanteConstant::EXPERIENCIA[$id];
-            } ])
+            ->add('duracion', TextColumn::class, ['label' => 'Duración', 'field' => 'd.nombre'])
             ->add('id', ButtonColumn::class, ['label' => '', 'buttons' => [
                 (new ButtonTypeModal('#modalForm', 'fas fa-pencil-alt'))->setAttr([
                     'class' => 'modal-with-form',
@@ -51,6 +49,7 @@ class ExperienciaDataTableType implements DataTableTypeInterface
                         ->select('e')
                         ->from(Experiencia::class, 'e')
                         ->join('e.area', 'area')
+                        ->join('e.duracion', 'd')
                         ->where('e.hv = :hv')
                         ->orderBy('e.id', 'DESC')
                         ->setParameter('hv', $hv);

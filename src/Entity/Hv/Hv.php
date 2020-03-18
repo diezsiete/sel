@@ -348,7 +348,6 @@ class Hv implements HvEntity
         $this->referencias = new ArrayCollection();
         $this->viviendas = new ArrayCollection();
         $this->vacantes = new ArrayCollection();
-        $this->usuario = new Usuario();
     }
 
     public function getId(): ?int
@@ -818,6 +817,7 @@ class Hv implements HvEntity
     }
 
     /**
+     * @param int|null $tipo
      * @return Collection|Referencia[]
      */
     public function getReferencias(?int $tipo = null): Collection
@@ -825,7 +825,7 @@ class Hv implements HvEntity
         if($tipo) {
             $referencias = new ArrayCollection();
             foreach($this->referencias as $referencia) {
-                if($referencia->getTipo() === $tipo) {
+                if($referencia->getTipo()->getId() === $tipo) {
                     $referencias->add($referencia);
                 }
             }

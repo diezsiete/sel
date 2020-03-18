@@ -17,20 +17,20 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     normalizationContext={"groups"={"api:referencia-tipo:read"}},
  *     attributes={"pagination_enabled"=false}
  * )
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="App\Repository\Hv\ReferenciaTipoRepository")
  */
 class ReferenciaTipo
 {
     /**
      * @ORM\Id()
      * @ORM\Column(type="smallint")
-     * @Groups("api:referencia-tipo:read")
+     * @Groups({"main", "napi:hv:post", "napi:referencia:post", "napi:hv-child:put", "api:referencia-tipo:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=8)
-     * @Groups("api:referencia-tipo:read")
+     * @Groups({"main", "api:referencia-tipo:read"})
      */
     private $nombre;
 
