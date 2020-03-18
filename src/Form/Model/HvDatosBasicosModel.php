@@ -369,8 +369,8 @@ class HvDatosBasicosModel
     private function assignFromEntity($properties, $entity)
     {
         foreach($properties as $propertyName => $propertyValue) {
-            $methodName = "get" . ucfirst($propertyName);
-            if(method_exists($entity, $methodName)) {
+            $methodName = 'get' . ucfirst($propertyName);
+            if($this->$propertyName === null && method_exists($entity, $methodName)) {
                 $this->$propertyName = $entity->$methodName();
             } else {
                 break;
