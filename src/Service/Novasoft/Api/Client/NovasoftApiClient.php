@@ -135,7 +135,11 @@ abstract class NovasoftApiClient
     protected function sendDelete(string $url, $options = []): int
     {
         return $this->request('DELETE', $url, $options, static function (ResponseInterface $response) {
-            return $response->getStatusCode();
+            $statusCode = $response->getStatusCode();
+            if($statusCode >= 400) {
+                return $response->getContent();
+            }
+            return $statusCode;
         });
     }
 
