@@ -50,7 +50,7 @@ class SerializeFunction
 
     protected function hasNormalizeFunction($object, $propertyName, $context = [])
     {
-        return (bool)$this->getNormalizeFunction($object, $propertyName);
+        return (bool)$this->getNormalizeFunction($object, $propertyName, $context);
     }
 
     /**
@@ -61,12 +61,12 @@ class SerializeFunction
      */
     protected function getNormalizeFunction($object, $propertyName, $context = [])
     {
-        $class = get_class($object);
+        $class = $this->em->getMetadataFactory()->getMetadataFor(get_class($object))->getName();
         if(!isset(static::$loadedNormalizeFunction[$class])) {
             $this->loadNormalizeFunction($object);
         }
         $normalizeFunction = static::$loadedNormalizeFunction[$class][$propertyName];
-        if(isset($context['groups']) && $normalizeFunction->groups) {
+        if($normalizeFunction && isset($context['groups']) && $normalizeFunction->groups) {
             $normalizeFunction = array_intersect($context['groups'], $normalizeFunction->groups) ? $normalizeFunction : null;
         }
         return $normalizeFunction;
@@ -74,7 +74,9 @@ class SerializeFunction
 
     protected function loadNormalizeFunction($object)
     {
-        $reflectionClass = new \ReflectionClass(get_class($object));
+        /** @var ClassMetadataInfo $targetMetadata */
+        $targetMetadata = $this->em->getMetadataFactory()->getMetadataFor(get_class($object));
+        $reflectionClass = $targetMetadata->getReflectionClass();
         foreach ($reflectionClass->getProperties() as $property) {
             $normalizeFunctionAnnotation = null;
             foreach ($this->reader->getPropertyAnnotations($property) as $annotation) {
@@ -82,7 +84,7 @@ class SerializeFunction
                     $normalizeFunctionAnnotation = $annotation;
                 }
             }
-            static::$loadedNormalizeFunction[$reflectionClass->getName()][$property->getName()] = $normalizeFunctionAnnotation;
+            static::$loadedNormalizeFunction[$targetMetadata->getName()][$property->getName()] = $normalizeFunctionAnnotation;
         }
     }
 }

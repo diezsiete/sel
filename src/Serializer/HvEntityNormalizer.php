@@ -4,15 +4,12 @@
 namespace App\Serializer;
 
 
-use App\Annotation\Serializer\NormalizeFunction;
 use App\Entity\Hv\Hv;
 use App\Entity\Hv\HvEntity;
 use App\Service\Serializer\SerializeFunction;
-use Doctrine\Common\Annotations\Reader;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\Exception\CircularReferenceException;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Exception\InvalidArgumentException;
