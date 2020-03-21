@@ -36,7 +36,7 @@ class Estudio implements HvEntity
      * @ORM\ManyToOne(targetEntity="EstudioCodigo")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotNull(message="Seleccione el area de estudio")
-     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "api:hv:write", "api:hv:read", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "messenger:hv-child:put",  "api:hv:write", "api:hv:read", "scraper", "scraper-hv-child"})
      * @var EstudioCodigo
      */
     private $codigo;
@@ -62,7 +62,7 @@ class Estudio implements HvEntity
      * @ORM\ManyToOne(targetEntity="EstudioInstituto")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotNull(message="Seleccione instituto. Si no lo encuentra seleccione opción 'NO APLICA'")
-     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "api:hv:write", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "messenger:hv-child:put", "api:hv:write", "scraper", "scraper-hv-child"})
      * @var EstudioInstituto
      */
     private $instituto;

@@ -76,6 +76,7 @@ class NovasoftApiMessenger
     {
         /** @var array $childNormalized */
         $childNormalized = $this->normalizer->normalize($entity, null, ['groups' => ['messenger:hv-child:put', 'napi:hv-child:put']]);
+//        dump($childNormalized);
 
         // fix chimbo inconsistencia experiencia tipo id entre sel y novasoft
         if(isset($childNormalized['area']['id']) && get_class($entity) === Experiencia::class) {

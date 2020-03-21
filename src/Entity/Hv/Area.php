@@ -19,7 +19,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *     itemOperations={
  *         "get" = {"path": "/area/{id}"},
  *     },
- *     normalizationContext={"groups"={"api:area:read"}},
+ *     normalizationContext={"groups"={"api:area:read", "messenger:hv-child:put"}},
  * )
  * @ApiFilter(SearchFilter::class, properties={"nombre": "partial"})
  * @ORM\Entity(repositoryClass="App\Repository\Hv\AreaRepository")
@@ -36,7 +36,7 @@ class Area
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Groups({"main", "messenger:hv-child:put", "api:area:read"})
+     * @Groups({"main", "api:area:read"})
      */
     private $nombre;
 

@@ -1090,7 +1090,7 @@ class Hv implements HvEntity
 
     public function getNapiId(): string
     {
-        return $this->usuario->getIdentificacion();
+        return $this->getUsuario()->getIdentificacion();
     }
 
     /**

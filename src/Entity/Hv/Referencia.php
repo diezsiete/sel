@@ -32,7 +32,7 @@ class Referencia implements HvEntity
      * @ORM\ManyToOne(targetEntity="App\Entity\Hv\ReferenciaTipo")
      * @ORM\JoinColumn(name="tipo", referencedColumnName="id", nullable=false)
      * @Assert\NotNull(message="Ingrese el tipo de referencia")
-     * @Groups({"main", "napi:hv:post", "napi:referencia:post", "napi:hv-child:put", "api:hv:read", "api:hv:write", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:referencia:post", "napi:hv-child:put", "messenger:hv-child:put", "api:hv:read", "api:hv:write", "scraper", "scraper-hv-child"})
      */
     private $tipo;
 

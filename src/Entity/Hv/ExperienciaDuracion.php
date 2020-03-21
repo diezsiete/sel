@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     itemOperations={
  *         "get" = {"path": "/experiencia-duracion/{id}"},
  *     },
- *     normalizationContext={"groups"={"api:experiencia-duracion:read"}},
+ *     normalizationContext={"groups"={"api:experiencia-duracion:read", "messenger:hv-child:put"}},
  *     attributes={"pagination_enabled"=false}
  * )
  * @ORM\Entity()

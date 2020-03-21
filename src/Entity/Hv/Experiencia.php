@@ -73,7 +73,7 @@ class Experiencia implements HvEntity
      * @ORM\ManyToOne(targetEntity="Area", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotNull(message="Selecione area")
-     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "api:hv:read", "api:hv:write", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "messenger:hv-child:put", "api:hv:read", "api:hv:write", "scraper", "scraper-hv-child"})
      */
     private $area;
 
@@ -94,7 +94,7 @@ class Experiencia implements HvEntity
      * @ORM\ManyToOne(targetEntity="App\Entity\Hv\ExperienciaDuracion")
      * @ORM\JoinColumn(name="duracion", referencedColumnName="id", nullable=false)
      * @Assert\NotNull(message="Ingrese duración")
-     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "api:hv:read", "api:hv:write", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "messenger:hv-child:put", "api:hv:read", "api:hv:write", "scraper", "scraper-hv-child"})
      */
     private $duracion;
 

@@ -4,6 +4,8 @@
 namespace App\Serializer;
 
 
+use ApiPlatform\Core\Api\IriConverterInterface;
+use ApiPlatform\Core\Api\ResourceClassResolverInterface;
 use App\Entity\Hv\Hv;
 use App\Entity\Hv\HvEntity;
 use App\Service\Serializer\SerializeFunction;
@@ -33,12 +35,24 @@ class HvEntityNormalizer implements NormalizerInterface
      * @var SerializeFunction
      */
     private $serializeFunction;
+    /**
+     * @var IriConverterInterface
+     */
+    private $iriConverter;
+    /**
+     * @var ResourceClassResolverInterface
+     */
+    private $resourceClassResolver;
 
-    public function __construct(ObjectNormalizer $normalizer, EntityManagerInterface $em, SerializeFunction $serializeFunction)
+    public function __construct(ObjectNormalizer $normalizer, EntityManagerInterface $em,
+                                SerializeFunction $serializeFunction,
+                                IriConverterInterface $iriConverter, ResourceClassResolverInterface $resourceClassResolver)
     {
         $this->normalizer = $normalizer;
         $this->em = $em;
         $this->serializeFunction = $serializeFunction;
+        $this->iriConverter = $iriConverter;
+        $this->resourceClassResolver = $resourceClassResolver;
     }
 
     /**
@@ -119,6 +133,12 @@ class HvEntityNormalizer implements NormalizerInterface
      */
     public function normalizeAssociation($innerObject, $outerObject, string $attributeName, string $format = null, array $context = [])
     {
+        // api-platform interfiere en normalizacion y desnormalizacion de resources, configuramos para que funcione
+        if(is_object($innerObject) && isset($context['groups']) && in_array('messenger:hv-child:put', $context['groups'])
+            && (is_object($outerObject) && $this->resourceClassResolver->isResourceClass(get_class($outerObject)))) {
+            return $this->iriConverter->getIriFromItem($innerObject);
+        }
+
         //si selecciono un pais sin dpto y ciudad o un dpto sin ciudad el valor null se convierte en 00 para novasoft
         if(!$innerObject && (preg_match('/.*Dpto$/', $attributeName) || preg_match('/.*Ciudad$/', $attributeName))) {
             $data = ['id' => '00'];

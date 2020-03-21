@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     itemOperations={
  *         "get" = {"path": "/referencia-tipo/{id}"},
  *     },
- *     normalizationContext={"groups"={"api:referencia-tipo:read"}},
+ *     normalizationContext={"groups"={"api:referencia-tipo:read", "messenger:hv-child:put"}},
  *     attributes={"pagination_enabled"=false}
  * )
  * @ORM\Entity(repositoryClass="App\Repository\Hv\ReferenciaTipoRepository")
