@@ -7,6 +7,7 @@ namespace App\Serializer;
 use App\Annotation\Serializer\NormalizeFunction;
 use App\Entity\Hv\Hv;
 use App\Entity\Hv\HvEntity;
+use App\Service\Serializer\SerializeFunction;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManagerInterface;
@@ -23,8 +24,6 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class HvEntityNormalizer implements NormalizerInterface
 {
-    protected static $loadedNormalizeFunction = [];
-
     /**
      * @var ObjectNormalizer
      */
@@ -34,17 +33,15 @@ class HvEntityNormalizer implements NormalizerInterface
      */
     protected $em;
     /**
-     * @var Reader
+     * @var SerializeFunction
      */
-    private $reader;
+    private $serializeFunction;
 
-
-
-    public function __construct(ObjectNormalizer $normalizer, EntityManagerInterface $em, Reader $reader)
+    public function __construct(ObjectNormalizer $normalizer, EntityManagerInterface $em, SerializeFunction $serializeFunction)
     {
         $this->normalizer = $normalizer;
         $this->em = $em;
-        $this->reader = $reader;
+        $this->serializeFunction = $serializeFunction;
     }
 
     /**
@@ -67,13 +64,11 @@ class HvEntityNormalizer implements NormalizerInterface
         /** @var ClassMetadataInfo $targetMetadata */
         $targetMetadata = $this->em->getMetadataFactory()->getMetadataFor(get_class($object));
 
-        $callbacks = [];
+        $callbacks = $this->serializeFunction->addCallbacks($object, $context);
+
         foreach($targetMetadata->fieldMappings as $mapping) {
             if($mapping['type'] === Type::DATE) {
                 $callbacks[$mapping['fieldName']] = [$this, 'normalizeDate'];
-            }
-            if ($this->hasNormalizeFunction($object, $mapping['fieldName'])) {
-                $callbacks[$mapping['fieldName']] = [$this, 'normalizeFunction'];
             }
         }
 
@@ -122,14 +117,6 @@ class HvEntityNormalizer implements NormalizerInterface
         return $innerObject instanceof \DateTime ? $innerObject->format(('Y-m-d')) : null;
     }
 
-    public function normalizeFunction($innerObject, $outerObject, string $attributeName, string $format = null, array $context = [])
-    {
-        if($normalizeFunction = $this->getNormalizeFunction($outerObject, $attributeName, $context)) {
-            return call_user_func($normalizeFunction->function, $innerObject);
-        }
-        return $innerObject;
-    }
-
     /**
      * Normaliza objetos de un solo valor
      */
@@ -162,48 +149,12 @@ class HvEntityNormalizer implements NormalizerInterface
         $response = [];
         foreach($innerObject as $child) {
             if($child->getId() === $context['scraper-hv-child']->getId()) {
-                 $response[] = self::normalize($child, $format, $context);
+                 $response[] = $this->normalize($child, $format, $context);
             }
         }
         return $response;
     }
 
-    protected function hasNormalizeFunction($object, $propertyName)
-    {
-        return (bool)$this->getNormalizeFunction($object, $propertyName);
-    }
 
-    /**
-     * @param $object
-     * @param $propertyName
-     * @param array $context
-     * @return NormalizeFunction|null
-     */
-    protected function getNormalizeFunction($object, $propertyName, array $context = [])
-    {
-        $class = get_class($object);
-        if(!isset(static::$loadedNormalizeFunction[$class])) {
-            $this->loadNormalizeFunction($object);
-        }
-        $normalizeFunction = static::$loadedNormalizeFunction[$class][$propertyName];
-        if(isset($context['groups']) && $normalizeFunction->groups) {
-            $normalizeFunction = array_intersect($context['groups'], $normalizeFunction->groups) ? $normalizeFunction : null;
-        }
-        return $normalizeFunction;
-    }
-
-    protected function loadNormalizeFunction($object)
-    {
-        $reflectionClass = new \ReflectionClass(get_class($object));
-        foreach ($reflectionClass->getProperties() as $property) {
-            $normalizeFunctionAnnotation = null;
-            foreach ($this->reader->getPropertyAnnotations($property) as $annotation) {
-                if($annotation instanceof NormalizeFunction) {
-                    $normalizeFunctionAnnotation = $annotation;
-                }
-            }
-            static::$loadedNormalizeFunction[$reflectionClass->getName()][$property->getName()] = $normalizeFunctionAnnotation;
-        }
-    }
 
 }
