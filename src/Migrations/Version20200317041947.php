@@ -4,14 +4,22 @@ declare(strict_types=1);
 
 namespace DoctrineMigrations;
 
+use App\Service\Configuracion\Configuracion;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20200317041947 extends AbstractMigration
+final class Version20200317041947 extends AbstractMigration implements ContainerAwareInterface
 {
+    /**
+     * @var ContainerInterface
+     */
+    private $container;
+
     public function getDescription() : string
     {
         return '';
@@ -19,6 +27,8 @@ final class Version20200317041947 extends AbstractMigration
 
     public function up(Schema $schema) : void
     {
+        $configuracion = $this->container->get(Configuracion::class);
+
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
@@ -93,7 +103,12 @@ final class Version20200317041947 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_DD0E30344B91EFE6 ON experiencia (duracion)');
 
         $this->addSql('CREATE TABLE referencia_tipo (id SMALLINT NOT NULL, nombre VARCHAR(8) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci ENGINE = InnoDB');
-        $this->addSql('INSERT INTO referencia_tipo (id, nombre) VALUES (1, \'PERSONAL\'), (2, \'FAMILIAR\'), (3, \'LABORAL\');');
+
+        if($configuracion->getEmpresa() === 'SERVILABOR') {
+            $this->addSql('INSERT INTO referencia_tipo (id, nombre) VALUES (7, \'PERSONAL\'), (8, \'FAMILIAR\'), (9, \'LABORAL\');');
+        } else {
+            $this->addSql('INSERT INTO referencia_tipo (id, nombre) VALUES (1, \'PERSONAL\'), (2, \'FAMILIAR\'), (3, \'LABORAL\');');
+        }
         $this->addSql('ALTER TABLE referencia ADD CONSTRAINT FK_C01213D8702D1D47 FOREIGN KEY (tipo) REFERENCES referencia_tipo (id)');
         $this->addSql('CREATE INDEX IDX_C01213D8702D1D47 ON referencia (tipo)');
 
@@ -141,5 +156,13 @@ final class Version20200317041947 extends AbstractMigration
         $this->addSql('ALTER TABLE hv DROP FOREIGN KEY FK_559B2759F4222D84');
         $this->addSql('DROP TABLE estado_civil');
         $this->addSql('DROP INDEX IDX_559B2759F4222D84 ON hv');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->container = $container;
     }
 }

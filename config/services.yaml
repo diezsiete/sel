@@ -99,6 +99,10 @@ services:
     App\Service\Autoliquidacion\ExportZip:
         public: true
 
+    # solo para que podamos acceder en migrations ver : Version20200317041947
+    App\Service\Configuracion\Configuracion:
+        public: true
+
     App\Service\Evaluacion\Mensaje:
         autowire: false
 
