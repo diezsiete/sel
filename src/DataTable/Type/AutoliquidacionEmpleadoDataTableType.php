@@ -61,7 +61,7 @@ class AutoliquidacionEmpleadoDataTableType implements DataTableTypeInterface
                     'target' => '_blank',
                     'tooltip' => 'Ver',
                     'data' => function (AutoliquidacionEmpleado $autoliquidacionEmpleado, $id) {
-                        return $autoliquidacionEmpleado->isExito() ? $id : 'disabled';
+                        return $autoliquidacionEmpleado->getCode() === 200 ? $id : 'disabled';
                     },
                 ]
             ])
