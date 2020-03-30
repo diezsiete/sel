@@ -151,7 +151,9 @@ services:
     App\Service\Pdf\Halcon\LiquidacionContratoPdf:
         arguments: ["P", "mm", "Letter"]
         shared: false
-
+    App\Service\Pdf\ServicioEmpleados\Report\CertificadoIngresosPdf:
+        arguments: ["P", "mm", "Letter"]
+        shared: false
 
     App\Uploader\Namer\ArchivoNamer:
         public: true
