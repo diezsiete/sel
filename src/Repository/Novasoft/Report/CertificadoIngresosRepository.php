@@ -11,6 +11,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @method CertificadoIngresos|null findOneBy(array $criteria, array $orderBy = null)
  * @method CertificadoIngresos[]    findAll()
  * @method CertificadoIngresos[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @deprecated
  */
 class CertificadoIngresosRepository extends ServiceEntityRepository
 {

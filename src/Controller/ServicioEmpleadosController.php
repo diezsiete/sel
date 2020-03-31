@@ -109,11 +109,9 @@ class ServicioEmpleadosController extends BaseController
     public function certificadoIngresos(DataTableBuilder $dataTableBuilder)
     {
         $table = $dataTableBuilder->certificadoIngresos();
-
         if($table->isCallback()) {
             return $table->getResponse();
         }
-
         return $this->render('servicio_empleados/certificado-ingresos.html.twig', [
             'datatable' => $table
         ]);
@@ -126,54 +124,7 @@ class ServicioEmpleadosController extends BaseController
     public function certificadoIngresosPdf(SeReportFactory $reportFactory, CertificadoIngresos $certificado)
     {
         return new RedirectResponse($reportFactory->certificadoIngresos($certificado)->linkPdf());
-//        return $this->renderStream(function () use ($reportFactory, $certificado) { return $reportFactory->certificadoIngresos($certificado)->streamPdf();});
     }
-
-//    //     * @IsGranted("REPORTE_MANAGE", subject="certificado")
-//    /**
-//     * @Route("/sel/se/certificado-ingresos/{certificado}", name="se_certificado_ingresos_pdf")
-//     */
-//    public function certificadoIngresosPdf(CertificadoIngresosReport $report)
-//    {
-//        $certificado = new \App\Entity\Novasoft\Report\ServicioEmpleados\CertificadoIngresos();
-//        $certificado->setIdentificacion(
-//            '53124855')
-//            ->setNumeroFormulario(4783)
-//            ->setNit('860527350   ')
-//            ->setDv('6')
-//            ->setFechaInicial(\DateTime::createFromFormat('Y-m-d', '2019-01-01'))
-//            ->setFechaFinal(\DateTime::createFromFormat('Y-m-d', '2019-12-31'))
-//            ->setRazonSocial('PTA-SAS')
-//            ->setTipoDocumento('13')
-//            ->setPrimerApellido('RIOS')
-//            ->setSegundoApellido('GOMEZ')
-//            ->setPrimerNombre('ALEJANDRA')
-//            ->setSegundoNombre('')
-//            ->setFechaExpedicion(new \DateTime())
-//            ->setCiudad('BOGOTA')
-//            ->setCiudadCodigo('11001')
-//            ->setIngresoSalario(59920000)
-//            ->setIngresoHonorarios(0)
-//            ->setIngresoServicios(0)
-//            ->setIngresoComisiones(0)
-//            ->setIngresoPrestaciones(5800000)
-//            ->setIngresoViaticos(0)
-//            ->setIngresoRepresentacion(0)
-//            ->setIngresoCompensaciones(0)
-//            ->setIngresoOtros(11272000)
-//            ->setIngresoCesantias(566000)
-//            ->setIngresoPensiones(0)
-//        ;
-//        $certificado->aportesSalud = 2591000;
-//        $certificado->aportesObligatoriosPensiones = 3240000;
-//        $certificado->aportesVoluntariosPensiones = 6000000;
-//        $certificado->aportesAfc = 0;
-//        $certificado->valorRetencion = 1093000;
-//
-//        return $this->renderStream(function () use ($certificado, $report) {
-//            return $report->streamPdf($certificado);
-//        });
-//    }
 
     /**
      * @Route("/sel/se/certificados-aportes", name="app_certificados_aportes")

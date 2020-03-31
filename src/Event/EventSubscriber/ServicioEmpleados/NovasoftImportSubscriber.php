@@ -6,7 +6,7 @@ namespace App\Event\EventSubscriber\ServicioEmpleados;
 use App\Entity\Novasoft\Report\CertificadoLaboral;
 use App\Entity\Novasoft\Report\LiquidacionContrato;
 use App\Entity\Novasoft\Report\Nomina\Nomina;
-use App\Entity\Novasoft\Report\ServicioEmpleados\CertificadoIngresos;
+use App\Entity\Napi\ServicioEmpleados\CertificadoIngresos;
 use App\Entity\ServicioEmpleados\CertificadoIngresos as SeCertificadoIngresos;
 use App\Entity\ServicioEmpleados\Nomina as SeNomina;
 use App\Entity\ServicioEmpleados\CertificadoLaboral as SeCertificadoLaboral;

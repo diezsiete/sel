@@ -16,6 +16,11 @@ use DateTimeInterface;
 use Psr\Container\ContainerInterface;
 use Symfony\Contracts\Service\ServiceSubscriberInterface;
 
+/**
+ * Class ReportFactory
+ * @package App\Service\Novasoft\Report
+ * @deprecated
+ */
 class ReportFactory implements ServiceSubscriberInterface
 {
     /**

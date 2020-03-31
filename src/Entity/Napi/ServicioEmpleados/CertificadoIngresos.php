@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity\Novasoft\Report\ServicioEmpleados;
+namespace App\Entity\Napi\ServicioEmpleados;
 
 use App\Annotation\NapiClient\NapiResource;
 use App\Annotation\NapiClient\NapiResourceId;
@@ -16,7 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
  *         "get"={"path"="/se/certificado-ingresos/identificacion={identificacion};fechaInicial={fechaInicial};fechaFinal={fechaFinal}"},
  *     }
  * )
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="App\Repository\Napi\ServicioEmpleados\CertificadoIngresosRepository")
  * @ORM\Table(name="napi_certificado_ingresos")
  */
 class CertificadoIngresos implements CertificadoIngresosInterface

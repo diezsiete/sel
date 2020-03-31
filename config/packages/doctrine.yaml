@@ -97,6 +97,12 @@ doctrine:
                         dir: '%kernel.project_dir%/src/Entity/Main'
                         prefix: 'App\Entity\Main'
                         alias: Main
+                    Napi:
+                        is_bundle: false
+                        type: annotation
+                        dir: '%kernel.project_dir%/src/Entity/Napi'
+                        prefix: 'App\Entity\Napi'
+                        alias: Napi
                     Novasoft:
                         is_bundle: false
                         type: annotation

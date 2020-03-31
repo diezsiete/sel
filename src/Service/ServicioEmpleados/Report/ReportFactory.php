@@ -7,9 +7,10 @@ use App\Entity\ServicioEmpleados\CertificadoLaboral;
 use App\Entity\ServicioEmpleados\LiquidacionContrato;
 use App\Entity\ServicioEmpleados\Nomina;
 use App\Entity\ServicioEmpleados\ServicioEmpleadosReport;
-use App\Repository\Novasoft\Report\CertificadoIngresosRepository as NovasoftCertificadoIngresosRepo;
+use App\Repository\Napi\ServicioEmpleados\CertificadoIngresosRepository as NapiCertificadoIngresosRepo;
 use App\Service\Halcon\Report\Report\CertificadoLaboralReport as HalconCertificadoLaboralReport;
 use App\Service\Halcon\Report\Report\LiquidacionContratoReport as HalconLiquidacionContratoReport;
+use App\Service\Napi\Report\CertificadoIngresosReport as NapiCertificadoIngresosReport;
 use App\Service\Novasoft\Report\Report\LiquidacionContratoReport as NovasoftLiquidacionContratoReport;
 use App\Service\Novasoft\NovasoftEmpleadoService;
 use App\Service\Novasoft\Report\Report\CertificadoLaboralReport as NovasoftCertificadoLaboralReport;
@@ -20,6 +21,7 @@ use App\Service\Halcon\Report\Report\CertificadoIngresosReport as HalconCertific
 use App\Service\Novasoft\Report\Report\CertificadoIngresosReport as NovasoftCertificadoIngresosReport;
 use App\Service\ServicioEmpleados\Report\Report\CertificadoLaboralReport as SeCertificadoLaboralReport;
 use Psr\Container\ContainerInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Contracts\Service\ServiceSubscriberInterface;
 
 
@@ -86,18 +88,15 @@ class ReportFactory implements ServiceSubscriberInterface
             if ($filter) {
                 $report->setIdentificacion($filter);
             }
-        } else {
-            if ($filter->isSourceNovasoft()) {
-                $certIngresos = $this->container->get(NovasoftCertificadoIngresosRepo::class)->find($filter->getSourceId());
-                return $this->container->get(NovasoftReportFactory::class)
-                    ->certificadoIngresos(
-                        $certIngresos->getAno(), $filter->getUsuario()->getIdentificacion(), $this->getSsrsDb($filter)
-                    );
-            } else {
-                list($empresaUsuario, $noContrat, $ano) = explode(",", $filter->getSourceId());
-                return $this->container->get(HalconReportFactory::class)
-                    ->certificadoIngresos($empresaUsuario, $noContrat, $ano, $filter->getUsuario());
+        } else if ($filter->isSourceNovasoft()) {
+            if($certIngresos = $this->container->get(NapiCertificadoIngresosRepo::class)->find($filter->getSourceId())) {
+                return $this->container->get(NapiCertificadoIngresosReport::class)->setCertificado($certIngresos);
             }
+            throw new NotFoundHttpException('Certificado no existe');
+        } else {
+            [$empresaUsuario, $noContrat, $ano] = explode(',', $filter->getSourceId());
+            return $this->container->get(HalconReportFactory::class)
+                ->certificadoIngresos($empresaUsuario, $noContrat, $ano, $filter->getUsuario());
         }
         return $report;
     }
@@ -137,11 +136,12 @@ class ReportFactory implements ServiceSubscriberInterface
     {
         return [
             NovasoftReportFactory::class,
-            NovasoftCertificadoIngresosRepo::class,
+            NapiCertificadoIngresosRepo::class,
             HalconReportFactory::class,
             NovasoftEmpleadoService::class,
             SeCertificadoLaboralReport::class,
             HalconCertificadoIngresosReport::class,
+            NapiCertificadoIngresosReport::class,
             SeCertificadoIngresosReport::class
         ];
     }
