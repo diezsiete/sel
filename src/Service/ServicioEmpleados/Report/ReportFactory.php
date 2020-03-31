@@ -79,7 +79,7 @@ class ReportFactory implements ServiceSubscriberInterface
 
     /**
      * @param null|string|CertificadoIngresos $filter
-     * @return SeCertificadoIngresosReport|HalconCertificadoIngresosReport|NovasoftCertificadoIngresosReport
+     * @return SeCertificadoIngresosReport|HalconCertificadoIngresosReport|NapiCertificadoIngresosReport
      */
     public function certificadoIngresos($filter = null)
     {

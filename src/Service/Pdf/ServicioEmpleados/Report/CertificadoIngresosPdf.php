@@ -147,9 +147,15 @@ class CertificadoIngresosPdf extends FPDI
         $this->SetX($x);
         $this->Write(0, $certificadoIngresos->getCiudadCodigo());
 
-        $y = 74;
         $this->fontSize -= 2;
         $this->SetFont($this->customFontFamily,'',$this->fontSize);
+
+        //Numero de agencias
+        $this->SetXY(148, 66);
+        $this->Write(0, 1);
+
+        //Conceptos
+        $y = 74;
         $y = $this->conceptoIngresos($certificadoIngresos, $y);
         $y += 4.5;
         $y = $this->conceptoAportes($certificadoIngresos, $y);

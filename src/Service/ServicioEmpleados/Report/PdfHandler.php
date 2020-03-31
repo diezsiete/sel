@@ -83,6 +83,12 @@ class PdfHandler
         return $this->generateLink($reporteNombre);
     }
 
+    public function writeAndLink(string $reporteNombre, $callbackSource)
+    {
+        $this->write($reporteNombre, $callbackSource);
+        return $this->generateLink($reporteNombre);
+    }
+
     /**
      * TODO utilizar S3Helper Trait
      * @param string $reporteNombre
