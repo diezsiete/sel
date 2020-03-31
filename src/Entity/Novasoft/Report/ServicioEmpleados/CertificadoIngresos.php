@@ -2,10 +2,16 @@
 
 namespace App\Entity\Novasoft\Report\ServicioEmpleados;
 
+use App\Annotation\NapiClient\NapiResource;
 use App\Service\Pdf\ServicioEmpleados\Report\CertificadoIngresosInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * @NapiResource(
+ *     itemOperations={
+ *         "get"={"path"="/se/certificado-ingresos/identificacion={identificacion};fechaInicial={fechaInicial};fechaFinal={fechaFinal}"},
+ *     }
+ * )
  * @ORM\Entity()
  * @ORM\Table(name="napi_certificado_ingresos")
  */

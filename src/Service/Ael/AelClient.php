@@ -74,11 +74,6 @@ class AelClient extends HttpClient
 
     private function url($url, $params = [])
     {
-        if($params && preg_match_all('/:(\w+)/', $url, $matches)) {
-            for($i = 0, $iMax = count($matches[0]); $i < $iMax; $i++) {
-                $url = str_replace($matches[0][$i], $params[$matches[1][$i]], $url);
-            }
-        }
-        return $this->configuracion->ael()->getUrl() . $url;
+        return $this->configuracion->ael()->getUrl() . $this->addParametersToUrl($url, $params);
     }
 }
