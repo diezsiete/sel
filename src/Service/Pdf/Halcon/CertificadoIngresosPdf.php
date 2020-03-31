@@ -69,7 +69,7 @@ class CertificadoIngresosPdf extends FPDI
         $this->AddPage();
 
 
-        $pathTemplate = '/build/' . $this->configuracion->getEmpresa(true) . '/images/sel';
+        $pathTemplate = 'build/' . $this->configuracion->getEmpresa(true) . '/images/sel';
         $file = $this->configuracion->getPdfResourcePath($pathTemplate . '/220/220-'.$desde[0].'.pdf');
 
         $file = file_exists($file)

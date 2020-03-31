@@ -41,6 +41,7 @@ class CertificadoIngresosPdf extends FPDI
 
     public function build(CertificadoIngresosInterface $certificadoIngresos)
     {
+
         // add a page
         $this->AddPage();
         $this->setSourceFile($this->getSourceFile($certificadoIngresos->getFechaInicial()->format('Y')));
@@ -179,7 +180,7 @@ class CertificadoIngresosPdf extends FPDI
 
     private function getSourceFile($ano)
     {
-        $pathTemplate = '/build/' . $this->configuracion->getEmpresa(true) . '/images/sel';
+        $pathTemplate = 'build/' . $this->configuracion->getEmpresa(true) . '/images/sel';
         $file = $this->configuracion->getPdfResourcePath($pathTemplate . '/220/220-'.$ano.'.pdf');
         return file_exists($file)
             ? $file
