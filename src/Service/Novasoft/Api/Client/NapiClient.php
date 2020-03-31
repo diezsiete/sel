@@ -11,6 +11,11 @@ use Doctrine\Common\Annotations\Reader;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class NapiClient extends HttpClient
@@ -73,6 +78,16 @@ class NapiClient extends HttpClient
         return new NapiClientOperation($class, $annotation->itemOperations, $this->denormalizer, $this->exceptionHandler, $this);
     }
 
+    /**
+     * @param string $url
+     * @param array $options
+     * @return array|\Symfony\Contracts\HttpClient\ResponseInterface
+     * @throws ClientExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
+     */
     public function get(string $url, array $options = [])
     {
         $url = $this->buildUrl($url, $options['parameters'] ?? []);

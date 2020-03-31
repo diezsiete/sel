@@ -42,6 +42,13 @@ class HttpClient
         return $this->request('DELETE', $url, $options);
     }
 
+    /**
+     * @param string $method
+     * @param string $url
+     * @param array $options
+     * @return ResponseInterface
+     * @throws TransportExceptionInterface
+     */
     public function request(string $method, string $url, array $options = [])
     {
         return $this->httpClient->request($method, $url, $options);

@@ -3,7 +3,11 @@
 namespace App\Entity\Novasoft\Report\ServicioEmpleados;
 
 use App\Annotation\NapiClient\NapiResource;
+use App\Annotation\NapiClient\NapiResourceId;
+use App\Entity\Main\Usuario;
 use App\Service\Pdf\ServicioEmpleados\Report\CertificadoIngresosInterface;
+use DateTime;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -26,16 +30,19 @@ class CertificadoIngresos implements CertificadoIngresosInterface
 
     /**
      * @ORM\Column(type="string", length=15)
+     * @NapiResourceId
      */
     protected $identificacion;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="date", nullable=true)
+     * @NapiResourceId
      */
     protected $fechaInicial;
 
     /**
      * @ORM\Column(type="date")
+     * @NapiResourceId
      */
     protected $fechaFinal;
 
@@ -180,6 +187,12 @@ class CertificadoIngresos implements CertificadoIngresosInterface
     public $valorRetencion;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Main\Usuario")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    protected $usuario;
+
+    /**
      * @return mixed
      */
     public function getId()
@@ -244,9 +257,9 @@ class CertificadoIngresos implements CertificadoIngresosInterface
     /**
      * @return mixed
      */
-    public function getFechaInicial(): \DateTimeInterface
+    public function getFechaInicial(): DateTimeInterface
     {
-        return $this->fechaInicial;
+        return $this->fechaInicial ?: new DateTime($this->fechaFinal->format('Y') . '-01-01');
     }
 
     /**
@@ -262,7 +275,7 @@ class CertificadoIngresos implements CertificadoIngresosInterface
     /**
      * @return mixed
      */
-    public function getFechaFinal(): \DateTimeInterface
+    public function getFechaFinal(): DateTimeInterface
     {
         return $this->fechaFinal;
     }
@@ -406,7 +419,7 @@ class CertificadoIngresos implements CertificadoIngresosInterface
     /**
      * @return mixed
      */
-    public function getFechaExpedicion(): \DateTimeInterface
+    public function getFechaExpedicion(): DateTimeInterface
     {
         return $this->fechaExpedicion;
     }
@@ -582,6 +595,24 @@ class CertificadoIngresos implements CertificadoIngresosInterface
     public function setIngresoPensiones($ingresoPensiones)
     {
         $this->ingresoPensiones = $ingresoPensiones;
+        return $this;
+    }
+
+    /**
+     * @return Usuario|null
+     */
+    public function getUsuario(): ?Usuario
+    {
+        return $this->usuario;
+    }
+
+    /**
+     * @param Usuario|null $usuario
+     * @return $this
+     */
+    public function setUsuario(?Usuario $usuario)
+    {
+        $this->usuario = $usuario;
         return $this;
     }
 

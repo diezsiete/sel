@@ -5,7 +5,13 @@ namespace App\Service\Novasoft\Api\Client;
 
 
 use App\Service\ExceptionHandler;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Throwable;
 
 class NapiClientOperation
@@ -34,6 +40,10 @@ class NapiClientOperation
         $this->exceptionHandler = $exceptionHandler;
     }
 
+    /**
+     * @return object|null
+     * @throws Throwable
+     */
     public function get()
     {
         $args = func_get_args();
@@ -41,6 +51,10 @@ class NapiClientOperation
         try {
             if ($data = $this->napiClient->get($this->classOperations['get']['path'], ['parameters' => $args])) {
                 $object = $this->denormalizer->denormalize($data, $this->class);
+            }
+        } catch (ClientExceptionInterface $e) {
+            if($e->getCode() !== 404) {
+                $this->exceptionHandler->handle($e);
             }
         } catch (Throwable $e) {
             $this->exceptionHandler->handle($e);

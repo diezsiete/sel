@@ -144,10 +144,10 @@ class EmpleadoRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param $periodoInicio
-     * @param $periodoFin
+     * @param DateTimeInterface $periodoInicio
+     * @param DateTimeInterface $periodoFin
      * @param null $codigoConvenio
-     * @return mixed
+     * @return Empleado[]
      * @throws QueryException
      */
     public function findByRangoPeriodo($periodoInicio, $periodoFin, $codigoConvenio = null)
