@@ -63,6 +63,7 @@ class CertificadoIngresosImportCommand extends TraitableCommand
                 $delete ? $this->deleteCertificado($empleado) : $this->importCertificado($empleado);
                 $this->progressBarAdvance();
             }
+            $this->em->clear();
         }
     }
 
