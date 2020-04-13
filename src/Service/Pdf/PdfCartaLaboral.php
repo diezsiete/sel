@@ -3,7 +3,7 @@
 
 namespace App\Service\Pdf;
 
-use App\Entity\Novasoft\Report\CertificadoLaboral;
+use App\Entity\Napi\Report\ServicioEmpleados\CertificadoLaboral;
 
 
 class PdfCartaLaboral extends PdfBase
@@ -22,22 +22,22 @@ class PdfCartaLaboral extends PdfBase
         $logoImg = $this->compania->getLogoPdf();
 
         $eusuaria = $certificado->getEmpresaUsuaria();
-        $cargo = $certificado->getCargo();
-        $desde = $certificado->getFechaIngresoTextual();
-        $nsalario = $certificado->getNsalario();
+        $cargo = $certificado->getNombreCargo();
+        $desde = $certificado->getFechaIngresoTexto();
+        $nsalario = $certificado->getSalarioTexto();
         $salario = $certificado->getSalario();
         $sex = $certificado->isHombre();
         $fecing = $certificado->getFechaIngreso()->format('Y-m-d');
-        $fecegr = $certificado->getFechaEgreso() ? $certificado->getFechaEgreso()->format('Y-m-d') : null;
+        $fecegr = $certificado->getFechaRetiro() ? $certificado->getFechaRetiro()->format('Y-m-d') : null;
 
 
-        $main = "" . ($sex ? 'El' : 'La') . utf8_decode(" señor") . ($sex ? '' : 'a') . " " . utf8_decode($certificado->getNombreCompleto())
-            . " identificad" . ($sex ? 'o' : 'a') . " con "
-            . utf8_decode($certificado->getTipoDocumento()) . " No. " . $certificado->getCedula() . "";
+        $main = '' . ($sex ? 'El' : 'La') . utf8_decode(' señor') . ($sex ? '' : 'a') . ' ' . utf8_decode($certificado->getNombreCompleto())
+            . ' identificad' . ($sex ? 'o' : 'a') . ' con '
+            . utf8_decode($certificado->getTipoId()) . ' No. ' . $certificado->getNumeroIdentificacion() . '';
 
         $main .= $certificado->isActivo()
-            ? $this->contentActivo($sex, $compania, $certificado->getContrato(), $cargo, $desde, $nsalario, $salario, $eusuaria)
-            : $this->contentInactivo($certificado->getContrato(), $cargo, $fecing, $fecegr, $eusuaria, $compania);
+            ? $this->contentActivo($sex, $compania, $certificado->getNombreContrato(), $cargo, $desde, $nsalario, $salario, $eusuaria)
+            : $this->contentInactivo($certificado->getNombreContrato(), $cargo, $fecing, $fecegr, $eusuaria, $compania);
 
         $logo_height = 0;
         $line_height = 8;

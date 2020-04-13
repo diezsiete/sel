@@ -13,6 +13,7 @@ use App\Service\Halcon\Report\Report\LiquidacionContratoReport as HalconLiquidac
 use App\Service\Napi\Report\ReportFactory as NapiReportFactory;
 use App\Service\Napi\Report\Report\CertificadoIngresosReport as NapiCertificadoIngresosReport;
 use App\Entity\Napi\Report\ServicioEmpleados\Nomina as NapiNomina;
+use App\Entity\Napi\Report\ServicioEmpleados\CertificadoLaboral as NapiCertificadoLaboral;
 use App\Service\Napi\Report\SsrsReport;
 use App\Service\Novasoft\Report\Report\LiquidacionContratoReport as NovasoftLiquidacionContratoReport;
 use App\Service\Novasoft\NovasoftEmpleadoService;
@@ -48,23 +49,16 @@ class ReportFactory implements ServiceSubscriberInterface
     public function nomina(Nomina $nomina)
     {
         if ($nomina->isSourceNapi()) {
-            $napiNomina = $this->container
-                ->get(EntityManagerInterface::class)->getRepository(NapiNomina::class)->find($nomina->getSourceId());
-            if($napiNomina) {
-                return $this->container
-                    ->get(NapiReportFactory::class)->getReport(NapiNomina::class)->setReport($napiNomina);
-            }
-            throw new NotFoundHttpException('Reporte no existe');
-        } else {
-            list($noContrat, $consecLiq) = explode(',', $nomina->getSourceId());
-            return $this->container->get(HalconReportFactory::class)
-                ->nomina($noContrat, $consecLiq, $nomina->getUsuario());
+            return $this->getNapiReport(NapiNomina::class, $nomina);
         }
+        [$noContrat, $consecLiq] = explode(',', $nomina->getSourceId());
+        return $this->container->get(HalconReportFactory::class)
+            ->nomina($noContrat, $consecLiq, $nomina->getUsuario());
     }
 
     /**
      * @param null|string|CertificadoLaboral $filter
-     * @return SeCertificadoLaboralReport|HalconCertificadoLaboralReport|NovasoftCertificadoLaboralReport
+     * @return SeCertificadoLaboralReport|HalconCertificadoLaboralReport|SsrsReport
      */
     public function certificadoLaboral($filter = null)
     {
@@ -74,14 +68,12 @@ class ReportFactory implements ServiceSubscriberInterface
                 $report->setIdentificacion($filter);
             }
         } else {
-            if ($filter->isSourceNovasoft()) {
-                return $this->container->get(NovasoftReportFactory::class)
-                    ->certificadoLaboral($filter->getUsuario()->getIdentificacion(), $this->getSsrsDb($filter));
-            } else {
-                $numeroContrato = $filter->getSourceId();
-                return $this->container->get(HalconReportFactory::class)
-                    ->certificadoLaboral($numeroContrato, $filter->getUsuario());
+            if ($filter->isSourceNapi()) {
+                return $this->getNapiReport(NapiCertificadoLaboral::class, $filter);
             }
+            $numeroContrato = $filter->getSourceId();
+            return $this->container->get(HalconReportFactory::class)
+                ->certificadoLaboral($numeroContrato, $filter->getUsuario());
         }
         return $report;
     }
@@ -160,5 +152,16 @@ class ReportFactory implements ServiceSubscriberInterface
     private function getSsrsDb(ServicioEmpleadosReport $report)
     {
         return $this->container->get(NovasoftEmpleadoService::class)->getSsrsDb($report->getUsuario()->getIdentificacion());
+    }
+
+    private function getNapiReport($entityClass, $seReport)
+    {
+        $napiReport = $this->container
+            ->get(EntityManagerInterface::class)->getRepository($entityClass)->find($seReport->getSourceId());
+        if($napiReport) {
+            return $this->container
+                ->get(NapiReportFactory::class)->getReport($entityClass)->setReport($napiReport);
+        }
+        throw new NotFoundHttpException('Reporte no existe');
     }
 }

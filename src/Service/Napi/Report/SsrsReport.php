@@ -64,5 +64,26 @@ abstract class SsrsReport
         $this->dispatcher->dispatch(new DeleteEvent($equalIdentifier, $entityClass));
     }
 
-    abstract public function import(Usuario $usuario);
+    public function import(Usuario $usuario)
+    {
+        $object = $this->callOperation($usuario);
+
+        if($object) {
+            $objects = is_array($object) ? $object : [$object];
+            foreach($objects as $object) {
+                if (!$object->getId()) {
+                    $object->setUsuario($usuario);
+
+                    $this->em->persist($object);
+                    $this->em->flush();
+
+                    $this->dispatchImportEvent($object);
+                } else {
+                    $this->em->flush();
+                }
+            }
+        }
+    }
+
+    abstract protected function callOperation(Usuario $usuario);
 }

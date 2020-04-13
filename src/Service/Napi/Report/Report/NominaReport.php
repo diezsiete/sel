@@ -10,27 +10,10 @@ use App\Service\Napi\Report\SsrsReport;
 
 class NominaReport extends SsrsReport
 {
-
-    public function import(Usuario $usuario)
+    protected function callOperation(Usuario $usuario)
     {
-        /** @var Nomina[] $nominas */
-        $nominas = $this->client->collectionOperations(Nomina::class)->get(
+        return $this->client->collectionOperations(Nomina::class)->get(
             $usuario->getIdentificacion(), '2017-02-01', (new \DateTime())->format('Y-m-t')
         );
-
-        if($nominas) {
-            foreach($nominas as $nomina) {
-                if (!$nomina->getId()) {
-                    $nomina->setUsuario($usuario);
-
-                    $this->em->persist($nomina);
-                    $this->em->flush();
-
-                    $this->dispatchImportEvent($nomina);
-                } else {
-                    $this->em->flush();
-                }
-            }
-        }
     }
 }

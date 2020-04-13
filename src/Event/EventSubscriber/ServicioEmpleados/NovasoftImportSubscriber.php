@@ -3,11 +3,12 @@
 
 namespace App\Event\EventSubscriber\ServicioEmpleados;
 
-use App\Entity\Novasoft\Report\CertificadoLaboral;
+
 use App\Entity\Novasoft\Report\LiquidacionContrato;
 
 use App\Entity\Napi\Report\ServicioEmpleados\CertificadoIngresos;
 use App\Entity\Napi\Report\ServicioEmpleados\Nomina;
+use App\Entity\Napi\Report\ServicioEmpleados\CertificadoLaboral;
 
 use App\Entity\ServicioEmpleados\CertificadoIngresos as SeCertificadoIngresos;
 use App\Entity\ServicioEmpleados\Nomina as SeNomina;
@@ -56,7 +57,7 @@ class NovasoftImportSubscriber implements EventSubscriberInterface
     {
         return (new SeCertificadoLaboral())
             ->setFechaIngreso($certificadoLaboral->getFechaIngreso())
-            ->setFechaRetiro($certificadoLaboral->getFechaEgreso())
+            ->setFechaRetiro($certificadoLaboral->getFechaRetiro())
             ->setConvenio($certificadoLaboral->getEmpresaUsuaria());
     }
 
@@ -87,7 +88,7 @@ class NovasoftImportSubscriber implements EventSubscriberInterface
                 break;
             case CertificadoLaboral::class:
                 $seEntity = $this->importCertificadoLaboral($event->entity);
-                $seEntity->setSourceNovasoft();
+                $seEntity->setSourceNapi();
                 break;
             case CertificadoIngresos::class:
                 $seEntity = $this->importCertificadoIngresos($event->entity);

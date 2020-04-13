@@ -2,6 +2,8 @@
 
 namespace App\Service\Napi\Report;
 
+
+use App\Service\Napi\Report\Report\CertificadoLaboralReport;
 use App\Service\Napi\Report\Report\NominaReport;
 use App\Service\Utils\Symbol;
 use Psr\Container\ContainerInterface;
@@ -42,7 +44,8 @@ class ReportFactory implements ServiceSubscriberInterface
     public static function getSubscribedServices()
     {
         return [
-            NominaReport::class
+            NominaReport::class,
+            CertificadoLaboralReport::class
         ];
     }
 
