@@ -56,7 +56,7 @@ class CertificadoLaboral
     private $paisExpedicion;
 
     /**
-     * @ORM\Column(type="string", length=3)
+     * @ORM\Column(type="string", length=5)
      */
     private $ciudadExpedicion;
 
