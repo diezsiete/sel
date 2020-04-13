@@ -18,6 +18,7 @@ class NapiClientOperation
 {
     private $class;
     private $classOperations;
+    private $buildFromObject;
     /**
      * @var NapiClient
      */
@@ -30,14 +31,28 @@ class NapiClientOperation
      * @var ExceptionHandler
      */
     private $exceptionHandler;
+    /**
+     * @var null|string|false
+     */
+    private $denormalizeAs;
 
-    public function __construct($class, $classOperations, DenormalizerInterface $denormalizer, ExceptionHandler $exceptionHandler, NapiClient $napiClient)
+    public function __construct($class, $classOperations, DenormalizerInterface $denormalizer, ExceptionHandler $exceptionHandler,
+                                NapiClient $napiClient, $denormalizeAs = null)
     {
-        $this->class = $class;
+        if(is_object($class)) {
+            $this->class = get_class($class);
+            $this->buildFromObject = $class;
+        } else {
+            $this->class = $class;
+        }
         $this->classOperations = $classOperations;
         $this->napiClient = $napiClient;
         $this->denormalizer = $denormalizer;
         $this->exceptionHandler = $exceptionHandler;
+        $this->denormalizeAs = $denormalizeAs;
+        if($this->denormalizeAs === null) {
+            $this->denormalizeAs = $this->class;
+        }
     }
 
     /**
@@ -47,10 +62,15 @@ class NapiClientOperation
     public function get()
     {
         $args = func_get_args();
+        if($this->buildFromObject) {
+            $args[] = $this->buildFromObject;
+        }
         $object = null;
         try {
             if ($data = $this->napiClient->get($this->classOperations['get']['path'], ['parameters' => $args])) {
-                $object = $this->denormalizer->denormalize($data, $this->class);
+                $object = $this->denormalizeAs
+                    ? $this->denormalizer->denormalize($data, $this->denormalizeAs)
+                    : $data;
             }
         } catch (ClientExceptionInterface $e) {
             if($e->getCode() !== 404) {

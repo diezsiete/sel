@@ -10,7 +10,10 @@ use App\Entity\ServicioEmpleados\ServicioEmpleadosReport;
 use App\Repository\Napi\Report\ServicioEmpleados\CertificadoIngresosRepository as NapiCertificadoIngresosRepo;
 use App\Service\Halcon\Report\Report\CertificadoLaboralReport as HalconCertificadoLaboralReport;
 use App\Service\Halcon\Report\Report\LiquidacionContratoReport as HalconLiquidacionContratoReport;
+use App\Service\Napi\Report\ReportFactory as NapiReportFactory;
 use App\Service\Napi\Report\Report\CertificadoIngresosReport as NapiCertificadoIngresosReport;
+use App\Entity\Napi\Report\ServicioEmpleados\Nomina as NapiNomina;
+use App\Service\Napi\Report\SsrsReport;
 use App\Service\Novasoft\Report\Report\LiquidacionContratoReport as NovasoftLiquidacionContratoReport;
 use App\Service\Novasoft\NovasoftEmpleadoService;
 use App\Service\Novasoft\Report\Report\CertificadoLaboralReport as NovasoftCertificadoLaboralReport;
@@ -19,6 +22,8 @@ use App\Service\Halcon\Report\ReportFactory as HalconReportFactory;
 use App\Service\ServicioEmpleados\Report\Report\CertificadoIngresosReport as SeCertificadoIngresosReport;
 use App\Service\Halcon\Report\Report\CertificadoIngresosReport as HalconCertificadoIngresosReport;
 use App\Service\ServicioEmpleados\Report\Report\CertificadoLaboralReport as SeCertificadoLaboralReport;
+
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Contracts\Service\ServiceSubscriberInterface;
@@ -38,15 +43,20 @@ class ReportFactory implements ServiceSubscriberInterface
 
     /**
      * @param Nomina $nomina
-     * @return ReportInterface
+     * @return ReportInterface|SsrsReport
      */
     public function nomina(Nomina $nomina)
     {
-        if ($nomina->isSourceNovasoft()) {
-            return $this->container->get(NovasoftReportFactory::class)->nomina(
-                $nomina->getUsuario()->getIdentificacion(), $nomina->getFecha(), $nomina->getFecha(), $this->getSsrsDb($nomina));
+        if ($nomina->isSourceNapi()) {
+            $napiNomina = $this->container
+                ->get(EntityManagerInterface::class)->getRepository(NapiNomina::class)->find($nomina->getSourceId());
+            if($napiNomina) {
+                return $this->container
+                    ->get(NapiReportFactory::class)->getReport(NapiNomina::class)->setReport($napiNomina);
+            }
+            throw new NotFoundHttpException('Reporte no existe');
         } else {
-            list($noContrat, $consecLiq) = explode(",", $nomina->getSourceId());
+            list($noContrat, $consecLiq) = explode(',', $nomina->getSourceId());
             return $this->container->get(HalconReportFactory::class)
                 ->nomina($noContrat, $consecLiq, $nomina->getUsuario());
         }
@@ -135,13 +145,15 @@ class ReportFactory implements ServiceSubscriberInterface
     {
         return [
             NovasoftReportFactory::class,
+            NapiReportFactory::class,
             NapiCertificadoIngresosRepo::class,
             HalconReportFactory::class,
             NovasoftEmpleadoService::class,
             SeCertificadoLaboralReport::class,
             HalconCertificadoIngresosReport::class,
             NapiCertificadoIngresosReport::class,
-            SeCertificadoIngresosReport::class
+            SeCertificadoIngresosReport::class,
+            EntityManagerInterface::class
         ];
     }
 

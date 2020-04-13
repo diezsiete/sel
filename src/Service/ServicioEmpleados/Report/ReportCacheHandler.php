@@ -372,7 +372,11 @@ class ReportCacheHandler
     }
 
 
-
+    /**
+     * @param $reporEntityClass
+     * @return mixed
+     * @deprecated TODO instead use Utils Symbol
+     */
     private function getReportEntityClassClean($reporEntityClass)
     {
         $reporEntityClassClean = $reporEntityClass;

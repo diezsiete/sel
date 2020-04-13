@@ -21,6 +21,12 @@ abstract class SsrsReport
      * @var EntityManagerInterface
      */
     protected $em;
+
+    /**
+     * @var object
+     */
+    protected $currentReport;
+
     /**
      * @var EventDispatcherInterface
      */
@@ -31,6 +37,21 @@ abstract class SsrsReport
         $this->client = $client;
         $this->em = $em;
         $this->dispatcher = $dispatcher;
+    }
+
+    public function setReport($report): self
+    {
+        $this->currentReport = $report;
+        return $this;
+    }
+
+    public function linkPdf()
+    {
+        $response = $this->client->itemOperations($this->currentReport, false)->get();
+        if($response && isset($response['hydra:member']) && count($response['hydra:member']) === 1) {
+            return $response['hydra:member'][0];
+        }
+        throw new \RuntimeException('Error generando link PDF');
     }
 
     protected function dispatchImportEvent($entity)

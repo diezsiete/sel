@@ -3,6 +3,7 @@
 namespace App\Service\Napi\Report;
 
 use App\Service\Napi\Report\Report\NominaReport;
+use App\Service\Utils\Symbol;
 use Psr\Container\ContainerInterface;
 use Symfony\Contracts\Service\ServiceSubscriberInterface;
 
@@ -16,12 +17,16 @@ class ReportFactory implements ServiceSubscriberInterface
      * @var ContainerInterface
      */
     private $container;
+    /**
+     * @var Symbol
+     */
+    private $utilSymbol;
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(ContainerInterface $container, Symbol $utilSymbol)
     {
         $this->container = $container;
+        $this->utilSymbol = $utilSymbol;
     }
-
 
     /**
      * @param $entityName
@@ -29,6 +34,7 @@ class ReportFactory implements ServiceSubscriberInterface
      */
     public function getReport($entityName)
     {
+        $entityName = $this->utilSymbol->removeNamespaceFromClassName($entityName);
         $reportName = __NAMESPACE__ . '\\Report\\'.$entityName . 'Report';
         return $this->container->get($reportName);
     }

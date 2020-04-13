@@ -44,9 +44,18 @@ abstract class ServicioEmpleadosReport
         return $this->source;
     }
 
+    /**
+     * @return bool
+     * @deprecated
+     */
     public function isSourceNovasoft(): bool
     {
         return $this->source === 'novasoft';
+    }
+
+    public function isSourceNapi(): bool
+    {
+        return $this->source === 'napi';
     }
 
     public function isSourceHalcon(): bool
