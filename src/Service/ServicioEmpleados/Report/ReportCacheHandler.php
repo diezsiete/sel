@@ -16,6 +16,7 @@ use App\Service\Novasoft\Report\Report\CertificadoIngresosReport as NovasoftCert
 use App\Service\Novasoft\Report\Report\LiquidacionContratoReport;
 use App\Service\Novasoft\Report\Report\NominaReport;
 use App\Service\Novasoft\Report\ReportFactory as NovasoftReportFactory;
+use App\Service\Napi\Report\ReportFactory as NapiReportFactory;
 use DateInterval;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -64,10 +65,15 @@ class ReportCacheHandler
      * @var ReportFactory
      */
     private $reportFactory;
+    /**
+     * @var NapiReportFactory
+     */
+    private $napiReportFactory;
 
     public function __construct(ReportCacheRepository $reportCacheRepo, EntityManagerInterface $em, Configuracion $config,
                                 NovasoftEmpleadoService $novasoftEmpleadoService, EventDispatcherInterface $dispatcher,
                                 HalconReportFactory $halconReportFactory, NovasoftReportFactory $novasoftReportFactory,
+                                NapiReportFactory $napiReportFactory,
                                 ReportFactory $reportFactory)
     {
         $this->reportCacheRepo = $reportCacheRepo;
@@ -78,6 +84,7 @@ class ReportCacheHandler
         $this->config = $config;
         $this->dispatcher = $dispatcher;
         $this->reportFactory = $reportFactory;
+        $this->napiReportFactory = $napiReportFactory;
     }
 
     /**
@@ -114,6 +121,7 @@ class ReportCacheHandler
     public function handle(Usuario $usuario, $reportEntityClass, $source = null)
     {
         if(!$source) {
+            /** @noinspection SuspiciousLoopInspection */
             foreach($this->config->servicioEmpleados()->getSources() as $source) {
                 $this->handle($usuario, $reportEntityClass, $source);
             }
@@ -124,6 +132,10 @@ class ReportCacheHandler
                     break;
                 case 'novasoft':
                     $this->handleNovasoft($usuario, $reportEntityClass);
+                    break;
+                case 'napi':
+                    $this->handleNapi($usuario, $reportEntityClass);
+                    break;
             }
         }
     }
@@ -140,6 +152,18 @@ class ReportCacheHandler
                     ->getImporter()
                     ->importMap();
                 $this->saveCache($usuario, 'halcon', $reportEntityClassClean);
+            }
+        }
+    }
+
+    public function handleNapi(Usuario $usuario, $reportEntityClass)
+    {
+        $reportEntityClass = $this->getReportEntityClassClean($reportEntityClass);
+        if($usuario->esRol('ROLE_EMPLEADO')) {
+            if (!$cache = $this->hasCache($usuario, 'napi', $reportEntityClass)) {
+                $report = $this->napiReportFactory->getReport($reportEntityClass);
+                $report->import($usuario);
+                //$this->saveCache($usuario, 'napi', $reportEntityClass);
             }
         }
     }
@@ -368,6 +392,11 @@ class ReportCacheHandler
                 $callbackEachEntity($entity);
             }
         }
+    }
+
+    private function hasCache(Usuario $usuario, $source, $reportEntityClass): bool
+    {
+        return  (bool) $this->reportCacheRepo->findLastCacheForReport($usuario, $source, $reportEntityClass);
     }
 
     public function log($level, $message, array $context = array())

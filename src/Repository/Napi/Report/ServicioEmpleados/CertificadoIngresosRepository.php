@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repository\Napi\ServicioEmpleados;
+namespace App\Repository\Napi\Report\ServicioEmpleados;
 
-use App\Entity\Napi\ServicioEmpleados\CertificadoIngresos;
+use App\Entity\Napi\Report\ServicioEmpleados\CertificadoIngresos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 

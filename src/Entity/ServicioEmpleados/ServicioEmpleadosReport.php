@@ -56,10 +56,17 @@ abstract class ServicioEmpleadosReport
 
     /**
      * @return $this
+     * @deprecated
      */
     public function setSourceNovasoft()
     {
         $this->source = 'novasoft';
+        return $this;
+    }
+
+    public function setSourceNapi()
+    {
+        $this->source = 'napi';
         return $this;
     }
 

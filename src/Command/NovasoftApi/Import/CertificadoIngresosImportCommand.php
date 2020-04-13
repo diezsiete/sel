@@ -9,7 +9,7 @@ use App\Command\Helpers\SearchByConvenioOrEmpleado;
 use App\Command\Helpers\SelCommandTrait;
 use App\Command\Helpers\TraitableCommand\TraitableCommand;
 use App\Entity\Main\Empleado;
-use App\Entity\Napi\ServicioEmpleados\CertificadoIngresos;
+use App\Entity\Napi\Report\ServicioEmpleados\CertificadoIngresos;
 use App\Event\Event\ServicioEmpleados\Report\Importer\DeleteEvent;
 use App\Event\Event\ServicioEmpleados\Report\Importer\ImportEvent;
 use App\Service\Novasoft\Api\Client\NapiClient;
@@ -117,7 +117,7 @@ class CertificadoIngresosImportCommand extends TraitableCommand
             'fechaFinal' => new DateTime($this->input->getArgument('year') . '-12-31')
         ]);
         if($certificado) {
-            $this->dispatchDeleteEvent($certificado->getId(), \App\Entity\Napi\ServicioEmpleados\CertificadoIngresos::class);
+            $this->dispatchDeleteEvent($certificado->getId(), \App\Entity\Napi\Report\ServicioEmpleados\CertificadoIngresos::class);
             $this->em->remove($certificado);
             $this->em->flush();
         }

@@ -48,6 +48,16 @@ class NapiResourceDenormalizer extends ObjectNormalizer
      */
     public function denormalize($data, $class, $format = null, array $context = [])
     {
+        // denormalizar coleccion (TODO no se si sea la mejor opcion)
+        if(isset($data['@type'], $data['hydra:member']) && $data['@type'] === 'hydra:Collection') {
+            $collection = [];
+            foreach($data['hydra:member'] as $member) {
+                $collection[] = $this->denormalize($member, $class, $format, $context);
+            }
+            return $collection;
+        }
+
+        // denormailizar objeto
         $identifier = $this->buildIdentifier($class, $data);
         $dbEntity = $this->em->getRepository($class)->findOneBy($identifier);
         if($dbEntity) {

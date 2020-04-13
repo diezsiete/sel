@@ -43,7 +43,8 @@ class ServicioEmpleados
     private $configReport;
     private $reports = [];
 
-    private $sourcesRoles = ['halcon' => 'ROLE_HALCON', 'novasoft' => 'ROLE_EMPLEADO'];
+    //private $sourcesRoles = ['halcon' => 'ROLE_HALCON', 'novasoft' => 'ROLE_EMPLEADO', 'napi' => 'ROLE_EMPLEADO'];
+    private $sourcesRoles = ['halcon' => 'ROLE_HALCON', 'napi' => 'ROLE_EMPLEADO'];
 
     public function __construct($config)
     {

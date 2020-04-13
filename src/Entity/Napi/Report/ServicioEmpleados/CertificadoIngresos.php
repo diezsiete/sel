@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity\Napi\ServicioEmpleados;
+namespace App\Entity\Napi\Report\ServicioEmpleados;
 
 use App\Annotation\NapiClient\NapiResource;
 use App\Annotation\NapiClient\NapiResourceId;
@@ -10,13 +10,14 @@ use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
+// TODO renombrar table a napi_se_certificado_ingresos
 /**
  * @NapiResource(
  *     itemOperations={
  *         "get"={"path"="/se/certificado-ingresos/identificacion={identificacion};fechaInicial={fechaInicial};fechaFinal={fechaFinal}"},
  *     }
  * )
- * @ORM\Entity(repositoryClass="App\Repository\Napi\ServicioEmpleados\CertificadoIngresosRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Napi\Report\ServicioEmpleados\CertificadoIngresosRepository")
  * @ORM\Table(name="napi_certificado_ingresos")
  */
 class CertificadoIngresos implements CertificadoIngresosInterface

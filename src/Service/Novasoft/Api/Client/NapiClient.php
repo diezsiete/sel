@@ -78,6 +78,13 @@ class NapiClient extends HttpClient
         return new NapiClientOperation($class, $annotation->itemOperations, $this->denormalizer, $this->exceptionHandler, $this);
     }
 
+    public function collectionOperations($class)
+    {
+        /** @var NapiResource $annotation */
+        $annotation = $this->reader->getClassAnnotation(new \ReflectionClass($class), NapiResource::class);
+        return new NapiClientOperation($class, $annotation->collectionOperations, $this->denormalizer, $this->exceptionHandler, $this);
+    }
+
     /**
      * @param string $url
      * @param array $options

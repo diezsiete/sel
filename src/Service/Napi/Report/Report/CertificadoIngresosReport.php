@@ -1,9 +1,11 @@
 <?php
 
 
-namespace App\Service\Napi\Report;
+namespace App\Service\Napi\Report\Report;
 
-use App\Entity\Napi\ServicioEmpleados\CertificadoIngresos;
+use App\Entity\Main\Usuario;
+use App\Entity\Napi\Report\ServicioEmpleados\CertificadoIngresos;
+use App\Service\Napi\Report\Report;
 use App\Service\Pdf\ServicioEmpleados\Report\CertificadoIngresosPdf;
 use App\Service\ServicioEmpleados\Report\PdfHandler;
 
@@ -42,5 +44,10 @@ class CertificadoIngresosReport extends Report
     {
         $ano = $this->currentCertificado->getFechaInicial()->format('Y');
         return 'napi/se/certificado-ingresos/' . $this->currentCertificado->getIdentificacion(). '-'.$ano.'.pdf';
+    }
+
+    public function import(Usuario $usuario)
+    {
+        // TODO: Implement import() method.
     }
 }

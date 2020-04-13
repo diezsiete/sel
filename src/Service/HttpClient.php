@@ -81,6 +81,7 @@ class HttpClient
      * @param array $params
      * @param string $parameterSyntax
      * @return string|string[]
+     * @deprecated instead use App\Service\Utils\Varchar::addParametersToPath
      */
     public function addParametersToUrl($url, $params = [], $parameterSyntax = ':')
     {

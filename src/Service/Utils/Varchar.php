@@ -38,4 +38,24 @@ class Varchar
     {
         return str_replace(' ', '', mb_convert_case(str_replace($separator, ' ', $string), MB_CASE_TITLE));
     }
+
+    /**
+     * Dada una url de tipo /api/:id ó /api/{id}, reemplaza id por los valores en $params
+     * @param $url
+     * @param array $params
+     * @param string $parameterSyntax
+     * @return string|string[]
+     */
+    public function addParametersToPath($url, $params = [], $parameterSyntax = ':')
+    {
+        $pattern = $parameterSyntax === ':' ? ':(\w+)' : '{(\w+)}';
+        if($params && preg_match_all("/$pattern/", $url, $matches)) {
+            for($i = 0, $iMax = count($matches[0]); $i < $iMax; $i++) {
+                $url = isset($params[$matches[1][$i]])
+                    ? str_replace($matches[0][$i], $params[$matches[1][$i]], $url)
+                    : str_replace($matches[0][$i], $params[$i], $url);
+            }
+        }
+        return $url;
+    }
 }

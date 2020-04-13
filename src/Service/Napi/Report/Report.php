@@ -3,6 +3,7 @@
 
 namespace App\Service\Napi\Report;
 
+use App\Entity\Main\Usuario;
 use App\Service\ServicioEmpleados\Report\PdfHandler;
 
 abstract class Report
@@ -28,6 +29,7 @@ abstract class Report
         });
     }
 
-    abstract function getPdfFileName(): string;
+    abstract public function getPdfFileName(): string;
     abstract public function renderPdf();
+    abstract public function import(Usuario $usuario);
 }
