@@ -16,6 +16,11 @@ use DateTime;
 use DateTimeInterface;
 use SSRS\SSRSReport;
 
+/**
+ * Class LiquidacionContratoReport
+ * @package App\Service\Novasoft\Report\Report
+ * @deprecated
+ */
 class LiquidacionContratoReport extends Report
 {
     protected $path = "/ReportesWeb/NOM/NOM701";

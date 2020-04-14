@@ -5,6 +5,7 @@ namespace App\Service\Napi\Report;
 
 use App\Service\Napi\Report\Report\CertificadoIngresosReport;
 use App\Service\Napi\Report\Report\CertificadoLaboralReport;
+use App\Service\Napi\Report\Report\LiquidacionContratoReport;
 use App\Service\Napi\Report\Report\NominaReport;
 use App\Service\Utils\Symbol;
 use Psr\Container\ContainerInterface;
@@ -47,7 +48,8 @@ class ReportFactory implements ServiceSubscriberInterface
         return [
             NominaReport::class,
             CertificadoLaboralReport::class,
-            CertificadoIngresosReport::class
+            CertificadoIngresosReport::class,
+            LiquidacionContratoReport::class
         ];
     }
 

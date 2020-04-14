@@ -14,6 +14,7 @@ use App\Service\Napi\Report\Report\CertificadoIngresosReport as NapiCertificadoI
 use App\Entity\Napi\Report\ServicioEmpleados\Nomina as NapiNomina;
 use App\Entity\Napi\Report\ServicioEmpleados\CertificadoLaboral as NapiCertificadoLaboral;
 use App\Entity\Napi\Report\ServicioEmpleados\CertificadoIngresos as NapiCertificadoIngresos;
+use App\Entity\Napi\Report\ServicioEmpleados\LiquidacionContrato as NapiLiquidacionContrato;
 use App\Service\Napi\Report\SsrsReport;
 use App\Service\Novasoft\Report\Report\LiquidacionContratoReport as NovasoftLiquidacionContratoReport;
 use App\Service\Novasoft\NovasoftEmpleadoService;
@@ -99,24 +100,17 @@ class ReportFactory implements ServiceSubscriberInterface
     }
 
     /**
-     * @param LiquidacionContrato $selLiqContrato
-     * @return HalconLiquidacionContratoReport|NovasoftLiquidacionContratoReport
+     * @param LiquidacionContrato $seLiqContrato
+     * @return HalconLiquidacionContratoReport|SsrsReport
      */
-    public function liquidacionContrato(LiquidacionContrato $selLiqContrato)
+    public function liquidacionContrato(LiquidacionContrato $seLiqContrato)
     {
-        if ($selLiqContrato->isSourceNovasoft()) {
-            return $this->container->get(NovasoftReportFactory::class)
-                ->liquidacionContrato(
-                    $selLiqContrato->getUsuario()->getIdentificacion(),
-                    $selLiqContrato->getFechaIngreso(),
-                    $selLiqContrato->getFechaRetiro(),
-                    $this->getSsrsDb($selLiqContrato)
-                );
-        } else {
-            list($noContrat, $liqDefini) = explode(",", $selLiqContrato->getSourceId());
-            return $this->container->get(HalconReportFactory::class)
-                ->liquidacionContrato($noContrat, $liqDefini, $selLiqContrato->getUsuario());
+        if ($seLiqContrato->isSourceNapi()) {
+            return $this->getNapiReport(NapiLiquidacionContrato::class, $seLiqContrato);
         }
+        [$noContrat, $liqDefini] = explode(',', $seLiqContrato->getSourceId());
+        return $this->container->get(HalconReportFactory::class)
+            ->liquidacionContrato($noContrat, $liqDefini, $seLiqContrato->getUsuario());
     }
 
     /**

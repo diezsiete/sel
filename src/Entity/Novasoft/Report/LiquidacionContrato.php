@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Novasoft\Report\LiquidacionContratoRepository")
  * @ORM\Table(name="novasoft_liquidacion_contrato")
+ * @deprecated
  */
 class LiquidacionContrato extends ServicioEmpleadosReport
 {
