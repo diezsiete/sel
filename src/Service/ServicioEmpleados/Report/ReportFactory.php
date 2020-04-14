@@ -7,17 +7,16 @@ use App\Entity\ServicioEmpleados\CertificadoLaboral;
 use App\Entity\ServicioEmpleados\LiquidacionContrato;
 use App\Entity\ServicioEmpleados\Nomina;
 use App\Entity\ServicioEmpleados\ServicioEmpleadosReport;
-use App\Repository\Napi\Report\ServicioEmpleados\CertificadoIngresosRepository as NapiCertificadoIngresosRepo;
 use App\Service\Halcon\Report\Report\CertificadoLaboralReport as HalconCertificadoLaboralReport;
 use App\Service\Halcon\Report\Report\LiquidacionContratoReport as HalconLiquidacionContratoReport;
 use App\Service\Napi\Report\ReportFactory as NapiReportFactory;
 use App\Service\Napi\Report\Report\CertificadoIngresosReport as NapiCertificadoIngresosReport;
 use App\Entity\Napi\Report\ServicioEmpleados\Nomina as NapiNomina;
 use App\Entity\Napi\Report\ServicioEmpleados\CertificadoLaboral as NapiCertificadoLaboral;
+use App\Entity\Napi\Report\ServicioEmpleados\CertificadoIngresos as NapiCertificadoIngresos;
 use App\Service\Napi\Report\SsrsReport;
 use App\Service\Novasoft\Report\Report\LiquidacionContratoReport as NovasoftLiquidacionContratoReport;
 use App\Service\Novasoft\NovasoftEmpleadoService;
-use App\Service\Novasoft\Report\Report\CertificadoLaboralReport as NovasoftCertificadoLaboralReport;
 use App\Service\Novasoft\Report\ReportFactory as NovasoftReportFactory;
 use App\Service\Halcon\Report\ReportFactory as HalconReportFactory;
 use App\Service\ServicioEmpleados\Report\Report\CertificadoIngresosReport as SeCertificadoIngresosReport;
@@ -80,7 +79,7 @@ class ReportFactory implements ServiceSubscriberInterface
 
     /**
      * @param null|string|CertificadoIngresos $filter
-     * @return SeCertificadoIngresosReport|HalconCertificadoIngresosReport|NapiCertificadoIngresosReport
+     * @return HalconCertificadoIngresosReport|SsrsReport
      */
     public function certificadoIngresos($filter = null)
     {
@@ -89,11 +88,8 @@ class ReportFactory implements ServiceSubscriberInterface
             if ($filter) {
                 $report->setIdentificacion($filter);
             }
-        } else if ($filter->isSourceNovasoft()) {
-            if($certIngresos = $this->container->get(NapiCertificadoIngresosRepo::class)->find($filter->getSourceId())) {
-                return $this->container->get(NapiCertificadoIngresosReport::class)->setCertificado($certIngresos);
-            }
-            throw new NotFoundHttpException('Certificado no existe');
+        } else if ($filter->isSourceNapi()) {
+            return $this->getNapiReport(NapiCertificadoIngresos::class, $filter);
         } else {
             [$empresaUsuario, $noContrat, $ano] = explode(',', $filter->getSourceId());
             return $this->container->get(HalconReportFactory::class)
@@ -138,7 +134,6 @@ class ReportFactory implements ServiceSubscriberInterface
         return [
             NovasoftReportFactory::class,
             NapiReportFactory::class,
-            NapiCertificadoIngresosRepo::class,
             HalconReportFactory::class,
             NovasoftEmpleadoService::class,
             SeCertificadoLaboralReport::class,

@@ -21,6 +21,7 @@ use Symfony\Contracts\Service\ServiceSubscriberInterface;
 /**
  * Class CertificadoLaboralReport
  * @package App\Service\Novasoft\Report\Report
+ * @deprecated
  */
 class CertificadoLaboralReport extends Report implements ServiceSubscriberInterface
 {

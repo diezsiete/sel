@@ -92,7 +92,7 @@ class NovasoftImportSubscriber implements EventSubscriberInterface
                 break;
             case CertificadoIngresos::class:
                 $seEntity = $this->importCertificadoIngresos($event->entity);
-                $seEntity->setSourceNovasoft();
+                $seEntity->setSourceNapi();
                 break;
             case LiquidacionContrato::class:
                 $seEntity = $this->importLiquidacionContrato($event->entity);

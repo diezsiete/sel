@@ -3,6 +3,7 @@
 namespace App\Service\Napi\Report;
 
 
+use App\Service\Napi\Report\Report\CertificadoIngresosReport;
 use App\Service\Napi\Report\Report\CertificadoLaboralReport;
 use App\Service\Napi\Report\Report\NominaReport;
 use App\Service\Utils\Symbol;
@@ -32,9 +33,9 @@ class ReportFactory implements ServiceSubscriberInterface
 
     /**
      * @param $entityName
-     * @return Report|SsrsReport
+     * @return SsrsReport
      */
-    public function getReport($entityName)
+    public function getReport($entityName): SsrsReport
     {
         $entityName = $this->utilSymbol->removeNamespaceFromClassName($entityName);
         $reportName = __NAMESPACE__ . '\\Report\\'.$entityName . 'Report';
@@ -45,7 +46,8 @@ class ReportFactory implements ServiceSubscriberInterface
     {
         return [
             NominaReport::class,
-            CertificadoLaboralReport::class
+            CertificadoLaboralReport::class,
+            CertificadoIngresosReport::class
         ];
     }
 

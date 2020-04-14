@@ -1,14 +1,26 @@
 <?php
 
-
 namespace App\Service\Napi\Report;
 
-use App\Entity\Main\Usuario;
 use App\Service\ServicioEmpleados\Report\PdfHandler;
 
-abstract class Report
+/**
+ * Utilizado por los reportes que generan el pdf localmente basado en info retornada por napi
+ * Trait LocalPdf
+ * @package App\Service\Napi\Report
+ */
+trait LocalPdf
 {
-    public function __construct(PdfHandler $pdfHandler)
+    /**
+     * @var PdfHandler
+     */
+    protected $pdfHandler;
+
+    /**
+     * @param PdfHandler $pdfHandler
+     * @required
+     */
+    public function setPdfHandler(PdfHandler $pdfHandler): void
     {
         $this->pdfHandler = $pdfHandler;
     }
@@ -19,17 +31,15 @@ abstract class Report
         return $this->pdfHandler->cacheAndStream($this->getPdfFileName(), function () {
             return $this->renderPdf();
         });
-
     }
 
-    public function linkPdf()
+    public function linkPdf(): string
     {
-        return $this->pdfHandler->cacheAndLink($this->getPdfFileName(), function () {
+        return $this->pdfHandler->writeAndLink($this->getPdfFileName(), function () {
             return $this->renderPdf();
         });
     }
 
     abstract public function getPdfFileName(): string;
     abstract public function renderPdf();
-    abstract public function import(Usuario $usuario);
 }
