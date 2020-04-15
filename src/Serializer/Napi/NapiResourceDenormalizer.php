@@ -74,6 +74,12 @@ class NapiResourceDenormalizer extends ObjectNormalizer
         return (bool)$this->reader->getClassAnnotation(new \ReflectionClass($type), NapiResource::class);
     }
 
+    public function supportsNormalization($data, $format = null)
+    {
+        // para que no se entrometa como normalizer de otros objetos que no le corresponden. Sucedia con Usuario
+        return false;
+    }
+
     private function buildIdentifier($class, $data)
     {
         $identifier = [];
