@@ -41,6 +41,7 @@ class Modulo extends HasDiapositivas
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Evaluacion\Diapositiva")
      * @ORM\JoinTable(name="evaluacion_modulo_diapositiva")
+     * @ORM\OrderBy({"indice" = "ASC"})
      */
     protected $diapositivas;
 
@@ -62,6 +63,7 @@ class Modulo extends HasDiapositivas
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Evaluacion\Pregunta\Pregunta", mappedBy="modulo")
+     * @ORM\OrderBy({"indice" = "ASC"})
      */
     private $preguntas;
 

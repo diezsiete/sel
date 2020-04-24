@@ -130,7 +130,7 @@ class Navegador
     public function getNextRoute()
     {
         if($this->hasNextRoute()) {
-            list($modulo, $diapositivaOPregunta, $preguntaDiapositiva) = $this->buildNextRoute();
+            [$modulo, $diapositivaOPregunta, $preguntaDiapositiva] = $this->buildNextRoute();
             return $this->buildRoute($modulo, $diapositivaOPregunta, $preguntaDiapositiva);
         }
         return false;
