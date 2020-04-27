@@ -2,6 +2,8 @@
 
 namespace App\Entity\Main;
 
+use App\Annotation\NapiClient\NapiResource;
+use App\Annotation\NapiClient\NapiResourceId;
 use App\Entity\Autoliquidacion\AutoliquidacionEmpleado;
 use App\Entity\Novasoft\Report\LiquidacionNomina\LiquidacionNomina;
 use App\Helper\Novasoft\Api\NapiAwareChangeEntity;
@@ -12,11 +14,18 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
+ * @NapiResource(
+ *     collectionOperations={
+ *         "get"={
+ *             "path"="/se/empleados",
+ *             "queryParameters"={"codigo", "fechaIngreso", "fechaRetiro"}
+ *         },
+ *     }
+ * )
  * @ORM\Entity(repositoryClass="App\Repository\Main\EmpleadoRepository")
  */
 class Empleado
 {
-    use NapiAwareChangeEntity;
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -90,6 +99,7 @@ class Empleado
      * @ORM\JoinColumn(nullable=false)
      * @var Usuario
      * @Groups("api")
+     * @NapiResourceId()
      */
     private $usuario;
 
@@ -138,7 +148,8 @@ class Empleado
 
     public function setSexo($sexo): self
     {
-        return $this->set('sexo', $sexo);
+        $this->sexo = $sexo;
+        return $this;
     }
 
     public function getEstadoCivil(): ?string
@@ -148,7 +159,8 @@ class Empleado
 
     public function setEstadoCivil(?string $estadoCivil): self
     {
-        return $this->set('estadoCivil', $estadoCivil);
+        $this->estadoCivil = $estadoCivil;
+        return $this;
     }
 
     public function getHijos(): ?int
@@ -159,7 +171,6 @@ class Empleado
     public function setHijos(?int $hijos): self
     {
         $this->hijos = $hijos;
-
         return $this;
     }
 
@@ -170,7 +181,8 @@ class Empleado
 
     public function setNacimiento(?DateTimeInterface $nacimiento): self
     {
-        return $this->set('nacimiento', $nacimiento);
+        $this->nacimiento = $nacimiento;
+        return $this;
     }
 
     public function getTelefono1(): ?string
@@ -181,7 +193,6 @@ class Empleado
     public function setTelefono1(?string $telefono1): self
     {
         $this->telefono1 = $telefono1;
-
         return $this;
     }
 
@@ -193,7 +204,6 @@ class Empleado
     public function setTelefono2(?string $telefono2): self
     {
         $this->telefono2 = $telefono2;
-
         return $this;
     }
 
@@ -205,7 +215,6 @@ class Empleado
     public function setDireccion(?string $direccion): self
     {
         $this->direccion = $direccion;
-
         return $this;
     }
 
@@ -218,7 +227,6 @@ class Empleado
     public function setCentroCosto(?string $centroCosto): self
     {
         $this->centroCosto = $centroCosto;
-
         return $this;
     }
 
@@ -229,7 +237,8 @@ class Empleado
 
     public function setFechaIngreso(DateTimeInterface $fechaIngreso): self
     {
-        return $this->set('fechaIngreso', $fechaIngreso);
+        $this->fechaIngreso = $fechaIngreso;
+        return $this;
     }
 
     public function getFechaRetiro(): ?DateTimeInterface
@@ -239,7 +248,8 @@ class Empleado
 
     public function setFechaRetiro(?DateTimeInterface $fechaRetiro): self
     {
-        return $this->set('fechaRetiro', $fechaRetiro);
+        $this->fechaRetiro = $fechaRetiro;
+        return $this;
     }
 
     public function getCargo(): ?string
@@ -250,7 +260,6 @@ class Empleado
     public function setCargo(?string $cargo): self
     {
         $this->cargo = $cargo;
-
         return $this;
     }
 
@@ -262,7 +271,6 @@ class Empleado
     public function setConvenio(?Convenio $convenio): self
     {
         $this->convenio = $convenio;
-
         return $this;
     }
 
@@ -274,7 +282,6 @@ class Empleado
     public function setUsuario(Usuario $usuario): self
     {
         $this->usuario = $usuario;
-
         return $this;
     }
 
@@ -307,7 +314,7 @@ class Empleado
     {
         $this->ssrsDb = strtoupper($db);
         $this->novasoftDb = $this->ssrsDb ? strtolower($this->ssrsDb) : null;
-        return $this->set('novasoftDb', $db);
+        return $this;
     }
 
     public function addAutoliquidacion(AutoliquidacionEmpleado $autoliquidacion): self
@@ -329,7 +336,6 @@ class Empleado
                 $autoliquidacion->setEmpleado(null);
             }
         }
-
         return $this;
     }
 
@@ -341,7 +347,6 @@ class Empleado
     public function setRepresentante(?Representante $representante): self
     {
         $this->representante = $representante;
-
         return $this;
     }
 
@@ -359,7 +364,6 @@ class Empleado
             $this->liquidacionesNomina[] = $liquidacionesNomina;
             $liquidacionesNomina->setEmpleado($this);
         }
-
         return $this;
     }
 
@@ -372,20 +376,6 @@ class Empleado
                 $liquidacionesNomina->setEmpleado(null);
             }
         }
-
         return $this;
     }
-
-    public function isNapiChanged(): bool
-    {
-        $changed = $this->napiChanged;
-        if (!$changed && $this->getUsuario()) {
-            $changed = $this->getUsuario()->isNapiChanged();
-            if (!$changed && $this->getConvenio()) {
-                $changed = $this->getConvenio()->getCodigo() === null;
-            }
-        }
-        return $changed;
-    }
-
 }

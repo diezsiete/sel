@@ -12,7 +12,7 @@ use App\Entity\Main\Empleado;
 use App\Entity\Napi\Report\ServicioEmpleados\CertificadoIngresos;
 use App\Event\Event\ServicioEmpleados\Report\Importer\DeleteEvent;
 use App\Event\Event\ServicioEmpleados\Report\Importer\ImportEvent;
-use App\Service\Novasoft\Api\Client\NapiClient;
+use App\Service\Napi\Client\NapiClient;
 use DateTime;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\ORM\Query\QueryException;

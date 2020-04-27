@@ -8,6 +8,11 @@ use App\Entity\Main\Empleado;
 use App\Service\Novasoft\Api\Helper\Hydra\HydraCollection;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
+/**
+ * Class EmpleadoCollection
+ * @package App\Service\Novasoft\Api\Helper
+ * @deprecated
+ */
 class EmpleadoCollection extends HydraCollection
 {
     /**

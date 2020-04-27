@@ -7,14 +7,14 @@ namespace App\Service\Napi\Report;
 use App\Entity\Main\Usuario;
 use App\Event\Event\ServicioEmpleados\Report\Importer\DeleteEvent;
 use App\Event\Event\ServicioEmpleados\Report\Importer\ImportEvent;
-use App\Service\Novasoft\Api\Client\NapiClient;
+use App\Service\Napi\Client\NapiClient;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 abstract class SsrsReport
 {
     /**
-     * @var NapiClient
+     * @var \App\Service\Napi\Client\NapiClient
      */
     protected $client;
     /**

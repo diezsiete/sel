@@ -16,6 +16,11 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
+/**
+ * Class EmpleadoImporter
+ * @package App\Service\Novasoft\Api\Importer
+ * @deprecated
+ */
 class EmpleadoImporter
 {
     /**

@@ -1,16 +1,11 @@
 <?php
 
 
-namespace App\Service\Novasoft\Api\Helper\Hydra;
+namespace App\Service\Napi\Client\Hydra;
 
+use App\Service\Napi\Client\NapiClient;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
-use App\Service\Novasoft\Api\Client\NovasoftApiClient;
-
-/**
- * Class HydraCollection
- * @package App\Service\Novasoft\Api\Helper\Hydra
- * @deprecated
- */
 class HydraCollection implements \Iterator, \Countable
 {
     /**
@@ -23,16 +18,25 @@ class HydraCollection implements \Iterator, \Countable
     private $client;
 
     private $internalCounter = 0;
+    /**
+     * @var DenormalizerInterface
+     */
+    private $denormalizer;
+    private $class;
 
     /**
      * HydraCollection constructor.
-     * @param NovasoftApiClient $client
+     * @param NapiClient $client
      * @param HydraCollectionPage $currentResponse
+     * @param $class
+     * @param DenormalizerInterface $denormalizer
      */
-    public function __construct($client, $currentResponse)
+    public function __construct($client, $currentResponse, $class, DenormalizerInterface $denormalizer)
     {
         $this->client = $client;
         $this->currentResponse = $currentResponse;
+        $this->denormalizer = $denormalizer;
+        $this->class = $class;
     }
 
     /**
@@ -52,7 +56,7 @@ class HydraCollection implements \Iterator, \Countable
         if(!$this->currentResponse->getIterator()->valid()) {
             $this->currentUrl = $this->currentResponse->getNextUrl();
             if($this->currentUrl) {
-                $this->currentResponse = new HydraCollectionPage($this->client->sendGet($this->currentUrl));
+                $this->currentResponse = new HydraCollectionPage($this->client->get($this->currentUrl));
                 return $this->currentResponse->getIterator()->valid();
             }
             return false;
@@ -65,7 +69,8 @@ class HydraCollection implements \Iterator, \Countable
      */
     public function current()
     {
-        return $this->currentResponse->getIterator()->current();
+        $data = $this->currentResponse->getIterator()->current();
+        return $this->denormalizer->denormalize($data, $this->class);
     }
 
     /**

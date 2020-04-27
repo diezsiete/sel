@@ -57,11 +57,12 @@ class NapiResourceDenormalizer extends ObjectNormalizer
             return $collection;
         }
 
-        // denormailizar objeto
-        $identifier = $this->buildIdentifier($class, $data);
-        $dbEntity = $this->em->getRepository($class)->findOneBy($identifier);
-        if($dbEntity) {
-            $context[AbstractNormalizer::OBJECT_TO_POPULATE] = $dbEntity;
+        // denormailizar a objeto existente
+        if($identifier = $this->buildIdentifier($class, $data)) {
+            $dbEntity = $this->em->getRepository($class)->findOneBy($identifier);
+            if ($dbEntity) {
+                $context[AbstractNormalizer::OBJECT_TO_POPULATE] = $dbEntity;
+            }
         }
         return parent::denormalize($data, $class, $format, $context);
     }
@@ -111,8 +112,17 @@ class NapiResourceDenormalizer extends ObjectNormalizer
                     $ids[] = $mapping;
                 }
             }
+            if(!$ids) {
+                foreach($targetMetadata->associationMappings as $associationMapping) {
+                    $reflectionProperty = new ReflectionProperty($class, $associationMapping['fieldName']);
+                    if ($resourceIdAnnotation = $this->reader->getPropertyAnnotation($reflectionProperty, NapiResourceId::class)) {
+                        $ids[] = $associationMapping;
+                    }
+                }
+            }
             $this->resourceIds[$class] = $ids;
         }
         return $this->resourceIds[$class];
     }
+
 }

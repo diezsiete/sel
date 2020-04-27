@@ -27,13 +27,14 @@ trait RangoPeriodoOption
 
 
     /**
-     * @param InputInterface $input
+     * @param InputInterface|null $input
      * @param bool|string $leftNullOrDefault
      * @return DateTime|null
      * @throws Exception
      */
-    protected function getInicio(InputInterface $input, $leftNullOrDefault = false)
+    protected function getInicio(?InputInterface $input = null, $leftNullOrDefault = false)
     {
+        $input = $input ?? $this->input;
         $desde = $this->getPeriodo($input, false);
 
         if(!$desde) {
@@ -54,13 +55,14 @@ trait RangoPeriodoOption
     }
 
     /**
-     * @param InputInterface $input
+     * @param InputInterface|null $input
      * @param bool $leftNullOrDefault
      * @return DateTime|null
      * @throws Exception
      */
-    protected function getFin(InputInterface $input, $leftNullOrDefault = false)
+    protected function getFin(?InputInterface $input = null, $leftNullOrDefault = false)
     {
+        $input = $input ?? $this->input;
         $rangoPeriodo = $this->getRangoFromPeriodo($input, false);
 
         if ($rangoPeriodo) {

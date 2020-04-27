@@ -4,6 +4,11 @@ namespace App\Helper\Novasoft\Api;
 
 use DateTimeInterface;
 
+/**
+ * Trait NapiAwareChangeEntity
+ * @package App\Helper\Novasoft\Api
+ * @deprecated
+ */
 trait NapiAwareChangeEntity
 {
     private $napiChanged = false;

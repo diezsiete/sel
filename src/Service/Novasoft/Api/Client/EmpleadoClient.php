@@ -15,6 +15,11 @@ use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Throwable;
 
+/**
+ * Class EmpleadoClient
+ * @package App\Service\Novasoft\Api\Client
+ * @deprecated
+ */
 class EmpleadoClient extends NovasoftApiClient
 {
 

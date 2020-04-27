@@ -6,12 +6,20 @@ namespace App\Command\NovasoftApi\Import;
 
 use App\Command\Helpers\ConsoleProgressBar;
 use App\Command\Helpers\Loggable;
+use App\Command\Helpers\PeriodoOption;
+use App\Command\Helpers\RangoPeriodoOption;
 use App\Command\Helpers\SearchByConvenioOrEmpleado;
+use App\Command\Helpers\SelCommandTrait;
 use App\Command\Helpers\TestOption;
 use App\Command\Helpers\TraitableCommand\TraitableCommand;
+use App\Entity\Main\Convenio;
+use App\Entity\Main\Empleado;
+use App\Service\Napi\EmpleadoService;
 use App\Service\Novasoft\Api\Client\ConvenioClient;
+use App\Service\Napi\Client\NapiClient;
 use App\Service\Novasoft\Api\Importer\EmpleadoImporter;
 use App\Service\Novasoft\Api\Client\NovasoftApiClient;
+use DateTimeInterface;
 use Doctrine\Common\Annotations\Reader;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -22,29 +30,28 @@ class ImportEmpleadoCommand extends TraitableCommand
 {
     use Loggable,
         TestOption,
-        ConsoleProgressBar;
+        PeriodoOption,
+        RangoPeriodoOption,
+        ConsoleProgressBar,
+        SelCommandTrait;
 
     protected static $defaultName = 'sel:napi:import:empleado';
 
     /**
-     * @var EmpleadoImporter
+     * @var NapiClient
      */
-    private $importer;
+    private $napiClient;
     /**
-     * @var ConvenioClient
+     * @var EmpleadoService
      */
-    private $convenioClient;
-
-    private $empleadosCollection = [];
-
-    private $conveniosCollection;
+    private $empleadoService;
 
     public function __construct(Reader $annotationReader, EventDispatcherInterface $dispatcher,
-                                EmpleadoImporter $importer, ConvenioClient $convenioClient)
+                                NapiClient $napiClient, EmpleadoService $empleadoService)
     {
         parent::__construct($annotationReader, $dispatcher);
-        $this->importer = $importer;
-        $this->convenioClient = $convenioClient;
+        $this->napiClient = $napiClient;
+        $this->empleadoService = $empleadoService;
     }
 
     protected function configure()
@@ -56,15 +63,16 @@ class ImportEmpleadoCommand extends TraitableCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+
         $search = $input->getArgument('search');
         if(is_numeric($search)) {
-            $this->importEmpleado($search);
+            //TODO
+            //$this->importEmpleado($search);
         } elseif($search) {
             $this->importEmpleados($search);
         } else {
-            $conveniosRaw = $this->convenioClient->getConveniosRaw();
-            foreach($conveniosRaw as $convenioRaw) {
-                $this->importEmpleados($convenioRaw['codigo']);
+            foreach($this->em->getRepository(Convenio::class)->findAll() as $convenio) {
+                $this->importEmpleados($convenio->getCodigo());
             }
         }
     }
@@ -75,54 +83,55 @@ class ImportEmpleadoCommand extends TraitableCommand
         foreach($collection as $empleado) {
             $this->importEmpleado($empleado);
         }
+        $this->em->clear();
     }
 
-    protected function importEmpleado($search)
+    protected function importEmpleado(Empleado $empleado)
     {
-        $empleado = is_object($search) ? $search : $this->importer->getNapiEmpleado($search);
-        if($empleado) {
-            $empleadoMessage = $empleado->getId() ? '[empleado update]' : '[empleado insert]';
-            $usuarioMessage = $empleado->getUsuario()->getId() ? '[usuario update]' : '[usuario insert]';
+        $empleadoMessage = $empleado->getId() ? '[empleado update]' : '[empleado insert]';
+        $usuarioMessage = $empleado->getUsuario()->getId() ? '[usuario update]' : '[usuario insert]';
 
-            if(!$this->isTest()) {
-                $this->importer->importEmpleado($empleado);
+        if(!$this->isTest()) {
+            if(!$empleado->getUsuario()->getId()) {
+                $this->empleadoService->prepareNewUsuario($empleado->getUsuario());
             }
-
-            $this->info(sprintf('%-12s %-16s %-17s %s %s', $empleado->getConvenio()->getCodigo(), $usuarioMessage, $empleadoMessage,
-                $empleado->getUsuario()->getNombreCompleto(), $empleado->getUsuario()->getIdentificacion()));
-        } else {
-            $identificacion = $empleado ? $empleado->getUsuario()->getIdentificacion() : $search;
-            $this->error(sprintf('error importando empleado "%s"', $identificacion));
+            if (!$empleado->getId() || !$empleado->getUsuario()->getId()) {
+                $this->em->persist($empleado);
+            }
+            $this->em->flush();
         }
+
+        $this->info(sprintf('%-12s %-16s %-17s %s %s', $empleado->getConvenio()->getCodigo(), $usuarioMessage, $empleadoMessage,
+            $empleado->getUsuario()->getNombreCompleto(), $empleado->getUsuario()->getIdentificacion()));
+
         $this->progressBarAdvance();
     }
 
 
     protected function progressBarCount(InputInterface $input, OutputInterface $output): ?int
     {
-        $search = $input->getArgument('search');
-        if (is_numeric($search)) {
+        $search = $this->input->getArgument('search');
+        if(is_numeric($search)) {
             return 1;
         }
-        if($search) {
-            return count($this->getEmpleadosCollection($search));
-        }
-        return count($this->importer->getClient()->getEmpleadosByConvenio());
+        return count($this->getEmpleadosCollection($search));
     }
 
-    protected function getEmpleadosCollection($codigoConvenio)
+    protected function getEmpleadosCollection($codigo = null)
     {
-        if(!isset($this->empleadosCollection[$codigoConvenio])) {
-            $this->empleadosCollection[$codigoConvenio] = $this->importer->getClient()->getEmpleadosByConvenio($codigoConvenio);
-        }
-        return $this->empleadosCollection[$codigoConvenio];
-    }
+        $fechaIngreso = $this->getInicio();
+        $fechaRetiro = $this->getFin();
 
-    protected function getConveniosCollection()
-    {
-        if(!$this->conveniosCollection) {
-            $this->conveniosCollection = $this->convenioClient->getConveniosRaw();
+        $operationParameters = [];
+        if($fechaIngreso) {
+            $operationParameters['fechaIngreso'] = $fechaIngreso->format('Y-m-d');
         }
-        return $this->conveniosCollection;
+        if($fechaRetiro) {
+            $operationParameters['fechaRetiro'] = $fechaRetiro->format('Y-m-d');
+        }
+        if($codigo) {
+            $operationParameters[is_numeric($codigo) ? 'identificacion' : 'codigo'] = $codigo;
+        }
+        return $this->napiClient->collectionOperations(Empleado::class)->get($operationParameters);
     }
 }

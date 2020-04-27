@@ -9,7 +9,7 @@ use App\Entity\Napi\Report\ServicioEmpleados\CertificadoLaboral;
 use App\Service\Configuracion\Configuracion;
 use App\Service\Napi\Report\LocalPdf;
 use App\Service\Napi\Report\SsrsReport;
-use App\Service\Novasoft\Api\Client\NapiClient;
+use App\Service\Napi\Client\NapiClient;
 use App\Service\Novasoft\NovasoftEmpleadoService;
 use App\Service\Pdf\PdfCartaLaboral;
 use App\Service\Pdf\PdfCartaLaboralServilabor;

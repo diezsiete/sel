@@ -8,7 +8,7 @@ use App\Entity\Napi\Report\ServicioEmpleados\CertificadoIngresos;
 use App\Service\Napi\Report\LocalPdf;
 use App\Service\Napi\Report\Report;
 use App\Service\Napi\Report\SsrsReport;
-use App\Service\Novasoft\Api\Client\NapiClient;
+use App\Service\Napi\Client\NapiClient;
 use App\Service\Pdf\ServicioEmpleados\Report\CertificadoIngresosPdf;
 use App\Service\ServicioEmpleados\Report\PdfHandler;
 use Doctrine\ORM\EntityManagerInterface;

@@ -1,13 +1,15 @@
 <?php
 
 
-namespace App\Service\Novasoft\Api\Client;
+namespace App\Service\Napi\Client;
 
 
 use App\Annotation\NapiClient\NapiResource;
 use App\Annotation\NapiClient\NapiResourceId;
 use App\Service\ExceptionHandler;
 use App\Service\HttpClient;
+use App\Service\Napi\Client\NapiClientCollectionOperation;
+use App\Service\Napi\Client\NapiClientOperation;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
@@ -89,7 +91,7 @@ class NapiClient extends HttpClient
     {
         /** @var NapiResource $annotation */
         $annotation = $this->reader->getClassAnnotation(new \ReflectionClass($class), NapiResource::class);
-        return new NapiClientOperation($class, $annotation->collectionOperations, $this->denormalizer, $this->exceptionHandler, $this, $denormalizeAs);
+        return new NapiClientCollectionOperation($class, $annotation->collectionOperations, $this->denormalizer, $this->exceptionHandler, $this, $denormalizeAs);
     }
 
     /**

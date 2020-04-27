@@ -12,7 +12,7 @@ trait TestOption
     /**
      * @Configure
      */
-    public function addOptionPeriodo()
+    public function addOptionTest()
     {
         $this->addOption('test', 't', InputOption::VALUE_NONE, $this->testDescription);
     }

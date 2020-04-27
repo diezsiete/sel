@@ -11,6 +11,11 @@ use App\Service\Novasoft\Api\Client\EmpleadoClient;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
+/**
+ * Class EmpleadoService
+ * @package App\Service\Novasoft\Api
+ * @deprecated
+ */
 class EmpleadoService
 {
     /**
@@ -79,9 +84,8 @@ class EmpleadoService
                     $this->prepareUsuario($empleado->getUsuario())
                         ->em->persist($empleado);
                     $this->em->flush();
-                } else if ($empleado->isNapiChanged()) {
-                    $this->em->flush();
                 }
+                $this->em->flush();
                 return $empleado;
             }
         }

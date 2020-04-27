@@ -17,6 +17,11 @@ use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
+/**
+ * Class HvClient
+ * @package App\Service\Novasoft\Api\Client
+ * @deprecated
+ */
 class HvClient extends NovasoftApiClient
 {
     /**

@@ -1,16 +1,11 @@
 <?php
 
-namespace App\Service\Novasoft\Api\Helper\Hydra;
+namespace App\Service\Napi\Client\Hydra;
 
 
 use Exception;
 use Traversable;
 
-/**
- * Class HydraCollectionPage
- * @package App\Service\Novasoft\Api\Helper\Hydra
- * @deprecated
- */
 class HydraCollectionPage implements \IteratorAggregate
 {
     /**
