@@ -32,9 +32,10 @@
       ansistrano_keep_releases: 3
 
       ansistrano_deploy_via: git
-      ansistrano_git_repo: git@github.com:diezsiete/sel.git
-      ansistrano_git_branch: master
-      ansistrano_git_identity_key_path: "{{ playbook_dir }}/id_rsa"
+      ansistrano_git_repo: "https://github.com/diezsiete/sel.git"
+      #ansistrano_git_branch: master
+      #ansistrano_git_repo: git@github.com:diezsiete/sel.git
+      #ansistrano_git_identity_key_path: "{{ playbook_dir }}/id_rsa"
 
       ansistrano_after_symlink_shared_tasks_file: "{{ playbook_dir }}/deploy/after-symlink-shared.yml"
 
