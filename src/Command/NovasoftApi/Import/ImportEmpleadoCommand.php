@@ -66,8 +66,10 @@ class ImportEmpleadoCommand extends TraitableCommand
 
         $search = $input->getArgument('search');
         if(is_numeric($search)) {
-            //TODO
-            //$this->importEmpleado($search);
+            /** @var Empleado|null $empleado */
+            if($empleado = $this->napiClient->itemOperations(Empleado::class)->get($search)) {
+                $this->importEmpleado($empleado);
+            }
         } elseif($search) {
             $this->importEmpleados($search);
         } else {

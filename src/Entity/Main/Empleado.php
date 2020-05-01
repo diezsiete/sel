@@ -20,6 +20,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *             "path"="/se/empleados",
  *             "queryParameters"={"codigo", "fechaIngreso", "fechaRetiro"}
  *         },
+ *     },
+ *     itemOperations={
+ *         "get"={"path"="/se/empleado/{identificacion}"}
  *     }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\Main\EmpleadoRepository")
