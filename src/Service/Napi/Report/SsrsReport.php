@@ -66,10 +66,8 @@ abstract class SsrsReport
 
     public function import(Usuario $usuario)
     {
-        $object = $this->callOperation($usuario);
-
-        if($object) {
-            $objects = is_array($object) ? $object : [$object];
+        $objects = $this->callOperation($usuario);
+        if($objects) {
             foreach($objects as $object) {
                 if (!$object->getId()) {
                     $object->setUsuario($usuario);
