@@ -94,13 +94,7 @@ class ImportEmpleadoCommand extends TraitableCommand
         $usuarioMessage = $empleado->getUsuario()->getId() ? '[usuario update]' : '[usuario insert]';
 
         if(!$this->isTest()) {
-            if(!$empleado->getUsuario()->getId()) {
-                $this->empleadoService->prepareNewUsuario($empleado->getUsuario());
-            }
-            if (!$empleado->getId() || !$empleado->getUsuario()->getId()) {
-                $this->em->persist($empleado);
-            }
-            $this->em->flush();
+            $this->empleadoService->importEmpleado($empleado);
         }
 
         $this->info(sprintf('%-12s %-16s %-17s %s %s', $empleado->getConvenio()->getCodigo(), $usuarioMessage, $empleadoMessage,

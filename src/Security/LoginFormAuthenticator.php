@@ -4,8 +4,8 @@ namespace App\Security;
 
 use App\Entity\Main\Usuario;
 use App\Service\Component\LoadingOverlayComponent;
-use App\Service\Novasoft\Api\EmpleadoService;
-use App\Service\Novasoft\NovasoftEmpleadoService;
+use App\Service\Napi\EmpleadoService;
+use App\Service\Novasoft\Api\EmpleadoService as NapiEmpleadoService;
 use App\Service\ServicioEmpleados\Report\ReportCacheHandler;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -31,38 +31,25 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     protected $urlGenerator;
     private $csrfTokenManager;
     private $passwordEncoder;
+
     /**
-     * @var NovasoftEmpleadoService
-     * @deprecated
+     * @var NapiEmpleadoService
      */
-    private $novasoftEmpleadoService;
-    /**
-     * @var LoadingOverlayComponent
-     */
-    private $loadingOverlay;
-    /**
-     * @var ReportCacheHandler
-     */
-    private $reportCacheHandler;
+    private $napiEmpleadoService;
     /**
      * @var EmpleadoService
      */
-    private $napiEmpleadoService;
+    private $empleadoService;
 
     public function __construct(EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator,
                                 CsrfTokenManagerInterface $csrfTokenManager, UserPasswordEncoderInterface $passwordEncoder,
-                                NovasoftEmpleadoService $novasoftEmpleadoService,
-                                EmpleadoService $napiEmpleadoService,
-                                LoadingOverlayComponent $loadingOverlay, ReportCacheHandler $reportCacheHandler)
+                                EmpleadoService $empleadoService)
     {
         $this->entityManager = $entityManager;
         $this->urlGenerator = $urlGenerator;
         $this->csrfTokenManager = $csrfTokenManager;
         $this->passwordEncoder = $passwordEncoder;
-        $this->novasoftEmpleadoService = $novasoftEmpleadoService;
-        $this->napiEmpleadoService = $napiEmpleadoService;
-        $this->loadingOverlay = $loadingOverlay;
-        $this->reportCacheHandler = $reportCacheHandler;
+        $this->empleadoService = $empleadoService;
     }
 
     public function supports(Request $request)
@@ -97,8 +84,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         $user = $this->entityManager->getRepository(Usuario::class)->findOneBy(['identificacion' => $credentials['identificacion']]);
 
         if (!$user) {
-            //$empleado = $this->novasoftEmpleadoService->updateEmpleado($credentials['identificacion'])
-            $empleado = $this->napiEmpleadoService->ifEmpleadoCreateUsuario($credentials['identificacion']);
+            $empleado = $this->empleadoService->updateFromNapi($credentials['identificacion']);
             if ($empleado) {
                 $user = $empleado->getUsuario();
             } else {
@@ -127,12 +113,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
             if($user->getType() === 1) {
                 $this->updatePasswordToNewHash($user, $credentials['password']);
             }
-            //$esEmpleado = $this->novasoftEmpleadoService->addRoleEmpleadoToUsuario($user);
-            $esEmpleado = $this->napiEmpleadoService->ifEmpleadoAddRol($user);
-
-            /*if(($esEmpleado || $user->esRol('ROLE_HALCON')) && $this->reportCacheHandler->hasCacheToRenew($user)) {
-                $this->loadingOverlay->enable()->useCallbackRoute('sel_panel_empleado_update');
-            }*/
+            $this->empleadoService->ifEmpleadoAddRol($user);
         }
 
         return $isValid;

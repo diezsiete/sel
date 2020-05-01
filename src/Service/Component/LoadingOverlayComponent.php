@@ -6,6 +6,11 @@ namespace App\Service\Component;
 
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
+/**
+ * Class LoadingOverlayComponent
+ * @package App\Service\Component
+ * @deprecated
+ */
 class LoadingOverlayComponent
 {
     const SESSION_NAME = 'loading-overlay';
