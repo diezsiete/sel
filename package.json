@@ -17,7 +17,7 @@
         "deepmerge": "^4.2.2",
         "dropzone": "^5.5.1",
         "fibers": "^4.0.2",
-        "jquery": "^3.4.1",
+        "jquery": "^3.5.0",
         "jquery.appear": "^1.0.1",
         "jquery.maskedinput": "^1.4.1",
         "load-google-maps-api": "^2.0.1",
