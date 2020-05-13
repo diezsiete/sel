@@ -89,6 +89,7 @@ class PdfCartaLaboral extends PdfBase
 
     protected function contentActivo($sex, $companiaNombre, $contratoTermino, $cargo, $desde, $salarioTexto, $salarioNum, $eusuaria = null)
     {
+        $salarioNum = number_format($salarioNum);
         return " se encuentra vinculad" . ($sex ? 'o' : 'a') . " laboralmente con la " . utf8_decode("Compañía")
             . " $companiaNombre en un contrato por " . $contratoTermino . " como trabajador en " . utf8_decode("misión")
             . " en la Empresa Usuaria $eusuaria " . utf8_decode("desempeñando") . " el cargo de"

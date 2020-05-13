@@ -68,6 +68,7 @@ abstract class SsrsReport
     {
         $objects = $this->callOperation($usuario);
         if($objects) {
+            $objects = is_array($objects) ? $objects : [$objects];
             foreach($objects as $object) {
                 if (!$object->getId()) {
                     $object->setUsuario($usuario);
