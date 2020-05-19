@@ -60,6 +60,9 @@ class EvaluacionController extends BaseController
      */
     public function presentar(Navegador $navegador)
     {
+        if($navegador->getProgreso()->getCulminacion()) {
+            return $this->redirectToRoute('evaluacion_resultados');
+        }
         $currentRoute = $navegador->getCurrentRoute();
         return $this->redirect($currentRoute);
     }

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Annotation\SelRoute;
 use App\Repository\Main\UsuarioRepository;
 use App\Service\Component\LoadingOverlayComponent;
+use App\Service\Evaluacion\EvaluacionService;
 use App\Service\Novasoft\Api\Client\EmpleadoClient;
 use App\Service\Novasoft\Api\EmpleadoService;
 use App\Service\Novasoft\NovasoftEmpleadoService;
@@ -19,18 +20,18 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class PanelController extends BaseController implements ActionBasedOnRole
 {
-    /**
-     * @var LoadingOverlayComponent
-     */
-    private $loadingOverlay;
+
     /**
      * @var ReportCacheHandler
      */
     private $reportCacheHandler;
+    /**
+     * @var EvaluacionService
+     */
+    private $evalacionService;
 
-    public function __construct(LoadingOverlayComponent $loadingOverlay, ReportCacheHandler $reportCacheHandler)
+    public function __construct(ReportCacheHandler $reportCacheHandler)
     {
-        $this->loadingOverlay = $loadingOverlay;
         $this->reportCacheHandler = $reportCacheHandler;
     }
 
@@ -45,7 +46,7 @@ class PanelController extends BaseController implements ActionBasedOnRole
         return $this->render('panel/main.html.twig');
     }
 
-    public function empleado(DataTableBuilder $dataTable, ReportFactory $reportFactory)
+    public function empleado(DataTableBuilder $dataTable, ReportFactory $reportFactory, EvaluacionService $evaluacionService)
     {
         /*if(!$this->loadingOverlay->isEnabled() && $this->reportCacheHandler->hasCacheToRenew($this->getUser())) {
             $this->loadingOverlay->enable();
@@ -62,12 +63,23 @@ class PanelController extends BaseController implements ActionBasedOnRole
 
         $certificadoLaboral = $reportFactory->certificadoLaboral($this->getUser()->getIdentificacion())->findLast();
 
+        $evaluacionLink = $this->generateUrl('evaluacion', ['evaluacionSlug' => 'induccion']);
+        $evaluacionPorcentaje = 0;
+        if($evaluacionProgreso = $evaluacionService->usuarioHasEvaluacion($this->getUser(), 'induccion')) {
+            $evaluacionPorcentaje = $evaluacionProgreso->getPorcentajeCompletitud();
+            if($evaluacionProgreso->getCulminacion()) {
+                $evaluacionLink = $this->generateUrl('evaluacion_certificado', ['evaluacionSlug' => 'induccion', 'progresoId' => $evaluacionProgreso->getId()]);
+            }
+        }
+
         return $this->render('panel/empleado.html.twig', [
             'datatables' => [
                 'comprobantes' => $tableNomina,
                 'aportes' => $tableAportes
             ],
-            'certificadoLaboral' => $certificadoLaboral
+            'certificadoLaboral' => $certificadoLaboral,
+            'evaluacionLink' => $evaluacionLink,
+            'evaluacionPorcentaje' => $evaluacionPorcentaje,
         ]);
     }
 

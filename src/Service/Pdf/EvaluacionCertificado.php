@@ -75,9 +75,11 @@ class EvaluacionCertificado extends PdfBase
 
         $this->Ln();
 
-        $text = 'Se ' . utf8_decode('informó') . ' sobre COVID-19 (Coronovirus) Pandemia Mundial, (Signos y Sintomas;Medidas de ' . utf8_decode('prevención')
-            . ' y como disminuir el riesgo de contagio; Procedimiento en casos sospechoso y confirmados de Covid -19 calificado en primera oportunidad por la ARL SURA)';
-        $this->MultiCell(round($this->getWritableWidth()), $line_height - 3, $text, 0, 'J');
+        if($this->configuracion->getEmpresa('true') === 'servilabor') {
+            $text = 'Se ' . utf8_decode('informó') . ' sobre COVID-19 (Coronovirus) Pandemia Mundial, (Signos y Sintomas;Medidas de ' . utf8_decode('prevención')
+                . ' y como disminuir el riesgo de contagio; Procedimiento en casos sospechoso y confirmados de Covid -19 calificado en primera oportunidad por la ARL SURA)';
+            $this->MultiCell(round($this->getWritableWidth()), $line_height - 3, $text, 0, 'J');
+        }
 
         $this->Ln();
 

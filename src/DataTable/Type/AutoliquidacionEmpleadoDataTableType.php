@@ -48,7 +48,7 @@ class AutoliquidacionEmpleadoDataTableType implements DataTableTypeInterface
         }
         if(!$periodo) {
             $dataTable->add('periodo', DateTimeColumn::class, ['label' => 'Fecha', 'format' => 'Y-m', 'field' => 'a.periodo'])
-                ->addOrderBy('periodo', DataTable::SORT_ASCENDING);
+                ->addOrderBy('periodo', DataTable::SORT_DESCENDING);
         }
         $dataTable
             ->add('PDF', ActionsColumn::class, [

@@ -37,17 +37,37 @@ class ProgresoRepository extends ServiceEntityRepository
      */
     public function findByUsuarioElseNew(UserInterface $usuario, Evaluacion $evaluacion)
     {
-        $progreso = $this->createQueryBuilder('p')
-            ->andWhere('p.usuario = :usuario')
-            ->andWhere('p.evaluacion = :evaluacion')
-            ->setParameter('usuario', $usuario)
-            ->setParameter('evaluacion', $evaluacion)
-            ->getQuery()
-            ->getOneOrNullResult();
+        $progreso = $this->findByUsuario($usuario, $evaluacion);
         if(!$progreso) {
             $progreso = $this->instanceNewProgreso($usuario, $evaluacion);
         }
         return $progreso;
+    }
+
+    /**
+     * @param UserInterface $usuario
+     * @param Evaluacion|string|null $evaluacion
+     * @return Progreso|null
+     */
+    public function findByUsuario(UserInterface $usuario, $evaluacion = null)
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->andWhere('p.usuario = :usuario')
+            ->setParameter('usuario', $usuario);
+        if($evaluacion) {
+            if(is_object($evaluacion)) {
+                $qb->andWhere('p.evaluacion = :evaluacion');
+            } elseif(is_string($evaluacion)) {
+                $qb->join('p.evaluacion', 'e')
+                    ->andWhere('e.nombre = :evaluacion');
+            }
+            $qb->setParameter('evaluacion', $evaluacion);
+        }
+        try {
+            return $qb->getQuery()->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+            return null;
+        }
     }
 
     public function findByEvaluacionSlug($id, $evaluacionSlug)
