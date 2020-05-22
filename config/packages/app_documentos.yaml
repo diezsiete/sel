@@ -2,6 +2,47 @@ app:
   empresas:
     PTA:
       documentos_laborales:
+        prevencion-covid-medidas-generales:
+          title: Prevención covid medidas generales
+          date: 2020-05-22
+          category: COVID-19
+        prevencion-covid-lavado-manos:
+          title: Prevención covid lavado de manos
+          date: 2020-05-22
+          category: COVID-19
+        prevencion-covid-higiene-respiratoria:
+          title: Prevención covid higiene respiratoria
+          date: 2020-05-22
+          category: COVID-19
+        prevencion-covid-alimentacion:
+          title: Prevención covid alimentación
+          date: 2020-05-22
+          category: COVID-19
+        prevencion-contencion-mitigacion-del-covid-19-adultos-mayores:
+          title: Prevención, contención y mitigación del Covid-19 en personas adultas mayores
+          date: 2020-05-22
+          category: COVID-19
+        prevencion-covid-psicolaboral:
+          title: Prevención covid psicolaboral
+          date: 2020-05-22
+          category: COVID-19
+        prevencion-covid-adultos-mayores:
+          title: Prevención covid adultos mayores
+          date: 2020-05-22
+          category: COVID-19
+        personas-con-discapacidad-covid-19:
+          title: Personas con discapacidad covid 19
+          date: 2020-05-22
+          category: COVID-19
+        recomendaciones-agua:
+          title: Recomendaciones con el agua para el consumo humano
+          date: 2020-05-22
+          category: COVID-19
+        recomendaciones-propiedad-horizontal:
+          title: Recomendaciones para propiedad horizontal
+          date: 2020-05-22
+          category: COVID-19
+
         requisitos-incapacidades:
           date: 2019-05-13
           title: Requisitos incapacidades

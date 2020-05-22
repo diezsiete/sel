@@ -77,7 +77,9 @@ class Configuracion
      * @var NovasoftApiConfiguracion
      */
     private $novasoftApiConfig = null;
-
+    /**
+     * @deprecated
+     */
     private $documentosLaborales = [];
 
     /**
@@ -304,6 +306,7 @@ class Configuracion
      * @param null|string $searchKey
      * @return DocumentoLaboral[]|DocumentoLaboral
      * @throws Exception
+     * @deprecated utilizar DocumentosLaborales
      */
     public function getDocumentosLaborales($searchKey = null)
     {

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Service\Configuracion;
+namespace App\Service\DocumentosLaborales;
 
 
 use DateTime;
@@ -9,7 +9,6 @@ use DateTime;
 /**
  * Class DocumentoLaboral
  * @package App\Service\Configuracion
- * @deprecated utilizar DocumentoLaboral de DocumentosLaborales
  */
 class DocumentoLaboral
 {
@@ -18,6 +17,7 @@ class DocumentoLaboral
     private $date;
     private $title;
     private $pdf;
+    private $category;
 
     public function __construct($empresa, $data)
     {
@@ -25,7 +25,8 @@ class DocumentoLaboral
         $this->key = $data['key'];
         $this->date = (new DateTime())->setTimestamp($data['date']);
         $this->title = $data['title'];
-        $this->pdf = ($data['pdf'] ? $data['pdf'] : $data['key']) . '.pdf';
+        $this->pdf = ($data['pdf'] ?: $data['key']) . '.pdf';
+        $this->category = $data['category'];
     }
 
     /**
@@ -67,8 +68,15 @@ class DocumentoLaboral
 
     public function getMimeType(): string
     {
-        return "application/pdf";
+        return 'application/pdf';
     }
 
+    /**
+     * @return mixed
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
 
 }

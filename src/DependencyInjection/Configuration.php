@@ -268,6 +268,7 @@ class Configuration implements ConfigurationInterface
                     ->scalarNode('date')->end()
                     ->scalarNode('title')->end()
                     ->scalarNode('pdf')->defaultValue(null)->end()
+                    ->scalarNode('category')->defaultValue('Documentos laborales')->end()
                 ->end()
             ->end();
     }

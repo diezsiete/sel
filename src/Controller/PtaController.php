@@ -12,6 +12,7 @@ use App\Repository\Main\PostRepository;
 use App\Repository\Main\TagRepository;
 use App\Service\Configuracion\Configuracion;
 use App\Service\Configuracion\Oficina;
+use App\Service\DocumentosLaborales\DocumentosLaborales;
 use App\Service\Mailer;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -84,36 +85,39 @@ class PtaController extends BaseController
     /**
      * @Route("/noticias", name="pta_noticias", host="%empresa.PTA.host%")
      */
-    public function noticias(PostRepository $postRepo, TagRepository $tagRepo, PaginatorInterface $paginator, Request $request, Configuracion $config)
+    public function noticias(PostRepository $postRepo, TagRepository $tagRepo, PaginatorInterface $paginator, Request $request, DocumentosLaborales $documentosLaborales)
     {
-        return $this->blogList($postRepo, $tagRepo, $paginator, $request);
+        return $this->blogList($postRepo, $tagRepo, $paginator, $request, $documentosLaborales);
     }
 
     /**
      * @Route("/noticias/categoria/{slug}", name="pta_noticias_categoria", host="%empresa.PTA.host%")
      */
-    public function noticiasCategoria(PostRepository $postRepo, TagRepository $tagRepo, PaginatorInterface $paginator, Request $request, Tag $tag)
+    public function noticiasCategoria(PostRepository $postRepo, TagRepository $tagRepo, PaginatorInterface $paginator, Request $request, Tag $tag, DocumentosLaborales $documentosLaborales)
     {
-        return $this->blogList($postRepo, $tagRepo, $paginator, $request, $tag);
+        return $this->blogList($postRepo, $tagRepo, $paginator, $request, $documentosLaborales, $tag);
     }
 
-    private function blogList(PostRepository $postRepo, TagRepository $tagRepo, PaginatorInterface $paginator, Request $request, ?Tag $tag = null)
+    private function blogList(PostRepository $postRepo, TagRepository $tagRepo, PaginatorInterface $paginator, Request $request,
+                              DocumentosLaborales $documentosLaborales, ?Tag $tag = null)
     {
         $qb = $postRepo->searchQueryBuilder($tag);
 
         $pagination = $paginator->paginate($qb, $request->get('page', 1), 5);
 
+
         return $this->render('pta/blog/list.html.twig', [
             'pagination' => $pagination,
             'tagSelected' => $tag,
-            'tags' => $tagRepo->findAllOrderBySize()
+            'tags' => $tagRepo->findAllOrderBySize(),
+            'documentosLaborales' => $documentosLaborales
         ]);
     }
 
     /**
      * @Route("/noticias/{slug}", name="pta_noticia", host="%empresa.PTA.host%")
      */
-    public function noticia(Post $post, PostRepository $repository, TagRepository $tagRepo)
+    public function noticia(Post $post, PostRepository $repository, TagRepository $tagRepo, DocumentosLaborales $documentosLaborales)
     {
         $showImage = !in_array($post->getSlug(), [
             'tips-evitar-gripe',
@@ -129,7 +133,8 @@ class PtaController extends BaseController
             'recomendados' => $recomendados,
             'showImage' => $showImage,
             'tags' => $tagRepo->findAllOrderBySize(),
-            'tagSelected' => null
+            'tagSelected' => null,
+            'documentosLaborales' => $documentosLaborales
         ]);
     }
 
