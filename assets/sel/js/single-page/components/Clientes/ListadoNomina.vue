@@ -103,7 +103,7 @@
 </template>
 
 <script>
-    import store from "@/store/clientes-store";
+    import store from "@/sel/js/single-page/store/clientes-store";
     import {mapState} from "vuex";
 
     export default {

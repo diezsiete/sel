@@ -54,8 +54,7 @@
 
 
 
-<body class="{{ is_sel() ? 'is-sel' : '' }} {{ loading_overlay_body_class() }}" {{ loading_overlay_body_options() }}>  {# class="{{ is_sel() ? 'pp-header-open' : '' }}" #}
-{{ loading_overlay() }}
+<body class="{{ is_sel() ? 'is-sel' : '' }}">  {# class="{{ is_sel() ? 'pp-header-open' : '' }}" #}
 <div class="body" id="body"> {# class="body{{ is_sel() ? ' menu-open' : '' }}" #}
     {% block header %}
         {% if not app.user and app.request.attributes.get('_route') is same as('pta_index') %}

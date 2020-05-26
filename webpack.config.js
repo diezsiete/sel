@@ -60,6 +60,8 @@ Encore
     .addEntry('clientes-report', './assets/sel/js/clientes/report.js')
     .addEntry('single-page', './assets/sel/js/single-page/app.js')
     .addEntry('clientes', './assets/clientes/app.js')
+    .addEntry('registro', './assets/cv/registro.js')
+    .addEntry('cv', './assets/cv/cv.js')
 
 
     //.addEntry('page1', './assets/js/page1.js')
@@ -129,8 +131,14 @@ Encore
     })*/
     .enableVueLoader()
     .addAliases({
-        "@": path.resolve(__dirname, 'assets/sel/js/single-page'),
+        //"@": path.resolve(__dirname, 'assets/sel/js/single-page'),
+        "@": path.resolve(__dirname, 'assets'),
         "@clientes": path.resolve(__dirname, 'assets/clientes'),
+        "@empresa": path.resolve(__dirname, 'assets/' + empresa),
+        "@plugins": path.resolve(__dirname, 'assets/plugins'),
+        "@router": path.resolve(__dirname, 'assets/router'),
+        "@sel": path.resolve(__dirname, 'assets/sel'),
+        "@store": path.resolve(__dirname, 'assets/store')
     })
 
     .addPlugin(new CaseSensitivePathsPlugin(), -10)
