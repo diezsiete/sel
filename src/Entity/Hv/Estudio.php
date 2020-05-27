@@ -10,7 +10,9 @@ use App\Validator\Hv\HvChild as HvChildConstraint;
 
 /**
  * @ApiResource(
- *     collectionOperations={},
+ *     collectionOperations={
+ *         "get"
+ *     },
  *     itemOperations={"get"},
  *     normalizationContext={"groups"={"api:hv:read"}},
  *     denormalizationContext={"groups"={"api:hv:write"}},

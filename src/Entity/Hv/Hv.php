@@ -21,10 +21,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ApiResource(
  *     collectionOperations={
+ *         "get",
  *         "post"={"path"="/hv"}
  *     },
  *     itemOperations={
- *         "get"
+ *         "get"={"path"="/hv/{id}"}
  *     },
  *     normalizationContext={"groups"={"api:hv:read"}},
  *     denormalizationContext={"groups"={"api:hv:write"}},

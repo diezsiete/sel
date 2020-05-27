@@ -2,7 +2,7 @@ import '@empresa/css/app.scss';
 
 import Vue from 'vue';
 import App from './AppRegistro.vue'
-import vuetify from "@plugins/Vuetify";
+import vuetify from "@plugins/vuetify";
 import "@plugins/vuelidate"
 
 import store from "@store/cv/modules/registro";
