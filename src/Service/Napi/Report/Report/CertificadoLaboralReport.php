@@ -34,7 +34,7 @@ class CertificadoLaboralReport extends SsrsReport implements ServiceSubscriberIn
     public function __construct(NapiClient $client, EntityManagerInterface $em, EventDispatcherInterface $dispatcher,
                                 Configuracion $configuracion, ContainerInterface $container)
     {
-        parent::__construct($client, $em, $dispatcher);
+        parent::__construct($client, $em, $dispatcher, $configuracion);
         $this->configuracion = $configuracion;
         $this->container = $container;
     }

@@ -56,7 +56,7 @@ class HydraCollection implements \Iterator, \Countable
         if(!$this->currentResponse->getIterator()->valid()) {
             $this->currentUrl = $this->currentResponse->getNextUrl();
             if($this->currentUrl) {
-                $this->currentResponse = new HydraCollectionPage($this->client->get($this->currentUrl));
+                $this->currentResponse = new HydraCollectionPage($this->client->get($this->currentUrl, [], false));
                 return $this->currentResponse->getIterator()->valid();
             }
             return false;

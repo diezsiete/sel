@@ -12,6 +12,7 @@ use App\Service\Napi\Client\NapiClientCollectionOperation;
 use App\Service\Napi\Client\NapiClientOperation;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\ORM\EntityManagerInterface;
+use ReflectionException;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -21,6 +22,7 @@ use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class NapiClient extends HttpClient
 {
@@ -36,6 +38,10 @@ class NapiClient extends HttpClient
      * @var string
      */
     private $napiDbTmp;
+    /**
+     * @var array
+     */
+    private $napiDbMultiple = [];
     /**
      * @var NormalizerInterface
      */
@@ -80,6 +86,14 @@ class NapiClient extends HttpClient
         return $this;
     }
 
+    public function addDb(string $db)
+    {
+        if($db !== $this->napiDb) {
+            $this->napiDbMultiple[] = $db;
+        }
+        return $this;
+    }
+
     public function itemOperations($class, $denormalizeAs = null)
     {
         /** @var NapiResource $annotation */
@@ -91,46 +105,56 @@ class NapiClient extends HttpClient
     {
         /** @var NapiResource $annotation */
         $annotation = $this->reader->getClassAnnotation(new \ReflectionClass($class), NapiResource::class);
-        return new NapiClientCollectionOperation($class, $annotation->collectionOperations, $this->denormalizer, $this->exceptionHandler, $this, $denormalizeAs);
+        $collectionOperations = new NapiClientCollectionOperation($class, $annotation->collectionOperations, $this->denormalizer, $this->exceptionHandler, $this, $denormalizeAs);
+        if($this->napiDbMultiple) {
+            $collectionOperations->addDb($this->napiDb);
+            foreach ($this->napiDbMultiple as $additionalDb) {
+                $collectionOperations->addDb($additionalDb);
+            }
+        }
+        return $collectionOperations;
     }
 
     /**
      * @param string $url
      * @param array $options
-     * @return array|\Symfony\Contracts\HttpClient\ResponseInterface
+     * @param string|null|false $db
+     * @return array|ResponseInterface
      * @throws ClientExceptionInterface
      * @throws DecodingExceptionInterface
      * @throws RedirectionExceptionInterface
      * @throws ServerExceptionInterface
      * @throws TransportExceptionInterface
+     * @throws ReflectionException
      */
-    public function get(string $url, array $options = [])
+    public function get(string $url, array $options = [], $db = null)
     {
         $parameters = $this->getParametersFromOptions($options);
-        $url = $this->buildUrl($url, $parameters);
+        $url = $this->buildUrl($url, $parameters, $db);
         $response = parent::get($url, $options);
         return $response->toArray();
     }
 
-    protected function buildUrl($url, $parameters = []): string
+    protected function buildUrl($url, $parameters = [], $db = null): string
     {
         if($parameters) {
             $url = $this->addParametersToUrl($url, $parameters, '{}');
         }
-        $db = $this->napiDbTmp ?: $this->napiDb;
-        $base = "/{$db}/api";
-
-        //urls de hydra collection ya vienen con $base, eliminamos
-        $url = str_replace($base, '', $url);
-
-        return "{$this->napiUrl}/{$db}/api{$url}";
+        $base = '';
+        if($db !== false) {
+            if($db === null) {
+                $db = $this->napiDbTmp ?: $this->napiDb;
+            }
+            $base = "/{$db}/api";
+        }
+        return "{$this->napiUrl}{$base}{$url}";
     }
 
     /**
      * En caso de que se pase un objeto en los parametros para agregar atributos como parametros a la url
      * @param $options
      * @return array
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     private function getParametersFromOptions(&$options)
     {

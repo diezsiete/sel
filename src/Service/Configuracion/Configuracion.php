@@ -139,6 +139,7 @@ class Configuracion
      * @param bool|string $filter
      * @return SsrsDb[]|SsrsDb
      * @throws Exception
+     * @deprecated
      */
     public function getSsrsDb($filter = false)
     {

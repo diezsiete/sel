@@ -4,9 +4,12 @@
 namespace App\Service\Napi\Report;
 
 
+use App\Entity\Main\Empleado;
 use App\Entity\Main\Usuario;
+use App\Entity\ServicioEmpleados\ServicioEmpleadosReport;
 use App\Event\Event\ServicioEmpleados\Report\Importer\DeleteEvent;
 use App\Event\Event\ServicioEmpleados\Report\Importer\ImportEvent;
+use App\Service\Configuracion\Configuracion;
 use App\Service\Napi\Client\NapiClient;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -23,7 +26,7 @@ abstract class SsrsReport
     protected $em;
 
     /**
-     * @var object
+     * @var ServicioEmpleadosReport
      */
     protected $currentReport;
 
@@ -31,12 +34,17 @@ abstract class SsrsReport
      * @var EventDispatcherInterface
      */
     private $dispatcher;
+    /**
+     * @var Configuracion
+     */
+    private $configuracion;
 
-    public function __construct(NapiClient $client, EntityManagerInterface $em, EventDispatcherInterface $dispatcher)
+    public function __construct(NapiClient $client, EntityManagerInterface $em, EventDispatcherInterface $dispatcher, Configuracion $configuracion)
     {
         $this->client = $client;
         $this->em = $em;
         $this->dispatcher = $dispatcher;
+        $this->configuracion = $configuracion;
     }
 
     public function setReport($report): self
@@ -47,6 +55,11 @@ abstract class SsrsReport
 
     public function linkPdf()
     {
+        $ssrsDbs = $this->configuracion->getSsrsDb();
+        if(count($ssrsDbs) > 1 && $this->currentReport->getUsuario()
+            && $empleado = $this->em->getRepository(Empleado::class)->findByIdentificacion($this->currentReport->getUsuario()->getIdentificacion())) {
+            $this->client->db($empleado->getSsrsDb());
+        }
         $response = $this->client->itemOperations($this->currentReport, false)->get();
         if($response && isset($response['hydra:member']) && count($response['hydra:member']) === 1) {
             return $response['hydra:member'][0];
@@ -66,6 +79,10 @@ abstract class SsrsReport
 
     public function import(Usuario $usuario)
     {
+        $ssrsDbs = $this->configuracion->getSsrsDb();
+        if(count($ssrsDbs) > 1 && $empleado = $this->em->getRepository(Empleado::class)->findByIdentificacion($usuario->getIdentificacion())) {
+            $this->client->db($empleado->getSsrsDb());
+        }
         $objects = $this->callOperation($usuario);
         if($objects) {
             $objects = is_iterable($objects) ? $objects : [$objects];
