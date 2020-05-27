@@ -5,6 +5,7 @@ namespace App\Service\Napi\Report\Report;
 
 use App\Entity\Main\Usuario;
 use App\Entity\Napi\Report\ServicioEmpleados\CertificadoIngresos;
+use App\Service\Configuracion\Configuracion;
 use App\Service\Napi\Report\LocalPdf;
 use App\Service\Napi\Report\Report;
 use App\Service\Napi\Report\SsrsReport;
@@ -28,9 +29,10 @@ class CertificadoIngresosReport extends SsrsReport
      */
     protected $currentReport;
 
-    public function __construct(NapiClient $client, EntityManagerInterface $em, EventDispatcherInterface $dispatcher, CertificadoIngresosPdf $pdfService)
+    public function __construct(NapiClient $client, EntityManagerInterface $em, EventDispatcherInterface $dispatcher,
+                                CertificadoIngresosPdf $pdfService, Configuracion $configuracion)
     {
-        parent::__construct($client, $em, $dispatcher);
+        parent::__construct($client, $em, $dispatcher, $configuracion);
         $this->pdfService = $pdfService;
     }
 

@@ -14,6 +14,7 @@ use App\Command\Helpers\TestOption;
 use App\Command\Helpers\TraitableCommand\TraitableCommand;
 use App\Entity\Main\Convenio;
 use App\Entity\Main\Empleado;
+use App\Service\Napi\Client\Hydra\HydraCollection;
 use App\Service\Napi\EmpleadoService;
 use App\Service\Novasoft\Api\Client\ConvenioClient;
 use App\Service\Napi\Client\NapiClient;
@@ -21,6 +22,7 @@ use App\Service\Novasoft\Api\Importer\EmpleadoImporter;
 use App\Service\Novasoft\Api\Client\NovasoftApiClient;
 use DateTimeInterface;
 use Doctrine\Common\Annotations\Reader;
+use Exception;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -63,7 +65,6 @@ class ImportEmpleadoCommand extends TraitableCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-
         $search = $input->getArgument('search');
         if(is_numeric($search)) {
             /** @var Empleado|null $empleado */
@@ -71,17 +72,19 @@ class ImportEmpleadoCommand extends TraitableCommand
                 $this->importEmpleado($empleado);
             }
         } elseif($search) {
-            $this->importEmpleados($search);
+            if($convenio = $this->em->getRepository(Convenio::class)->find($search)) {
+                $this->importEmpleados($convenio);
+            }
         } else {
             foreach($this->em->getRepository(Convenio::class)->findAll() as $convenio) {
-                $this->importEmpleados($convenio->getCodigo());
+                $this->importEmpleados($convenio);
             }
         }
     }
 
-    protected function importEmpleados($codigoConvenio)
+    protected function importEmpleados(Convenio $convenio)
     {
-        $collection = $this->getEmpleadosCollection($codigoConvenio);
+        $collection = $this->getEmpleadosCollection($convenio);
         foreach($collection as $empleado) {
             $this->importEmpleado($empleado);
         }
@@ -97,8 +100,14 @@ class ImportEmpleadoCommand extends TraitableCommand
             $this->empleadoService->importEmpleado($empleado);
         }
 
-        $this->info(sprintf('%-12s %-16s %-17s %s %s', $empleado->getConvenio()->getCodigo(), $usuarioMessage, $empleadoMessage,
-            $empleado->getUsuario()->getNombreCompleto(), $empleado->getUsuario()->getIdentificacion()));
+        $this->info(sprintf('%-12s %-6s %-16s %-17s %s %s',
+            $empleado->getSsrsDb(),
+            $empleado->getConvenio()->getCodigo(),
+            $usuarioMessage,
+            $empleadoMessage,
+            $empleado->getUsuario()->getNombreCompleto(),
+            $empleado->getUsuario()->getIdentificacion()
+        ));
 
         $this->progressBarAdvance();
     }
@@ -113,7 +122,12 @@ class ImportEmpleadoCommand extends TraitableCommand
         return count($this->getEmpleadosCollection($search));
     }
 
-    protected function getEmpleadosCollection($codigo = null)
+    /**
+     * @param null|string|Convenio $search
+     * @return HydraCollection
+     * @throws Exception
+     */
+    protected function getEmpleadosCollection($search = null)
     {
         $fechaIngreso = $this->getInicio();
         $fechaRetiro = $this->getFin();
@@ -125,8 +139,17 @@ class ImportEmpleadoCommand extends TraitableCommand
         if($fechaRetiro) {
             $operationParameters['fechaRetiro'] = $fechaRetiro->format('Y-m-d');
         }
-        if($codigo) {
-            $operationParameters[is_numeric($codigo) ? 'identificacion' : 'codigo'] = $codigo;
+        if($search) {
+            if(is_object($search)) {
+                $operationParameters['codigo'] =  $search->getCodigo();
+                $this->napiClient->db($search->getSsrsDb());
+            } else {
+                $operationParameters['identificacion'] = $search;
+            }
+        } else {
+            foreach($this->configuracion->getSsrsDb() as $ssrsDb) {
+                $this->napiClient->addDb(strtolower($ssrsDb->getNombre()));
+            }
         }
         return $this->napiClient->collectionOperations(Empleado::class)->get($operationParameters);
     }

@@ -37,11 +37,13 @@ trait ConsoleProgressBar
      */
     public function initProgressBar(BeforeRunEvent $event)
     {
-        $countProgressBar = $this->progressBarCount($event->getInput(), $event->getOutput());
-        if($countProgressBar) {
-            $this->progressBar = new ProgressBar($event->getOutput(), $countProgressBar);
-            $this->progressBar->setFormat($this->progressBarFormat);
-            return $this->progressBar;
+        if(!$event->getInput()->hasOption('test') || !$event->getInput()->getOption('test')) {
+            $countProgressBar = $this->progressBarCount($event->getInput(), $event->getOutput());
+            if ($countProgressBar) {
+                $this->progressBar = new ProgressBar($event->getOutput(), $countProgressBar);
+                $this->progressBar->setFormat($this->progressBarFormat);
+                return $this->progressBar;
+            }
         }
         return null;
     }
