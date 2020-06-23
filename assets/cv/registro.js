@@ -5,7 +5,7 @@ import App from './AppRegistro.vue'
 import vuetify from "@plugins/vuetify";
 import "@plugins/vuelidate"
 
-import store from "@store/cv/modules/registro";
+import store from "@store/cv/registro";
 
 
 const rootElement = document.getElementById('app');

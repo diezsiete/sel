@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\Cv\CvService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -15,13 +16,15 @@ class CvController extends AbstractController
         return $this->render('cv/registro.html.twig');
     }
 
+
+
     /**
-     * @Route("/sel/cv", name="cv")
-     * @Route("/sel/cv/datos-basicos", name="cv_datos_basicos")
-     * @Route("/sel/cv/estudios", name="cv_estudios")
+     * @Route("/sel/cv/{any}", name="cv", defaults={"any"=null}, requirements={"any"=".*"})
      */
-    public function cv()
+    public function cv(CvService $cvService)
     {
-        return $this->render('cv/cv.html.twig');
+        return $this->render('cv/cv.html.twig', [
+            'cvIri' => $cvService->getUserCvIri(),
+        ]);
     }
 }

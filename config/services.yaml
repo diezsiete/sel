@@ -94,6 +94,11 @@ services:
         public: true
         shared: false
 
+    App\Decorator\IriConverterDecorator:
+        decorates: 'api_platform.iri_converter'
+        arguments: [ '@App\Decorator\IriConverterDecorator.inner' ]
+        autoconfigure: false
+
     App\Service\Autoliquidacion\ExportPdf:
         public: true
     App\Service\Autoliquidacion\ExportZip:
@@ -158,9 +163,10 @@ services:
     App\Uploader\Namer\ArchivoNamer:
         public: true
 
-
     Knp\Menu\Twig\MenuExtension:
         alias: knp_menu.twig.extension
+
+
 
     app.menu_builder:
         factory: ['App\Menu\MenuBuilderFactory', 'test']

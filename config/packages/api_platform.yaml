@@ -6,3 +6,7 @@ api_platform:
         json: ['application/merge-patch+json']
     swagger:
         versions: [3]
+    collection:
+        pagination:
+            client_enabled: true
+            enabled_parameter_name: pagination # optional

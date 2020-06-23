@@ -1,25 +1,36 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
+    {{ parent() }}
     {{ encore_entry_link_tags('cv') }}
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
 {% endblock %}
 
 
-{# block body_header %}{% endblock #}
+{% block body_header_class %}no-content{% endblock %}
 
 
+{% block main %}
 
-{% block body %}
-    <div class="row">
-        <div class="col">
-            <div id="app">
-            </div>
-        </div>
+    {{ include('default/_flash_messages.html.twig') }}
+
+    {% block body_header %}
+        {{ parent() }}
+    {% endblock %}
+
+    <div id="app" data-cv-iri="{{ cvIri }}">
     </div>
+
+    {% block footer %}
+        {{ parent() }}
+    {% endblock %}
+
 {% endblock %}
 
+
+
 {% block javascripts %}
+    {{ parent() }}
     {{ encore_entry_script_tags('cv') }}
 {% endblock %}

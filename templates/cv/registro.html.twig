@@ -7,18 +7,27 @@
 {% endblock %}
 
 
-{# block body_header %}{% endblock #}
+{% block body_header_class %}no-content{% endblock %}
 
 
+{% block main %}
 
-{% block body %}
-    <div class="row">
-        <div class="col">
-            <div id="app">
-            </div>
-        </div>
+    {{ include('default/_flash_messages.html.twig') }}
+
+    {% block body_header %}
+        {{ parent() }}
+    {% endblock %}
+
+    <div id="app">
     </div>
+
+    {% block footer %}
+        {{ parent() }}
+    {% endblock %}
+
 {% endblock %}
+
+
 
 {% block javascripts %}
     {{ encore_entry_script_tags('registro') }}

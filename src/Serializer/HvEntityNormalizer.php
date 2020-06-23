@@ -120,6 +120,7 @@ class HvEntityNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
+        return false;
         return $data instanceof HvEntity && !($data instanceof  Hv);
     }
 

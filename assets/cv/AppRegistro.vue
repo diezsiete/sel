@@ -1,7 +1,7 @@
 <template>
-    <v-app>
+    <v-app :class="{ overflow: overflow }">
         <!-- Sizes your content based upon application components -->
-        <v-content>
+        <v-main>
             <!-- Provides the application the proper gutter -->
             <v-container fluid>
                 <v-stepper v-model="currentStep" :alt-labels="true">
@@ -17,17 +17,18 @@
 
                     <v-stepper-items>
                         <v-stepper-content step="1">
-                            <DatosBasicos></DatosBasicos>
-                            <v-btn color="primary" @click="validateBeforeNextStep()" class="float-right" >
-                                Siguiente
-                            </v-btn>
+                            <cv-registro ref="CvRegistro">
+                                <registro-toolbar :next="next"></registro-toolbar>
+                            </cv-registro>
                         </v-stepper-content>
                         <v-stepper-content step="2">
-                            <RegistroTableEntity component="Estudio" name="Estudio"></RegistroTableEntity>
-                            <v-btn color="primary" @click="validateBeforeNextStep()" class="float-right" >
+                            <estudio-registro ref="EstudioRegistro">
+                                <registro-toolbar :add="add" :cancel="cancel" :next="next" :save="save"></registro-toolbar>
+                            </estudio-registro>
+                            <!--<v-btn color="primary" @click="validateBeforeNextStep()" class="float-right" >
                                 Siguiente
                             </v-btn>
-                            <v-btn text @click="prevStep()">Anterior</v-btn>
+                            <v-btn text @click="prevStep()">Anterior</v-btn>-->
                         </v-stepper-content>
                         <!--<v-stepper-content v-for="(item, n) in steps" :key="`${n}-content`" :step="n + 1">
                             <component v-bind:is="currentComponent"></component>
@@ -39,56 +40,66 @@
                             <v-btn text v-if="n > 0" @click="prevStep()">Anterior</v-btn>
                         </v-stepper-content>-->
                     </v-stepper-items>
+
                 </v-stepper>
             </v-container>
-        </v-content>
-
-        <v-footer app>
-            <!-- -->
-        </v-footer>
+        </v-main>
     </v-app>
 </template>
 
 <script>
     import { mapState } from 'vuex';
-    import DatosBasicos from "./components/DatosBasicos";
-    import RegistroTableEntity from "./components/RegistroTableEntity";
-    import { EventBus } from './helpers/event-bus.js';
+    import CvRegistro from '@views/entity/cv/cv/Registro';
+    import EstudioRegistro from '@views/entity/cv/estudio/Registro';
+    import RegistroToolbar from "@components/cv/RegistroToolbar";
 
     export default {
-        name: 'app',
+        name: 'AppRegistro',
         components: {
-            DatosBasicos,
-            RegistroTableEntity
+            CvRegistro,
+            EstudioRegistro,
+            RegistroToolbar
         },
         computed: {
             currentStep: {
                 get () {
-                    return this.$store.state.registro.currentStep
+                    return this.$store.state.currentStep
                 },
                 set (value) {
                     this.$store.dispatch('setCurrentStep', value)
                 }
             },
             ...mapState({
-                steps: state => state.registro.steps,
-                currentComponent: state => state.registro.currentComponent
+                steps: state => state.steps,
+                currentComponent: state => state.currentComponent,
+                overflow: state => state.overflow
             })
         },
         created() {
-            EventBus.$on('registroNextStep', () => {
+            /*EventBus.$on('registroNextStep', () => {
                 this.nextStep()
-            });
+            });*/
         },
         methods: {
-            validateBeforeNextStep() {
-                EventBus.$emit('registroValidateBeforeNextStep', this.currentComponent);
+            next () {
+                const currentComponent = this.$refs[this.$store.getters.currentComponent];
+                if(currentComponent.validate()) {
+                    this.$store.dispatch('currentStepAugment')
+                }
+                /*currentComponent.$v.$touch();
+                if (!currentComponent.$v.$invalid) {
+                    this.$store.dispatch('create', currentComponent.$v.item.$model);
+                    this.$store.dispatch('currentStepAugment')
+                }*/
             },
-            nextStep () {
-                this.$store.dispatch('currentStepAugment')
+            add () {
+                this.$refs[this.$store.getters.currentComponent].add()
             },
-            prevStep () {
-                this.$store.dispatch('currentStepDecrease')
+            cancel () {
+                this.$refs[this.$store.getters.currentComponent].cancel()
+            },
+            save() {
+                this.$refs[this.$store.getters.currentComponent].save()
             }
         }
     }
@@ -97,5 +108,10 @@
 <style lang="scss">
     #app{
         background-color: #ecedf0;
+    }
+    .overflow {
+        .v-stepper__wrapper, .v-stepper__items, .v-stepper{
+            overflow: visible !important;
+        }
     }
 </style>

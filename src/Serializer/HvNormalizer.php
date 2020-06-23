@@ -34,6 +34,7 @@ class HvNormalizer extends HvEntityNormalizer implements DenormalizerInterface
 
     public function supportsNormalization($data, $format = null)
     {
+        return false;
         return $data instanceof Hv;
     }
 
@@ -42,6 +43,7 @@ class HvNormalizer extends HvEntityNormalizer implements DenormalizerInterface
      */
     public function supportsDenormalization($data, $type, $format = null)
     {
+        return false;
         return $type === Hv::class;
     }
 

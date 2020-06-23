@@ -25,7 +25,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "post"={"path"="/hv"}
  *     },
  *     itemOperations={
- *         "get"={"path"="/hv/{id}"}
+ *         "get"={"path"="/hv/{id}"},
+ *         "put"={"path"="/hv/{id}"},
  *     },
  *     normalizationContext={"groups"={"api:hv:read"}},
  *     denormalizationContext={"groups"={"api:hv:write"}},

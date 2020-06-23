@@ -1,9 +1,10 @@
 <template>
     <v-app>
-        <v-content>
+        <snackbar></snackbar>
+        <v-main>
             <v-container fluid>
                 <v-row>
-                    <v-col cols="12" md="3">
+                    <v-col cols="12" md="2">
                         <v-card elevation="2" width="256">
                             <v-navigation-drawer permanent floating>
                                 <v-list dense>
@@ -20,25 +21,35 @@
                             </v-navigation-drawer>
                         </v-card>
                     </v-col>
-                    <v-col cols="12" md="9">
+                    <v-col cols="12" md="10">
                         <router-view></router-view>
                     </v-col>
                 </v-row>
             </v-container>
-        </v-content>
+        </v-main>
     </v-app>
 </template>
 
 <script>
+    import Snackbar from '@components/Snackbar';
     export default {
         name: "AppCv",
+        beforeMount() {
+            this.$store.dispatch('bootstrap', {cvIri: this.cvIri})
+        },
+        components: {
+            Snackbar
+        },
         data: () => ({
             items: [
-                { title: 'Datos básicos', icon: 'mdi-view-dashboard', route: '/sel/cv/datos-basicos'},
-                { title: 'Estudios', icon: 'mdi-image', route: '/sel/cv/estudios' },
+                { title: 'Datos básicos', icon: 'mdi-view-dashboard', route: '/sel/cv/cv'},
+                { title: 'Estudios', icon: 'mdi-image', route: '/sel/cv/estudio' },
             ],
             right: null,
         }),
+        props: [
+            "cvIri"
+        ],
     }
 </script>
 
