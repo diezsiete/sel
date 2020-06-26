@@ -31,3 +31,6 @@ npm-debug.log
 yarn-error.log
 /assets/bundles/
 ###< symfony/webpack-encore-bundle ###
+
+
+/vuetify-app/
