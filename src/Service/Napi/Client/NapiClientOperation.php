@@ -6,6 +6,7 @@ namespace App\Service\Napi\Client;
 
 use App\Service\ExceptionHandler;
 use App\Service\Napi\Client\NapiClient;
+use ReflectionException;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
@@ -64,37 +65,38 @@ class NapiClientOperation
     public function __call($name, $args)
     {
         $methodName = "_$name";
-        if(method_exists($this, $methodName)) {
-            if (count($args) === 1 && is_array($args[0])) {
-                $args = $args[0];
-            }
-            if ($this->buildFromObject) {
-                $args[] = $this->buildFromObject;
-            }
-            $object = null;
-            try {
-                $path = $this->classOperations['get']['path'];
-                $queryParameters = $this->classOperations['get']['queryParameters'] ?? [];
-                if ($queryParameters) {
-                    $path .= array_reduce($queryParameters, static function ($carry, $item) use ($args) {
-                        if (isset($args[$item])) {
-                            return $carry . ($carry ? '&' : '?') . $item . '={' . $item . '}';
-                        }
-                        return '';
-                    }, '');
-                }
-                $object = $this->$methodName($path, $args);
+        if(!method_exists($this, $methodName)) {
+            $methodName = '_get';
+        }
 
-            } catch (ClientExceptionInterface $e) {
-                if ($e->getCode() !== 404) {
-                    $this->exceptionHandler->handle($e);
-                }
-            } catch (Throwable $e) {
+        if (count($args) === 1 && is_array($args[0])) {
+            $args = $args[0];
+        }
+        if ($this->buildFromObject) {
+            $args[] = $this->buildFromObject;
+        }
+        $object = null;
+        try {
+            $path = $this->classOperations[$name]['path'];
+            $queryParameters = $this->classOperations[$name]['queryParameters'] ?? [];
+            if ($queryParameters) {
+                $path .= array_reduce($queryParameters, static function ($carry, $item) use ($args) {
+                    if (isset($args[$item])) {
+                        return $carry . ($carry ? '&' : '?') . $item . '={' . $item . '}';
+                    }
+                    return '';
+                }, '');
+            }
+            $object = $this->$methodName($path, $args);
+
+        } catch (ClientExceptionInterface $e) {
+            if ($e->getCode() !== 404) {
                 $this->exceptionHandler->handle($e);
             }
-            return $object;
+        } catch (Throwable $e) {
+            $this->exceptionHandler->handle($e);
         }
-        throw new \RuntimeException("metodo $name no existe");
+        return $object;
     }
 
     /**
@@ -107,6 +109,7 @@ class NapiClientOperation
      * @throws RedirectionExceptionInterface
      * @throws ServerExceptionInterface
      * @throws TransportExceptionInterface
+     * @throws ReflectionException
      */
     protected function _get($path, $args)
     {

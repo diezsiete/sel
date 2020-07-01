@@ -80,10 +80,11 @@ abstract class SsrsReport
     public function import(Usuario $usuario)
     {
         $ssrsDbs = $this->configuracion->getSsrsDb();
-        if(count($ssrsDbs) > 1 && $empleado = $this->em->getRepository(Empleado::class)->findByIdentificacion($usuario->getIdentificacion())) {
+        $empleado = $this->em->getRepository(Empleado::class)->findByIdentificacion($usuario->getIdentificacion());
+        if(count($ssrsDbs) > 1 && $empleado) {
             $this->client->db($empleado->getSsrsDb());
         }
-        $objects = $this->callOperation($usuario);
+        $objects = $this->callOperation($empleado);
         if($objects) {
             $objects = is_iterable($objects) ? $objects : [$objects];
             foreach($objects as $object) {
@@ -101,5 +102,5 @@ abstract class SsrsReport
         }
     }
 
-    abstract protected function callOperation(Usuario $usuario);
+    abstract protected function callOperation(Empleado $empleado);
 }

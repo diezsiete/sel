@@ -4,6 +4,7 @@
 namespace App\Service\Napi\Report\Report;
 
 
+use App\Entity\Main\Empleado;
 use App\Entity\Main\Usuario;
 use App\Entity\Napi\Report\ServicioEmpleados\CertificadoLaboral;
 use App\Service\Configuracion\Configuracion;
@@ -39,14 +40,15 @@ class CertificadoLaboralReport extends SsrsReport implements ServiceSubscriberIn
         $this->container = $container;
     }
 
-    protected function callOperation(Usuario $usuario)
+    protected function callOperation(Empleado $empleado)
     {
-        return $this->client->itemOperations(CertificadoLaboral::class)->get($usuario->getIdentificacion());
+        return $this->client->itemOperations(CertificadoLaboral::class)->get($empleado->getCodEmp() ?? $empleado->getIdentificacion());
     }
 
     public function renderPdf()
     {
-        $object = $this->callOperation($this->currentReport->getUsuario());
+        $empleado = $this->em->getRepository(Empleado::class)->findByIdentificacion($this->currentReport->getUsuario()->getIdentificacion());
+        $object = $this->callOperation($empleado);
         $pdfService = $this->container->get($this->configuracion->getEmpresa(true) === 'servilabor'
             ? PdfCartaLaboralServilabor::class : PdfCartaLaboral::class);
 

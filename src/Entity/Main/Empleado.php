@@ -22,7 +22,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *         },
  *     },
  *     itemOperations={
- *         "get"={"path"="/se/empleado/{identificacion}"}
+ *         "get"={"path"="/se/empleado/{identificacion}"},
+ *         "by_identificacion"={"path"="/se/empleado/identificacion/{identificacion}"},
  *     }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\Main\EmpleadoRepository")
@@ -35,6 +36,12 @@ class Empleado
      * @ORM\Column(type="integer")
      */
     private $id;
+
+    /**
+     * @ORM\Column(type="string", length=12, nullable=true)
+     * @var string|null
+     */
+    public $codEmp;
 
     /**
      * @ORM\Column(type="smallint")
@@ -141,6 +148,24 @@ class Empleado
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCodEmp(): ?string
+    {
+        return $this->codEmp;
+    }
+
+    /**
+     * @param string|null $codEmp
+     * @return Empleado
+     */
+    public function setCodEmp(?string $codEmp): Empleado
+    {
+        $this->codEmp = $codEmp;
+        return $this;
     }
 
 
@@ -286,6 +311,11 @@ class Empleado
     {
         $this->usuario = $usuario;
         return $this;
+    }
+
+    public function getIdentificacion()
+    {
+        return $this->getUsuario()->getIdentificacion();
     }
 
     /**

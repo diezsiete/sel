@@ -3,15 +3,13 @@
 
 namespace App\Service\Napi\Report\Report;
 
-use App\Entity\Main\Usuario;
+use App\Entity\Main\Empleado;
 use App\Entity\Napi\Report\ServicioEmpleados\CertificadoIngresos;
 use App\Service\Configuracion\Configuracion;
 use App\Service\Napi\Report\LocalPdf;
-use App\Service\Napi\Report\Report;
 use App\Service\Napi\Report\SsrsReport;
 use App\Service\Napi\Client\NapiClient;
 use App\Service\Pdf\ServicioEmpleados\Report\CertificadoIngresosPdf;
-use App\Service\ServicioEmpleados\Report\PdfHandler;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -50,7 +48,7 @@ class CertificadoIngresosReport extends SsrsReport
         return 'napi/se/certificado-ingresos/' . $this->currentReport->getIdentificacion() . '-' . $ano . '.pdf';
     }
 
-    protected function callOperation(Usuario $usuario)
+    protected function callOperation(Empleado $empleado)
     {
         // TODO
 //        $certificadoIngresos = $this->napiClient->itemOperations(CertificadoIngresos::class)->get(

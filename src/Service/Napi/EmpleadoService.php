@@ -49,6 +49,8 @@ class EmpleadoService
     {
         if (!$usuario->esRol(['/EMPLEADO/', '/SUPERADMIN/', '/CLIENTE/'])) {
             $this->updateFromNapi($usuario->getIdentificacion());
+        } else {
+            $this->temporalUpdateCodEmp($usuario);
         }
         return $usuario->esRol('ROLE_EMPLEADO');
     }
@@ -101,5 +103,31 @@ class EmpleadoService
         $this->usuarioService->prepareNewUsuario($usuario);
         $usuario->addRol('ROLE_EMPLEADO');
         return $this;
+    }
+
+    private function temporalUpdateCodEmp(Usuario $usuario)
+    {
+        if($usuario->esRol('ROLE_EMPLEADO')) {
+            /* @var Empleado $empleado */
+            $empleado = $this->em->getRepository(Empleado::class)->findByIdentificacion($usuario->getIdentificacion());
+            if(!$empleado->getCodEmp()) {
+                $empleado = $this->updateFromNapi($usuario->getIdentificacion());
+                if(!$empleado){
+                    $dbs = $this->configuracion->napi()->getDb();
+                    foreach($dbs as $db) {
+                        /** @var Empleado|null $empleado */
+                        $empleado = $this->client->db($db)->itemOperations(Empleado::class)
+                            ->by_identificacion($usuario->getIdentificacion());
+                        if($empleado) {
+                            try {
+                                $this->importEmpleado($empleado);
+                            }catch(\Exception $e) {
+                                // TODO enviar un correo al administrador
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
