@@ -86,6 +86,7 @@ class EmpleadoService
             if (!$usuario->getId()) {
                 $this->prepareNewUsuario($empleado->getUsuario());
             }
+            $usuario->addRol('ROLE_EMPLEADO');
             if (!$empleado->getId() || !$usuario->getId()) {
                 $this->em->persist($empleado);
             }
