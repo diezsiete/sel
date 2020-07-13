@@ -4,7 +4,7 @@
         <v-main>
             <!-- Provides the application the proper gutter -->
             <v-container fluid>
-                <v-stepper v-model="currentStep" :alt-labels="true">
+                <v-stepper v-model="currentStep" :alt-labels="true" :id="id">
                     <v-stepper-header>
                         <template v-for="(item, n) in steps">
                             <v-stepper-step :key="`${n}-step`" :complete="currentStep > n + 1" :step="n + 1"
@@ -23,7 +23,7 @@
                         </v-stepper-content>
                         <v-stepper-content step="2">
                             <estudio-registro ref="EstudioRegistro">
-                                <registro-toolbar :add="add" :cancel="cancel" :next="next" :save="save"></registro-toolbar>
+                                <registro-toolbar :add="add" :cancel="cancel" :next="next" :save="save" :prev="prev"></registro-toolbar>
                             </estudio-registro>
                             <!--<v-btn color="primary" @click="validateBeforeNextStep()" class="float-right" >
                                 Siguiente
@@ -75,22 +75,16 @@
                 overflow: state => state.overflow
             })
         },
-        created() {
-            /*EventBus.$on('registroNextStep', () => {
-                this.nextStep()
-            });*/
-        },
+        data: () => ({
+            id: 'registro'
+        }),
         methods: {
-            next () {
+            async next () {
                 const currentComponent = this.$refs[this.$store.getters.currentComponent];
-                if(currentComponent.validate()) {
-                    this.$store.dispatch('currentStepAugment')
+                if(await currentComponent.validate()) {
+                    await this.$store.dispatch('currentStepAugment')
+                    await this.$vuetify.goTo(`#${this.id}`)
                 }
-                /*currentComponent.$v.$touch();
-                if (!currentComponent.$v.$invalid) {
-                    this.$store.dispatch('create', currentComponent.$v.item.$model);
-                    this.$store.dispatch('currentStepAugment')
-                }*/
             },
             add () {
                 this.$refs[this.$store.getters.currentComponent].add()
@@ -100,6 +94,10 @@
             },
             save() {
                 this.$refs[this.$store.getters.currentComponent].save()
+            },
+            prev() {
+                this.$vuetify.goTo(`#${this.id}`);
+                this.$store.dispatch('currentStepDecrease');
             }
         }
     }

@@ -1,3 +1,4 @@
+import '@sel/css/app.scss';
 import '@empresa/css/app.scss';
 
 import Vue from 'vue';

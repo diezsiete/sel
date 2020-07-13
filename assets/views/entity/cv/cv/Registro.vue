@@ -1,6 +1,5 @@
 <template>
     <div>
-        <h1 class="mb-0">Datos básicos</h1>
         <cv-form ref="createForm" :values="item" />
         <slot></slot>
     </div>
@@ -12,6 +11,9 @@
 
     export default {
         name: "RegistroCv",
+        mounted(){
+            this.isMounted = true;
+        },
         components: {
             CvForm
         },
@@ -26,16 +28,18 @@
         data() {
             return {
                 step: 1,
+                isMounted: false
             }
         },
         methods: {
-            validate() {
+            async validate() {
                 const form = this.$refs.createForm;
-                form.$v.$touch();
-                if (!form.$v.$invalid) {
-                    this.$store.dispatch('create', form.$v.item.$model);
+                const ok = await form.validateAsync();
+                if (ok) {
+                    await this.$store.dispatch('create', form.$v.item.$model);
                     return true;
                 }
+                form.goTo();
                 return false;
             }
         },
@@ -44,11 +48,7 @@
                 if(active) {
                     this.$store.commit('SET_TOOLBAR', {add: false, cancel: false, next: true, prev: false, save: false});
                 }
-            },
+            }
         }
     }
 </script>
-
-<style scoped>
-
-</style>

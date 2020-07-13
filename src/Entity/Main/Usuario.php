@@ -2,6 +2,8 @@
 
 namespace App\Entity\Main;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Annotation\Serializer\NormalizeFunction;
 use App\Helper\Novasoft\Api\NapiAwareChangeEntity;
 use Doctrine\ORM\Mapping as ORM;
@@ -10,14 +12,27 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
+ * @ApiResource(
+ *     collectionOperations={"get"},
+ *     itemOperations={
+ *         "get"={"path"="/usuario/{id}"},
+ *         "one-by"={
+ *             "method"="GET",
+ *             "path"="/usuario/one-by/{field}/{id}"
+ *         }
+ *     },
+ *     normalizationContext={"groups"={"api"}},
+ * )
  * @ORM\Entity(repositoryClass="App\Repository\Main\UsuarioRepository")
  * @UniqueEntity(
  *     fields={"identificacion"},
  *     message="Identificación ya registrada",
  *     groups={"Default", "api"}
  * )
+ * @ApiFilter(SearchFilter::class, properties={"identificacion": "exact"})
  */
 class Usuario implements UserInterface
 {

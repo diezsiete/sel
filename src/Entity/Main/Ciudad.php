@@ -17,7 +17,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *     itemOperations={
  *         "get" = {"path": "/ciudad/{id}"},
  *     },
- *     normalizationContext={"groups"={"t3rs:ciudad:read"}},
+ *     normalizationContext={"groups"={"main"}},
  * )
  * @ORM\Entity(repositoryClass="App\Repository\Main\CiudadRepository")
  * @ApiFilter(SearchFilter::class, properties={"pais": "exact", "dpto": "exact", "nombre": "partial"})
@@ -41,14 +41,14 @@ class Ciudad
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Main\Dpto", inversedBy="ciudades")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"t3rs:ciudad:read"})
+     * @Groups({"main"})
      */
     private $dpto;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Main\Pais", inversedBy="ciudades")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"t3rs:ciudad:read"})
+     * @Groups({"main"})
      */
     private $pais;
 

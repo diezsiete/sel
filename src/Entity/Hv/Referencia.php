@@ -10,10 +10,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ApiResource(
- *     collectionOperations={},
- *     itemOperations={"get"},
- *     normalizationContext={"groups"={"api:hv:read"}},
- *     denormalizationContext={"groups"={"api:hv:write"}},
+ *     collectionOperations={"post"},
+ *     itemOperations={"get", "put", "delete"},
+ *     normalizationContext={"groups"={"api:cv:read"}},
+ *     denormalizationContext={"groups"={"api:cv:write"}},
  *     attributes={"validation_groups"={"Default", "api"}}
  * )
  * @ORM\Entity(repositoryClass="App\Repository\Hv\ReferenciaRepository")
@@ -24,7 +24,7 @@ class Referencia implements HvEntity
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups("main")
+     * @Groups({"api:cv:read"})
      */
     protected $id;
 
@@ -32,7 +32,7 @@ class Referencia implements HvEntity
      * @ORM\ManyToOne(targetEntity="App\Entity\Hv\ReferenciaTipo")
      * @ORM\JoinColumn(name="tipo", referencedColumnName="id", nullable=false)
      * @Assert\NotNull(message="Ingrese el tipo de referencia")
-     * @Groups({"main", "napi:hv:post", "napi:referencia:post", "napi:hv-child:put", "messenger:hv-child:put", "api:hv:read", "api:hv:write", "scraper", "scraper-hv-child"})
+     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:referencia:post", "napi:hv-child:put"})
      */
     private $tipo;
 
@@ -43,7 +43,7 @@ class Referencia implements HvEntity
      *      max = 200,
      *      maxMessage = "El nombre supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"main", "napi:hv:post", "napi:referencia:post", "napi:hv-child:put", "api:hv:read", "api:hv:write", "scraper", "scraper-hv-child"})
+     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:referencia:post", "napi:hv-child:put"})
      * @NormalizeFunction("strtoupper", groups={"napi:hv:post", "napi:referencia:post", "napi:hv-child:put"})
      */
     private $nombre;
@@ -55,7 +55,7 @@ class Referencia implements HvEntity
      *      max = 200,
      *      maxMessage = "La ocupación supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"main", "napi:hv:post", "napi:referencia:post", "napi:hv-child:put", "api:hv:read", "api:hv:write", "scraper", "scraper-hv-child"})
+     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:referencia:post", "napi:hv-child:put"})
      * @NormalizeFunction("strtoupper", groups={"napi:hv:post", "napi:referencia:post", "napi:hv-child:put"})
      */
     private $ocupacion;
@@ -67,7 +67,7 @@ class Referencia implements HvEntity
      *      max = 50,
      *      maxMessage = "El parentesco supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"main", "napi:hv:post", "napi:referencia:post", "napi:hv-child:put", "api:hv:read", "api:hv:write", "scraper", "scraper-hv-child"})
+     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:referencia:post", "napi:hv-child:put"})
      * @NormalizeFunction("strtoupper", groups={"napi:hv:post", "napi:referencia:post", "napi:hv-child:put"})
      */
     private $parentesco;
@@ -80,7 +80,7 @@ class Referencia implements HvEntity
      *      max = 50,
      *      maxMessage = "El celular supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"main", "napi:hv:post", "napi:referencia:post", "napi:hv-child:put", "api:hv:read", "api:hv:write", "scraper", "scraper-hv-child"})
+     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:referencia:post", "napi:hv-child:put"})
      */
     private $celular;
 
@@ -92,7 +92,7 @@ class Referencia implements HvEntity
      *      max = 50,
      *      maxMessage = "El telefono supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"main", "napi:hv:post", "napi:referencia:post", "napi:hv-child:put", "api:hv:read", "api:hv:write", "scraper", "scraper-hv-child"})
+     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:referencia:post", "napi:hv-child:put"})
      */
     private $telefono;
 
@@ -102,7 +102,7 @@ class Referencia implements HvEntity
      *      max = 50,
      *      maxMessage = "La dirección supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"main", "napi:hv:post", "napi:referencia:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
+     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:referencia:post", "napi:hv-child:put"})
      * @NormalizeFunction("strtoupper", groups={"napi:hv:post", "napi:referencia:post", "napi:hv-child:put"})
      */
     private $direccion;

@@ -12,10 +12,10 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * @ApiResource(
- *     collectionOperations={"get", "post"},
+ *     collectionOperations={"post"},
  *     itemOperations={"get", "put", "delete"},
- *     normalizationContext={"groups"={"vue:read"}},
- *     denormalizationContext={"groups"={"vue:write"}},
+ *     normalizationContext={"groups"={"api:cv:read"}},
+ *     denormalizationContext={"groups"={"api:cv:write"}},
  *     attributes={"validation_groups"={"Default", "api"}}
  * )
  * @ApiFilter(SearchFilter::class, properties={"hv": "exact"})
@@ -31,7 +31,7 @@ class Estudio implements HvEntity
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"vue:read"})
+     * @Groups({"api:cv:read"})
      */
     protected $id;
 
@@ -39,7 +39,7 @@ class Estudio implements HvEntity
      * @ORM\ManyToOne(targetEntity="EstudioCodigo")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotNull(message="Seleccione el area de estudio")
-     * @Groups({"vue:read", "vue:write"})
+     * @Groups({"api:cv:read", "api:cv:write"})
      * @var EstudioCodigo
      */
     private $codigo;
@@ -51,7 +51,7 @@ class Estudio implements HvEntity
      *      max = 50,
      *      maxMessage = "El titulo supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"vue:read", "vue:write"})
+     * @Groups({"api:cv:read", "api:cv:write"})
      */
     private $nombre;
 
@@ -59,14 +59,14 @@ class Estudio implements HvEntity
      * @ORM\ManyToOne(targetEntity="EstudioInstituto")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotNull(message="Seleccione instituto. Si no lo encuentra seleccione opción 'NO APLICA'")
-     * @Groups({"vue:read", "vue:write"})
+     * @Groups({"api:cv:read", "api:cv:write"})
      * @var EstudioInstituto
      */
     private $instituto;
 
     /**
      * @ORM\Column(type="date", nullable=true)
-     * @Groups({"vue:read", "vue:write"})
+     * @Groups({"api:cv:read", "api:cv:write"})
      */
     private $fin;
 
@@ -76,50 +76,50 @@ class Estudio implements HvEntity
      *      max = 75,
      *      maxMessage = "El nombre supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"vue:read", "vue:write"})
+     * @Groups({"api:cv:read", "api:cv:write"})
      */
     private $institutoNombreAlt;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"vue:read", "vue:write"})
+     * @Groups({"api:cv:read", "api:cv:write"})
      */
     private $anoEstudio;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"vue:read", "vue:write"})
+     * @Groups({"api:cv:read", "api:cv:write"})
      */
     private $horasEstudio;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
-     * @Groups({"vue:read", "vue:write"})
+     * @Groups({"api:cv:read", "api:cv:write"})
      */
     private $graduado;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"vue:read", "vue:write"})
+     * @Groups({"api:cv:read", "api:cv:write"})
      */
     private $semestresAprobados;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
-     * @Groups({"vue:read", "vue:write"})
+     * @Groups({"api:cv:read", "api:cv:write"})
      */
     private $cancelo = 0;
 
     /**
      * @ORM\Column(type="string", length=13, nullable=true)
-     * @Groups({"vue:read", "vue:write"})
+     * @Groups({"api:cv:read", "api:cv:write"})
      */
     private $numeroTarjeta;
 
     /**
      * @ORM\ManyToOne(targetEntity="Hv", inversedBy="estudios")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"vue:write"})
+     * @Groups({"api:cv:write"})
      * @var Hv
      */
     protected $hv;

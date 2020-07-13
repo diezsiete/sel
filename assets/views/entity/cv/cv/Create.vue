@@ -1,6 +1,5 @@
 <template>
     <div>
-        <h1 class="mb-0">Datos básicos</h1>
         <cv-form ref="createForm" :values="item" :errors="violations"/>
         <Toolbar :handle-submit="onSendForm" :handle-cancel="cancel"></Toolbar>
         <Loading :visible="isLoading"/>

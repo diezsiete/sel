@@ -1,6 +1,6 @@
 <template>
     <v-toolbar class="my-md-auto" elevation="0">
-        <v-btn text v-if="showPrev" @click="handlePrev">Anterior</v-btn>
+        <v-btn text v-if="showPrev" @click="handle('prev')">Anterior</v-btn>
         <v-spacer/>
         <div>
             <v-btn color="primary" v-if="showSave" @click="handle('save')" class="float-right ml-sm-2" >
@@ -92,6 +92,7 @@
             add: Function,
             cancel: Function,
             next: Function,
+            prev: Function,
             save: Function,
             handleDelete: {
                 type: Function,
@@ -128,9 +129,6 @@
                 if(this[handleType]) {
                     this[handleType]();
                 }
-            },
-            handlePrev() {
-                this.$store.dispatch('currentStepDecrease');
             },
             /*addItem() {
                 if (this.handleAdd) {

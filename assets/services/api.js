@@ -1,12 +1,12 @@
 import fetch from '../utils/fetch';
 
-export default function makeService(endpoint) {
+export default function makeService(endpoint, plural = null) {
     return {
         find(id) {
             return fetch(`${id}`);
         },
         findAll(params) {
-            return fetch(endpoint, params);
+            return fetch(plural || endpoint, params);
         },
         create(payload) {
             return fetch(endpoint, {method: 'POST', body: JSON.stringify(payload)});
@@ -19,6 +19,7 @@ export default function makeService(endpoint) {
                 method: 'PUT',
                 body: JSON.stringify(payload)
             });
-        }
+        },
+        endpoint
     };
 }

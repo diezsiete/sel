@@ -1,24 +1,29 @@
 <template>
     <v-autocomplete
-            :loading="isLoading"
-            :items="items"
-            :search-input.sync="search"
-            :error-messages="errorMessages"
+            v-if="edit"
+            attach
+            autocomplete="off"
+            :class="classes"
             clearable
+            dense
+            :error-messages="errors"
             hide-selected
+            :items="items"
             :item-text="itemText"
             :item-value="identifier"
             :label="label"
+            :loading="isLoading"
+            outlined
             :placeholder="placeholder"
+            ref="autocomplete"
             :return-object="returnObject"
-            attach
+            :search-input.sync="search"
+            :value="identifierValue"
             @click="fetch"
             @input="updateValue"
-            :value="identifierValue"
-            ref="autocomplete"
-            v-on:click:append="menuArrow"
             @blur="blur"
             @focus="open = true"
+            v-on:click:append="menuArrow"
     >
         <template v-slot:no-data>
             <v-list-item>
@@ -28,47 +33,40 @@
             </v-list-item>
         </template>
     </v-autocomplete>
+    <v-input
+            v-else
+            :label="label">
+        <p>
+            {{ identifierValue && items.length ? items[0].nombre : '' }}
+        </p>
+    </v-input>
 
 </template>
 
 <script>
+    import AutocompleteMixin from "@mixins/field/AutocompleteMixin";
+
     export default {
         name: "EntityField",
-        data: () => ({
-            isLoading: false,
-            fetched: false,
-            search: null,
-            open: false,
-        }),
-        computed:{
+        mixins: [AutocompleteMixin],
+        computed: {
             items() {
                 return this.$store.getters[`${this.namespace}/list`]
             },
             identifierValue() {
-                if(typeof this.value === 'object' && this.value !== null) {
+                if (this.value) {
                     this.fetch();
-                    return this.value[this.identifier]
                 }
                 return this.value;
             }
         },
-        mounted() {
-            const autocomplete = this.$refs.autocomplete;
-            autocomplete.activateMenu = (orig => () => {
-                orig.call(autocomplete);
-                this.open = autocomplete.isMenuActive;
-            })(autocomplete.activateMenu)
-            autocomplete.selectItem = (orig => item => {
-                orig.call(autocomplete, item);
-                this.open = autocomplete.isMenuActive;
-            })(autocomplete.selectItem)
-        },
+
         methods: {
             fetch() {
                 if (this.items.length > 0 || this.isLoading) {
                     return;
                 }
-                this.isLoading = true;
+                this.isLoading = 'secondary';
                 this.$store.dispatch(`${this.namespace}/fetchAll`, {pagination: false})
                     .finally(() => {
                         this.fetched = true;
@@ -86,7 +84,6 @@
                         this.fetch();
                     }
                     this.$refs.autocomplete.isMenuActive = true;
-                    debugger;
                     autocomplete.focus();
 
                 }
@@ -94,47 +91,18 @@
             updateValue: function (value) {
                 this.$emit('input', value)
             },
-            blur() {
-                if(document.hasFocus()) {
-                    this.open = false
-                }
-            }
         },
         props: {
-            errorMessages: [String, Array],
-            identifier: {
-                type: String,
-                default: '@id'
-            },
-            itemText: String,
-            label: String,
             namespace: {
                 type: String,
                 required: true
             },
-            placeholder: {
-                type: String,
-                default: 'Seleccione...'
-            },
-            returnObject: {
-                type: Boolean,
-                default: false
-            },
-            value: null,
         },
         watch: {
             search(val) {
                 this.fetch()
             },
-            open(state) {
-                console.log('open', state)
-                this.$store.state.overflow = state;
-            }
         },
 
     }
 </script>
-
-<style scoped>
-
-</style>

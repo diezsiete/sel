@@ -17,7 +17,6 @@
                         :loading-text="loadingText"
                         class="elevation-1"
                         :item-key="itemKey"
-                        show-select
                         @update:options="onUpdateOptions"
                         @input="onSelected"
                         hide-default-footer
@@ -49,7 +48,7 @@
                     {text: 'Título', value: 'nombre'},
                     {text: 'Institución', value: 'instituto.nombre'},
                     {
-                        text: 'Actions',
+                        text: 'Acciones',
                         value: 'action',
                         sortable: false
                     }

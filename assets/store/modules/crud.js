@@ -147,7 +147,8 @@ export default function makeCrudModule({
             getField,
             list: (state, getters) => {
                 return state.allIds.map(id => getters.find(id));
-            }
+            },
+            service: () => service
         },
         mutations: {
             updateField,

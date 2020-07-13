@@ -74,6 +74,10 @@ services:
             - [setLogger, ['@monolog.logger.se_report_cache_import']]
 
 
+    App\DataProvider\OneByItemDataProvider:
+        arguments:
+            $itemExtensions: !tagged api_platform.doctrine.orm.query_extension.item
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
