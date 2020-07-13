@@ -3,10 +3,10 @@ import {mapState} from "vuex";
 export default {
     computed: {
         items() {
-            return this.$store.state.item[this.$options.childKey]
+            return this.$store.state.item[this.childKey]
         },
         totalItems() {
-            return this.$store.state.totals[this.$options.childKey]
+            return this.$store.state.totals[this.childKey]
         },
         active() {
             return this.step === this.$store.state.currentStep;
@@ -49,18 +49,20 @@ export default {
             if (!form.$v.$invalid) {
                 const item = form.$v.item.$model;
                 if(typeof item['@id'] === 'undefined') {
-                    this.$store.commit('PUSH', {prop: this.$options.childKey, item});
+                    this.$store.commit('PUSH', {prop: this.childKey, item});
                 } else {
-                    this.$store.commit('SPLICE', {prop: this.$options.childKey, start: item['@id'], item});
+                    this.$store.commit('SPLICE', {prop: this.childKey, start: item['@id'], item});
                 }
                 this.showTable = true;
                 this.$store.commit('SET_TOOLBAR', {
-                    add: true, cancel: false, next: true, prev: true, save: false, addText: 'Agregar ' + this.$options.childName
+                    add: true, cancel: false, next: true, prev: true, save: false, addText: 'Agregar ' + this.childName
                 });
+            } else {
+                form.goTo();
             }
         },
         deleteHandler(item) {
-            this.$store.commit('SPLICE', {prop: this.$options.childKey, start: item['@id']});
+            this.$store.commit('SPLICE', {prop: this.childKey, start: item['@id']});
             if(!this.validate()) {
                 this.showTable = false;
                 this.$store.commit('SET_TOOLBAR', {
@@ -71,7 +73,7 @@ export default {
         cancel() {
             this.showTable = true;
             this.$store.commit('SET_TOOLBAR', {
-                add: true, cancel: false, next: true, prev: true, save: false, addText: 'Agregar ' + this.$options.childName
+                add: true, cancel: false, next: true, prev: true, save: false, addText: 'Agregar ' + this.childName
             });
         }
     },

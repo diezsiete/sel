@@ -1,6 +1,6 @@
 <template>
     <div>
-        <cv-form ref="createForm" :values="item" />
+        <cv-form ref="createForm" :values="item" entity="cv"/>
         <slot></slot>
     </div>
 </template>

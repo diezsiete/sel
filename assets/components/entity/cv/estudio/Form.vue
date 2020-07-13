@@ -31,25 +31,12 @@
 <script>
     import AlidationFormMixin from "@mixins/alidation/AlidationFormMixin";
     import FormMixin from "@mixins/FormMixin";
-    import EntityField from "@components/field/EntityField";
     import DateField from "@components/field/DateField";
 
     export default {
         name: 'EstudioForm',
         mixins: [AlidationFormMixin, FormMixin],
-        props: {
-            relationsReturnObject : {
-                type: Boolean,
-                default: false
-            }
-        },
-        data() {
-            return {
-                menu2: false,
-            };
-        },
         components: {
-            EntityField,
             DateField
         },
     };

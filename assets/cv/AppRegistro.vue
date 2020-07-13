@@ -25,10 +25,11 @@
                             <estudio-registro ref="EstudioRegistro">
                                 <registro-toolbar :add="add" :cancel="cancel" :next="next" :save="save" :prev="prev"></registro-toolbar>
                             </estudio-registro>
-                            <!--<v-btn color="primary" @click="validateBeforeNextStep()" class="float-right" >
-                                Siguiente
-                            </v-btn>
-                            <v-btn text @click="prevStep()">Anterior</v-btn>-->
+                        </v-stepper-content>
+                        <v-stepper-content step="3">
+                            <experiencia-registro ref="ExperienciaRegistro">
+                                <registro-toolbar :add="add" :cancel="cancel" :next="next" :save="save" :prev="prev"></registro-toolbar>
+                            </experiencia-registro>
                         </v-stepper-content>
                         <!--<v-stepper-content v-for="(item, n) in steps" :key="`${n}-content`" :step="n + 1">
                             <component v-bind:is="currentComponent"></component>
@@ -51,6 +52,7 @@
     import { mapState } from 'vuex';
     import CvRegistro from '@views/entity/cv/cv/Registro';
     import EstudioRegistro from '@views/entity/cv/estudio/Registro';
+    import ExperienciaRegistro from '@views/entity/cv/experiencia/Registro';
     import RegistroToolbar from "@components/cv/RegistroToolbar";
 
     export default {
@@ -58,6 +60,7 @@
         components: {
             CvRegistro,
             EstudioRegistro,
+            ExperienciaRegistro,
             RegistroToolbar
         },
         computed: {
@@ -95,9 +98,9 @@
             save() {
                 this.$refs[this.$store.getters.currentComponent].save()
             },
-            prev() {
-                this.$vuetify.goTo(`#${this.id}`);
-                this.$store.dispatch('currentStepDecrease');
+            async prev() {
+                await this.$store.dispatch('currentStepDecrease');
+                await this.$vuetify.goTo(`#${this.id}`);
             }
         }
     }

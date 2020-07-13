@@ -3,7 +3,7 @@ import validators from "@plugins/validators";
 export default {
     mounted() {
         if(this.alidationReady) {
-            this.$store.commit('alidation/ADD', {modelExpression: this.modelExpression, id: this.id})
+            this.$store.commit(`${this.entity}/alidation/ADD`, {modelExpression: this.modelExpression, id: this.id})
         }
     },
     computed: {
@@ -52,6 +52,7 @@ export default {
         }
     },
     data: () => ({
+        entity: null,
         alidationReady: false,
         vuelidate: null,
     }),

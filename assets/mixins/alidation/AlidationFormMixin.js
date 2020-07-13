@@ -18,7 +18,7 @@ export default {
                         }
                         return o[expression];
                     }, vnode.context.alidations);
-
+                    vnode.componentInstance.entity = vnode.context.entity
                     vnode.componentInstance.$v = vnode.context.$v
                 }
             }
@@ -52,9 +52,9 @@ export default {
             return !this.$v.$invalid;
         },
         goTo() {
-            this.$store.getters['alidation/modelExpressions'].every(modelExpression => {
+            this.$store.getters[`${this.entity}/alidation/modelExpressions`].every(modelExpression => {
                 if(modelExpression.split('.').reduce((o, i) => o[i], this.$v).$error) {
-                    this.$vuetify.goTo(`#${this.$store.getters['alidation/id'](modelExpression)}`, {offset: 100});
+                    this.$vuetify.goTo('#'+this.$store.getters[`${this.entity}/alidation/id`](modelExpression), {offset: 100});
                     return false;
                 }
                 return true;
@@ -63,5 +63,11 @@ export default {
     },
     validations() {
         return this.alidations;
+    },
+    props: {
+        //el nombre de la entidad que representa, se relaciona con el modulo en el store para guardar alidations
+        entity: {
+            type: String
+        }
     }
 }

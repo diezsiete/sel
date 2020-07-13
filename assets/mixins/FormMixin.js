@@ -1,9 +1,12 @@
 import AlidationFormMixin from "@mixins/alidation/AlidationFormMixin";
 import TextField from "@components/field/TextField";
+import EntityField from "@components/field/EntityField";
+
 export default {
     mixins: [AlidationFormMixin],
     components: {
-        TextField
+        TextField,
+        EntityField
     },
     computed: {
         item() {
@@ -33,6 +36,10 @@ export default {
             type: String,
             default: 'edit',
             validator: value => ['edit', 'view'].indexOf(value) !== -1
+        },
+        relationsReturnObject : {
+            type: Boolean,
+            default: false
         }
     },
 }

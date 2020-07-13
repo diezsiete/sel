@@ -1,7 +1,7 @@
 <template>
     <v-container grid-list-xl fluid>
         <v-layout row >
-            <estudio-table
+            <experiencia-table
                     v-if="showTable"
                     v-model="selected"
                     :items="items"
@@ -10,10 +10,10 @@
                     :total-items="totalItems"
                     :edit-handler="item => editHandler(item)"
                     :delete-handler="item => deleteHandler(item)"
-            ></estudio-table>
+            ></experiencia-table>
             <div v-else>
-                <h1 class="mb-0">Crear estudio</h1>
-                <estudio-form ref="createForm" :values="item" :relations-return-object="true" :entity="childName"></estudio-form>
+                <h1 class="mb-0">Agregar Experiencia laboral</h1>
+                <experiencia-form ref="createForm" :values="item" :relations-return-object="true" :entity="childName"></experiencia-form>
             </div>
             <slot></slot>
         </v-layout>
@@ -22,20 +22,20 @@
 
 <script>
     import RegistroCvChildMixin from "@mixins/cv/RegistroCvChildMixin";
-    import EstudioTable from "@components/entity/cv/estudio/Table";
-    import EstudioForm from "@components/entity/cv/estudio/Form";
+    import ExperienciaTable from '@components/entity/cv/experiencia/Table';
+    import ExperienciaForm from '@components/entity/cv/experiencia/Form';
 
     export default {
-        name: "EstudioRegistro",
+        name: "ExperienciaRegistro",
         mixins: [RegistroCvChildMixin],
         components: {
-            EstudioTable,
-            EstudioForm
+            ExperienciaTable,
+            ExperienciaForm
         },
         data: () => ({
-            step: 2,
-            childKey: 'estudios',
-            childName: 'estudio',
+            step: 3,
+            childKey: 'experiencia',
+            childName: 'experiencia',
         }),
     }
 </script>

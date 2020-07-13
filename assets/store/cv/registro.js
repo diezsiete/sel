@@ -1,10 +1,13 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import areaService from "@services/cv/area";
 import cvService from "@services/cv/cv";
 import estadoCivilService from "@services/cv/estado-civil";
 import estudioService from "@services/cv/estudio";
 import estudioCodigoService from "@services/cv/estudio-codigo";
 import estudioInstitutoService from "@services/cv/estudio-instituto";
+import experienciaService from "@services/cv/experiencia";
+import experienciaDuracionService from '@services/cv/experiencia-duracion';
 import factorRhService from '@services/cv/factor-rh';
 import generoService from "@services/cv/genero";
 import grupoSanguineoService from '@services/cv/grupo-sanguineo';
@@ -12,7 +15,6 @@ import identificacionTipoService from '@services/cv/identificacion-tipo';
 import nacionalidadService from "@services/cv/nacionalidad";
 import nivelAcademicoService from "@services/cv/nivel-academico";
 import usuarioService from "@services/usuario";
-import alidation from "@store/modules/alidation";
 import makeCrudModule from "@store/modules/crud";
 import notifications from "@store/modules/notifications";
 
@@ -20,7 +22,9 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     modules: {
-        alidation,
+        area: makeCrudModule({
+            service: areaService
+        }),
         cv: makeCrudModule({
             service: cvService
         }),
@@ -35,6 +39,12 @@ export default new Vuex.Store({
         }),
         estudioInstituto: makeCrudModule({
             service: estudioInstitutoService
+        }),
+        experiencia: makeCrudModule({
+            service: experienciaService
+        }),
+        experienciaDuracion: makeCrudModule({
+            service: experienciaDuracionService
         }),
         factorRh: makeCrudModule({
             service: factorRhService
@@ -119,7 +129,7 @@ export default new Vuex.Store({
         }, {
             title: 'Experiencia',
             editable: false,
-            component: 'Experiencia'
+            component: 'ExperienciaRegistro'
         }, {
             title: 'Referencias',
             editable: false,
@@ -154,9 +164,9 @@ export default new Vuex.Store({
             primerNombre: 'Jose',
             resiCiudad: '/api/ciudad/149',
             telefono: '2123444',
-            /*estudios: [
+            estudios: [
                 {
-                    '@id': 1,
+                    '@id': 0,
                     codigo: {
                         '@id' : '/api/estudio-codigo/00001',
                         'id' : '00001',
@@ -169,8 +179,32 @@ export default new Vuex.Store({
                     },
                     nombre: 'asdasdasd'
                 }
-            ]*/
-            estudios: []
+            ],
+            // estudios: [],
+            experiencia: [
+                {
+                    '@id': 0,
+                    area: {
+                        '@id': '/api/experiencia-duracion/3',
+                        '@type': 'ExperienciaDuracion',
+                        id: 3,
+                        nombre: 'DE 1 A 2 AÑOS'
+                    },
+                    cargo: 'Desarrollador',
+                    descripcion: 'Cosas',
+                    duracion: {
+                        '@id': '/api/experiencia-duracion/2',
+                        '@type': 'ExperienciaDuracion',
+                        id: 2,
+                        nombre: 'DE 0 A 1 AÑO'
+                    },
+                    empresa: 'PTA',
+                    fechaIngreso: '2020-01-01',
+                    jefeInmediato: 'Cuacua',
+                    salarioBasico: '100000',
+                    telefonoJefe: '3202123926'
+                }
+            ]
         },
         isLoading: false,
         registroToolbar: {
@@ -182,7 +216,8 @@ export default new Vuex.Store({
             addText: 'Agregar'
         },
         totals: {
-            estudios: 0
+            estudios: 1,
+            experiencia: 1
         },
         // para campos que se salen del stepper se cambie el estilo
         overflow: false

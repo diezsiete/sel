@@ -19,7 +19,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *     itemOperations={
  *         "get" = {"path": "/area/{id}"},
  *     },
- *     normalizationContext={"groups"={"api:area:read", "messenger:hv-child:put"}},
+ *     normalizationContext={"groups"={"api:cv:read", "messenger:hv-child:put"}},
  * )
  * @ApiFilter(SearchFilter::class, properties={"nombre": "partial"})
  * @ORM\Entity(repositoryClass="App\Repository\Hv\AreaRepository")
@@ -30,13 +30,13 @@ class Area
      * TODO: en novasoft esto es smallint
      * @ORM\Id()
      * @ORM\Column(type="string", length=7)
-     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "api:area:read", "scraper", "scraper-hv-child"})
+     * @Groups({"api:cv:read", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Groups({"main", "api:area:read"})
+     * @Groups({"api:cv:read"})
      */
     private $nombre;
 

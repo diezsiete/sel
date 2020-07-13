@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import alidation from "@store/modules/alidation";
 import {getField, updateField} from 'vuex-map-fields';
 import remove from 'lodash/remove';
 import SubmissionError from '../../error/SubmissionError';
@@ -149,6 +150,9 @@ export default function makeCrudModule({
                 return state.allIds.map(id => getters.find(id));
             },
             service: () => service
+        },
+        modules: {
+            alidation: alidation()
         },
         mutations: {
             updateField,
