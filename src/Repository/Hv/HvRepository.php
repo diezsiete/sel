@@ -9,7 +9,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method Hv|null find($id, $lockMode = null, $lockVersion = null)
@@ -24,7 +24,7 @@ class HvRepository extends ServiceEntityRepository
      */
     private $usuarioRepository;
 
-    public function __construct(RegistryInterface $registry, UsuarioRepository $usuarioRepository)
+    public function __construct(ManagerRegistry $registry, UsuarioRepository $usuarioRepository)
     {
         parent::__construct($registry, Hv::class);
         $this->usuarioRepository = $usuarioRepository;

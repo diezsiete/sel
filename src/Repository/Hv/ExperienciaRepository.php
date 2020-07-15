@@ -4,7 +4,7 @@ namespace App\Repository\Hv;
 
 use App\Entity\Hv\Experiencia;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method Experiencia|null find($id, $lockMode = null, $lockVersion = null)
@@ -16,7 +16,7 @@ class ExperienciaRepository extends ServiceEntityRepository
 {
     use HvChildRepository;
 
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Experiencia::class);
     }

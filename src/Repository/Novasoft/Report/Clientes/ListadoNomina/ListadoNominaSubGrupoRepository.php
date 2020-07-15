@@ -5,7 +5,7 @@ namespace App\Repository\Novasoft\Report\Clientes\ListadoNomina;
 use App\Entity\Novasoft\Report\Clientes\ListadoNomina\ListadoNominaSubgrupo;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method ListadoNominaSubgrupo|null find($id, $lockMode = null, $lockVersion = null)
@@ -15,7 +15,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class ListadoNominaSubGrupoRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, ListadoNominaSubgrupo::class);
     }

@@ -25,7 +25,7 @@ class SelDataTableFactory extends DataTableFactory
     {
         $config = $this->config;
 
-        return (new SelDataTable($this->eventDispatcher, array_merge($config['options'] ?? [], $options), $this->instantiator))
+        return (new SelDataTable($this->eventDispatcher, $this->exporterManager, array_merge($config['options'] ?? [], $options), $this->instantiator))
             ->setRenderer($this->renderer)
             ->setMethod($config['method'] ?? Request::METHOD_POST)
             ->setPersistState($config['persist_state'] ?? 'fragment')

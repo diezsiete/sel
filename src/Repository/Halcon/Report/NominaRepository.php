@@ -7,7 +7,7 @@ namespace App\Repository\Halcon\Report;
 use App\Entity\Halcon\Report\Nomina;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 class NominaRepository extends ServiceEntityRepository
 {
@@ -16,7 +16,7 @@ class NominaRepository extends ServiceEntityRepository
      */
     private $nominaRenglonRepo;
 
-    public function __construct(RegistryInterface $registry, NominaRenglonRepository $nominaRenglonRepo)
+    public function __construct(ManagerRegistry $registry, NominaRenglonRepository $nominaRenglonRepo)
     {
         parent::__construct($registry, Nomina::class);
         $this->nominaRenglonRepo = $nominaRenglonRepo;

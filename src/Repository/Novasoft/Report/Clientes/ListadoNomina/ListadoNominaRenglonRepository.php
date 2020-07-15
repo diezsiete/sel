@@ -4,7 +4,7 @@ namespace App\Repository\Novasoft\Report\Clientes\ListadoNomina;
 
 use App\Entity\Novasoft\Report\Clientes\ListadoNomina\ListadoNominaRenglon;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method ListadoNominaRenglon|null find($id, $lockMode = null, $lockVersion = null)
@@ -14,7 +14,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class ListadoNominaRenglonRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, ListadoNominaRenglon::class);
     }

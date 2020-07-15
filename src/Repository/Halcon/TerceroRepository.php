@@ -4,7 +4,7 @@ namespace App\Repository\Halcon;
 
 use App\Entity\Halcon\Tercero;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use function Doctrine\ORM\QueryBuilder;
 
 /**
@@ -15,7 +15,7 @@ use function Doctrine\ORM\QueryBuilder;
  */
 class TerceroRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Tercero::class);
     }

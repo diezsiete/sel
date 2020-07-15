@@ -6,7 +6,7 @@ use App\Entity\Scraper\Solicitud;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use ReflectionClass;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method Solicitud|null find($id, $lockMode = null, $lockVersion = null)
@@ -42,7 +42,7 @@ class SolicitudRepository extends ServiceEntityRepository
         return array_flip((new ReflectionClass($this))->getConstants());
     }
 
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Solicitud::class);
     }
