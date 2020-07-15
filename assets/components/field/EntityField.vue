@@ -5,6 +5,7 @@
             autocomplete="off"
             :class="classes"
             clearable
+            :disabled="disabled"
             dense
             :error-messages="errors"
             hide-selected
@@ -97,6 +98,10 @@
                 type: String,
                 required: true
             },
+            disabled: {
+                type: Boolean,
+                default: false
+            }
         },
         watch: {
             search(val) {

@@ -10,8 +10,15 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ApiResource(
- *     collectionOperations={"post"},
- *     itemOperations={"get", "put", "delete"},
+ *     collectionOperations={
+ *         "get"={"path"="/referencias"},
+ *         "post"={"path"="/referencia"}
+ *     },
+ *     itemOperations={
+ *         "get"={"path"="/referencia/{id}"},
+ *         "put"={"path"="/referencia/{id}"},
+ *         "delete"={"path"="/referencia/{id}"}
+ *     },
  *     normalizationContext={"groups"={"api:cv:read"}},
  *     denormalizationContext={"groups"={"api:cv:write"}},
  *     attributes={"validation_groups"={"Default", "api"}}

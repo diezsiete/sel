@@ -10,7 +10,7 @@
             </v-tooltip>
             <v-tooltip top v-if="handleDelete">
                 <template v-slot:activator="{ on }">
-                    <v-icon small class="mr-2 pedo" @click="confirmDelete = true" v-on="on">mdi-delete</v-icon>
+                    <v-icon small class="mr-2" @click="confirmDelete = true" v-on="on">mdi-delete</v-icon>
                 </template>
                 <span>Eliminar</span>
             </v-tooltip>

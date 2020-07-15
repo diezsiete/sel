@@ -14,6 +14,8 @@ import grupoSanguineoService from '@services/cv/grupo-sanguineo';
 import identificacionTipoService from '@services/cv/identificacion-tipo';
 import nacionalidadService from "@services/cv/nacionalidad";
 import nivelAcademicoService from "@services/cv/nivel-academico";
+import referenciaService from "@services/cv/referencia";
+import referenciaTipoService from "@services/cv/referencia-tipo";
 import usuarioService from "@services/usuario";
 import makeCrudModule from "@store/modules/crud";
 import notifications from "@store/modules/notifications";
@@ -65,6 +67,12 @@ export default new Vuex.Store({
             service: nivelAcademicoService
         }),
         notifications,
+        referencia: makeCrudModule({
+            service: referenciaService
+        }),
+        referenciaTipo: makeCrudModule({
+            service: referenciaTipoService
+        }),
         usuario: makeCrudModule({
             service: usuarioService
         })
@@ -115,6 +123,7 @@ export default new Vuex.Store({
                 state.item[prop].splice(start, 1);
                 state.totals[prop] = state.item[prop].length;
             }
+            state.item[prop].forEach((item, idx) => item['@id'] = idx);
         }
     },
     state: {
@@ -133,7 +142,7 @@ export default new Vuex.Store({
         }, {
             title: 'Referencias',
             editable: false,
-            component: 'Referencia'
+            component: 'ReferenciaRegistro'
         }, {
             title: 'Familiares',
             editable: false,
@@ -143,7 +152,7 @@ export default new Vuex.Store({
             editable: false,
             component: 'Cuenta'
         }],
-        currentStep: 1,
+        currentStep: 4,
         item: {
             barrio: 'Marly',
             celular: '3202123926',
@@ -181,7 +190,7 @@ export default new Vuex.Store({
                 }
             ],
             // estudios: [],
-            experiencia: [
+            experiencias: [
                 {
                     '@id': 0,
                     area: {
@@ -204,7 +213,8 @@ export default new Vuex.Store({
                     salarioBasico: '100000',
                     telefonoJefe: '3202123926'
                 }
-            ]
+            ],
+            referencias: []
         },
         isLoading: false,
         registroToolbar: {
@@ -217,7 +227,8 @@ export default new Vuex.Store({
         },
         totals: {
             estudios: 1,
-            experiencia: 1
+            experiencias: 1,
+            referencias: 0
         },
         // para campos que se salen del stepper se cambie el estilo
         overflow: false

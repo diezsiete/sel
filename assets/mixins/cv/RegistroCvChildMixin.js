@@ -16,15 +16,15 @@ export default {
         }),
     },
     data: () => ({
-        selected: [],
+        item: {},
         options: {
             sortBy: [],
             descending: false,
             page: 1,
             itemsPerPage: 15
         },
+        selected: [],
         showTable: true,
-        item: {},
     }),
     methods: {
         editHandler(item) {
@@ -44,19 +44,15 @@ export default {
             return this.items.length > 0;
         },
         save() {
-            const form = this.$refs.createForm;
-            form.$v.$touch();
-            if (!form.$v.$invalid) {
+            const form = this.getRefForm();
+            if (form.validate()) {
                 const item = form.$v.item.$model;
                 if(typeof item['@id'] === 'undefined') {
                     this.$store.commit('PUSH', {prop: this.childKey, item});
                 } else {
                     this.$store.commit('SPLICE', {prop: this.childKey, start: item['@id'], item});
                 }
-                this.showTable = true;
-                this.$store.commit('SET_TOOLBAR', {
-                    add: true, cancel: false, next: true, prev: true, save: false, addText: 'Agregar ' + this.childName
-                });
+                this.setShowTable();
             } else {
                 form.goTo();
             }
@@ -71,14 +67,22 @@ export default {
             }
         },
         cancel() {
-            this.showTable = true;
-            this.$store.commit('SET_TOOLBAR', {
-                add: true, cancel: false, next: true, prev: true, save: false, addText: 'Agregar ' + this.childName
-            });
+            this.setShowTable();
+        },
+        setShowTable() {
+            this.showTable = this.validate();
+            if(this.showTable) {
+                this.$store.commit('SET_TOOLBAR', {
+                    add: true, cancel: false, next: true, prev: true, save: false, addText: 'Agregar ' + this.childName
+                });
+            }
+        },
+        getRefForm() {
+            return this.$refs.createForm;
         }
     },
     watch: {
-        active(active) {
+        active: { handler(active) {
             if(active) {
                 if(this.validate()) {
                     this.showTable = true;
@@ -92,7 +96,7 @@ export default {
                     });
                 }
             }
-        },
+        }, immediate: true},
         showTable(showTable) {
             if(showTable) {
                 this.item = {};

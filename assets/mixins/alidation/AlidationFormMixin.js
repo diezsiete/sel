@@ -3,13 +3,14 @@ import Vue from 'vue';
 export default {
     data: () => ({
         alidations: {},
+        alidationFields: {}
     }),
     directives: {
         alidation: {
             // directive definition
             bind: function (el, binding, vnode) {
                 if(vnode.data.model) {
-                    const modelExpression = vnode.data.model.expression
+                    const modelExpression = vnode.data.model.expression;
                     const x = vnode.componentInstance.$v;
 
                     modelExpression.split('.').reduce((o, expression, idx, splice) => {
@@ -18,8 +19,10 @@ export default {
                         }
                         return o[expression];
                     }, vnode.context.alidations);
-                    vnode.componentInstance.entity = vnode.context.entity
-                    vnode.componentInstance.$v = vnode.context.$v
+                    vnode.componentInstance.entity = vnode.context.entity;
+                    vnode.componentInstance.$v = vnode.context.$v;
+
+                    vnode.context.alidationFields[modelExpression] = vnode.componentInstance
                 }
             }
         }
@@ -48,13 +51,15 @@ export default {
             return this.validPromise();
         },
         validate() {
-            this.$v.$touch();
-            return !this.$v.$invalid;
+            const $v = this.$v;
+            $v.$touch();
+            return !$v.$invalid;
         },
         goTo() {
             this.$store.getters[`${this.entity}/alidation/modelExpressions`].every(modelExpression => {
                 if(modelExpression.split('.').reduce((o, i) => o[i], this.$v).$error) {
-                    this.$vuetify.goTo('#'+this.$store.getters[`${this.entity}/alidation/id`](modelExpression), {offset: 100});
+                    this.$vuetify.goTo(this.alidationFields[modelExpression], {offset: 100});
+                    //this.$vuetify.goTo('#'+this.$store.getters[`${this.entity}/alidation/id`](modelExpression), {offset: 100});
                     return false;
                 }
                 return true;

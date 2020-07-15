@@ -34,8 +34,8 @@
         },
         data: () => ({
             step: 3,
-            childKey: 'experiencia',
-            childName: 'experiencia',
+            childKey: 'experiencias',
+            childName: 'experiencia'
         }),
     }
 </script>

@@ -4,7 +4,7 @@
         <v-main>
             <!-- Provides the application the proper gutter -->
             <v-container fluid>
-                <v-stepper v-model="currentStep" :alt-labels="true" :id="id">
+                <v-stepper v-model="currentStep" :id="id">
                     <v-stepper-header>
                         <template v-for="(item, n) in steps">
                             <v-stepper-step :key="`${n}-step`" :complete="currentStep > n + 1" :step="n + 1"
@@ -31,15 +31,12 @@
                                 <registro-toolbar :add="add" :cancel="cancel" :next="next" :save="save" :prev="prev"></registro-toolbar>
                             </experiencia-registro>
                         </v-stepper-content>
-                        <!--<v-stepper-content v-for="(item, n) in steps" :key="`${n}-content`" :step="n + 1">
-                            <component v-bind:is="currentComponent"></component>
+                        <v-stepper-content step="4">
+                            <referencia-registro ref="ReferenciaRegistro">
+                                <registro-toolbar :add="add" :cancel="cancel" :next="next" :save="save" :prev="prev"></registro-toolbar>
+                            </referencia-registro>
+                        </v-stepper-content>
 
-                            <v-btn color="primary" @click="nextStep()" class="float-right" >
-                                Siguiente
-                            </v-btn>
-
-                            <v-btn text v-if="n > 0" @click="prevStep()">Anterior</v-btn>
-                        </v-stepper-content>-->
                     </v-stepper-items>
 
                 </v-stepper>
@@ -53,6 +50,7 @@
     import CvRegistro from '@views/entity/cv/cv/Registro';
     import EstudioRegistro from '@views/entity/cv/estudio/Registro';
     import ExperienciaRegistro from '@views/entity/cv/experiencia/Registro';
+    import ReferenciaRegistro from '@views/entity/cv/referencia/Registro';
     import RegistroToolbar from "@components/cv/RegistroToolbar";
 
     export default {
@@ -61,6 +59,7 @@
             CvRegistro,
             EstudioRegistro,
             ExperienciaRegistro,
+            ReferenciaRegistro,
             RegistroToolbar
         },
         computed: {
@@ -85,7 +84,7 @@
             async next () {
                 const currentComponent = this.$refs[this.$store.getters.currentComponent];
                 if(await currentComponent.validate()) {
-                    await this.$store.dispatch('currentStepAugment')
+                    await this.$store.dispatch('currentStepAugment');
                     await this.$vuetify.goTo(`#${this.id}`)
                 }
             },

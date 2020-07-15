@@ -48,7 +48,7 @@ export default {
             return this.modelExpression.split('.').reduce((o, i) => i, '')
         },
         id() {
-            return this.modelName
+            return `alidation-${this.modelName}`
         }
     },
     data: () => ({

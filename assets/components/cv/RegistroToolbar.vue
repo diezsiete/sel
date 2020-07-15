@@ -15,64 +15,15 @@
             <v-btn color="primary" v-if="showAdd" @click="handle('add')" class="float-right" >
                 {{ addText }}
             </v-btn>
-
-            <!--<v-btn
-                    v-if="handleCancel"
-                    :loading="isLoading"
-                    color="warning"
-                    @click="cancel"
-            >
-                Cancelar
-            </v-btn>
-            <v-btn
-                    v-if="handleDelete"
-                    color="error"
-                    @click="confirmDelete = true"
-            >
-                Borrar
-            </v-btn>
-            <v-btn
-                    v-if="handleSubmit"
-                    :loading="isLoading"
-                    color="primary"
-                    @click="submitItem"
-            >
-                Guardar
-            </v-btn>
-            <v-btn
-                    v-if="handleReset"
-                    color="primary"
-                    class="ml-sm-2"
-                    @click="resetItem"
-            >
-                Reiniciar
-            </v-btn>
-            <v-btn
-                    v-if="handleAdd"
-                    color="primary"
-                    @click="addItem"
-            >
-                Agregar
-            </v-btn>-->
         </div>
-        <ConfirmDelete
-                v-if="handleDelete"
-                :visible="confirmDelete"
-                :handle-delete="handleDelete"
-                @close="confirmDelete = false"
-        />
     </v-toolbar>
 </template>
 
 <script>
-    import ConfirmDelete from '@components/ConfirmDelete';
     import { mapState } from 'vuex';
 
     export default {
         name: 'RegistroToolbar',
-        components: {
-            ConfirmDelete
-        },
         computed: {
             ...mapState({
                 showNext: state => state.registroToolbar.next,
@@ -83,37 +34,12 @@
                 addText: state => state.registroToolbar.addText
             })
         },
-        data() {
-            return {
-                confirmDelete: false
-            };
-        },
         props: {
             add: Function,
             cancel: Function,
             next: Function,
             prev: Function,
             save: Function,
-            handleDelete: {
-                type: Function,
-                required: false
-            },
-            /*handleSubmit: {
-                type: Function,
-                required: false
-            },
-            handleReset: {
-                type: Function,
-                required: false
-            },
-            handleAdd: {
-                type: Function,
-                required: false
-            },
-            handleCancel: {
-                type: Function,
-                required: false
-            },*/
             title: {
                 type: String,
                 required: false
@@ -130,26 +56,6 @@
                     this[handleType]();
                 }
             },
-            /*addItem() {
-                if (this.handleAdd) {
-                    this.handleAdd();
-                }
-            },
-            submitItem() {
-                if (this.handleSubmit) {
-                    this.handleSubmit();
-                }
-            },
-            resetItem() {
-                if (this.handleReset) {
-                    this.handleReset();
-                }
-            },
-            cancel() {
-                if(this.handleCancel) {
-                    this.handleCancel();
-                }
-            }*/
         }
     };
 </script>

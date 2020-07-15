@@ -35,7 +35,7 @@
         data: () => ({
             step: 2,
             childKey: 'estudios',
-            childName: 'estudio',
+            childName: 'estudio'
         }),
     }
 </script>
