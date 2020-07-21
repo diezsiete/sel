@@ -1,5 +1,6 @@
 
 import '../css/index.scss';
+import '../css/component/_floating-recaudo.scss'
 
 import './component/index-hero'
 import $ from 'jquery';

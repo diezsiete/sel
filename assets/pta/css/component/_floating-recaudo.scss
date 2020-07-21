@@ -1,0 +1,31 @@
+@import '../helper/variables';
+
+/*
+.floating-recaudo {
+    position:fixed;
+    width:60px;
+    height:60px;
+    bottom:40px;
+    right:40px;
+    background-color:$tertiary;
+    color:#FFF;
+    border-radius:50px;
+    text-align:center;
+    box-shadow: 2px 2px 3px #999;
+    line-height: 60px;
+    z-index: 3;
+}*/
+
+.floating-recaudo {
+    position:fixed;
+    width:105px;
+    height:59px;
+    bottom:40px;
+    right:40px;
+    background-image: url(../../img/BOTON-MI-PAGO-AMIGO-210X118.png);
+    background-size: contain;
+    border-radius:10px;
+    text-align:center;
+    box-shadow: 1px 1px 2px #333;
+    z-index: 3;
+}
