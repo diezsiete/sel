@@ -2,7 +2,7 @@
     <v-autocomplete
             v-if="edit"
             attach
-            autocomplete="off"
+            autocomplete="nope"
             :class="classes"
             clearable
             :disabled="disabled"

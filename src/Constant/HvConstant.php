@@ -3,7 +3,11 @@
 
 namespace App\Constant;
 
-
+/**
+ * Class HvConstant
+ * @package App\Constant
+ * @deprecated
+ */
 class HvConstant
 {
     const ESTADO_CIVIL = [

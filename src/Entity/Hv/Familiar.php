@@ -10,8 +10,14 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * * @ApiResource(
- *     collectionOperations={"post"},
- *     itemOperations={"get", "put", "delete"},
+ *     collectionOperations={
+ *         "post"={"path"="/familiar"}
+ *     },
+ *     itemOperations={
+ *         "get"={"path"="/familiar"},
+ *         "put"={"path"="/familiar"},
+ *         "delete"={"path"="/familiar"}
+ *     },
  *     normalizationContext={"groups"={"api:cv:read"}},
  *     denormalizationContext={"groups"={"api:cv:write"}},
  * )
@@ -38,7 +44,7 @@ class Familiar implements HvEntity
      *      max = 15,
      *      maxMessage = "El apellido supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"api:cv:write", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put"})
+     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put"})
      */
     private $primerApellido;
 
@@ -54,7 +60,7 @@ class Familiar implements HvEntity
      *      max = 15,
      *      maxMessage = "El apellido supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"api:cv:write", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put"})
+     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put"})
      */
     private $segundoApellido;
 
@@ -65,7 +71,7 @@ class Familiar implements HvEntity
      *      max = 30,
      *      maxMessage = "El nombre supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"api:cv:write", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put"})
+     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put"})
      */
     private $nombre;
 
@@ -76,38 +82,42 @@ class Familiar implements HvEntity
     private $nombrePrev;
 
     /**
-     * @ORM\Column(type="date", nullable=true)
+     * @ORM\Column(type="date")
      * @Assert\NotNull(message="Ingrese fecha de nacimiento")
      * @Assert\Date(message="Ingrese fecha valida")
-     * @Groups({"api:cv:write", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put"})
+     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put"})
      */
     private $nacimiento;
 
     /**
-     * @ORM\Column(type="string", length=2)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Hv\Parentesco")
+     * @ORM\JoinColumn(name="parentesco", referencedColumnName="id", nullable=false)
      * @Assert\NotNull(message="Ingrese parentesco")
-     * @Groups({"api:cv:write", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put"})
+     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put"})
      */
     private $parentesco;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Hv\Ocupacion")
+     * @ORM\JoinColumn(name="ocupacion", referencedColumnName="id", nullable=false)
      * @Assert\NotNull(message="Ingrese ocupación")
-     * @Groups({"api:cv:write", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put"})
+     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put"})
      */
     private $ocupacion;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Hv\Genero")
+     * @ORM\JoinColumn(name="genero", referencedColumnName="id", nullable=false)
      * @Assert\NotNull(message="Ingrese genero")
-     * @Groups({"api:cv:write", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put"})
+     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put"})
      */
     private $genero;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Hv\EstadoCivil")
+     * @ORM\JoinColumn(name="estado_civil", referencedColumnName="id", nullable=false)
      * @Assert\NotNull(message="Ingrese estado civil")
-     * @Groups({"api:cv:write", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put"})
+     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put"})
      */
     private $estadoCivil;
 
@@ -117,20 +127,22 @@ class Familiar implements HvEntity
      *      max = 12,
      *      maxMessage = "La identificación supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"api:cv:write", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put"})
+     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put"})
      */
     private $identificacion;
 
     /**
-     * @ORM\Column(type="string", length=2)
-     * @Groups({"api:cv:write", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put"})
+     * @ORM\ManyToOne(targetEntity="IdentificacionTipo")
+     * @ORM\JoinColumn(name="identificacion_tipo", referencedColumnName="id", nullable=true)
+     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put"})
      */
-    private $identificacionTipo = 0;
+    private $identificacionTipo;
 
     /**
-     * @ORM\Column(type="string", length=2)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Hv\NivelAcademico")
+     * @ORM\JoinColumn(name="nivel_academico", referencedColumnName="id", nullable=false)
      * @Assert\NotNull(message="Ingrese nivel academico")
-     * @Groups({"api:cv:write", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put"})
+     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put"})
      */
     private $nivelAcademico;
 
@@ -237,48 +249,48 @@ class Familiar implements HvEntity
         return $this;
     }
 
-    public function getParentesco(): ?string
+    public function getParentesco()
     {
         return $this->parentesco;
     }
 
-    public function setParentesco(?string $parentesco): self
+    public function setParentesco($parentesco): self
     {
         $this->parentesco = $parentesco;
 
         return $this;
     }
 
-    public function getOcupacion(): ?int
+    public function getOcupacion()
     {
         return $this->ocupacion;
     }
 
-    public function setOcupacion(?int $ocupacion): self
+    public function setOcupacion($ocupacion): self
     {
         $this->ocupacion = $ocupacion;
 
         return $this;
     }
 
-    public function getGenero(): ?int
+    public function getGenero()
     {
         return $this->genero;
     }
 
-    public function setGenero(?int $genero): self
+    public function setGenero($genero): self
     {
         $this->genero = $genero;
 
         return $this;
     }
 
-    public function getEstadoCivil(): ?int
+    public function getEstadoCivil()
     {
         return $this->estadoCivil;
     }
 
-    public function setEstadoCivil(?int $estadoCivil): self
+    public function setEstadoCivil($estadoCivil): self
     {
         $this->estadoCivil = $estadoCivil;
 
@@ -297,24 +309,24 @@ class Familiar implements HvEntity
         return $this;
     }
 
-    public function getIdentificacionTipo(): ?string
+    public function getIdentificacionTipo()
     {
         return $this->identificacionTipo;
     }
 
-    public function setIdentificacionTipo(?string $identificacionTipo): self
+    public function setIdentificacionTipo($identificacionTipo): self
     {
         $this->identificacionTipo = $identificacionTipo;
 
         return $this;
     }
 
-    public function getNivelAcademico(): ?string
+    public function getNivelAcademico()
     {
         return $this->nivelAcademico;
     }
 
-    public function setNivelAcademico(?string $nivelAcademico): self
+    public function setNivelAcademico($nivelAcademico): self
     {
         $this->nivelAcademico = $nivelAcademico;
 

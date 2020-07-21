@@ -36,6 +36,11 @@
                                 <registro-toolbar :add="add" :cancel="cancel" :next="next" :save="save" :prev="prev"></registro-toolbar>
                             </referencia-registro>
                         </v-stepper-content>
+                        <v-stepper-content step="5">
+                            <familiar-registro ref="FamiliarRegistro">
+                                <registro-toolbar :add="add" :cancel="cancel" :next="next" :save="save" :prev="prev"></registro-toolbar>
+                            </familiar-registro>
+                        </v-stepper-content>
 
                     </v-stepper-items>
 
@@ -50,6 +55,7 @@
     import CvRegistro from '@views/entity/cv/cv/Registro';
     import EstudioRegistro from '@views/entity/cv/estudio/Registro';
     import ExperienciaRegistro from '@views/entity/cv/experiencia/Registro';
+    import FamiliarRegistro from '@views/entity/cv/familiar/Registro';
     import ReferenciaRegistro from '@views/entity/cv/referencia/Registro';
     import RegistroToolbar from "@components/cv/RegistroToolbar";
 
@@ -59,6 +65,7 @@
             CvRegistro,
             EstudioRegistro,
             ExperienciaRegistro,
+            FamiliarRegistro,
             ReferenciaRegistro,
             RegistroToolbar
         },

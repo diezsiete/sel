@@ -9,16 +9,21 @@ import estudioInstitutoService from "@services/cv/estudio-instituto";
 import experienciaService from "@services/cv/experiencia";
 import experienciaDuracionService from '@services/cv/experiencia-duracion';
 import factorRhService from '@services/cv/factor-rh';
+import familiarService from '@services/cv/familiar';
 import generoService from "@services/cv/genero";
 import grupoSanguineoService from '@services/cv/grupo-sanguineo';
 import identificacionTipoService from '@services/cv/identificacion-tipo';
 import nacionalidadService from "@services/cv/nacionalidad";
 import nivelAcademicoService from "@services/cv/nivel-academico";
+import ocupacionService from "@services/cv/ocuapcion";
+import parentescoService from "@services/cv/parentesco";
 import referenciaService from "@services/cv/referencia";
 import referenciaTipoService from "@services/cv/referencia-tipo";
 import usuarioService from "@services/usuario";
 import makeCrudModule from "@store/modules/crud";
 import notifications from "@store/modules/notifications";
+
+import testItem from './registro-test-item';
 
 Vue.use(Vuex);
 
@@ -48,6 +53,9 @@ export default new Vuex.Store({
         experienciaDuracion: makeCrudModule({
             service: experienciaDuracionService
         }),
+        familiar: makeCrudModule({
+            service: familiarService
+        }),
         factorRh: makeCrudModule({
             service: factorRhService
         }),
@@ -67,6 +75,12 @@ export default new Vuex.Store({
             service: nivelAcademicoService
         }),
         notifications,
+        ocupacion: makeCrudModule({
+            service: ocupacionService
+        }),
+        parentesco: makeCrudModule({
+            service: parentescoService
+        }),
         referencia: makeCrudModule({
             service: referenciaService
         }),
@@ -146,76 +160,14 @@ export default new Vuex.Store({
         }, {
             title: 'Familiares',
             editable: false,
-            component: 'Familiares'
+            component: 'FamiliarRegistro'
         }, {
             title: 'Cuenta',
             editable: false,
             component: 'Cuenta'
         }],
-        currentStep: 4,
-        item: {
-            barrio: 'Marly',
-            celular: '3202123926',
-            direccion: 'Calle 50 13-43',
-            email: 'guerrerojosedario@gmail.com',
-            estadoCivil: '/api/estado-civil/1',
-            factorRh: '/api/factor-rh/+',
-            genero: '/api/genero/2',
-            grupoSanguineo: '/api/grupo-sanguineo/A',
-            identCiudad: '/api/ciudad/1023',
-            identificacion: '101841066',
-            identificacionTipo: '/api/identificacion-tipo/01',
-            nacCiudad: '/api/ciudad/149',
-            nacimiento: '2012-05-02',
-            nacionalidad: '/api/nacionalidad/1',
-            nivelAcademico: '/api/nivel-academico/08',
-            primerApellido: 'Guerrero',
-            primerNombre: 'Jose',
-            resiCiudad: '/api/ciudad/149',
-            telefono: '2123444',
-            estudios: [
-                {
-                    '@id': 0,
-                    codigo: {
-                        '@id' : '/api/estudio-codigo/00001',
-                        'id' : '00001',
-                        nombre: 'ACTIVIDAD FISICA Y DEPORTE'
-                    },
-                    instituto: {
-                        '@id': '/api/estudio-instituto/000001',
-                        'id': '000002',
-                        'nombre': 'CENTRO EDUCACIONAL DE COMPUTOS Y SISTEMAS-CEDESIST'
-                    },
-                    nombre: 'asdasdasd'
-                }
-            ],
-            // estudios: [],
-            experiencias: [
-                {
-                    '@id': 0,
-                    area: {
-                        '@id': '/api/experiencia-duracion/3',
-                        '@type': 'ExperienciaDuracion',
-                        id: 3,
-                        nombre: 'DE 1 A 2 AÑOS'
-                    },
-                    cargo: 'Desarrollador',
-                    descripcion: 'Cosas',
-                    duracion: {
-                        '@id': '/api/experiencia-duracion/2',
-                        '@type': 'ExperienciaDuracion',
-                        id: 2,
-                        nombre: 'DE 0 A 1 AÑO'
-                    },
-                    empresa: 'PTA',
-                    fechaIngreso: '2020-01-01',
-                    jefeInmediato: 'Cuacua',
-                    salarioBasico: '100000',
-                    telefonoJefe: '3202123926'
-                }
-            ],
-            referencias: []
-        },
+        currentStep: 1,
+        item: testItem,
         isLoading: false,
         registroToolbar: {
             next: true,
@@ -228,7 +180,8 @@ export default new Vuex.Store({
         totals: {
             estudios: 1,
             experiencias: 1,
-            referencias: 0
+            referencias: 3,
+            familiares: 0
         },
         // para campos que se salen del stepper se cambie el estilo
         overflow: false
