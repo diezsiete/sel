@@ -264,6 +264,9 @@
             "config/routes/oneup_uploader.yaml"
         ]
     },
+    "php": {
+        "version": "7.3"
+    },
     "phpdocumentor/reflection-common": {
         "version": "1.0.1"
     },

@@ -145,6 +145,7 @@ class NapiClient extends HttpClient
             if($db === null) {
                 $db = $this->napiDbTmp ?: $this->napiDb;
             }
+            $db = strtolower($db);
             $base = "/{$db}/api";
         }
         return "{$this->napiUrl}{$base}{$url}";
