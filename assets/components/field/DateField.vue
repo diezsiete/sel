@@ -20,7 +20,17 @@
                     v-on="on"
             ></v-text-field>
         </template>
-        <v-date-picker :value="formattedDate" @input="updateValue"></v-date-picker>
+        <v-date-picker
+            locale="es-co"
+            :max="new Date().toISOString().substr(0, 10)"
+            min="1920-01-01"
+            no-title
+            ref="picker"
+            scrollable
+            :value="formattedDate"
+            @input="updateValue"
+        >
+        </v-date-picker>
     </v-menu>
     <v-input v-else :label="label">
         <p>
@@ -55,12 +65,17 @@
             },
         },
         props: {
-            value: null,
+            birthday: {
+                type: Boolean,
+                default: true
+            },
             label: String,
+            value: null,
         },
         watch: {
             menu(state) {
                 this.$store.state.overflow = state;
+                state && this.birthday && setTimeout(() => this.$refs.picker.activePicker = 'YEAR')
             }
         }
     }
