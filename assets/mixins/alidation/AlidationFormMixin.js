@@ -56,14 +56,14 @@ export default {
             return !$v.$invalid;
         },
         goTo() {
-            this.$store.getters[`${this.entity}/alidation/modelExpressions`].every(modelExpression => {
+            /*this.$store.getters[`${this.entity}/alidation/modelExpressions`].every(modelExpression => {
                 if(modelExpression.split('.').reduce((o, i) => o[i], this.$v).$error) {
                     this.$vuetify.goTo(this.alidationFields[modelExpression], {offset: 100});
                     //this.$vuetify.goTo('#'+this.$store.getters[`${this.entity}/alidation/id`](modelExpression), {offset: 100});
                     return false;
                 }
                 return true;
-            });
+            });*/
         }
     },
     validations() {

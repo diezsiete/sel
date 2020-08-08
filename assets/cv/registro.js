@@ -8,6 +8,7 @@ import "@plugins/vuelidate"
 
 import store from "@store/cv/registro";
 
+Vue.config.productionTip = false;
 
 const rootElement = document.getElementById('app');
 

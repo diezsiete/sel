@@ -18,6 +18,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @IsGranted("ASPIRANTES_MODULE", statusCode=404, message="Resource not found")
+ * @deprecated
  */
 class HvAdjuntoController extends BaseController
 {

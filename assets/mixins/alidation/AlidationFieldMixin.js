@@ -1,11 +1,11 @@
 import validators from "@plugins/validators";
 
 export default {
-    mounted() {
+    /*mounted() {
         if(this.alidationReady) {
             this.$store.commit(`${this.entity}/alidation/ADD`, {modelExpression: this.modelExpression, id: this.id})
         }
-    },
+    },*/
     computed: {
         errors() {
             const errors = [];
@@ -84,6 +84,8 @@ export default {
         },
         fetchUnique: {
             type: [String, Object]
-        }
+        },
+        sameAs: [String, Object],
+        size: [String, Object, Number]
     }
 }

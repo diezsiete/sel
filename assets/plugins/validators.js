@@ -1,4 +1,4 @@
-import {required, requiredIf, minLength} from 'vuelidate/lib/validators';
+import {required, requiredIf, minLength, sameAs} from 'vuelidate/lib/validators';
 import debounce from 'debounce-promise';
 
 const fetchOperation = debounce((service, model, val) => new Promise(r =>
@@ -32,6 +32,16 @@ const validators = {
             }
         },
         isCallable: true
+    },
+    sameAs: {
+        isCallable: true,
+        message: 'Valor no coincide',
+        validator: sameAs
+    },
+    size: {
+        isCallable: true,
+        message: 'Tamaño de archivo supera % MB',
+        validator: size => value => !value || value.size < (size * 1000000)
     }
 };
 

@@ -10,7 +10,7 @@
                 Cancelar
             </v-btn>
             <v-btn color="primary" v-if="showNext" @click="handle('next')" class="float-right ml-sm-2" >
-                Siguiente
+                {{ nextText }}
             </v-btn>
             <v-btn color="primary" v-if="showAdd" @click="handle('add')" class="float-right" >
                 {{ addText }}
@@ -38,6 +38,10 @@
             add: Function,
             cancel: Function,
             next: Function,
+            nextText: {
+                type: String,
+                default: 'Siguiente'
+            },
             prev: Function,
             save: Function,
             title: {

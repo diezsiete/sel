@@ -103,5 +103,12 @@ export default {
             }
         }
     ],
-    familiares: []
+    familiares: [],
+    usuario: {
+        password: {
+            first: '',
+            second: '',
+        },
+        aceptoTerminosEn: null
+    }
 }

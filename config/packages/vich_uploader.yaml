@@ -1,0 +1,9 @@
+vich_uploader:
+    db_driver: orm
+    storage: flysystem
+
+    mappings:
+        adjunto:
+            uri_prefix: /adjunto
+            upload_destination: private_uploads_filesystem
+            namer: Vich\UploaderBundle\Naming\OrignameNamer

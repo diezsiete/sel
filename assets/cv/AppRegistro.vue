@@ -13,9 +13,11 @@
                             </v-stepper-step>
                             <v-divider v-if="n !== steps.length - 1" :key="n"></v-divider>
                         </template>
+                        <v-progress-linear :active="isLoading" indeterminate color="primary"></v-progress-linear>
                     </v-stepper-header>
 
                     <v-stepper-items>
+                        <v-overlay absolute :value="isLoading" opacity="0.1"></v-overlay>
                         <v-stepper-content step="1">
                             <cv-registro ref="CvRegistro">
                                 <registro-toolbar :next="next"></registro-toolbar>
@@ -41,7 +43,11 @@
                                 <registro-toolbar :add="add" :cancel="cancel" :next="next" :save="save" :prev="prev"></registro-toolbar>
                             </familiar-registro>
                         </v-stepper-content>
-
+                        <v-stepper-content step="6">
+                            <cuenta-registro ref="CuentaRegistro">
+                                <registro-toolbar :next="next" :prev="prev" next-text="Registrarse"></registro-toolbar>
+                            </cuenta-registro>
+                        </v-stepper-content>
                     </v-stepper-items>
 
                 </v-stepper>
@@ -52,12 +58,14 @@
 
 <script>
     import { mapState } from 'vuex';
+    import { mapFields } from 'vuex-map-fields';
     import CvRegistro from '@views/entity/cv/cv/Registro';
     import EstudioRegistro from '@views/entity/cv/estudio/Registro';
     import ExperienciaRegistro from '@views/entity/cv/experiencia/Registro';
     import FamiliarRegistro from '@views/entity/cv/familiar/Registro';
     import ReferenciaRegistro from '@views/entity/cv/referencia/Registro';
     import RegistroToolbar from "@components/cv/RegistroToolbar";
+    import CuentaRegistro from "@views/entity/cv/cv/CuentaRegistro";
 
     export default {
         name: 'AppRegistro',
@@ -67,9 +75,16 @@
             ExperienciaRegistro,
             FamiliarRegistro,
             ReferenciaRegistro,
-            RegistroToolbar
+            RegistroToolbar,
+            CuentaRegistro
         },
         computed: {
+            ...mapFields(['isLoading']),
+            ...mapState({
+                steps: state => state.steps,
+                currentComponent: state => state.currentComponent,
+                overflow: state => state.overflow
+            }),
             currentStep: {
                 get () {
                     return this.$store.state.currentStep
@@ -78,11 +93,6 @@
                     this.$store.dispatch('setCurrentStep', value)
                 }
             },
-            ...mapState({
-                steps: state => state.steps,
-                currentComponent: state => state.currentComponent,
-                overflow: state => state.overflow
-            })
         },
         data: () => ({
             id: 'registro'
@@ -101,12 +111,12 @@
             cancel () {
                 this.$refs[this.$store.getters.currentComponent].cancel()
             },
-            save() {
-                this.$refs[this.$store.getters.currentComponent].save()
-            },
             async prev() {
                 await this.$store.dispatch('currentStepDecrease');
                 await this.$vuetify.goTo(`#${this.id}`);
+            },
+            save() {
+                this.$refs[this.$store.getters.currentComponent].save()
             }
         }
     }

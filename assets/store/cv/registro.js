@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import {getField, updateField} from 'vuex-map-fields'
 import areaService from "@services/cv/area";
 import cvService from "@services/cv/cv";
 import estadoCivilService from "@services/cv/estado-civil";
@@ -110,11 +111,13 @@ export default new Vuex.Store({
         },
     },
     getters: {
+        getField,
         currentComponent: state => {
             return state.steps[state.currentStep - 1].component
         }
     },
     mutations: {
+        updateField,
         SET_CURRENT_STEP(state, step) {
             state.currentStep = step;
             state.registroToolbar.prev = step > 1;
@@ -164,9 +167,9 @@ export default new Vuex.Store({
         }, {
             title: 'Cuenta',
             editable: false,
-            component: 'Cuenta'
+            component: 'CuentaRegistro'
         }],
-        currentStep: 1,
+        currentStep: 6,
         item: testItem,
         isLoading: false,
         registroToolbar: {

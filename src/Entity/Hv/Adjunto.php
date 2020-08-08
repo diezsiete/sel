@@ -2,13 +2,50 @@
 
 namespace App\Entity\Hv;
 
+use App\Controller\Cv\CreateAdjuntoAction;
+use ApiPlatform\Core\Annotation\ApiProperty;
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Service\UploaderHelper;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Hv\AdjuntoRepository")
  * @ORM\Table(name="hv_adjunto")
+ * @ApiResource(
+ *     iri="http://schema.org/MediaObject",
+ *     collectionOperations={
+ *         "post"={
+ *             "controller"=CreateAdjuntoAction::class,
+ *             "deserialize"=false,
+ *             "openapi_context"={
+ *                 "requestBody"={
+ *                     "content"={
+ *                         "multipart/form-data"={
+ *                             "schema"={
+ *                                 "type"="object",
+ *                                 "properties"={
+ *                                     "file"={
+ *                                         "type"="string",
+ *                                         "format"="binary"
+ *                                     }
+ *                                 }
+ *                             }
+ *                         }
+ *                     }
+ *                 }
+ *             }
+ *         },
+ *         "get"
+ *     },
+ *     itemOperations={
+ *         "get"
+ *     }
+ * )
+ * @Vich\Uploadable
  */
 class Adjunto implements HvEntity
 {
@@ -21,10 +58,17 @@ class Adjunto implements HvEntity
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Hv\Hv", inversedBy="adjunto", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\OneToOne(targetEntity="App\Entity\Hv\Hv", inversedBy="adjunto")
+     * @ORM\JoinColumn()
      */
     private $hv;
+
+    /**
+     * @var File|null
+     * @Assert\NotNull()
+     * @Vich\UploadableField(mapping="adjunto", fileNameProperty="filename", mimeType="mimeType", originalName="originalFilename")
+     */
+    public $file;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -43,6 +87,13 @@ class Adjunto implements HvEntity
      * @Groups("main")
      */
     private $mimeType;
+
+    /**
+     * @var string|null
+     * @ApiProperty(iri="http://schema.org/contentUrl")
+     * @Groups("main")
+     */
+    public $contentUrl;
 
     public function getId(): ?int
     {
@@ -99,7 +150,7 @@ class Adjunto implements HvEntity
 
     public function getFilePath():string
     {
-        return UploaderHelper::HV_ADJUNTO . '/' . $this->getFilename();
+        return UploaderHelper::HV_ADJUNTO . '/' . $this->filename;
     }
 
     public function getNapiId(): string
