@@ -19,7 +19,10 @@ $blue: #24135f;
 
 //'vendor/hs-megamenu/src/hs.megamenu.css'
 
-
+@font-face {
+    font-family: 'Rubik';
+    src: url("https://fonts.gstatic.com/s/rubik/v10/iJWKBXyIfDnIV7nBrXyw023e.woff2") format('truetype');
+}
 
 //THEME
 @import 'theme/unify-core';

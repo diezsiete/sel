@@ -1,11 +1,11 @@
 app:
     scraper:
-        url: http://34.201.35.157:8666
+        url: http://3.237.96.100:8666
     ael:
-        url: http://34.201.35.157:8667
+        url: http://3.237.96.100:8667
     empresas:
         SERVILABOR:
             php_exec: /opt/php71/bin/php
 
     novasoftapi:
-        url: http://34.201.35.157:80
+        url: http://3.237.96.100:80

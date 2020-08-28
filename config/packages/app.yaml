@@ -85,7 +85,7 @@ app:
       host: '%env(HOST_SERVILABOR)%'
       razon: SERVILABOR S.A.S
       nit: 800.154.576-3
-      dir: 'Cra 14 # 76-39 Of 102'
+      dir: 'Carrera 22 # 86 A 24'
       web: www.servilabor.com.co
       mail: info@servilabor.com.co
       tel: 300 31 13
