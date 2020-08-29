@@ -1,7 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Archivo from "@/components/Archivos/Archivos";
-import Enviar from "@/components/Archivos/Enviar";
+import Archivo from "@/sel/js/single-page/components/Archivos/Archivos";
+import Enviar from "@/sel/js/single-page/components/Archivos/Enviar";
 
 Vue.use(VueRouter);
 

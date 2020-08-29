@@ -38,12 +38,12 @@
 </template>
 
 <script>
-    import convenioSearch from '@/components/ConvenioSearch'
+    import convenioSearch from '@/sel/js/single-page/components/ConvenioSearch'
     import archivoOwnersBrowser from './ArchivoOwnersBrowser'
     import archivoOwnerDetail from './ArchivoOwnerDetail'
-    import store from "@/store/store";
+    import store from "@/sel/js/single-page/store/store";
     import { mapState } from 'vuex';
-    import Router from "@/../router";
+    import Router from "@/sel/js/single-page/router";
     import axios from 'axios';
 
     export default {

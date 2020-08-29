@@ -74,6 +74,10 @@ services:
             - [setLogger, ['@monolog.logger.se_report_cache_import']]
 
 
+    App\DataProvider\OneByItemDataProvider:
+        arguments:
+            $itemExtensions: !tagged api_platform.doctrine.orm.query_extension.item
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
@@ -93,6 +97,11 @@ services:
     App\DataTable\Column\ActionsColumn\ActionModal:
         public: true
         shared: false
+
+    App\Decorator\IriConverterDecorator:
+        decorates: 'api_platform.iri_converter'
+        arguments: [ '@App\Decorator\IriConverterDecorator.inner' ]
+        autoconfigure: false
 
     App\Service\Autoliquidacion\ExportPdf:
         public: true
@@ -158,9 +167,10 @@ services:
     App\Uploader\Namer\ArchivoNamer:
         public: true
 
-
     Knp\Menu\Twig\MenuExtension:
         alias: knp_menu.twig.extension
+
+
 
     app.menu_builder:
         factory: ['App\Menu\MenuBuilderFactory', 'test']

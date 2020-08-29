@@ -9,8 +9,8 @@ use Omines\DataTablesBundle\DataTable;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class SelDataTable extends DataTable
 {
@@ -42,7 +42,7 @@ class SelDataTable extends DataTable
         return $this;
     }
 
-    public function getResponse(): JsonResponse
+    public function getResponse(): Response
     {
         if ($this->isCallback()) {
             $this->eventDispatcher->dispatch(new PreGetResultsEvent($this->getState()));

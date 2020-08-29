@@ -13,6 +13,11 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Security;
 
+/**
+ * Class HvResolver
+ * @package App\Service\Hv
+ * @deprecated
+ */
 class HvResolver implements HvEntity
 {
     /**

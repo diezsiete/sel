@@ -74,7 +74,7 @@ body #body.menu-open #menu-button:after {
 
 @media (min-width: $menu-min-width) {
     .pp-header~* {
-        position:relative;
+        //position:relative;
         top:0;
         transition:all .3s ease-out;
     }

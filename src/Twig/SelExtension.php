@@ -71,9 +71,10 @@ class SelExtension extends AbstractExtension implements ServiceSubscriberInterfa
 
         $route = $this->container->get(RequestStack::class)->getCurrentRequest()->attributes->get('_route');
 
-        return !$except || !in_array($route, $except)
+        $isSel = !$except || !in_array($route, $except)
             ? !in_array($route, $this->container->get(Configuracion::class)->getSelRoutes()->ignore)
             : false;
+        return $isSel;
     }
 
     /**
@@ -88,40 +89,7 @@ class SelExtension extends AbstractExtension implements ServiceSubscriberInterfa
         return $this->container->get(Utils::class)->meses($n - 1);
     }
 
-    public function loadingOverlayBodyClass()
-    {
-        if($this->container->get(LoadingOverlayComponent::class)->isEnabled()) {
-            return 'loading-overlay-showing';
-        }
-        return '';
-    }
 
-    public function loadingOverlayBodyOptions()
-    {
-        $component = $this->container->get(LoadingOverlayComponent::class);
-        if($component->isEnabled()) {
-            return "data-loading-overlay data-loading-overlay-options='".$component->encodeOptions()."'";
-        }
-        return '';
-    }
-
-    public function loadingOverlayTemplate()
-    {
-        $component = $this->container->get(LoadingOverlayComponent::class);
-        if($component->isEnabled()) {
-            $component->clearSession();
-            return
-                '<div class="loading-overlay">
-                    <div class="bounce-loader with-text">
-                        <h4>Estamos cargando su información, por favor espere un momento</h4>
-                        <div class="bounce1"></div>
-                        <div class="bounce2"></div>
-                        <div class="bounce3"></div>
-                    </div>
-                </div>';
-        }
-        return '';
-    }
 
 
 

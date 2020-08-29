@@ -2,7 +2,7 @@ import Vue from 'vue';
 import router from "./router/router";
 import store from "@clientes/store/store";
 import App from './App.vue'
-import vuetify from "./plugins/Vuetify";
+import vuetify from "@plugins/vuetify";
 import './style/single-page.scss';
 
 const rootElement = document.getElementById('app');

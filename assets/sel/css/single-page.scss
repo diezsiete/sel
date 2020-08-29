@@ -1,7 +1,12 @@
-/** pagina sin titulo que el contenido no se vea muy abajo (ej. archivos) */
-.page-header.page-header-modern.page-header-sm.no-content .container{
-  padding: 0;
+.page-header.page-header-modern.page-header-sm.no-content {
+    padding-bottom: 0;
 }
+
+/** pagina sin titulo que el contenido no se vea muy abajo (ej. archivos) */
+.page-header.page-header-modern.page-header-sm.no-content .container {
+    padding: 0;
+}
+
 .page-header.page-header-modern.page-header-sm.no-content + .container {
-  padding-top: 0;
+    padding-top: 0;
 }

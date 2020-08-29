@@ -16,7 +16,7 @@ use Doctrine\ORM\Query\QueryException;
 use Doctrine\ORM\QueryBuilder;
 use Exception;
 use phpDocumentor\Reflection\Types\Static_;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method Empleado|null find($id, $lockMode = null, $lockVersion = null)
@@ -25,7 +25,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class EmpleadoRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Empleado::class);
     }

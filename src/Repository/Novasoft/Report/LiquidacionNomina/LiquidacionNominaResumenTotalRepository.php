@@ -4,7 +4,7 @@ namespace App\Repository\Novasoft\Report\LiquidacionNomina;
 
 use App\Entity\Novasoft\Report\LiquidacionNomina\LiquidacionNominaResumenTotal;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method LiquidacionNominaResumenTotal|null find($id, $lockMode = null, $lockVersion = null)
@@ -14,7 +14,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class LiquidacionNominaResumenTotalRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, LiquidacionNominaResumenTotal::class);
     }

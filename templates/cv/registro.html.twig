@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('registro') }}
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
+{% endblock %}
+
+
+{% block body_header_class %}no-content{% endblock %}
+
+
+{% block main %}
+
+    {{ include('default/_flash_messages.html.twig') }}
+
+    {% block body_header %}
+        {{ parent() }}
+    {% endblock %}
+
+    <div id="app">
+    </div>
+
+    {% block footer %}
+        {{ parent() }}
+    {% endblock %}
+
+{% endblock %}
+
+
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('registro') }}
+{% endblock %}

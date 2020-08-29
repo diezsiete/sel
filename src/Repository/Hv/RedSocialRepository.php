@@ -4,7 +4,7 @@ namespace App\Repository\Hv;
 
 use App\Entity\Hv\RedSocial;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method RedSocial|null find($id, $lockMode = null, $lockVersion = null)
@@ -16,7 +16,7 @@ class RedSocialRepository extends ServiceEntityRepository
 {
     use HvChildRepository;
 
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, RedSocial::class);
     }

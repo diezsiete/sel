@@ -2,20 +2,23 @@
 
 namespace App\Entity\Hv;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
 use App\Validator\Hv\HvChild as HvChildConstraint;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * @ApiResource(
- *     collectionOperations={},
- *     itemOperations={"get"},
- *     normalizationContext={"groups"={"api:hv:read"}},
- *     denormalizationContext={"groups"={"api:hv:write"}},
+ *     collectionOperations={"post"},
+ *     itemOperations={"get", "put", "delete"},
+ *     normalizationContext={"groups"={"api:cv:read"}},
+ *     denormalizationContext={"groups"={"api:cv:write"}},
  *     attributes={"validation_groups"={"Default", "api"}}
  * )
+ * @ApiFilter(SearchFilter::class, properties={"hv": "exact"})
  * @ORM\Entity(repositoryClass="App\Repository\Hv\EstudioRepository")
  * @HvChildConstraint(
  *     uniqueFields={"codigo", "instituto"},
@@ -28,7 +31,7 @@ class Estudio implements HvEntity
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"main", "api:hv:read"})
+     * @Groups({"api:cv:read"})
      */
     protected $id;
 
@@ -36,16 +39,10 @@ class Estudio implements HvEntity
      * @ORM\ManyToOne(targetEntity="EstudioCodigo")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotNull(message="Seleccione el area de estudio")
-     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "messenger:hv-child:put",  "api:hv:write", "api:hv:read", "scraper", "scraper-hv-child"})
+     * @Groups({"api:cv:read", "api:cv:write"})
      * @var EstudioCodigo
      */
     private $codigo;
-
-    /**
-     * @var EstudioCodigo
-     * @Groups("messenger:hv-child:put")
-     */
-    private $codigoPrev;
 
     /**
      * @ORM\Column(type="string", length=50)
@@ -54,7 +51,7 @@ class Estudio implements HvEntity
      *      max = 50,
      *      maxMessage = "El titulo supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "api:hv:write", "api:hv:read", "scraper", "scraper-hv-child"})
+     * @Groups({"api:cv:read", "api:cv:write"})
      */
     private $nombre;
 
@@ -62,20 +59,14 @@ class Estudio implements HvEntity
      * @ORM\ManyToOne(targetEntity="EstudioInstituto")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotNull(message="Seleccione instituto. Si no lo encuentra seleccione opción 'NO APLICA'")
-     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "messenger:hv-child:put", "api:hv:write", "scraper", "scraper-hv-child"})
+     * @Groups({"api:cv:read", "api:cv:write"})
      * @var EstudioInstituto
      */
     private $instituto;
 
     /**
-     * @var EstudioInstituto
-     * @Groups("messenger:hv-child:put")
-     */
-    private $institutoPrev;
-
-    /**
      * @ORM\Column(type="date", nullable=true)
-     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
+     * @Groups({"api:cv:read", "api:cv:write"})
      */
     private $fin;
 
@@ -85,46 +76,50 @@ class Estudio implements HvEntity
      *      max = 75,
      *      maxMessage = "El nombre supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups("main")
+     * @Groups({"api:cv:read", "api:cv:write"})
      */
     private $institutoNombreAlt;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"api:cv:read", "api:cv:write"})
      */
     private $anoEstudio;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"api:cv:read", "api:cv:write"})
      */
     private $horasEstudio;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
-     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
+     * @Groups({"api:cv:read", "api:cv:write"})
      */
     private $graduado;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"api:cv:read", "api:cv:write"})
      */
     private $semestresAprobados;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
-     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
+     * @Groups({"api:cv:read", "api:cv:write"})
      */
     private $cancelo = 0;
 
     /**
      * @ORM\Column(type="string", length=13, nullable=true)
+     * @Groups({"api:cv:read", "api:cv:write"})
      */
     private $numeroTarjeta;
 
     /**
      * @ORM\ManyToOne(targetEntity="Hv", inversedBy="estudios")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"napi:hv-child:post", "napi:hv-child:put"})
+     * @Groups({"api:cv:write"})
      * @var Hv
      */
     protected $hv;
@@ -153,19 +148,7 @@ class Estudio implements HvEntity
 
     public function setCodigo(?EstudioCodigo $codigo): self
     {
-        $this->codigoPrev = $this->codigo;
         $this->codigo = $codigo;
-        return $this;
-    }
-
-    public function getCodigoPrev(): ?EstudioCodigo
-    {
-        return $this->codigoPrev;
-    }
-
-    public function setCodigoPrev(EstudioCodigo $codigoPrev): Estudio
-    {
-        $this->codigoPrev = $codigoPrev;
         return $this;
     }
 
@@ -192,20 +175,7 @@ class Estudio implements HvEntity
 
     public function setInstituto(?EstudioInstituto $instituto): self
     {
-        $this->institutoPrev = $this->instituto;
         $this->instituto = $instituto;
-        return $this;
-    }
-
-
-    public function getInstitutoPrev(): ?EstudioInstituto
-    {
-        return $this->institutoPrev;
-    }
-
-    public function setInstitutoPrev(EstudioInstituto $institutoPrev): Estudio
-    {
-        $this->institutoPrev = $institutoPrev;
         return $this;
     }
 
@@ -307,8 +277,8 @@ class Estudio implements HvEntity
 
     public function getNapiId(): string
     {
-        $codigo = $this->codigoPrev ?? $this->codigo;
-        $instituto = $this->institutoPrev ?? $this->instituto;
+        $codigo = $this->codigo;
+        $instituto = $this->instituto;
         return "hv={$this->hv->getNapiId()};codigo={$codigo->getId()};instituto={$instituto->getId()}";
     }
 }

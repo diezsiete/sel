@@ -11,10 +11,14 @@ use App\Validator\Hv\HvChild as HvChildConstraint;
 
 /**
  * @ApiResource(
- *     collectionOperations={},
- *     itemOperations={"get"},
- *     normalizationContext={"groups"={"api:hv:read"}},
- *     denormalizationContext={"groups"={"api:hv:write"}},
+ *     collectionOperations={"post" = {"path"="/experiencia"}},
+ *     itemOperations={
+ *         "get"={"path"="/experiencia/{id}"},
+ *         "put"={"path"="/experiencia/{id}"},
+ *         "delete"={"path"="/experiencia/{id}"}
+ *     },
+ *     normalizationContext={"groups"={"api:cv:read"}},
+ *     denormalizationContext={"groups"={"api:cv:write"}},
  *     attributes={"validation_groups"={"Default", "api"}}
  * )
  * @ORM\Entity(repositoryClass="App\Repository\Hv\ExperienciaRepository")
@@ -31,7 +35,7 @@ class Experiencia implements HvEntity
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"main", "api:hv:read"})
+     * @Groups({"api:cv:read"})
      */
     protected $id;
 
@@ -42,7 +46,7 @@ class Experiencia implements HvEntity
      *      max = 150,
      *      maxMessage = "Nombre de la empresa supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "api:hv:read", "api:hv:write", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "api:cv:read", "api:cv:write", "scraper", "scraper-hv-child"})
      */
     private $empresa;
 
@@ -59,7 +63,7 @@ class Experiencia implements HvEntity
      *      max = 45,
      *      maxMessage = "El cargo supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "api:hv:read", "api:hv:write", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "api:cv:read", "api:cv:write", "scraper", "scraper-hv-child"})
      */
     private $cargo;
 
@@ -73,20 +77,20 @@ class Experiencia implements HvEntity
      * @ORM\ManyToOne(targetEntity="Area", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotNull(message="Selecione area")
-     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "messenger:hv-child:put", "api:hv:read", "api:hv:write", "scraper", "scraper-hv-child"})
+     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "messenger:hv-child:put"})
      */
     private $area;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      * @Assert\NotNull(message="Ingrese descripcion")
-     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "api:hv:read", "api:hv:write", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "api:cv:read", "api:cv:write", "scraper", "scraper-hv-child"})
      */
     private $descripcion;
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
+     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put"})
      */
     private $logrosObtenidos;
 
@@ -94,13 +98,13 @@ class Experiencia implements HvEntity
      * @ORM\ManyToOne(targetEntity="App\Entity\Hv\ExperienciaDuracion")
      * @ORM\JoinColumn(name="duracion", referencedColumnName="id", nullable=false)
      * @Assert\NotNull(message="Ingrese duración")
-     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "messenger:hv-child:put", "api:hv:read", "api:hv:write", "scraper", "scraper-hv-child"})
+     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "messenger:hv-child:put"})
      */
     private $duracion;
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
+     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put"})
      */
     private $motivoRetiro;
 
@@ -111,7 +115,7 @@ class Experiencia implements HvEntity
      *      max = 100,
      *      maxMessage = "El nombre supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "api:hv:read", "api:hv:write", "scraper", "scraper-hv-child"})
+     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put"})
      * @NormalizeFunction("strtoupper", groups={"napi:hv:post", "napi:hv-child:post", "napi:hv-child:put"})
      */
     private $jefeInmediato;
@@ -119,7 +123,7 @@ class Experiencia implements HvEntity
     /**
      * @ORM\Column(type="bigint", nullable=true)
      * @Assert\Regex(pattern="/^[0-9]+$/", message="Solo se aceptan numeros")
-     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
+     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put"})
      */
     private $salarioBasico;
 
@@ -131,14 +135,14 @@ class Experiencia implements HvEntity
      *      max = 15,
      *      maxMessage = "El telefono supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "api:hv:read", "api:hv:write", "scraper", "scraper-hv-child"})
+     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put"})
      */
     private $telefonoJefe;
 
     /**
      * @ORM\Column(type="date", nullable=true)
      * @Assert\NotNull(message="Ingrese fecha")
-     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "api:hv:read", "api:hv:write", "scraper", "scraper-hv-child"})
+     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put"})
      */
     private $fechaIngreso;
 

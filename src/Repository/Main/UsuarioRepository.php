@@ -10,7 +10,7 @@ use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use PDO;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method Usuario|null find($id, $lockMode = null, $lockVersion = null)
@@ -23,7 +23,7 @@ class UsuarioRepository extends ServiceEntityRepository
     private $usuariosCached = [];
 
 
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Usuario::class);
     }

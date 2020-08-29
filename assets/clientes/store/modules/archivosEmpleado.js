@@ -1,4 +1,4 @@
-import Router from "@/../router";
+import Router from "@/sel/js/single-page/router/router";
 import axios from 'axios';
 
 export default {

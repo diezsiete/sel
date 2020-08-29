@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Query\QueryException;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method Autoliquidacion|null find($id, $lockMode = null, $lockVersion = null)
@@ -20,7 +20,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class AutoliquidacionRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Autoliquidacion::class);
     }

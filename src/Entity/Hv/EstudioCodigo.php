@@ -16,7 +16,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *     itemOperations={
  *         "get" = {"path": "/estudio-codigo/{id}"},
  *     },
- *     normalizationContext={"groups"={"api:estudio-codigo:read", "messenger:hv-child:put"}}
+ *     normalizationContext={"groups"={"vue:read"}}
  * )
  * @ApiFilter(SearchFilter::class, properties={"nombre": "partial"})
  * @ORM\Entity(repositoryClass="App\Repository\Hv\EstudioCodigoRepository")
@@ -26,13 +26,13 @@ class EstudioCodigo
     /**
      * @ORM\Id()
      * @ORM\Column(type="string", length=5)
-     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "api:estudio-codigo:read", "scraper", "scraper-hv-child"})
+     * @Groups({"vue:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=45)
-     * @Groups({"main", "api:estudio-codigo:read"})
+     * @Groups({"vue:read"})
      */
     private $nombre;
 

@@ -1,0 +1,4 @@
+.required label::after, .archivo .required span::after  {
+    content: " *";
+    color: #c70019;
+}

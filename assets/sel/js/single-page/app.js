@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Vuetify from 'vuetify';
 import 'vuetify/dist/vuetify.min.css'
 import './../../css/single-page.scss';
-import '@/store/store'
+import '@/sel/js/single-page/store/store'
 import App from './App.vue'
 import router from "./router/router";
 

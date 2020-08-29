@@ -57,7 +57,7 @@
 </template>
 
 <script>
-    import usuarioSearch from '@/components/UsuarioSearch'
+    import usuarioSearch from '@/sel/js/single-page/components/UsuarioSearch'
     import fileUploader from "./ArchivoUploader";
     import archivosBrowser from './ArchivosBrowser'
     import archivoDetail from './ArchivoDetail'
