@@ -111,16 +111,12 @@ final class Version20200317041947 extends AbstractMigration implements Container
         }
         $this->addSql('ALTER TABLE referencia ADD CONSTRAINT FK_C01213D8702D1D47 FOREIGN KEY (tipo) REFERENCES referencia_tipo (id)');
         $this->addSql('CREATE INDEX IDX_C01213D8702D1D47 ON referencia (tipo)');
-
-        $this->addSql('ALTER TABLE hv ADD t3rs TINYINT(1) DEFAULT NULL');
     }
 
     public function down(Schema $schema) : void
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
-
-        $this->addSql('ALTER TABLE hv DROP t3rs');
 
         $this->addSql('ALTER TABLE referencia DROP FOREIGN KEY FK_C01213D8702D1D47');
         $this->addSql('DROP TABLE referencia_tipo');

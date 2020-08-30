@@ -343,11 +343,6 @@ class Hv implements HvEntity
      */
     private $vacantes;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $t3rs;
-
     public function __construct()
     {
         $this->estudios = new ArrayCollection();
@@ -1071,23 +1066,6 @@ class Hv implements HvEntity
         return $this;
     }
 
-    /**
-     * @return bool|null
-     */
-    public function getT3rs(): ?bool
-    {
-        return $this->t3rs;
-    }
-
-    /**
-     * @param bool $t3rs
-     * @return Hv
-     */
-    public function isT3rs($t3rs): Hv
-    {
-        $this->t3rs = $t3rs;
-        return $this;
-    }
 
     public function getNapiId(): string
     {
