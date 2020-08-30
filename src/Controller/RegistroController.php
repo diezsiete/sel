@@ -187,6 +187,14 @@ class RegistroController extends AbstractController
         return $this->json(['can' => $ok === true, 'errorMessage' => $ok === true ? "" : $ok]);
     }
 
+    /**
+     * @Route("/registro/session-maintain", name="registro_session_maintain", options={"expose" = true})
+     */
+    public function sessionMaintain()
+    {
+        return $this->json(['ok' => true]);
+    }
+
 
     protected function hvEntityPage(Request $request, DataTableFactory $dataTableFactory, string $datatableType,
                                     string $formType, string $view, array $parameters = [])
