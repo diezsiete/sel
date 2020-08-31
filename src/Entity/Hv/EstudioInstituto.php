@@ -26,13 +26,13 @@ class EstudioInstituto
     /**
      * @ORM\Id()
      * @ORM\Column(type="string", length=10)
-     * @Groups({"vue:read"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "messenger:hv-child:put", "scraper", "scraper-hv-child"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=145)
-     * @Groups({"vue:read"})
+     * @Groups("main")
      */
     private $nombre;
 

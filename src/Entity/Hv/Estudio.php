@@ -14,8 +14,8 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  * @ApiResource(
  *     collectionOperations={"post"},
  *     itemOperations={"get", "put", "delete"},
- *     normalizationContext={"groups"={"api:cv:read"}},
- *     denormalizationContext={"groups"={"api:cv:write"}},
+ *     normalizationContext={"groups"={"api:hv:read"}},
+ *     denormalizationContext={"groups"={"api:hv:write"}},
  *     attributes={"validation_groups"={"Default", "api"}}
  * )
  * @ApiFilter(SearchFilter::class, properties={"hv": "exact"})
@@ -31,7 +31,7 @@ class Estudio implements HvEntity
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"api:cv:read"})
+     * @Groups({"main", "api:hv:read", "api:cv:read"})
      */
     protected $id;
 
@@ -39,7 +39,7 @@ class Estudio implements HvEntity
      * @ORM\ManyToOne(targetEntity="EstudioCodigo")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotNull(message="Seleccione el area de estudio")
-     * @Groups({"api:cv:read", "api:cv:write"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "messenger:hv-child:put",  "api:hv:write", "api:hv:read", "scraper", "scraper-hv-child", "api:cv:read", "api:cv:write"})
      * @var EstudioCodigo
      */
     private $codigo;
@@ -51,7 +51,7 @@ class Estudio implements HvEntity
      *      max = 50,
      *      maxMessage = "El titulo supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"api:cv:read", "api:cv:write"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "api:hv:write", "api:hv:read", "scraper", "scraper-hv-child", "api:cv:read", "api:cv:write"})
      */
     private $nombre;
 
@@ -59,14 +59,14 @@ class Estudio implements HvEntity
      * @ORM\ManyToOne(targetEntity="EstudioInstituto")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotNull(message="Seleccione instituto. Si no lo encuentra seleccione opción 'NO APLICA'")
-     * @Groups({"api:cv:read", "api:cv:write"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "messenger:hv-child:put", "api:hv:write", "scraper", "scraper-hv-child"})
      * @var EstudioInstituto
      */
     private $instituto;
 
     /**
      * @ORM\Column(type="date", nullable=true)
-     * @Groups({"api:cv:read", "api:cv:write"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
      */
     private $fin;
 
@@ -94,7 +94,7 @@ class Estudio implements HvEntity
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
-     * @Groups({"api:cv:read", "api:cv:write"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child", "api:cv:read", "api:cv:write"})
      */
     private $graduado;
 
@@ -106,7 +106,7 @@ class Estudio implements HvEntity
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
-     * @Groups({"api:cv:read", "api:cv:write"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child", "api:cv:read", "api:cv:write"})
      */
     private $cancelo = 0;
 

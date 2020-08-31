@@ -49,7 +49,7 @@ class AdminHvDataTableType implements DataTableTypeInterface
         $vacante = $options['vacante'] ?? null;
         $dataTable
             ->add('identificacion', TextColumn::class, ['label' => 'Identificación', 'field' => 'usuario.identificacion'])
-            ->add('nombreCompleto', TextColumn::class, ['label' => 'Nombre', 'field' => 'usuario.nombrePrimeros'])
+            ->add('nombreCompleto', TextColumn::class, ['label' => 'Nombre', 'field' => 'usuario.nombrePrimeros', 'orderable' => false])
             ->add('registro', DateTimeColumn::class, ['label' => 'Registro', 'field' => 'usuario.createdAt', 'format' => 'Y-m-d'])
             ->add('residencia', TextColumn::class, ['label' => 'Residencia', 'field' => 'resiCiudad.nombre'])
             ->add('edad', DateTimeColumn::class, ['label' => 'Edad', 'field' => 'hv.nacimiento', 'format' => 'Y-m-d', 'render' => function($value, $context) {
