@@ -24,20 +24,18 @@ abstract class SsrsReport
      * @var EntityManagerInterface
      */
     protected $em;
-
     /**
      * @var ServicioEmpleadosReport
      */
     protected $currentReport;
-
     /**
      * @var EventDispatcherInterface
      */
-    private $dispatcher;
+    protected $dispatcher;
     /**
      * @var Configuracion
      */
-    private $configuracion;
+    protected $configuracion;
 
     public function __construct(NapiClient $client, EntityManagerInterface $em, EventDispatcherInterface $dispatcher, Configuracion $configuracion)
     {

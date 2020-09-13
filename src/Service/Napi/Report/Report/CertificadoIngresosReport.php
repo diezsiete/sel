@@ -13,6 +13,10 @@ use App\Service\Pdf\ServicioEmpleados\Report\CertificadoIngresosPdf;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
+/**
+ * Previamente en ssrs era el "/ReportesWeb/NOM/NOM921_17"
+ * @package App\Service\Napi\Report\Report
+ */
 class CertificadoIngresosReport extends SsrsReport
 {
     use LocalPdf;
@@ -50,12 +54,18 @@ class CertificadoIngresosReport extends SsrsReport
 
     protected function callOperation(Empleado $empleado)
     {
-        // TODO
-//        $certificadoIngresos = $this->napiClient->itemOperations(CertificadoIngresos::class)->get(
-//            $usuario->getIdentificacion(),
-//            $this->input->getArgument('year') . '-01-01',
-//            $this->input->getArgument('year') . '-12-31'
-//        );
-        return null;
+        $anos = $this->configuracion->servicioEmpleados()->getCertificadoIngresosConfig()->getAnos();
+        $certificados = [];
+        foreach($anos as $ano) {
+            $certificadoIngresos = $this->client->itemOperations(CertificadoIngresos::class)->get(
+                $empleado->getIdentificacion(),
+                $ano . '-01-01',
+                $ano . '-12-31'
+            );
+            if($certificadoIngresos) {
+                $certificados[] = $certificadoIngresos;
+            }
+        }
+        return $certificados;
     }
 }

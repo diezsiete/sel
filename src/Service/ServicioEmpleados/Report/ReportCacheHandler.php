@@ -17,6 +17,7 @@ use App\Service\Novasoft\Report\Report\LiquidacionContratoReport;
 use App\Service\Novasoft\Report\Report\NominaReport;
 use App\Service\Novasoft\Report\ReportFactory as NovasoftReportFactory;
 use App\Service\Napi\Report\ReportFactory as NapiReportFactory;
+use App\Service\Utils\Symbol;
 use DateInterval;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -69,13 +70,23 @@ class ReportCacheHandler
      * @var NapiReportFactory
      */
     private $napiReportFactory;
+    /**
+     * @var Symbol
+     */
+    private $utilsSymbol;
 
-    public function __construct(ReportCacheRepository $reportCacheRepo, EntityManagerInterface $em, Configuracion $config,
-                                NovasoftEmpleadoService $novasoftEmpleadoService, EventDispatcherInterface $dispatcher,
-                                HalconReportFactory $halconReportFactory, NovasoftReportFactory $novasoftReportFactory,
-                                NapiReportFactory $napiReportFactory,
-                                ReportFactory $reportFactory)
-    {
+    public function __construct(
+        ReportCacheRepository $reportCacheRepo,
+        EntityManagerInterface $em,
+        Configuracion $config,
+        NovasoftEmpleadoService $novasoftEmpleadoService,
+        EventDispatcherInterface $dispatcher,
+        HalconReportFactory $halconReportFactory,
+        NovasoftReportFactory $novasoftReportFactory,
+        NapiReportFactory $napiReportFactory,
+        ReportFactory $reportFactory,
+        Symbol $utilsSymbol
+    ){
         $this->reportCacheRepo = $reportCacheRepo;
         $this->halconReportFactory = $halconReportFactory;
         $this->novasoftReportFactory = $novasoftReportFactory;
@@ -85,6 +96,7 @@ class ReportCacheHandler
         $this->dispatcher = $dispatcher;
         $this->reportFactory = $reportFactory;
         $this->napiReportFactory = $napiReportFactory;
+        $this->utilsSymbol = $utilsSymbol;
     }
 
     /**
@@ -143,7 +155,7 @@ class ReportCacheHandler
 
     public function handleHalcon(Usuario $usuario, $reportEntityClass)
     {
-        $reportEntityClassClean = $this->getReportEntityClassClean($reportEntityClass);
+        $reportEntityClassClean = $this->utilsSymbol->removeNamespaceFromClassName($reportEntityClass);
         if($usuario->esRol('ROLE_HALCON')) {
             if (!$cache = $this->reportCacheRepo->findLastCacheForReport($usuario, 'halcon', $reportEntityClassClean)) {
                 $report = $this->halconReportFactory->getReport($reportEntityClassClean);
@@ -158,7 +170,7 @@ class ReportCacheHandler
 
     public function handleNapi(Usuario $usuario, $reportEntityClass)
     {
-        $reportEntityClass = $this->getReportEntityClassClean($reportEntityClass);
+        $reportEntityClass = $this->utilsSymbol->removeNamespaceFromClassName($reportEntityClass);
         if($usuario->esRol('ROLE_EMPLEADO')) {
             if (!$cache = $this->hasCache($usuario, 'napi', $reportEntityClass)) {
                 $report = $this->napiReportFactory->getReport($reportEntityClass);
@@ -176,7 +188,7 @@ class ReportCacheHandler
      */
     public function handleNovasoft(Usuario $usuario, $reportEntityClass, $ignoreRefreshInterval = false)
     {
-        $reportEntityClassClean = $this->getReportEntityClassClean($reportEntityClass);
+        $reportEntityClassClean = $this->utilsSymbol->removeNamespaceFromClassName($reportEntityClass);
         if($usuario->esRol('ROLE_EMPLEADO')) {
             $report = $this->novasoftReportFactory->getReport($reportEntityClassClean)
                 ->setUsuario($usuario)
@@ -227,8 +239,8 @@ class ReportCacheHandler
     public function delete(Usuario $usuario, $reportEntityName, $source = null)
     {
         if(!$source) {
-            foreach($this->config->servicioEmpleados()->getSources() as $source) {
-                $this->delete($usuario, $reportEntityName, $source);
+            foreach($this->config->servicioEmpleados()->getSources() as $seSource) {
+                $this->delete($usuario, $reportEntityName, $seSource);
             }
         } else {
             $seEntityName = $this->config->servicioEmpleados()->getReportEntityClass($reportEntityName);
@@ -260,8 +272,8 @@ class ReportCacheHandler
         $reports = is_array($reports) ? $reports : [$reports];
         $hasCacheToRenew = false;
         if(!$source) {
-            foreach($this->config->servicioEmpleados()->getSources() as $source) {
-                $hasCacheToRenew = $hasCacheToRenew ? $hasCacheToRenew : $this->hasCacheToRenew($usuario, $source, $reports);
+            foreach($this->config->servicioEmpleados()->getSources() as $seSource) {
+                $hasCacheToRenew = $hasCacheToRenew ? $hasCacheToRenew : $this->hasCacheToRenew($usuario, $seSource, $reports);
             }
         } else {
             if($this->config->servicioEmpleados()->usuarioHasRoleForSource($usuario, $source)) {
@@ -369,21 +381,6 @@ class ReportCacheHandler
             $anosUpdate[] = array_shift($anos);
         }
         $ciReport->setParameterAno($anosUpdate);
-    }
-
-
-    /**
-     * @param $reporEntityClass
-     * @return mixed
-     * @deprecated TODO instead use Utils Symbol
-     */
-    private function getReportEntityClassClean($reporEntityClass)
-    {
-        $reporEntityClassClean = $reporEntityClass;
-        if(preg_match('/.*\\\\(\w+)$/', $reporEntityClass, $matches)) {
-            $reporEntityClassClean = $matches[1];
-        }
-        return $reporEntityClassClean;
     }
 
     private function deleteReportEntities($entityName, $criteria, $callbackEachEntity = '')

@@ -24,10 +24,6 @@ class CertificadoLaboralReport extends SsrsReport implements ServiceSubscriberIn
     use LocalPdf;
 
     /**
-     * @var Configuracion
-     */
-    private $configuracion;
-    /**
      * @var ContainerInterface
      */
     private $container;
@@ -36,7 +32,6 @@ class CertificadoLaboralReport extends SsrsReport implements ServiceSubscriberIn
                                 Configuracion $configuracion, ContainerInterface $container)
     {
         parent::__construct($client, $em, $dispatcher, $configuracion);
-        $this->configuracion = $configuracion;
         $this->container = $container;
     }
 
