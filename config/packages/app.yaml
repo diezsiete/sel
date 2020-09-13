@@ -88,7 +88,7 @@ app:
       dir: 'Carrera 22 # 86 A 24'
       web: www.servilabor.com.co
       mail: info@servilabor.com.co
-      tel: 300 31 13
+      tel: 578 34 35
       logo: build/servilabor/images/sel/logo-servilabor.png
       logo_pdf: build/servilabor/images/sel/logo-servilabor-pdf.png
       home_route: servilabor_inicio

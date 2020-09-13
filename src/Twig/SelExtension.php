@@ -52,11 +52,7 @@ class SelExtension extends AbstractExtension implements ServiceSubscriberInterfa
     {
         return [
             new TwigFunction('master_request', [$this, 'masterRequest']),
-            new TwigFunction('is_sel', [$this, 'isSel']),
-
-            new TwigFunction('loading_overlay_body_class', [$this, 'loadingOverlayBodyClass']),
-            new TwigFunction('loading_overlay_body_options', [$this, 'loadingOverlayBodyOptions'], ['is_safe' => ['html']]),
-            new TwigFunction('loading_overlay', [$this, 'loadingOverlayTemplate'], ['is_safe' => ['html']])
+            new TwigFunction('is_sel', [$this, 'isSel'])
         ];
     }
 

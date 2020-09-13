@@ -133,24 +133,29 @@
 }
 
 /*--------------------------------------------------
-    Camacoes
+    Camacoes y Grupo Hispano Colombiano
 ----------------------------------------------------*/
-a.camacoes, a.camacoes:hover, h3.camacoes {
-    color: #AB0303;
-    font-weight: bold;
+.camacoes {
+    .resalte, a.resalte:hover {
+        color: #AB0303;
+        font-weight: bold;
+    }
+    p {
+        margin-bottom: 60px;
+    }
 }
 
 .grupo-hispanocolombiano{
-    p{
-        margin-bottom: 60px;
-    }
-    a {
+    .font-rubik {
         font-size: 20px;
         font-weight: 400;
         letter-spacing: 3px;
         color: #1a1a1a;
         text-decoration: none;
         font-family: Rubik, sans-serif;
+    }
+    img {
+        width: 200px;
     }
 }
 
