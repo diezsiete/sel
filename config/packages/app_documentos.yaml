@@ -2,6 +2,10 @@ app:
   empresas:
     PTA:
       documentos_laborales:
+        protocolo-de-bioseguridad-1513:
+          title: PROTOCOLO DE BIOSEGURIDAD 1513
+          date: 2020-09-02
+          category: COVID-19
         prevencion-covid-medidas-generales:
           title: Prevención covid medidas generales
           date: 2020-05-22
