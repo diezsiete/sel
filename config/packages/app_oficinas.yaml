@@ -43,14 +43,6 @@ app:
           latitude: 5.82880
           longitude: -73.03401
 
-        ibague:
-          ciudad: Ibagué
-          direccion: Manzana B, Casa 7 Barrio Prados del Norte
-          telefono: (8) 274 31 95
-          email: jefatura.ibague@pta.com.co
-          latitude: 4.431412
-          longitude: -75.219765
-
         medellin:
           ciudad: Medellín
           direccion: Carrera 49  Nº 52 - 170  Of. 601 (Ed. Los Cambulos)
@@ -58,11 +50,3 @@ app:
           email: ptamedellin@pta.com.co
           latitude: 6.25117
           longitude: -75.56570
-
-        pereira:
-          ciudad: Pereira
-          direccion: Carrera 6 N° 18 - 46   Of. 405 A (C. Cial. y de Negocios La Plazuela P.H.)
-          telefono: (6) 333 3637
-          email: ptapereira@pta.com.co
-          latitude: 4.81549
-          longitude: -75.69361
