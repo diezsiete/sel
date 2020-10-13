@@ -171,6 +171,18 @@ class HvFormType extends AbstractType
             ->add('nivelAcademico', EntityType::class, [
                 'class' => NivelAcademico::class,
                 'required' => true,
+                'query_builder' => function(EntityRepository $repository) {
+                    $qb = $repository->createQueryBuilder('na');
+                    // the function returns a QueryBuilder object
+                    return $qb
+                        // find all users where 'deleted' is NOT '1'
+                        ->where($qb->expr()->andX(
+                            $qb->expr()->neq('na.id', '?1'),
+                            $qb->expr()->neq('na.id', '?2')
+                        ))
+                        ->setParameter('1', '01')
+                        ->setParameter('2', '13');
+                }
             ])
             /*->add('estatura', null, [
                 'label' => 'Estatura (Metros)'

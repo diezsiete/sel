@@ -31,14 +31,14 @@ class EstudioFormType extends AbstractType
             ])
             ->add('fin',DateType::class, [
                 'label' => 'Fecha de finalización',
-                'required' => false,
+                'required' => true,
                 'widget' => 'single_text',
                 'html5' => false,
                 'format' => 'yyyy-MM-dd',
                 'help' => 'Utilizar el formato ej: 2010-10-23',
             ])
-            ->add('graduado')
-            ->add('cancelo')
+//            ->add('graduado')
+//            ->add('cancelo')
 //            ->add('anoEstudio')
 //            ->add('horasEstudio')
 //            ->add('semestresAprobados')

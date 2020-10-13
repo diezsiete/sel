@@ -66,6 +66,7 @@ class Estudio implements HvEntity
 
     /**
      * @ORM\Column(type="date", nullable=true)
+     * @Assert\NotNull(message="Indique la fecha de finalización")
      * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
      */
     private $fin;
