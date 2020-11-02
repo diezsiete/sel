@@ -4,9 +4,9 @@
 namespace App\Message\Novasoft\Api;
 
 
-class InsertHvChildInNovasoft
+class InsertHvChildInNovasoft implements NapiHvMessage
 {
-    use MessageWithScraperSolicitud;
+    use MessageWithSolicitud;
 
     private $childId;
     /**

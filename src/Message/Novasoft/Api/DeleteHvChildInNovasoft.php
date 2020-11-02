@@ -4,9 +4,9 @@
 namespace App\Message\Novasoft\Api;
 
 
-class DeleteHvChildInNovasoft
+class DeleteHvChildInNovasoft implements NapiHvMessage
 {
-    use MessageWithScraperSolicitud;
+    use MessageWithSolicitud;
     /**
      * @var string
      */

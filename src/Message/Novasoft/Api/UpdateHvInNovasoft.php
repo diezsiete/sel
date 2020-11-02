@@ -4,9 +4,9 @@
 namespace App\Message\Novasoft\Api;
 
 
-class UpdateHvInNovasoft
+class UpdateHvInNovasoft implements NapiHvMessage
 {
-    use MessageWithScraperSolicitud;
+    use MessageWithSolicitud;
 
     private $hvId;
 

@@ -4,9 +4,9 @@
 namespace App\Message\Novasoft\Api;
 
 
-class UpdateHvChildInNovasoft
+class UpdateHvChildInNovasoft implements NapiHvMessage
 {
-    use MessageWithScraperSolicitud;
+    use MessageWithSolicitud;
     /**
      * @var array
      */
