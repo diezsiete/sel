@@ -1,0 +1,4 @@
+app:
+  halcon:
+    servicios:
+      url: http://3.237.96.100:8668

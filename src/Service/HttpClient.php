@@ -3,13 +3,10 @@
 namespace App\Service;
 
 
-use HttpException;
+use Closure;
 use Symfony\Component\HttpClient\Exception\ClientException;
 use Symfony\Component\HttpClient\Exception\ServerException;
-use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Component\Mime\Part\Multipart\FormDataPart;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
@@ -29,6 +26,18 @@ class HttpClient
     public function get(string $url, array $options = [])
     {
         return $this->request('GET', $url, $options);
+    }
+
+    /**
+     * @param string $url
+     * @param string|array|Closure|resource $parameters
+     * @param array $options
+     * @return ResponseInterface
+     * @throws TransportExceptionInterface
+     */
+    public function post(string $url, $parameters, $options = [])
+    {
+        return $this->request('POST', $url, ['body' => $parameters] + $options);
     }
 
     public function postJson(string $url, $jsonData, $options = [])

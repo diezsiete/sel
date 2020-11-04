@@ -10,11 +10,10 @@ use App\Command\Helpers\SelCommandTrait;
 use App\Command\Helpers\TraitableCommand\TraitableCommand;
 use App\Entity\Autoliquidacion\Autoliquidacion;
 use App\Entity\Main\Convenio;
-use App\Entity\Main\Representante;
 use App\Service\Autoliquidacion\Email;
-use App\Service\Autoliquidacion\Export;
 use App\Service\Autoliquidacion\ExportPdf;
 use App\Service\Autoliquidacion\ExportZip;
+use App\Service\Autoliquidacion\Correo;
 use DateTime;
 use Doctrine\Common\Annotations\Reader;
 use Exception;
@@ -39,21 +38,26 @@ class AutoliquidacionEmailCommand extends TraitableCommand
      */
     private $email;
     /**
-     * @var Export
+     * @var ExportZip
      */
-    private $export;
+    private $exportZip;
     /**
      * @var ExportPdf
      */
     private $exportPdf;
+    /**
+     * @var Correo
+     */
+    private $correo;
 
     public function __construct(Reader $annotationReader, EventDispatcherInterface $eventDispatcher, Email $email,
-                                ExportZip $export, ExportPdf $exportPdf)
+                                ExportZip $export, ExportPdf $exportPdf, Correo $correo)
     {
         parent::__construct($annotationReader, $eventDispatcher);
         $this->email = $email;
-        $this->export = $export;
+        $this->exportZip = $export;
         $this->exportPdf = $exportPdf;
+        $this->correo = $correo;
     }
 
     protected function configure()
@@ -80,7 +84,7 @@ class AutoliquidacionEmailCommand extends TraitableCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $testRecipient = $input->getOption('recipient') ? [$input->getOption('recipient')] : [];
+        $testRecipient = $input->getOption('recipient') ? [$input->getOption('recipient')] : null;
         $testBcc = $input->getOption('bcc');
         $testBcc = !$testBcc ? null : array_filter($testBcc, static function($value) {
             return (bool)$value;
@@ -89,7 +93,7 @@ class AutoliquidacionEmailCommand extends TraitableCommand
         $bccMerge = $input->getOption('bcc-merge');
         $force = $input->getOption('force');
         $sendedNot = $input->getOption('sended-not');
-        $cuotaAdjunto = 25;
+        $cuotaAdjunto = $this->correo->adjuntoLimite();
 
         $autoliqs = $this->em->getRepository(Autoliquidacion::class)
             ->findByConvenio($input->getArgument('convenios'), $this->getPeriodo($input));
@@ -102,16 +106,21 @@ class AutoliquidacionEmailCommand extends TraitableCommand
 
             $send = ($force || (!$force && $porcentajeEjecucion === 100)) && (!$sendedNot || !$autoliq->isEmailSended());
             if($send) {
-                $recipients = $this->email->getRecipients($autoliq->getConvenio(), $testRecipient);
+                $recipients = $testRecipient ?? $this->correo->getRecipients($autoliq->getConvenio());
+                $bccs = $testBcc && !$bccMerge ? $testBcc : $this->correo->getBccsEmails($autoliq);
+                if($testBcc && $bccMerge) {
+                    $bccs = array_merge($bccs, $testBcc);
+                }
 
                 foreach($recipients as $recipient) {
-                    $bccs = $this->email->getBccsEmails($autoliq->getConvenio(), $testBcc, $bccMerge);
                     $this->logRecipients($recipient, $bccs);
                     try {
                         $filePath = $this->generateExportFile($autoliq, $recipient, $cuotaAdjunto);
+
                         if($filePath && !$input->getOption('dont-send')) {
                             $recipientEmail = is_object($recipient) ? $recipient->getEmail() : $recipient;
-                            $this->email->send($autoliq, $filePath, $recipientEmail, $bccs);
+
+                            $this->correo->enviar($autoliq, $filePath, $recipientEmail, $bccs);
                             $this->info('Exito envio de email');
                             if(!$testRecipient) {
                                 $autoliq->setEmailSended(1);
@@ -137,7 +146,7 @@ class AutoliquidacionEmailCommand extends TraitableCommand
 
     private function generateExportFile(Autoliquidacion $autoliq, $recipient, $cuotaAdjunto)
     {
-        $export = $this->export;
+        $export = $this->exportZip;
 
         //fix temp
         //TODO permitir que esto sea via configuracion

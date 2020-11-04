@@ -33,6 +33,7 @@ class AppExtension extends Extension
         $container->setParameter('sel_routes', isset($config['sel_routes']) ? $config['sel_routes'] : []);
         $container->setParameter('se', $config['se']);
         $container->setParameter('env(DB_URL)', '%%empresa.'.$empresa.'.db%%');
+        $container->setParameter('halcon', $config['halcon']);
     }
 
 

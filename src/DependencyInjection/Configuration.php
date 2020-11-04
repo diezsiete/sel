@@ -26,6 +26,7 @@ class Configuration implements ConfigurationInterface
             ->append($this->addSeNode())
             ->append($this->addSelRoutesNode())
             ->append($this->addHvWizardRoutes())
+            ->append($this->addHalconNode())
             ->arrayNode('empresas')
                 ->useAttributeAsKey('name')
                 ->arrayPrototype()
@@ -292,6 +293,19 @@ class Configuration implements ConfigurationInterface
             ->end()
         ;
         return $node;
+    }
+
+    private function addHalconNode()
+    {
+        $treeBuilder = new TreeBuilder('halcon');
+        return $treeBuilder->getRootNode()
+            ->children()
+                ->arrayNode('servicios')
+                    ->children()
+                        ->scalarNode('url')->end()
+                    ->end()
+                ->end()
+            ->end();
     }
 
 }
