@@ -1,5 +1,5 @@
 <?php
-
+define('AKEEBAENGINE', 1); // para usar s3 v2
 use App\Kernel;
 use Symfony\Component\Debug\Debug;
 use Symfony\Component\HttpFoundation\Request;

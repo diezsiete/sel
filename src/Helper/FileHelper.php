@@ -11,6 +11,11 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use App\Constant\File as FileConstant;
 
+/**
+ * Trait FileHelper
+ * @package App\Helper
+ * @deprecated use instead \App\Service\Utils\File
+ */
 trait FileHelper
 {
     /**

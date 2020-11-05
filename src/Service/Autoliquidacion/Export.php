@@ -18,7 +18,7 @@ abstract class Export
      */
     protected $security;
     /**
-     * @var \App\Repository\Main\RepresentanteRepository
+     * @var RepresentanteRepository
      */
     protected $representanteRepo;
     /**
@@ -58,7 +58,7 @@ abstract class Export
 
     /**
      * @param Autoliquidacion $autoliquidacion
-     * @param \App\Entity\Main\Usuario|null|Representante $usuario
+     * @param Usuario|null|Representante $usuario
      * @return string
      */
     public abstract function generate(Autoliquidacion $autoliquidacion, $usuario = null);

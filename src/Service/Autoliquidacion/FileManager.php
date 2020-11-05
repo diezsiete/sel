@@ -3,6 +3,7 @@
 
 namespace App\Service\Autoliquidacion;
 
+use App\Entity\Autoliquidacion\Autoliquidacion;
 use App\Service\Utils;
 use DateTimeInterface;
 use Exception;
@@ -124,8 +125,34 @@ class FileManager
         return $this->kernelProjectDir . $this->privateUploadsBaseUrl . $path;
     }
 
-    public function absolutePdfExportPath(DateTimeInterface $periodo, string $codigo)
+    /**
+     * @param string $exportType
+     * @param DateTimeInterface|Autoliquidacion $periodo
+     * @param string|null $codigo
+     * @param bool $absolute
+     * @return string
+     */
+    public function exportPath($exportType = self::DIR_EXPORT_ZIP, $periodo = null, ?string $codigo = null, $absolute = false)
     {
+        if($periodo instanceof Autoliquidacion) {
+            $codigo = $periodo->getConvenio()->getCodigo();
+            $periodo = $periodo->getPeriodo();
+        }
+        $path = $this->getPath($periodo, $codigo, $exportType);
+        return ($absolute ? $this->kernelProjectDir . $this->privateUploadsBaseUrl : '') . $path;
+    }
+
+    /**
+     * @param DateTimeInterface|Autoliquidacion $periodo
+     * @param string|null $codigo
+     * @return string
+     */
+    public function absolutePdfExportPath($periodo, ?string $codigo = null)
+    {
+        if($periodo instanceof Autoliquidacion) {
+            $codigo = $periodo->getConvenio()->getCodigo();
+            $periodo = $periodo->getPeriodo();
+        }
         $path = $this->getPath($periodo, $codigo, static::DIR_EXPORT_PDF);
         return $this->kernelProjectDir . $this->privateUploadsBaseUrl . $path;
     }

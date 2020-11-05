@@ -167,10 +167,10 @@ services:
     App\Uploader\Namer\ArchivoNamer:
         public: true
 
+
+
     Knp\Menu\Twig\MenuExtension:
         alias: knp_menu.twig.extension
-
-
 
     app.menu_builder:
         factory: ['App\Menu\MenuBuilderFactory', 'test']
@@ -215,3 +215,12 @@ services:
                 credentials:
                     key: "%env(empresa:AWS_S3_ACCESS_ID)%"
                     secret: "%env(empresa:AWS_S3_ACCESS_SECRET)%"
+
+    Akeeba\Engine\Postproc\Connector\S3v4\Configuration:
+        arguments:
+            - "%env(empresa:AWS_S3_ACCESS_ID)%"
+            - "%env(empresa:AWS_S3_ACCESS_SECRET)%"
+
+    Akeeba\Engine\Postproc\Connector\S3v4\Connector:
+        arguments:
+            - '@Akeeba\Engine\Postproc\Connector\S3v4\Configuration'

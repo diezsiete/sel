@@ -8,7 +8,7 @@ use App\Entity\Archivo\Archivo;
 use App\Entity\Main\Usuario;
 use App\Exception\UploadedFileValidationErrorsException;
 use App\Helper\File\Zip;
-use App\Helper\S3Helper;
+use App\Helper\File\S3Helper;
 use App\Repository\Archivo\ArchivoRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
