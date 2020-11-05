@@ -51,7 +51,10 @@ class AutoliquidacionCreateCommand extends TraitableCommand
      */
     private $autoliquidacionEmpleadoRepository;
 
-
+    /**
+     * @var array
+     */
+    private $conveniosCodigos;
 
     public function __construct(Reader $reader, EventDispatcherInterface $dispatcher,
                                 DatabaseActions $autoliquidacionService,
@@ -68,7 +71,7 @@ class AutoliquidacionCreateCommand extends TraitableCommand
 
     protected function configure()
     {
-        //$this->addOption('not_overwrite', null, InputOption::VALUE_NONE, 'Si la autoliquidacion ya existe la borra');
+        $this->addOption('overwrite', 'o', InputOption::VALUE_NONE, 'Si la autoliquidacion ya existe la borra');
         $this->addOption('representante', 'r', InputOption::VALUE_NONE,
             'Si no se filtra por convenio, este selecciona unicamente los convenio con representantes (enviar email)');
         parent::configure();
@@ -76,21 +79,18 @@ class AutoliquidacionCreateCommand extends TraitableCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-
+        $overwrite = $input->getOption('overwrite');
         $rango = $this->getRangoFromPeriodo($input, false);
-
 
         if($this->isSearchConvenio()) {
             $conveniosCodigos = $this->getConveniosCodigos();
-            /*if($overwrite) {
-                $this->autoliquidacionService->deleteAutoliquidacion($rango->start, $this->searchValue);
-            }*/
-            $this->autoliquidacionService->deleteAutoliquidacion($rango->start, $this->searchValue);
-
             foreach($conveniosCodigos as $codigo) {
+                if($overwrite) {
+                    $this->autoliquidacionService->deleteAutoliquidacion($rango->start, $codigo);
+                }
                 $empleados = $this->empleadoRepository->findByRangoPeriodo($rango->start, $rango->end, $codigo);
 
-                if(count($empleados)) {
+                if (count($empleados)) {
                     $autoliquidacion = $this->createAutoliquidacion($codigo, $rango->start);
                     foreach ($empleados as $empleado) {
                         $this->createAutoliquidacionEmpleado($autoliquidacion, $empleado);
@@ -179,11 +179,22 @@ class AutoliquidacionCreateCommand extends TraitableCommand
 
     protected function getConveniosCodigos()
     {
-        if($this->input->getOption('representante')) {
-            return $this->convenioRepository->findCodigosWithRepresentante();
-        } else {
-            return $this->getConvenioCodigosTrait();
+        if($this->conveniosCodigos === null) {
+            if ($this->input->getOption('representante')) {
+                $conveniosCodigos = $this->convenioRepository->findCodigosWithRepresentante();
+            } else {
+                $conveniosCodigos = $this->getConvenioCodigosTrait();
+            }
+            if(!$this->input->getOption('overwrite')) {
+                $rango = $this->getRangoFromPeriodo($this->input, false);
+
+                $conveniosCodigos = array_diff($conveniosCodigos, array_map(function (Autoliquidacion $autoliquidacion) {
+                    return $autoliquidacion->getConvenio()->getCodigo();
+                }, $this->autoliquidacionRepository->findByConvenio($conveniosCodigos, $rango->start)));
+            }
+            $this->conveniosCodigos = $conveniosCodigos;
         }
+        return $this->conveniosCodigos;
     }
 
 }
