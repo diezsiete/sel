@@ -87,17 +87,12 @@ class AutoliquidacionCorreoCommand extends TraitableCommand
     {
         $testRecipient = $input->getOption('to') ? $input->getOption('to') : [];
         $testBcc = $input->getOption('bcc');
-        $testBcc = !$testBcc ? null : array_filter($testBcc, static function($value) {
-            return (bool)$value;
-        });
-
         $bccMerge = $input->getOption('bcc-merge');
         $force = $input->getOption('force');
         $sendedNot = $input->getOption('sended-not');
 
         $autoliqs = $this->em->getRepository(Autoliquidacion::class)
             ->findByConvenio($input->getArgument('convenios'), $this->getPeriodo($input));
-
 
         foreach($autoliqs as $autoliq) {
             $porcentajeEjecucion = $autoliq->getPorcentajeEjecucion();
@@ -107,8 +102,8 @@ class AutoliquidacionCorreoCommand extends TraitableCommand
             $send = ($force || (!$force && $porcentajeEjecucion === 100)) && (!$sendedNot || !$autoliq->isEmailSended());
             if($send) {
                 $recipients = $testRecipient ?? $this->correoService->getRecipients($autoliq);
-                $bccs = $testBcc && !$bccMerge ? $testBcc : $this->correoService->getBccsEmails($autoliq);
-                if($testBcc && $bccMerge) {
+                $bccs = $testRecipient || ($testBcc && !$bccMerge) ? $testBcc : $this->correoService->getBccsEmails($autoliq);
+                if(!$testRecipient && $testBcc && $bccMerge) {
                     $bccs = array_merge($bccs, $testBcc);
                 }
 
