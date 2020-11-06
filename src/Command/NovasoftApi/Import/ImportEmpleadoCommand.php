@@ -118,6 +118,8 @@ class ImportEmpleadoCommand extends TraitableCommand
         $search = $this->input->getArgument('search');
         if(is_numeric($search)) {
             return 1;
+        } elseif($search) {
+            $search = $this->em->getRepository(Convenio::class)->find($search);
         }
         return count($this->getEmpleadosCollection($search));
     }
@@ -139,6 +141,7 @@ class ImportEmpleadoCommand extends TraitableCommand
         if($fechaRetiro) {
             $operationParameters['fechaRetiro'] = $fechaRetiro->format('Y-m-d');
         }
+
         if($search) {
             if(is_object($search)) {
                 $operationParameters['codigo'] =  $search->getCodigo();
@@ -151,6 +154,7 @@ class ImportEmpleadoCommand extends TraitableCommand
                 $this->napiClient->addDb(strtolower($ssrsDb->getNombre()));
             }
         }
+
         return $this->napiClient->collectionOperations(Empleado::class)->get($operationParameters);
     }
 }
