@@ -336,7 +336,17 @@ class Progreso
     {
         $pregunta = $pregunta ? $pregunta : $this->pregunta;
         if($pregunta) {
-            $result = $this->respuestas->matching(RespuestaRepository::getByPreguntaCriteria($pregunta));
+            // $result = $this->respuestas->matching(RespuestaRepository::getByPreguntaCriteria($pregunta));
+            $result = $this->respuestas->filter(function (Respuesta $respuesta) use ($pregunta) {
+                $respuestaPreguntaId = $respuesta->getPregunta()->getId();
+                if($pregunta instanceof Pregunta) {
+                    return $respuestaPreguntaId == $pregunta->getId();
+                } else {
+                    return count($pregunta->filter(function (Pregunta $pregunta) use ($respuestaPreguntaId) {
+                        return $pregunta->getId() == $respuestaPreguntaId;
+                    }));
+                }
+            });
             if($pregunta instanceof Pregunta) {
                 $result = $result->count() === 0 ? null : $result->first();
             }
