@@ -95,7 +95,7 @@ class AutoliquidacionEmpleado
         return $this->salida;
     }
 
-    public function setSalida(?string $salida): self
+    public function setSalida(?string $salida = null): self
     {
         $this->salida = $salida;
 

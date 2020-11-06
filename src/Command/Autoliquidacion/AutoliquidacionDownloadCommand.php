@@ -67,6 +67,7 @@ class AutoliquidacionDownloadCommand extends TraitableCommand
     protected function configure()
     {
         parent::configure();
+        $this->setDescription('Descarga autoliq empleado para periodo cuyo codigo de respuesta sea null');
         $this->addOption('overwrite', 'o', InputOption::VALUE_OPTIONAL,
             'Vuelve y descarga la autoliquidacion aun halla sido exitosa. 
             Si especifica codigo sobrescribe las que tengan ese codigo (ej: -o\!200)', false);
@@ -99,9 +100,13 @@ class AutoliquidacionDownloadCommand extends TraitableCommand
                     $this->autoliquidacionService->uploadPdfResource($periodo, $ident, $resource);
                     $this->aelClient->pdfDelete($ident, $periodo);
 
-                    $autoliquidacion->setExito(true)->setCode(200);
+                    $autoliquidacion->setExito(true)->setSalida()->setCode(200);
 //                    $autoliquidacionProgreso->setLastMessage($message);
                 } catch (\Exception $e) {
+                    if($e->getCode() === 403) {
+                        $this->io->error($e->getMessage());
+                        break;
+                    }
                     $autoliquidacion
                         ->setExito($e->getCode() === 404)
                         ->setSalida($e->getMessage())
