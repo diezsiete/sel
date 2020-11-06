@@ -4,12 +4,14 @@
 namespace App\Service\File;
 
 
+use Akeeba\Engine\Postproc\Connector\S3v4\Connector;
 use App\Entity\Archivo\Archivo;
 use App\Entity\Main\Usuario;
 use App\Exception\UploadedFileValidationErrorsException;
 use App\Helper\File\Zip;
 use App\Helper\File\S3Helper;
 use App\Repository\Archivo\ArchivoRepository;
+use App\Service\Utils\File as FileUtil;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use League\Flysystem\FileExistsException;
@@ -49,9 +51,10 @@ class ArchivoManager extends FileManager
 
     public function __construct(FilesystemInterface $selFilesystem, ValidatorInterface $validator,
                                 FilesystemInterface $localFilesystem, EntityManagerInterface $em,
-                                ArchivoRepository $archivoRepository)
+                                ArchivoRepository $archivoRepository, FileUtil $fileUtil,
+                                Connector $s3Connector)
     {
-        parent::__construct($selFilesystem, $validator);
+        parent::__construct($selFilesystem, $validator, $fileUtil, $s3Connector);
 
         $this->em = $em;
         $this->archivoRepository = $archivoRepository;
