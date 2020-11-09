@@ -101,7 +101,7 @@ class AutoliquidacionCorreoCommand extends TraitableCommand
 
             $send = ($force || (!$force && $porcentajeEjecucion === 100)) && (!$sendedNot || !$autoliq->isEmailSended());
             if($send) {
-                $recipients = $testRecipient ?? $this->correoService->getRecipients($autoliq);
+                $recipients = $testRecipient ?: $this->correoService->getRecipients($autoliq);
                 $bccs = $testRecipient || ($testBcc && !$bccMerge) ? $testBcc : $this->correoService->getBccsEmails($autoliq);
                 if(!$testRecipient && $testBcc && $bccMerge) {
                     $bccs = array_merge($bccs, $testBcc);
