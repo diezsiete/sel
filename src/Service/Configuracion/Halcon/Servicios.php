@@ -7,6 +7,7 @@ use App\Service\Utils\Varchar;
 
 /**
  * @property Correo correo
+ * @property Terminal terminal
  */
 class Servicios
 {
@@ -14,12 +15,14 @@ class Servicios
      * @var array
      */
     private $params;
-
-    private $_correo;
     /**
      * @var Varchar
      */
     private $varcharUtil;
+    /**
+     * @var ServicioEndPoints[]
+     */
+    private $endpoints = [];
 
     public function __construct(array $params, Varchar $varcharUtil)
     {
@@ -29,13 +32,16 @@ class Servicios
 
     public function __get($name)
     {
-        switch ($name) {
-            case 'correo':
-                if($this->_correo === null) {
-                    $this->_correo = new Correo($this->params['url'], $this->varcharUtil);
-                }
-                return $this->_correo;
+        if(!isset($this->endpoints[$name])) {
+            switch ($name) {
+                case 'correo':
+                    $this->endpoints[$name] = new Correo($this->params['url'], $this->varcharUtil);
+                    break;
+                case 'terminal':
+                    $this->endpoints[$name] = new Terminal($this->params['url'], $this->varcharUtil);
+                    break;
+            }
         }
-        throw new \Exception("property '$name' no existe");
+        return $this->endpoints[$name];
     }
 }

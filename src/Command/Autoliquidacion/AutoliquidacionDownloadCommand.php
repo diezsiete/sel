@@ -71,6 +71,7 @@ class AutoliquidacionDownloadCommand extends TraitableCommand
         $this->addOption('overwrite', 'o', InputOption::VALUE_OPTIONAL,
             'Vuelve y descarga la autoliquidacion aun halla sido exitosa. 
             Si especifica codigo sobrescribe las que tengan ese codigo (ej: -o\!200)', false);
+        $this->addOption('pm2', null, InputOption::VALUE_NONE, 'Inicializa proceso pm2 en ael');
     }
 
     protected function progressBarCount(InputInterface $input, OutputInterface $output): ?int
@@ -80,41 +81,47 @@ class AutoliquidacionDownloadCommand extends TraitableCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $pm2 = $input->getOption('pm2');
         $periodo = $this->getPeriodo($input);
-
         $autoliquidaciones = $this->getAutoliquidacionesEmpleado($periodo, $input->getOption('overwrite'));
 
         if($autoliquidaciones) {
 //            $autoliquidacionProgreso = (new AutoliquidacionProgreso())->setTotal(count($autoliquidaciones));
 //            $this->em->persist($autoliquidacionProgreso);
 //            $this->em->flush();
-            foreach($autoliquidaciones as $autoliquidacion) {
-                if($output->isVeryVerbose()) {
-                    $this->output->writeln($autoliquidacion->getEmpleado()->getUsuario()->getIdentificacion());
-                }
-                try {
-                    $ident = $autoliquidacion->getUsuario()->getIdentificacion();
+            try {
+                $pm2 ? $this->aelClient->start() : null;
 
-                    $this->aelClient->certificadoDownload($ident, $periodo);
-                    $resource = $this->aelClient->pdfDownload($ident, $periodo);
-                    $this->autoliquidacionService->uploadPdfResource($periodo, $ident, $resource);
-                    $this->aelClient->pdfDelete($ident, $periodo);
-
-                    $autoliquidacion->setExito(true)->setSalida()->setCode(200);
-//                    $autoliquidacionProgreso->setLastMessage($message);
-                } catch (\Exception $e) {
-                    if($e->getCode() === 403) {
-                        $this->io->error($e->getMessage());
-                        break;
+                foreach ($autoliquidaciones as $autoliquidacion) {
+                    if ($output->isVeryVerbose()) {
+                        $this->output->writeln($autoliquidacion->getEmpleado()->getUsuario()->getIdentificacion());
                     }
-                    $autoliquidacion
-                        ->setExito($e->getCode() === 404)
-                        ->setSalida($e->getMessage())
-                        ->setCode($e->getCode());
+                    try {
+                        $ident = $autoliquidacion->getUsuario()->getIdentificacion();
+
+                        $this->aelClient->certificadoDownload($ident, $periodo);
+                        $resource = $this->aelClient->pdfDownload($ident, $periodo);
+                        $this->autoliquidacionService->uploadPdfResource($periodo, $ident, $resource);
+                        $this->aelClient->pdfDelete($ident, $periodo);
+
+                        $autoliquidacion->setExito(true)->setSalida()->setCode(200);
+                        //                    $autoliquidacionProgreso->setLastMessage($message);
+                    } catch (\Exception $e) {
+                        if ($e->getCode() === 403) {
+                            $this->io->error($e->getMessage());
+                            break;
+                        }
+                        $autoliquidacion
+                            ->setExito($e->getCode() === 404)
+                            ->setSalida($e->getMessage())
+                            ->setCode($e->getCode());
+                    }
+                    $autoliquidacion->getAutoliquidacion()->calcularPorcentajeEjecucion();
+                    $this->em->flush();
+                    $this->progressBarAdvance();
                 }
-                $autoliquidacion->getAutoliquidacion()->calcularPorcentajeEjecucion();
-                $this->em->flush();
-                $this->progressBarAdvance();
+            } finally {
+                $pm2 ? $this->aelClient->delete() : null;
             }
         } else {
             $this->io->writeln('No hay autolquidaciones para descargar');

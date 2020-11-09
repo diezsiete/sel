@@ -1,4 +1,4 @@
 app:
   halcon:
     servicios:
-      url: http://127.0.0.1:8000
+      url: http://3.237.96.100:8668 #http://127.0.0.1:8000

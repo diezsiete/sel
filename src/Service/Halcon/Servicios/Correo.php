@@ -6,23 +6,8 @@ use App\Helper\Halcon\Mensaje;
 use App\Service\Configuracion\Halcon\Halcon;
 use App\Service\HttpClient\HttpClient;
 
-class Correo
+class Correo extends HalconServicio
 {
-    /**
-     * @var Halcon
-     */
-    private $configuracion;
-    /**
-     * @var HttpClient
-     */
-    private $client;
-
-    public function __construct(Halcon $configuracion, HttpClient $client)
-    {
-        $this->configuracion = $configuracion;
-        $this->client = $client;
-    }
-
     public function mensaje()
     {
         return new Mensaje();

@@ -6,13 +6,12 @@ namespace App\Service\Configuracion\Halcon;
 use App\Service\Utils\Varchar;
 
 /**
- * @property string enviar
- * @property string adjuntoLimite
+ * @property string ejecutar
  */
-class Correo extends ServicioEndPoints
+class Terminal extends ServicioEndPoints
 {
     public function __construct(string $url, Varchar $varcharUtil)
     {
-        parent::__construct($url . '/correo', $varcharUtil);
+        parent::__construct($url . '/terminal', $varcharUtil);
     }
 }
