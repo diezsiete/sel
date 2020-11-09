@@ -99,7 +99,18 @@ trait SearchByConvenioOrEmpleado
     {
         $conveniosCodigos = [];
         if($this->isSearchConvenio()) {
-            $conveniosCodigos = $this->searchValue ? $this->searchValue : $this->convenioRepository->findAllCodigos();
+            if($this->searchValue) {
+                if(count($this->searchValue) === 1 && preg_match('/(\*|%)/', $this->searchValue[0], $matches)) {
+
+                    $conveniosCodigos = array_map(function (Convenio $convenio) {
+                        return $convenio->getCodigo();
+                    }, $this->convenioRepository->findByCodigo($this->searchValue[0]));
+                } else {
+                    $conveniosCodigos = $this->searchValue;
+                }
+            } else {
+                $conveniosCodigos = $this->convenioRepository->findAllCodigos();
+            }
         }
         return $conveniosCodigos;
     }
@@ -112,7 +123,7 @@ trait SearchByConvenioOrEmpleado
         $convenios = [];
         if($this->isSearchConvenio()) {
             $convenios = $this->searchValue ?
-                $this->convenioRepository->findBy(['codigo' => $this->searchValue]) :
+                $this->convenioRepository->findByCodigo($this->searchValue) :
                 $this->convenioRepository->findAll();
         }
         return $convenios;

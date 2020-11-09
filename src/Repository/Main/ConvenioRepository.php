@@ -28,6 +28,28 @@ class ConvenioRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param string|string[] $codigo
+     * @return Convenio[]
+     */
+    public function findByCodigo($codigo)
+    {
+        if(is_array($codigo) && count($codigo) === 1) {
+            $codigo = $codigo[array_key_first($codigo)];
+        }
+        if(is_array($codigo) || !preg_match('/(\*|%)/', $codigo, $matches)) {
+            return $this->findBy(['codigo' => $codigo]);
+        }
+
+        $codigo = str_replace($matches[1], '%', $codigo);
+
+        $qb = $this->createQueryBuilder('c');
+        return $qb
+            ->andWhere($qb->expr()->like('c.codigo', ':search'))
+            ->setParameter('search', $codigo)
+            ->getQuery()->getResult();
+    }
+
+    /**
      * @return string[]
      */
     public function findAllCodigos()
