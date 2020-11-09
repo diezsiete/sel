@@ -32,7 +32,7 @@ class MenuBuilderServilabor extends MenuBuilder
         $this->createAspirantesMenu($menu, $user);
         $this->createEvaluacionMenu($menu, $user);
 
-        //$this->createPortalClientesMenu($menu, $user);
+        $this->createPortalClientesMenu($menu, $user);
 
         $this->createAdminMenu($menu, $user);
 
@@ -43,11 +43,28 @@ class MenuBuilderServilabor extends MenuBuilder
                 ->setExtra('icon', 'fas fa-microchip');
         }
 
-
-
-
         return $menu;
     }
 
+    protected function createPortalClientesMenu(ItemInterface $menu, $user)
+    {
+        $childs = [];
+        if($this->security->isGranted(['ROLE_ADMIN_AUTOLIQUIDACIONES', 'ROLE_ARCHIVO_CARGAR'], $user)) {
+            $childs['Convenios'] = [
+                'options' => ['route' => 'admin_convenio_list'],
+                'extra' => ['name' => 'icon', 'value' => 'fas fa-building']
+            ];
+        }
 
+        if($this->security->isGranted(['ROLE_ADMIN', 'ROLE_ARCHIVO_CARGAR'], $user)){
+            $menu->addChild('Portal clientes')
+                ->setUri('#')
+                ->setExtra('icon', 'fas fa-cog');
+            foreach ($childs as $childName => $childData) {
+                $menu['Portal clientes']
+                    ->addChild($childName, $childData['options'])
+                    ->setExtra($childData['extra']['name'], $childData['extra']['value']);
+            }
+        }
+    }
 }
