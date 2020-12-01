@@ -97,7 +97,7 @@ app:
         firma: build/servilabor/images/sel/firma-certificado-laboral-servilabor.png
         firmante: SERGIO INVERNON RAMOS
         firmante_cargo: Gerente General
-        firmante_contacto: PBX 300 31 13
+        firmante_contacto: PBX 578 34 35
 
       emails:
         contacto: '%env(empresa:EMAILS_CONTACTO)%'

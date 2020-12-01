@@ -82,7 +82,7 @@
                     <i class="d-flex g-color-gray-dark-v5 mt-1 mr-3 icon-communication-062 u-line-icon-pro"></i>
                     <div class="media-body">
                         <p class="g-color-gray-dark-v3 mb-2">Correo: <a class="g-color-gray-dark-v4" href="#">
-                                info@servilabor.com.co
+                               {{ configuracion.mail }}
                             </a>
                         </p>
                     </div>
@@ -90,7 +90,8 @@
                 <div class="media mb-2">
                     <i class="d-flex g-color-gray-dark-v5 mt-1 mr-3 icon-communication-033 u-line-icon-pro"></i>
                     <div class="media-body">
-                        <p class="g-color-gray-dark-v3">Llamar: <span class="g-color-gray-dark-v4">+57 1 300 31 13</span>
+                        <p class="g-color-gray-dark-v3">Llamar: <span class="g-color-gray-dark-v4">
+                                +57 1 {{ configuracion.tel }}</span>
                         </p>
                     </div>
                 </div>
