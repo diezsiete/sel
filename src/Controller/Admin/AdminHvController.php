@@ -60,7 +60,8 @@ class AdminHvController extends BaseController
             'tiposReferencia' => $referenciaTipoRepo->getKeyPair()
         ]);
         // return $response;
-        $content = str_replace('localhost:8000', 'com.co', $response->getContent());
+        // $content = str_replace('localhost:8000', 'com.co', $response->getContent());
+        $content = $response->getContent();
         $path = '/pdf/' . $hv->getIdentificacion() . '.pdf';
         $halconPdf->generarHtmlStreamBorrar($content, $kernelProjectDir . "/var/uploads$path");
 
