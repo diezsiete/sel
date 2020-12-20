@@ -71,6 +71,12 @@ class AdminHvDataTableType implements DataTableTypeInterface
                         'target' => '_blank'
                     ],
                     [
+                        'route' => ['admin_hv_pdf', ['id' => 'hv.id']],
+                        'tooltip' => 'Pdf',
+                        'icon' => 'fas fa-file-pdf',
+                        'target' => '_blank'
+                    ],
+                    [
                         'icon' => 'fas fa-upload',
                         'tooltip' => 'Cargar a novasoft',
                         'data-id' => 'hv.id',

@@ -28,4 +28,9 @@ class HttpClient
     {
         return (new Request($this->httpClient, $url))->get();
     }
+
+    public function stream($responses, float $timeout = null)
+    {
+        return $this->httpClient->stream($responses, $timeout);
+    }
 }

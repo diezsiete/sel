@@ -1,0 +1,62 @@
+<table>
+    <tr id="basicos">
+        <td>
+            <div class="profile thumb-info mb-3" style="position: relative">
+                <div class="img-wrap rounded img-fluid"></div>
+                <div class="thumb-info-title">
+                    <span class="thumb-info-inner">{{ hv.usuario.nombreCompleto }}</span>
+                    <span class="thumb-info-type">
+                                    <span class="identificacion-tipo">{{ hv.identificacionTipo.nombre }}</span>
+                                    <br>
+                                    {{ hv.usuario.identificacion }}
+                                </span>
+                </div>
+            </div>
+        </td>
+        <td>
+            <h5 class="mb-2 mt-3">Identificación</h5>
+            <p class="text-2">
+                <b>{{ hv.identificacionTipo.nombre }}</b> -
+                {{ hv.usuario.identificacion }}<br>
+                <b>De : </b>
+                {{ hv.identCiudad.nombre }}, {{ hv.identDpto }}, {{ hv.identPais }}
+            </p>
+        </td>
+        <td>
+            <h5 class="mb-2 mt-3">Nacimiento ( {{  hv.nacimiento|ago }} )</h5>
+            <p class="text-2">
+                {{ hv.nacimiento|date('Y-m-d') }}<br>
+                <b>De : </b>
+                {{ hv.identCiudad.nombre }}, {{ hv.identDpto }}, {{ hv.identPais }}
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <h5 class="mb-2 mt-3">Residencia</h5>
+            <p class="text-2">
+                {{ hv.resiCiudad.nombre }}, {{ hv.resiDpto }}, {{ hv.resiPais }}<br>
+                <b>Dirección : </b> {{ hv.direccion }} - {{ hv.barrio }}
+            </p>
+        </td>
+        <td>
+            <h5 class="mb-2 mt-3">Información Adicional</h5>
+            <p class="text-2">
+                <b>Estado civil:</b> {{ hv.estadoCivil.nombre }}<br>
+                <b>Grupo sanguineo</b> {{ hv.grupoSanguineo.nombre ~ " " ~ hv.factorRh.nombre }}<br>
+                <b>Nacionalidad</b> {{ hv.nacionalidad.nombre }}<br>
+            </p>
+        </td>
+        <td>
+            {% if hv.redesSociales.count %}
+                <h5 class="mb-2 mt-3">Redes sociales</h5>
+                {% for redSocial in hv.redesSociales %}
+                    <div class="post-info">
+                        <i class="{{ redesSocialesIcons[redSocial.tipo] }}"></i>&nbsp;
+                        {{ redSocial.cuenta }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </td>
+    </tr>
+</table>

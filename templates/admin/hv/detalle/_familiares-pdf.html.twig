@@ -1,0 +1,50 @@
+{% for key, parentesco in constant('App\\Constant\\HvConstant::PARENTESCO') %}
+    {% set familiares = hv.familiares(key) %}
+    {% if not familiares is empty %}
+        <table>
+            <tr>
+                <td colspan="2"><h4>{{ parentesco }}</h4></td>
+            </tr>
+            {% for familiar in familiares %}
+                <tr>
+                    <td colspan="2"><h5>
+                        {{ familiar.nombre ~ ' ' ~ familiar.primerApellido ~ ' ' ~ familiar.segundoApellido }}
+                    </h5></td>
+                </tr>
+                <tr>
+                    <td><h6>Identificación</h6></td>
+                    <td>
+                        {{ familiar.identificacion }}
+                        - ({{ constant('App\\Constant\\HvConstant::IDENTIFICACION_TIPO')[familiar.identificacionTipo] }})
+                    </td>
+                </tr>
+                <tr>
+                    <td><h6>Nacimiento</h6></td>
+                    <td>
+                        {{ familiar.nacimiento|date('Y-m-d') }} - ({{ familiar.nacimiento|ago }})
+                    </td>
+                </tr>
+                <tr>
+                    <td><h6>Ocupación</h6></td>
+                    <td>
+                        {{ constant('App\\Constant\\HvConstant::OCUPACION')[familiar.ocupacion] }}
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><h6>Nivel académico</h6></td>
+                    <td>
+                        {{ constant('App\\Constant\\HvConstant::NIVEL_ACADEMICO')[familiar.nivelAcademico] }}
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><h6>Estado civil</h6></td>
+                    <td>
+                        {{ constant('App\\Constant\\HvConstant::ESTADO_CIVIL')[familiar.estadoCivil] }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+{% endfor %}

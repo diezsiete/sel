@@ -45,10 +45,10 @@ class Body implements \ArrayAccess
     }
 
     /**
-     * @param array $data
+     * @param array|string $data
      * @return Body
      */
-    public function setData(array $data)
+    public function setData($data)
     {
         $this->data = $data;
         return $this;

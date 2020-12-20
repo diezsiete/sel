@@ -17,6 +17,8 @@ abstract class ServicioEndPoints
      */
     protected $varcharUtil;
 
+    protected $nameGlue = '-';
+
     public function __construct(string $url, Varchar $varcharUtil)
     {
         $this->url = $url;
@@ -27,7 +29,7 @@ abstract class ServicioEndPoints
     {
         switch ($name) {
             default:
-                return $this->url . '/' . $this->varcharUtil->toSnakeCase($name, '-');
+                return $this->url . '/' . $this->varcharUtil->toSnakeCase($name, $this->nameGlue);
         }
     }
 }

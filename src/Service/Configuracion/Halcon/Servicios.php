@@ -3,10 +3,12 @@
 
 namespace App\Service\Configuracion\Halcon;
 
+use App\Service\Configuracion\Halcon\Pdf\Pdf;
 use App\Service\Utils\Varchar;
 
 /**
  * @property Correo correo
+ * @property Pdf pdf
  * @property Terminal terminal
  */
 class Servicios
@@ -36,6 +38,9 @@ class Servicios
             switch ($name) {
                 case 'correo':
                     $this->endpoints[$name] = new Correo($this->params['url'], $this->varcharUtil);
+                    break;
+                case 'pdf':
+                    $this->endpoints[$name] = new Pdf($this->params['url'], $this->varcharUtil);
                     break;
                 case 'terminal':
                     $this->endpoints[$name] = new Terminal($this->params['url'], $this->varcharUtil);

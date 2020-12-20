@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Hv - {{ hv.usuario.nombreCompleto(true) }}</title>
+    <!-- Required Meta Tags Always Come First -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800">
+
+    {% for file in encore_entry_css_files('admin-hv') %}
+        <link href="{{ absolute_url(asset(file)) }}" rel="stylesheet" />
+    {% endfor %}
+    <style>
+        hr {
+            background: #3f317d;
+            margin-bottom: 0;
+        }
+        h2 {
+            color: #3f317d;
+            background: white;
+            float: left;
+            margin-top: -25px;
+            padding-right: 10px;
+        }
+        h2:not(.first), hr:not(.first) {
+            margin-top: 60px;
+        }
+        h2:not(.first) {
+            margin-top: -25px;
+        }
+        table {
+            clear: both;
+            width: 100%;
+            page-break-inside: avoid;
+        }
+    </style>
+
+</head>
+
+<body>
+<main>
+    <section class="g-py-20">
+        <div id="hv-detalle">
+
+            {{ include('admin/hv/detalle/_basicos-pdf.html.twig') }}
+
+            <hr class="first">
+            <h2 class="first">Formación</h2>
+            {{ include('admin/hv/detalle/_estudios-pdf.html.twig') }}
+
+            <hr>
+            <h2>Experiencia</h2>
+            {{ include('admin/hv/detalle/_experiencia-pdf.html.twig') }}
+
+
+            <hr>
+            <h2>Referencias</h2>
+            {{ include('admin/hv/detalle/_referencias-pdf.html.twig') }}
+
+            <hr>
+            <h2>Familiares</h2>
+            {{ include('admin/hv/detalle/_familiares-pdf.html.twig') }}
+        </div>
+    </section>
+
+</main>
+</body>
+</html>

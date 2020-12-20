@@ -1,23 +1,28 @@
 <?php
+/**
+ * @noinspection PhpMissingReturnTypeInspection
+ * @noinspection PhpDocSignatureInspection
+ */
 
 namespace App\Controller\Admin;
 
+use App\Controller\BaseController;
 use App\DataTable\Type\Hv\AdminHvDataTableType;
 use App\Entity\Hv\Hv;
 use App\Repository\Hv\HvRepository;
 use App\Repository\Hv\ReferenciaTipoRepository;
-use Knp\Bundle\TimeBundle\Twig\Extension\TimeExtension;
+use App\Service\Halcon\Servicios\Pdf;
 use Knp\Component\Pager\PaginatorInterface;
+use League\Flysystem\FilesystemInterface;
 use Omines\DataTablesBundle\DataTableFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @IsGranted("ASPIRANTES_MODULE", statusCode=404, message="Resource not found")
  */
-class AdminHvController extends AbstractController
+class AdminHvController extends BaseController
 {
     /**
      * @Route("/sel/admin/hv/listado", name="admin_hv_listado")
@@ -45,6 +50,25 @@ class AdminHvController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/sel/admin/hv/{id}/pdf", name="admin_hv_pdf", requirements={"id"="\d+"})
+     */
+    public function detallePdf(Hv $hv, ReferenciaTipoRepository $referenciaTipoRepo, Pdf $halconPdf, $kernelProjectDir, FilesystemInterface $privateUploadFilesystem)
+    {
+        $response = $this->render('admin/hv/detalle/pdf.html.twig', [
+            'hv' => $hv,
+            'tiposReferencia' => $referenciaTipoRepo->getKeyPair()
+        ]);
+        // return $response;
+        $content = str_replace('localhost:8000', 'com.co', $response->getContent());
+        $path = '/pdf/' . $hv->getIdentificacion() . '.pdf';
+        $halconPdf->generarHtmlStreamBorrar($content, $kernelProjectDir . "/var/uploads$path");
+
+        return $this->renderStream(function () use ($privateUploadFilesystem, $path) {
+            return $privateUploadFilesystem->readStream($path);
+        });
+    }
+
 
     /**
      * @Route("/sel/admin/hv/listado-old", name="admin_hv_listado_old")
@@ -61,4 +85,6 @@ class AdminHvController extends AbstractController
             'search' => $search
         ]);
     }
+
+
 }

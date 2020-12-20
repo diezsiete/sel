@@ -1,0 +1,33 @@
+{% for estudio in hv.estudios %}
+    <table>
+        <tr>
+            <td colspan="2"><h4>{{ estudio.nombre }}</h4></td>
+        </tr>
+        <tr>
+            <td><h5>Area de estudio</h5></td>
+            <td>
+                {{ estudio.codigo.nombre }}
+            </td>
+        </tr>
+        <tr>
+            <td><h5>Título del estudio</h5></td>
+            <td>
+                {{ estudio.nombre }}
+            </td>
+        </tr>
+        <tr>
+            <td><h5>Institución</h5></td>
+            <td>
+                {{ estudio.institutoNombreAlt ?? estudio.instituto.nombre }}
+            </td>
+        </tr>
+        {% if estudio.fin %}
+            <tr>
+                <td><h5>Fecha de finalización</h5></td>
+                <td>
+                    {{ estudio.fin|date('Y-m-d') }}
+                </td>
+            </tr>
+        {% endif %}
+    </table>
+{% endfor %}
