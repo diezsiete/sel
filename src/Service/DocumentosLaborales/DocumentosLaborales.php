@@ -28,27 +28,30 @@ class DocumentosLaborales
 
     /**
      * @param null|string $searchKey
+     * @param bool $public
      * @return DocumentoLaboral[]|DocumentoLaboral
-     * @throws Exception
      */
-    public function get($searchKey = null)
+    public function get($searchKey = null, $public = true)
     {
         $this->initDocumentosLaborales();
         if($searchKey) {
-            if(isset($this->documentosLaborales[$searchKey])) {
-                return $this->documentosLaborales[$searchKey];
+            $docLaboral = $this->documentosLaborales[$searchKey] ?? null;
+            if($docLaboral && ($public && $docLaboral->isPublic()) || (!$public && !$docLaboral->isPublic())) {
+                return $docLaboral;
             }
             throw new \RuntimeException("documento laboral '$searchKey' doesn't exists'");
         }
-        return $this->documentosLaborales;
+        return array_filter($this->documentosLaborales, function(DocumentoLaboral $documentoLaboral) use ($public) {
+            return $public ? $documentoLaboral->isPublic() : !$documentoLaboral->isPublic();
+        });
     }
 
-    public function getByCategory($category)
+    public function getByCategory($category, $public = true)
     {
         $this->initDocumentosLaborales();
         $documentos = [];
         foreach($this->documentosLaborales as $documentoLaboral) {
-            if($documentoLaboral->getCategory() === $category) {
+            if($documentoLaboral->getCategory() === $category && (($public && $documentoLaboral->isPublic()) || (!$public && !$documentoLaboral->isPublic()))) {
                 $documentos[] = $documentoLaboral;
             }
         }

@@ -2,17 +2,11 @@
 
 namespace App\Controller;
 
-use App\Annotation\SelRoute;
-use App\Repository\Main\UsuarioRepository;
-use App\Service\Component\LoadingOverlayComponent;
+use App\Service\DocumentosLaborales\DocumentosLaborales;
 use App\Service\Evaluacion\EvaluacionService;
-use App\Service\Novasoft\Api\Client\EmpleadoClient;
-use App\Service\Novasoft\Api\EmpleadoService;
-use App\Service\Novasoft\NovasoftEmpleadoService;
 use App\Service\ServicioEmpleados\DataTableBuilder;
 use App\Service\ServicioEmpleados\Report\ReportCacheHandler;
 use App\Service\ServicioEmpleados\Report\ReportFactory;
-use Exception;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -46,8 +40,12 @@ class PanelController extends BaseController implements ActionBasedOnRole
         return $this->render('panel/main.html.twig');
     }
 
-    public function empleado(DataTableBuilder $dataTable, ReportFactory $reportFactory, EvaluacionService $evaluacionService)
-    {
+    public function empleado(
+        DataTableBuilder $dataTable,
+        ReportFactory $reportFactory,
+        EvaluacionService $evaluacionService,
+        DocumentosLaborales $documentosLaborales
+    ) {
         /*if(!$this->loadingOverlay->isEnabled() && $this->reportCacheHandler->hasCacheToRenew($this->getUser())) {
             $this->loadingOverlay->enable();
         }*/
@@ -80,6 +78,7 @@ class PanelController extends BaseController implements ActionBasedOnRole
             'certificadoLaboral' => $certificadoLaboral,
             'evaluacionLink' => $evaluacionLink,
             'evaluacionPorcentaje' => $evaluacionPorcentaje,
+            'documentosLaborales' => $documentosLaborales->get(null, false)
         ]);
     }
 

@@ -18,6 +18,7 @@ class DocumentoLaboral
     private $title;
     private $pdf;
     private $category;
+    private $public = true;
 
     public function __construct($empresa, $data)
     {
@@ -27,6 +28,7 @@ class DocumentoLaboral
         $this->title = $data['title'];
         $this->pdf = ($data['pdf'] ?: $data['key']) . '.pdf';
         $this->category = $data['category'];
+        $this->public = $data['public'];
     }
 
     /**
@@ -63,7 +65,8 @@ class DocumentoLaboral
 
     public function getFilePath(): string
     {
-        return '/documentos_laborales/'.$this->empresa.'/'.$this->getPdf();
+        $private = $this->public ? '' : 'private/';
+        return '/documentos_laborales/'.$this->empresa.'/'.$private.$this->getPdf();
     }
 
     public function getMimeType(): string
@@ -77,6 +80,14 @@ class DocumentoLaboral
     public function getCategory()
     {
         return $this->category;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPublic()
+    {
+        return $this->public;
     }
 
 }

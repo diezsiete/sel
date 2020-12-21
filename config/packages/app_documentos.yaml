@@ -75,6 +75,11 @@ app:
           date: 2016-12-14
           title: Política de seguridad y salud en el trabajo
 
+        manual-procedimiento-adjuntos-correspondientes-al-comite-de-convivencia:
+          date: 2020-12-10
+          title: Manual y procedimiento adjuntos correspondientes al Comité de Convivencia
+          public: false
+
     SERVILABOR:
       documentos_laborales:
         politica-sst:

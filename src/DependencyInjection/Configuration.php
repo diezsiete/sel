@@ -270,6 +270,7 @@ class Configuration implements ConfigurationInterface
                     ->scalarNode('title')->end()
                     ->scalarNode('pdf')->defaultValue(null)->end()
                     ->scalarNode('category')->defaultValue('Documentos laborales')->end()
+                    ->booleanNode('public')->defaultValue(true)->end()
                 ->end()
             ->end();
     }

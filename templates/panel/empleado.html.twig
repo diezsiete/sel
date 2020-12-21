@@ -94,7 +94,7 @@
                 </div>
             </div>
 
-            <div class="col-md-12">
+            <div class="{% if documentosLaborales|length %}col-lg-8{% else %}col-xl-12{% endif %}">
                 <section class="card">
                     <header class="card-header">
                         Ultimos Aportes a seguridad social
@@ -109,6 +109,39 @@
                     </div>
                 </section>
             </div>
+            {% if documentosLaborales|length %}
+                <div class="col-lg-4">
+
+                            <div class="tabs tabs-dark mb-4 pb-2">
+                                <ul class="nav nav-tabs">
+                                    <li class="nav-item active">
+                                        <a class="nav-link show active text-1 font-weight-bold text-uppercase" href="#popularPosts" data-toggle="tab">
+                                            Documentos laborales
+                                        </a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="popularPosts">
+                                        <ul style="list-style-type:none; padding-left: 0">
+                                            {% for documentoLaboral in documentosLaborales %}
+                                                <li>
+                                                    <div class="post-info">
+                                                        <a href="{{ path('documento_laboral_private', {key: documentoLaboral.key}) }}" target="_blank">
+                                                            {{ documentoLaboral.title }}
+                                                        </a>
+                                                        <div class="post-meta">
+                                                            {{ documentoLaboral.date|date('M d, Y') }}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                </div>
+            {% endif %}
         </div>
     {% endif %}
 {% endblock %}
