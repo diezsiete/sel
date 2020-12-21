@@ -1,89 +1,96 @@
-{% for experiencia in hv.experiencias %}
-    <table>
-        <tr>
-            <td colspan="2"><h4>{{ experiencia.cargo }}</h4></td>
-        </tr>
-        <tr>
-            <td><h5>Empresa</h5></td>
-            <td>
-                {{ experiencia.empresa }}
-            </td>
-        </tr>
-        <tr>
-            <td><h5>Cargo</h5></td>
-            <td>
-                {{ experiencia.cargo }}
-            </td>
-        </tr>
-        <tr>
-            <td><h5>Area del cargo</h5></td>
-            <td>
-                {{ experiencia.area.nombre }}
-            </td>
-        </tr>
-
-        <tr>
-            <td><h5>Duración</h5></td>
-            <td>
-                {{ experiencia.duracion.nombre}}
-            </td>
-        </tr>
-        <tr>
-            <td><h5>Jefe</h5></td>
-            <td>
-                {{ experiencia.jefeInmediato }}
-            </td>
-        </tr>
-        <tr>
-            <td><h5>Telefono jefe</h5></td>
-            <td>
-                {{ experiencia.telefonoJefe }}
-            </td>
-        </tr>
-        <tr>
-            <td><h5>Fecha ingreso</h5></td>
-            <td>
-                {{ experiencia.fechaIngreso|date('Y-m-d') }}
-            </td>
-        </tr>
-        <tr>
-            <td><h5>Fecha retiro</h5></td>
-            <td>
-                {{ experiencia.fechaRetiro ? experiencia.fechaRetiro|date('Y-m-d') }}
-            </td>
-        </tr>
-
-        <tr>
-            <td><h5>Descripcion</h5></td>
-            <td>
-                {{ experiencia.descripcion }}
-            </td>
-        </tr>
-
-        {% if experiencia.logrosObtenidos %}
+{% if hv.experiencias.count %}
+    <div class="content-no-break-inside">
+    <h2>Experiencia</h2>
+    {% for experiencia in hv.experiencias %}
+        <table {% if loop.first %}class="first"{% endif %}>
             <tr>
-                <td><h5>Logros obtenidos</h5></td>
+                <td colspan="2" ><h4>{{ experiencia.cargo }}</h4></td>
+            </tr>
+            <tr>
+                <td class="title"><h5>Empresa</h5></td>
                 <td>
-                    {{ experiencia.logrosObtenidos }}
+                    {{ experiencia.empresa }}
                 </td>
             </tr>
-        {% endif %}
-        {% if experiencia.motivoRetiro %}
             <tr>
-                <td><h5>Motivo del retiro</h5></td>
+                <td class="title"><h5>Cargo</h5></td>
                 <td>
-                    {{ experiencia.motivoRetiro }}
+                    {{ experiencia.cargo }}
                 </td>
             </tr>
-        {% endif %}
-        {% if experiencia.salarioBasico %}
             <tr>
-                <td><h5>Salario</h5></td>
+                <td class="title"><h5>Area del cargo</h5></td>
                 <td>
-                    {{ experiencia.salarioBasico }}
+                    {{ experiencia.area.nombre }}
                 </td>
             </tr>
-        {% endif %}
 
-    </table>
-{% endfor %}
+            <tr>
+                <td class="title"><h5>Duración</h5></td>
+                <td>
+                    {{ experiencia.duracion.nombre}}
+                </td>
+            </tr>
+            <tr>
+                <td class="title"><h5>Jefe</h5></td>
+                <td>
+                    {{ experiencia.jefeInmediato }}
+                </td>
+            </tr>
+            <tr>
+                <td class="title"><h5>Telefono jefe</h5></td>
+                <td>
+                    {{ experiencia.telefonoJefe }}
+                </td>
+            </tr>
+            <tr>
+                <td class="title"><h5>Fecha ingreso</h5></td>
+                <td>
+                    {{ experiencia.fechaIngreso|date('Y-m-d') }}
+                </td>
+            </tr>
+            <tr>
+                <td class="title"><h5>Fecha retiro</h5></td>
+                <td>
+                    {{ experiencia.fechaRetiro ? experiencia.fechaRetiro|date('Y-m-d') }}
+                </td>
+            </tr>
+
+            <tr>
+                <td class="title"><h5>Descripcion</h5></td>
+                <td>
+                    {{ experiencia.descripcion }}
+                </td>
+            </tr>
+
+            {% if experiencia.logrosObtenidos %}
+                <tr>
+                    <td class="title"><h5>Logros obtenidos</h5></td>
+                    <td>
+                        {{ experiencia.logrosObtenidos }}
+                    </td>
+                </tr>
+            {% endif %}
+            {% if experiencia.motivoRetiro %}
+                <tr>
+                    <td class="title"><h5>Motivo del retiro</h5></td>
+                    <td>
+                        {{ experiencia.motivoRetiro }}
+                    </td>
+                </tr>
+            {% endif %}
+            {% if experiencia.salarioBasico %}
+                <tr>
+                    <td class="title"><h5>Salario</h5></td>
+                    <td>
+                        {{ experiencia.salarioBasico }}
+                    </td>
+                </tr>
+            {% endif %}
+
+        </table>
+        {% if loop.first %}
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endif %}

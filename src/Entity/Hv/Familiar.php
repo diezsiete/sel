@@ -27,7 +27,7 @@ class Familiar implements HvEntity
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"api:cv:read"})
+     * @Groups({"main", "api:cv:read"})
      */
     protected $id;
 
@@ -38,7 +38,7 @@ class Familiar implements HvEntity
      *      max = 15,
      *      maxMessage = "El apellido supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"api:cv:write", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put"})
+     * @Groups({"main", "api:cv:write", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put"})
      */
     private $primerApellido;
 
@@ -54,7 +54,7 @@ class Familiar implements HvEntity
      *      max = 15,
      *      maxMessage = "El apellido supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"api:cv:write", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put"})
+     * @Groups({"main", "api:cv:write", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put"})
      */
     private $segundoApellido;
 
@@ -65,7 +65,7 @@ class Familiar implements HvEntity
      *      max = 30,
      *      maxMessage = "El nombre supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"api:cv:write", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put"})
+     * @Groups({"main", "api:cv:write", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put"})
      */
     private $nombre;
 
@@ -79,35 +79,35 @@ class Familiar implements HvEntity
      * @ORM\Column(type="date", nullable=true)
      * @Assert\NotNull(message="Ingrese fecha de nacimiento")
      * @Assert\Date(message="Ingrese fecha valida")
-     * @Groups({"api:cv:write", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put"})
+     * @Groups({"main", "api:cv:write", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put"})
      */
     private $nacimiento;
 
     /**
      * @ORM\Column(type="string", length=2)
      * @Assert\NotNull(message="Ingrese parentesco")
-     * @Groups({"api:cv:write", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put"})
+     * @Groups({"main", "api:cv:write", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put"})
      */
     private $parentesco;
 
     /**
      * @ORM\Column(type="integer")
      * @Assert\NotNull(message="Ingrese ocupación")
-     * @Groups({"api:cv:write", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put"})
+     * @Groups({"main", "api:cv:write", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put"})
      */
     private $ocupacion;
 
     /**
      * @ORM\Column(type="integer")
      * @Assert\NotNull(message="Ingrese genero")
-     * @Groups({"api:cv:write", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put"})
+     * @Groups({"main", "api:cv:write", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put"})
      */
     private $genero;
 
     /**
      * @ORM\Column(type="integer")
      * @Assert\NotNull(message="Ingrese estado civil")
-     * @Groups({"api:cv:write", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put"})
+     * @Groups({"main", "api:cv:write", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put"})
      */
     private $estadoCivil;
 
@@ -117,20 +117,20 @@ class Familiar implements HvEntity
      *      max = 12,
      *      maxMessage = "La identificación supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"api:cv:write", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put"})
+     * @Groups({"main", "api:cv:write", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put"})
      */
     private $identificacion;
 
     /**
      * @ORM\Column(type="string", length=2)
-     * @Groups({"api:cv:write", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put"})
+     * @Groups({"main", "api:cv:write", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put"})
      */
     private $identificacionTipo = 0;
 
     /**
      * @ORM\Column(type="string", length=2)
      * @Assert\NotNull(message="Ingrese nivel academico")
-     * @Groups({"api:cv:write", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put"})
+     * @Groups({"main", "api:cv:write", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put"})
      */
     private $nivelAcademico;
 

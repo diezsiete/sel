@@ -30,13 +30,13 @@ class Area
      * TODO: en novasoft esto es smallint
      * @ORM\Id()
      * @ORM\Column(type="string", length=7)
-     * @Groups({"api:cv:read", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put"})
+     * @Groups({"main", "api:cv:read", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Groups({"api:cv:read"})
+     * @Groups({"main", "api:cv:read"})
      */
     private $nombre;
 

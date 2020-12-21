@@ -1,3 +1,5 @@
+
+<h2>Referencias</h2>
 {% for key, referenciaTipo in tiposReferencia %}
     <table>
         <tr>
@@ -8,33 +10,33 @@
             <td colspan="2"><h5>{{ referencia.nombre }}</h5></td>
         </tr>
         <tr>
-            <td><h6>Ocupación</h6></td>
+            <td class="title"><h6>Ocupación</h6></td>
             <td>
                 {{ referencia.ocupacion }}
             </td>
         </tr>
         <tr>
-            <td><h6>Parentesco</h6></td>
+            <td class="title"><h6>Parentesco</h6></td>
             <td>
                 {{ referencia.parentesco }}
             </td>
         </tr>
         <tr>
-            <td><h6>Celular</h6></td>
+            <td class="title"><h6>Celular</h6></td>
             <td>
                 {{ referencia.celular }}
             </td>
         </tr>
 
         <tr>
-            <td><h6>Teléfono</h6></td>
+            <td class="title"><h6>Teléfono</h6></td>
             <td>
                 {{ referencia.telefono }}
             </td>
         </tr>
         {% if referencia.direccion %}
             <tr>
-                <td><h6>Dirección</h6></td>
+                <td class="title"><h6>Dirección</h6></td>
                 <td>
                     {{ referencia.direccion }}
                 </td>

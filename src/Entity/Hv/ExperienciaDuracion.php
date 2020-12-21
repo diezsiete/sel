@@ -24,13 +24,13 @@ class ExperienciaDuracion
     /**
      * @ORM\Id()
      * @ORM\Column(type="smallint")
-     * @Groups({"api:cv:read", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "api:experiencia-duracion:read"})
+     * @Groups({"main", "api:cv:read", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "api:experiencia-duracion:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=21)
-     * @Groups({"api:cv:read"})
+     * @Groups({"main", "api:cv:read"})
      */
     private $nombre;
 

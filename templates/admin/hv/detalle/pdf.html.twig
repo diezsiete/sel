@@ -22,19 +22,26 @@
             color: #3f317d;
             background: white;
             float: left;
-            margin-top: -25px;
             padding-right: 10px;
         }
-        h2:not(.first), hr:not(.first) {
-            margin-top: 60px;
-        }
         h2:not(.first) {
-            margin-top: -25px;
+            margin-top: 60px;
         }
         table {
             clear: both;
             width: 100%;
+        }
+        table:not(.first) {
             page-break-inside: avoid;
+        }
+        .content-no-break-inside {
+            page-break-inside: avoid;
+        }
+        td {
+            vertical-align: top;
+        }
+        td.title {
+            padding-top: 5px;
         }
     </style>
 
@@ -47,21 +54,15 @@
 
             {{ include('admin/hv/detalle/_basicos-pdf.html.twig') }}
 
-            <hr class="first">
-            <h2 class="first">Formación</h2>
+
             {{ include('admin/hv/detalle/_estudios-pdf.html.twig') }}
 
-            <hr>
-            <h2>Experiencia</h2>
+
             {{ include('admin/hv/detalle/_experiencia-pdf.html.twig') }}
 
 
-            <hr>
-            <h2>Referencias</h2>
             {{ include('admin/hv/detalle/_referencias-pdf.html.twig') }}
 
-            <hr>
-            <h2>Familiares</h2>
             {{ include('admin/hv/detalle/_familiares-pdf.html.twig') }}
         </div>
     </section>

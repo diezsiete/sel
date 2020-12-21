@@ -63,15 +63,15 @@ class EmpleadoService
     {
         $dbs = $this->configuracion->napi()->getDb();
         foreach($dbs as $db) {
-            /** @var Empleado|null $empleado */
-            $empleado = $this->client->db($db)->itemOperations(Empleado::class)->get($identificacion);
-            if($empleado) {
-                try {
+            try {
+                /** @var Empleado|null $empleado */
+                $empleado = $this->client->db($db)->itemOperations(Empleado::class)->get($identificacion);
+                if($empleado) {
                     $this->importEmpleado($empleado);
                     return $empleado;
-                }catch(\Exception $e) {
-                    // TODO enviar un correo al administrador
                 }
+            }catch(\Exception $e) {
+                // TODO enviar un correo al administrador
             }
         }
         return null;

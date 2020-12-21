@@ -77,7 +77,7 @@ class Estudio implements HvEntity
      *      max = 75,
      *      maxMessage = "El nombre supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"api:cv:read", "api:cv:write"})
+     * @Groups({"main", "api:cv:read", "api:cv:write"})
      */
     private $institutoNombreAlt;
 
