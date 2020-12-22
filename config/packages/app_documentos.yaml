@@ -75,9 +75,14 @@ app:
           date: 2016-12-14
           title: Política de seguridad y salud en el trabajo
 
-        manual-procedimiento-adjuntos-correspondientes-al-comite-de-convivencia:
-          date: 2020-12-10
-          title: Manual y procedimiento adjuntos correspondientes al Comité de Convivencia
+        manual-convivencia:
+          date: 2020-01-03
+          title: Manual del convivencia
+          public: false
+
+        procedimiento-reporte-presunto-acoso-laboral-personal-mision-planta:
+          date: 2019-12-30
+          title: Procedimiento de reporte de presunto acoso laboral para personal en misión y personal de planta
           public: false
 
     SERVILABOR:
