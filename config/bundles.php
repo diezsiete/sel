@@ -26,4 +26,5 @@ return [
     Oneup\UploaderBundle\OneupUploaderBundle::class => ['all' => true],
     Nelmio\CorsBundle\NelmioCorsBundle::class => ['all' => true],
     ApiPlatform\Core\Bridge\Symfony\Bundle\ApiPlatformBundle::class => ['all' => true],
+    Sel\RemoteBundle\SelRemoteBundle::class => ['all' => true],
 ];

@@ -1,0 +1,16 @@
+services:
+  _defaults:
+    public: true
+    autowire: true      # Automatically injects dependencies in your services.
+    autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+
+  Sel\RemoteBundle\:
+    resource: '../../*'
+    exclude: '../../{Api,DependencyInjection,Helper,Resources}'
+
+  Sel\RemoteBundle\Service\Api:
+    $basePath: '@=service("Sel\\RemoteBundle\\Service\\Configuracion").getBasePath()'
+
+  Sel\RemoteBundle\Service\SelClient:
+    $env: "%kernel.environment%"
