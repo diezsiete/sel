@@ -14,3 +14,11 @@ services:
 
   Sel\RemoteBundle\Service\SelClient:
     $env: "%kernel.environment%"
+
+  Sel\RemoteBundle\Service\S3Client:
+    arguments:
+      - version: '2006-03-01'
+        region: "us-east-1"
+        credentials:
+          key: "%env(empresa:AWS_S3_ACCESS_ID)%"
+          secret: "%env(empresa:AWS_S3_ACCESS_SECRET)%"

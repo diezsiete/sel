@@ -4,6 +4,7 @@
 namespace Sel\RemoteBundle\Helper\Api;
 
 
+use Sel\RemoteBundle\Helper\SelClient\Request;
 use Sel\RemoteBundle\Service\SelClient;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -11,12 +12,13 @@ trait MigrateEndpoint
 {
     /**
      * @param $object
-     * @param EndPointParams|array  $params
+     * @param null $params
+     * @param Request|null $request
      * @return array|null
      */
-    public function migrate($object, $params = null)
+    public function migrate($object, $params = null, ?Request $request = null)
     {
-        $request = $this->getClient()->request($this->buildPath());
+        $request = $request ?? $this->getClient()->request($this->buildPath());
         $request->body = $this->getSerializer()->serialize($object, 'json', EndPointParams::buildContext($params));
         return $request->post()->toArray();
     }

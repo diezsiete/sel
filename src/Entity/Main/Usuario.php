@@ -50,7 +50,7 @@ class Usuario implements UserInterface
     /**
      * @Assert\NotBlank(message="Por favor ingrese identificación", groups={"Default", "api"})
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Groups({"napi:hv:post", "napi:hv-child:post", "messenger:hv-child:put", "scraper", "scraper-hv", "scraper-hv-child", "api"})
+     * @Groups({"napi:hv:post", "napi:hv-child:post", "messenger:hv-child:put", "scraper", "scraper-hv", "scraper-hv-child", "api", "selr:migrate"})
      */
     private $identificacion;
 

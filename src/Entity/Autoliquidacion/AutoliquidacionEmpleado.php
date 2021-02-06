@@ -6,6 +6,7 @@ use App\Entity\Main\Convenio;
 use App\Entity\Main\Empleado;
 use App\Entity\Main\Usuario;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Autoliquidacion\AutoliquidacionEmpleadoRepository")
@@ -23,6 +24,7 @@ class AutoliquidacionEmpleado
      * @var Empleado
      * @ORM\ManyToOne(targetEntity="App\Entity\Main\Empleado", inversedBy="autoliquidaciones")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("selr:migrate")
      */
     private $empleado;
 
@@ -30,24 +32,32 @@ class AutoliquidacionEmpleado
      * @ORM\ManyToOne(targetEntity="App\Entity\Autoliquidacion\Autoliquidacion", inversedBy="empleados")
      * @ORM\JoinColumn(nullable=false)
      * @var Autoliquidacion
+     * @Groups("selr:migrate")
      */
     private $autoliquidacion;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups("selr:migrate")
      */
     private $exito = false;
 
     /**
      * @ORM\Column(type="string", length=145, nullable=true)
+     * @Groups("selr:migrate")
      */
     private $salida;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups("selr:migrate")
      */
     private $code;
 
+    /**
+     * @Groups("selr:migrate")
+     */
+    public $hasFile;
 
     public function getId(): ?int
     {

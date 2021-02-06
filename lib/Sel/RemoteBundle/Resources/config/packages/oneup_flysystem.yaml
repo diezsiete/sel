@@ -1,0 +1,9 @@
+oneup_flysystem:
+  adapters:
+    selr:
+      awss3v3:
+        client: Sel\RemoteBundle\Service\S3Client
+        bucket: '%env(AWS_S3_BUCKET_SELR)%'
+  filesystems:
+    selr:
+      adapter: selr

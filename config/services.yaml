@@ -32,6 +32,7 @@ services:
             $migrationDatabaseSeUrl: '%env(DATABASE_SE_URL)%'
             $migrationDatabaseSeAspiranteUrl: '%env(DATABASE_SE_ASPIRANTE_URL)%'
             #$migrationDatabaseSeVacantesUrl: '%env(DATABASE_SE_VACANTES_URL)%'
+            $empresa: '%env(lowercase:EMPRESA)%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name

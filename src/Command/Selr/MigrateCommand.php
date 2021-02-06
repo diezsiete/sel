@@ -11,7 +11,9 @@ use App\Entity\Autoliquidacion\Autoliquidacion;
 use App\Entity\Autoliquidacion\AutoliquidacionEmpleado;
 use App\Entity\Main\Convenio;
 use App\Entity\Main\Usuario;
+use App\Service\Autoliquidacion\FileManager;
 use Doctrine\Common\Annotations\Reader;
+use League\Flysystem\FilesystemInterface;
 use Sel\RemoteBundle\Service\Api;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -36,14 +38,32 @@ class MigrateCommand extends TraitableCommand
      * @var Api
      */
     private $api;
+    /**
+     * @var FileManager
+     */
+    private $autoliqFileManager;
+    /**
+     * @var FilesystemInterface
+     */
+    private $selrFilesystem;
+    /**
+     * @var string
+     */
+    private $empresa;
 
     public function __construct(
         Reader $annotationReader,
         EventDispatcherInterface $dispatcher,
-        Api $api
+        Api $api,
+        FileManager $autoliqFileManager,
+        FilesystemInterface $selrFilesystem,
+        string $empresa
     ) {
         parent::__construct($annotationReader, $dispatcher);
         $this->api = $api;
+        $this->autoliqFileManager = $autoliqFileManager;
+        $this->selrFilesystem = $selrFilesystem;
+        $this->empresa = $empresa;
     }
 
     protected function configure()
@@ -83,7 +103,24 @@ class MigrateCommand extends TraitableCommand
 
     private function autoliquidacionMigrate()
     {
+        /** @var Autoliquidacion $autoliquidacion */
+        foreach ($this->em->getRepository(Autoliquidacion::class)->findAll() as $autoliquidacion) {
+            $this->api->migrate->autoliquidacion->migrate($autoliquidacion, ['groups' => 'selr:migrate']);
+            $periodo = $autoliquidacion->getPeriodo();
+            foreach ($autoliquidacion->getEmpleados() as $autoliquidacionEmpleado) {
+                $ident = $autoliquidacionEmpleado->getUsuario()->getIdentificacion();
+                $autoliquidacionEmpleado->hasFile = $this->autoliqFileManager->fileExists($periodo, $ident);
 
+                if ($autoliquidacionEmpleado->hasFile) {
+                    $path = $this->empresa . $this->autoliqFileManager->getPath($periodo, $ident);
+                    if (!$this->selrFilesystem->has($path)) {
+                        $this->selrFilesystem->writeStream($path, $this->autoliqFileManager->readStream($periodo, $ident));
+                    }
+                }
+                $this->api->migrate->autoliquidacion->migrateUsuario($autoliquidacionEmpleado, ['groups' => 'selr:migrate']);
+                $this->progressBarAdvance();
+            }
+        }
     }
 
     protected function progressBarCount(InputInterface $input, OutputInterface $output): ?int

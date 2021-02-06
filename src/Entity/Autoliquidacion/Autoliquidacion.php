@@ -8,6 +8,7 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Autoliquidacion\AutoliquidacionRepository")
@@ -24,33 +25,39 @@ class Autoliquidacion
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Main\Convenio", inversedBy="autoliquidaciones", )
      * @ORM\JoinColumn(name="convenio_codigo", referencedColumnName="codigo", nullable=true)
+     * @Groups("selr:migrate")
      */
     private $convenio;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Main\Usuario")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("selr:migrate")
      */
     private $usuario;
 
     /**
      * @var DateTime
      * @ORM\Column(type="date")
+     * @Groups("selr:migrate")
      */
     private $periodo;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups("selr:migrate")
      */
     private $fechaEjecucion;
 
     /**
      * @ORM\Column(type="smallint")
+     * @Groups("selr:migrate")
      */
     private $porcentajeEjecucion = 0;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups("selr:migrate")
      */
     private $emailSended = false;
 
@@ -61,6 +68,7 @@ class Autoliquidacion
 
     /**
      * @ORM\Column(type="string", length=140, nullable=true)
+     * @Groups("selr:migrate")
      */
     private $emailFailMessage;
 

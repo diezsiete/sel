@@ -108,7 +108,7 @@ class Empleado
      * @ORM\OneToOne(targetEntity="App\Entity\Main\Usuario", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      * @var Usuario
-     * @Groups("api")
+     * @Groups({"api", "selr:migrate"})
      * @NapiResourceId()
      */
     private $usuario;
