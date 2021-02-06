@@ -9,10 +9,15 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 trait MigrateEndpoint
 {
-    public function migrate($object)
+    /**
+     * @param $object
+     * @param EndPointParams|array  $params
+     * @return array|null
+     */
+    public function migrate($object, $params = null)
     {
         $request = $this->getClient()->request($this->buildPath());
-        $request->body = $this->getSerializer()->serialize($object, 'json');
+        $request->body = $this->getSerializer()->serialize($object, 'json', EndPointParams::buildContext($params));
         return $request->post()->toArray();
     }
 

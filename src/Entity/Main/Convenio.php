@@ -21,24 +21,25 @@ class Convenio implements \JsonSerializable
     /**
      * @ORM\Id()
      * @ORM\Column(type="string", length=45)
-     * @Groups("api")
+     * @Groups({"api", "selr:migrate"})
      */
     private $codigo;
 
     /**
      * @ORM\Column(type="string", length=45, nullable=true)
+     * @Groups("selr:migrate")
      */
     private $codigoCliente;
 
     /**
      * @ORM\Column(type="string", length=105)
-     * @Groups("api")
+     * @Groups({"api", "selr:migrate"})
      */
     private $nombre;
 
     /**
      * @ORM\Column(type="string", length=145, nullable=true)
-     * @Groups("api")
+     * @Groups({"api", "selr:migrate"})
      */
     private $direccion;
 
@@ -49,6 +50,7 @@ class Convenio implements \JsonSerializable
 
     /**
      * @ORM\Column(type="string", length=20, nullable=true)
+     * @Groups("selr:migrate")
      */
     private $ssrsDb;
 
@@ -76,6 +78,7 @@ class Convenio implements \JsonSerializable
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
+     * @Groups("selr:migrate")
      */
     private $activo = true;
 

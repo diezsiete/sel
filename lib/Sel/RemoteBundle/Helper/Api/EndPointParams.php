@@ -25,14 +25,24 @@ class EndPointParams implements \ArrayAccess
         foreach ($params['orders'] ?? [] as $sort => $order) {
             $query .= ($query ? '&' : '') . "order[$sort]=$order";
         }
-        foreach ($params['groups'] ?? [] as $groups) {
-            $query .= ($query ? '&' : '') . "groups[]=$groups";
-        }
         if (isset($params['search'])) {
             $query .= ($query ? '&' : '') . "search=".urlencode($params['search']);
         }
 
         return $start . $query;
+    }
+
+    /**
+     * @param EndPointParams|array|null $params
+     * @return array
+     */
+    public static function buildContext($params): array
+    {
+        $context = [];
+        if ($params && $params['groups']) {
+            $context['groups'] = is_array($params['groups']) ? $params['groups'] : [$params['groups']];
+        }
+        return $context;
     }
 
     public $hydration;

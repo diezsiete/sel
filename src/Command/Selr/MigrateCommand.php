@@ -7,6 +7,9 @@ namespace App\Command\Selr;
 use App\Command\Helpers\ConsoleProgressBar;
 use App\Command\Helpers\SelCommandTrait;
 use App\Command\Helpers\TraitableCommand\TraitableCommand;
+use App\Entity\Autoliquidacion\Autoliquidacion;
+use App\Entity\Autoliquidacion\AutoliquidacionEmpleado;
+use App\Entity\Main\Convenio;
 use App\Entity\Main\Usuario;
 use Doctrine\Common\Annotations\Reader;
 use Sel\RemoteBundle\Service\Api;
@@ -23,7 +26,9 @@ class MigrateCommand extends TraitableCommand
     protected static $defaultName = 'selr:migrate';
 
     private $migratableEntities = [
-        'usuario' => Usuario::class
+        'usuario' => Usuario::class,
+        'convenio' => Convenio::class,
+        'autoliquidacion' => AutoliquidacionEmpleado::class,
     ];
 
     private $entities;
@@ -51,16 +56,34 @@ class MigrateCommand extends TraitableCommand
     {
         $this->em->getConnection()->getConfiguration()->setSQLLogger(null);
         foreach ($this->entities() as $entityName => $entityClass) {
-            $q = $this->em->createQuery('select x from '.$entityClass.'  x');
-            $iterableResult = $q->iterate();
-            foreach ($iterableResult as $row) {
-                $this->api->migrate->usuario->migrate($row[0]);
-                // do stuff with the data in the row
-                // detach from Doctrine, so that it can be Garbage-Collected immediately
-                $this->em->detach($row[0]);
-                $this->progressBarAdvance();
+            $customMigrateMethod = $entityName . 'Migrate';
+            if (method_exists($this, $customMigrateMethod)) {
+                $this->$customMigrateMethod();
+            } else {
+                $this->entitiesMigrate($entityName, $entityClass);
             }
         }
+    }
+
+    private function convenioMigrate()
+    {
+        $this->entitiesMigrate('convenio', Convenio::class, ['groups' => 'selr:migrate']);
+    }
+
+    private function entitiesMigrate($entityName, $entityClass, $params = null)
+    {
+        $q = $this->em->createQuery('select x from ' . $entityClass . '  x');
+        $iterableResult = $q->iterate();
+        foreach ($iterableResult as $row) {
+            $this->api->migrate->$entityName->migrate($row[0], $params);
+            $this->em->detach($row[0]);
+            $this->progressBarAdvance();
+        }
+    }
+
+    private function autoliquidacionMigrate()
+    {
+
     }
 
     protected function progressBarCount(InputInterface $input, OutputInterface $output): ?int
@@ -69,6 +92,8 @@ class MigrateCommand extends TraitableCommand
             return $carry + $this->em->getRepository($entity)->count([]);
         }, 0);
     }
+
+
 
     private function entities()
     {
