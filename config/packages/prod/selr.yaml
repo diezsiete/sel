@@ -1,0 +1,3 @@
+sel_remote:
+  url: http://50.19.144.184:8669
+  empresa: '%env(lowercase:EMPRESA)%'

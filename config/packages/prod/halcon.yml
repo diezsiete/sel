@@ -1,4 +1,4 @@
 app:
   halcon:
     servicios:
-      url: http://3.237.96.100:8668
+      url: http://50.19.144.184:8668
