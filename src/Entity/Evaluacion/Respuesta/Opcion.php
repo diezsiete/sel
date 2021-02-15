@@ -4,6 +4,7 @@ namespace App\Entity\Evaluacion\Respuesta;
 
 use App\Entity\Evaluacion\Pregunta\Opcion as PreguntaOpcion;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Evaluacion\Respuesta\OpcionRepository")
@@ -27,6 +28,7 @@ class Opcion
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Evaluacion\Pregunta\Opcion")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("selr:migrate")
      */
     private $preguntaOpcion;
 

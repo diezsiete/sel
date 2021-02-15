@@ -4,6 +4,7 @@ namespace App\Entity\Evaluacion;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Evaluacion\DiapositivaRepository")
@@ -15,6 +16,7 @@ class Diapositiva
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups("selr:migrate")
      */
     private $id;
 

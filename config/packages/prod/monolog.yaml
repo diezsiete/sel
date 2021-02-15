@@ -34,7 +34,7 @@ monolog:
             handler: swift
         swift:
             type:         swift_mailer
-            from_email:   'direccion.comercial@servilabor.com.co'
+            from_email:   'guerrerojosedario@gmail.com'
             to_email:     'guerrerojosedario@gmail.com'
             subject:      'An Error Occurred! %%message%%'
             level:        debug

@@ -12,6 +12,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Evaluacion\ProgresoRepository")
@@ -29,6 +30,7 @@ class Progreso
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Main\Usuario", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("selr:migrate")
      */
     private $usuario;
 
@@ -36,50 +38,59 @@ class Progreso
      * @var Evaluacion
      * @ORM\ManyToOne(targetEntity="App\Entity\Evaluacion\Evaluacion")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("selr:migrate")
      */
     private $evaluacion;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups("selr:migrate")
      */
     private $culminacion;
 
     /**
      * @ORM\Column(type="smallint")
+     * @Groups("selr:migrate")
      */
     private $porcentajeCompletitud = 0;
 
     /**
      * @ORM\Column(type="smallint")
+     * @Groups("selr:migrate")
      */
     private $porcentajeExito = 0;
 
     /**
      * @var Modulo|null
      * @ORM\ManyToOne(targetEntity="App\Entity\Evaluacion\Modulo")
+     * @Groups("selr:migrate")
      */
     private $modulo;
 
     /**
      * @var Diapositiva|null
      * @ORM\ManyToOne(targetEntity="App\Entity\Evaluacion\Diapositiva")
+     * @Groups("selr:migrate")
      */
     private $diapositiva;
 
     /**
      * @var Pregunta|null
      * @ORM\ManyToOne(targetEntity="App\Entity\Evaluacion\Pregunta\Pregunta")
+     * @Groups("selr:migrate")
      */
     private $pregunta;
 
     /**
      * @var Diapositiva|null
      * @ORM\ManyToOne(targetEntity="App\Entity\Evaluacion\Diapositiva")
+     * @Groups("selr:migrate")
      */
     private $preguntaDiapositiva;
 
     /**
      * @ORM\Column(type="string", length=140)
+     * @Groups("selr:migrate")
      */
     private $descripcion = "Inicial";
 
@@ -91,12 +102,14 @@ class Progreso
     /**
      * @var bool
      * @ORM\Column(type="boolean")
+     * @Groups("selr:migrate")
      */
     private $moduloRepeticion = false;
 
     /**
      * @var boolean
      * @ORM\Column(type="boolean")
+     * @Groups("selr:migrate")
      */
     private $preguntasEnabled = true;
 

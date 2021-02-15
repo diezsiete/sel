@@ -3,6 +3,7 @@
 namespace App\Entity\Evaluacion\Pregunta;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Evaluacion\Pregunta\OpcionRepository")
@@ -14,6 +15,7 @@ class Opcion
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups("selr:migrate")
      */
     private $id;
 

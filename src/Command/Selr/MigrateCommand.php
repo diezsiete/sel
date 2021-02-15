@@ -1,14 +1,14 @@
 <?php
 
-
 namespace App\Command\Selr;
-
 
 use App\Command\Helpers\ConsoleProgressBar;
 use App\Command\Helpers\SelCommandTrait;
 use App\Command\Helpers\TraitableCommand\TraitableCommand;
 use App\Entity\Autoliquidacion\Autoliquidacion;
 use App\Entity\Autoliquidacion\AutoliquidacionEmpleado;
+use App\Entity\Evaluacion\Progreso;
+use App\Entity\Evaluacion\Respuesta\Respuesta;
 use App\Entity\Main\Convenio;
 use App\Entity\Main\Usuario;
 use App\Service\Autoliquidacion\FileManager;
@@ -31,6 +31,7 @@ class MigrateCommand extends TraitableCommand
         'usuario' => Usuario::class,
         'convenio' => Convenio::class,
         'autoliquidacion' => AutoliquidacionEmpleado::class,
+        'progreso' => Progreso::class
     ];
 
     private $entities;
@@ -121,6 +122,36 @@ class MigrateCommand extends TraitableCommand
                 $this->progressBarAdvance();
             }
         }
+    }
+
+
+    private function progresoMigrate()
+    {
+        /** @var Progreso $progreso */
+        foreach ($this->em->getRepository(Progreso::class)->findAll() as $progreso) {
+            // $this->api->migrate->progreso->migrate($progreso, ['groups' => 'selr:migrate']);
+
+            foreach ($progreso->getRespuestas() as $respuesta) {
+                $this->api->migrate->progreso->migrateRespuesta($respuesta, ['groups' => 'selr:migrate']);
+            }
+
+
+            // $periodo = $progreso->getPeriodo();
+            // foreach ($progreso->getEmpleados() as $autoliquidacionEmpleado) {
+            //     $ident = $autoliquidacionEmpleado->getUsuario()->getIdentificacion();
+            //     $autoliquidacionEmpleado->hasFile = $this->autoliqFileManager->fileExists($periodo, $ident);
+            //
+            //     if ($autoliquidacionEmpleado->hasFile) {
+            //         $path = $this->empresa . $this->autoliqFileManager->getPath($periodo, $ident);
+            //         if (!$this->selrFilesystem->has($path)) {
+            //             $this->selrFilesystem->writeStream($path, $this->autoliqFileManager->readStream($periodo, $ident));
+            //         }
+            //     }
+            //     $this->api->migrate->autoliquidacion->migrateUsuario($autoliquidacionEmpleado, ['groups' => 'selr:migrate']);
+            //     $this->progressBarAdvance();
+            // }
+        }
+        dd('ko');
     }
 
     protected function progressBarCount(InputInterface $input, OutputInterface $output): ?int

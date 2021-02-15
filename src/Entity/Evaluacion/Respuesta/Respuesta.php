@@ -5,6 +5,7 @@ namespace App\Entity\Evaluacion\Respuesta;
 use App\Entity\Evaluacion\Pregunta\Pregunta;
 use App\Entity\Evaluacion\Progreso;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Evaluacion\Respuesta\RespuestaRepository")
@@ -25,17 +26,20 @@ abstract class Respuesta
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Evaluacion\Progreso", inversedBy="respuestas")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("selr:migrate")
      */
     protected $progreso;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Evaluacion\Pregunta\Pregunta")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("selr:migrate")
      */
     protected $pregunta;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups("selr:migrate")
      */
     protected $respondidaEn;
 
@@ -86,4 +90,12 @@ abstract class Respuesta
     }
 
     public abstract function evaluar(): bool;
+
+    /**
+     * @Groups("selr:migrate")
+     */
+    public function getClass()
+    {
+        return get_class($this);
+    }
 }

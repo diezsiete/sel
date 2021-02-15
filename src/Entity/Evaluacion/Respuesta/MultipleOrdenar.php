@@ -8,6 +8,7 @@ use App\Validator\EvaluacionMultipleOrdenar;
 use Countable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -22,6 +23,7 @@ class MultipleOrdenar extends MultipleUnica implements Countable
     /**
      * @var Opcion[]|ArrayCollection
      * @ORM\OneToMany(targetEntity="App\Entity\Evaluacion\Respuesta\Opcion", mappedBy="respuesta", orphanRemoval=true, cascade={"persist"})
+     * @Groups("selr:migrate")
      */
     protected $opciones;
 
