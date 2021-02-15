@@ -8,10 +8,11 @@ use App\Command\Helpers\TraitableCommand\TraitableCommand;
 use App\Entity\Autoliquidacion\Autoliquidacion;
 use App\Entity\Autoliquidacion\AutoliquidacionEmpleado;
 use App\Entity\Evaluacion\Progreso;
-use App\Entity\Evaluacion\Respuesta\Respuesta;
+use App\Entity\Hv\Hv;
 use App\Entity\Main\Convenio;
 use App\Entity\Main\Usuario;
 use App\Service\Autoliquidacion\FileManager;
+use App\Service\UploaderHelper;
 use Doctrine\Common\Annotations\Reader;
 use League\Flysystem\FilesystemInterface;
 use Sel\RemoteBundle\Service\Api;
@@ -31,7 +32,8 @@ class MigrateCommand extends TraitableCommand
         'usuario' => Usuario::class,
         'convenio' => Convenio::class,
         'autoliquidacion' => AutoliquidacionEmpleado::class,
-        'progreso' => Progreso::class
+        'progreso' => Progreso::class,
+        'hv' => Hv::class
     ];
 
     private $entities;
@@ -51,12 +53,17 @@ class MigrateCommand extends TraitableCommand
      * @var string
      */
     private $empresa;
+    /**
+     * @var UploaderHelper
+     */
+    private $uploaderHelper;
 
     public function __construct(
         Reader $annotationReader,
         EventDispatcherInterface $dispatcher,
         Api $api,
         FileManager $autoliqFileManager,
+        UploaderHelper $uploaderHelper,
         FilesystemInterface $selrFilesystem,
         string $empresa
     ) {
@@ -65,6 +72,7 @@ class MigrateCommand extends TraitableCommand
         $this->autoliqFileManager = $autoliqFileManager;
         $this->selrFilesystem = $selrFilesystem;
         $this->empresa = $empresa;
+        $this->uploaderHelper = $uploaderHelper;
     }
 
     protected function configure()
@@ -124,34 +132,37 @@ class MigrateCommand extends TraitableCommand
         }
     }
 
-
     private function progresoMigrate()
     {
         /** @var Progreso $progreso */
         foreach ($this->em->getRepository(Progreso::class)->findAll() as $progreso) {
-            // $this->api->migrate->progreso->migrate($progreso, ['groups' => 'selr:migrate']);
-
+            $this->api->migrate->progreso->migrate($progreso, ['groups' => 'selr:migrate']);
             foreach ($progreso->getRespuestas() as $respuesta) {
                 $this->api->migrate->progreso->migrateRespuesta($respuesta, ['groups' => 'selr:migrate']);
             }
-
-
-            // $periodo = $progreso->getPeriodo();
-            // foreach ($progreso->getEmpleados() as $autoliquidacionEmpleado) {
-            //     $ident = $autoliquidacionEmpleado->getUsuario()->getIdentificacion();
-            //     $autoliquidacionEmpleado->hasFile = $this->autoliqFileManager->fileExists($periodo, $ident);
-            //
-            //     if ($autoliquidacionEmpleado->hasFile) {
-            //         $path = $this->empresa . $this->autoliqFileManager->getPath($periodo, $ident);
-            //         if (!$this->selrFilesystem->has($path)) {
-            //             $this->selrFilesystem->writeStream($path, $this->autoliqFileManager->readStream($periodo, $ident));
-            //         }
-            //     }
-            //     $this->api->migrate->autoliquidacion->migrateUsuario($autoliquidacionEmpleado, ['groups' => 'selr:migrate']);
-            //     $this->progressBarAdvance();
-            // }
+            $this->progressBarAdvance();
         }
-        dd('ko');
+    }
+
+    private function hvMigrate()
+    {
+        /** @var Hv $hv */
+        foreach ($this->em->getRepository(Hv::class)->findAll() as $hv) {
+            if ($hv->getUsuario()) {
+                $context = ['groups' => 'selr:migrate'];
+                $this->api->migrate->hv->migrate($hv, $context);
+                $this->api->migrate->hv->estudios($hv->getIdentificacion(), $hv->getEstudios(), $context);
+                $this->api->migrate->hv->experiencias($hv->getIdentificacion(), $hv->getExperiencias(), $context);
+                if ($adjunto = $hv->getAdjunto()) {
+                    $path = $this->empresa . "/hv-adjunto/".$adjunto->getFilename();
+                    if (!$this->selrFilesystem->has($path)) {
+                        $this->selrFilesystem->writeStream($path, $this->uploaderHelper->readStream($adjunto->getFilePath(), false));
+                    }
+                    $this->api->migrate->hv->adjunto($hv->getIdentificacion(), $adjunto, $context);
+                }
+            }
+            $this->progressBarAdvance();
+        }
     }
 
     protected function progressBarCount(InputInterface $input, OutputInterface $output): ?int
@@ -160,8 +171,6 @@ class MigrateCommand extends TraitableCommand
             return $carry + $this->em->getRepository($entity)->count([]);
         }, 0);
     }
-
-
 
     private function entities()
     {

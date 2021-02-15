@@ -28,19 +28,19 @@ class Adjunto implements HvEntity
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups("main")
+     * @Groups({"main", "selr:migrate"})
      */
     private $filename;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups("main")
+     * @Groups({"main", "selr:migrate"})
      */
     private $originalFilename;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups("main")
+     * @Groups({"main", "selr:migrate"})
      */
     private $mimeType;
 

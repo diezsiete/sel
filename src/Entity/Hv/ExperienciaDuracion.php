@@ -24,7 +24,7 @@ class ExperienciaDuracion
     /**
      * @ORM\Id()
      * @ORM\Column(type="smallint")
-     * @Groups({"main", "api:cv:read", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "api:experiencia-duracion:read"})
+     * @Groups({"main", "api:cv:read", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "api:experiencia-duracion:read", "selr:migrate"})
      */
     private $id;
 

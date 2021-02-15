@@ -39,7 +39,7 @@ class Estudio implements HvEntity
      * @ORM\ManyToOne(targetEntity="EstudioCodigo")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotNull(message="Seleccione el area de estudio")
-     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "messenger:hv-child:put",  "api:hv:write", "api:hv:read", "scraper", "scraper-hv-child", "api:cv:read", "api:cv:write"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "messenger:hv-child:put",  "api:hv:write", "api:hv:read", "scraper", "scraper-hv-child", "api:cv:read", "api:cv:write", "selr:migrate"})
      * @var EstudioCodigo
      */
     private $codigo;
@@ -51,7 +51,7 @@ class Estudio implements HvEntity
      *      max = 50,
      *      maxMessage = "El titulo supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "api:hv:write", "api:hv:read", "scraper", "scraper-hv-child", "api:cv:read", "api:cv:write"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "api:hv:write", "api:hv:read", "scraper", "scraper-hv-child", "api:cv:read", "api:cv:write", "selr:migrate"})
      */
     private $nombre;
 
@@ -59,7 +59,7 @@ class Estudio implements HvEntity
      * @ORM\ManyToOne(targetEntity="EstudioInstituto")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotNull(message="Seleccione instituto. Si no lo encuentra seleccione opción 'NO APLICA'")
-     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "messenger:hv-child:put", "api:hv:write", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "messenger:hv-child:put", "api:hv:write", "scraper", "scraper-hv-child", "selr:migrate"})
      * @var EstudioInstituto
      */
     private $instituto;
@@ -67,7 +67,7 @@ class Estudio implements HvEntity
     /**
      * @ORM\Column(type="date", nullable=true)
      * @Assert\NotNull(message="Indique la fecha de finalización")
-     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child"})
+     * @Groups({"main", "napi:hv:post", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv-child", "selr:migrate"})
      */
     private $fin;
 
@@ -77,7 +77,7 @@ class Estudio implements HvEntity
      *      max = 75,
      *      maxMessage = "El nombre supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"main", "api:cv:read", "api:cv:write"})
+     * @Groups({"main", "api:cv:read", "api:cv:write", "selr:migrate"})
      */
     private $institutoNombreAlt;
 

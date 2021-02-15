@@ -24,7 +24,7 @@ class FactorRh
     /**
      * @ORM\Id()
      * @ORM\Column(type="string", length=1)
-     * @Groups({"napi:hv:post", "napi:hv:put", "t3rs:read"})
+     * @Groups({"napi:hv:post", "napi:hv:put", "t3rs:read", "selr:migrate"})
      */
     private $id;
 

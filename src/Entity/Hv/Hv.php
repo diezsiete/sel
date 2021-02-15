@@ -46,7 +46,7 @@ class Hv implements HvEntity
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Main\Usuario", cascade={"persist", "remove"})
-     * @Groups({"napi:hv:post", "napi:hv:put", "napi:hv-child:post", "messenger:hv-child:put"})
+     * @Groups({"napi:hv:post", "napi:hv:put", "napi:hv-child:post", "messenger:hv-child:put", "selr:migrate"})
      * @var Usuario
      */
     private $usuario;
@@ -56,21 +56,21 @@ class Hv implements HvEntity
      * @ORM\ManyToOne(targetEntity="App\Entity\Main\Pais")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotNull(message="Ingrese pais de nacimiento")
-     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv:put"})
+     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv:put", "selr:migrate"})
      */
     private $nacPais;
 
     /**
      * Departamento de nacimiento
      * @ORM\ManyToOne(targetEntity="App\Entity\Main\Dpto")
-     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv:put"})
+     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv:put", "selr:migrate"})
      */
     private $nacDpto;
 
     /**
      * Ciudad de nacimiento
      * @ORM\ManyToOne(targetEntity="App\Entity\Main\Ciudad")
-     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv:put"})
+     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv:put", "selr:migrate"})
      */
     private $nacCiudad;
 
@@ -78,33 +78,33 @@ class Hv implements HvEntity
      * @ORM\ManyToOne(targetEntity="App\Entity\Main\Pais")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotNull(message="Ingrese pais de identificación")
-     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv:put"})
+     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv:put", "selr:migrate"})
      */
     private $identPais;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Main\Dpto")
-     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv:put"})
+     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv:put", "selr:migrate"})
      */
     private $identDpto;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Main\Ciudad")
-     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv:put"})
+     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv:put", "selr:migrate"})
      */
     private $identCiudad;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Hv\Genero")
      * @ORM\JoinColumn(name="genero", referencedColumnName="id", nullable=false)
-     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv:put"})
+     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv:put", "selr:migrate"})
      */
     private $genero;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Hv\EstadoCivil")
      * @ORM\JoinColumn(name="estado_civil", referencedColumnName="id", nullable=false)
-     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv:put"})
+     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv:put", "selr:migrate"})
      */
     private $estadoCivil;
 
@@ -112,21 +112,21 @@ class Hv implements HvEntity
      * Pais de residencia
      * @ORM\ManyToOne(targetEntity="App\Entity\Main\Pais")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv:put"})
+     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv:put", "selr:migrate"})
      */
     private $resiPais;
 
     /**
      * Departamento de residencia
      * @ORM\ManyToOne(targetEntity="App\Entity\Main\Dpto")
-     * @Groups({ "api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv:put"})
+     * @Groups({ "api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv:put", "selr:migrate"})
      */
     private $resiDpto;
 
     /**
      * Ciudad de residencia
      * @ORM\ManyToOne(targetEntity="App\Entity\Main\Ciudad")
-     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv:put"})
+     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv:put", "selr:migrate"})
      */
     private $resiCiudad;
 
@@ -138,7 +138,7 @@ class Hv implements HvEntity
      *      max = 50,
      *      maxMessage = "Barrio supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv:put"})
+     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv:put", "selr:migrate"})
      * @NormalizeFunction("strtoupper", groups={"napi:hv:post", "napi:hv:put"})
      */
     private $barrio;
@@ -151,7 +151,7 @@ class Hv implements HvEntity
      *      max = 40,
      *      maxMessage = "La dirección supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv:put"})
+     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv:put", "selr:migrate"})
      * @NormalizeFunction("strtoupper", groups={"napi:hv:post", "napi:hv:put"})
      */
     private $direccion;
@@ -159,28 +159,28 @@ class Hv implements HvEntity
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Hv\GrupoSanguineo")
      * @ORM\JoinColumn(name="grupo_sanguineo", referencedColumnName="id", nullable=false)
-     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv:put"})
+     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv:put", "selr:migrate"})
      */
     private $grupoSanguineo;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Hv\FactorRh")
      * @ORM\JoinColumn(name="factor_rh", referencedColumnName="id", nullable=false)
-     * @Groups({"api:cv:write", "api:cv:read", "napi:hv:post", "napi:hv:put"})
+     * @Groups({"api:cv:write", "api:cv:read", "napi:hv:post", "napi:hv:put", "selr:migrate"})
      */
     private $factorRh;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Hv\Nacionalidad")
      * @ORM\JoinColumn(name="nacionalidad", referencedColumnName="id", nullable=false)
-     * @Groups({"api:cv:write", "api:cv:read", "napi:hv:post", "napi:hv:put"})
+     * @Groups({"api:cv:write", "api:cv:read", "napi:hv:post", "napi:hv:put", "selr:migrate"})
      */
     private $nacionalidad;
 
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
      * @Assert\Email(message="Ingrese un email valido")
-     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv:put"})
+     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv:put", "selr:migrate"})
      */
     private $emailAlt;
 
@@ -207,7 +207,7 @@ class Hv implements HvEntity
     /**
      * @ORM\ManyToOne(targetEntity="IdentificacionTipo")
      * @ORM\JoinColumn(name="identificacion_tipo", referencedColumnName="id", nullable=false)
-     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv:put"})
+     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv:put", "selr:migrate"})
      */
     private $identificacionTipo;
 
@@ -215,7 +215,7 @@ class Hv implements HvEntity
      * Fecha de nacimiento
      * @ORM\Column(type="date", nullable=true)
      * @Assert\NotBlank(message="Ingrese fecha de nacimiento")
-     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv:put"})
+     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv:put", "selr:migrate"})
      */
     private $nacimiento;
 
@@ -252,19 +252,19 @@ class Hv implements HvEntity
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Hv\NivelAcademico")
      * @ORM\JoinColumn(name="nivel_academico", referencedColumnName="id", nullable=false)
-     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv:put"})
+     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv:put", "selr:migrate"})
      */
     private $nivelAcademico;
 
     /**
      * @ORM\Column(type="string", length=17, nullable=true)
-     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv:put"})
+     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv:put", "selr:migrate"})
      */
     private $telefono;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
-     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv:put"})
+     * @Groups({"api:cv:read", "api:cv:write", "napi:hv:post", "napi:hv:put", "selr:migrate"})
      */
     private $celular;
 
@@ -1109,7 +1109,7 @@ class Hv implements HvEntity
      *      max = 50,
      *      maxMessage = "El nombre supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"api:cv:read"})
+     * @Groups({"api:cv:read", "selr:migrate"})
      */
     public function getPrimerNombre(): ?string
     {
@@ -1135,7 +1135,7 @@ class Hv implements HvEntity
      *      max = 50,
      *      maxMessage = "El nombre supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"api:cv:read"})
+     * @Groups({"api:cv:read", "selr:migrate"})
      */
     public function getSegundoNombre(): ?string
     {
@@ -1162,7 +1162,7 @@ class Hv implements HvEntity
      *      max = 50,
      *      maxMessage = "El apellido supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"api:cv:read"})
+     * @Groups({"api:cv:read", "selr:migrate"})
      */
     public function getPrimerApellido(): ?string
     {
@@ -1188,7 +1188,7 @@ class Hv implements HvEntity
      *      max = 50,
      *      maxMessage = "El apellido supera el limite de {{ limit }} caracteres"
      * )
-     * @Groups({"api:cv:read"})
+     * @Groups({"api:cv:read", "selr:migrate"})
      */
     public function getSegundoApellido(): ?string
     {
@@ -1206,7 +1206,7 @@ class Hv implements HvEntity
     /**
      * @Assert\NotBlank(message="Por favor ingrese correo")
      * @Assert\Email()
-     * @Groups({"api:cv:read"})
+     * @Groups({"api:cv:read", "selr:migrate"})
      */
     public function getEmail(): ?string
     {

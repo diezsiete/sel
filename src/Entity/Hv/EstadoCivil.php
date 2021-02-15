@@ -24,7 +24,7 @@ class EstadoCivil
     /**
      * @ORM\Id()
      * @ORM\Column(type="smallint")
-     * @Groups({"napi:hv:post", "napi:hv:put", "t3rs:read"})
+     * @Groups({"napi:hv:post", "napi:hv:put", "t3rs:read", "selr:migrate"})
      */
     private $id;
 

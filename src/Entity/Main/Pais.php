@@ -49,7 +49,7 @@ class Pais
 
     /**
      * @ORM\Column(type="string", length=3, nullable=true)
-     * @Groups({"napi:hv:post", "napi:hv:put", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv", "scraper-hv-child"})
+     * @Groups({"napi:hv:post", "napi:hv:put", "napi:hv-child:post", "napi:hv-child:put", "scraper", "scraper-hv", "scraper-hv-child", "selr:migrate"})
      * @SerializedName("id")
      */
     private $nId;
