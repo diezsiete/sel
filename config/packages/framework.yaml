@@ -22,3 +22,9 @@ framework:
     # For instance, basic validation constraints will be inferred from Doctrine's metadata.
     validation:
         auto_mapping: {'App\\': {}}
+
+    http_client:
+        scoped_clients:
+            selr_api:
+                base_uri: '%env(SELR_URL)%'
+                auth_bearer: '%env(empresa:SELR_TOKEN)%'

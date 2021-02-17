@@ -10,16 +10,19 @@ use App\Entity\Autoliquidacion\AutoliquidacionEmpleado;
 use App\Entity\Evaluacion\Progreso;
 use App\Entity\Hv\Hv;
 use App\Entity\Main\Convenio;
+use App\Entity\Main\Empleado;
 use App\Entity\Main\Usuario;
 use App\Service\Autoliquidacion\FileManager;
 use App\Service\UploaderHelper;
 use Doctrine\Common\Annotations\Reader;
 use League\Flysystem\FilesystemInterface;
+use Sel\RemoteBundle\Dto\UsuarioDto;
 use Sel\RemoteBundle\Service\Api;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 class MigrateCommand extends TraitableCommand
 {
@@ -57,6 +60,10 @@ class MigrateCommand extends TraitableCommand
      * @var UploaderHelper
      */
     private $uploaderHelper;
+    /**
+     * @var PropertyAccessorInterface
+     */
+    private $accessor;
 
     public function __construct(
         Reader $annotationReader,
@@ -65,6 +72,7 @@ class MigrateCommand extends TraitableCommand
         FileManager $autoliqFileManager,
         UploaderHelper $uploaderHelper,
         FilesystemInterface $selrFilesystem,
+        PropertyAccessorInterface $accessor,
         string $empresa
     ) {
         parent::__construct($annotationReader, $dispatcher);
@@ -73,6 +81,7 @@ class MigrateCommand extends TraitableCommand
         $this->selrFilesystem = $selrFilesystem;
         $this->empresa = $empresa;
         $this->uploaderHelper = $uploaderHelper;
+        $this->accessor = $accessor;
     }
 
     protected function configure()
@@ -105,6 +114,27 @@ class MigrateCommand extends TraitableCommand
         $iterableResult = $q->iterate();
         foreach ($iterableResult as $row) {
             $this->api->migrate->$entityName->migrate($row[0], $params);
+            $this->em->detach($row[0]);
+            $this->progressBarAdvance();
+        }
+    }
+
+    private function usuarioMigrate()
+    {
+        $q = $this->em->createQuery('select u from ' . Usuario::class . ' u');
+        $iterableResult = $q->iterate();
+        foreach ($iterableResult as $row) {
+            $usuarioDto = new UsuarioDto();
+            foreach (array_keys(get_object_vars($usuarioDto)) as $propertyName) {
+                if ($this->accessor->isReadable($row[0], $propertyName)) {
+                    $usuarioDto->$propertyName = $this->accessor->getValue($row[0], $propertyName);
+                }
+            }
+            $qe = $this->em->createQuery('select e from ' . Empleado::class . ' e where e.usuario = ' .$row[0]->getId());
+            if ($empleado = $qe->getOneOrNullResult()) {
+                $usuarioDto->napidb = strtolower($empleado->getSsrsDb());
+            }
+            $this->api->migrate->usuario->migrate($usuarioDto);
             $this->em->detach($row[0]);
             $this->progressBarAdvance();
         }

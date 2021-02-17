@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Sel\RemoteBundle\Service;
-
 
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
@@ -32,6 +30,6 @@ class Configuracion
 
     public function getBasePath(): string
     {
-        return $this->url . '/' . $this->empresa;
+        return $this->empresa;
     }
 }

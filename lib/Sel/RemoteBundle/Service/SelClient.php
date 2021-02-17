@@ -21,9 +21,9 @@ class SelClient
      */
     private $env;
 
-    public function __construct(HttpClientInterface $httpClient, LoggerInterface $logger, string $env)
+    public function __construct(HttpClientInterface $selrApi, LoggerInterface $logger, string $env)
     {
-        $this->httpClient = $httpClient;
+        $this->httpClient = $selrApi;
         $this->logger = $logger;
         $this->env = $env;
     }
