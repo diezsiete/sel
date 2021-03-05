@@ -11,6 +11,7 @@ use App\Entity\Evaluacion\Progreso;
 use App\Entity\Hv\Hv;
 use App\Entity\Main\Convenio;
 use App\Entity\Main\Empleado;
+use App\Entity\Main\Representante;
 use App\Entity\Main\Usuario;
 use App\Service\Autoliquidacion\FileManager;
 use App\Service\UploaderHelper;
@@ -36,7 +37,8 @@ class MigrateCommand extends TraitableCommand
         'convenio' => Convenio::class,
         'autoliquidacion' => AutoliquidacionEmpleado::class,
         'progreso' => Progreso::class,
-        'hv' => Hv::class
+        'hv' => Hv::class,
+        'representante' => Representante::class
     ];
 
     private $entities;
@@ -98,7 +100,7 @@ class MigrateCommand extends TraitableCommand
             if (method_exists($this, $customMigrateMethod)) {
                 $this->$customMigrateMethod();
             } else {
-                $this->entitiesMigrate($entityName, $entityClass);
+                $this->entitiesMigrate($entityName, $entityClass, ['groups' => 'selr:migrate']);
             }
         }
     }

@@ -75,9 +75,24 @@ app:
           date: 2016-12-14
           title: Política de seguridad y salud en el trabajo
 
+        procedimiento-para-reporte-de-actos-y-condiciones-inseguras:
+          date: 2021-01-15
+          title: Procedimiento para reporte de actos y condiciones inseguras
+          public: false
+
         manual-convivencia:
           date: 2020-01-03
           title: Manual del convivencia
+          public: false
+
+        politica-de-prevencion-acoso-laboral:
+          date: 2019-12-30
+          title: Política de prevención del acoso laboral
+          public: false
+
+        formato-para-interponer-quejas-por-presunto-acoso-laboral:
+          date: 2019-12-30
+          title: Formato para interponer quejas por presunto acoso laboral
           public: false
 
         procedimiento-reporte-presunto-acoso-laboral-personal-mision-planta:

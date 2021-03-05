@@ -8,6 +8,7 @@ use App\Entity\Main\Usuario;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -69,6 +70,7 @@ class Representante
      * @ORM\Column(type="string", length=140, nullable=true)
      * @Assert\NotBlank(message="Por favor ingrese correo")
      * @Assert\Email()
+     * @Groups("selr:migrate")
      */
     private $email;
 
@@ -85,6 +87,14 @@ class Representante
     public function getConvenio(): ?Convenio
     {
         return $this->convenio;
+    }
+
+    /**
+     * @Groups("selr:migrate")
+     */
+    public function getCodigo()
+    {
+        return $this->convenio->getCodigo();
     }
 
     public function setConvenio(?Convenio $convenio): self
@@ -104,6 +114,13 @@ class Representante
         $this->usuario = $usuario;
 
         return $this;
+    }
+    /**
+     * @Groups("selr:migrate")
+     */
+    public function getIdentificacion()
+    {
+        return $this->usuario->getIdentificacion();
     }
 
     public function isEncargado(): ?bool
@@ -243,5 +260,13 @@ class Representante
     public function whichArchivo()
     {
         return !$this->archivo && !$this->archivoBcc ? null : $this->archivo;
+    }
+
+    /**
+     * @Groups("selr:migrate")
+     */
+    public function isAutoliquidacion()
+    {
+        return $this->encargado || $this->bcc;
     }
 }
