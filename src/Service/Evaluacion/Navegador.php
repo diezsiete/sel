@@ -13,7 +13,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\Routing\RouterInterface;
 
-class Navegador
+class   Navegador
 {
     /**
      * @var Progreso
@@ -379,9 +379,12 @@ class Navegador
             if($diapositiva) {
                 $diapositivaOPregunta = $diapositiva;
             } else {
-                if($this->progreso->moduloTienePreguntas()) {
-                    $diapositivaOPregunta = $this->getPreguntasContainer()->getPrimeraPregunta();
-                } else {
+                // si es modulo repeticion pero por alguna razon desconocida todas las preguntas estan resueltas correctamente
+                // diapositivaOPregunta es false, pasamos al siguiente modulo entonces
+                $diapositivaOPregunta = $this->progreso->moduloTienePreguntas()
+                    ? $this->getPreguntasContainer()->getPrimeraPregunta()
+                    : false;
+                if(!$diapositivaOPregunta) {
                     $modulo = $this->progreso->getNextModulo();
                     $diapositivaOPregunta = $modulo->getDiapositivas()->first();
                 }
