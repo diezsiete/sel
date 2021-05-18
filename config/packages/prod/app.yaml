@@ -8,4 +8,4 @@ app:
             php_exec: /opt/php71/bin/php
 
     novasoftapi:
-        url: http://50.19.144.184:80
+        url: http://50.19.144.184:8669
