@@ -152,26 +152,35 @@ class CertificadoIngresosPdf extends FPDI
         $this->SetFont($this->customFontFamily,'',$this->fontSize);
 
         //Numero de agencias
-        $this->SetXY(148, 66);
-        $this->Write(0, 1);
+        if ($certificadoIngresos->getFechaInicial()->format('Y') != 2020) {
+            $this->SetXY(148, 66);
+            $this->Write(0, 1);
+        }
 
         //Conceptos
-        $y = 74;
+        $y = $certificadoIngresos->getFechaInicial()->format('Y') != 2020 ? 74 : 70;
         $y = $this->conceptoIngresos($certificadoIngresos, $y);
         $y += 4.5;
         $y = $this->conceptoAportes($certificadoIngresos, $y);
 
-        $this->fontSize += 2;
 
         //Nombre del pagador o agente retenedor
-        $this->SetFont($this->customFontFamily,'',$this->fontSize);
-        $x = 10;
-        $y += 4;
-        $this->SetXY($x, $y);
-        $this->Write(0, 'FORMA CONTINUA IMPRESA POR COMPUTADOR NO NECESITA FIRMAR AUTOGRAFO (ART 10 D.R. 836/91)');
+        if ($certificadoIngresos->getFechaInicial()->format('Y') != 2020) {
+            $x = 10;
+            $y += 4;
+            $this->fontSize += 2;
+            $this->SetXY($x, $y);
+            $this->SetFont($this->customFontFamily,'',$this->fontSize);
+            $this->Write(0, 'FORMA CONTINUA IMPRESA POR COMPUTADOR NO NECESITA FIRMAR AUTOGRAFO (ART 10 D.R. 836/91)');
+            $this->fontSize -= 2;
+        } else {
+            $x = 60;
+            $y += 3.5;
+            $this->SetXY($x, $y);
+            $this->Write(0, $certificadoIngresos->getRazonSocial() . ' ' . $certificadoIngresos->getNit() . '-' . $certificadoIngresos->getDv());
+        }
 
         $y += 4.25 * 10;
-        $this->fontSize -= 2;
         $this->SetFont($this->customFontFamily,'',$this->fontSize);
         $this->writeRightCell((string)number_format($certificadoIngresos->getMonto('valorRetencion')), $y);
 

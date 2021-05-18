@@ -112,6 +112,11 @@ class CertificadoIngresos implements CertificadoIngresosInterface
     public $ciudadCodigo;
 
     /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    protected $bonosElectronicos;
+
+    /**
      * @ORM\Column(type="integer")
      */
     public $ingresoHonorarios;
@@ -162,6 +167,11 @@ class CertificadoIngresos implements CertificadoIngresosInterface
     public $ingresoPensiones;
 
     /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    protected $ingresoTotal;
+
+    /**
      * @ORM\Column(type="integer")
      */
     public $aportesSalud;
@@ -185,6 +195,9 @@ class CertificadoIngresos implements CertificadoIngresosInterface
      * @ORM\Column(type="integer")
      */
     public $valorRetencion;
+
+    public $rais = 0;
+    public $covid = 0;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Main\Usuario")
@@ -498,6 +511,19 @@ class CertificadoIngresos implements CertificadoIngresosInterface
         return substr($this->ciudadCodigo, 0, 2);
     }
 
+
+    public function getBonosElectronicos(): ?int
+    {
+        return $this->bonosElectronicos;
+    }
+
+
+    public function setBonosElectronicos(int $bonosElectronicos): self
+    {
+        $this->bonosElectronicos = $bonosElectronicos;
+        return $this;
+    }
+
     /**
      * @param mixed $ingresoHonorarios
      * @return CertificadoIngresos
@@ -623,19 +649,38 @@ class CertificadoIngresos implements CertificadoIngresosInterface
 
     public function getIngresoProperties(): array
     {
-        return [
-            'ingresoSalario', 'ingresoHonorarios', 'ingresoServicios', 'ingresoComisiones', 'ingresoPrestaciones',
-            'ingresoViaticos', 'ingresoRepresentacion', 'ingresoCompensaciones', 'ingresoOtros', 'ingresoCesantias', 'ingresoPensiones'
-        ];
+        $ingresoProperties = ['ingresoSalario'];
+        if ($this->getFechaInicial()->format('Y') == 2020) {
+            $ingresoProperties[] = 'bonosElectronicos';
+        }
+        return array_merge($ingresoProperties, [
+            'ingresoHonorarios', 'ingresoServicios', 'ingresoComisiones', 'ingresoPrestaciones', 'ingresoViaticos',
+            'ingresoRepresentacion', 'ingresoCompensaciones', 'ingresoOtros', 'ingresoCesantias', 'ingresoPensiones'
+        ]);
     }
 
     public function getAportesProperties(): array
     {
-        return ['aportesSalud','aportesObligatoriosPensiones','aportesVoluntariosPensiones','aportesAfc','valorRetencion'];
+        $aportesProperties =  [
+            'aportesSalud','aportesObligatoriosPensiones','aportesVoluntariosPensiones','aportesAfc','valorRetencion'
+        ];
+        if ($this->getFechaInicial()->format('Y') == 2020) {
+            array_splice($aportesProperties, 2, 0, ['rais', 'covid']);
+        }
+        return $aportesProperties;
+    }
+
+    public function setIngresoTotal(int $ingresoTotal): self
+    {
+        $this->ingresoTotal = $ingresoTotal;
+        return $this;
     }
 
     public function getIngresoTotal()
     {
+        if ($this->ingresoTotal) {
+            return $this->ingresoTotal;
+        }
         return array_reduce($this->getIngresoProperties(), function ($carrier, $property) {
             return $carrier + $this->$property;
         }, 0);

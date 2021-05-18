@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Service\Napi\Report;
-
 
 use App\Entity\Main\Empleado;
 use App\Entity\Main\Usuario;
@@ -12,12 +10,13 @@ use App\Event\Event\ServicioEmpleados\Report\Importer\ImportEvent;
 use App\Service\Configuracion\Configuracion;
 use App\Service\Napi\Client\NapiClient;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 abstract class SsrsReport
 {
     /**
-     * @var \App\Service\Napi\Client\NapiClient
+     * @var NapiClient
      */
     protected $client;
     /**
@@ -75,10 +74,16 @@ abstract class SsrsReport
         $this->dispatcher->dispatch(new DeleteEvent($equalIdentifier, $entityClass));
     }
 
-    public function import(Usuario $usuario)
+    /**
+     * @param Usuario|Empleado $usuario
+     * @throws Exception
+     */
+    public function import($usuario)
     {
         $ssrsDbs = $this->configuracion->getSsrsDb();
-        $empleado = $this->em->getRepository(Empleado::class)->findByIdentificacion($usuario->getIdentificacion());
+        $empleado = $usuario instanceof Usuario
+            ? $this->em->getRepository(Empleado::class)->findByIdentificacion($usuario->getIdentificacion())
+            : $usuario;
         if(count($ssrsDbs) > 1 && $empleado) {
             $this->client->db($empleado->getSsrsDb());
         }

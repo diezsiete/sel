@@ -10,4 +10,9 @@ class Factory
     {
         return new Read($filePath);
     }
+
+    public function write(string $filePath): Write
+    {
+        return new Write($filePath);
+    }
 }

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Service\Excel;
-
 
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Exception;
@@ -33,8 +31,7 @@ class Read
 
     public function range($pRange)
     {
-        return $this->spreadsheet->getActiveSheet()
-            ->rangeToArray($pRange, $nullValue = null, $calculateFormulas = true, $formatData = true, $returnCellRef = false);
+        return $this->spreadsheet->getActiveSheet()->rangeToArray($pRange);
     }
 
     /**
@@ -59,6 +56,39 @@ class Read
     }
 
     /**
+     * @param string|int $pRange pude ser el numero de la fila
+     * @param array|null $titles
+     * @return array|null
+     */
+    public function row($pRange, ?array $titles = null): ?array
+    {
+        $worksheet = $this->spreadsheet->getActiveSheet();
+        if (is_numeric($pRange)) {
+            $highestCol = $worksheet->getHighestColumn($pRange);
+            $pRange = "A$pRange:$highestCol$pRange";
+        }
+
+        $row = $worksheet->rangeToArray($pRange);
+        if (is_array($row) && isset($row[0]) && is_array($row[0])) {
+            $row = $row[0];
+            if (count($row) === 1 && $row[array_key_first($row)] === null) {
+                $row = null;
+            } elseif ($titles) {
+                $tmpRow = [];
+                foreach ($titles as $key => $title) {
+                    if (array_key_exists($key, $row)) {
+                        $tmpRow[$title] = $row[$key];
+                    }
+                }
+                $row = $tmpRow;
+            }
+        } else {
+            $row = null;
+        }
+        return $row;
+    }
+
+    /**
      * @param string $charlist
      * @return Read
      */
@@ -68,9 +98,17 @@ class Read
         return $this;
     }
 
+    public function getHighestRow()
+    {
+        return $this->spreadsheet->getActiveSheet()->getHighestRow();
+    }
 
+    public function columnStringFromIndex($colIndex)
+    {
+        return Coordinate::stringFromColumnIndex($colIndex);
+    }
 
-    private function columnIndexFromString($pString)
+    public function columnIndexFromString($pString)
     {
         return Coordinate::columnIndexFromString($pString);
     }
