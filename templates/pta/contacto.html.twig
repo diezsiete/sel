@@ -79,7 +79,13 @@
                 <div class="appear-animation" data-appear-animation="fadeIn" data-appear-animation-delay="800">
                     <h4 class="mt-2 mb-1">Agencia  <strong>{{ currentOficina.ciudad }}</strong></h4>
                     <ul class="list list-icons list-icons-style-2 mt-2">
-                        <li><i class="fas fa-map-marker-alt top-6"></i> <strong class="text-dark">Dirección:</strong> {{ currentOficina.direccion }}, {{currentOficina.ciudad}}, Colombia</li>
+                        {% if currentOficina.direccion %}
+                            <li>
+                                <i class="fas fa-map-marker-alt top-6"></i>
+                                <strong class="text-dark">Dirección:</strong>
+                                {{ currentOficina.direccion }}, {{currentOficina.ciudad}}, Colombia
+                            </li>
+                        {% endif %}
                         <li><i class="fas fa-phone top-6"></i> <strong class="text-dark">Teléfono:</strong> {{ currentOficina.telefono }}</li>
                         {#<li><i class="fas fa-envelope top-6"></i> <strong class="text-dark">Email:</strong>
                             <a href="mailto:{{ currentOficina.email }}">{{ currentOficina.email }}</a></li>#}
@@ -108,12 +114,14 @@
 
     </div>
 
-    <div id="googlemaps" class="google-map mb-0 mt-3"
-         data-latitude="{{ currentOficina.latitude }}"
-         data-longitude="{{ currentOficina.longitude }}"
-         data-title="{{ "Agencia " ~ currentOficina.ciudad }}"
-         data-address="{{ currentOficina.direccion }}"
-         data-zoom="17"></div>
+    {% if currentOficina.direccion %}
+        <div id="googlemaps" class="google-map mb-0 mt-3"
+             data-latitude="{{ currentOficina.latitude }}"
+             data-longitude="{{ currentOficina.longitude }}"
+             data-title="{{ "Agencia " ~ currentOficina.ciudad }}"
+             data-address="{{ currentOficina.direccion }}"
+             data-zoom="17"></div>
+    {% endif %}
 
 {% endblock %}
 

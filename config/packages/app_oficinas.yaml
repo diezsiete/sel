@@ -13,24 +13,24 @@ app:
 
         barranquilla:
           ciudad: Barranquilla
-          direccion: Cra 53 N° 68 B - 29 Local 01
-          telefono: (5) 368 30 24
+          direccion: Calle 77B No. 57-103, Piso 10, Oficina 1001, Edificio Green Towers
+          telefono: (5) 316 23 84
           email: barranquilla@pta.com.co
-          latitude: 10.99680
-          longitude: -74.79964
+          latitude: 11.0049129
+          longitude: -74.8151875
 
         bucaramanga:
           ciudad: Bucaramanga
-          direccion: Carrera 34 Nº 51 - 80   Of. 403 (Centro Empresarial Foro)
-          telefono: (7) 657 28 61
+          direccion: ~
+          telefono: 316 244 06 19
           email: bucaramanga@pta.com.co
-          latitude: 7.11393
-          longitude: -73.10998
+          latitude: 0
+          longitude: 0
 
         cali:
           ciudad: Cali
           direccion: Calle 22 Norte Nº 4 N - 56    Of. 204 (Edf. Vanesa)
-          telefono: (2) 660 48 58
+          telefono: 317 769 81 39
           email: agenciacali@pta.com.co
           latitude: 3.462535
           longitude: -76.527968
@@ -38,15 +38,15 @@ app:
         duitama:
           ciudad: Duitama
           direccion: Calle 16 N° 14-41Of. 1008 (Centro Empresarial Palma Real)
-          telefono: (8) 761 74 36
+          telefono: 310 306 22 34
           email: duitama@pta.com.co
           latitude: 5.82880
           longitude: -73.03401
 
         medellin:
           ciudad: Medellín
-          direccion: Carrera 49  Nº 52 - 170  Of. 601 (Ed. Los Cambulos)
+          direccion: 'Carrera 43A # 11A-44 Piso, 2'
           telefono: (4) 251 20 90
           email: ptamedellin@pta.com.co
-          latitude: 6.25117
-          longitude: -75.56570
+          latitude: 6.2124013
+          longitude: -75.5718482

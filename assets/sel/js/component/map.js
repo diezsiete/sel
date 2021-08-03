@@ -25,17 +25,18 @@ class Map {
 module.exports = elementId => {
     document.addEventListener("DOMContentLoaded", function() {
         let mapElement = document.getElementById(elementId);
+        if (mapElement) {
+            const latitude = Number.parseFloat(mapElement.dataset.latitude);
+            const longitude = Number.parseFloat(mapElement.dataset.longitude);
+            const zoom = Number.parseInt(mapElement.dataset.zoom || 16);
+            const title = mapElement.dataset.title;
+            const address = mapElement.dataset.address;
+            const pinImg = mapElement.dataset.pinImg;
 
-        const latitude = Number.parseFloat(mapElement.dataset.latitude);
-        const longitude =  Number.parseFloat(mapElement.dataset.longitude);
-        const zoom = Number.parseInt(mapElement.dataset.zoom || 16);
-        const title = mapElement.dataset.title;
-        const address = mapElement.dataset.address;
-        const pinImg = mapElement.dataset.pinImg;
-
-        Map.loadGoogleMapsApi().then(function(googleMaps) {
-            Map.createMap(googleMaps, mapElement, {lat: latitude, lng: longitude}, zoom, pinImg);
-        });
+            Map.loadGoogleMapsApi().then(function (googleMaps) {
+                Map.createMap(googleMaps, mapElement, {lat: latitude, lng: longitude}, zoom, pinImg);
+            });
+        }
 
     });
 };
