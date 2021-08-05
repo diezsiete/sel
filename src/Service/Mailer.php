@@ -8,6 +8,7 @@ use App\Entity\Main\RestaurarClave;
 use App\Entity\Main\SolicitudServicio;
 use App\Form\Model\ContactoModel;
 use App\Service\Configuracion\Configuracion;
+use App\Service\Halcon\Servicios\Correo;
 use Psr\Container\ContainerInterface;
 use Swift_Attachment;
 use Swift_Mailer;
@@ -32,12 +33,17 @@ class Mailer
      * @var Configuracion
      */
     private $configuracion;
+    /**
+     * @var Correo
+     */
+    private $correo;
 
-    public function __construct(Swift_Mailer $mailer, ContainerInterface $container, Configuracion $configuracion)
+    public function __construct(Swift_Mailer $mailer, ContainerInterface $container, Configuracion $configuracion, Correo $correo)
     {
         $this->mailer = $mailer;
         $this->container = $container;
         $this->configuracion = $configuracion;
+        $this->correo = $correo;
     }
 
     public function send($subject, $from, $to, $view, $parameters, $attachmentPath = false)
@@ -80,12 +86,24 @@ class Mailer
 
     public function sendOlvido(RestaurarClave $restaurarClave)
     {
-        $this->send(
-            $this->configuracion->getRazon() . '. Pagina web restaurar clave',
-            $this->configuracion->getMail(),
-            $restaurarClave->getUsuario()->getEmail(),
-            'emails/olvido.html.twig', [
-                'restaurarClave' => $restaurarClave
-            ]);
+        try {
+            $mensaje = $this->correo->mensaje()
+                ->subject($this->configuracion->getRazon() . '. Pagina web restaurar clave')
+                ->to($restaurarClave->getUsuario()->getEmail())
+                ->html($this->container->get('twig')->render('emails/olvido.html.twig', [
+                    'restaurarClave' => $restaurarClave
+                ]));
+            $this->correo->enviar($mensaje);
+        } catch (\Exception $e) {
+            // TODO mandar mail a admin o algo
+        }
+
+        // $this->send(
+        //     $this->configuracion->getRazon() . '. Pagina web restaurar clave',
+        //     $this->configuracion->getMail(),
+        //     $restaurarClave->getUsuario()->getEmail(),
+        //     'emails/olvido.html.twig', [
+        //         'restaurarClave' => $restaurarClave
+        //     ]);
     }
 }
