@@ -58,7 +58,27 @@
 <div class="body" id="body"> {# class="body{{ is_sel() ? ' menu-open' : '' }}" #}
     {% block header %}
         {% if not app.user and app.request.attributes.get('_route') is same as('pta_index') %}
-            {{ include('pta/blocks/header/_coronavirus.html.twig') }}
+            <div id="header">
+                <div class="header-top header-top-no-min-height" style="background: #fafafa;">
+                    <div class="container-fluid px-0">
+                        <div class="header-row py-0">
+                            <div class="header-column justify-content-end">
+                                <div class="header-row alert-danger">
+                                    <div class="estafadores-back-fill"></div>
+                                    <div class="row">
+                                        <div class="order-2 order-lg-1 col-sm-12 col-md-6">
+                                            {{ include('pta/blocks/header/_coronavirus.html.twig') }}
+                                        </div>
+                                        <div class="order-1 order-lg-2 col-sm-12 col-md-6">
+                                            {{ include('pta/blocks/header/_estafadores.html.twig') }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         {% endif %}
         {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
             {{ include('pta/blocks/header/_switch-user.html.twig') }}

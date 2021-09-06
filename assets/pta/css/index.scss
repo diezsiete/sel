@@ -17,3 +17,67 @@
 section.cualidades.section.section-height-5 {
   padding-bottom: 0;
 }
+#header .header-row.alert-danger {
+  background-color: #f3f5c6;
+  position: relative;
+
+  #estafadores {
+    h1{
+      font-size: 1.8em;
+      font-weight: 400;
+      line-height: 24px;
+      margin-top: 0;
+      padding-top: 0;
+    }
+    background-color: #f5c6cb;
+    z-index: 20;
+    height: 100%;
+    top: 0;
+
+
+  }
+}
+@media (min-width: 768px) {
+  #header .header-row.alert-danger {
+    overflow: hidden;
+    .estafadores-back-fill {
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 100px;
+      background-color: #f5c6cb;
+    }
+    #estafadores {
+      background-color: #f5c6cb;
+      font-size: 1.2em;
+      z-index: 20;
+      overflow: hidden;
+      position: relative;
+      -webkit-transition: transform .8s;
+      transition: transform .8s;
+      height: 100%;
+      top: 0;
+      transform: skewX(10deg);
+      -moz-transform: skewX(10deg);
+      -webkit-transform: skewX(10deg);
+      box-shadow: -32px 20px 35px -10px rgb(0 0 0 / 21%);
+      display: table;
+      h1 {
+        font-size: 2.6em;
+        line-height: 48px;
+      }
+      .text {
+        transform: skewX(-10deg);
+        -moz-transform: skewX(-10deg);
+        -webkit-transform: skewX(-10deg);
+        text-align: center;
+        display: table-cell;
+        vertical-align: middle;
+        p {
+          font-size: 1.2em;
+        }
+      }
+    }
+  }
+}
