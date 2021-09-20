@@ -92,15 +92,15 @@ class PdfCartaLaboral extends PdfBase
         $salarioNum = number_format($salarioNum);
         return " se encuentra vinculad" . ($sex ? 'o' : 'a') . " laboralmente con la " . utf8_decode("Compañía")
             . " $companiaNombre en un contrato por " . $contratoTermino . " como trabajador en " . utf8_decode("misión")
-            . " en la Empresa Usuaria $eusuaria " . utf8_decode("desempeñando") . " el cargo de"
-            . " $cargo desde el $desde con una " . utf8_decode("asignación") . " salarial mensual de $salarioTexto ($$salarioNum)";
+            . " en la Empresa Usuaria " . utf8_decode($eusuaria) . ' ' . utf8_decode("desempeñando") . " el cargo de "
+            . utf8_decode($cargo) . " desde el $desde con una " . utf8_decode("asignación") . " salarial mensual de $salarioTexto ($$salarioNum)";
     }
 
     protected function contentInactivo($contratoTermino, $cargo, $fecing, $fecegr, $eusuaria = null, $companiaNombre = null)
     {
         return " " . utf8_decode("laboró") . " por medio de contrato de " . $contratoTermino . " "
-            . utf8_decode("desempeñando") . " el cargo de $cargo"
-            . " para la Empresa Usuaria $eusuaria en los siguientes periodos:\n\n"
+            . utf8_decode("desempeñando") . " el cargo de " . utf8_decode($cargo)
+            . " para la Empresa Usuaria ".utf8_decode($eusuaria)." en los siguientes periodos:\n\n"
             . "Fecha Ingreso : " . $fecing . " \n"
             . "Fecha Retiro   : " . $fecegr;
     }
