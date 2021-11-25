@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import './index-hero.scss';
 
 $(function () {
     var s = null

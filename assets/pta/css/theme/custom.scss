@@ -12,6 +12,17 @@
     background: #212529;
 }
 
+.cuadros-top {
+    background-image: url("../../img/cuadros.jpg");
+    background-position: left -18px;
+    background-repeat: repeat-x;
+    background-color: #FFF;
+    &.contacto {
+        background-position: left -44px;
+    }
+}
+
+
 /* Nosotros --------------------------------------------------------------------------------------------------------- */
 .logos{
     text-align:center !important;
@@ -415,4 +426,24 @@ ul.nav-list li.active.text-dark > a {
 }
 .text-xs-center {
     text-align: center!important;
+}
+
+// whatsapp ------------------------------------------------------------------------------------------------------------
+.whatsapp {
+    position:fixed;
+    width:60px;
+    height:60px;
+    bottom:40px;
+    left:40px;
+    background-color:#25d366;
+    color:#FFF !important;
+    border-radius:50px;
+    text-align:center;
+    font-size:40px;
+    z-index:100;
+    box-shadow: 1px 0 5px rgba(0,0,0,0.4);
+}
+
+.whatsapp-icon {
+    margin-top:10px;
 }

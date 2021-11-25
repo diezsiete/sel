@@ -1,9 +1,10 @@
-
 import '../css/index.scss';
 import '../css/component/_floating-recaudo.scss'
 
-import './component/index-hero'
 import $ from 'jquery';
+// import '../component/index-hero/index-hero'
+// import '../component/index-hero-tres/index-hero-tres'
+import '../component/index-hero-tres/index-hero-tres2'
 
 
 import './theme/countTo';
@@ -18,7 +19,6 @@ import './theme/animate-init';
 // Counter
 $(function() {
     $('[data-plugin-counter]:not(.manual), .counters [data-to]').each(function() {
-
         var $this = $(this),
             opts;
 

@@ -9,114 +9,7 @@
 
 
 {% block body %}
-    <!-- SLIDER -->
-    <section class="row-fluid center-text text-center twin-hero">
-        <div class="hero-shadow">
-        </div>
-        <div class="hero-container">
-            <div class="left-hero" id="left-hero">
-                <div class="left-hero-tilt left-hero-tilt-expanded">
-                    <div class="side-container">
-                        <div class="initial active">
-                            <h2>Empresas</h2>
-                            <p>Consiga el personal que su empresa necesita</p>
-                            <span class="round-icon">+</span>
-                        </div>
-                        <div class="collapsed">
-                            <h2>Empresas</h2>
-                            <span class="round-filled-icon">+</span>
-                        </div>
-                        <div class="expanded">
-
-                            <h2>Empresas</h2>
-
-                            <p>Suministramos personal calificado para todos los sectores economicos</p>
-
-                            <div class="hero-twin-items">
-                                <div class="hero-twin-item">
-                                    <i class="icon-featured icon-user icons text-color-light"></i>
-                                    <p>Reclutamiento, evaluación y selección de personal</p>
-                                </div>
-                                <div class="hero-twin-item">
-                                    <i class="icon-featured icon-layers icons text-color-light"></i>
-                                    <p>Contratación y administración</p>
-                                </div>
-                                <div class="hero-twin-item">
-                                    <i class="icon-featured icon-phone icons text-color-light"></i>
-                                    <p>Atención y soporte</p>
-                                </div>
-                            </div>
-                            <a class="btn btn-white btn-twin-hero"
-                               href="{{ path('pta_servicios') }}"
-                               data-ga-twin-label="| Business CTA" data-pa-click="hero|Business CTA">
-                                Conozca mas sobre nosotros</a>
-                            <div class="legal-container">
-                                <p class="legal-notes">¿Ya es cliente?<br>
-                                    <a href="{{ path('app_login') }}">
-                                        Ingrese al portal de clientes
-                                    </a>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="right-hero" id="right-hero">
-                <div class="right-hero-tilt">
-                    <div class="side-container">
-                        <div class="initial active">
-
-                            <h2>Trabajadores</h2>
-                            <p>Encuentre el trabajo que mas se ajusta a sus cualidades</p>
-                            <span class="round-icon">+</span>
-                        </div>
-                        <div class="collapsed">
-
-                            <h2>Trabajadores</h2>
-                            <span class="round-filled-icon">+</span>
-                        </div>
-                        <div class="expanded">
-
-                            <h2>Trabajadores</h2>
-                            <p>Trabaje con nosotros para establidad y seguridad laboral</p>
-
-                            <div class="hero-twin-items">
-                                <div class="hero-twin-item">
-                                    <i class="icon-featured icon-docs icons text-color-light"></i>
-                                    <p>Contrato laboral, seguridad social y prestaciones sociales</p>
-                                </div>
-                                <div class="hero-twin-item">
-                                    <i class="icon-featured icon-umbrella icons text-color-light"></i>
-                                    <p>Salud, Pensión, ARL y Caja de compensación familiar</p>
-                                </div>
-                                <div class="hero-twin-item">
-                                    <i class="icon-featured icon-like icons text-color-light"></i>
-                                    <p>Convenios especiales y beneficios para nuestros trabajadores.</p>
-                                </div>
-                            </div>
-                            {# if is_granted('ASPIRANTES_MODULE') %}
-                                <a class="btn btn-white btn-twin-hero"
-                                   href="{{ path('vacante_listado') }}"
-                                   data-ga-twin-label="| Personal CTA" data-pa-click="hero|Personal CTA">
-                                    Buscar trabajo</a>
-                            {% endif #}
-                            <a class="btn btn-white btn-twin-hero" href="https://pta.t3rsc.co"
-                               data-ga-twin-label="| Personal CTA" data-pa-click="hero|Personal CTA">
-                                Buscar trabajo</a>
-                            <div class="legal-container">
-                                <p class="legal-notes">¿Ya es empleado?.<br>
-                                <a href="{{ path('app_login') }}">
-                                    Ingrese al servicio de empleados
-                                </a>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- /SLIDER -->
+    {{ include('pta/blocks/index-hero/_index-hero-tres2.html.twig') }}
 
     <div class="home-intro mb-0" id="home-intro">
         <div class="container">
@@ -140,23 +33,25 @@
         </div>
     </div>
 
-    <div class="container py-3 my-5">
-        <div class="row justify-content-center appear-animation" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="400">
-            <div class="col">
-                <h1 class="text-10 font-weight-normal text-color-dark mb-4 line-height-4">
-                    <span class="text-color-primary font-weight-bold ">PTA S.A.S</span> - Personal Temporal y Asesorías
-                </h1>
-                <p class="text-5 font-weight-normal text-color-dark line-height-7">
-                    Respaldados por nuestra amplia experiencia en la administración de recursos humanos,
-                    nos posicionamos en el mercado como una de las empresas líderes del sector.
-                </p>
+    <div class="cuadros-top">
+        <div class="container">
+            <div class="row justify-content-center appear-animation" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="400">
+                <div class="col">
+                    <h1 class="text-10 font-weight-normal text-color-dark mb-4 line-height-4">
+                        <span class="text-color-primary font-weight-bold ">PTA S.A.S</span> - Personal Temporal y Asesorías
+                    </h1>
+                    <p class="text-5 font-weight-normal text-color-dark line-height-7">
+                        Respaldados por nuestra amplia experiencia en la administración de recursos humanos,
+                        nos posicionamos en el mercado como una de las empresas líderes del sector.
+                    </p>
+                </div>
             </div>
         </div>
     </div>
 
 
     <div class="container">
-        <div class="row counters counters-sm py-4 mt-5">
+        <div class="row counters counters-sm py-4 mt-0">
             <div class="col-sm-6 col-lg-3 mb-5 mb-lg-0">
                 <div class="counter">
                     <i class="fa fa-building"></i>
@@ -174,14 +69,14 @@
             <div class="col-sm-6 col-lg-3 mb-5 mb-lg-0">
                 <div class="counter">
                     <i class="fa fa-medal"></i>
-                    <strong class="text-color-dark font-weight-extra-bold" data-to="34">0</strong>
+                    <strong class="text-color-dark font-weight-extra-bold" data-to="36">0</strong>
                     <label class="text-4 mt-1">Años de experiencia</label>
                 </div>
             </div>
             <div class="col-sm-6 col-lg-3">
                 <div class="counter">
                     <i class="fa fa-home"></i>
-                    <strong class="text-color-dark font-weight-extra-bold" data-to="8" data-append="">0</strong>
+                    <strong class="text-color-dark font-weight-extra-bold" data-to="6" data-append="">0</strong>
                     <label class="text-4 mt-1">Agencias en Colombia</label>
                 </div>
             </div>
@@ -255,9 +150,126 @@
             </div>
         </div>
     </section>
+
+    <section class="section section-height-5 bg-light border border-bottom-0 m-0 ultimas-noticias">
+        <section class="section section-default section-footer">
+            <div class="container">
+                <div class="row mt-4 appear-animation" data-appear-animation="fadeInUpShorter">
+                    <div class="col-lg-12">
+                        <div class="recent-posts mb-5">
+                            <h2 class="font-weight-normal text-6 mb-4">
+                                <strong class="font-weight-extra-bold">Últimas</strong> noticias
+                            </h2>
+                            <div class="owl-carousel owl-theme dots-title mb-0" data-plugin-options="{'items': 1, 'autoHeight': true, 'autoplay': true, 'autoplayTimeout': 8000}">
+                                <div class="row">
+                                    <div class="col-lg-6 mb-4 mb-lg-0">
+                                        <article class="post">
+                                            <div class="row">
+                                                <div class="col-auto pr-0">
+                                                    <div class="post-date">
+                                                        <span class="day font-weight-extra-bold">6</span>
+                                                        <span class="month text-1">Sep</span>
+                                                        <span class="year">2021</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col pl-1">
+                                                    <h4 class="text-primary text-4">
+                                                        ¡Comunicado de alerta!
+                                                    </h4>
+                                                    <p>
+                                                        Nos permitimos informar que PTA SAS <strong>no solicita dinero o pago de pólizas</strong>
+                                                        para vincular a trabajadores.
+                                                    </p>
+                                                    <p>
+                                                        No se deje engañar por estafadores, si recibe este tipo de solicitudes por favor absténgase de pagar dinero y
+                                                        denuncie a nuestro correo electrónico
+                                                        <a href="mailto:notificaciones@pta.com.co">notificaciones@pta.com.co</a>
+                                                        y si es posible envie todas las pruebas.
+                                                    </p>
+                                                    <p>
+                                                        Los delincuentes utilizan el correo
+                                                        <a href="mailto:angelicamendezpta@hotmail.com.co">angelicamendezpta@hotmail.com.co</a>
+                                                    </p>
+                                                </div>
+
+                                            </div>
+                                        </article>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <article class="post">
+                                            <div class="row">
+                                                <div class="col-auto pr-0">
+                                                    <div class="post-date">
+                                                        <span class="day font-weight-extra-bold">16</span>
+                                                        <span class="month text-1">Mar</span>
+                                                        <span class="year">2020</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col pl-1">
+                                                    <h4 class="text-primary text-4">
+                                                        <a class="d-block" href="blog-post.html">
+                                                            Comunicado plan de contingencia Covid-19
+                                                        </a>
+                                                    </h4>
+                                                    <p class="pr-4 mb-0">
+                                                        <strong>Nuestras sedes están cerradas para la atención al público</strong> y las inquietudes, solicitudes o
+                                                        aclaraciones, las estamos atendiendo a través de los siguientes canales:
+                                                    </p>
+                                                    <p style="margin: 15px 5px; color: #721c24;line-height: 20px;">
+                                                        Si usted es proveedor comuníquese al correo
+                                                        <a href="mailto:contador@pta.com.co">contador@pta.com.co</a>
+                                                        o al teléfono 318 716 13 18<br>
+                                                        Si Usted es Trabajador en Misión al correo
+                                                        <a href="mailto:servicioalcliente2@pta.com.co">servicioalcliente2@pta.com.co</a>
+                                                        o al teléfono 315 802 92 66 y 321 343 85 72<br>
+                                                        Si Usted es Empresa Usuaria o requiere contratar nuestros servicios al correo
+                                                        <a href="mailto:fernanda.sanchez@pta.com.co">fernanda.sanchez@pta.com.co</a>
+                                                        o al teléfono 316 834 57 26
+                                                    </p>
+                                                    <button class="read-more text-color-dark font-weight-semibold text-2"
+                                                            data-toggle="modal" data-target="#coronaModal" id="corona-modal-trigger">
+                                                        Leer más <i class="fas fa-angle-right position-relative top-1 ml-1"></i>
+                                                    </button>
+
+                                                </div>
+                                            </div>
+                                        </article>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+
+
     <a href="https://www.mipagoamigo.com/MPA_WebSite/ServicePayments/StartPayment?id=5437&searchedCategoryId=&searchedAgreementName=PTA%20%20SAS"
        class="floating-recaudo" target="_blank">
     </a>
+
+    <div class="modal fade" id="coronaModal" tabindex="-1" role="dialog" aria-labelledby="coronaModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="coronaModalLabel">
+                        Comunicado plan de contingencia Covid-19
+                    </h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    {{ include('pta/blocks/header/_coronavirus.html.twig') }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-dismiss="modal">
+                        Cerrar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
 
 {% block javascripts %}

@@ -1,6 +1,17 @@
 @import '~simple-line-icons/scss/simple-line-icons.scss';
-@import 'component/index-hero';
+//@import 'component/index-hero';
 @import 'helper/variables';
+@import 'blog';
+
+.cuadros-top {
+  .container {
+    margin-bottom: 0;
+    padding-top: 2rem;
+    p {
+      margin-bottom: 0;
+    }
+  }
+}
 
 .btn-empr-bg{
   background: rgba(255, 255, 255, 0.72);
@@ -33,10 +44,27 @@ section.cualidades.section.section-height-5 {
     z-index: 20;
     height: 100%;
     top: 0;
-
-
   }
 }
+
+section.ultimas-noticias {
+  padding: 0 !important;
+
+  section.section.section-footer {
+    margin-top: -1px !important;
+    padding: 0;
+    margin-bottom: 0 !important;
+  }
+}
+#coronaModalLabel {
+  color:#721c24;
+  margin: 5px;
+}
+#corona-modal-trigger {
+  border:none;
+  background-color: transparent;
+}
+
 @media (min-width: 768px) {
   #header .header-row.alert-danger {
     overflow: hidden;

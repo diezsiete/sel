@@ -1,0 +1,106 @@
+<section class="row-fluid center-text text-center twin-hero">
+    <div class="hero-shadow">
+    </div>
+    <div class="hero-container">
+        <div class="left-hero" id="left-hero">
+            <div class="left-hero-tilt left-hero-tilt-expanded">
+                <div class="side-container">
+                    <div class="initial active">
+                        <h2>Empresas</h2>
+                        <p>Consiga el personal que su empresa necesita</p>
+                        <span class="round-icon">+</span>
+                    </div>
+                    <div class="collapsed">
+                        <h2>Empresas</h2>
+                        <span class="round-filled-icon">+</span>
+                    </div>
+                    <div class="expanded">
+
+                        <h2>Empresas</h2>
+
+                        <p>Suministramos personal calificado para todos los sectores economicos</p>
+
+                        <div class="hero-twin-items">
+                            <div class="hero-twin-item">
+                                <i class="icon-featured icon-user icons text-color-light"></i>
+                                <p>Reclutamiento, evaluación y selección de personal</p>
+                            </div>
+                            <div class="hero-twin-item">
+                                <i class="icon-featured icon-layers icons text-color-light"></i>
+                                <p>Contratación y administración</p>
+                            </div>
+                            <div class="hero-twin-item">
+                                <i class="icon-featured icon-phone icons text-color-light"></i>
+                                <p>Atención y soporte</p>
+                            </div>
+                        </div>
+                        <a class="btn btn-white btn-twin-hero"
+                           href="{{ path('pta_servicios') }}"
+                           data-ga-twin-label="| Business CTA" data-pa-click="hero|Business CTA">
+                            Conozca mas sobre nosotros</a>
+                        <div class="legal-container">
+                            <p class="legal-notes">¿Ya es cliente?<br>
+                                <a href="{{ path('app_login') }}">
+                                    Ingrese al portal de clientes
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="right-hero" id="right-hero">
+            <div class="right-hero-tilt">
+                <div class="side-container">
+                    <div class="initial active">
+
+                        <h2>Trabajadores</h2>
+                        <p>Encuentre el trabajo que mas se ajusta a sus cualidades</p>
+                        <span class="round-icon">+</span>
+                    </div>
+                    <div class="collapsed">
+
+                        <h2>Trabajadores</h2>
+                        <span class="round-filled-icon">+</span>
+                    </div>
+                    <div class="expanded">
+
+                        <h2>Trabajadores</h2>
+                        <p>Trabaje con nosotros para establidad y seguridad laboral</p>
+
+                        <div class="hero-twin-items">
+                            <div class="hero-twin-item">
+                                <i class="icon-featured icon-docs icons text-color-light"></i>
+                                <p>Contrato laboral, seguridad social y prestaciones sociales</p>
+                            </div>
+                            <div class="hero-twin-item">
+                                <i class="icon-featured icon-umbrella icons text-color-light"></i>
+                                <p>Salud, Pensión, ARL y Caja de compensación familiar</p>
+                            </div>
+                            <div class="hero-twin-item">
+                                <i class="icon-featured icon-like icons text-color-light"></i>
+                                <p>Convenios especiales y beneficios para nuestros trabajadores.</p>
+                            </div>
+                        </div>
+                        {# if is_granted('ASPIRANTES_MODULE') %}
+                                <a class="btn btn-white btn-twin-hero"
+                                   href="{{ path('vacante_listado') }}"
+                                   data-ga-twin-label="| Personal CTA" data-pa-click="hero|Personal CTA">
+                                    Buscar trabajo</a>
+                            {% endif #}
+                        <a class="btn btn-white btn-twin-hero" href="https://pta.t3rsc.co"
+                           data-ga-twin-label="| Personal CTA" data-pa-click="hero|Personal CTA">
+                            Buscar trabajo</a>
+                        <div class="legal-container">
+                            <p class="legal-notes">¿Ya es empleado?.<br>
+                                <a href="{{ path('app_login') }}">
+                                    Ingrese al servicio de empleados
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
