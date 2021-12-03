@@ -31,16 +31,20 @@
                             <p class="lead mb-0 appear-animation" data-appear-animation="maskUp" data-appear-animation-delay="200">
                                 Somos una empresa de trabajos temporales con trayectoria y <br> experiencia de mas de 35 años.
                             </p>
-                            <div class="col-lg-2 appear-animation mt-3 pl-0 mb-1" data-appear-animation="fadeIn" data-appear-animation-delay="500">
+                            <div class="appear-animation mt-3 pl-0 mb-3" data-appear-animation="fadeIn" data-appear-animation-delay="500">
 {#                                <a href="{{ path('pta_contacto') }}" class="btn btn-modern btn-primary mt-1">Contactenos</a>#}
                                 <a class="btn btn-modern btn-primary mt-1" href="#modalContactenos" id="contactenos-btn">
-                                    Contactenos
+                                    Solicite aquí su cotización
                                 </a>
                             </div>
-                            <p data-reactid="101">
-                                ó Llamenos para empezar:
-                                <a href="tel:756-98-40">
-                                    <i class="fas fa-phone"></i> (1) 756-98-40
+                            <p class="sublead" data-reactid="101">
+                                ó Comuniquese con nosotros para empezar: <br>
+                                <a href="tel:316-834-57260">
+                                    <i class="fas fa-phone"></i> 316 834 5726
+                                </a>
+                                <br>
+                                <a href="https://wa.me/573168345726">
+                                    <i class="fab fa-whatsapp"></i> 316 834 5726
                                 </a>
                             </p>
                         </div>
@@ -80,6 +84,7 @@
                             <li>Verificación de datos</li>
                             <li>Visita domiciliaria</li>
                             <li>Pruebas de poligrafo</li>
+                            <li>Estudios de seguridad</li>
                         </ul>
                     </div>
                     <div class="plan-footer"></div>
@@ -335,11 +340,11 @@
     </div>
     </div>
 
-    <div id="modalContactenos" class="modal-block mfp-hide">
+    <div id="modalContactenos" class="modal-block mfp-hide fadeIn">
         <section class="card">
             <header class="card-header">
-                <h2 class="card-title">Contactenos</h2>
-                <small>Ingrese la siguiente información para conocer sus necesidades y poderle brindar la mejor atención</small>
+                <h2 class="card-title">Solicitud de cotización</h2>
+                <p>Ingrese la siguiente información para conocer sus necesidades y poderle brindar la mejor atención</p>
             </header>
             <div class="card-body">
                 <div class="modal-wrapper">
@@ -357,8 +362,8 @@
             <footer class="card-footer">
                 <div class="row">
                     <div class="col-md-12 text-right">
-                        <button class="btn btn-primary modal-confirm">Enviar</button>
                         <button class="btn btn-default modal-dismiss">Cancelar</button>
+                        <button class="btn btn-primary modal-confirm">Enviar</button>
                     </div>
                 </div>
             </footer>
@@ -369,6 +374,3 @@
         {{ parent() }}
     {% endblock %}
 {% endblock %}
-
-
-

@@ -66,6 +66,20 @@ class SolicitudServicio
      */
     private $comentario;
 
+    /**
+     * @ORM\Column(type="string", length=120, nullable=true)
+     * @Assert\NotBlank(message="Ingrese ciudad")
+     * @Assert\Length(max=120, maxMessage="Campo supera limite de {{ limit }} caracteres")
+     */
+    private $ciudad;
+
+    /**
+     * @ORM\Column(type="string", length=120, nullable=true)
+     * @Assert\NotBlank(message="Ingrese cargo")
+     * @Assert\Length(max=120, maxMessage="Campo supera limite de {{ limit }} caracteres")
+     */
+    private $cargo;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -164,6 +178,30 @@ class SolicitudServicio
     public function setComentario(?string $comentario): self
     {
         $this->comentario = $comentario;
+
+        return $this;
+    }
+
+    public function getCiudad(): ?string
+    {
+        return $this->ciudad;
+    }
+
+    public function setCiudad(?string $ciudad): self
+    {
+        $this->ciudad = $ciudad;
+
+        return $this;
+    }
+
+    public function getCargo(): ?string
+    {
+        return $this->cargo;
+    }
+
+    public function setCargo(?string $cargo): self
+    {
+        $this->cargo = $cargo;
 
         return $this;
     }

@@ -20,8 +20,12 @@ DirectoryIndex index.php
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
-    RewriteCond %{HTTP_HOST} ^{{ empresa }}.com.co [NC]
-    RewriteRule ^(.*)$ https://www.{{ empresa }}.com.co/$1 [L,R=301]
+    # cambio para ssl de godaddy ahora es con pta.com.co
+    #RewriteCond %{HTTP_HOST} ^{{ empresa }}.com.co [NC]
+    #RewriteRule ^(.*)$ https://www.{{ empresa }}.com.co/$1 [L,R=301]
+    RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+    RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+
 
     # forzar https
     # https://www.siteground.com/kb/how-to-force-ssl-with-htaccess/

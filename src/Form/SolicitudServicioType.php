@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Form;
-
 
 use App\Entity\Main\SolicitudServicio;
 use Symfony\Component\Form\AbstractType;
@@ -19,6 +17,7 @@ class SolicitudServicioType extends AbstractType
             ->add('nombreEmpresa', null, [
                 'label' => 'Nombre de la empresa'
             ])
+            ->add('ciudad')
             ->add('sector', null, [
                 'label' => 'Sector'
             ])
@@ -34,10 +33,13 @@ class SolicitudServicioType extends AbstractType
                 'label' => 'Email corporativo'
             ])
             ->add('telefonoContacto', null, [
-                'label' => 'Teléfono contacto'
+                'label' => 'Celular'
+            ])
+            ->add('cargo', null, [
+                'label' => 'Cargo contacto'
             ])
             ->add('comentario', null, [
-                'label' => 'Comentario'
+                'label' => 'Detalle de la solicitud'
             ]);
     }
 
