@@ -25,7 +25,7 @@ app:
       CertificadoLaboral:
         refresh_interval: 'PT12H'
       CertificadoIngresos:
-        anos: [2017, 2018, 2019, 2020]
+        anos: [2017, 2018, 2019, 2020, 2021]
       LiquidacionContrato: ~
 
   empresas:

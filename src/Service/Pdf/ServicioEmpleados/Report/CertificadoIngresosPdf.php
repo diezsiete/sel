@@ -41,10 +41,10 @@ class CertificadoIngresosPdf extends FPDI
 
     public function build(CertificadoIngresosInterface $certificadoIngresos)
     {
-
+        $anoInicial = $certificadoIngresos->getFechaInicial()->format('Y');
         // add a page
         $this->AddPage();
-        $this->setSourceFile($this->getSourceFile($certificadoIngresos->getFechaInicial()->format('Y')));
+        $this->setSourceFile($this->getSourceFile($anoInicial));
 
         // import page 1
         $tplIdx = $this->importPage(1);
@@ -112,7 +112,7 @@ class CertificadoIngresosPdf extends FPDI
         $x = 19;
         $y = 61.5;
         $this->SetXY($x, $y);
-        $this->Write(0, $certificadoIngresos->getFechaInicial()->format('Y'));
+        $this->Write(0, $anoInicial);
         $this->SetX($x + 12);
         $this->Write(0, $certificadoIngresos->getFechaInicial()->format('m'));
         $this->SetX($x + 20);
@@ -152,20 +152,20 @@ class CertificadoIngresosPdf extends FPDI
         $this->SetFont($this->customFontFamily,'',$this->fontSize);
 
         //Numero de agencias
-        if ($certificadoIngresos->getFechaInicial()->format('Y') != 2020) {
+        if ($anoInicial < 2020) {
             $this->SetXY(148, 66);
             $this->Write(0, 1);
         }
 
         //Conceptos
-        $y = $certificadoIngresos->getFechaInicial()->format('Y') != 2020 ? 74 : 70;
+        $y = $anoInicial < 2020 ? 74 : 70;
         $y = $this->conceptoIngresos($certificadoIngresos, $y);
-        $y += 4.5;
+        $y += $anoInicial < 2020 ? 4.5 : 4.3;
         $y = $this->conceptoAportes($certificadoIngresos, $y);
 
 
         //Nombre del pagador o agente retenedor
-        if ($certificadoIngresos->getFechaInicial()->format('Y') != 2020) {
+        if ($anoInicial < 2020) {
             $x = 10;
             $y += 4;
             $this->fontSize += 2;
@@ -175,14 +175,20 @@ class CertificadoIngresosPdf extends FPDI
             $this->fontSize -= 2;
         } else {
             $x = 60;
-            $y += 3.5;
+            $y += $anoInicial == 2020 ? 3.5 : 0;
             $this->SetXY($x, $y);
             $this->Write(0, $certificadoIngresos->getRazonSocial() . ' ' . $certificadoIngresos->getNit() . '-' . $certificadoIngresos->getDv());
         }
 
-        $y += 4.25 * 10;
-        $this->SetFont($this->customFontFamily,'',$this->fontSize);
-        $this->writeRightCell((string)number_format($certificadoIngresos->getMonto('valorRetencion')), $y);
+        if ($anoInicial <= 2020) {
+            $y += 4.25 * 10;
+            $this->SetFont($this->customFontFamily, '', $this->fontSize);
+            $this->writeRightCell((string)number_format($certificadoIngresos->getMonto('valorRetencion')), $y);
+        } else {
+            $y += 4.25 * 9.8;
+            $this->SetFont($this->customFontFamily, '', $this->fontSize);
+            $this->writeRightCell((string)number_format($certificadoIngresos->getMonto('totalRetenciones')), $y);
+        }
 
         return $this;
     }

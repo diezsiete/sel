@@ -196,8 +196,19 @@ class CertificadoIngresos implements CertificadoIngresosInterface
      */
     public $valorRetencion;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    public $salariosEclesiasticos = 0;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    public $totalRetenciones = 0;
+
     public $rais = 0;
     public $covid = 0;
+    public $jubilacion = 0;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Main\Usuario")
@@ -649,22 +660,28 @@ class CertificadoIngresos implements CertificadoIngresosInterface
 
     public function getIngresoProperties(): array
     {
-        $ingresoProperties = ['ingresoSalario'];
-        if ($this->getFechaInicial()->format('Y') == 2020) {
+        $ano = $this->getFechaInicial()->format('Y');
+        $ingresoProperties = $ano != 2021 ? ['ingresoSalario'] : ['salariosEclesiasticos'];
+        if ($ano >= 2020) {
             $ingresoProperties[] = 'bonosElectronicos';
         }
         return array_merge($ingresoProperties, [
             'ingresoHonorarios', 'ingresoServicios', 'ingresoComisiones', 'ingresoPrestaciones', 'ingresoViaticos',
             'ingresoRepresentacion', 'ingresoCompensaciones', 'ingresoOtros', 'ingresoCesantias', 'ingresoPensiones'
-        ]);
+        ], ($ano == 2021 ? ['jubilacion'] : []));
     }
 
     public function getAportesProperties(): array
     {
-        $aportesProperties =  [
-            'aportesSalud','aportesObligatoriosPensiones','aportesVoluntariosPensiones','aportesAfc','valorRetencion'
-        ];
-        if ($this->getFechaInicial()->format('Y') == 2020) {
+        $ano = $this->getFechaInicial()->format('Y');
+        $aportesProperties = $ano != 2021
+            ? [
+                'aportesSalud','aportesObligatoriosPensiones','aportesVoluntariosPensiones','aportesAfc','valorRetencion'
+            ]
+            : [
+                'aportesVoluntariosPensiones', 'covid', 'rais', 'valorRetencion', 'aportesAfc', 'totalRetenciones'
+            ];
+        if ($ano == 2020) {
             array_splice($aportesProperties, 2, 0, ['rais', 'covid']);
         }
         return $aportesProperties;
