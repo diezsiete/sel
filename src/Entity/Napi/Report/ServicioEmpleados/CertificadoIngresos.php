@@ -674,13 +674,16 @@ class CertificadoIngresos implements CertificadoIngresosInterface
     public function getAportesProperties(): array
     {
         $ano = $this->getFechaInicial()->format('Y');
-        $aportesProperties = $ano != 2021
-            ? [
-                'aportesSalud','aportesObligatoriosPensiones','aportesVoluntariosPensiones','aportesAfc','valorRetencion'
-            ]
-            : [
-                'aportesVoluntariosPensiones', 'covid', 'rais', 'valorRetencion', 'aportesAfc', 'totalRetenciones'
+        if ($ano == 2021) {
+            $aportesProperties = [
+                'aportesObligatoriosPensiones', 'aportesVoluntariosPensiones', 'rais', 'valorRetencion', 'aportesAfc', 'totalRetenciones'
             ];
+        } else {
+            $aportesProperties = [
+                'aportesSalud','aportesObligatoriosPensiones','aportesVoluntariosPensiones','aportesAfc','valorRetencion'
+            ];
+        }
+
         if ($ano == 2020) {
             array_splice($aportesProperties, 2, 0, ['rais', 'covid']);
         }
